@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:grabConfig xmlns:tns="http://www.dabi.com/habitv/grabconfig/entities" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.dabi.com/habitv/grabconfig/entities grab-config.xsd ">
+  <channel>
+    <name>name</name>
+    <category>
+      <id>id</id>
+      <name>name</name>
+    </category>
+  </channel>
+</tns:grabConfig>
