@@ -36,7 +36,7 @@ public class PluginsLoader<P extends PluginBase> {
 	}
 
 	public PluginsLoader(final Class<P> pluginInterface, final File[] files) {
-		this.files = Arrays.asList(files);
+		this.files = Arrays.asList(files);//FIXME throw Exception si files null ou vide
 		this.classPluginProviders = new LinkedList<>();
 		this.pluginInterface = pluginInterface;
 	}

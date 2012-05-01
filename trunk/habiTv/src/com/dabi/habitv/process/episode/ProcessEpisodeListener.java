@@ -30,4 +30,6 @@ public interface ProcessEpisodeListener extends EventListener {
 
 	void providerDownloadCheckStarted(ProviderPluginInterface provider);
 
+	void episodeReady(EpisodeDTO episode);
+
 }
