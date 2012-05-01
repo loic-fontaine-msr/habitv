@@ -141,8 +141,6 @@ public class HabiTvTrayView implements HabiTvListener {
 			trayIcon.setImage(animatedImage);
 			break;
 		case DONE:
-			// trayIcon.displayMessage("Done", "Checking & Dowloading done",
-			// TrayIcon.MessageType.INFO);
 			startItem.setEnabled(true);
 			trayIcon.setImage(fixImage);
 			break;

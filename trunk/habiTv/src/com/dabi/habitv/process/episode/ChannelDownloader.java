@@ -34,7 +34,7 @@ public class ChannelDownloader implements Runnable {
 
 	private final ExecutorService exportThreadPool;
 
-	private ExecutorService miscThreadPool; //FIXME un par episode !
+	private ExecutorService miscThreadPool; // FIXME un par episode !
 
 	private final PluginFactory<ExporterPluginInterface> exporterFactory;
 

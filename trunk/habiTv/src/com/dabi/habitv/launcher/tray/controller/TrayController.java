@@ -111,7 +111,8 @@ public class TrayController implements ProcessEpisodeListener {
 
 	@Override
 	public void episodeReady(EpisodeDTO episode) {
-		getModel().getProgressionModel().endAction(episode, EpisodeStateEnum.READY);
+		getModel().getProgressionModel().endAction(episode, EpisodeStateEnum.EXPORTING);
+		getModel().getProgressionModel().updateActionProgress(episode, EpisodeStateEnum.READY,"");
 		fireEpisodeChanged(EpisodeStateEnum.READY, episode);
 	}
 
