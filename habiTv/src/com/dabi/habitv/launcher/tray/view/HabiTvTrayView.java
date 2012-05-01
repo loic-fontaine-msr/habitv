@@ -14,7 +14,8 @@ import java.awt.event.MouseListener;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.dabi.habitv.framework.plugin.utils.ProcessingThread;
+import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
+import com.dabi.habitv.framework.plugin.exception.TechnicalException;
 import com.dabi.habitv.launcher.tray.EpisodeChangedEvent;
 import com.dabi.habitv.launcher.tray.HabiTvListener;
 import com.dabi.habitv.launcher.tray.ProcessChangedEvent;
@@ -26,16 +27,22 @@ public class HabiTvTrayView implements HabiTvListener {
 	private final TrayController controller;
 
 	private final TrayIcon trayIcon;
+	
+	private MenuItem startItem;
+	
+	private final Image fixImage;
+	
+	private final Image animatedImage;
 
 	public HabiTvTrayView(final TrayController controller) {
 		this.controller = controller;
-		Image image = Toolkit.getDefaultToolkit().getImage("test/test.gif");
-		trayIcon = new TrayIcon(image, "habiTv");
+		fixImage = Toolkit.getDefaultToolkit().getImage("src/fixe.gif");
+		animatedImage = Toolkit.getDefaultToolkit().getImage("src/anim.gif");
+		trayIcon = new TrayIcon(fixImage, "habiTv");
 		try {
 			init();
 		} catch (AWTException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new TechnicalException(e);
 		}
 	}
 
@@ -45,25 +52,27 @@ public class HabiTvTrayView implements HabiTvListener {
 
 			SystemTray tray = SystemTray.getSystemTray();
 			PopupMenu popupmenu = new PopupMenu();
-			MenuItem item = new MenuItem("Quitter");
-			ActionListener exitActionListener = new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					ProcessingThread.killAllProcessing();
-					System.exit(0);
-				}
-			};
-			item.addActionListener(exitActionListener);
-			popupmenu.add(item);
 
-			item = new MenuItem("Start");
-			exitActionListener = new ActionListener() {
+			startItem = new MenuItem("Start");
+			ActionListener actionListener = new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
+					startItem.setEnabled(false);
 					controller.start();
+					startItem.setEnabled(true);
 				}
 			};
-			item.addActionListener(exitActionListener);
+			startItem.addActionListener(actionListener);
+			popupmenu.add(startItem);
+
+			MenuItem item = new MenuItem("Quitter");
+			actionListener = new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					controller.stop();
+				}
+			};
+			item.addActionListener(actionListener);
 			popupmenu.add(item);
 
 			trayIcon.setPopupMenu(popupmenu);
@@ -103,12 +112,18 @@ public class HabiTvTrayView implements HabiTvListener {
 		}
 	}
 
-	private String progressionToText(Map<String, Map<EpisodeStateEnum, String>> episodeName2ActionProgress) {
-		StringBuilder str = new StringBuilder();
-		for (Entry<String, Map<EpisodeStateEnum, String>> episodeEntry : episodeName2ActionProgress.entrySet()) {
-			str.append(episodeEntry.getKey() + " ");
+	private String progressionToText(Map<EpisodeDTO, Map<EpisodeStateEnum, String>> episodeName2ActionProgress) {
+		StringBuilder str = null;
+		for (Entry<EpisodeDTO, Map<EpisodeStateEnum, String>> episodeEntry : episodeName2ActionProgress.entrySet()) {
+			if (str == null) {
+				str = new StringBuilder();
+			} else {
+				str.append("\n");
+			}
+			str.append(episodeEntry.getKey().getCategory() + " " + episodeEntry.getKey().getName() + " ");
 			for (Entry<EpisodeStateEnum, String> episodeActions : episodeEntry.getValue().entrySet()) {
-				str.append(episodeActions.getKey().name() + " " + episodeActions.getValue() + "%");
+				str.append(episodeActions.getKey().name() + " "
+						+ ((episodeActions.getValue() != null && episodeActions.getValue().length() > 0) ? (episodeActions.getValue() + "%") : ""));
 			}
 		}
 		return str.toString();
@@ -119,12 +134,17 @@ public class HabiTvTrayView implements HabiTvListener {
 		switch (event.getState()) {
 		case BUILD_INDEX:
 			trayIcon.displayMessage("Building Index", "Build Index for " + event.getInfo(), TrayIcon.MessageType.INFO);
-			break;		
+			break;
 		case CHECKING_EPISODES:
+			startItem.setEnabled(false);
 			trayIcon.displayMessage("Checking", "Checking for episodes", TrayIcon.MessageType.INFO);
+			trayIcon.setImage(animatedImage);
 			break;
 		case DONE:
-			trayIcon.displayMessage("Done", "Checking & Dowloading done", TrayIcon.MessageType.INFO);
+			// trayIcon.displayMessage("Done", "Checking & Dowloading done",
+			// TrayIcon.MessageType.INFO);
+			startItem.setEnabled(true);
+			trayIcon.setImage(fixImage);
 			break;
 		case ERROR:
 			trayIcon.displayMessage("Error", "En error has occured", TrayIcon.MessageType.ERROR);
@@ -141,14 +161,21 @@ public class HabiTvTrayView implements HabiTvListener {
 	public void episodeChanged(EpisodeChangedEvent event) {
 		EpisodeStateEnum episodeState = event.getState();
 		switch (episodeState) {
+		case TO_DOWNLOAD:
+			trayIcon.displayMessage("New Download", "Episode to download : " + event.getEpisode().getCategory() + " " + event.getEpisode().getName(),
+					TrayIcon.MessageType.INFO);
+			break;
 		case DOWNLOAD_FAILED:
-			trayIcon.displayMessage("Warning", "Episode failed to download : " + event.getEpisode().getName(), TrayIcon.MessageType.WARNING);
+			trayIcon.displayMessage("Warning", "Episode failed to download : " + event.getEpisode().getCategory() + " " + event.getEpisode().getName(),
+					TrayIcon.MessageType.WARNING);
 			break;
 		case EXPORT_FAILED:
-			trayIcon.displayMessage("Warning", "Export failed to download : " + event.getEpisode().getName(), TrayIcon.MessageType.WARNING);
+			trayIcon.displayMessage("Warning", "Export failed to download : " + event.getEpisode().getCategory() + " " + event.getEpisode().getName(),
+					TrayIcon.MessageType.WARNING);
 			break;
 		case READY:
-			trayIcon.displayMessage("Episode Ready", "The episode is ready : " + event.getEpisode().getName(), TrayIcon.MessageType.INFO);
+			trayIcon.displayMessage("Episode Ready", "The episode is ready : " + event.getEpisode().getCategory() + " " + event.getEpisode().getName(),
+					TrayIcon.MessageType.INFO);
 			break;
 		default:
 			break;

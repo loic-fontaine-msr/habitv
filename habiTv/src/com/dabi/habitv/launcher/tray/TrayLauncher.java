@@ -11,6 +11,7 @@ public class TrayLauncher {
 		TrayController controller = new TrayController(model);
 		HabiTvTrayView view = new HabiTvTrayView(controller);
 		model.addListener(view);
+		controller.startDownloadCheckDemon();
 	}
 
 }

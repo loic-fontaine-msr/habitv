@@ -26,6 +26,8 @@ public class HabitTvTrayModel extends Observable {
 
 	private final ProgressionModel progressionModel;
 
+	private Thread demonThread;
+
 	public HabitTvTrayModel() {
 		retrieveAndExport = new RetrieveAndExport();
 		progressionModel = new ProgressionModel();
@@ -73,9 +75,46 @@ public class HabitTvTrayModel extends Observable {
 		}
 	}
 
-	public void startDownloadCheck(final ProcessEpisodeListener listener) {
-		(new Thread() {
+	public void startDownloadCheckDemon(final ProcessEpisodeListener listener) {
 
+		demonThread = new Thread() {
+			@Override
+			public void run() {
+				boolean interrupted = false;
+				final long confDemonTime;
+				if (config.getDemonTime() == null) {
+					confDemonTime = 1800;
+				} else {
+					confDemonTime = config.getDemonTime();
+				}
+				final long demonTime = confDemonTime * 1000L;
+				// demon mode
+				//FIXME empecher le lancement du démon si tâche déja en cours
+				while (true) {
+					if (!interrupted) {
+						retrieveAndExport.execute(config, grabConfig, listener);
+					} else {
+						interrupted = false;
+					}
+					try {
+						Thread.sleep(demonTime);
+					} catch (InterruptedException e) {
+						// may have been interrupted by a manually start
+						interrupted = true;
+					}
+				}
+			}
+
+		};
+
+		demonThread.start();
+	}
+
+	public void startDownloadCheck(final ProcessEpisodeListener listener) {
+
+		demonThread.interrupt();
+
+		(new Thread() {
 			@Override
 			public void run() {
 				retrieveAndExport.execute(config, grabConfig, listener);

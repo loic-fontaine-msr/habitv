@@ -12,8 +12,8 @@ import com.dabi.habitv.config.entities.Downloader;
 import com.dabi.habitv.config.entities.Exporter;
 import com.dabi.habitv.dldao.DownloadedDAO;
 import com.dabi.habitv.framework.plugin.api.CmdProgressionListener;
-import com.dabi.habitv.framework.plugin.api.PluginDownloaderInterface;
 import com.dabi.habitv.framework.plugin.api.ExporterPluginInterface;
+import com.dabi.habitv.framework.plugin.api.PluginDownloaderInterface;
 import com.dabi.habitv.framework.plugin.api.ProviderPluginInterface;
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
@@ -33,6 +33,8 @@ public class ChannelDownloader implements Runnable {
 	private final ProviderPluginInterface provider;
 
 	private final ExecutorService exportThreadPool;
+
+	private ExecutorService miscThreadPool; //FIXME un par episode !
 
 	private final PluginFactory<ExporterPluginInterface> exporterFactory;
 
@@ -125,7 +127,7 @@ public class ChannelDownloader implements Runnable {
 					listener.downloadedEpisode(episode);
 
 					// add the export thread
-					exportThreadPool.execute(buildExportThread(episode, config.getExporter(), episodeExporter, filesDAO));
+					exportThreadPool.execute(buildExportThread(episode, config.getExporter(), episodeExporter, filesDAO, true));
 				} catch (ExecutorFailedException e) {
 					listener.downloadFailed(episode, e);
 				}
@@ -134,17 +136,21 @@ public class ChannelDownloader implements Runnable {
 	}
 
 	private Runnable buildExportThread(final EpisodeDTO episode, final List<Exporter> exporterList, final EpisodeExporter episodeExporter,
-			final DownloadedDAO filesDAO) {
+			final DownloadedDAO filesDAO, final boolean rootCall) {
 		return new Runnable() {
 			@Override
 			public void run() {
 				final String threadName = "EXPORT" + episode.getName();
 				Thread.currentThread().setName(threadName);
+
+				if (rootCall) {
+					miscThreadPool = Executors.newCachedThreadPool();
+				}
+
 				for (final Exporter exporter : exporterList) {
 					try {
 						episodeExporter.export(exporter.getCmd(), exporterFactory.findPlugin(exporter.getName(), HabitTvConf.DEFAULT_EXPORTER),
 								new CmdProgressionListener() {
-
 									@Override
 									public void listen(final String progression) {
 										listener.exportEpisode(episode, exporter, progression);
@@ -154,10 +160,20 @@ public class ChannelDownloader implements Runnable {
 						listener.exportFailed(episode, exporter, e);
 					}
 					if (!exporter.getExporter().isEmpty()) {
-						new Thread(buildExportThread(episode, exporter.getExporter(), episodeExporter, filesDAO)).start();
+						miscThreadPool.execute(buildExportThread(episode, exporter.getExporter(), episodeExporter, filesDAO, false));
 					}
 				}
-				filesDAO.addDownloadedFiles(episode.getName());
+
+				if (rootCall) {
+					miscThreadPool.shutdown();
+					try {
+						miscThreadPool.awaitTermination(config.getAllDownloadTimeout(), TimeUnit.SECONDS);
+					} catch (InterruptedException e) {
+						throw new TechnicalException(e);
+					}
+					filesDAO.addDownloadedFiles(episode.getName());
+					listener.episodeReady(episode);
+				}
 			}
 		};
 	}
