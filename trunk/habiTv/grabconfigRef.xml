@@ -1,0 +1,1273 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:grabConfig xmlns:ns2="http://www.dabi.com/habitv/grabconfig/entities">
+    <channel>
+        <name>m6</name>
+        <category>
+            <id>130</id>
+            <name>Maison à vendre</name>
+        </category>
+        <category>
+            <id>5408</id>
+            <name>Matt et les monstres</name>
+        </category>
+        <category>
+            <id>10834</id>
+            <name>TOP TENDANCE</name>
+        </category>
+        <category>
+            <id>2264</id>
+            <name>Barbapapa</name>
+        </category>
+        <category>
+            <id>8082</id>
+            <name>UN TRESOR DANS VOTRE MAISON</name>
+        </category>
+        <category>
+            <id>7976</id>
+            <name>LES BLAGUES DE TOTO</name>
+        </category>
+        <category>
+            <id>2272</id>
+            <name>M6 Boutique</name>
+        </category>
+        <category>
+            <id>6172</id>
+            <name>C'EST MA VIE</name>
+        </category>
+        <category>
+            <id>18</id>
+            <name>Un dîner presque parfait</name>
+        </category>
+        <category>
+            <id>6026</id>
+            <name>Un gars, une fille</name>
+        </category>
+        <category>
+            <id>608</id>
+            <name>Les bleus</name>
+        </category>
+        <category>
+            <id>10572</id>
+            <name>BASKUP</name>
+        </category>
+        <category>
+            <id>11316</id>
+            <name>MONSTER ALLERGY</name>
+        </category>
+        <category>
+            <id>2972</id>
+            <name>Le 1945</name>
+        </category>
+        <category>
+            <id>11836</id>
+            <name>LA MEILLEURE DANSE</name>
+        </category>
+        <category>
+            <id>11788</id>
+            <name>La Belle et ses princes presque charmants</name>
+        </category>
+        <category>
+            <id>122</id>
+            <name>E=M6</name>
+        </category>
+        <category>
+            <id>3800</id>
+            <name>COSMIC ROBBIE</name>
+        </category>
+        <category>
+            <id>6354</id>
+            <name>CAPITAL TERRE</name>
+        </category>
+        <category>
+            <id>11912</id>
+            <name>HINDENBURG : LE GEANT DES AIRS</name>
+        </category>
+        <category>
+            <id>624</id>
+            <name>Kid et toi</name>
+        </category>
+        <category>
+            <id>11768</id>
+            <name>Tony &amp; Alberto</name>
+        </category>
+        <category>
+            <id>8220</id>
+            <name>UNE NOUVELLE DONNE</name>
+        </category>
+        <category>
+            <id>2334</id>
+            <name>CHARLOTTE AUX FRAISES</name>
+        </category>
+        <category>
+            <id>2460</id>
+            <name>Enquête exclusive</name>
+        </category>
+        <category>
+            <id>2856</id>
+            <name>ABSOLUMENT STARS</name>
+        </category>
+        <category>
+            <id>10322</id>
+            <name>UN ADMIRATEUR SECRET</name>
+        </category>
+        <category>
+            <id>4862</id>
+            <name>LE 1245</name>
+        </category>
+        <category>
+            <id>9812</id>
+            <name>Hawaii 5-0</name>
+        </category>
+        <category>
+            <id>9794</id>
+            <name>CHICO CHICA BOUMBA PEPPER SCHOOL</name>
+        </category>
+        <category>
+            <id>11874</id>
+            <name>Un coeur à l'hameçon</name>
+        </category>
+        <category>
+            <id>11474</id>
+            <name>LE CHEF EN FRANCE</name>
+        </category>
+        <category>
+            <id>142</id>
+            <name>D&amp;CO</name>
+        </category>
+        <category>
+            <id>2276</id>
+            <name>Cinésix</name>
+        </category>
+        <category>
+            <id>398</id>
+            <name>Pékin Express</name>
+        </category>
+        <category>
+            <id>2260</id>
+            <name>100% Mag</name>
+        </category>
+        <category>
+            <id>2168</id>
+            <name>Turbo</name>
+        </category>
+        <category>
+            <id>3538</id>
+            <name>Scènes de ménages</name>
+        </category>
+        <category>
+            <id>11728</id>
+            <name>LES P'TITS DIABLES</name>
+        </category>
+        <category>
+            <id>2282</id>
+            <name>Météo</name>
+        </category>
+        <category>
+            <id>116</id>
+            <name>66 Minutes</name>
+        </category>
+        <category>
+            <id>9992</id>
+            <name>2012 ET VOUS</name>
+        </category>
+        <category>
+            <id>616</id>
+            <name>N.C.I.S.</name>
+        </category>
+        <category>
+            <id>2912</id>
+            <name>Le petit Nicolas</name>
+        </category>
+    </channel>
+    <channel>
+        <name>canalPlus</name>
+        <category>
+            <id>523</id>
+            <name>Toutes les vidéos CREA+</name>
+            <category>
+                <id>490719</id>
+                <name>CREA+</name>
+            </category>
+        </category>
+        <category>
+            <id>62</id>
+            <name>LES BUZZ DU WEB</name>
+            <category>
+                <id>633794</id>
+                <name>LE BOUCAN DU JOUR</name>
+            </category>
+        </category>
+        <category>
+            <id>118</id>
+            <name>CANAL STREET - LES INCONTOURNABLES</name>
+            <category>
+                <id>631165</id>
+                <name>ACTU</name>
+            </category>
+            <category>
+                <id>630851</id>
+                <name>ARTS</name>
+            </category>
+            <category>
+                <id>632453</id>
+                <name>SPORT</name>
+            </category>
+            <category>
+                <id>631776</id>
+                <name>CSMUSIQUE</name>
+            </category>
+            <category>
+                <id>634006</id>
+                <name>TENDANCES</name>
+            </category>
+            <category>
+                <id>631313</id>
+                <name>DANSE</name>
+            </category>
+        </category>
+        <category>
+            <id>746</id>
+            <name>GNARKS GNARKS</name>
+            <category>
+                <id>631041</id>
+                <name>GNARKS</name>
+            </category>
+        </category>
+        <category>
+            <id>119</id>
+            <name>Les Live de CANAL STREET</name>
+            <category>
+                <id>630056</id>
+                <name>CSMUSIQUE</name>
+            </category>
+        </category>
+        <category>
+            <id>837</id>
+            <name>COULISSES</name>
+            <category>
+                <id>598835</id>
+                <name>CESAR 2012</name>
+            </category>
+        </category>
+        <category>
+            <id>843</id>
+            <name>LA QUESTION DE +</name>
+            <category>
+                <id>628543</id>
+                <name>LA QUESTION DE +</name>
+            </category>
+        </category>
+        <category>
+            <id>3</id>
+            <name>TOUT LE FOOTBALL</name>
+            <category>
+                <id>634110</id>
+                <name>FOOTBALL</name>
+            </category>
+        </category>
+        <category>
+            <id>864</id>
+            <name>SERIES - THE OFFICE saison 7</name>
+            <category>
+                <id>621512</id>
+                <name>THE OFFICE</name>
+            </category>
+        </category>
+        <category>
+            <id>82</id>
+            <name>COUPS DE COEUR EN SALLES DE CANAL</name>
+            <category>
+                <id>598540</id>
+                <name>CINEMA EN SALLES</name>
+            </category>
+            <category>
+                <id>627610</id>
+                <name>EMISSION</name>
+            </category>
+        </category>
+        <category>
+            <id>380</id>
+            <name>CIN'EXPRESS</name>
+            <category>
+                <id>453460</id>
+                <name>FESTIVAL EN VIDEO</name>
+            </category>
+            <category>
+                <id>624915</id>
+                <name>EMISSION</name>
+            </category>
+        </category>
+        <category>
+            <id>210</id>
+            <name>Juste Debout 2011 à Bercy</name>
+            <category>
+                <id>433630</id>
+                <name>TENDANCES</name>
+            </category>
+        </category>
+        <category>
+            <id>44</id>
+            <name>LES EMISSIONS EVENEMENTIELLES</name>
+            <category>
+                <id>492292</id>
+                <name>EMISSIONS EVENEMENTIELLES</name>
+            </category>
+        </category>
+        <category>
+            <id>507</id>
+            <name>La nuit des cons</name>
+            <category>
+                <id>325552</id>
+                <name>LA NUIT DES CONS</name>
+            </category>
+        </category>
+        <category>
+            <id>15</id>
+            <name>LES VIDEOS DU MOMENT</name>
+            <category>
+                <id>626507</id>
+                <name>LUTHER</name>
+            </category>
+            <category>
+                <id>630213</id>
+                <name>DESPERATE HOUSEWIVES - SAISON 8</name>
+            </category>
+            <category>
+                <id>628543</id>
+                <name>LA QUESTION DE +</name>
+            </category>
+            <category>
+                <id>631041</id>
+                <name>GNARKS</name>
+            </category>
+            <category>
+                <id>621512</id>
+                <name>THE OFFICE</name>
+            </category>
+            <category>
+                <id>619070</id>
+                <name>WORKINGIRLS</name>
+            </category>
+        </category>
+        <category>
+            <id>424</id>
+            <name>REPORTAGES DANSE</name>
+            <category>
+                <id>389680</id>
+                <name>TENDANCES</name>
+            </category>
+        </category>
+        <category>
+            <id>237</id>
+            <name>Les live du Grand journal</name>
+            <category>
+                <id>632569</id>
+                <name>LE GRAND JOURNAL</name>
+            </category>
+        </category>
+        <category>
+            <id>306</id>
+            <name>Canal Street - Les live</name>
+            <category>
+                <id>630851</id>
+                <name>ARTS</name>
+            </category>
+            <category>
+                <id>617859</id>
+                <name>CSMUSIQUE</name>
+            </category>
+        </category>
+        <category>
+            <id>838</id>
+            <name>LE MEILLEUR DES CESAR 2012</name>
+            <category>
+                <id>598835</id>
+                <name>CESAR 2012</name>
+            </category>
+        </category>
+        <category>
+            <id>32</id>
+            <name>LES INTERVIEWS</name>
+            <category>
+                <id>477007</id>
+                <name>ALBUM DE LA SEMAINE</name>
+            </category>
+        </category>
+        <category>
+            <id>358</id>
+            <name>30 ROCK</name>
+            <category>
+                <id>592832</id>
+                <name>30 ROCK</name>
+            </category>
+        </category>
+        <category>
+            <id>63</id>
+            <name> LES EXCLUS</name>
+            <category>
+                <id>611666</id>
+                <name>DOCUMENTAIRES DIVERS</name>
+            </category>
+            <category>
+                <id>633790</id>
+                <name>LE MEILLEUR DU HIER</name>
+            </category>
+            <category>
+                <id>492292</id>
+                <name>EMISSIONS EVENEMENTIELLES</name>
+            </category>
+            <category>
+                <id>633794</id>
+                <name>LE BOUCAN DU JOUR</name>
+            </category>
+            <category>
+                <id>541512</id>
+                <name>SPECIAL INVESTIGATION</name>
+            </category>
+            <category>
+                <id>632448</id>
+                <name>LES NOUVEAUX EXPLORATEURS</name>
+            </category>
+        </category>
+        <category>
+            <id>39</id>
+            <name>LES EMISSIONS QUOTIDIENNES</name>
+            <category>
+                <id>634012</id>
+                <name>LES GUIGNOLS</name>
+            </category>
+            <category>
+                <id>633984</id>
+                <name>LE JT DE CANAL+</name>
+            </category>
+            <category>
+                <id>633988</id>
+                <name>BREF</name>
+            </category>
+            <category>
+                <id>633844</id>
+                <name>ZAPPING</name>
+            </category>
+        </category>
+        <category>
+            <id>47</id>
+            <name>LES EXCLUS DU WEB </name>
+            <category>
+                <id>631443</id>
+                <name>PEPITES SUR LE NET</name>
+            </category>
+            <category>
+                <id>604405</id>
+                <name>LA BOITE A QUESTIONS</name>
+            </category>
+        </category>
+        <category>
+            <id>627</id>
+            <name>BREF</name>
+            <category>
+                <id>633988</id>
+                <name>BREF</name>
+            </category>
+        </category>
+        <category>
+            <id>43</id>
+            <name>LES EMISSIONS DU DIMANCHE</name>
+            <category>
+                <id>633257</id>
+                <name>DIMANCHE+</name>
+            </category>
+            <category>
+                <id>633236</id>
+                <name>L'EFFET PAPILLON</name>
+            </category>
+            <category>
+                <id>634012</id>
+                <name>LES GUIGNOLS</name>
+            </category>
+            <category>
+                <id>618514</id>
+                <name>LE PETIT JOURNAL</name>
+            </category>
+            <category>
+                <id>633844</id>
+                <name>ZAPPING</name>
+            </category>
+            <category>
+                <id>633294</id>
+                <name>ACTION DISCRETE</name>
+            </category>
+        </category>
+        <category>
+            <id>105</id>
+            <name>Toutes les émissions</name>
+            <category>
+                <id>633852</id>
+                <name>UNE MINUTE AVANT</name>
+            </category>
+            <category>
+                <id>633257</id>
+                <name>DIMANCHE+</name>
+            </category>
+            <category>
+                <id>633727</id>
+                <name>LA MATINALE</name>
+            </category>
+            <category>
+                <id>633017</id>
+                <name>SALUT LES TERRIENS</name>
+            </category>
+            <category>
+                <id>633105</id>
+                <name>GROLAND</name>
+            </category>
+            <category>
+                <id>634012</id>
+                <name>LES GUIGNOLS</name>
+            </category>
+            <category>
+                <id>633984</id>
+                <name>LE JT DE CANAL+</name>
+            </category>
+            <category>
+                <id>634096</id>
+                <name>LE PETIT JOURNAL</name>
+            </category>
+            <category>
+                <id>633988</id>
+                <name>BREF</name>
+            </category>
+            <category>
+                <id>632780</id>
+                <name>JDJV</name>
+            </category>
+            <category>
+                <id>633989</id>
+                <name>LE GRAND JOURNAL</name>
+            </category>
+            <category>
+                <id>633236</id>
+                <name>L'EFFET PAPILLON</name>
+            </category>
+            <category>
+                <id>634081</id>
+                <name>SAV</name>
+            </category>
+            <category>
+                <id>632797</id>
+                <name>NEWS SHOW</name>
+            </category>
+            <category>
+                <id>633844</id>
+                <name>ZAPPING</name>
+            </category>
+            <category>
+                <id>633776</id>
+                <name>LA NOUVELLE EDITION</name>
+            </category>
+            <category>
+                <id>633294</id>
+                <name>ACTION DISCRETE</name>
+            </category>
+        </category>
+        <category>
+            <id>104</id>
+            <name>Le Grand Journal</name>
+            <category>
+                <id>633989</id>
+                <name>LE GRAND JOURNAL</name>
+            </category>
+        </category>
+        <category>
+            <id>242</id>
+            <name>DU HARD OU DU COCHON</name>
+            <category>
+                <id>349280</id>
+                <name>DU HARD OU DU COCHON</name>
+            </category>
+        </category>
+        <category>
+            <id>499</id>
+            <name>CESAR 2011 - MEILLEURS MOMENTS</name>
+            <category>
+                <id>430952</id>
+                <name>CINEMA EN SALLES</name>
+            </category>
+            <category>
+                <id>430133</id>
+                <name>CESAR 2012</name>
+            </category>
+            <category>
+                <id>431015</id>
+                <name>EMISSION</name>
+            </category>
+        </category>
+        <category>
+            <id>7</id>
+            <name>LES EMISSIONS SPORT</name>
+            <category>
+                <id>633025</id>
+                <name>INTERIEUR SPORT</name>
+            </category>
+        </category>
+        <category>
+            <id>4</id>
+            <name>TOUT LE TENNIS / GOLF</name>
+            <category>
+                <id>629259</id>
+                <name>GOLF</name>
+            </category>
+            <category>
+                <id>633780</id>
+                <name>TENNIS</name>
+            </category>
+        </category>
+        <category>
+            <id>75</id>
+            <name>LES + VUES</name>
+            <category>
+                <id>376444</id>
+                <name>CREA+</name>
+            </category>
+            <category>
+                <id>325552</id>
+                <name>LA NUIT DES CONS</name>
+            </category>
+            <category>
+                <id>373226</id>
+                <name>VOS SAV</name>
+            </category>
+            <category>
+                <id>210808</id>
+                <name>AIR FUCK</name>
+            </category>
+        </category>
+        <category>
+            <id>76</id>
+            <name>LES + RECENTES</name>
+            <category>
+                <id>490719</id>
+                <name>CREA+</name>
+            </category>
+        </category>
+        <category>
+            <id>73</id>
+            <name>LES PLUS RECENTES</name>
+            <category>
+                <id>634058</id>
+                <name>ZAPSPORT</name>
+            </category>
+            <category>
+                <id>634018</id>
+                <name>BASKET</name>
+            </category>
+            <category>
+                <id>633519</id>
+                <name>RUGBY</name>
+            </category>
+            <category>
+                <id>634110</id>
+                <name>FOOTBALL</name>
+            </category>
+            <category>
+                <id>633365</id>
+                <name>AUTRES SPORTS</name>
+            </category>
+            <category>
+                <id>633780</id>
+                <name>TENNIS</name>
+            </category>
+            <category>
+                <id>632053</id>
+                <name>HANDBALL</name>
+            </category>
+            <category>
+                <id>633419</id>
+                <name>BOXE</name>
+            </category>
+            <category>
+                <id>633025</id>
+                <name>INTERIEUR SPORT</name>
+            </category>
+        </category>
+        <category>
+            <id>28</id>
+            <name>CULTURE</name>
+            <category>
+                <id>634080</id>
+                <name>MOULOUD ACHOUR</name>
+            </category>
+            <category>
+                <id>482557</id>
+                <name>L'INSTANT T</name>
+            </category>
+        </category>
+        <category>
+            <id>2</id>
+            <name>LES INCONTOURNABLES</name>
+            <category>
+                <id>326810</id>
+                <name>X GAMES</name>
+            </category>
+            <category>
+                <id>629259</id>
+                <name>GOLF</name>
+            </category>
+            <category>
+                <id>634058</id>
+                <name>ZAPSPORT</name>
+            </category>
+            <category>
+                <id>634018</id>
+                <name>BASKET</name>
+            </category>
+            <category>
+                <id>633519</id>
+                <name>RUGBY</name>
+            </category>
+            <category>
+                <id>634110</id>
+                <name>FOOTBALL</name>
+            </category>
+            <category>
+                <id>633365</id>
+                <name>AUTRES SPORTS</name>
+            </category>
+            <category>
+                <id>633780</id>
+                <name>TENNIS</name>
+            </category>
+            <category>
+                <id>633025</id>
+                <name>INTERIEUR SPORT</name>
+            </category>
+        </category>
+        <category>
+            <id>565</id>
+            <name>DESPERATE HOUSEWIVES 8 ALL</name>
+            <category>
+                <id>627884</id>
+                <name>DESPERATE HOUSEWIVES - SAISON 8</name>
+            </category>
+        </category>
+        <category>
+            <id>290</id>
+            <name>BA CANAL+</name>
+            <category>
+                <id>611345</id>
+                <name>BA A L'ANTENNE</name>
+            </category>
+        </category>
+        <category>
+            <id>11</id>
+            <name>LES EMISSIONS CINEMA</name>
+            <category>
+                <id>634088</id>
+                <name>EMISSION</name>
+            </category>
+        </category>
+        <category>
+            <id>130</id>
+            <name>Les émissions</name>
+            <category>
+                <id>632780</id>
+                <name>JDJV</name>
+            </category>
+            <category>
+                <id>633077</id>
+                <name>SALUT LES TERRIENS</name>
+            </category>
+            <category>
+                <id>633105</id>
+                <name>GROLAND</name>
+            </category>
+            <category>
+                <id>633989</id>
+                <name>LE GRAND JOURNAL</name>
+            </category>
+            <category>
+                <id>634012</id>
+                <name>LES GUIGNOLS</name>
+            </category>
+            <category>
+                <id>634096</id>
+                <name>LE PETIT JOURNAL</name>
+            </category>
+            <category>
+                <id>634081</id>
+                <name>SAV</name>
+            </category>
+            <category>
+                <id>632797</id>
+                <name>NEWS SHOW</name>
+            </category>
+            <category>
+                <id>633844</id>
+                <name>ZAPPING</name>
+            </category>
+            <category>
+                <id>480470</id>
+                <name>L'EDITION SPECIALE</name>
+            </category>
+            <category>
+                <id>633294</id>
+                <name>ACTION DISCRETE</name>
+            </category>
+        </category>
+        <category>
+            <id>510</id>
+            <name>les films suédés</name>
+            <category>
+                <id>226241</id>
+                <name>CREA+</name>
+            </category>
+            <category>
+                <id>107768</id>
+                <name>CINEMA EN SALLES</name>
+            </category>
+            <category>
+                <id>213902</id>
+                <name>LES FILMS FAITS A LA MAISON</name>
+            </category>
+        </category>
+        <category>
+            <id>24</id>
+            <name>LES DOCUMENTAIRES</name>
+            <category>
+                <id>634010</id>
+                <name>DOCUMENTAIRES DIVERS</name>
+            </category>
+            <category>
+                <id>626274</id>
+                <name>SPECIAL INVESTIGATION</name>
+            </category>
+            <category>
+                <id>632448</id>
+                <name>LES NOUVEAUX EXPLORATEURS</name>
+            </category>
+        </category>
+        <category>
+            <id>506</id>
+            <name>Créez la pub de CANAL+</name>
+            <category>
+                <id>210814</id>
+                <name>LA PUB DE CANAL+</name>
+            </category>
+        </category>
+        <category>
+            <id>121</id>
+            <name>Street Tendances</name>
+            <category>
+                <id>485971</id>
+                <name>TENDANCES</name>
+            </category>
+        </category>
+        <category>
+            <id>6</id>
+            <name>TOUT LE RUGBY</name>
+            <category>
+                <id>633519</id>
+                <name>RUGBY</name>
+            </category>
+        </category>
+        <category>
+            <id>31</id>
+            <name>LES LIVE</name>
+            <category>
+                <id>633006</id>
+                <name>CONCERTS PRIVES</name>
+            </category>
+            <category>
+                <id>632569</id>
+                <name>LE GRAND JOURNAL</name>
+            </category>
+            <category>
+                <id>633010</id>
+                <name>ALBUM DE LA SEMAINE</name>
+            </category>
+            <category>
+                <id>544341</id>
+                <name>LA MUSICALE</name>
+            </category>
+        </category>
+        <category>
+            <id>9</id>
+            <name>AUTRES SPORTS - HOME SPORT</name>
+            <category>
+                <id>629259</id>
+                <name>GOLF</name>
+            </category>
+            <category>
+                <id>634058</id>
+                <name>ZAPSPORT</name>
+            </category>
+            <category>
+                <id>633365</id>
+                <name>AUTRES SPORTS</name>
+            </category>
+        </category>
+        <category>
+            <id>825</id>
+            <name>MAFIOSA 4</name>
+            <category>
+                <id>621233</id>
+                <name>MAFIOSA - SAISON 4</name>
+            </category>
+        </category>
+        <category>
+            <id>124</id>
+            <name>les interviews de Raphäl</name>
+        </category>
+        <category>
+            <id>511</id>
+            <name>La Factorire</name>
+            <category>
+                <id>381419</id>
+                <name>LA FACTORIRE</name>
+            </category>
+        </category>
+        <category>
+            <id>10</id>
+            <name>LES DERNIERES BA</name>
+            <category>
+                <id>633074</id>
+                <name>CINEMA EN SALLES</name>
+            </category>
+        </category>
+        <category>
+            <id>48</id>
+            <name>LES GUIGNOLS</name>
+            <category>
+                <id>634012</id>
+                <name>LES GUIGNOLS</name>
+            </category>
+        </category>
+        <category>
+            <id>108</id>
+            <name>Les Musiques des émissions</name>
+            <category>
+                <id>632230</id>
+                <name>LA MATINALE</name>
+            </category>
+            <category>
+                <id>632569</id>
+                <name>LE GRAND JOURNAL</name>
+            </category>
+        </category>
+        <category>
+            <id>783</id>
+            <name>CESAR 2012 - BA FILMS NOMINES</name>
+            <category>
+                <id>544313</id>
+                <name>CINEMA EN SALLES</name>
+            </category>
+        </category>
+        <category>
+            <id>77</id>
+            <name>Les mieux notées</name>
+            <category>
+                <id>205075</id>
+                <name>CREA+</name>
+            </category>
+            <category>
+                <id>382734</id>
+                <name>VOS SAV</name>
+            </category>
+            <category>
+                <id>220516</id>
+                <name>LE MOIS DES AMOURS</name>
+            </category>
+        </category>
+        <category>
+            <id>37</id>
+            <name>L'HUMOUR DU WEEK-END </name>
+            <category>
+                <id>633077</id>
+                <name>SALUT LES TERRIENS</name>
+            </category>
+            <category>
+                <id>633105</id>
+                <name>GROLAND</name>
+            </category>
+            <category>
+                <id>633350</id>
+                <name>LES GUIGNOLS</name>
+            </category>
+            <category>
+                <id>618514</id>
+                <name>LE PETIT JOURNAL</name>
+            </category>
+            <category>
+                <id>632797</id>
+                <name>NEWS SHOW</name>
+            </category>
+            <category>
+                <id>633294</id>
+                <name>ACTION DISCRETE</name>
+            </category>
+        </category>
+        <category>
+            <id>836</id>
+            <name>CEREMONIE</name>
+            <category>
+                <id>597550</id>
+                <name>CESAR 2012</name>
+            </category>
+        </category>
+        <category>
+            <id>72</id>
+            <name>LES PLUS VUES</name>
+            <category>
+                <id>423396</id>
+                <name>FOOTBALL</name>
+            </category>
+            <category>
+                <id>285428</id>
+                <name>INTERIEUR SPORT</name>
+            </category>
+        </category>
+        <category>
+            <id>112</id>
+            <name>Le Meilleur Du Hier</name>
+            <category>
+                <id>288657</id>
+                <name>LE MEILLEUR DU HIER</name>
+            </category>
+        </category>
+        <category>
+            <id>858</id>
+            <name>MAFIOSA - SAISON 4 - LES OFF DE TONY ET MANU</name>
+            <category>
+                <id>621233</id>
+                <name>MAFIOSA - SAISON 4</name>
+            </category>
+        </category>
+        <category>
+            <id>41</id>
+            <name>LES EMISSIONS DU SAMEDI</name>
+            <category>
+                <id>632780</id>
+                <name>JDJV</name>
+            </category>
+            <category>
+                <id>633017</id>
+                <name>SALUT LES TERRIENS</name>
+            </category>
+            <category>
+                <id>633105</id>
+                <name>GROLAND</name>
+            </category>
+            <category>
+                <id>633984</id>
+                <name>LE JT DE CANAL+</name>
+            </category>
+            <category>
+                <id>633988</id>
+                <name>BREF</name>
+            </category>
+            <category>
+                <id>632797</id>
+                <name>NEWS SHOW</name>
+            </category>
+            <category>
+                <id>633844</id>
+                <name>ZAPPING</name>
+            </category>
+            <category>
+                <id>633044</id>
+                <name>EMISSION</name>
+            </category>
+        </category>
+        <category>
+            <id>508</id>
+            <name>le mois désamours</name>
+            <category>
+                <id>297095</id>
+                <name>LE MOIS DES AMOURS</name>
+            </category>
+        </category>
+        <category>
+            <id>42</id>
+            <name>LA SELECTION CANAL</name>
+            <category>
+                <id>481688</id>
+                <name>CREA+</name>
+            </category>
+            <category>
+                <id>373226</id>
+                <name>VOS SAV</name>
+            </category>
+        </category>
+        <category>
+            <id>29</id>
+            <name>POLITIQUE</name>
+            <category>
+                <id>633257</id>
+                <name>DIMANCHE+</name>
+            </category>
+            <category>
+                <id>632229</id>
+                <name>LA MATINALE</name>
+            </category>
+            <category>
+                <id>194781</id>
+                <name>L'ACTU AVEC ITELE</name>
+            </category>
+            <category>
+                <id>634054</id>
+                <name>LE BOUCAN DU JOUR</name>
+            </category>
+            <category>
+                <id>633984</id>
+                <name>LE JT DE CANAL+</name>
+            </category>
+        </category>
+        <category>
+            <id>46</id>
+            <name>BONUS </name>
+            <category>
+                <id>632372</id>
+                <name>CINEMA EN SALLES</name>
+            </category>
+            <category>
+                <id>597550</id>
+                <name>CESAR 2012</name>
+            </category>
+            <category>
+                <id>603121</id>
+                <name>OSCAR 2012</name>
+            </category>
+            <category>
+                <id>633282</id>
+                <name>EMISSION</name>
+            </category>
+        </category>
+        <category>
+            <id>129</id>
+            <name>TOUS LES MEILLEURS MOMENTS DU GRAND JOURNAL</name>
+            <category>
+                <id>634079</id>
+                <name>LE GRAND JOURNAL</name>
+            </category>
+            <category>
+                <id>634012</id>
+                <name>LES GUIGNOLS</name>
+            </category>
+            <category>
+                <id>634076</id>
+                <name>LA METEO DE SOLWEIG</name>
+            </category>
+            <category>
+                <id>633988</id>
+                <name>BREF</name>
+            </category>
+            <category>
+                <id>634081</id>
+                <name>SAV</name>
+            </category>
+            <category>
+                <id>632536</id>
+                <name>LA BOITE A QUESTIONS</name>
+            </category>
+            <category>
+                <id>633844</id>
+                <name>ZAPPING</name>
+            </category>
+            <category>
+                <id>632007</id>
+                <name>EMISSION</name>
+            </category>
+        </category>
+        <category>
+            <id>5</id>
+            <name>TOUT LE BASKET</name>
+            <category>
+                <id>634018</id>
+                <name>BASKET</name>
+            </category>
+        </category>
+        <category>
+            <id>786</id>
+            <name>AVANT CESAR</name>
+            <category>
+                <id>588640</id>
+                <name>CINEMA EN SALLES</name>
+            </category>
+            <category>
+                <id>597586</id>
+                <name>CESAR 2012</name>
+            </category>
+        </category>
+        <category>
+            <id>509</id>
+            <name>Viens jouer sur CANAL+</name>
+            <category>
+                <id>235198</id>
+                <name>VIENS JOUER SUR CANAL+</name>
+            </category>
+        </category>
+        <category>
+            <id>27</id>
+            <name>L'ACTUALITE</name>
+            <category>
+                <id>621535</id>
+                <name>LA PETITE SEMAINE</name>
+            </category>
+            <category>
+                <id>633257</id>
+                <name>DIMANCHE+</name>
+            </category>
+            <category>
+                <id>633727</id>
+                <name>LA MATINALE</name>
+            </category>
+            <category>
+                <id>633236</id>
+                <name>L'EFFET PAPILLON</name>
+            </category>
+            <category>
+                <id>203105</id>
+                <name>SPECIAL</name>
+            </category>
+            <category>
+                <id>633984</id>
+                <name>LE JT DE CANAL+</name>
+            </category>
+            <category>
+                <id>634138</id>
+                <name>SUJET</name>
+            </category>
+        </category>
+        <category>
+            <id>868</id>
+            <name>WORKINGIRLS</name>
+            <category>
+                <id>630636</id>
+                <name>WORKINGIRLS</name>
+            </category>
+        </category>
+        <category>
+            <id>381</id>
+            <name>FACE A FACE(S)</name>
+            <category>
+                <id>544855</id>
+                <name>EMISSION</name>
+            </category>
+        </category>
+        <category>
+            <id>38</id>
+            <name>LES VIDEOS LES + VUES</name>
+            <category>
+                <id>355990</id>
+                <name>LES GUIGNOLS</name>
+            </category>
+            <category>
+                <id>505918</id>
+                <name>BREF</name>
+            </category>
+            <category>
+                <id>137775</id>
+                <name>PEPITES SUR LE NET</name>
+            </category>
+        </category>
+    </channel>
+</ns2:grabConfig>
