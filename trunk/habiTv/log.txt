@@ -1,0 +1,18 @@
+---> user freebox
+USER freebox
+---> 
+PASS 4688
+---> cd "/Disque dur/"
+CWD /Disque dur/
+---> mkdir "FOOTBALL"/
+XMKD FOOTBALL/
+Request action not taken (file does not exist or no access).
+---> cd "FOOTBALL/"
+CWD FOOTBALL/
+---> bin
+TYPE I
+---> put "D:\divx\regular\avi\Tottenham_Hotspur__Blackburn_Rover.avi"
+PORT 192,168,0,13,192,170
+---> STOR Tottenham_Hotspur__Blackburn_Rover.avi
+---> quit
+QUIT
