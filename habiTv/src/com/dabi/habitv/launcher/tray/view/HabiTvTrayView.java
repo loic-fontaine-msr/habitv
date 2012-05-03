@@ -21,17 +21,18 @@ import com.dabi.habitv.launcher.tray.HabiTvListener;
 import com.dabi.habitv.launcher.tray.ProcessChangedEvent;
 import com.dabi.habitv.launcher.tray.controller.TrayController;
 import com.dabi.habitv.launcher.tray.model.EpisodeStateEnum;
+import com.dabi.habitv.launcher.tray.model.ProgressionModel.ActionProgress;
 
 public class HabiTvTrayView implements HabiTvListener {
 
 	private final TrayController controller;
 
 	private final TrayIcon trayIcon;
-	
+
 	private MenuItem startItem;
-	
+
 	private final Image fixImage;
-	
+
 	private final Image animatedImage;
 
 	public HabiTvTrayView(final TrayController controller) {
@@ -112,19 +113,17 @@ public class HabiTvTrayView implements HabiTvListener {
 		}
 	}
 
-	private String progressionToText(Map<EpisodeDTO, Map<EpisodeStateEnum, String>> episodeName2ActionProgress) {
+	private String progressionToText(Map<EpisodeDTO, ActionProgress> episodeName2ActionProgress) {
 		StringBuilder str = null;
-		for (Entry<EpisodeDTO, Map<EpisodeStateEnum, String>> episodeEntry : episodeName2ActionProgress.entrySet()) {
+		for (Entry<EpisodeDTO, ActionProgress> episodeEntry : episodeName2ActionProgress.entrySet()) {
 			if (str == null) {
 				str = new StringBuilder();
 			} else {
 				str.append("\n");
 			}
 			str.append(episodeEntry.getKey().getCategory() + " " + episodeEntry.getKey().getName() + " ");
-			for (Entry<EpisodeStateEnum, String> episodeActions : episodeEntry.getValue().entrySet()) {
-				str.append(episodeActions.getKey().name() + " "
-						+ ((episodeActions.getValue() != null && episodeActions.getValue().length() > 0) ? (episodeActions.getValue() + "%") : ""));
-			}
+			ActionProgress actionProgress = episodeEntry.getValue();
+			str.append(actionProgress.getState().name() + " " + actionProgress.getInfo() + " " + actionProgress.getProgress() + "%");
 		}
 		return str.toString();
 	}
