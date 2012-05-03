@@ -57,32 +57,28 @@ public class ChannelDownloader implements Runnable {
 
 	private void downloadEpisode(final List<CategoryDTO> categoryDTOs) {
 		for (final CategoryDTO category : categoryDTOs) {
-			if (category.getSubCategories().isEmpty()) {
-				// dao to find dowloaded episodes
-				final DownloadedDAO filesDAO = new DownloadedDAO(config.getWorkingDir(), provider.getName(), category.getName());
-				if (!filesDAO.isIndexCreated()) {
-					listener.buildEpisodeIndex(category);
+			// dao to find dowloaded episodes
+			final DownloadedDAO filesDAO = new DownloadedDAO(config.getWorkingDir(), provider.getName(), category.getName());
+			if (!filesDAO.isIndexCreated()) {
+				listener.buildEpisodeIndex(category);
+			}
+			// get list of downloadable episodes
+			Set<EpisodeDTO> episodeList = provider.findEpisode(category);
+			// filter episode lister by include/exclude and already
+			// downloaded
+			episodeList = FilterUtils.filterByIncludeExcludeAndDowloaded(episodeList, category.getInclude(), category.getExclude(),
+					filesDAO.findDownloadedFiles());
+			for (final EpisodeDTO episode : episodeList) {
+				final EpisodeExporter episodeExporter = new EpisodeExporter(provider.getName(), category, episode);
+				if (filesDAO.isIndexCreated()) {
+					listener.episodeToDownload(episode);
+					// producer download the file
+					downloadThreadPool.execute(buildDownloadAndExportThread(episode, episodeExporter, filesDAO));
+				} else {
+					// if index has not been created the first run will only
+					// fill this file
+					filesDAO.addDownloadedFiles(episode.getName());
 				}
-				// get list of downloadable episodes
-				Set<EpisodeDTO> episodeList = provider.findEpisode(category);
-				// filter episode lister by include/exclude and already
-				// downloaded
-				episodeList = FilterUtils.filterByIncludeExcludeAndDowloaded(episodeList, category.getInclude(), category.getExclude(),
-						filesDAO.findDownloadedFiles());
-				for (final EpisodeDTO episode : episodeList) {
-					final EpisodeExporter episodeExporter = new EpisodeExporter(provider.getName(), category, episode);
-					if (filesDAO.isIndexCreated()) {
-						listener.episodeToDownload(episode);
-						// producer download the file
-						downloadThreadPool.execute(buildDownloadAndExportThread(episode, episodeExporter, filesDAO));
-					} else {
-						// if index has not been created the first run will only
-						// fill this file
-						filesDAO.addDownloadedFiles(episode.getName());
-					}
-				}
-			} else {
-				downloadEpisode(category.getSubCategories());
 			}
 		}
 	}
@@ -149,6 +145,7 @@ public class ChannelDownloader implements Runnable {
 
 				for (final Exporter exporter : exporterList) {
 					try {
+						listener.exportEpisode(episode, exporter, "");
 						episodeExporter.export(exporter.getCmd(), exporterFactory.findPlugin(exporter.getName(), HabitTvConf.DEFAULT_EXPORTER),
 								new CmdProgressionListener() {
 									@Override

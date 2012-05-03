@@ -57,8 +57,7 @@ public class TrayController implements ProcessEpisodeListener {
 
 	@Override
 	public void downloadingEpisode(EpisodeDTO episode, String progress) {
-		getModel().getProgressionModel().endAction(episode, EpisodeStateEnum.TO_DOWNLOAD);
-		getModel().getProgressionModel().updateActionProgress(episode, EpisodeStateEnum.DOWNLOADING, progress);
+		getModel().getProgressionModel().updateActionProgress(episode, EpisodeStateEnum.DOWNLOADING, "", progress);
 	}
 
 	@Override
@@ -73,34 +72,30 @@ public class TrayController implements ProcessEpisodeListener {
 
 	@Override
 	public void episodeToDownload(EpisodeDTO episode) {
-		getModel().getProgressionModel().updateActionProgress(episode, EpisodeStateEnum.TO_DOWNLOAD, "");
+		getModel().getProgressionModel().updateActionProgress(episode, EpisodeStateEnum.TO_DOWNLOAD, "", "");
 		fireEpisodeChanged(EpisodeStateEnum.TO_DOWNLOAD, episode);
 	}
 
 	@Override
 	public void downloadedEpisode(EpisodeDTO episode) {
-		getModel().getProgressionModel().endAction(episode, EpisodeStateEnum.DOWNLOADING);
-		getModel().getProgressionModel().updateActionProgress(episode, EpisodeStateEnum.DOWNLOADED, "");
+		getModel().getProgressionModel().updateActionProgress(episode, EpisodeStateEnum.DOWNLOADED, "", "");
 	}
 
 	@Override
 	public void downloadFailed(EpisodeDTO episode, ExecutorFailedException e) {
-		getModel().getProgressionModel().endAction(episode, EpisodeStateEnum.DOWNLOADING);
-		getModel().getProgressionModel().updateActionProgress(episode, EpisodeStateEnum.DOWNLOAD_FAILED, "");
+		getModel().getProgressionModel().updateActionProgress(episode, EpisodeStateEnum.DOWNLOAD_FAILED, e.getMessage(), "");
 		fireEpisodeChanged(EpisodeStateEnum.DOWNLOAD_FAILED, episode);
 
 	}
 
 	@Override
 	public void exportEpisode(EpisodeDTO episode, Exporter exporter, String progression) {
-		getModel().getProgressionModel().endAction(episode, EpisodeStateEnum.DOWNLOADED);
-		getModel().getProgressionModel().updateActionProgress(episode, EpisodeStateEnum.EXPORTING, progression);
+		getModel().getProgressionModel().updateActionProgress(episode, EpisodeStateEnum.EXPORTING, exporter.getOutput(), progression);
 	}
 
 	@Override
 	public void exportFailed(EpisodeDTO episode, Exporter exporter, ExecutorFailedException e) {
-		getModel().getProgressionModel().endAction(episode, EpisodeStateEnum.EXPORTING);
-		getModel().getProgressionModel().updateActionProgress(episode, EpisodeStateEnum.EXPORT_FAILED, "");
+		getModel().getProgressionModel().updateActionProgress(episode, EpisodeStateEnum.EXPORT_FAILED, exporter.getOutput(), "");
 		fireEpisodeChanged(EpisodeStateEnum.EXPORT_FAILED, episode);
 	}
 
@@ -111,8 +106,7 @@ public class TrayController implements ProcessEpisodeListener {
 
 	@Override
 	public void episodeReady(EpisodeDTO episode) {
-		getModel().getProgressionModel().endAction(episode, EpisodeStateEnum.EXPORTING);
-		getModel().getProgressionModel().updateActionProgress(episode, EpisodeStateEnum.READY,"");
+		getModel().getProgressionModel().updateActionProgress(episode, EpisodeStateEnum.READY, "", "");
 		fireEpisodeChanged(EpisodeStateEnum.READY, episode);
 	}
 
