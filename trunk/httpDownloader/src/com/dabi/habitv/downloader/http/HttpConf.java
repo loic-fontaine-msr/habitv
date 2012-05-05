@@ -6,6 +6,6 @@ public final class HttpConf {
 
 	}
 
-	public static final String NAME = "rtmpdump";
+	public static final String NAME = "http";
 
 }
