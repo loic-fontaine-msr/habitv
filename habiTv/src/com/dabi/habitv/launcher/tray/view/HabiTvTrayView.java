@@ -11,17 +11,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.Map;
-import java.util.Map.Entry;
+import java.util.Collection;
 
-import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
 import com.dabi.habitv.launcher.tray.EpisodeChangedEvent;
 import com.dabi.habitv.launcher.tray.HabiTvListener;
 import com.dabi.habitv.launcher.tray.ProcessChangedEvent;
 import com.dabi.habitv.launcher.tray.controller.TrayController;
+import com.dabi.habitv.launcher.tray.model.ActionProgress;
 import com.dabi.habitv.launcher.tray.model.EpisodeStateEnum;
-import com.dabi.habitv.launcher.tray.model.ProgressionModel.ActionProgress;
 
 public class HabiTvTrayView implements HabiTvListener {
 
@@ -113,17 +111,20 @@ public class HabiTvTrayView implements HabiTvListener {
 		}
 	}
 
-	private String progressionToText(Map<EpisodeDTO, ActionProgress> episodeName2ActionProgress) {
+	private String progressionToText(Collection<ActionProgress> episodeName2ActionProgress) {
 		StringBuilder str = null;
-		for (Entry<EpisodeDTO, ActionProgress> episodeEntry : episodeName2ActionProgress.entrySet()) {
+		for (ActionProgress actionProgress : episodeName2ActionProgress) {
 			if (str == null) {
 				str = new StringBuilder();
 			} else {
 				str.append("\n");
 			}
-			str.append(episodeEntry.getKey().getCategory() + " " + episodeEntry.getKey().getName() + " ");
-			ActionProgress actionProgress = episodeEntry.getValue();
-			str.append(actionProgress.getState().name() + " " + actionProgress.getInfo() + " " + actionProgress.getProgress() + "%");
+			str.append(actionProgress.getEpisode().getCategory() + " " + actionProgress.getEpisode().getName() + " ");
+			String progression = actionProgress.getProgress();
+			if (progression != null && progression.length() > 0) {
+				progression = progression + "%";
+			}
+			str.append(actionProgress.getState().name() + " " + actionProgress.getInfo() + " " + progression);
 		}
 		return str.toString();
 	}

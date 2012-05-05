@@ -1,0 +1,18 @@
+---> user freebox
+USER freebox
+---> 
+PASS 4688
+---> cd "/Disque dur/"
+CWD /Disque dur/
+---> mkdir "ZAPPING"/
+XMKD ZAPPING/
+Request action not taken (file does not exist or no access).
+---> cd "ZAPPING/"
+CWD ZAPPING/
+---> bin
+TYPE I
+---> put "D:\divx\regular\avi\04_05_1.avi"
+PORT 192,168,0,13,224,21
+---> STOR 04_05_1.avi
+---> quit
+QUIT
