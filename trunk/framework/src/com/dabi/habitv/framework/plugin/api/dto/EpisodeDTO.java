@@ -1,6 +1,6 @@
 package com.dabi.habitv.framework.plugin.api.dto;
 
-public class EpisodeDTO {
+public class EpisodeDTO implements Comparable<EpisodeDTO> {
 
 	private final String category;
 
@@ -44,6 +44,15 @@ public class EpisodeDTO {
 
 	public String getVideoUrl() {
 		return videoUrl;
+	}
+
+	@Override
+	public int compareTo(EpisodeDTO o) {
+		int ret = category.compareTo(o.category);
+		if (ret == 0) {
+			ret = name.compareTo(o.name);
+		}
+		return ret;
 	}
 
 }
