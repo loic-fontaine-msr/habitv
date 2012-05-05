@@ -46,7 +46,6 @@ public class YoutubeDownloader {
  private static final String scheme = "http";
  private static final String host = "www.youtube.com";
  private static final Pattern commaPattern = Pattern.compile(",");
- private static final Pattern pipePattern = Pattern.compile("\\|");
  private static final Pattern equalPattern = Pattern.compile("=");
  private static final char[] ILLEGAL_FILENAME_CHARACTERS = { '/', '\n', '\r', '\t', '\0', '\f', '`', '?', '*', '\\', '<', '>', '|', '\"', ':' };
 
@@ -119,7 +118,6 @@ public class YoutubeDownloader {
    if (videoInfo != null && videoInfo.length() > 0) {
     List<NameValuePair> infoMap = new ArrayList<NameValuePair>();
     URLEncodedUtils.parse(infoMap, new Scanner(videoInfo), encoding);
-    String token = null;
     String downloadUrl = null;
     String filename = videoId;
 
@@ -127,9 +125,7 @@ public class YoutubeDownloader {
      String key = pair.getName();
      String val = pair.getValue();
      log.finest(key + "=" + val);
-     if (key.equals("token")) {
-      token = val;
-     } else if (key.equals("title")) {
+     if (key.equals("title")) {
       filename = val;
      } else if (key.equals("url_encoded_fmt_stream_map")) {
       String[] formats = commaPattern.split(val);
