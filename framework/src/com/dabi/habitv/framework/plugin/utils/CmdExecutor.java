@@ -77,7 +77,7 @@ public class CmdExecutor {
 							fullOutput.append("\n");
 							lastOutputLine = line;
 							String handledLine = handleProgression(line);
-							if (listener != null && handledLine != null && (System.currentTimeMillis() - lastTime) > 2000) {
+							if (listener != null && handledLine != null && (System.currentTimeMillis() - lastTime) > 2000) {//FIXME en conf
 								listener.listen(handledLine);
 								lastTime = System.currentTimeMillis();
 							}
