@@ -10,5 +10,7 @@ public final class SoirFootConf {
 	public static final String HTTP = "http";
 	public static final String HOME_URL = "http://www.soirfoot.com";
 	public static final String JUSTIN_API_URL = "http://api.justin.tv/api/broadcast/by_archive/";
+	
+	public static final String HTTP_CMD = "#VIDEO_URL#///#FILE_DEST#";
 
 }

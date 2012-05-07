@@ -65,8 +65,15 @@ public class CanalPlusRetriever {
 			if (videoUrl == null || videoUrl.length() < 2) {
 				videoUrl = video.getMEDIA().getVIDEOS().getBASDEBIT();
 			}
-			//TODO il est possible que plusieurs épisode s'appelle soustitre mais si on concatène avec titre c'est trop long
-			episodes.add(new EpisodeDTO(category.getName(), video.getINFOS().getTITRAGE().getSOUSTITRE(), videoUrl));
+
+			String name = video.getINFOS().getTITRAGE().getSOUSTITRE();
+			if (category.getName().contains("FOOTBALL")) {
+				name = name.replaceAll("(\\d\\s*-\\s*\\d)", "").replaceAll("(\\d_*-_*\\d)", "");
+			}
+
+			// TODO il est possible que plusieurs épisode s'appelle soustitre
+			// mais si on concatène avec titre c'est trop long
+			episodes.add(new EpisodeDTO(category.getName(), name, videoUrl));
 		}
 		return episodes;
 	}

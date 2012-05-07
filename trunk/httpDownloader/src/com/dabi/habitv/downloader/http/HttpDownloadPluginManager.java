@@ -23,7 +23,8 @@ public class HttpDownloadPluginManager implements PluginDownloaderInterface {
 	@Override
 	public void download(final String cmd, final CmdProgressionListener listener) throws DownloadFailedException {
 		try {
-			HttpDownload download = new HttpDownload(new URL(cmd));
+			String[] param = cmd.split("///");
+			HttpDownload download = new HttpDownload(new URL(param[0]),param[1]);
 			download.addObserver(new DlObserverListener(listener));
 			download.run();
 		} catch (MalformedURLException e) {

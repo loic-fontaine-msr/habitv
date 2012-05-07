@@ -8,6 +8,10 @@
   <exporterPluginDir>../builder/pub/exporter</exporterPluginDir> 
   <downloadOuput>D:/divx/regular/#EPISODE_NAME_NOSCORE#.mp4</downloadOuput>
   <downloader>
+    <name>http</name>
+    <cmd></cmd>
+  </downloader>  
+  <downloader>
     <name>rtmpdump</name>
     <cmd>D:\script\habiTv\bin\rtmpdump.exe</cmd>
   </downloader>

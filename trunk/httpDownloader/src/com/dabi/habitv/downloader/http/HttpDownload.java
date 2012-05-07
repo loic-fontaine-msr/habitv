@@ -23,13 +23,15 @@ class HttpDownload extends Observable implements Runnable {
 	public static final int ERROR = 4;
 
 	private URL url; // download URL
+	private String fileOutput;
 	private int size; // size of download in bytes
 	private int downloaded; // number of bytes downloaded
 	private int status; // current status of download
 
 	// Constructor for Download.
-	public HttpDownload(URL url) {
+	public HttpDownload(URL url, String fileOutput) {
 		this.url = url;
+		this.fileOutput = fileOutput;
 		size = -1;
 		downloaded = 0;
 		status = DOWNLOADING;
@@ -89,12 +91,6 @@ class HttpDownload extends Observable implements Runnable {
 		thread.start();
 	}
 
-	// Get file name portion of URL.
-	private String getFileName(URL url) {
-		String fileName = url.getFile();
-		return fileName.substring(fileName.lastIndexOf('/') + 1);
-	}
-
 	// Download file.
 	public void run() {
 		RandomAccessFile file = null;
@@ -130,7 +126,7 @@ class HttpDownload extends Observable implements Runnable {
 			}
 
 			// Open file and seek to the end of it.
-			file = new RandomAccessFile(getFileName(url), "rw");
+			file = new RandomAccessFile(fileOutput, "rw");
 			file.seek(downloaded);
 
 			stream = connection.getInputStream();
