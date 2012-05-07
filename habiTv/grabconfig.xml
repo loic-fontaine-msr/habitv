@@ -20,6 +20,10 @@
 			<id>2276</id>
 			<name>Cinésix</name>
 		</category>
+		<category>
+			<id>116</id>
+			<name>66 Minutes</name>
+		</category>
 	</channel>
 	<channel>
 		<name>canalPlus</name>
@@ -66,6 +70,45 @@
 			<include>.*Bayern Munich.*</include>
 			<exclude>.*LE MEILLEUR DU CFC.*</exclude>
 			<exclude>.*The Specialists.*</exclude>
+		</category>
+		<category>
+			<id>47</id>
+			<name>LES EXCLUS DU WEB </name>
+			<category>
+				<id>631443</id>
+				<name>PEPITES SUR LE NET</name>
+			</category>
+		</category>
+		<category>
+			<id>73</id>
+			<name>LES PLUS RECENTES</name>
+			<category>
+				<id>634058</id>
+				<name>ZAPSPORT</name>
+			</category>
+		</category>
+        <category>
+            <id>24</id>
+            <name>LES DOCUMENTAIRES</name>
+            <category>
+                <id>634010</id>
+                <name>DOCUMENTAIRES DIVERS</name>
+            </category>
+            <category>
+                <id>626274</id>
+                <name>SPECIAL INVESTIGATION</name>
+            </category>
+            <category>
+                <id>632448</id>
+                <name>LES NOUVEAUX EXPLORATEURS</name>
+            </category>
+        </category>		
+	</channel>
+	<channel>
+		<name>soirFoot</name>
+		<category>
+			<id>browse-Ligue-1-Ligue1-videos-1-date.html</id>
+			<name>Ligue 1</name>
 		</category>
 	</channel>
 </tns:grabConfig>

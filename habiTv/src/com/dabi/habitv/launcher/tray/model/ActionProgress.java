@@ -46,11 +46,11 @@ public class ActionProgress implements Comparable<ActionProgress> {
 
 	@Override
 	public int compareTo(ActionProgress o) {
-		int ret = o.state.compareTo(state);
+		int ret = state.compareTo(o.state);
 		if (ret == 0) {
-			ret = o.info.compareTo(info);
+			ret = info.compareTo(o.info);
 			if (ret == 0) {
-				ret = episode.compareTo(o.episode);
+				ret = o.episode.compareTo(episode);
 			}
 		}
 		return ret;

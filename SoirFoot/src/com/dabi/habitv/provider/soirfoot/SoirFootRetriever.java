@@ -27,23 +27,24 @@ public final class SoirFootRetriever {
 				Element segmentA = segment.getChildElements().get(0).getChildElements().get(0);
 				String url = segmentA.getAttributeValue("href");
 				Source source2 = new Source(new URL(url));
-				
+
 				String name = source2.getAllStartTags("h2 class=\"h2_artist\"").get(0).getElement().getContent().toString();
-				
+
 				for (Segment segment2 : source2.getAllStartTags("param name=\"flashvars\"")) {
 					String param = segment2.getChildElements().get(0).getAttributeValue("value");
-					String archiveId = param.split("&")[0].split("=")[1];
-					String xmlUrl = SoirFootConf.JUSTIN_API_URL + archiveId + ".xml?onsite=true";
-					Source source3 = new Source(new URL(xmlUrl));
-					for (Segment segment3 : source3.getAllStartTags("video_file_url")) {
-						String flvUrl = segment3.getChildElements().get(0).getContent().toString();
-						episodeList.add(new EpisodeDTO(category.getName(), name, flvUrl));
-
+					if (param.contains("archive_id")) {
+						String archiveId = param.split("&")[0].split("=")[1];
+						String xmlUrl = SoirFootConf.JUSTIN_API_URL + archiveId + ".xml?onsite=true";
+						Source source3 = new Source(new URL(xmlUrl));
+						for (Segment segment3 : source3.getAllStartTags("video_file_url")) {
+							String flvUrl = segment3.getChildElements().get(0).getContent().toString();
+							episodeList.add(new EpisodeDTO(category.getName(), name, flvUrl));
+						}
 					}
 				}
 			}
 		} catch (IOException e) {
-			throw new TechnicalException(e);
+			throw new TechnicalException(e);//TODO DOwnloadfailed
 		}
 		return episodeList;
 	}

@@ -23,4 +23,15 @@
 			<version>LATEST</version>
 		</dependency>
 	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<outputDirectory>../builder/pub/provider</outputDirectory>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>	
 </project>

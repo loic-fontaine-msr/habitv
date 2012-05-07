@@ -20,7 +20,7 @@ public class SoirFootPluginManager implements ProviderPluginInterface {
 
 	@Override
 	public String downloadCmd(final String url) {
-		return "";
+		return SoirFootConf.HTTP_CMD;
 	}
 
 	@Override

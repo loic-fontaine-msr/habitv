@@ -100,7 +100,7 @@ public class ChannelDownloader implements Runnable {
 				return currentDownloader;
 			}
 		}
-		throw new IllegalArgumentException(downloaderName + " n'a pas été trouvé");
+		throw new IllegalArgumentException(downloaderName + " n'a pas été déclaré");//TODO falcultatif ?
 	}
 
 	private Runnable buildDownloadAndExportThread(final EpisodeDTO episode, final EpisodeExporter episodeExporter, final DownloadedDAO filesDAO) {
