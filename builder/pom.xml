@@ -14,15 +14,20 @@
 	</properties>
 
 	<modules>
+		<module>../framework</module>	
 		<module>../habiTv</module>
-		<module>../framework</module>
 		<module>../canalPlus</module>
 		<module>../m6</module>
+		<module>../soirFoot</module>
+		<module>../tvSubtitles</module>
 		<module>../cmdDownloader</module>
+		<module>../httpDownloader</module>
+		<module>../aria2Downloader</module>
+		<module>../curlDownloader</module>
+		<!-- <module>../youtubeDownloader</module>-->
 		<module>../cmdExporter</module>
 		<module>../ffmpegExporter</module>
 		<module>../rtmpDumpDownloader</module>
-		<module>../curlDownloader</module>
 	</modules>
 
 	<build>

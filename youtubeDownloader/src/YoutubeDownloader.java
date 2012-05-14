@@ -38,212 +38,211 @@ import org.apache.http.protocol.HttpContext;
 
 public class YoutubeDownloader {
 
- public static String newline = System.getProperty("line.separator");
- private static final Logger log = Logger.getLogger(YoutubeDownloader.class.getCanonicalName());
- private static final Level defaultLogLevelSelf = Level.FINER;
- private static final Level defaultLogLevel = Level.WARNING;
- private static final Logger rootlog = Logger.getLogger("");
- private static final String scheme = "http";
- private static final String host = "www.youtube.com";
- private static final Pattern commaPattern = Pattern.compile(",");
- private static final Pattern equalPattern = Pattern.compile("=");
- private static final char[] ILLEGAL_FILENAME_CHARACTERS = { '/', '\n', '\r', '\t', '\0', '\f', '`', '?', '*', '\\', '<', '>', '|', '\"', ':' };
+	public static String newline = System.getProperty("line.separator");
+	private static final Logger log = Logger.getLogger(YoutubeDownloader.class.getCanonicalName());
+	private static final Level defaultLogLevelSelf = Level.FINER;
+	private static final Level defaultLogLevel = Level.WARNING;
+	private static final Logger rootlog = Logger.getLogger("");
+	private static final String scheme = "http";
+	private static final String host = "www.youtube.com";
+	private static final Pattern commaPattern = Pattern.compile(",");
+	private static final Pattern equalPattern = Pattern.compile("=");
+	private static final char[] ILLEGAL_FILENAME_CHARACTERS = { '/', '\n', '\r', '\t', '\0', '\f', '`', '?', '*', '\\', '<', '>', '|', '\"', ':' };
 
- private static void usage(String error) {
-  if (error != null) {
-   System.err.println("Error: " + error);
-  }
-  System.err.println("usage: JavaYoutubeDownload VIDEO_ID DESTINATION_DIRECTORY");
-  System.exit(-1);
- }
+	private static void usage(String error) {
+		if (error != null) {
+			System.err.println("Error: " + error);
+		}
+		System.err.println("usage: JavaYoutubeDownload VIDEO_ID DESTINATION_DIRECTORY");
+		System.exit(-1);
+	}
 
- public static void main(String[] args) {
-  if (args == null || args.length == 0) {
-   usage("Missing video id. Extract from http://www.youtube.com/watch?v=VIDEO_ID");
-  }
-  try {
-   setupLogging();
+	public static void main(String[] args) {
+		if (args == null || args.length == 0) {
+			usage("Missing video id. Extract from http://www.youtube.com/watch?v=VIDEO_ID");
+		}
+		try {
+			setupLogging();
 
-   log.fine("Starting");
-   String videoId = null;
-   String outdir = ".";
-   // TODO Ghetto command line parsing
-   if (args.length == 1) {
-    videoId = args[0];
-   } else if (args.length == 2) {
-    videoId = args[0];
-    outdir = args[1];
-   }
+			log.fine("Starting");
+			String videoId = null;
+			String outdir = ".";
+			if (args.length == 1) {
+				videoId = args[0];
+			} else if (args.length == 2) {
+				videoId = args[0];
+				outdir = args[1];
+			}
 
-   int format = 18; // http://en.wikipedia.org/wiki/YouTube#Quality_and_codecs
-   String encoding = "UTF-8";
-   String userAgent = "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.2.13) Gecko/20101203 Firefox/3.6.13";
-   File outputDir = new File(outdir);
-   String extension = getExtension(format);
+			int format = 18; // http://en.wikipedia.org/wiki/YouTube#Quality_and_codecs
+			String encoding = "UTF-8";
+			String userAgent = "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.2.13) Gecko/20101203 Firefox/3.6.13";
+			File outputDir = new File(outdir);
+			String extension = getExtension(format);
 
-   play(videoId, format, encoding, userAgent, outputDir, extension);
+			play(videoId, format, encoding, userAgent, outputDir, extension);
 
-  } catch (Throwable t) {
-   t.printStackTrace();
-  }
-  log.fine("Finished");
- }
+		} catch (Throwable t) {
+			t.printStackTrace();
+		}
+		log.fine("Finished");
+	}
 
- private static String getExtension(int format) {
-  // TODO
-  return "mp4";
- }
+	private static String getExtension(int format) {
+		return "flv";
+	}
 
- private static void play(String videoId, int format, String encoding, String userAgent, File outputdir, String extension) throws Throwable {
-  log.fine("Retrieving " + videoId);
-  List<NameValuePair> qparams = new ArrayList<NameValuePair>();
-  qparams.add(new BasicNameValuePair("video_id", videoId));
-  qparams.add(new BasicNameValuePair("fmt", "" + format));
-  URI uri = getUri("get_video_info", qparams);
+	private static void play(String videoId, int format, String encoding, String userAgent, File outputdir, String extension) throws Throwable {
+		log.fine("Retrieving " + videoId);
+		List<NameValuePair> qparams = new ArrayList<NameValuePair>();
+		qparams.add(new BasicNameValuePair("video_id", videoId));
+		qparams.add(new BasicNameValuePair("fmt", "" + format));
+		URI uri = getUri("get_video_info", qparams);
 
-  CookieStore cookieStore = new BasicCookieStore();
-  HttpContext localContext = new BasicHttpContext();
-  localContext.setAttribute(ClientContext.COOKIE_STORE, cookieStore);
+		CookieStore cookieStore = new BasicCookieStore();
+		HttpContext localContext = new BasicHttpContext();
+		localContext.setAttribute(ClientContext.COOKIE_STORE, cookieStore);
 
-  HttpClient httpclient = new DefaultHttpClient();
-  HttpGet httpget = new HttpGet(uri);
-  httpget.setHeader("User-Agent", userAgent);
+		HttpClient httpclient = new DefaultHttpClient();
+		HttpGet httpget = new HttpGet(uri);
+		httpget.setHeader("User-Agent", userAgent);
 
-  log.finer("Executing " + uri);
-  HttpResponse response = httpclient.execute(httpget, localContext);
-  HttpEntity entity = response.getEntity();
-  if (entity != null && response.getStatusLine().getStatusCode() == 200) {
-   InputStream instream = entity.getContent();
-   String videoInfo = getStringFromInputStream(encoding, instream);
-   if (videoInfo != null && videoInfo.length() > 0) {
-    List<NameValuePair> infoMap = new ArrayList<NameValuePair>();
-    URLEncodedUtils.parse(infoMap, new Scanner(videoInfo), encoding);
-    String downloadUrl = null;
-    String filename = videoId;
+		log.finer("Executing " + uri);
+		HttpResponse response = httpclient.execute(httpget, localContext);
+		HttpEntity entity = response.getEntity();
+		if (entity != null && response.getStatusLine().getStatusCode() == 200) {
+			InputStream instream = entity.getContent();
+			String videoInfo = getStringFromInputStream(encoding, instream);
+			if (videoInfo != null && videoInfo.length() > 0) {
+				List<NameValuePair> infoMap = new ArrayList<NameValuePair>();
+				URLEncodedUtils.parse(infoMap, new Scanner(videoInfo), encoding);
+				String downloadUrl = null;
+				String filename = videoId;
 
-    for (NameValuePair pair : infoMap) {
-     String key = pair.getName();
-     String val = pair.getValue();
-     log.finest(key + "=" + val);
-     if (key.equals("title")) {
-      filename = val;
-     } else if (key.equals("url_encoded_fmt_stream_map")) {
-      String[] formats = commaPattern.split(val);
-      for (String fmt : formats) {
-       String[] fmtPieces = equalPattern.split(fmt);
-       if (fmtPieces.length > 0) {
-        // in the end, download somethin!
-        downloadUrl = fmtPieces[1];
-//        int pieceFormat = Integer.parseInt(fmtPieces[0]);
-//        if (pieceFormat == format) {
-//         // found what we want
-//         downloadUrl = fmtPieces[1];
-//         break;
-//        }
-       }
-      }
-     }
-    }
+				for (NameValuePair pair : infoMap) {
+					String key = pair.getName();
+					String val = pair.getValue();
+					log.finest(key + "=" + val);
+					if (key.equals("title")) {
+						filename = val;
+					} else if (key.equals("url_encoded_fmt_stream_map")) {
+						String[] formats = commaPattern.split(val);
+						for (String fmt : formats) {
+							String[] fmtPieces = equalPattern.split(fmt);
+							if (fmtPieces.length > 0) {
+								// in the end, download somethin!
+								downloadUrl = fmtPieces[1];
+								// int pieceFormat =
+								// Integer.parseInt(fmtPieces[0]);
+								// if (pieceFormat == format) {
+								// // found what we want
+								// downloadUrl = fmtPieces[1];
+								// break;
+								// }
+							}
+						}
+					}
+				}
 
-    filename = cleanFilename(filename);
-    if (filename.length() == 0) {
-     filename = videoId;
-    } else {
-     filename += "_" + videoId;
-    }
-    filename += "." + extension;
-    File outputfile = new File(outputdir, filename);
+				filename = cleanFilename(filename);
+				if (filename.length() == 0) {
+					filename = videoId;
+				} else {
+					filename += "_" + videoId;
+				}
+				filename += "." + extension;
+				File outputfile = new File(outputdir, filename);
 
-    if (downloadUrl != null) {
-     downloadWithHttpClient(userAgent, downloadUrl, outputfile);
-    }
-   }
-  }
- }
+				if (downloadUrl != null) {
+					downloadWithHttpClient(userAgent, downloadUrl, outputfile);
+				}
+			}
+		}
+	}
 
- private static void downloadWithHttpClient(String userAgent, String downloadUrl, File outputfile) throws Throwable {
-  HttpGet httpget2 = new HttpGet(URLDecoder.decode(downloadUrl,"UTF-8"));
-  httpget2.setHeader("User-Agent", userAgent);
+	private static void downloadWithHttpClient(String userAgent, String downloadUrl, File outputfile) throws Throwable {
+		HttpGet httpget2 = new HttpGet(URLDecoder.decode(downloadUrl, "UTF-8"));
+		httpget2.setHeader("User-Agent", userAgent);
 
-  log.finer("Executing " + httpget2.getURI());
-  HttpClient httpclient2 = new DefaultHttpClient();
-  HttpResponse response2 = httpclient2.execute(httpget2);
-  HttpEntity entity2 = response2.getEntity();
-  if (entity2 != null && response2.getStatusLine().getStatusCode() == 200) {
-   long length = entity2.getContentLength();
-   InputStream instream2 = entity2.getContent();
-   log.finer("Writing " + length + " bytes to " + outputfile);
-   if (outputfile.exists()) {
-    outputfile.delete();
-   }
-   FileOutputStream outstream = new FileOutputStream(outputfile);
-   try {
-    byte[] buffer = new byte[2048];
-    int count = -1;
-    while ((count = instream2.read(buffer)) != -1) {
-     outstream.write(buffer, 0, count);
-    }
-    outstream.flush();
-   } finally {
-    outstream.close();
-   }
-  }
- }
+		log.finer("Executing " + httpget2.getURI());
+		HttpClient httpclient2 = new DefaultHttpClient();
+		HttpResponse response2 = httpclient2.execute(httpget2);
+		HttpEntity entity2 = response2.getEntity();
+		if (entity2 != null && response2.getStatusLine().getStatusCode() == 200) {
+			long length = entity2.getContentLength();
+			InputStream instream2 = entity2.getContent();
+			log.finer("Writing " + length + " bytes to " + outputfile);
+			if (outputfile.exists()) {
+				outputfile.delete();
+			}
+			FileOutputStream outstream = new FileOutputStream(outputfile);
+			try {
+				byte[] buffer = new byte[2048];
+				int count = -1;
+				while ((count = instream2.read(buffer)) != -1) {
+					outstream.write(buffer, 0, count);
+				}
+				outstream.flush();
+			} finally {
+				outstream.close();
+			}
+		}
+	}
 
- private static String cleanFilename(String filename) {
-  for (char c : ILLEGAL_FILENAME_CHARACTERS) {
-   filename = filename.replace(c, '_');
-  }
-  return filename;
- }
+	private static String cleanFilename(String filename) {
+		for (char c : ILLEGAL_FILENAME_CHARACTERS) {
+			filename = filename.replace(c, '_');
+		}
+		return filename;
+	}
 
- private static URI getUri(String path, List<NameValuePair> qparams) throws URISyntaxException {
-  URI uri = URIUtils.createURI(scheme, host, -1, "/" + path, URLEncodedUtils.format(qparams, "UTF-8"), null);
-  return uri;
- }
+	private static URI getUri(String path, List<NameValuePair> qparams) throws URISyntaxException {
+		URI uri = URIUtils.createURI(scheme, host, -1, "/" + path, URLEncodedUtils.format(qparams, "UTF-8"), null);
+		return uri;
+	}
 
- private static void setupLogging() {
-  changeFormatter(new Formatter() {
-   @Override
-   public String format(LogRecord arg0) {
-    return arg0.getMessage() + newline;
-   }
-  });
-  explicitlySetAllLogging(Level.FINER);
- }
+	private static void setupLogging() {
+		changeFormatter(new Formatter() {
+			@Override
+			public String format(LogRecord arg0) {
+				return arg0.getMessage() + newline;
+			}
+		});
+		explicitlySetAllLogging(Level.FINER);
+	}
 
- private static void changeFormatter(Formatter formatter) {
-  Handler[] handlers = rootlog.getHandlers();
-  for (Handler handler : handlers) {
-   handler.setFormatter(formatter);
-  }
- }
+	private static void changeFormatter(Formatter formatter) {
+		Handler[] handlers = rootlog.getHandlers();
+		for (Handler handler : handlers) {
+			handler.setFormatter(formatter);
+		}
+	}
 
- private static void explicitlySetAllLogging(Level level) {
-  rootlog.setLevel(Level.ALL);
-  for (Handler handler : rootlog.getHandlers()) {
-   handler.setLevel(defaultLogLevelSelf);
-  }
-  log.setLevel(level);
-  rootlog.setLevel(defaultLogLevel);
- }
+	private static void explicitlySetAllLogging(Level level) {
+		rootlog.setLevel(Level.ALL);
+		for (Handler handler : rootlog.getHandlers()) {
+			handler.setLevel(defaultLogLevelSelf);
+		}
+		log.setLevel(level);
+		rootlog.setLevel(defaultLogLevel);
+	}
 
- private static String getStringFromInputStream(String encoding, InputStream instream) throws UnsupportedEncodingException, IOException {
-  Writer writer = new StringWriter();
+	private static String getStringFromInputStream(String encoding, InputStream instream) throws UnsupportedEncodingException, IOException {
+		Writer writer = new StringWriter();
 
-  char[] buffer = new char[1024];
-  try {
-   Reader reader = new BufferedReader(new InputStreamReader(instream, encoding));
-   int n;
-   while ((n = reader.read(buffer)) != -1) {
-    writer.write(buffer, 0, n);
-   }
-  } finally {
-   instream.close();
-  }
-  String result = writer.toString();
-  return result;
- }
+		char[] buffer = new char[1024];
+		try {
+			Reader reader = new BufferedReader(new InputStreamReader(instream, encoding));
+			int n;
+			while ((n = reader.read(buffer)) != -1) {
+				writer.write(buffer, 0, n);
+			}
+		} finally {
+			instream.close();
+		}
+		String result = writer.toString();
+		return result;
+	}
 }
 
 /**
