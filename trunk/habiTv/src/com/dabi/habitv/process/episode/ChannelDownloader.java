@@ -2,9 +2,6 @@ package com.dabi.habitv.process.episode;
 
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 import com.dabi.habitv.config.HabitTvConf;
 import com.dabi.habitv.config.entities.Config;
@@ -18,23 +15,23 @@ import com.dabi.habitv.framework.plugin.api.ProviderPluginInterface;
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
 import com.dabi.habitv.framework.plugin.exception.ExecutorFailedException;
+import com.dabi.habitv.framework.plugin.exception.InvalidEpisodeException;
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
 import com.dabi.habitv.plugin.PluginFactory;
+import com.dabi.habitv.taskmanager.Task;
+import com.dabi.habitv.taskmanager.TaskMgr;
+import com.dabi.habitv.taskmanager.TaskTypeEnum;
 import com.dabi.habitv.utils.FilterUtils;
 
 public class ChannelDownloader implements Runnable {
 
-	private final List<CategoryDTO> categoryList;
+	private final TaskMgr taskMgr;
 
-	private final ExecutorService downloadThreadPool;
+	private final List<CategoryDTO> categoryList;
 
 	private final Config config;
 
 	private final ProviderPluginInterface provider;
-
-	private final ExecutorService exportThreadPool;
-
-	private ExecutorService miscThreadPool; // FIXME un par episode !
 
 	private final PluginFactory<ExporterPluginInterface> exporterFactory;
 
@@ -42,17 +39,19 @@ public class ChannelDownloader implements Runnable {
 
 	private final ProcessEpisodeListener listener;
 
-	public ChannelDownloader(final ProcessEpisodeListener listener, final List<CategoryDTO> categoryList, final Config config,
-			final ExecutorService exportThreadPool, final ProviderPluginInterface provider, final PluginFactory<ExporterPluginInterface> exporterFactory,
+	private final String channel;
+
+	public ChannelDownloader(final String channel, final TaskMgr taskMgr, final ProcessEpisodeListener listener, final List<CategoryDTO> categoryList,
+			final Config config, final ProviderPluginInterface provider, final PluginFactory<ExporterPluginInterface> exporterFactory,
 			final PluginFactory<PluginDownloaderInterface> dowloaderFactory) {
+		this.taskMgr = taskMgr;
 		this.listener = listener;
 		this.config = config;
 		this.categoryList = categoryList;
-		this.exportThreadPool = exportThreadPool;
-		this.downloadThreadPool = Executors.newFixedThreadPool(config.getSimultaneousEpisodeDownload());
 		this.provider = provider;
 		this.exporterFactory = exporterFactory;
 		this.dowloaderFactory = dowloaderFactory;
+		this.channel = channel;
 	}
 
 	private void downloadEpisode(final List<CategoryDTO> categoryDTOs) {
@@ -69,11 +68,12 @@ public class ChannelDownloader implements Runnable {
 			episodeList = FilterUtils.filterByIncludeExcludeAndDowloaded(episodeList, category.getInclude(), category.getExclude(),
 					filesDAO.findDownloadedFiles());
 			for (final EpisodeDTO episode : episodeList) {
+				// TODO Gérer les execptions sur un Episode sans tout arréter
 				final EpisodeExporter episodeExporter = new EpisodeExporter(provider.getName(), category, episode);
 				if (filesDAO.isIndexCreated()) {
-					listener.episodeToDownload(episode);
+					listener.episodeToDownload(episode);//TODO si l'épisode était déjà dans la liste il ne faut pas le redl
 					// producer download the file
-					downloadThreadPool.execute(buildDownloadAndExportThread(episode, episodeExporter, filesDAO));
+					taskMgr.addTask(buildDownloadAndExportTask(episode, episodeExporter, filesDAO));
 				} else {
 					// if index has not been created the first run will only
 					// fill this file
@@ -83,38 +83,31 @@ public class ChannelDownloader implements Runnable {
 		}
 	}
 
-	private void downloadEpisode() {
-		downloadEpisode(categoryList);
-
-		downloadThreadPool.shutdown();
-		try {
-			downloadThreadPool.awaitTermination(config.getAllDownloadTimeout(), TimeUnit.SECONDS);
-		} catch (InterruptedException e) {
-			throw new TechnicalException(e);
-		}
-	}
-
 	private Downloader findDowloader(final String downloaderName) {
 		for (Downloader currentDownloader : config.getDownloader()) {
 			if (currentDownloader.getName().equals(downloaderName)) {
 				return currentDownloader;
 			}
 		}
-		throw new IllegalArgumentException(downloaderName + " n'a pas été déclaré");//TODO falcultatif ?
+		throw new IllegalArgumentException(downloaderName + " n'a pas été déclaré");
 	}
 
-	private Runnable buildDownloadAndExportThread(final EpisodeDTO episode, final EpisodeExporter episodeExporter, final DownloadedDAO filesDAO) {
-		return new Runnable() {
+	private Task buildDownloadAndExportTask(final EpisodeDTO episode, final EpisodeExporter episodeExporter, final DownloadedDAO filesDAO) {
+		Runnable job = new Runnable() {
 			@Override
 			public void run() {
-				Thread.currentThread().setName("EPISODE" + episode.getName());
+				try {
+					episode.check();
+				} catch (InvalidEpisodeException e) {
+					throw new TechnicalException(e);
+				}
 				final String downloaderName = provider.getDownloader(episode.getVideoUrl());
 				final PluginDownloaderInterface pluginDownloader = dowloaderFactory.findPlugin(downloaderName, HabitTvConf.DEFAULT_DOWNLOADER);
 				final Downloader downloaderConfig = findDowloader(downloaderName);
 
 				try {
-					episodeExporter.download(downloaderConfig, pluginDownloader, provider.downloadCmd(episode.getVideoUrl()), config.getDownloadOuput(),
-							new CmdProgressionListener() {
+					episodeExporter.download(downloaderConfig, pluginDownloader, provider.downloadCmd(episode.getVideoUrl()), episode.getVideoUrl(),
+							config.getDownloadOuput(), new CmdProgressionListener() {
 								@Override
 								public void listen(final String progression) {
 									listener.downloadingEpisode(episode, progression);
@@ -123,26 +116,21 @@ public class ChannelDownloader implements Runnable {
 					listener.downloadedEpisode(episode);
 
 					// add the export thread
-					exportThreadPool.execute(buildExportThread(episode, config.getExporter(), episodeExporter, filesDAO, true));
+					taskMgr.addTask(buildExportTask(episode, config.getExporter(), episodeExporter, filesDAO, true));
 				} catch (ExecutorFailedException e) {
 					listener.downloadFailed(episode, e);
 				}
 			}
 		};
+		return new Task(TaskTypeEnum.DOWNLOAD, channel, episode.getVideoUrl(), job);
 	}
 
-	private Runnable buildExportThread(final EpisodeDTO episode, final List<Exporter> exporterList, final EpisodeExporter episodeExporter,
+	private Task buildExportTask(final EpisodeDTO episode, final List<Exporter> exporterList, final EpisodeExporter episodeExporter,
 			final DownloadedDAO filesDAO, final boolean rootCall) {
-		return new Runnable() {
+		Runnable job = new Runnable() {
 			@Override
 			public void run() {
-				final String threadName = "EXPORT" + episode.getName();
-				Thread.currentThread().setName(threadName);
-
-				if (rootCall) {
-					miscThreadPool = Executors.newCachedThreadPool();
-				}
-
+				boolean success = true;
 				for (final Exporter exporter : exporterList) {
 					try {
 						listener.exportEpisode(episode, exporter, "");
@@ -155,30 +143,38 @@ public class ChannelDownloader implements Runnable {
 								});
 					} catch (ExecutorFailedException e) {
 						listener.exportFailed(episode, exporter, e);
+						success = false;
+						break;
 					}
 					if (!exporter.getExporter().isEmpty()) {
-						miscThreadPool.execute(buildExportThread(episode, exporter.getExporter(), episodeExporter, filesDAO, false));
+						taskMgr.addTask(buildExportTask(episode, exporter.getExporter(), episodeExporter, filesDAO, false));
 					}
 				}
 
 				if (rootCall) {
-					miscThreadPool.shutdown();
-					try {
-						miscThreadPool.awaitTermination(config.getAllDownloadTimeout(), TimeUnit.SECONDS);
-					} catch (InterruptedException e) {
-						throw new TechnicalException(e);
+					//FIXME récupérer les retours des sous-taches pour vérifier si l'épisode est vraiment en succès
+					taskMgr.waitForEndTasks(config.getAllDownloadTimeout(), TaskTypeEnum.EXPORT);
+					if (success) {
+						filesDAO.addDownloadedFiles(episode.getName());
+						listener.episodeReady(episode);
 					}
-					filesDAO.addDownloadedFiles(episode.getName());
-					listener.episodeReady(episode);
 				}
 			}
 		};
+		final Task task;
+		if (rootCall) {
+			task = new Task(TaskTypeEnum.EXPORT_MAIN, episode.getVideoUrl(), job);
+		} else {
+			task = new Task(TaskTypeEnum.EXPORT, episode.getVideoUrl(), job);
+		}
+		return task;
 	}
 
 	@Override
 	public void run() {
 		listener.providerDownloadCheckStarted(provider);
-		downloadEpisode();
+		downloadEpisode(categoryList);
+		listener.providerDownloadCheckDone(provider);
 	}
 
 }

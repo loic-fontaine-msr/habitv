@@ -71,7 +71,7 @@ public class CanalPlusRetriever {
 				name = name.replaceAll("(\\d\\s*-\\s*\\d)", "").replaceAll("(\\d_*-_*\\d)", "");
 			}
 
-			// TODO il est possible que plusieurs épisode s'appelle soustitre
+			//il est possible que plusieurs épisode s'appelle soustitre
 			// mais si on concatène avec titre c'est trop long
 			episodes.add(new EpisodeDTO(category.getName(), name, videoUrl));
 		}

@@ -6,8 +6,14 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Observable;
 
+import org.apache.log4j.Logger;
+
+import com.dabi.habitv.framework.plugin.exception.TechnicalException;
+
 // This class downloads a file from a URL.
 class HttpDownload extends Observable implements Runnable {
+
+	private static final Logger LOG = Logger.getLogger(HttpDownload.class.getName());
 
 	// Max size of download buffer.
 	private static final int MAX_BUFFER_SIZE = 1024;
@@ -22,14 +28,15 @@ class HttpDownload extends Observable implements Runnable {
 	public static final int CANCELLED = 3;
 	public static final int ERROR = 4;
 
-	private URL url; // download URL
-	private String fileOutput;
+	private final URL url; // download URL
+	private final String fileOutput;
 	private int size; // size of download in bytes
 	private int downloaded; // number of bytes downloaded
 	private int status; // current status of download
 
 	// Constructor for Download.
-	public HttpDownload(URL url, String fileOutput) {
+	public HttpDownload(final URL url, final String fileOutput) {
+		super();
 		this.url = url;
 		this.fileOutput = fileOutput;
 		size = -1;
@@ -80,7 +87,7 @@ class HttpDownload extends Observable implements Runnable {
 	}
 
 	// Mark this download as having an error.
-	private void error() {
+	private void fail() {
 		status = ERROR;
 		stateChanged();
 	}
@@ -108,13 +115,13 @@ class HttpDownload extends Observable implements Runnable {
 
 			// Make sure response code is in the 200 range.
 			if (connection.getResponseCode() / 100 != 2) {
-				error();
+				fail();
 			}
 
 			// Check for valid content length.
 			int contentLength = connection.getContentLength();
 			if (contentLength < 1) {
-				error();
+				fail();
 			}
 
 			/*
@@ -144,8 +151,9 @@ class HttpDownload extends Observable implements Runnable {
 
 				// Read from server into buffer.
 				int read = stream.read(buffer);
-				if (read == -1)
+				if (read == -1) {
 					break;
+				}
 
 				// Write buffer to file.
 				file.write(buffer, 0, read);
@@ -162,13 +170,15 @@ class HttpDownload extends Observable implements Runnable {
 				stateChanged();
 			}
 		} catch (Exception e) {
-			error();
+			fail();
+			throw new TechnicalException(e);
 		} finally {
 			// Close file.
 			if (file != null) {
 				try {
 					file.close();
 				} catch (Exception e) {
+					LOG.error("", e);
 				}
 			}
 
@@ -177,6 +187,7 @@ class HttpDownload extends Observable implements Runnable {
 				try {
 					stream.close();
 				} catch (Exception e) {
+					LOG.error("", e);
 				}
 			}
 		}

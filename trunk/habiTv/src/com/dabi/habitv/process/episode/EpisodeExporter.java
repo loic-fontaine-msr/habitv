@@ -1,5 +1,8 @@
 package com.dabi.habitv.process.episode;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.dabi.habitv.config.entities.Downloader;
 import com.dabi.habitv.framework.plugin.api.CmdProgressionListener;
 import com.dabi.habitv.framework.plugin.api.ExporterPluginInterface;
@@ -7,6 +10,7 @@ import com.dabi.habitv.framework.plugin.api.PluginDownloaderInterface;
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
 import com.dabi.habitv.framework.plugin.exception.ExecutorFailedException;
+import com.dabi.habitv.framework.plugin.utils.FrameworkConf;
 import com.dabi.habitv.utils.FileUtils;
 
 public class EpisodeExporter {
@@ -38,14 +42,8 @@ public class EpisodeExporter {
 
 		if (episodeName.length() > 0) {
 			cmdReturn = cmdReturn.replaceAll("#EPISODE_NAME_CUT#", ensure(episodeName.substring(0, Math.min(40, episodeName.length() - 1))));
-
-			String episodeNameNoScore = episodeName.replaceAll("(\\d\\s*-\\s*\\d)", "").replaceAll("(\\d_*-_*\\d)", "");
-			cmdReturn = cmdReturn.replaceAll("#EPISODE_NAME_NOSCORE#", ensure(episodeNameNoScore.substring(0, Math.min(40, episodeNameNoScore.length() - 1))));
 		}
 
-		if (episode.getVideoUrl() != null) {
-			cmdReturn = cmdReturn.replaceAll("#VIDEO_URL#", episode.getVideoUrl());
-		}
 		cmdReturn = cmdReturn.replaceAll("#CATEGORY#", ensure(ensure(episode.getCategory())));
 
 		// TV SHOW
@@ -61,11 +59,14 @@ public class EpisodeExporter {
 		return FileUtils.sanitizeFilename(string);
 	}
 
-	public void download(final Downloader downloader, final PluginDownloaderInterface pluginDownloader, final String downloadParam, final String fileDest,
-			final CmdProgressionListener listener) throws ExecutorFailedException {
+	public void download(final Downloader downloader, final PluginDownloaderInterface pluginDownloader, final String downloadParam, final String videoUrl,
+			final String fileDest, final CmdProgressionListener listener) throws ExecutorFailedException {
 
-		final String param = replaceToken(downloadParam.replaceAll("#FILE_DEST#", fileDest));
-		pluginDownloader.download(downloader.getCmd() + " " + param, listener);
+		final Map<String, String> parameters = new HashMap<>();
+		parameters.put(FrameworkConf.PARAMETER_BIN_PATH, downloader.getBinPath());
+		parameters.put(FrameworkConf.PARAMETER_ARGS, downloadParam);
+
+		pluginDownloader.download(videoUrl, replaceToken(fileDest), parameters, listener);
 	}
 
 }

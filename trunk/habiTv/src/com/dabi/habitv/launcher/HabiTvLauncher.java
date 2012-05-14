@@ -10,6 +10,7 @@ import com.dabi.habitv.process.category.ProcessCategory;
 import com.dabi.habitv.process.category.ProcessCategoryListener;
 import com.dabi.habitv.process.episode.ProcessEpisodeListener;
 import com.dabi.habitv.process.episode.RetrieveAndExport;
+import com.dabi.habitv.taskmanager.TaskMgr;
 
 public final class HabiTvLauncher {
 
@@ -23,11 +24,13 @@ public final class HabiTvLauncher {
 		final Config config = ConfigAccess.initConfig();
 		final GrabConfig grabConfig = ConfigAccess.initGrabConfig();
 
+		final TaskMgr taskMgr = new TaskMgr(ConfigAccess.buildTaskType2ThreadPool(config));
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 
 			@Override
 			public void run() {
 				LOG.info("Interrompus, fermeture des traitements");
+				taskMgr.forceEnd();
 				ProcessingThread.killAllProcessing();
 			}
 
@@ -38,26 +41,28 @@ public final class HabiTvLauncher {
 			(new ProcessCategory()).execute(config, new ProcessCategoryListener() {
 
 				@Override
-				public void getProviderCategories(String providerName) {
+				public void getProviderCategories(final String providerName) {
 					LOG.info(providerName);
 				}
 
 				@Override
-				public void categoriesSaved(String grabconfigXmlFile) {
+				public void categoriesSaved(final String grabconfigXmlFile) {
 					LOG.info("Catégories sauvegardées dans " + grabconfigXmlFile);
 				}
 			});
 		} else {
 
-			ProcessEpisodeListener listener = new ConsoleProcessEpisodeListener();
+			final ProcessEpisodeListener listener = new ConsoleProcessEpisodeListener();
 
+			final RetrieveAndExport retrieveAndExport = new RetrieveAndExport(config, grabConfig);
 			if (config.getDemonTime() == null) {
-				(new RetrieveAndExport()).execute(config, grabConfig, listener);
+				retrieveAndExport.execute(listener, taskMgr);
+				taskMgr.waitForEndTasks(config.getAllDownloadTimeout());
 			} else {
 				final long demonTime = config.getDemonTime() * 1000L;
 				// demon mode
 				while (true) {
-					(new RetrieveAndExport()).execute(config, grabConfig, listener);
+					retrieveAndExport.execute(listener, taskMgr);
 					Thread.sleep(demonTime);
 				}
 			}

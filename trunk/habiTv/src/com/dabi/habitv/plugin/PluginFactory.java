@@ -19,6 +19,10 @@ public final class PluginFactory<P extends PluginBase> {
 		}
 	}
 
+	public P findPlugin(final String pluginName) {
+		return findPlugin(pluginName, null);
+	}
+
 	public P findPlugin(final String pluginName, final String defaultValue) {
 		P plugin = pluginName2Plugin.get(pluginName);
 		if (plugin == null) {

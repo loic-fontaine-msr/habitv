@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
@@ -20,6 +22,7 @@ import org.xml.sax.SAXException;
 import com.dabi.habitv.config.entities.Config;
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
 import com.dabi.habitv.grabconfig.entities.GrabConfig;
+import com.dabi.habitv.taskmanager.TaskTypeEnum;
 
 public final class ConfigAccess {
 
@@ -65,13 +68,21 @@ public final class ConfigAccess {
 		unmarshaller.setSchema(schema);
 	}
 
+	public static Map<TaskTypeEnum, Integer> buildTaskType2ThreadPool(Config config) {
+		final Map<TaskTypeEnum, Integer> taskType2ThreadPool = new HashMap<>(TaskTypeEnum.values().length);
+		taskType2ThreadPool.put(TaskTypeEnum.DOWNLOAD, config.getSimultaneousEpisodeDownload());
+		taskType2ThreadPool.put(TaskTypeEnum.SEARCH, config.getSimultaneousChannelDownload());
+		taskType2ThreadPool.put(TaskTypeEnum.EXPORT_MAIN, config.getSimultaneousExport());
+		return taskType2ThreadPool;
+	}
+
 	public static GrabConfig initGrabConfig() {
 		GrabConfig grabConfig = null;
 		try {
 			final JAXBContext jaxbContext = JAXBContext.newInstance(GRAB_CONF_PACKAGE_NAME);
 			final Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 			setValidation(unmarshaller, GRAB_CONF_XSD);
-			grabConfig = ((GrabConfig) unmarshaller.unmarshal(new InputStreamReader(new FileInputStream(GRAB_CONF_FILE), "UTF-8")));
+			grabConfig = ((GrabConfig) unmarshaller.unmarshal(new InputStreamReader(new FileInputStream(GRAB_CONF_FILE), HabitTvConf.ENCODING)));
 		} catch (JAXBException e) {
 			throw new TechnicalException(e);
 		} catch (UnsupportedEncodingException e) {

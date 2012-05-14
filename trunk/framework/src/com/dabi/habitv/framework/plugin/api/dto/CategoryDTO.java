@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.dabi.habitv.framework.plugin.exception.InvalidCategoryException;
+import com.dabi.habitv.framework.plugin.utils.CheckUtils;
+
 /**
- * Define the category of the episode
- * The category can define sub categories
+ * Define the category of the episode The category can define sub categories
  * include and exclude
- *
+ * 
  */
 public class CategoryDTO {
 
@@ -24,10 +26,17 @@ public class CategoryDTO {
 
 	/**
 	 * Full Constructor
-	 * @param name label of the category
-	 * @param identifier unique id of the category
-	 * @param include pattern to define which episode will be included in the category
-	 * @param exclude pattern to define which episode will be excluded of the category
+	 * 
+	 * @param name
+	 *            label of the category
+	 * @param identifier
+	 *            unique id of the category
+	 * @param include
+	 *            pattern to define which episode will be included in the
+	 *            category
+	 * @param exclude
+	 *            pattern to define which episode will be excluded of the
+	 *            category
 	 */
 	public CategoryDTO(final String name, final String identifier, final List<String> include, final List<String> exclude) {
 		super();
@@ -39,14 +48,16 @@ public class CategoryDTO {
 
 	/**
 	 * Light constructor
-	 * @param name label of the category
-	 * @param identifier unique id of the category
+	 * 
+	 * @param name
+	 *            label of the category
+	 * @param identifier
+	 *            unique id of the category
 	 */
 	public CategoryDTO(final String name, final String identifier) {
 		super();
 		this.name = name;
 		this.identifier = identifier;
-		//FIXME validate method
 	}
 
 	/**
@@ -94,9 +105,10 @@ public class CategoryDTO {
 	}
 
 	/**
-	 * Add sub category to current category
-	 * init list if empty
-	 * @param subCategory the sub category to add
+	 * Add sub category to current category init list if empty
+	 * 
+	 * @param subCategory
+	 *            the sub category to add
 	 */
 	public void addSubCategory(final CategoryDTO subCategory) {
 		if (this.subCategories == null) {
@@ -106,9 +118,10 @@ public class CategoryDTO {
 	}
 
 	/**
-	 * Add sub categories to current category
-	 * init list if empty
-	 * @param subCategory the sub categories to add
+	 * Add sub categories to current category init list if empty
+	 * 
+	 * @param subCategory
+	 *            the sub categories to add
 	 */
 	public void addSubCategories(final Collection<CategoryDTO> categoryListDTO) {
 		if (this.subCategories == null) {
@@ -127,6 +140,7 @@ public class CategoryDTO {
 
 	/**
 	 * Define equality by the name
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -147,5 +161,19 @@ public class CategoryDTO {
 	@Override
 	public String toString() {
 		return getName();
+	}
+
+	/**
+	 * Check the category
+	 * 
+	 * @throws InvalidCategoryException
+	 */
+	public void check() throws InvalidCategoryException {
+		if (!CheckUtils.checkMinSize(identifier)) {
+			throw new InvalidCategoryException(identifier, InvalidCategoryException.CauseField.IDENTIFIER);
+		}
+		if (!CheckUtils.checkMinSize(name)) {
+			throw new InvalidCategoryException(name, InvalidCategoryException.CauseField.NAME);
+		}
 	}
 }

@@ -12,9 +12,12 @@ public class PatternMatcher {
 	 */
 	public static void main(String[] args) {
 		// compilation de la regex
-		Pattern p = Pattern.compile("\\((\\d+\\.\\d)%\\)$");
-		// cr�ation d�un moteur de recherche
-		Matcher m = p.matcher("17862.141 kB / 160.44 sec (79.1%)");
+		// \\((\\d+\\.\\d)%\\)$
+		// \((\d+\.\d)%\)$
+		Pattern p = Pattern.compile("\\[.*\\((.*)\\%\\).*\\]");
+		// creation dun moteur de recherche
+		//17862.141 kB / 160.44 sec (79.1%)
+		Matcher m = p.matcher("[#2 SIZE:0B/426.7MiB(43.5%) CN:0 SEED:0 SPD:0Bs]");
 		// lancement de la recherche de toutes les occurrences
 		boolean b = m.find();
 		// si recherche fructueuse
@@ -22,7 +25,7 @@ public class PatternMatcher {
 			log.info("Groupe x : " + m.group(m.groupCount()));
 			// pour chaque groupe
 			for (int i = 0; i <= m.groupCount(); i++) {
-				// affichage de la sous-cha�ne captur�e
+				// affichage de la sous-chaine capturee
 				log.info("Groupe " + i + " : " + m.group(i));
 			}
 		}

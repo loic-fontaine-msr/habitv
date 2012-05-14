@@ -15,12 +15,9 @@ public class RtmpDumpCmdExecutor extends CmdExecutor {
 
 	@Override
 	protected String handleProgression(final String line) {
-		// compilation de la regex
 		final Pattern pattern = Pattern.compile("\\((\\d+\\.\\d)%\\)$");
 		final Matcher matcher = pattern.matcher(line);
-		// lancement de la recherche de toutes les occurrences
 		final boolean hasMatched = matcher.find();
-		// si recherche fructueuse
 		String ret = null;
 		if (hasMatched) {
 			ret = matcher.group(matcher.groupCount());
@@ -29,7 +26,7 @@ public class RtmpDumpCmdExecutor extends CmdExecutor {
 	}
 
 	@Override
-	protected boolean isSuccess() {
+	protected boolean isSuccess(final String fullOutput) {
 		return getLastOutputLine().contains("Download complete");
 	}
 

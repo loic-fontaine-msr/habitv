@@ -31,9 +31,6 @@
 			<element name="simultaneousExport" type="int" maxOccurs="1"
 				minOccurs="1">
 			</element>
-			<element name="timeBetweenLog" type="int" maxOccurs="1"
-				minOccurs="1">
-			</element>
 			<element name="allDownloadTimeout" type="int" maxOccurs="1"
 				minOccurs="1">
 			</element>
@@ -49,7 +46,7 @@
 	<complexType name="downloader">
 		<sequence>
 			<element name="name" type="string" maxOccurs="1" minOccurs="1"></element>
-			<element name="cmd" type="string" maxOccurs="1" minOccurs="1"></element>
+			<element name="binPath" type="string" maxOccurs="1" minOccurs="0"></element>
 		</sequence>
 	</complexType>
 

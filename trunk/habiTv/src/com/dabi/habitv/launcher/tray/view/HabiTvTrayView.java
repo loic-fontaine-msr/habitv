@@ -21,7 +21,7 @@ import com.dabi.habitv.launcher.tray.controller.TrayController;
 import com.dabi.habitv.launcher.tray.model.ActionProgress;
 import com.dabi.habitv.launcher.tray.model.EpisodeStateEnum;
 
-public class HabiTvTrayView implements HabiTvListener {
+public final class HabiTvTrayView implements HabiTvListener {
 
 	private final TrayController controller;
 
@@ -49,13 +49,13 @@ public class HabiTvTrayView implements HabiTvListener {
 
 		if (SystemTray.isSupported()) {
 
-			SystemTray tray = SystemTray.getSystemTray();
-			PopupMenu popupmenu = new PopupMenu();
+			final SystemTray tray = SystemTray.getSystemTray();
+			final PopupMenu popupmenu = new PopupMenu();
 
-			startItem = new MenuItem("Start");
+			startItem = new MenuItem("Check");
 			ActionListener actionListener = new ActionListener() {
 				@Override
-				public void actionPerformed(ActionEvent e) {
+				public void actionPerformed(final ActionEvent actionEvent) {
 					startItem.setEnabled(false);
 					controller.start();
 					startItem.setEnabled(true);
@@ -64,10 +64,10 @@ public class HabiTvTrayView implements HabiTvListener {
 			startItem.addActionListener(actionListener);
 			popupmenu.add(startItem);
 
-			MenuItem item = new MenuItem("Quitter");
+			final MenuItem item = new MenuItem("Quitter");
 			actionListener = new ActionListener() {
 				@Override
-				public void actionPerformed(ActionEvent e) {
+				public void actionPerformed(final ActionEvent actionEvent) {
 					controller.stop();
 				}
 			};
@@ -76,30 +76,30 @@ public class HabiTvTrayView implements HabiTvListener {
 
 			trayIcon.setPopupMenu(popupmenu);
 
-			MouseListener mouseListener = new MouseListener() {
+			final MouseListener mouseListener = new MouseListener() {
 
 				@Override
-				public void mouseReleased(MouseEvent e) {
+				public void mouseReleased(final MouseEvent mouseEvent) {
 					// nothing
 				}
 
 				@Override
-				public void mousePressed(MouseEvent e) {
+				public void mousePressed(final MouseEvent mouseEvent) {
 					// nothing
 				}
 
 				@Override
-				public void mouseExited(MouseEvent e) {
+				public void mouseExited(final MouseEvent mouseEvent) {
 					// nothing
 				}
 
 				@Override
-				public void mouseEntered(MouseEvent e) {
+				public void mouseEntered(final MouseEvent mouseEvent) {
 					// nothing
 				}
 
 				@Override
-				public void mouseClicked(MouseEvent e) {
+				public void mouseClicked(final MouseEvent mouseEvent) {
 					if (!controller.getModel().getProgressionModel().getEpisodeName2ActionProgress().isEmpty()) {
 						trayIcon.displayMessage("Processing", progressionToText(controller.getModel().getProgressionModel().getEpisodeName2ActionProgress()),
 								TrayIcon.MessageType.INFO);
@@ -111,7 +111,7 @@ public class HabiTvTrayView implements HabiTvListener {
 		}
 	}
 
-	private String progressionToText(Collection<ActionProgress> episodeName2ActionProgress) {
+	private String progressionToText(final Collection<ActionProgress> episodeName2ActionProgress) {
 		StringBuilder str = null;
 		for (ActionProgress actionProgress : episodeName2ActionProgress) {
 			if (str == null) {
@@ -130,18 +130,18 @@ public class HabiTvTrayView implements HabiTvListener {
 	}
 
 	@Override
-	public void processChanged(ProcessChangedEvent event) {
+	public void processChanged(final ProcessChangedEvent event) {
 		switch (event.getState()) {
 		case BUILD_INDEX:
 			trayIcon.displayMessage("Building Index", "Build Index for " + event.getInfo(), TrayIcon.MessageType.INFO);
 			break;
 		case CHECKING_EPISODES:
-			startItem.setEnabled(false);
+			//startItem.setEnabled(false);
 			trayIcon.displayMessage("Checking", "Checking for episodes", TrayIcon.MessageType.INFO);
 			trayIcon.setImage(animatedImage);
 			break;
 		case DONE:
-			startItem.setEnabled(true);
+			//startItem.setEnabled(true);
 			trayIcon.setImage(fixImage);
 			break;
 		case ERROR:
@@ -156,8 +156,8 @@ public class HabiTvTrayView implements HabiTvListener {
 	}
 
 	@Override
-	public void episodeChanged(EpisodeChangedEvent event) {
-		EpisodeStateEnum episodeState = event.getState();
+	public void episodeChanged(final EpisodeChangedEvent event) {
+		final EpisodeStateEnum episodeState = event.getState();
 		switch (episodeState) {
 		case TO_DOWNLOAD:
 			trayIcon.displayMessage("New Download", "Episode to download : " + event.getEpisode().getCategory() + " " + event.getEpisode().getName(),

@@ -7,7 +7,7 @@ import java.util.List;
 
 public final class ProcessingThread {
 
-	private static volatile boolean blocker;
+	private static boolean blocker;
 
 	private ProcessingThread() {
 
@@ -15,13 +15,13 @@ public final class ProcessingThread {
 
 	private static final List<Process> processingList = Collections.synchronizedList(new LinkedList<Process>());
 
-	public static void addProcessing(Process process) {
+	public static void addProcessing(final Process process) {
 		if (!blocker) {
 			processingList.add(process);
 		}
 	}
 
-	public static void removeProcessing(Process process) {
+	public static void removeProcessing(final Process process) {
 		if (!blocker) {
 			processingList.remove(process);
 		}

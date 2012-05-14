@@ -12,11 +12,14 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
+import org.apache.log4j.Logger;
+
 import com.dabi.habitv.config.ConfigAccess;
 import com.dabi.habitv.config.HabitTvConf;
 import com.dabi.habitv.config.entities.Config;
 import com.dabi.habitv.framework.plugin.api.ProviderPluginInterface;
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
+import com.dabi.habitv.framework.plugin.exception.InvalidCategoryException;
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
 import com.dabi.habitv.grabconfig.entities.Category;
 import com.dabi.habitv.grabconfig.entities.Channel;
@@ -24,6 +27,10 @@ import com.dabi.habitv.grabconfig.entities.GrabConfig;
 import com.dabi.habitv.plugin.PluginFactory;
 
 public class ProcessCategory {
+	
+	//TODO utiliser TaskMgr
+
+	private static final Logger LOGGER = Logger.getLogger(ProcessCategory.class);
 
 	public void execute(final Config config, final ProcessCategoryListener listener) {
 		final PluginFactory<ProviderPluginInterface> pluginProviderFactory = new PluginFactory<>(ProviderPluginInterface.class, config.getProviderPluginDir());
@@ -42,6 +49,11 @@ public class ProcessCategory {
 			final Channel channel = new Channel();
 			channel.setName(entry.getKey());
 			for (CategoryDTO categoryDTO : entry.getValue()) {
+				try {
+					categoryDTO.check();
+				} catch (InvalidCategoryException e) {
+					LOGGER.error("Invalid Category", e);
+				}
 				channel.getCategory().add(buildCategory(categoryDTO));
 			}
 			config.getChannel().add(channel);

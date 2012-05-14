@@ -13,38 +13,31 @@ import com.dabi.habitv.launcher.tray.HabiTvListener;
 import com.dabi.habitv.launcher.tray.ProcessChangedEvent;
 import com.dabi.habitv.process.episode.ProcessEpisodeListener;
 import com.dabi.habitv.process.episode.RetrieveAndExport;
+import com.dabi.habitv.taskmanager.TaskMgr;
 
 public class HabitTvTrayModel extends Observable {
 
 	private final RetrieveAndExport retrieveAndExport;
 
+	private final TaskMgr taskMgr;
+
 	private final Config config = ConfigAccess.initConfig();
 
 	private final GrabConfig grabConfig = ConfigAccess.initGrabConfig();
 
-	private EventListenerList listeners;
+	private final EventListenerList listeners;
 
 	private final ProgressionModel progressionModel;
 
 	private Thread demonThread;
 
 	public HabitTvTrayModel() {
-		retrieveAndExport = new RetrieveAndExport();
+		super();
+		retrieveAndExport = new RetrieveAndExport(config, grabConfig);
 		progressionModel = new ProgressionModel();
 		listeners = new EventListenerList();
+		taskMgr = new TaskMgr(ConfigAccess.buildTaskType2ThreadPool(config));
 
-	}
-
-	protected RetrieveAndExport getRetrieveAndExport() {
-		return retrieveAndExport;
-	}
-
-	protected Config getConfig() {
-		return config;
-	}
-
-	protected GrabConfig getGrabConfig() {
-		return grabConfig;
 	}
 
 	public ProgressionModel getProgressionModel() {
@@ -60,7 +53,7 @@ public class HabitTvTrayModel extends Observable {
 	}
 
 	public void fireProcessChanged(ProcessStateEnum processStateEnum, String info) {
-		HabiTvListener[] listenerList = (HabiTvListener[]) listeners.getListeners(HabiTvListener.class);
+		final HabiTvListener[] listenerList = (HabiTvListener[]) listeners.getListeners(HabiTvListener.class);
 
 		for (HabiTvListener listener : listenerList) {
 			listener.processChanged(new ProcessChangedEvent(this, processStateEnum, info));
@@ -89,12 +82,11 @@ public class HabitTvTrayModel extends Observable {
 				}
 				final long demonTime = confDemonTime * 1000L;
 				// demon mode
-				//FIXME empecher le lancement du démon si tâche déja en cours
 				while (true) {
-					if (!interrupted) {
-						retrieveAndExport.execute(config, grabConfig, listener);
-					} else {
+					if (interrupted) {
 						interrupted = false;
+					} else {
+						retrieveAndExport.execute(listener, taskMgr);
 					}
 					try {
 						Thread.sleep(demonTime);
@@ -117,10 +109,14 @@ public class HabitTvTrayModel extends Observable {
 		(new Thread() {
 			@Override
 			public void run() {
-				retrieveAndExport.execute(config, grabConfig, listener);
+				retrieveAndExport.execute(listener, taskMgr);
 			}
 
 		}).start();
+	}
+
+	public void forceEnd() {
+		taskMgr.forceEnd();
 	}
 
 }

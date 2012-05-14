@@ -6,7 +6,7 @@ public class ActionProgress implements Comparable<ActionProgress> {
 	private EpisodeStateEnum state;
 	private String progress;
 	private String info;
-	private EpisodeDTO episode;
+	final private EpisodeDTO episode;
 
 	public ActionProgress(final EpisodeStateEnum state, final String progress, final String info, final EpisodeDTO episode) {
 		super();
@@ -24,7 +24,7 @@ public class ActionProgress implements Comparable<ActionProgress> {
 		return state;
 	}
 
-	public void setState(EpisodeStateEnum state) {
+	public void setState(final EpisodeStateEnum state) {
 		this.state = state;
 	}
 
@@ -32,7 +32,7 @@ public class ActionProgress implements Comparable<ActionProgress> {
 		return progress;
 	}
 
-	public void setProgress(String progress) {
+	public void setProgress(final String progress) {
 		this.progress = progress;
 	}
 
@@ -40,12 +40,12 @@ public class ActionProgress implements Comparable<ActionProgress> {
 		return info;
 	}
 
-	public void setInfo(String info) {
+	public void setInfo(final String info) {
 		this.info = info;
 	}
 
 	@Override
-	public int compareTo(ActionProgress o) {
+	public int compareTo(final ActionProgress o) {
 		int ret = state.compareTo(o.state);
 		if (ret == 0) {
 			ret = info.compareTo(o.info);
@@ -57,7 +57,7 @@ public class ActionProgress implements Comparable<ActionProgress> {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		boolean ret = false;
 		if (obj instanceof ActionProgress) {
 			ret = this.getEpisode().equals(((ActionProgress) obj).getEpisode());

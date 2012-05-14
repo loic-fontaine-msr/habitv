@@ -25,7 +25,7 @@ public class MultipleProcessEpisodeListener implements ProcessEpisodeListener {
 	}
 
 	@Override
-	public void downloadingEpisode(EpisodeDTO episode, String progress) {
+	public void downloadingEpisode(final EpisodeDTO episode, final String progress) {
 		for (ProcessEpisodeListener listener : listeners) {
 			listener.downloadingEpisode(episode, progress);
 		}
@@ -39,59 +39,66 @@ public class MultipleProcessEpisodeListener implements ProcessEpisodeListener {
 	}
 
 	@Override
-	public void buildEpisodeIndex(CategoryDTO category) {
+	public void buildEpisodeIndex(final CategoryDTO category) {
 		for (ProcessEpisodeListener listener : listeners) {
 			listener.buildEpisodeIndex(category);
 		}
 	}
 
 	@Override
-	public void episodeToDownload(EpisodeDTO episode) {
+	public void episodeToDownload(final EpisodeDTO episode) {
 		for (ProcessEpisodeListener listener : listeners) {
 			listener.episodeToDownload(episode);
 		}
 	}
 
 	@Override
-	public void downloadedEpisode(EpisodeDTO episode) {
+	public void downloadedEpisode(final EpisodeDTO episode) {
 		for (ProcessEpisodeListener listener : listeners) {
 			listener.downloadedEpisode(episode);
 		}
 	}
 
 	@Override
-	public void downloadFailed(EpisodeDTO episode, ExecutorFailedException e) {
+	public void downloadFailed(final EpisodeDTO episode, final ExecutorFailedException exception) {
 		for (ProcessEpisodeListener listener : listeners) {
-			listener.downloadFailed(episode, e);
+			listener.downloadFailed(episode, exception);
 		}
 	}
 
 	@Override
-	public void exportEpisode(EpisodeDTO episode, Exporter exporter, String progression) {
+	public void exportEpisode(final EpisodeDTO episode, final Exporter exporter, final String progression) {
 		for (ProcessEpisodeListener listener : listeners) {
 			listener.exportEpisode(episode, exporter, progression);
 		}
 	}
 
 	@Override
-	public void exportFailed(EpisodeDTO episode, Exporter exporter, ExecutorFailedException e) {
+	public void exportFailed(final EpisodeDTO episode, final Exporter exporter, final ExecutorFailedException exception) {
 		for (ProcessEpisodeListener listener : listeners) {
-			listener.exportFailed(episode, exporter, e);
+			listener.exportFailed(episode, exporter, exception);
 		}
 	}
 
 	@Override
-	public void providerDownloadCheckStarted(ProviderPluginInterface provider) {
+	public void providerDownloadCheckStarted(final ProviderPluginInterface provider) {
 		for (ProcessEpisodeListener listener : listeners) {
 			listener.providerDownloadCheckStarted(provider);
 		}
 	}
 
 	@Override
-	public void episodeReady(EpisodeDTO episode) {
+	public void episodeReady(final EpisodeDTO episode) {
 		for (ProcessEpisodeListener listener : listeners) {
 			listener.episodeReady(episode);
 		}
+	}
+
+	@Override
+	public void providerDownloadCheckDone(ProviderPluginInterface provider) {
+		for (ProcessEpisodeListener listener : listeners) {
+			listener.providerDownloadCheckDone(provider);
+		}		
 	}
 
 }

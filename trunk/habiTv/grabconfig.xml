@@ -2,7 +2,7 @@
 <tns:grabConfig xmlns:tns="http://www.dabi.com/habitv/grabconfig/entities"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.dabi.com/habitv/grabconfig/entities grab-config.xsd ">
-	<channel>
+<!-- 	<channel>
 		<name>m6</name>
 		<category>
 			<id>3538</id>
@@ -25,6 +25,7 @@
 			<name>66 Minutes</name>
 		</category>
 	</channel>
+-->	
 	<channel>
 		<name>canalPlus</name>
 		<category>
@@ -104,11 +105,11 @@
             </category>
         </category>		
 	</channel>
-	<channel>
+	<!-- <channel>
 		<name>soirFoot</name>
 		<category>
 			<id>browse-Ligue-1-Ligue1-videos-1-date.html</id>
 			<name>Ligue 1</name>
 		</category>
-	</channel>
+	</channel> -->
 </tns:grabConfig>

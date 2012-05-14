@@ -15,7 +15,6 @@ public class ProgressionModel {
 		if (actionInProgress == null) {
 			actionInProgress = new ActionProgress(state, progression, info, episode);
 			episodeName2ActionProgress.add(actionInProgress);
-			;
 		} else {
 			actionInProgress.setState(state);
 			actionInProgress.setProgress(progression);
@@ -23,7 +22,7 @@ public class ProgressionModel {
 		}
 	}
 
-	public ActionProgress getAction(EpisodeDTO episode) {
+	public ActionProgress getAction(final EpisodeDTO episode) {
 		ActionProgress ret = null;
 		for (ActionProgress actionProgress : episodeName2ActionProgress) {
 			if (actionProgress.getEpisode().equals(episode)) {

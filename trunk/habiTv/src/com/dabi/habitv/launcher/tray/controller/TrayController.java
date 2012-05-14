@@ -22,9 +22,9 @@ public class TrayController implements ProcessEpisodeListener {
 
 	private final ProcessEpisodeListener listeners;
 
-	public TrayController(HabitTvTrayModel habiModel) {
+	public TrayController(final HabitTvTrayModel habiModel) {
 		this.habiModel = habiModel;
-		List<ProcessEpisodeListener> listeners = new ArrayList<>();
+		final List<ProcessEpisodeListener> listeners = new ArrayList<>();
 		listeners.add(this);
 		listeners.add(new ConsoleProcessEpisodeListener());
 		this.listeners = new MultipleProcessEpisodeListener(listeners);
@@ -42,11 +42,11 @@ public class TrayController implements ProcessEpisodeListener {
 		getModel().startDownloadCheckDemon(listeners);
 	}
 
-	private void fireProcessChanged(ProcessStateEnum processStateEnum, String info) {
+	private void fireProcessChanged(final ProcessStateEnum processStateEnum, final String info) {
 		getModel().fireProcessChanged(processStateEnum, info);
 	}
 
-	private void fireEpisodeChanged(EpisodeStateEnum episodeStateEnum, EpisodeDTO episode) {
+	private void fireEpisodeChanged(final EpisodeStateEnum episodeStateEnum, final EpisodeDTO episode) {
 		getModel().fireEpisodeChanged(episodeStateEnum, episode);
 	}
 
@@ -56,7 +56,7 @@ public class TrayController implements ProcessEpisodeListener {
 	}
 
 	@Override
-	public void downloadingEpisode(EpisodeDTO episode, String progress) {
+	public void downloadingEpisode(final EpisodeDTO episode, final String progress) {
 		getModel().getProgressionModel().updateActionProgress(episode, EpisodeStateEnum.DOWNLOADING, "", progress);
 	}
 
@@ -66,51 +66,56 @@ public class TrayController implements ProcessEpisodeListener {
 	}
 
 	@Override
-	public void buildEpisodeIndex(CategoryDTO category) {
+	public void buildEpisodeIndex(final CategoryDTO category) {
 		fireProcessChanged(ProcessStateEnum.BUILD_INDEX, category.getName());
 	}
 
 	@Override
-	public void episodeToDownload(EpisodeDTO episode) {
+	public void episodeToDownload(final EpisodeDTO episode) {
 		getModel().getProgressionModel().updateActionProgress(episode, EpisodeStateEnum.TO_DOWNLOAD, "", "");
 		fireEpisodeChanged(EpisodeStateEnum.TO_DOWNLOAD, episode);
 	}
 
 	@Override
-	public void downloadedEpisode(EpisodeDTO episode) {
+	public void downloadedEpisode(final EpisodeDTO episode) {
 		getModel().getProgressionModel().updateActionProgress(episode, EpisodeStateEnum.DOWNLOADED, "", "");
 	}
 
 	@Override
-	public void downloadFailed(EpisodeDTO episode, ExecutorFailedException e) {
-		getModel().getProgressionModel().updateActionProgress(episode, EpisodeStateEnum.DOWNLOAD_FAILED, e.getMessage(), "");
+	public void downloadFailed(final EpisodeDTO episode, final ExecutorFailedException exception) {
+		getModel().getProgressionModel().updateActionProgress(episode, EpisodeStateEnum.DOWNLOAD_FAILED, exception.getMessage(), "");
 		fireEpisodeChanged(EpisodeStateEnum.DOWNLOAD_FAILED, episode);
-
 	}
 
 	@Override
-	public void exportEpisode(EpisodeDTO episode, Exporter exporter, String progression) {
+	public void exportEpisode(final EpisodeDTO episode, final Exporter exporter, final String progression) {
 		getModel().getProgressionModel().updateActionProgress(episode, EpisodeStateEnum.EXPORTING, exporter.getOutput(), progression);
 	}
 
 	@Override
-	public void exportFailed(EpisodeDTO episode, Exporter exporter, ExecutorFailedException e) {
+	public void exportFailed(final EpisodeDTO episode, final Exporter exporter, final ExecutorFailedException exception) {
 		getModel().getProgressionModel().updateActionProgress(episode, EpisodeStateEnum.EXPORT_FAILED, exporter.getOutput(), "");
 		fireEpisodeChanged(EpisodeStateEnum.EXPORT_FAILED, episode);
 	}
 
 	@Override
-	public void providerDownloadCheckStarted(ProviderPluginInterface provider) {
+	public void providerDownloadCheckStarted(final ProviderPluginInterface provider) {
 		fireProcessChanged(ProcessStateEnum.CHECKING_EPISODES, provider.getName());
 	}
 
 	@Override
-	public void episodeReady(EpisodeDTO episode) {
+	public void providerDownloadCheckDone(ProviderPluginInterface provider) {
+		
+	}
+
+	@Override
+	public void episodeReady(final EpisodeDTO episode) {
 		getModel().getProgressionModel().updateActionProgress(episode, EpisodeStateEnum.READY, "", "");
 		fireEpisodeChanged(EpisodeStateEnum.READY, episode);
 	}
 
 	public void stop() {
+		getModel().forceEnd();
 		ProcessingThread.killAllProcessing();
 		System.exit(0);
 	}

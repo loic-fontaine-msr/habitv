@@ -6,17 +6,15 @@ public class TestHttpDl {
 
 	/**
 	 * @param args
-	 * @throws DownloadFailedException 
+	 * @throws DownloadFailedException
 	 */
 	public static void main(String[] args) throws DownloadFailedException {
 		HttpDownloadPluginManager dl = new HttpDownloadPluginManager();
-		dl.download("http://media21.justin.tv/archives/2012-5-2/highlight_316928550.flv", new CmdProgressionListener() {
-
+		dl.download("http://media21.justin.tv/archives/2012-5-2/highlight_316928550.flv", "highlight_316928550.flv", null, new CmdProgressionListener() {
 			@Override
 			public void listen(String progression) {
 				System.err.println(progression);
 			}
 		});
 	}
-
 }
