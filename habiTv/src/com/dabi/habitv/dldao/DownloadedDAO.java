@@ -35,12 +35,14 @@ public final class DownloadedDAO {
 		this.indexDir = workingDir + "/index";
 		this.tvShow = tvShow;
 		this.channelName = channelName;
-		File indexDirectory = new File(indexDir);
+		final File indexDirectory = new File(indexDir);
 		if (indexDirectory.exists()) {
 			this.indexExist = new File(getFileIndex()).exists();
 		} else {
 			this.indexExist = false;
-			indexDirectory.mkdir();
+			if (!indexDirectory.mkdir()) {
+				throw new TechnicalException("Folder can't be created" + indexDirectory.getAbsolutePath());
+			}
 		}
 	}
 

@@ -55,7 +55,7 @@ public class FFMPEGCmdExecutor extends CmdExecutor {
 	}
 
 	@Override
-	protected boolean isSuccess() {
+	protected boolean isSuccess(final String fullOutput) {
 		return getLastOutputLine().matches("video:\\d*kB audio:\\d*kB global headers:\\d*kB muxing overhead.*");
 	}
 

@@ -22,21 +22,15 @@ public class CanalPlusPluginManager implements ProviderPluginInterface {
 
 	@Override
 	public String downloadCmd(final String url) {
-		String cmd;
-		if (url.startsWith(CanalPlusConf.RTMPDUMP_PREFIX)){
-			cmd = CanalPlusConf.DUMP_CMD;
-		}else { 
-			cmd = CanalPlusConf.CURL_CMD;
-		}
-		return cmd;
+		return null;
 	}
 
 	@Override
 	public String getDownloader(final String url) {
 		String downloaderName;
-		if (url.startsWith(CanalPlusConf.RTMPDUMP_PREFIX)){
+		if (url.startsWith(CanalPlusConf.RTMPDUMP_PREFIX)) {
 			downloaderName = CanalPlusConf.RTMDUMP;
-		}else { 
+		} else {
 			downloaderName = CanalPlusConf.CURL;
 		}
 		return downloaderName;

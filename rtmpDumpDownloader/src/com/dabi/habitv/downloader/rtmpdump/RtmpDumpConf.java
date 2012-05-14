@@ -8,4 +8,6 @@ public final class RtmpDumpConf {
 
 	public static final String NAME = "rtmpdump";
 
+	public static final String DUMP_CMD = "-r \"#VIDEO_URL#\" -o \"#FILE_DEST#\"";
+
 }

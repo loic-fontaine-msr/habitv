@@ -31,7 +31,6 @@ public class CanalPlusCategoriesFinder {
 				categoryDTO = new CategoryDTO(selection.getNOM(), String.valueOf(selection.getID()));
 				categories.add(categoryDTO);
 				categoryDTO.addSubCategories(getCategoryById(String.valueOf(selection.getID())));
-				//categories.addAll(getCategoryById(String.valueOf(selection.getID())));
 			}
 		}
 		return categories;

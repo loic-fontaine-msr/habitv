@@ -51,14 +51,14 @@ public class CmdExecutor {
 			outputThread.join();
 			errorThread.join();
 		} catch (IOException | InterruptedException e) {
-			throw new TechnicalException(e);
+			throw new ExecutorFailedException(cmd, fullOutput.toString());
 		} finally {
 			if (process != null) {
 				ProcessingThread.removeProcessing(process);
 			}
 		}
 
-		if (getLastOutputLine() != null && !isSuccess()) {
+		if (getLastOutputLine() != null && !isSuccess(fullOutput.toString())) {
 			throw new ExecutorFailedException(cmd, fullOutput.toString());
 		}
 	}
@@ -73,11 +73,10 @@ public class CmdExecutor {
 					try {
 						long lastTime = 0;
 						while ((line = reader.readLine()) != null) {
-							fullOutput.append(line);
-							fullOutput.append("\n");
+							fullOutput.append(line + "\n");
 							lastOutputLine = line;
 							String handledLine = handleProgression(line);
-							if (listener != null && handledLine != null && (System.currentTimeMillis() - lastTime) > 2000) {//FIXME en conf
+							if (listener != null && handledLine != null && (System.currentTimeMillis() - lastTime) > FrameworkConf.TIME_BETWEEN_LOG) {
 								listener.listen(handledLine);
 								lastTime = System.currentTimeMillis();
 							}
@@ -97,7 +96,7 @@ public class CmdExecutor {
 		return lastOutputLine;
 	}
 
-	protected boolean isSuccess() {
+	protected boolean isSuccess(final String fullOutput) {
 		return true;
 	}
 

@@ -6,7 +6,11 @@ import com.dabi.habitv.launcher.tray.view.HabiTvTrayView;
 
 public class TrayLauncher {
 
-	public static void main(String[] args) {
+	private TrayLauncher() {
+
+	}
+
+	public static void main(final String[] args) {
 		HabitTvTrayModel model = new HabitTvTrayModel();
 		TrayController controller = new TrayController(model);
 		HabiTvTrayView view = new HabiTvTrayView(controller);

@@ -12,24 +12,26 @@ public interface ProcessEpisodeListener extends EventListener {
 
 	void downloadCheckStarted();
 
-	void downloadingEpisode(EpisodeDTO episode, String progress);
+	void downloadingEpisode(final EpisodeDTO episode, final String progress);
 
 	void processDone();
 
-	void buildEpisodeIndex(CategoryDTO category);
+	void buildEpisodeIndex(final CategoryDTO category);
 
-	void episodeToDownload(EpisodeDTO episode);
+	void episodeToDownload(final EpisodeDTO episode);
 
-	void downloadedEpisode(EpisodeDTO episode);
+	void downloadedEpisode(final EpisodeDTO episode);
 
-	void downloadFailed(EpisodeDTO episode, ExecutorFailedException e);
+	void downloadFailed(final EpisodeDTO episode, final ExecutorFailedException exception);
 
-	void exportEpisode(EpisodeDTO episode, Exporter exporter, String progression);
+	void exportEpisode(final EpisodeDTO episode, final Exporter exporter, final String progression);
 
-	void exportFailed(EpisodeDTO episode, Exporter exporter, ExecutorFailedException e);
+	void exportFailed(final EpisodeDTO episode, final Exporter exporter, final ExecutorFailedException exception);
 
-	void providerDownloadCheckStarted(ProviderPluginInterface provider);
+	void providerDownloadCheckStarted(final ProviderPluginInterface provider);
 
-	void episodeReady(EpisodeDTO episode);
+	void episodeReady(final EpisodeDTO episode);
+
+	void providerDownloadCheckDone(final ProviderPluginInterface provider);
 
 }

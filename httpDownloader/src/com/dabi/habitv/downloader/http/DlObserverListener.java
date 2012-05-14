@@ -4,6 +4,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import com.dabi.habitv.framework.plugin.api.CmdProgressionListener;
+import com.dabi.habitv.framework.plugin.utils.FrameworkConf;
 
 public class DlObserverListener implements Observer {
 
@@ -13,15 +14,14 @@ public class DlObserverListener implements Observer {
 		this.listener = listener;
 	}
 
-	private String progression;
-	
 	private long lastTime = 0;
 
 	@Override
-	public void update(Observable o, Object arg) {
-		HttpDownload dl = (HttpDownload) o;
-		progression = String.valueOf(Math.round(dl.getProgress()));
-		if (listener != null && (System.currentTimeMillis() - lastTime ) > 2000) {//FIXME en conf
+	public void update(final Observable observable, final Object arg) {
+		final HttpDownload dl = (HttpDownload) observable;
+
+		final String progression = String.valueOf(Math.round(dl.getProgress()));
+		if (listener != null && (System.currentTimeMillis() - lastTime) > FrameworkConf.TIME_BETWEEN_LOG) {
 			listener.listen(progression);
 			lastTime = System.currentTimeMillis();
 		}

@@ -2,6 +2,7 @@ package com.dabi.habitv.downloader.http;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Map;
 
 import com.dabi.habitv.framework.plugin.api.CmdProgressionListener;
 import com.dabi.habitv.framework.plugin.api.PluginDownloaderInterface;
@@ -21,10 +22,10 @@ public class HttpDownloadPluginManager implements PluginDownloaderInterface {
 	}
 
 	@Override
-	public void download(final String cmd, final CmdProgressionListener listener) throws DownloadFailedException {
+	public void download(final String downloadInput, final String downloadDestination, final Map<String, String> parameters,
+			final CmdProgressionListener listener) throws DownloadFailedException {
 		try {
-			String[] param = cmd.split("///");
-			HttpDownload download = new HttpDownload(new URL(param[0]),param[1]);
+			HttpDownload download = new HttpDownload(new URL(downloadInput), downloadDestination);
 			download.addObserver(new DlObserverListener(listener));
 			download.run();
 		} catch (MalformedURLException e) {

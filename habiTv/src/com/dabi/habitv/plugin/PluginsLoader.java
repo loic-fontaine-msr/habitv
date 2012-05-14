@@ -36,7 +36,10 @@ public class PluginsLoader<P extends PluginBase> {
 	}
 
 	public PluginsLoader(final Class<P> pluginInterface, final File[] files) {
-		this.files = Arrays.asList(files);//FIXME throw Exception si files null ou vide
+		if (files == null || files.length == 0) {
+			throw new IllegalArgumentException("files lists can't be empty");
+		}
+		this.files = Arrays.asList(files);
 		this.classPluginProviders = new LinkedList<>();
 		this.pluginInterface = pluginInterface;
 	}
@@ -62,8 +65,7 @@ public class PluginsLoader<P extends PluginBase> {
 	private void initializeLoader() {
 		// On vérifie que la liste des plugins à charger à été initialisé
 		if (this.files == null || this.files.size() == 0) {
-			// TODO functionnal
-			throw new TechnicalException("Pas de fichier spécifié");
+			throw new TechnicalException("No files");
 		}
 
 		// Pour eviter le double chargement des plugins
@@ -76,7 +78,7 @@ public class PluginsLoader<P extends PluginBase> {
 				break;
 			}
 
-			//recherche tous les plugins dans le fichier
+			// recherche tous les plugins dans le fichier
 			findAllPlugins(file);
 		}
 

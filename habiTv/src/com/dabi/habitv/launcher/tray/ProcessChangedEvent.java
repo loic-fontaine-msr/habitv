@@ -13,7 +13,7 @@ public class ProcessChangedEvent extends EventObject {
 	
 	private final String info;
 
-	public ProcessChangedEvent(final HabitTvTrayModel source, final ProcessStateEnum state, String info) {
+	public ProcessChangedEvent(final HabitTvTrayModel source, final ProcessStateEnum state, final String info) {
 		super(source);
 		this.state = state;
 		this.info = info;

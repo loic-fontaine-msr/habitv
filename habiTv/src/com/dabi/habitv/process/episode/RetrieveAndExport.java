@@ -2,45 +2,57 @@ package com.dabi.habitv.process.episode;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 import com.dabi.habitv.config.entities.Config;
-import com.dabi.habitv.framework.plugin.api.PluginDownloaderInterface;
 import com.dabi.habitv.framework.plugin.api.ExporterPluginInterface;
+import com.dabi.habitv.framework.plugin.api.PluginDownloaderInterface;
 import com.dabi.habitv.framework.plugin.api.ProviderPluginInterface;
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
-import com.dabi.habitv.framework.plugin.exception.TechnicalException;
 import com.dabi.habitv.grabconfig.entities.Category;
 import com.dabi.habitv.grabconfig.entities.Channel;
 import com.dabi.habitv.grabconfig.entities.GrabConfig;
 import com.dabi.habitv.plugin.PluginFactory;
+import com.dabi.habitv.taskmanager.Task;
+import com.dabi.habitv.taskmanager.TaskMgr;
+import com.dabi.habitv.taskmanager.TaskTypeEnum;
 
 public class RetrieveAndExport {
 
-	public void execute(final Config config, final GrabConfig grabConfig, final ProcessEpisodeListener listener) {
+	private final PluginFactory<ProviderPluginInterface> pluginProviderFactory;
 
-		final ExecutorService exportThreadPool = Executors.newFixedThreadPool(config.getSimultaneousExport());
-		final ExecutorService channelThreadPool = Executors.newFixedThreadPool(config.getSimultaneousChannelDownload());
+	private final PluginFactory<PluginDownloaderInterface> pluginDownloaderFactory;
 
-		final PluginFactory<ProviderPluginInterface> pluginProviderFactory = new PluginFactory<>(ProviderPluginInterface.class, config.getProviderPluginDir());
-		final PluginFactory<PluginDownloaderInterface> pluginDownloaderFactory = new PluginFactory<>(PluginDownloaderInterface.class,
-				config.getDownloaderPluginDir());
-		final PluginFactory<ExporterPluginInterface> pluginExporterFactory = new PluginFactory<>(ExporterPluginInterface.class, config.getExporterPluginDir());
+	private final PluginFactory<ExporterPluginInterface> pluginExporterFactory;
+
+	private final Config config;
+
+	private final GrabConfig grabConfig;
+
+	public RetrieveAndExport(final Config config, final GrabConfig grabConfig) {
+		this.config = config;
+		this.grabConfig = grabConfig;
+		this.pluginProviderFactory = new PluginFactory<>(ProviderPluginInterface.class, config.getProviderPluginDir());
+		this.pluginDownloaderFactory = new PluginFactory<>(PluginDownloaderInterface.class, config.getDownloaderPluginDir());
+		this.pluginExporterFactory = new PluginFactory<>(ExporterPluginInterface.class, config.getExporterPluginDir());
+	}
+
+	public void execute(final ProcessEpisodeListener listener, final TaskMgr taskMgr) {
 
 		for (final Channel channel : grabConfig.getChannel()) {
 			final ProviderPluginInterface provider = pluginProviderFactory.findPlugin(channel.getName(), null);
-			channelThreadPool.execute(new ChannelDownloader(listener, buildCategoryListDTO(channel.getCategory()), config, exportThreadPool, provider,
-					pluginExporterFactory, pluginDownloaderFactory));
+			taskMgr.addTask(buildChannelSearchTask(channel, listener, provider, taskMgr));
 		}
-
-		endThreadPool(channelThreadPool, config.getAllDownloadTimeout());
-		endThreadPool(exportThreadPool, config.getExportTimeout());
 		listener.processDone();
 	}
 
-	private List<CategoryDTO> buildCategoryListDTO(final List<Category> categories) {
+	private Task buildChannelSearchTask(final Channel channel, final ProcessEpisodeListener listener, final ProviderPluginInterface provider,
+			final TaskMgr taskMgr) {
+		ChannelDownloader channelDownloader = new ChannelDownloader(channel.getName(), taskMgr, listener, buildCategoryListDTO(channel.getCategory()), config,
+				provider, pluginExporterFactory, pluginDownloaderFactory);
+		return new Task(TaskTypeEnum.SEARCH, channel.getName(), channelDownloader);
+	}
+
+	private static List<CategoryDTO> buildCategoryListDTO(final List<Category> categories) {
 		final List<CategoryDTO> categoryDTOs = new ArrayList<>(categories.size());
 		CategoryDTO categoryDTO;
 		for (Category category : categories) {
@@ -49,15 +61,6 @@ public class RetrieveAndExport {
 			categoryDTOs.add(categoryDTO);
 		}
 		return categoryDTOs;
-	}
-
-	public static void endThreadPool(final ExecutorService threadPool, final int timeOut) {
-		threadPool.shutdown();
-		try {
-			threadPool.awaitTermination(timeOut, TimeUnit.SECONDS);
-		} catch (InterruptedException e) {
-			throw new TechnicalException(e);
-		}
 	}
 
 }

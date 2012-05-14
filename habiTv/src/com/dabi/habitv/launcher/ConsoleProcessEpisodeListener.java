@@ -15,12 +15,12 @@ public class ConsoleProcessEpisodeListener implements ProcessEpisodeListener {
 
 	@Override
 	public void downloadCheckStarted() {
-		LOG.info("Recherche des épiodes à télécharger...");
+		LOG.info("Recherche des épisodes à télécharger...");
 	}
 
 	@Override
-	public void downloadingEpisode(EpisodeDTO episode, String progress) {
-		LOG.info("Dowloading " + episode.getName() + " " + progress + "%");
+	public void downloadingEpisode(final EpisodeDTO episode, final String progress) {
+		LOG.info("Dowloading " + episode.getCategory() + " - " + episode.getName() + " " + progress + "%");
 	}
 
 	@Override
@@ -29,47 +29,52 @@ public class ConsoleProcessEpisodeListener implements ProcessEpisodeListener {
 	}
 
 	@Override
-	public void buildEpisodeIndex(CategoryDTO category) {
+	public void buildEpisodeIndex(final CategoryDTO category) {
 		LOG.info("Construction de l'index pour " + category.getName());
 	}
 
 	@Override
-	public void episodeToDownload(EpisodeDTO episode) {
-
+	public void episodeToDownload(final EpisodeDTO episode) {
+		LOG.info(episode.getCategory() + " - " + episode.getName() + " à télécharger");
 	}
 
 	@Override
-	public void downloadedEpisode(EpisodeDTO episode) {
-		LOG.info(episode.getName() + "Downloaded");
+	public void downloadedEpisode(final EpisodeDTO episode) {
+		LOG.info(episode.getCategory() + " - " + episode.getName() + "Downloaded");
 	}
 
 	@Override
-	public void downloadFailed(EpisodeDTO episode, ExecutorFailedException e) {
-		LOG.error("download of " + episode.getName() + "failed");
+	public void downloadFailed(final EpisodeDTO episode, final ExecutorFailedException e) {
+		LOG.error("download of " + episode.getCategory() + " - " + episode.getName() + "failed");
 		LOG.error("cmd was" + e.getCmd());
 		LOG.error(e.getFullOuput());
 	}
 
 	@Override
-	public void exportEpisode(EpisodeDTO episode, Exporter exporter, String progression) {
-		LOG.info(exporter.getOutput() + " " + episode.getName() + " " + progression + "%");
+	public void exportEpisode(final EpisodeDTO episode, final Exporter exporter, final String progression) {
+		LOG.info(exporter.getOutput() + " " + episode.getCategory() + " - " + episode.getName() + " " + progression + "%");
 	}
 
 	@Override
-	public void exportFailed(EpisodeDTO episode, Exporter exporter, ExecutorFailedException e) {
-		LOG.error("export of " + episode.getName() + "failed");
+	public void exportFailed(final EpisodeDTO episode, final Exporter exporter, final ExecutorFailedException e) {
+		LOG.error("export of " + episode.getCategory() + " - " + episode.getName() + "failed");
 		LOG.error("cmd was" + e.getCmd());
 		LOG.error(e.getFullOuput());
 	}
 
 	@Override
-	public void providerDownloadCheckStarted(ProviderPluginInterface provider) {
+	public void providerDownloadCheckStarted(final ProviderPluginInterface provider) {
 		LOG.info(provider.getName());
 	}
 
 	@Override
-	public void episodeReady(EpisodeDTO episode) {
+	public void episodeReady(final EpisodeDTO episode) {
 		LOG.info(episode.getCategory() + " " + episode.getName() + " prêt");
+	}
+
+	@Override
+	public void providerDownloadCheckDone(ProviderPluginInterface provider) {
+		LOG.info(provider.getName()+" done");
 	}
 
 }
