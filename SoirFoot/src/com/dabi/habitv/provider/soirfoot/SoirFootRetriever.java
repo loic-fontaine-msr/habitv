@@ -47,17 +47,17 @@ public final class SoirFootRetriever {
 					}
 
 					// rutube
-					for (Segment segment2 : source2.getAllStartTags("embed src=\"")) {
-						String param = segment2.getChildElements().get(0).getAttributeValue("src");
-						if (param.contains("/")) {
-							String archiveId = param.substring(param.lastIndexOf("/") + 1, param.length());
-							String xmlUrl = SoirFootConf.RUTUBE_API_URL.replaceFirst("#ID#", archiveId);
-							Source source3 = new Source(new URL(xmlUrl));
-							String baseUrl = source3.getAllStartTags("baseurl").get(0).getElement().getContent().toString();
-							String rtmpDumpUrl = source3.getAllStartTags("media").get(0).getAttributeValue("url");
-							episodeList.add(new EpisodeDTO(category.getName(), name, baseUrl + rtmpDumpUrl));
-						}
-					}
+//					for (Segment segment2 : source2.getAllStartTags("embed src=\"")) {
+//						String param = segment2.getChildElements().get(0).getAttributeValue("src");
+//						if (param.contains("/")) {
+//							String archiveId = param.substring(param.lastIndexOf("/") + 1, param.length());
+//							String xmlUrl = SoirFootConf.RUTUBE_API_URL.replaceFirst("#ID#", archiveId);
+//							Source source3 = new Source(new URL(xmlUrl));
+//							String baseUrl = source3.getAllStartTags("baseurl").get(0).getElement().getContent().toString();
+//							String rtmpDumpUrl = source3.getAllStartTags("media").get(0).getAttributeValue("url");
+//							episodeList.add(new EpisodeDTO(category.getName(), name, baseUrl + rtmpDumpUrl));
+//						}
+//					}
 				} catch (Exception e) {
 					e.printStackTrace();
 					// FIXME
