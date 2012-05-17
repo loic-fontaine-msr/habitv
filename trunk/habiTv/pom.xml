@@ -32,6 +32,9 @@
 			<resource>
 				<directory>conf</directory>
 			</resource>
+			<resource>
+				<directory>img</directory>
+			</resource>			
 		</resources>
 		<plugins>
 			<plugin>
@@ -39,9 +42,6 @@
 				<artifactId>maven-jar-plugin</artifactId>
 				<configuration>
 					<outputDirectory>../builder/pub/lib</outputDirectory>
-					<descriptorRefs>
-						<descriptorRef>jar-with-dependencies</descriptorRef>
-					</descriptorRefs>
 					<archive>
 						<manifest>
 							<addClasspath>true</addClasspath>

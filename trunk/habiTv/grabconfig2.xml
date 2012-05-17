@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<tns:grabConfig xmlns:tns="http://www.dabi.com/habitv/grabconfig/entities"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.dabi.com/habitv/grabconfig/entities grab-config.xsd ">
+<!-- 	<channel>
+		<name>m6</name>
+		<category>
+			<id>3538</id>
+			<name>Scènes de
+				ménages
+			</name>
+			<include>.*20h.*</include>
+			<exclude>.*13h00.*</exclude>
+		</category>
+		<category>
+			<id>6026</id>
+			<name>Un gars, une fille</name>
+		</category>
+		<category>
+			<id>2276</id>
+			<name>Cinésix</name>
+		</category>
+		<category>
+			<id>116</id>
+			<name>66 Minutes</name>
+		</category>
+	</channel>
+-->	
+	<channel>
+		<name>canalPlus</name>
+		<category>
+			<id>634012</id>
+			<name>LES GUIGNOLS</name>
+			<exclude>.*La semaine des Guignols.*</exclude>
+		</category>
+		<category>
+			<id>619685</id>
+			<name>LE JT DE CANAL+</name>
+		</category>
+		<category>
+			<id>633988</id>
+			<name>BREF</name>
+		</category>
+		<category>
+			<id>633844</id>
+			<name>ZAPPING</name>
+		</category>
+		<category>
+			<id>3</id>
+			<name>TOUT LE FOOTBALL</name>
+			<include>.*Multiplex.*</include>
+			<include>.*Sporting.*</include>
+			<include>.*Atletico Madrid.*</include>
+			<include>.*Real Madrid.*</include>
+			<include>.*FC Barcelone.*</include>
+			<include>.*Valence.*</include>
+			<include>.*Bilbao.*</include>
+			<include>.*Inter Milan.*</include>
+			<include>.*AC Milan.*</include>
+			<include>.*AS Roma.*</include>
+			<include>.*Juventus Turin.*</include>
+			<include>.*Newcastle United.*</include>
+			<include>.*Arsenal.*</include>
+			<include>.*Chelsea.*</include>
+			<include>.*Tottenham.*</include>
+			<include>.*Manchester United.*</include>
+			<include>.*Manchester City.*</include>
+			<include>.*Top buts.*</include>
+			<include>.*Les 5 plus beaux buts.*</include>
+			<include>.*Marseille.*</include>
+			<include>.*Bayern Munich.*</include>
+			<exclude>.*LE MEILLEUR DU CFC.*</exclude>
+			<exclude>.*The Specialists.*</exclude>
+		</category>
+		<category>
+			<id>47</id>
+			<name>LES EXCLUS DU WEB </name>
+			<category>
+				<id>631443</id>
+				<name>PEPITES SUR LE NET</name>
+			</category>
+		</category>
+		<category>
+			<id>73</id>
+			<name>LES PLUS RECENTES</name>
+			<category>
+				<id>634058</id>
+				<name>ZAPSPORT</name>
+			</category>
+		</category>
+	</channel>
+	<!-- <channel>
+		<name>soirFoot</name>
+		<category>
+			<id>browse-Ligue-1-Ligue1-videos-1-date.html</id>
+			<name>Ligue 1</name>
+		</category>
+	</channel> -->
+</tns:grabConfig>

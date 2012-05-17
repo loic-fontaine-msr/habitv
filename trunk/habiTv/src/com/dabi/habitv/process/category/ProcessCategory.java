@@ -52,7 +52,7 @@ public class ProcessCategory {
 				try {
 					categoryDTO.check();
 				} catch (InvalidCategoryException e) {
-					LOGGER.error("Invalid Category", e);
+					LOGGER.error("Invalid Category" + categoryDTO, e);
 				}
 				channel.getCategory().add(buildCategory(categoryDTO));
 			}

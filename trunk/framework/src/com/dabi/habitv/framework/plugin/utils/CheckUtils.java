@@ -6,7 +6,7 @@ public final class CheckUtils {
 	}
 
 	public static boolean checkMinSize(final String category) {
-		return category != null && category.length() > FrameworkConf.MIN_SIZE;
+		return category != null && category.length() >= FrameworkConf.MIN_SIZE;
 	}
 
 }

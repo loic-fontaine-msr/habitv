@@ -11,6 +11,8 @@ import com.dabi.habitv.grabconfig.entities.GrabConfig;
 import com.dabi.habitv.launcher.tray.EpisodeChangedEvent;
 import com.dabi.habitv.launcher.tray.HabiTvListener;
 import com.dabi.habitv.launcher.tray.ProcessChangedEvent;
+import com.dabi.habitv.process.category.ProcessCategory;
+import com.dabi.habitv.process.category.ProcessCategoryListener;
 import com.dabi.habitv.process.episode.ProcessEpisodeListener;
 import com.dabi.habitv.process.episode.RetrieveAndExport;
 import com.dabi.habitv.taskmanager.TaskMgr;
@@ -86,7 +88,22 @@ public class HabitTvTrayModel extends Observable {
 					if (interrupted) {
 						interrupted = false;
 					} else {
-						retrieveAndExport.execute(listener, taskMgr);
+						if (grabConfig == null) {
+							(new ProcessCategory()).execute(config, new ProcessCategoryListener() {
+
+								@Override
+								public void getProviderCategories(final String providerName) {
+									fireProcessChanged(ProcessStateEnum.BUILDING_CATEGORIES, providerName);
+								}
+
+								@Override
+								public void categoriesSaved(final String grabconfigXmlFile) {
+									fireProcessChanged(ProcessStateEnum.CATEGORIES_BUILD, grabconfigXmlFile);
+								}
+							});
+						} else {
+							retrieveAndExport.execute(listener, taskMgr);
+						}
 					}
 					try {
 						Thread.sleep(demonTime);
@@ -105,7 +122,6 @@ public class HabitTvTrayModel extends Observable {
 	public void startDownloadCheck(final ProcessEpisodeListener listener) {
 
 		demonThread.interrupt();
-
 		(new Thread() {
 			@Override
 			public void run() {

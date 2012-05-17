@@ -10,7 +10,7 @@ public final class FrameworkConf {
 
 	public static final String PARAMETER_ARGS = "ARGUMENTS";
 
-	public static final int MIN_SIZE = 3;
+	public static final int MIN_SIZE = 1;
 
 	public static final long TIME_BETWEEN_LOG = 2000L;
 
