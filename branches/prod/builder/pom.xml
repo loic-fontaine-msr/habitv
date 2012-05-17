@@ -14,8 +14,8 @@
 	</properties>
 
 	<modules>
+		<module>../framework</module>	
 		<module>../habiTv</module>
-		<module>../framework</module>
 		<module>../canalPlus</module>
 		<module>../m6</module>
 		<module>../cmdDownloader</module>
