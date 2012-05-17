@@ -35,14 +35,18 @@ public final class HabiTvTrayView implements HabiTvListener {
 
 	public HabiTvTrayView(final TrayController controller) {
 		this.controller = controller;
-		fixImage = Toolkit.getDefaultToolkit().getImage("src/fixe.gif");
-		animatedImage = Toolkit.getDefaultToolkit().getImage("src/anim.gif");
+		fixImage = getImage("fixe.gif");
+		animatedImage = getImage("anim.gif");
 		trayIcon = new TrayIcon(fixImage, "habiTv");
 		try {
 			init();
 		} catch (AWTException e) {
 			throw new TechnicalException(e);
 		}
+	}
+
+	private Image getImage(String image) {
+		return Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource(image));
 	}
 
 	public void init() throws AWTException {
@@ -136,19 +140,24 @@ public final class HabiTvTrayView implements HabiTvListener {
 			trayIcon.displayMessage("Building Index", "Build Index for " + event.getInfo(), TrayIcon.MessageType.INFO);
 			break;
 		case CHECKING_EPISODES:
-			//startItem.setEnabled(false);
+			// startItem.setEnabled(false);
 			trayIcon.displayMessage("Checking", "Checking for episodes", TrayIcon.MessageType.INFO);
 			trayIcon.setImage(animatedImage);
 			break;
 		case DONE:
-			//startItem.setEnabled(true);
+			// startItem.setEnabled(true);
 			trayIcon.setImage(fixImage);
 			break;
 		case ERROR:
 			trayIcon.displayMessage("Error", "En error has occured", TrayIcon.MessageType.ERROR);
 			break;
-		case GETTING_CATEGORIES:
-			trayIcon.displayMessage("Grabbing categories", "Grabbing categories", TrayIcon.MessageType.INFO);
+		case BUILDING_CATEGORIES:
+			trayIcon.displayMessage("Grabbing categories", "Grabbing categories for " + event.getInfo(), TrayIcon.MessageType.INFO);
+			trayIcon.setImage(animatedImage);
+			break;
+		case CATEGORIES_BUILD:
+			trayIcon.displayMessage("Grabbing categories", "Categories built in " + event.getInfo(), TrayIcon.MessageType.INFO);
+			trayIcon.setImage(fixImage);
 			break;
 		default:
 			break;

@@ -56,28 +56,36 @@ public class ChannelDownloader implements Runnable {
 
 	private void downloadEpisode(final List<CategoryDTO> categoryDTOs) {
 		for (final CategoryDTO category : categoryDTOs) {
-			// dao to find dowloaded episodes
-			final DownloadedDAO filesDAO = new DownloadedDAO(config.getWorkingDir(), provider.getName(), category.getName());
-			if (!filesDAO.isIndexCreated()) {
-				listener.buildEpisodeIndex(category);
-			}
-			// get list of downloadable episodes
-			Set<EpisodeDTO> episodeList = provider.findEpisode(category);
-			// filter episode lister by include/exclude and already
-			// downloaded
-			episodeList = FilterUtils.filterByIncludeExcludeAndDowloaded(episodeList, category.getInclude(), category.getExclude(),
-					filesDAO.findDownloadedFiles());
-			for (final EpisodeDTO episode : episodeList) {
-				// TODO Gérer les execptions sur un Episode sans tout arréter
-				final EpisodeExporter episodeExporter = new EpisodeExporter(provider.getName(), category, episode);
-				if (filesDAO.isIndexCreated()) {
-					listener.episodeToDownload(episode);//TODO si l'épisode était déjà dans la liste il ne faut pas le redl
-					// producer download the file
-					taskMgr.addTask(buildDownloadAndExportTask(episode, episodeExporter, filesDAO));
-				} else {
-					// if index has not been created the first run will only
-					// fill this file
-					filesDAO.addDownloadedFiles(episode.getName());
+			if (!category.getSubCategories().isEmpty()) {
+				downloadEpisode(category.getSubCategories());
+			} else {
+				// dao to find dowloaded episodes
+				final DownloadedDAO filesDAO = new DownloadedDAO(config.getWorkingDir(), provider.getName(), category.getName());
+				if (!filesDAO.isIndexCreated()) {
+					listener.buildEpisodeIndex(category);
+				}
+				// get list of downloadable episodes
+				Set<EpisodeDTO> episodeList = provider.findEpisode(category);
+				// filter episode lister by include/exclude and already
+				// downloaded
+				episodeList = FilterUtils.filterByIncludeExcludeAndDowloaded(episodeList, category.getInclude(), category.getExclude(),
+						filesDAO.findDownloadedFiles());
+				for (final EpisodeDTO episode : episodeList) {
+					// TODO Gérer les execptions sur un Episode sans tout
+					// arréter
+					final EpisodeExporter episodeExporter = new EpisodeExporter(provider.getName(), category, episode);
+					if (filesDAO.isIndexCreated()) {
+						listener.episodeToDownload(episode);// TODO si l'épisode
+															// était déjà dans
+															// la liste il ne
+															// faut pas le redl
+						// producer download the file
+						taskMgr.addTask(buildDownloadAndExportTask(episode, episodeExporter, filesDAO));
+					} else {
+						// if index has not been created the first run will only
+						// fill this file
+						filesDAO.addDownloadedFiles(episode.getName());
+					}
 				}
 			}
 		}
@@ -152,7 +160,8 @@ public class ChannelDownloader implements Runnable {
 				}
 
 				if (rootCall) {
-					//FIXME récupérer les retours des sous-taches pour vérifier si l'épisode est vraiment en succès
+					// FIXME récupérer les retours des sous-taches pour vérifier
+					// si l'épisode est vraiment en succès
 					taskMgr.waitForEndTasks(config.getAllDownloadTimeout(), TaskTypeEnum.EXPORT);
 					if (success) {
 						filesDAO.addDownloadedFiles(episode.getName());
