@@ -1,46 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ns2:grabConfig xmlns:ns2="http://www.dabi.com/habitv/grabconfig/entities">
     <channel>
-        <name>canalPlus</name>
+        <name>tvSubtitles</name>
         <category>
-            <id>39</id>
-            <name>LES EMISSIONS QUOTIDIENNES</name>
-            <category>
-                <id>642556</id>
-                <name>UNE MINUTE AVANT</name>
-            </category>
-            <category>
-                <id>642919</id>
-                <name>LA MATINALE</name>
-            </category>
-            <category>
-                <id>642801</id>
-                <name>LE GRAND JOURNAL</name>
-            </category>
-            <category>
-                <id>642872</id>
-                <name>LES GUIGNOLS</name>
-            </category>
-            <category>
-                <id>642790</id>
-                <name>LE JT DE CANAL+</name>
-            </category>
-            <category>
-                <id>642550</id>
-                <name>LE PETIT JOURNAL</name>
-            </category>
-            <category>
-                <id>638597</id>
-                <name>BREF</name>
-            </category>
-            <category>
-                <id>643590</id>
-                <name>_</name>
-            </category>
-            <category>
-                <id>642579</id>
-                <name>ZAPPING</name>
-            </category>
+            <id>tvshow-679-1.html</id>
+            <name>Awake</name>
         </category>
     </channel>
 </ns2:grabConfig>

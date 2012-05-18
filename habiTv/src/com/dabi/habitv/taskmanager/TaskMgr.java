@@ -8,11 +8,15 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.log4j.Logger;
+
 import com.dabi.habitv.config.HabitTvConf;
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
 import com.dabi.habitv.taskmanager.Task.TaskAction;
 
 public class TaskMgr {
+
+	private static final Logger LOG = Logger.getLogger(TaskMgr.class);
 
 	private static final String DEFAULT_CATEGORY = "DEFAULT";
 
@@ -39,15 +43,20 @@ public class TaskMgr {
 	public synchronized void addTask(final Task task) {
 		final ExecutorService executorService = findExecutorService(task.getTaskType(), task.getCategory());
 		if (!findCurrentTask(task)) {
+			task.add();
+			LOG.debug("Task added" + task);
 			executorService.execute(task.getRunnable(new TaskAction() {
 
 				@Override
 				public void onTaskEnd() {
 					removeCurrentTask(task);
+					LOG.debug("Task ended" + task);
 				}
 
 			}));
 			addCurrentTask(task);
+		} else {
+			LOG.debug("Task refused" + task);
 		}
 	}
 

@@ -59,12 +59,11 @@ public final class SoirFootRetriever {
 //						}
 //					}
 				} catch (Exception e) {
-					e.printStackTrace();
-					// FIXME
+					throw new TechnicalException(e);
 				}
 			}
 		} catch (IOException e) {
-			throw new TechnicalException(e);// FIXME throw functionnal
+			throw new TechnicalException(e);// TODO throw functionnal
 											// checkFailedException
 		}
 		return episodeList;

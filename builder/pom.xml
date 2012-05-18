@@ -18,10 +18,10 @@
 		<module>../habiTv</module>
 		<module>../canalPlus</module>
 		<module>../m6</module>
-		<module>../soirFoot</module>
+		<!-- <module>../soirFoot</module> -->
 		<module>../tvSubtitles</module>
 		<module>../cmdDownloader</module>
-		<module>../httpDownloader</module>
+		<!-- <module>../httpDownloader</module> -->
 		<module>../aria2Downloader</module>
 		<module>../curlDownloader</module>
 		<!-- <module>../youtubeDownloader</module>-->

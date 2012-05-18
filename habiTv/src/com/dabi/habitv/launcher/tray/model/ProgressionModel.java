@@ -36,4 +36,20 @@ public class ProgressionModel {
 		return episodeName2ActionProgress;
 	}
 
+	public boolean isAllActionDone() {
+		boolean ret = true;
+		for (ActionProgress actionProgress : episodeName2ActionProgress) {
+			if (!isActionDone(actionProgress)) {
+				ret = false;
+				break;
+			}
+		}
+		return ret;
+	}
+
+	private boolean isActionDone(ActionProgress actionProgress) {
+		EpisodeStateEnum state = actionProgress.getState();
+		return state.equals(EpisodeStateEnum.READY) || state.equals(EpisodeStateEnum.EXPORT_FAILED) || state.equals(EpisodeStateEnum.DOWNLOAD_FAILED);
+	}
+
 }

@@ -127,8 +127,14 @@ public final class HabiTvTrayView implements HabiTvListener {
 			String progression = actionProgress.getProgress();
 			if (progression != null && progression.length() > 0) {
 				progression = progression + "%";
+			} else {
+				progression = "";
 			}
-			str.append(actionProgress.getState().name() + " " + actionProgress.getInfo() + " " + progression);
+			String info = actionProgress.getInfo();
+			if (info == null) {
+				info = "";
+			}
+			str.append(actionProgress.getState().name() + " " + info + " " + progression);
 		}
 		return str.toString();
 	}
@@ -140,12 +146,10 @@ public final class HabiTvTrayView implements HabiTvListener {
 			trayIcon.displayMessage("Building Index", "Build Index for " + event.getInfo(), TrayIcon.MessageType.INFO);
 			break;
 		case CHECKING_EPISODES:
-			// startItem.setEnabled(false);
 			trayIcon.displayMessage("Checking", "Checking for episodes", TrayIcon.MessageType.INFO);
 			trayIcon.setImage(animatedImage);
 			break;
 		case DONE:
-			// startItem.setEnabled(true);
 			trayIcon.setImage(fixImage);
 			break;
 		case ERROR:

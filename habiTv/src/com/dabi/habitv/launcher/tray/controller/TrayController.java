@@ -3,11 +3,14 @@ package com.dabi.habitv.launcher.tray.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.dabi.habitv.config.entities.Exporter;
 import com.dabi.habitv.framework.plugin.api.ProviderPluginInterface;
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
 import com.dabi.habitv.framework.plugin.exception.ExecutorFailedException;
+import com.dabi.habitv.framework.plugin.exception.TechnicalException;
 import com.dabi.habitv.framework.plugin.utils.ProcessingThread;
 import com.dabi.habitv.launcher.ConsoleProcessEpisodeListener;
 import com.dabi.habitv.launcher.MultipleProcessEpisodeListener;
@@ -17,6 +20,8 @@ import com.dabi.habitv.launcher.tray.model.ProcessStateEnum;
 import com.dabi.habitv.process.episode.ProcessEpisodeListener;
 
 public class TrayController implements ProcessEpisodeListener {
+
+	private static final Logger LOG = Logger.getLogger(TrayController.class);
 
 	private final HabitTvTrayModel habiModel;
 
@@ -42,11 +47,30 @@ public class TrayController implements ProcessEpisodeListener {
 		getModel().startDownloadCheckDemon(listeners);
 	}
 
+	private void printStack() {
+		if (LOG.isDebugEnabled()) {
+			int limit = 3;
+			int i = 0;
+			for (StackTraceElement stackTraceElement : Thread.currentThread().getStackTrace()) {
+				if (i > 2) {
+					LOG.debug(stackTraceElement.getClassName() + "." + stackTraceElement.getMethodName() + "L" + stackTraceElement.getLineNumber());
+				}
+				if (i >= limit) {
+					break;
+				}
+				i++;
+			}
+		}
+	}
+
 	private void fireProcessChanged(final ProcessStateEnum processStateEnum, final String info) {
+		LOG.debug("fireProcessChanged " + processStateEnum + " " + info);
+		printStack();
 		getModel().fireProcessChanged(processStateEnum, info);
 	}
 
 	private void fireEpisodeChanged(final EpisodeStateEnum episodeStateEnum, final EpisodeDTO episode) {
+		LOG.debug("fireProcessChanged " + episodeStateEnum + " " + episode);
 		getModel().fireEpisodeChanged(episodeStateEnum, episode);
 	}
 
@@ -62,7 +86,16 @@ public class TrayController implements ProcessEpisodeListener {
 
 	@Override
 	public void processDone() {
-		fireProcessChanged(ProcessStateEnum.DONE, null);
+		// must wait for the next test since the model may not have been update
+		// yet
+		try {
+			Thread.sleep(7000);
+		} catch (InterruptedException e) {
+			throw new TechnicalException(e);
+		}
+		if (getModel().getProgressionModel().isAllActionDone()) {
+			fireProcessChanged(ProcessStateEnum.DONE, null);
+		}
 	}
 
 	@Override
@@ -105,13 +138,16 @@ public class TrayController implements ProcessEpisodeListener {
 
 	@Override
 	public void providerDownloadCheckDone(ProviderPluginInterface provider) {
-		
+
 	}
 
 	@Override
 	public void episodeReady(final EpisodeDTO episode) {
 		getModel().getProgressionModel().updateActionProgress(episode, EpisodeStateEnum.READY, "", "");
 		fireEpisodeChanged(EpisodeStateEnum.READY, episode);
+		if (getModel().getProgressionModel().isAllActionDone()) {
+			fireProcessChanged(ProcessStateEnum.DONE, null);
+		}
 	}
 
 	public void stop() {
