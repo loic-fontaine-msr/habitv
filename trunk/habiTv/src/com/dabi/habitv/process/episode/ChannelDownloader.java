@@ -1,5 +1,7 @@
 package com.dabi.habitv.process.episode;
 
+import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -75,12 +77,13 @@ public class ChannelDownloader implements Runnable {
 					// arréter
 					final EpisodeExporter episodeExporter = new EpisodeExporter(provider.getName(), category, episode);
 					if (filesDAO.isIndexCreated()) {
-						listener.episodeToDownload(episode);// TODO si l'épisode
-															// était déjà dans
-															// la liste il ne
-															// faut pas le redl
 						// producer download the file
-						taskMgr.addTask(buildDownloadAndExportTask(episode, episodeExporter, filesDAO));
+						Task dlTask = buildDownloadAndExportTask(episode, episodeExporter, filesDAO);
+						taskMgr.addTask(dlTask);
+
+						if (dlTask.isAdded()) {
+							listener.episodeToDownload(episode);
+						}
 					} else {
 						// if index has not been created the first run will only
 						// fill this file
@@ -135,10 +138,18 @@ public class ChannelDownloader implements Runnable {
 
 	private Task buildExportTask(final EpisodeDTO episode, final List<Exporter> exporterList, final EpisodeExporter episodeExporter,
 			final DownloadedDAO filesDAO, final boolean rootCall) {
+		final Task task;
+		if (rootCall) {
+			task = new Task(TaskTypeEnum.EXPORT_MAIN, episode.getVideoUrl());
+		} else {
+			task = new Task(TaskTypeEnum.EXPORT, episode.getVideoUrl());
+		}
+
 		Runnable job = new Runnable() {
 			@Override
 			public void run() {
 				boolean success = true;
+				final Collection<Task> taskList = new LinkedList<>();
 				for (final Exporter exporter : exporterList) {
 					try {
 						listener.exportEpisode(episode, exporter, "");
@@ -155,28 +166,37 @@ public class ChannelDownloader implements Runnable {
 						break;
 					}
 					if (!exporter.getExporter().isEmpty()) {
-						taskMgr.addTask(buildExportTask(episode, exporter.getExporter(), episodeExporter, filesDAO, false));
+						Task subExportTask = buildExportTask(episode, exporter.getExporter(), episodeExporter, filesDAO, false);
+						taskMgr.addTask(subExportTask);
+						taskList.add(subExportTask);
 					}
 				}
 
+				task.setSuccess((success && isAllTaskSuccess(taskList)));
 				if (rootCall) {
-					// FIXME récupérer les retours des sous-taches pour vérifier
-					// si l'épisode est vraiment en succès
 					taskMgr.waitForEndTasks(config.getAllDownloadTimeout(), TaskTypeEnum.EXPORT);
-					if (success) {
+
+					if (task.isSuccess()) {
 						filesDAO.addDownloadedFiles(episode.getName());
 						listener.episodeReady(episode);
 					}
 				}
 			}
+
 		};
-		final Task task;
-		if (rootCall) {
-			task = new Task(TaskTypeEnum.EXPORT_MAIN, episode.getVideoUrl(), job);
-		} else {
-			task = new Task(TaskTypeEnum.EXPORT, episode.getVideoUrl(), job);
-		}
+		task.setJob(job);
 		return task;
+	}
+
+	private boolean isAllTaskSuccess(final Collection<Task> taskList) {
+		boolean ret = true;
+		for (final Task task : taskList) {
+			if (!task.isSuccess()) {
+				ret = false;
+				break;
+			}
+		}
+		return ret;
 	}
 
 	@Override

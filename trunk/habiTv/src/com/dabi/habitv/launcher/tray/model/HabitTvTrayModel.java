@@ -29,6 +29,7 @@ public class HabitTvTrayModel extends Observable {
 
 	private final EventListenerList listeners;
 
+	//TODO rapprocher le progressionModel de TaskMgr ?
 	private final ProgressionModel progressionModel;
 
 	private Thread demonThread;

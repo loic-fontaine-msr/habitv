@@ -8,7 +8,23 @@ public class Task {
 
 	private final String identifier;
 
-	private final Runnable runnable;
+	private Runnable runnable;
+
+	private boolean added;
+
+	private boolean success;
+
+	public Task(final TaskTypeEnum taskType, final String category, final String identifier) {
+		super();
+		this.taskType = taskType;
+		this.category = category;
+		this.identifier = identifier;
+		this.added = false;
+	}
+
+	public Task(final TaskTypeEnum taskType, final String identifier) {
+		this(taskType, null, identifier);
+	}
 
 	public Task(final TaskTypeEnum taskType, final String category, final String identifier, final Runnable runnable) {
 		super();
@@ -16,6 +32,7 @@ public class Task {
 		this.category = category;
 		this.identifier = identifier;
 		this.runnable = runnable;
+		this.added = false;
 	}
 
 	public Task(final TaskTypeEnum taskType, final String identifier, final Runnable runnable) {
@@ -32,6 +49,18 @@ public class Task {
 
 	public String getIdentifier() {
 		return identifier;
+	}
+
+	public boolean isSuccess() {
+		return success;
+	}
+
+	public void setSuccess(boolean success) {
+		this.success = success;
+	}
+
+	public void setJob(Runnable runnable) {
+		this.runnable = runnable;
 	}
 
 	interface TaskAction {
@@ -54,6 +83,14 @@ public class Task {
 		};
 	}
 
+	public boolean isAdded() {
+		return added;
+	}
+
+	public void add() {
+		this.added = true;
+	}
+
 	@Override
 	public int hashCode() {
 		return identifier.hashCode();
@@ -66,6 +103,17 @@ public class Task {
 			ret = identifier.equals(((Task) obj).getIdentifier());
 		}
 		return ret;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder ret = new StringBuilder();
+		ret.append("taskType " + taskType);
+		ret.append(",category " + category);
+		ret.append(",identifier " + identifier);
+		ret.append(",added " + added);
+		ret.append(",success " + success);
+		return ret.toString();
 	}
 
 }

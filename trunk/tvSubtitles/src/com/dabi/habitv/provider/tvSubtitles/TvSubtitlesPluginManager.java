@@ -20,12 +20,12 @@ public class TvSubtitlesPluginManager implements ProviderPluginInterface {
 
 	@Override
 	public String downloadCmd(final String url) {
-		return TvSubtitlesConf.HTTP_CMD;
+		return null;
 	}
 
 	@Override
 	public String getDownloader(final String url) {
-		return TvSubtitlesConf.HTTP;
+		return TvSubtitlesConf.DOWNLOADER;
 	}
 
 	@Override
