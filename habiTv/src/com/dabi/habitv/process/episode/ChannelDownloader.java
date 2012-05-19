@@ -173,10 +173,10 @@ public class ChannelDownloader implements Runnable {
 					}
 				}
 
-				task.setSuccess((success && isAllTaskSuccess(taskList)));
+				task.setSuccess((success));
 				if (rootCall) {
 					taskMgr.waitForEndTasks(config.getAllDownloadTimeout(), TaskTypeEnum.EXPORT);
-
+					task.setSuccess((success && isAllTaskSuccess(taskList)));
 					if (task.isSuccess()) {
 						listener.episodeReady(episode);
 					}
