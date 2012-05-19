@@ -146,7 +146,7 @@ public final class HabiTvTrayView implements HabiTvListener {
 			trayIcon.displayMessage("Building Index", "Build Index for " + event.getInfo(), TrayIcon.MessageType.INFO);
 			break;
 		case CHECKING_EPISODES:
-			trayIcon.displayMessage("Checking", "Checking for episodes", TrayIcon.MessageType.INFO);
+			//trayIcon.displayMessage("Checking", "Checking for episodes", TrayIcon.MessageType.INFO);
 			trayIcon.setImage(animatedImage);
 			break;
 		case DONE:
