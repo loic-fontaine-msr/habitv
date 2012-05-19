@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ns2:grabConfig xmlns:ns2="http://www.dabi.com/habitv/grabconfig/entities">
     <channel>
-        <name>tvSubtitles</name>
+        <name>rss</name>
         <category>
-            <id>tvshow-679-1.html</id>
-            <name>Awake</name>
+            <id>http://isohunt.com/js/rss/?iht=10&amp;noSL</id>
+            <name>Movie Video</name>
+            <include>.*John Lennon.*</include>
         </category>
     </channel>
 </ns2:grabConfig>
