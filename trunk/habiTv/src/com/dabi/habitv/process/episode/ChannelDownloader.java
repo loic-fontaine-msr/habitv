@@ -125,6 +125,7 @@ public class ChannelDownloader implements Runnable {
 								}
 							});
 					listener.downloadedEpisode(episode);
+					filesDAO.addDownloadedFiles(episode.getName());
 
 					// add the export thread
 					taskMgr.addTask(buildExportTask(episode, config.getExporter(), episodeExporter, filesDAO, true));
@@ -177,7 +178,6 @@ public class ChannelDownloader implements Runnable {
 					taskMgr.waitForEndTasks(config.getAllDownloadTimeout(), TaskTypeEnum.EXPORT);
 
 					if (task.isSuccess()) {
-						filesDAO.addDownloadedFiles(episode.getName());
 						listener.episodeReady(episode);
 					}
 				}
