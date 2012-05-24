@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:config xmlns:tns="http://www.dabi.com/habitv/config/entities" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.dabi.com/habitv/config/entities config.xsd ">
+  <demonTime>1800</demonTime>
+  <workingDir>.</workingDir>
+  <indexDir>index</indexDir>
+  <providerPluginDir>provider</providerPluginDir>
+  <downloaderPluginDir>downloader</downloaderPluginDir>
+  <exporterPluginDir>exporter</exporterPluginDir> 
+  <downloadOuput>#TVSHOW_NAME#_#EPISODE_NAME_CUT#.mp4</downloadOuput>
+  <downloader>
+    <name>rtmpdump</name>
+    <binPath>bin\rtmpdump.exe</binPath>
+  </downloader>
+  <downloader>
+    <name>curl</name>
+    <binPath>bin\curl.exe</binPath>
+  </downloader>
+  <downloader>
+    <name>aria2</name>
+    <binPath>bin\aria2c.exe</binPath>
+  </downloader>   
+  <simultaneousChannelDownload>3</simultaneousChannelDownload>
+  <simultaneousEpisodeDownload>2</simultaneousEpisodeDownload>
+  <simultaneousExport>1</simultaneousExport>
+  <allDownloadTimeout>7200</allDownloadTimeout>
+  <exportTimeout>7200</exportTimeout>
+</tns:config>

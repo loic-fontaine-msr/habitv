@@ -27,7 +27,7 @@ public final class TvSubtitlesCategoriesFinder {
 				List<Element> categorieSegment = segment.getChildElements().get(0).getChildElements();
 				String name = categorieSegment.get(0).getChildElements().get(0).getContent().toString();
 				String identifier = categorieSegment.get(0).getAttributeValue("href");
-				categoryList.add(new CategoryDTO(name, identifier));
+				categoryList.add(new CategoryDTO(TvSubtitlesConf.NAME, name, identifier, TvSubtitlesConf.EXTENSION));
 			}
 		} catch (IOException e) {
 			throw new TechnicalException(e);

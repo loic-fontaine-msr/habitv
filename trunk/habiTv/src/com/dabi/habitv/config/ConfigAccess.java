@@ -32,13 +32,13 @@ public final class ConfigAccess {
 
 	}
 
-	private static final String GRAB_CONF_FILE = "grabconfig.xml";
+	public static final String GRAB_CONF_FILE = "grabconfig.xml";
 
 	private static final String GRAB_CONF_XSD = "grab-config.xsd";
 
 	public static final String GRAB_CONF_PACKAGE_NAME = "com.dabi.habitv.grabconfig.entities";
 
-	private static final String CONF_FILE = "config.xml";
+	public static final String CONF_FILE = "config.xml";
 
 	private static final String CONF_XSD = "config.xsd";
 

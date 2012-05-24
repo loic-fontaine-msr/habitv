@@ -47,17 +47,18 @@ public class RetrieveAndExport {
 
 	private Task buildChannelSearchTask(final Channel channel, final ProcessEpisodeListener listener, final ProviderPluginInterface provider,
 			final TaskMgr taskMgr) {
-		ChannelDownloader channelDownloader = new ChannelDownloader(channel.getName(), taskMgr, listener, buildCategoryListDTO(channel.getCategory()), config,
-				provider, pluginExporterFactory, pluginDownloaderFactory);
+		ChannelDownloader channelDownloader = new ChannelDownloader(channel.getName(), taskMgr, listener, buildCategoryListDTO(channel.getName(),
+				channel.getCategory()), config, provider, pluginExporterFactory, pluginDownloaderFactory);
 		return new Task(TaskTypeEnum.SEARCH, channel.getName(), channelDownloader);
 	}
 
-	private static List<CategoryDTO> buildCategoryListDTO(final List<Category> categories) {
+	private static List<CategoryDTO> buildCategoryListDTO(final String channelName, final List<Category> categories) {
 		final List<CategoryDTO> categoryDTOs = new ArrayList<>(categories.size());
 		CategoryDTO categoryDTO;
 		for (Category category : categories) {
-			categoryDTO = new CategoryDTO(category.getName(), category.getId(), category.getInclude(), category.getExclude());
-			categoryDTO.addSubCategories(buildCategoryListDTO(category.getCategory()));
+			categoryDTO = new CategoryDTO(channelName, category.getName(), category.getId(), category.getInclude(), category.getExclude(),
+					category.getExtension());
+			categoryDTO.addSubCategories(buildCategoryListDTO(channelName, category.getCategory()));
 			categoryDTOs.add(categoryDTO);
 		}
 		return categoryDTOs;

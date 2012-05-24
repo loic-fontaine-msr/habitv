@@ -13,5 +13,6 @@ public final class TvSubtitlesConf {
 	public static final String HOME_URL = "http://www.tvsubtitles.net";
 	public static final String LANGUAGE = "French";
 	public static final String LANGUAGE2 = "Français";
+	public static final String EXTENSION = "zip";
 
 }

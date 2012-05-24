@@ -24,8 +24,10 @@
 			<element name="exclude" type="string" maxOccurs="unbounded"
 				minOccurs="0">
 			</element>
-			<element name="category" type="tns:category" maxOccurs="unbounded"
-				minOccurs="0"></element>
+			<element name="category" type="tns:category"
+				maxOccurs="unbounded" minOccurs="0">
+			</element>
+			<element name="extension" type="string" maxOccurs="1" minOccurs="1"></element>
 		</sequence>
 	</complexType>
 

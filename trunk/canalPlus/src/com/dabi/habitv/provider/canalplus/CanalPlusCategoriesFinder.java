@@ -28,7 +28,7 @@ public class CanalPlusCategoriesFinder {
 		CategoryDTO categoryDTO;
 		for (THEMATIQUE thematique : initplayer.getTHEMATIQUES().getTHEMATIQUE()) {
 			for (SELECTION selection : thematique.getSELECTIONS().getSELECTION()) {
-				categoryDTO = new CategoryDTO(selection.getNOM(), String.valueOf(selection.getID()));
+				categoryDTO = new CategoryDTO(CanalPlusConf.NAME, selection.getNOM(), String.valueOf(selection.getID()), CanalPlusConf.EXTENSION);
 				categories.add(categoryDTO);
 				categoryDTO.addSubCategories(getCategoryById(String.valueOf(selection.getID())));
 			}
@@ -42,7 +42,7 @@ public class CanalPlusCategoriesFinder {
 		final MEAS meas = (MEAS) RetrieverUtils.unmarshalInputStream(RetrieverUtils.getInputStreamFromUrl(CanalPlusConf.MEA_URL + identifier),
 				CanalPlusConf.MEA_PACKAGE_NAME, classLoader);
 		for (MEA mea : meas.getMEA()) {
-			categories.add(new CategoryDTO(mea.getRUBRIQUAGE().getRUBRIQUE(), String.valueOf(mea.getID())));
+			categories.add(new CategoryDTO(CanalPlusConf.NAME, mea.getRUBRIQUAGE().getRUBRIQUE(), String.valueOf(mea.getID()), CanalPlusConf.EXTENSION));
 		}
 
 		return categories;

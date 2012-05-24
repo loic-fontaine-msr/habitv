@@ -21,4 +21,5 @@ public final class SoirFootConf {
 	public static final String RTMP_DUMP_CMD = " -r \"" + BASE_URL_APP + "\" -a \"" + APP
 			+ "/\" -f \"LNX 10,3,162,29\" -W \"http://rutube.ru/player.swf\" -p \"http://rutube.ru/tracks/4322127.html\" -y \"" + MP4_URL + "\" -o \""
 			+ FrameworkConf.DOWNLOAD_DESTINATION + "\"";
+	public static final String EXTENSION = "flv";
 }

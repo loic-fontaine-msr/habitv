@@ -75,7 +75,7 @@ public class ChannelDownloader implements Runnable {
 				for (final EpisodeDTO episode : episodeList) {
 					// TODO Gérer les execptions sur un Episode sans tout
 					// arréter
-					final EpisodeExporter episodeExporter = new EpisodeExporter(provider.getName(), category, episode);
+					final EpisodeExporter episodeExporter = new EpisodeExporter(episode);
 					if (filesDAO.isIndexCreated()) {
 						// producer download the file
 						Task dlTask = buildDownloadAndExportTask(episode, episodeExporter, filesDAO);
@@ -152,24 +152,26 @@ public class ChannelDownloader implements Runnable {
 				boolean success = true;
 				final Collection<Task> taskList = new LinkedList<>();
 				for (final Exporter exporter : exporterList) {
-					try {
-						listener.exportEpisode(episode, exporter, "");
-						episodeExporter.export(exporter.getCmd(), exporterFactory.findPlugin(exporter.getName(), HabitTvConf.DEFAULT_EXPORTER),
-								new CmdProgressionListener() {
-									@Override
-									public void listen(final String progression) {
-										listener.exportEpisode(episode, exporter, progression);
-									}
-								});
-					} catch (ExecutorFailedException e) {
-						listener.exportFailed(episode, exporter, e);
-						success = false;
-						break;
-					}
-					if (!exporter.getExporter().isEmpty()) {
-						Task subExportTask = buildExportTask(episode, exporter.getExporter(), episodeExporter, filesDAO, false);
-						taskMgr.addTask(subExportTask);
-						taskList.add(subExportTask);
+					if (validCondition(exporter, episode)) {
+						try {
+							listener.exportEpisode(episode, exporter, "");
+							episodeExporter.export(exporter.getCmd(), exporterFactory.findPlugin(exporter.getName(), HabitTvConf.DEFAULT_EXPORTER),
+									new CmdProgressionListener() {
+										@Override
+										public void listen(final String progression) {
+											listener.exportEpisode(episode, exporter, progression);
+										}
+									});
+						} catch (ExecutorFailedException e) {
+							listener.exportFailed(episode, exporter, e);
+							success = false;
+							break;
+						}
+						if (!exporter.getExporter().isEmpty()) {
+							Task subExportTask = buildExportTask(episode, exporter.getExporter(), episodeExporter, filesDAO, false);
+							taskMgr.addTask(subExportTask);
+							taskList.add(subExportTask);
+						}
 					}
 				}
 
@@ -186,6 +188,16 @@ public class ChannelDownloader implements Runnable {
 		};
 		task.setJob(job);
 		return task;
+	}
+
+	private boolean validCondition(final Exporter exporter, final EpisodeDTO episode) {
+		boolean ret = true;
+		if (exporter.getCondition() != null) {
+			String reference = exporter.getCondition().getReference();
+			String actualString = TokenReplacer.replaceRef(reference, episode);
+			ret = actualString.matches(exporter.getCondition().getPattern());
+		}
+		return ret;
 	}
 
 	private boolean isAllTaskSuccess(final Collection<Task> taskList) {

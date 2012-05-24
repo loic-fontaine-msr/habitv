@@ -23,13 +23,13 @@ public class HabitTvTrayModel extends Observable {
 
 	private final TaskMgr taskMgr;
 
-	private final Config config = ConfigAccess.initConfig();
+	private Config config = ConfigAccess.initConfig();
 
-	private final GrabConfig grabConfig = ConfigAccess.initGrabConfig();
+	private GrabConfig grabConfig = ConfigAccess.initGrabConfig();
 
 	private final EventListenerList listeners;
 
-	//TODO rapprocher le progressionModel de TaskMgr ?
+	// TODO rapprocher le progressionModel de TaskMgr ?
 	private final ProgressionModel progressionModel;
 
 	private Thread demonThread;
@@ -134,6 +134,19 @@ public class HabitTvTrayModel extends Observable {
 
 	public void forceEnd() {
 		taskMgr.forceEnd();
+	}
+
+	public void clear() {
+		progressionModel.clear();
+	}
+
+	public Config getConfig() {
+		return config;
+	}
+
+	public void reloadConfig() {
+		config = ConfigAccess.initConfig();
+		grabConfig = ConfigAccess.initGrabConfig();
 	}
 
 }

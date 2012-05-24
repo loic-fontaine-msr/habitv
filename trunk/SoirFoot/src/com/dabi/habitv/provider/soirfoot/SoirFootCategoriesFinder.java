@@ -28,7 +28,7 @@ public final class SoirFootCategoriesFinder {
 					String[] urlTab = segmentA.getAttributeValue("href").split("/");
 					String identifier = urlTab[urlTab.length - 1];
 					String name = segmentA.getContent().toString();
-					categoryList.add(new CategoryDTO(name, identifier));
+					categoryList.add(new CategoryDTO(SoirFootConf.NAME, name, identifier, SoirFootConf.EXTENSION));
 				}
 			}
 		} catch (IOException e) {

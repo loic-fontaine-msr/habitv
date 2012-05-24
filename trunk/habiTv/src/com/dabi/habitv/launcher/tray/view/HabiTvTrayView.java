@@ -2,13 +2,9 @@ package com.dabi.habitv.launcher.tray.view;
 
 import java.awt.AWTException;
 import java.awt.Image;
-import java.awt.MenuItem;
-import java.awt.PopupMenu;
 import java.awt.SystemTray;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Collection;
@@ -26,8 +22,6 @@ public final class HabiTvTrayView implements HabiTvListener {
 	private final TrayController controller;
 
 	private final TrayIcon trayIcon;
-
-	private MenuItem startItem;
 
 	private final Image fixImage;
 
@@ -54,31 +48,7 @@ public final class HabiTvTrayView implements HabiTvListener {
 		if (SystemTray.isSupported()) {
 
 			final SystemTray tray = SystemTray.getSystemTray();
-			final PopupMenu popupmenu = new PopupMenu();
-
-			startItem = new MenuItem("Check");
-			ActionListener actionListener = new ActionListener() {
-				@Override
-				public void actionPerformed(final ActionEvent actionEvent) {
-					startItem.setEnabled(false);
-					controller.start();
-					startItem.setEnabled(true);
-				}
-			};
-			startItem.addActionListener(actionListener);
-			popupmenu.add(startItem);
-
-			final MenuItem item = new MenuItem("Quitter");
-			actionListener = new ActionListener() {
-				@Override
-				public void actionPerformed(final ActionEvent actionEvent) {
-					controller.stop();
-				}
-			};
-			item.addActionListener(actionListener);
-			popupmenu.add(item);
-
-			trayIcon.setPopupMenu(popupmenu);
+			trayIcon.setPopupMenu(new TrayMenu(controller));
 
 			final MouseListener mouseListener = new MouseListener() {
 
@@ -146,7 +116,8 @@ public final class HabiTvTrayView implements HabiTvListener {
 			trayIcon.displayMessage("Building Index", "Build Index for " + event.getInfo(), TrayIcon.MessageType.INFO);
 			break;
 		case CHECKING_EPISODES:
-			//trayIcon.displayMessage("Checking", "Checking for episodes", TrayIcon.MessageType.INFO);
+			// trayIcon.displayMessage("Checking", "Checking for episodes",
+			// TrayIcon.MessageType.INFO);
 			trayIcon.setImage(animatedImage);
 			break;
 		case DONE:

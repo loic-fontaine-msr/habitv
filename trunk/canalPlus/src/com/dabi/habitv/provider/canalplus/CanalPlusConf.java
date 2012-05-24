@@ -26,4 +26,6 @@ public final class CanalPlusConf {
 
 	public static final String CURL = "curl";
 
+	public static final String EXTENSION = "mp4";
+
 }

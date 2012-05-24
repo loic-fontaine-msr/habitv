@@ -5,10 +5,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
-import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
-import com.dabi.habitv.provider.soirfoot.SoirFootCategoriesFinder;
-import com.dabi.habitv.provider.soirfoot.SoirFootRetriever;
-
 import net.htmlparser.jericho.MasonTagTypes;
 import net.htmlparser.jericho.MicrosoftConditionalCommentTagTypes;
 import net.htmlparser.jericho.PHPTagTypes;
@@ -16,12 +12,16 @@ import net.htmlparser.jericho.Segment;
 import net.htmlparser.jericho.Source;
 import net.htmlparser.jericho.StartTagType;
 
+import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
+import com.dabi.habitv.provider.soirfoot.SoirFootCategoriesFinder;
+import com.dabi.habitv.provider.soirfoot.SoirFootRetriever;
+
 public class FindSpecificTags {
 	public static void main(String[] args) throws Exception {
-		
+
 		SoirFootCategoriesFinder.findCategory();
-		SoirFootRetriever.findEpisodeByCategory(new CategoryDTO("", "browse-Ligue-1-Ligue1-videos-1-date.html"));
-		
+		SoirFootRetriever.findEpisodeByCategory(new CategoryDTO("", "", "browse-Ligue-1-Ligue1-videos-1-date.html", ""));
+
 		String sourceUrlString = "http://www.soirfoot.com/browse-Ligue-1-Ligue1-videos-1-date.html";
 		if (args.length == 0)
 			System.err.println("Using default argument of \"" + sourceUrlString + '"');
@@ -76,11 +76,13 @@ public class FindSpecificTags {
 					Source source2 = new Source(new URL(xmlUrl));
 					for (Segment segment3 : source2.getAllStartTags("video_file_url")) {
 						String flvUrl = segment3.getChildElements().get(0).getContent().toString();
-						saveUrl("D:/tmp/test.flv",flvUrl);
-//						URL google = new URL(flvUrl);
-//						ReadableByteChannel rbc = Channels.newChannel(google.openStream());
-//						FileOutputStream fos = new FileOutputStream("D:/tmp/test.flv");
-//						fos.getChannel().transferFrom(rbc, 0, 1 << 24);
+						saveUrl("D:/tmp/test.flv", flvUrl);
+						// URL google = new URL(flvUrl);
+						// ReadableByteChannel rbc =
+						// Channels.newChannel(google.openStream());
+						// FileOutputStream fos = new
+						// FileOutputStream("D:/tmp/test.flv");
+						// fos.getChannel().transferFrom(rbc, 0, 1 << 24);
 
 					}
 				}

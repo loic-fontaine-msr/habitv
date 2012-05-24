@@ -2,6 +2,7 @@ package com.dabi.habitv.launcher.tray.model;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.TreeSet;
 
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
@@ -50,6 +51,17 @@ public class ProgressionModel {
 	private boolean isActionDone(ActionProgress actionProgress) {
 		EpisodeStateEnum state = actionProgress.getState();
 		return state.equals(EpisodeStateEnum.READY) || state.equals(EpisodeStateEnum.EXPORT_FAILED) || state.equals(EpisodeStateEnum.DOWNLOAD_FAILED);
+	}
+
+	public void clear() {
+		Iterator<ActionProgress> it = episodeName2ActionProgress.iterator();
+		ActionProgress actionProgress;
+		while (it.hasNext()) {
+			actionProgress = (ActionProgress) it.next();
+			if (isActionDone(actionProgress)) {
+				it.remove();
+			}
+		}
 	}
 
 }

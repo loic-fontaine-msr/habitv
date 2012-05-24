@@ -26,7 +26,7 @@ public final class M6CategoriesFinder {
 				if (subCategorieObject instanceof Categorie) {
 					final Categorie subCategorie = (Categorie) subCategorieObject;
 					final String categorieName = (String) subCategorie.getCategorieOrNomOrLiens().get(0);
-					categoryList.add(new CategoryDTO(categorieName, String.valueOf(subCategorie.getId())));
+					categoryList.add(new CategoryDTO(M6Conf.NAME, categorieName, String.valueOf(subCategorie.getId()), M6Conf.EXTENSION));
 				}
 
 			}
