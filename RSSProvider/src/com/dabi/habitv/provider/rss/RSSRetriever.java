@@ -30,19 +30,19 @@ public final class RSSRetriever {
 
 			SyndFeedInput input = new SyndFeedInput();
 			SyndFeed feed = input.build(new XmlReader(feedUrl));
-			episodeList = convertFeedToEpisodeList(feed, category.getName());
+			episodeList = convertFeedToEpisodeList(feed, category);
 		} catch (IllegalArgumentException | FeedException | IOException e) {
 			throw new TechnicalException(e);
 		}
 		return episodeList;
 	}
 
-	private static Set<EpisodeDTO> convertFeedToEpisodeList(SyndFeed feed, String categoryName) {
+	private static Set<EpisodeDTO> convertFeedToEpisodeList(final SyndFeed feed, final CategoryDTO category) {
 		final Set<EpisodeDTO> episodeList = new HashSet<EpisodeDTO>();
 		List<?> entries = feed.getEntries();
 		for (Object object : entries) {
 			SyndEntry entry = (SyndEntry) object;
-			episodeList.add(new EpisodeDTO(categoryName, entry.getTitle(), ((SyndEnclosure)entry.getEnclosures().get(0)).getUrl()));
+			episodeList.add(new EpisodeDTO(category, entry.getTitle(), ((SyndEnclosure) entry.getEnclosures().get(0)).getUrl()));
 		}
 		return episodeList;
 	}

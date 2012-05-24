@@ -1,11 +1,116 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<ns2:grabConfig xmlns:ns2="http://www.dabi.com/habitv/grabconfig/entities">
-    <channel>
-        <name>rss</name>
-        <category>
-            <id>http://isohunt.com/js/rss/?iht=10&amp;noSL</id>
-            <name>Movie Video</name>
-            <include>.*John Lennon.*</include>
-        </category>
-    </channel>
-</ns2:grabConfig>
+<tns:grabConfig xmlns:tns="http://www.dabi.com/habitv/grabconfig/entities"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.dabi.com/habitv/grabconfig/entities grab-config.xsd ">
+	<!-- <channel> <name>m6</name> <category> <id>3538</id> <name>Scènes de 
+		ménages </name> <include>.*20h.*</include> <exclude>.*13h00.*</exclude> </category> 
+		<category> <id>6026</id> <name>Un gars, une fille</name> </category> <category> 
+		<id>2276</id> <name>Cinésix</name> </category> <category> <id>116</id> <name>66 
+		Minutes</name> </category> </channel> -->
+	<channel>
+		<name>tvSubtitles</name>
+		<category>
+			<id>tvshow-911-2.html</id>
+			<name>Game of Thrones</name>
+			<extension>zip</extension>
+		</category>
+		<category>
+			<id>tvshow-967-1.html</id>
+			<name>Revenge</name>
+			<extension>zip</extension>
+		</category>
+		<category>
+			<id>tvshow-679-1.html</id>
+			<name>Awake</name>
+			<extension>zip</extension>
+		</category>
+		<category>
+			<id>tvshow-1104-1.html</id>
+			<name>The Client List</name>
+			<extension>zip</extension>
+		</category>
+	</channel>
+	<channel>
+		<name>canalPlus</name>
+		<category>
+			<id>634012</id>
+			<name>LES GUIGNOLS</name>
+			<exclude>.*La semaine des Guignols.*</exclude>
+			<extension>mp4</extension>
+		</category>
+		<category>
+			<id>619685</id>
+			<name>LE JT DE CANAL+</name>
+			<extension>mp4</extension>
+		</category>
+		<category>
+			<id>633988</id>
+			<name>BREF</name>
+			<extension>mp4</extension>
+		</category>
+		<category>
+			<id>633844</id>
+			<name>ZAPPING</name>
+			<extension>mp4</extension>
+		</category>
+		<category>
+			<id>3</id>
+			<name>TOUT LE FOOTBALL</name>
+			<include>.*Multiplex.*</include>
+			<include>.*Sporting.*</include>
+			<include>.*Atletico Madrid.*</include>
+			<include>.*Real Madrid.*</include>
+			<include>.*FC Barcelone.*</include>
+			<include>.*Valence.*</include>
+			<include>.*Bilbao.*</include>
+			<include>.*Inter Milan.*</include>
+			<include>.*AC Milan.*</include>
+			<include>.*AS Roma.*</include>
+			<include>.*Juventus Turin.*</include>
+			<include>.*Newcastle United.*</include>
+			<include>.*Arsenal.*</include>
+			<include>.*Chelsea.*</include>
+			<include>.*Tottenham.*</include>
+			<include>.*Manchester United.*</include>
+			<include>.*Manchester City.*</include>
+			<include>.*Top buts.*</include>
+			<include>.*Les 5 plus beaux buts.*</include>
+			<include>.*Marseille.*</include>
+			<include>.*Bayern Munich.*</include>
+			<exclude>.*LE MEILLEUR DU CFC.*</exclude>
+			<exclude>.*The Specialists.*</exclude>
+			<extension>mp4</extension>
+		</category>
+		<category>
+			<id>47</id>
+			<name>LES EXCLUS DU WEB </name>
+			<category>
+				<id>631443</id>
+				<name>PEPITES SUR LE NET</name>
+				<extension>mp4</extension>
+			</category>
+			<extension>mp4</extension>
+		</category>
+		<category>
+			<id>73</id>
+			<name>LES PLUS RECENTES</name>
+			<category>
+				<id>634058</id>
+				<name>ZAPSPORT</name>
+				<extension>mp4</extension>
+			</category>
+			<extension>mp4</extension>
+		</category>
+	</channel>
+	<!-- <channel> <name>soirFoot</name> <category> <id>browse-Ligue-1-Ligue1-videos-1-date.html</id> 
+		<name>Ligue 1</name> </category> </channel> -->
+	<channel>
+		<name>rss</name>
+		<category>
+			<id>http://ezrss.it/search/index.php?show_name=how+i+met+your+mother&amp;date=&amp;quality=&amp;release_group=&amp;mode=rss
+			</id>
+			<name>How I Met Your Mother</name>
+			<extension>torrent</extension>
+		</category>
+	</channel>
+</tns:grabConfig>

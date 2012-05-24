@@ -27,8 +27,8 @@ import com.dabi.habitv.grabconfig.entities.GrabConfig;
 import com.dabi.habitv.plugin.PluginFactory;
 
 public class ProcessCategory {
-	
-	//TODO utiliser TaskMgr
+
+	// TODO utiliser TaskMgr
 
 	private static final Logger LOGGER = Logger.getLogger(ProcessCategory.class);
 
@@ -65,6 +65,7 @@ public class ProcessCategory {
 		final Category category = new Category();
 		category.setId(categoryDTO.getId());
 		category.setName(categoryDTO.getName());
+		category.setExtension(categoryDTO.getExtension());
 		for (String exclude : categoryDTO.getExclude()) {
 			category.getExclude().add(exclude);
 		}

@@ -155,4 +155,12 @@ public class TrayController implements ProcessEpisodeListener {
 		ProcessingThread.killAllProcessing();
 		System.exit(0);
 	}
+
+	public void clear() {
+		getModel().clear();
+	}
+
+	public void reloadConfig() {
+		getModel().reloadConfig();
+	}
 }

@@ -19,7 +19,7 @@ public final class RSSCategoriesFinder {
 		include.add("Add include pattern");
 		List<String> exclude = new ArrayList<String>(1);
 		exclude.add("Add exclude pattern");
-		categoryList.add(new CategoryDTO("Give RSS Label Here", "Give RSS Url Here", include, exclude));
+		categoryList.add(new CategoryDTO(RSSConf.NAME, "Give RSS Label Here", "Give RSS Url Here", include, exclude,"Give files extension Here"));
 		return categoryList;
 	}
 

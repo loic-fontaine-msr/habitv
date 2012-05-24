@@ -28,6 +28,7 @@
 		<module>../cmdExporter</module>
 		<module>../ffmpegExporter</module>
 		<module>../rtmpDumpDownloader</module>
+		<module>../RSSProvider</module>
 	</modules>
 
 	<build>

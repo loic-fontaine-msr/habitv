@@ -19,8 +19,7 @@ public final class M6Retriever {
 
 	public static Set<EpisodeDTO> findEpisodeByCategory(final ClassLoader classLoader, final CategoryDTO category) {
 		final TemplateExchangeWEB templateExchangeWEB = (TemplateExchangeWEB) RetrieverUtils.unmarshalInputStream(
-				RetrieverUtils.getEncryptedInputStreamFromUrl(M6Conf.CATALOG_URL, M6Conf.ENCRYPTION, M6Conf.SECRET_KEY), M6Conf.PACKAGE_NAME,
-				classLoader);
+				RetrieverUtils.getEncryptedInputStreamFromUrl(M6Conf.CATALOG_URL, M6Conf.ENCRYPTION, M6Conf.SECRET_KEY), M6Conf.PACKAGE_NAME, classLoader);
 
 		final List<Categorie> categories = templateExchangeWEB.getCategorie();
 		final Set<EpisodeDTO> episodeList = new HashSet<>();
@@ -32,7 +31,7 @@ public final class M6Retriever {
 					final String categorieName = (String) subCategorie.getCategorieOrNomOrLiens().get(0);
 					if (categorieName.equals(category.getName()) || subCategorie.getId().toString().equals(category.getId())) {
 						for (Produit produit : subCategorie.getProduit()) {
-							episodeList.add(new EpisodeDTO(categorieName, produit.getNom(), produit.getFichemedia().getVideoUrl()));
+							episodeList.add(new EpisodeDTO(category, produit.getNom(), produit.getFichemedia().getVideoUrl()));
 						}
 					}
 				}

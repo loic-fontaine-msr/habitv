@@ -52,14 +52,26 @@
 
 	<complexType name="exporter">
 		<sequence>
-			<element name="name" type="string" maxOccurs="1" minOccurs="1">
+            <element name="condition" type="tns:conditionType" maxOccurs="1" minOccurs="0"></element>
+            <element name="name" type="string" maxOccurs="1"
+				minOccurs="1">
 			</element>
-			<element name="output" type="string" maxOccurs="1" minOccurs="1">
+			<element name="output" type="string" maxOccurs="1"
+				minOccurs="1">
 			</element>
-			<element name="cmd" type="string" maxOccurs="1" minOccurs="1">
+			<element name="cmd" type="string" maxOccurs="1"
+				minOccurs="1">
 			</element>
-			<element name="exporter" type="tns:exporter" maxOccurs="unbounded"
-				minOccurs="0"></element>
+			<element name="exporter" type="tns:exporter"
+				maxOccurs="unbounded" minOccurs="0">
+			</element>
+		</sequence>
+	</complexType>
+
+	<complexType name="conditionType">
+		<sequence>
+			<element name="reference" type="string"></element>
+			<element name="pattern" type="string"></element>
 		</sequence>
 	</complexType>
 </schema>

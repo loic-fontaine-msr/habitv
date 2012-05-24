@@ -43,7 +43,7 @@ public class CanalPlusRetriever {
 		final MEAS meas = (MEAS) RetrieverUtils.unmarshalInputStream(RetrieverUtils.getInputStreamFromUrl(CanalPlusConf.MEA_URL + identifier),
 				CanalPlusConf.MEA_PACKAGE_NAME, classLoader);
 		for (MEA mea : meas.getMEA()) {
-			categories.add(new CategoryDTO(mea.getRUBRIQUAGE().getRUBRIQUE(), String.valueOf(mea.getID())));
+			categories.add(new CategoryDTO(CanalPlusConf.NAME, mea.getRUBRIQUAGE().getRUBRIQUE(), String.valueOf(mea.getID()), CanalPlusConf.EXTENSION));
 		}
 
 		return categories;
@@ -71,9 +71,9 @@ public class CanalPlusRetriever {
 				name = name.replaceAll("(\\d\\s*-\\s*\\d)", "").replaceAll("(\\d_*-_*\\d)", "");
 			}
 
-			//il est possible que plusieurs épisode s'appelle soustitre
+			// il est possible que plusieurs épisode s'appelle du soustitre
 			// mais si on concatène avec titre c'est trop long
-			episodes.add(new EpisodeDTO(category.getName(), name, videoUrl));
+			episodes.add(new EpisodeDTO(category, name, videoUrl));
 		}
 		return episodes;
 	}

@@ -1,30 +1,23 @@
 package com.dabi.habitv.framework.plugin.api.dto;
 
-import java.io.Serializable;
-
 import com.dabi.habitv.framework.plugin.exception.InvalidEpisodeException;
 import com.dabi.habitv.framework.plugin.utils.CheckUtils;
 
-public class EpisodeDTO implements Comparable<EpisodeDTO>, Serializable {
+public class EpisodeDTO implements Comparable<EpisodeDTO> {
 
-	private static final long serialVersionUID = -202519171479125349L;
-
-	private final String category;
+	private final CategoryDTO category;
 
 	private final String name;
 
 	private final String videoUrl;
 
-	public EpisodeDTO(final String category, final String name, final String videoUrl) {
+	public EpisodeDTO(final CategoryDTO category, final String name, final String videoUrl) {
 		this.category = category;
 		this.name = name;
 		this.videoUrl = videoUrl;
 	}
 
 	public void check() throws InvalidEpisodeException {
-		if (!CheckUtils.checkMinSize(category)) {
-			throw new InvalidEpisodeException(category, InvalidEpisodeException.CauseField.CATEGORY);
-		}
 		if (!CheckUtils.checkMinSize(name)) {
 			throw new InvalidEpisodeException(name, InvalidEpisodeException.CauseField.NAME);
 		}
@@ -37,7 +30,7 @@ public class EpisodeDTO implements Comparable<EpisodeDTO>, Serializable {
 		return name;
 	}
 
-	public String getCategory() {
+	public CategoryDTO getCategory() {
 		return category;
 	}
 

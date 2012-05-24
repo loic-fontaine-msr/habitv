@@ -12,7 +12,9 @@ import com.dabi.habitv.framework.plugin.utils.CheckUtils;
  * include and exclude
  * 
  */
-public class CategoryDTO {
+public class CategoryDTO implements Comparable<CategoryDTO> {
+
+	final private String channel;
 
 	final private String name;
 
@@ -24,9 +26,13 @@ public class CategoryDTO {
 
 	private List<String> exclude;
 
+	private String extension;
+
 	/**
 	 * Full Constructor
 	 * 
+	 * @param channel
+	 *            channel of the category
 	 * @param name
 	 *            label of the category
 	 * @param identifier
@@ -37,27 +43,38 @@ public class CategoryDTO {
 	 * @param exclude
 	 *            pattern to define which episode will be excluded of the
 	 *            category
+	 * @param extension
+	 *            the extension of the files in this category
 	 */
-	public CategoryDTO(final String name, final String identifier, final List<String> include, final List<String> exclude) {
+	public CategoryDTO(final String channel, final String name, final String identifier, final List<String> include, final List<String> exclude,
+			final String extension) {
 		super();
+		this.channel = channel;
 		this.name = name;
 		this.identifier = identifier;
 		this.include = include;
 		this.exclude = exclude;
+		this.extension = extension;
 	}
 
 	/**
 	 * Light constructor
 	 * 
+	 * @param channel
+	 *            channel of the category
 	 * @param name
 	 *            label of the category
 	 * @param identifier
 	 *            unique id of the category
+	 * @param extension
+	 *            the extension of the files in this category
 	 */
-	public CategoryDTO(final String name, final String identifier) {
+	public CategoryDTO(final String channel, final String name, final String identifier, final String extension) {
 		super();
+		this.channel = channel;
 		this.name = name;
 		this.identifier = identifier;
+		this.extension = extension;
 	}
 
 	/**
@@ -131,6 +148,20 @@ public class CategoryDTO {
 	}
 
 	/**
+	 * Extension of the files in the category
+	 */
+	public String getExtension() {
+		return extension;
+	}
+
+	/**
+	 * @return channel of the category
+	 */
+	public String getChannel() {
+		return channel;
+	}
+
+	/**
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -175,5 +206,21 @@ public class CategoryDTO {
 		if (!CheckUtils.checkMinSize(name)) {
 			throw new InvalidCategoryException(name, InvalidCategoryException.CauseField.NAME);
 		}
+	}
+
+	/**
+	 * Compare with another category
+	 * 
+	 * @param other
+	 *            category
+	 * @return int
+	 */
+	@Override
+	public int compareTo(CategoryDTO o) {
+		int ret = this.getChannel().compareTo(o.getChannel());
+		if (ret != 0) {
+			ret = this.getId().compareTo(o.getId());
+		}
+		return ret;
 	}
 }

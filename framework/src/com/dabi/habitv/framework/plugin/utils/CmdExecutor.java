@@ -64,7 +64,7 @@ public class CmdExecutor {
 	}
 
 	private Thread treatCmdOutput(final InputStream inputStream, final StringBuffer fullOutput) {
-		final Thread tread = new Thread() {
+		final Thread tread = new Thread() {//TODO log tout en DEBUG
 			@Override
 			public void run() {
 				try {
