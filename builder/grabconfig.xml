@@ -48,11 +48,11 @@
 		<category>
 			<id>3</id>
 			<name>TOUT LE FOOTBALL</name>
-			<include>.*Multiplex.*</include>
+			<!-- <include>.*Multiplex.*</include>
 			<include>.*Sporting.*</include>
 			<include>.*Atletico Madrid.*</include>
 			<include>.*Real Madrid.*</include>
-			<include>.*FC Barcelone.*</include>
+			<include>.*Barcelone.*</include>
 			<include>.*Valence.*</include>
 			<include>.*Bilbao.*</include>
 			<include>.*Inter Milan.*</include>
@@ -68,7 +68,19 @@
 			<include>.*Top buts.*</include>
 			<include>.*Les 5 plus beaux buts.*</include>
 			<include>.*Marseille.*</include>
-			<include>.*Bayern Munich.*</include>
+			<include>.*Bayern Munich.*</include>-->
+			<include>.*USA.*</include>
+			<!-- <include>.*Ecosse.*</include>
+			<include>.*Angleterre.*</include>
+			<include>.*Norvège.*</include>
+			<include>.*Espagne.*</include>
+			<include>.*Serbie.*</include>
+			<include>.*Suisse.*</include>
+			<include>.*Allemagne.*</include>
+			<include>.*Danemark.*</include>
+			<include>.*Brésil.*</include>
+			<include>.*France.*</include>
+			<include>.*Italie.*</include>			-->
 			<exclude>.*LE MEILLEUR DU CFC.*</exclude>
 			<exclude>.*The Specialists.*</exclude>
 		</category>
