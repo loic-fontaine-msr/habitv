@@ -20,18 +20,18 @@ public class CanalPlusRetriever {
 		this.classLoader = classLoader;
 	}
 
-	protected Set<EpisodeDTO> findEpisodeByCategory(final CategoryDTO category) {
+	protected Set<EpisodeDTO> findEpisodeByCategory(final CategoryDTO originalcategory) {
 		final Set<EpisodeDTO> episodes;
 
-		if (category.getSubCategories().isEmpty()) {
-			episodes = findEpisodeBySubCategory(category);
-			for (CategoryDTO subCategory : getCategoryById(category.getId())) {
-				episodes.addAll(findEpisodeBySubCategory(subCategory));
+		if (originalcategory.getSubCategories().isEmpty()) {
+			episodes = findEpisodeBySubCategory(originalcategory, originalcategory);
+			for (CategoryDTO subCategory : getCategoryById(originalcategory.getId())) {
+				episodes.addAll(findEpisodeBySubCategory(subCategory, originalcategory));
 			}
 		} else {
 			episodes = new HashSet<>();
-			for (CategoryDTO subCategory : category.getSubCategories()) {
-				episodes.addAll(findEpisodeBySubCategory(subCategory));
+			for (CategoryDTO subCategory : originalcategory.getSubCategories()) {
+				episodes.addAll(findEpisodeBySubCategory(subCategory, originalcategory));
 			}
 		}
 		return episodes;
@@ -43,19 +43,20 @@ public class CanalPlusRetriever {
 		final MEAS meas = (MEAS) RetrieverUtils.unmarshalInputStream(RetrieverUtils.getInputStreamFromUrl(CanalPlusConf.MEA_URL + identifier),
 				CanalPlusConf.MEA_PACKAGE_NAME, classLoader);
 		for (MEA mea : meas.getMEA()) {
-			categories.add(new CategoryDTO(CanalPlusConf.NAME, mea.getRUBRIQUAGE().getRUBRIQUE(), String.valueOf(mea.getID()), CanalPlusConf.EXTENSION));
+			categories
+					.add(new CategoryDTO(CanalPlusConf.NAME, mea.getINFOS().getTITRAGE().getSOUSTITRE(), String.valueOf(mea.getID()), CanalPlusConf.EXTENSION));
 		}
 
 		return categories;
 	}
 
-	private Set<EpisodeDTO> findEpisodeBySubCategory(final CategoryDTO category) {
+	private Set<EpisodeDTO> findEpisodeBySubCategory(final CategoryDTO category, final CategoryDTO originalcategory) {
 		final VIDEOS videos = (VIDEOS) RetrieverUtils.unmarshalInputStream(RetrieverUtils.getInputStreamFromUrl(CanalPlusConf.VIDEO_URL + category.getId()),
 				CanalPlusConf.VIDEO_PACKAGE_NAME, classLoader);
-		return buildFromVideo(category, videos);
+		return buildFromVideo(category, videos, originalcategory);
 	}
 
-	protected static Set<EpisodeDTO> buildFromVideo(final CategoryDTO category, final VIDEOS videos) {
+	protected static Set<EpisodeDTO> buildFromVideo(final CategoryDTO category, final VIDEOS videos, final CategoryDTO originalCategory) {
 		final Set<EpisodeDTO> episodes = new HashSet<>();
 		for (VIDEO video : videos.getVIDEO()) {
 			String videoUrl = video.getMEDIA().getVIDEOS().getHD();
@@ -73,7 +74,7 @@ public class CanalPlusRetriever {
 
 			// il est possible que plusieurs épisode s'appelle du soustitre
 			// mais si on concatène avec titre c'est trop long
-			episodes.add(new EpisodeDTO(category, name, videoUrl));
+			episodes.add(new EpisodeDTO(originalCategory, name, videoUrl));
 		}
 		return episodes;
 	}

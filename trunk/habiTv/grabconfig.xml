@@ -7,32 +7,15 @@
 		<category> <id>6026</id> <name>Un gars, une fille</name> </category> <category> 
 		<id>2276</id> <name>Cinésix</name> </category> <category> <id>116</id> <name>66 
 		Minutes</name> </category> </channel> -->
-	<channel>
-		<name>tvSubtitles</name>
-		<category>
-			<id>tvshow-911-2.html</id>
-			<name>Game of Thrones</name>
-			<extension>zip</extension>
-		</category>
-		<category>
-			<id>tvshow-967-1.html</id>
-			<name>Revenge</name>
-			<extension>zip</extension>
-		</category>
-		<category>
-			<id>tvshow-679-1.html</id>
-			<name>Awake</name>
-			<extension>zip</extension>
-		</category>
-		<category>
-			<id>tvshow-1104-1.html</id>
-			<name>The Client List</name>
-			<extension>zip</extension>
-		</category>
-	</channel>
+	<!-- <channel> <name>tvSubtitles</name> <category> <id>tvshow-911-2.html</id> 
+		<name>Game of Thrones</name> <extension>zip</extension> </category> <category> 
+		<id>tvshow-967-1.html</id> <name>Revenge</name> <extension>zip</extension> 
+		</category> <category> <id>tvshow-679-1.html</id> <name>Awake</name> <extension>zip</extension> 
+		</category> <category> <id>tvshow-1104-1.html</id> <name>The Client List</name> 
+		<extension>zip</extension> </category> </channel> -->
 	<channel>
 		<name>canalPlus</name>
-		<category>
+		<!-- <category>
 			<id>634012</id>
 			<name>LES GUIGNOLS</name>
 			<exclude>.*La semaine des Guignols.*</exclude>
@@ -52,7 +35,7 @@
 			<id>633844</id>
 			<name>ZAPPING</name>
 			<extension>mp4</extension>
-		</category>
+		</category> -->
 		<category>
 			<id>3</id>
 			<name>TOUT LE FOOTBALL</name>
@@ -60,7 +43,7 @@
 			<include>.*Sporting.*</include>
 			<include>.*Atletico Madrid.*</include>
 			<include>.*Real Madrid.*</include>
-			<include>.*FC Barcelone.*</include>
+			<include>.*Barcelone.*</include>
 			<include>.*Valence.*</include>
 			<include>.*Bilbao.*</include>
 			<include>.*Inter Milan.*</include>
@@ -77,11 +60,23 @@
 			<include>.*Les 5 plus beaux buts.*</include>
 			<include>.*Marseille.*</include>
 			<include>.*Bayern Munich.*</include>
+			<include>.*USA.*</include>
+			<include>.*Ecosse.*</include>
+			<include>.*Angleterre.*</include>
+			<include>.*Norvège.*</include>
+			<include>.*Espagne.*</include>
+			<include>.*Serbie.*</include>
+			<include>.*Suisse.*</include>
+			<include>.*Allemagne.*</include>
+			<include>.*Danemark.*</include>
+			<include>.*Brésil.*</include>
+			<include>.*France.*</include>
+			<include>.*Italie.*</include>
 			<exclude>.*LE MEILLEUR DU CFC.*</exclude>
 			<exclude>.*The Specialists.*</exclude>
 			<extension>mp4</extension>
 		</category>
-		<category>
+		<!-- <category>
 			<id>47</id>
 			<name>LES EXCLUS DU WEB </name>
 			<category>
@@ -101,10 +96,11 @@
 			</category>
 			<extension>mp4</extension>
 		</category>
+		 -->
 	</channel>
 	<!-- <channel> <name>soirFoot</name> <category> <id>browse-Ligue-1-Ligue1-videos-1-date.html</id> 
 		<name>Ligue 1</name> </category> </channel> -->
-	<channel>
+	<!-- <channel>
 		<name>rss</name>
 		<category>
 			<id>http://ezrss.it/search/index.php?show_name=how+i+met+your+mother&amp;date=&amp;quality=&amp;release_group=&amp;mode=rss
@@ -113,4 +109,5 @@
 			<extension>torrent</extension>
 		</category>
 	</channel>
+	 -->
 </tns:grabConfig>
