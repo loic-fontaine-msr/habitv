@@ -143,7 +143,7 @@ public class ChannelDownloader implements Runnable {
 		if (rootCall) {
 			task = new Task(TaskTypeEnum.EXPORT_MAIN, episode.getVideoUrl());
 		} else {
-			task = new Task(TaskTypeEnum.EXPORT, episode.getVideoUrl());
+			task = new Task(TaskTypeEnum.EXPORT, episode.getVideoUrl(), episode.getVideoUrl());
 		}
 
 		Runnable job = new Runnable() {
@@ -177,7 +177,9 @@ public class ChannelDownloader implements Runnable {
 
 				task.setSuccess((success));
 				if (rootCall) {
-					taskMgr.waitForEndTasks(config.getAllDownloadTimeout(), TaskTypeEnum.EXPORT);
+					// FIXME termine le pool alors qu'autres export ne pas avoir
+					// été ajouté
+					taskMgr.waitForEndTasks(config.getAllDownloadTimeout(), TaskTypeEnum.EXPORT, episode.getVideoUrl());
 					task.setSuccess((success && isAllTaskSuccess(taskList)));
 					if (task.isSuccess()) {
 						listener.episodeReady(episode);
