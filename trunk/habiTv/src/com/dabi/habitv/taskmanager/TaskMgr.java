@@ -131,7 +131,7 @@ public class TaskMgr {
 		ExecutorService executorService = category2ThreadPool.get(searchCategory);
 		if (executorService == null) {
 			executorService = initExecutorService(getPoolSize(taskType));
-			category2ThreadPool.put(category, executorService);
+			category2ThreadPool.put(searchCategory, executorService);
 		}
 		return executorService;
 	}
