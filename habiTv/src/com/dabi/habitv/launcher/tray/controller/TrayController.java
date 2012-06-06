@@ -6,7 +6,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import com.dabi.habitv.config.entities.Exporter;
-import com.dabi.habitv.framework.plugin.api.ProviderPluginInterface;
+import com.dabi.habitv.framework.plugin.api.PluginProviderInterface;
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
 import com.dabi.habitv.framework.plugin.exception.ExecutorFailedException;
@@ -132,12 +132,12 @@ public class TrayController implements ProcessEpisodeListener {
 	}
 
 	@Override
-	public void providerDownloadCheckStarted(final ProviderPluginInterface provider) {
+	public void providerDownloadCheckStarted(final PluginProviderInterface provider) {
 		fireProcessChanged(ProcessStateEnum.CHECKING_EPISODES, provider.getName());
 	}
 
 	@Override
-	public void providerDownloadCheckDone(ProviderPluginInterface provider) {
+	public void providerDownloadCheckDone(PluginProviderInterface provider) {
 
 	}
 

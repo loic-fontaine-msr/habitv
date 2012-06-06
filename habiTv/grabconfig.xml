@@ -31,11 +31,12 @@
 			<name>BREF</name>
 			<extension>mp4</extension>
 		</category>
+
 		<category>
 			<id>633844</id>
 			<name>ZAPPING</name>
 			<extension>mp4</extension>
-		</category> -->
+		</category>		-->
 		<category>
 			<id>3</id>
 			<name>TOUT LE FOOTBALL</name>
@@ -76,7 +77,8 @@
 			<exclude>.*The Specialists.*</exclude>
 			<extension>mp4</extension>
 		</category>
-		<!-- <category>
+				<!--
+		<category>
 			<id>47</id>
 			<name>LES EXCLUS DU WEB </name>
 			<category>

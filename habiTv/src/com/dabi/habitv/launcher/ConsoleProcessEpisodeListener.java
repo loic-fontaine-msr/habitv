@@ -3,7 +3,7 @@ package com.dabi.habitv.launcher;
 import org.apache.log4j.Logger;
 
 import com.dabi.habitv.config.entities.Exporter;
-import com.dabi.habitv.framework.plugin.api.ProviderPluginInterface;
+import com.dabi.habitv.framework.plugin.api.PluginProviderInterface;
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
 import com.dabi.habitv.framework.plugin.exception.ExecutorFailedException;
@@ -63,7 +63,7 @@ public class ConsoleProcessEpisodeListener implements ProcessEpisodeListener {
 	}
 
 	@Override
-	public void providerDownloadCheckStarted(final ProviderPluginInterface provider) {
+	public void providerDownloadCheckStarted(final PluginProviderInterface provider) {
 		LOG.info(provider.getName());
 	}
 
@@ -73,7 +73,7 @@ public class ConsoleProcessEpisodeListener implements ProcessEpisodeListener {
 	}
 
 	@Override
-	public void providerDownloadCheckDone(ProviderPluginInterface provider) {
+	public void providerDownloadCheckDone(PluginProviderInterface provider) {
 		LOG.info(provider.getName()+" done");
 	}
 

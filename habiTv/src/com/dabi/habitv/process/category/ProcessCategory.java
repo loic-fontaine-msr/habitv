@@ -17,7 +17,7 @@ import org.apache.log4j.Logger;
 import com.dabi.habitv.config.ConfigAccess;
 import com.dabi.habitv.config.HabitTvConf;
 import com.dabi.habitv.config.entities.Config;
-import com.dabi.habitv.framework.plugin.api.ProviderPluginInterface;
+import com.dabi.habitv.framework.plugin.api.PluginProviderInterface;
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
 import com.dabi.habitv.framework.plugin.exception.InvalidCategoryException;
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
@@ -33,9 +33,9 @@ public class ProcessCategory {
 	private static final Logger LOGGER = Logger.getLogger(ProcessCategory.class);
 
 	public void execute(final Config config, final ProcessCategoryListener listener) {
-		final PluginFactory<ProviderPluginInterface> pluginProviderFactory = new PluginFactory<>(ProviderPluginInterface.class, config.getProviderPluginDir());
+		final PluginFactory<PluginProviderInterface> pluginProviderFactory = new PluginFactory<>(PluginProviderInterface.class, config.getProviderPluginDir());
 		final Map<String, Set<CategoryDTO>> channel2Categories = new HashMap<>();
-		for (ProviderPluginInterface retriever : pluginProviderFactory.getAllPlugin()) {
+		for (PluginProviderInterface retriever : pluginProviderFactory.getAllPlugin()) {
 			listener.getProviderCategories(retriever.getName());
 			channel2Categories.put(retriever.getName(), retriever.findCategory());
 		}

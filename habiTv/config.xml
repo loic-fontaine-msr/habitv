@@ -8,8 +8,7 @@
 	<providerPluginDir>../builder/pub/provider</providerPluginDir>
 	<downloaderPluginDir>../builder/pub/downloader</downloaderPluginDir>
 	<exporterPluginDir>../builder/pub/exporter</exporterPluginDir>
-	<downloadOuput>D:/divx/regular/#EPISODE_NAME_CUT#.#EXTENSION#
-	</downloadOuput>
+	<downloadOuput>D:/divx/regular/#EPISODE_NAME_CUT#.#EXTENSION#</downloadOuput>
 	<downloader>
 		<name>http</name>
 	</downloader>
@@ -53,20 +52,14 @@
 				<reference>#EXTENSION#</reference>
 				<pattern>mp4|flv</pattern>
 			</condition>
-			<name>ftp</name>
+			<name>curl</name>
 			<output>Transferring to freebox</output>
-			<cmd>D:\script\ftp\uploadToFtp.bat #TVSHOW_NAME#
-				D:\divx\regular\avi\#EPISODE_NAME_CUT#.avi
-			</cmd>
+			<cmd>..\curlDownloader\exe\curl.exe -T "D:/divx/regular/avi/#EPISODE_NAME_CUT#.avi" "ftp://freebox:4688@hd1.freebox.fr/Disque dur/#TVSHOW_NAME#/" --ftp-create-dirs</cmd>
 		</exporter>
 		<exporter>
-			<condition>
-				<reference>#EXTENSION#</reference>
-				<pattern>mp4|flv</pattern>
-			</condition>
 			<name>del</name>
 			<output>Deleting</output>
-			<cmd>cmd /c del D:\divx\regular\#EPISODE_NAME_NOSCORE#.mp4</cmd>
+			<cmd>cmd /c del D:\divx\regular\#EPISODE_NAME_NOSCORE#.#EXTENSION#</cmd>
 		</exporter>
 	</exporter>
 	<simultaneousChannelDownload>3</simultaneousChannelDownload>
