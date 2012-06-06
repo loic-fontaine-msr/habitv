@@ -11,8 +11,8 @@ import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
  * to download an episode
  * 
  */
-public interface ProviderPluginInterface extends PluginBase {
-
+public interface PluginProviderInterface extends PluginBase {
+//TODO ajouter download (Episode)
 	/**
 	 * Find episodes related to a category and sub categories
 	 * @param category the category (with sub categories)
