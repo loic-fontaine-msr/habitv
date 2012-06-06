@@ -2,11 +2,11 @@ package com.dabi.habitv.provider.canalplus;
 
 import java.util.Set;
 
-import com.dabi.habitv.framework.plugin.api.ProviderPluginInterface;
+import com.dabi.habitv.framework.plugin.api.PluginProviderInterface;
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
 
-public class CanalPlusPluginManager implements ProviderPluginInterface {
+public class CanalPlusPluginManager implements PluginProviderInterface {
 
 	private ClassLoader classLoader;
 
