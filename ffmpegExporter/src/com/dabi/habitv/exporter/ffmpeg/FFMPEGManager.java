@@ -1,11 +1,11 @@
 package com.dabi.habitv.exporter.ffmpeg;
 
 import com.dabi.habitv.framework.plugin.api.CmdProgressionListener;
-import com.dabi.habitv.framework.plugin.api.ExporterPluginInterface;
+import com.dabi.habitv.framework.plugin.api.PluginExporterInterface;
 import com.dabi.habitv.framework.plugin.exception.ExecutorFailedException;
 import com.dabi.habitv.framework.plugin.exception.ExportFailedException;
 
-public class FFMPEGManager implements ExporterPluginInterface {
+public class FFMPEGManager implements PluginExporterInterface {
 
 	@Override
 	public String getName() {

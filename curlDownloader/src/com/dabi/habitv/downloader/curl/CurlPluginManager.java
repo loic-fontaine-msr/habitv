@@ -1,4 +1,4 @@
-package com.dabi.habitv.curl.rtmpdump;
+package com.dabi.habitv.downloader.curl;
 
 import java.util.Map;
 
