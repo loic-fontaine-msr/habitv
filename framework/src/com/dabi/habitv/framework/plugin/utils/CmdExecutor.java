@@ -31,13 +31,11 @@ public class CmdExecutor {
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("cmd : " + cmd);
 		}
-		final Runtime runtime = Runtime.getRuntime();
-		Process process = null;
-
 		final StringBuffer fullOutput = new StringBuffer();
 
+		final Process process = buildProcess(cmd);
+
 		try {
-			process = runtime.exec(cmd);
 			ProcessingThread.addProcessing(process);
 			// consume standard output in a thread
 			final Thread outputThread = treatCmdOutput(process.getInputStream(), fullOutput);
@@ -50,7 +48,7 @@ public class CmdExecutor {
 			// wait for both thread
 			outputThread.join();
 			errorThread.join();
-		} catch (IOException | InterruptedException e) {
+		} catch (InterruptedException e) {
 			throw new ExecutorFailedException(cmd, fullOutput.toString());
 		} finally {
 			if (process != null) {
@@ -58,13 +56,21 @@ public class CmdExecutor {
 			}
 		}
 
-		if (getLastOutputLine() != null && !isSuccess(fullOutput.toString())) {
+		if (process.exitValue() != 0 || (getLastOutputLine() != null && !isSuccess(fullOutput.toString()))) {
 			throw new ExecutorFailedException(cmd, fullOutput.toString());
 		}
 	}
 
+	protected Process buildProcess(final String cmd) throws ExecutorFailedException {
+		try {
+			return Runtime.getRuntime().exec(cmd);
+		} catch (IOException e) {
+			throw new ExecutorFailedException(cmd, e.getMessage());
+		}
+	}
+
 	private Thread treatCmdOutput(final InputStream inputStream, final StringBuffer fullOutput) {
-		final Thread tread = new Thread() {//TODO log tout en DEBUG
+		final Thread tread = new Thread() {// TODO log tout en DEBUG
 			@Override
 			public void run() {
 				try {
