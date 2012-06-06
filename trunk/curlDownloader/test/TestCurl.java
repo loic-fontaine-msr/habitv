@@ -1,4 +1,4 @@
-import com.dabi.habitv.curl.rtmpdump.CurlCmdExecutor;
+import com.dabi.habitv.downloader.curl.CurlCmdExecutor;
 import com.dabi.habitv.framework.plugin.api.CmdProgressionListener;
 import com.dabi.habitv.framework.plugin.exception.ExecutorFailedException;
 
