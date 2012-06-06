@@ -2,11 +2,11 @@ package com.dabi.habitv.provider.rss;
 
 import java.util.Set;
 
-import com.dabi.habitv.framework.plugin.api.ProviderPluginInterface;
+import com.dabi.habitv.framework.plugin.api.PluginProviderInterface;
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
 
-public class RSSPluginManager implements ProviderPluginInterface {
+public class RSSPluginManager implements PluginProviderInterface {
 	
 	private ClassLoader classLoader;
 

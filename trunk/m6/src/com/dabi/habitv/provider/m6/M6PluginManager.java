@@ -2,11 +2,11 @@ package com.dabi.habitv.provider.m6;
 
 import java.util.Set;
 
-import com.dabi.habitv.framework.plugin.api.ProviderPluginInterface;
+import com.dabi.habitv.framework.plugin.api.PluginProviderInterface;
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
 
-public class M6PluginManager implements ProviderPluginInterface {
+public class M6PluginManager implements PluginProviderInterface {
 	
 	private ClassLoader classLoader;
 
