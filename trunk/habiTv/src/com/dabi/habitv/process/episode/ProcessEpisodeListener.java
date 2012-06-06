@@ -3,7 +3,7 @@ package com.dabi.habitv.process.episode;
 import java.util.EventListener;
 
 import com.dabi.habitv.config.entities.Exporter;
-import com.dabi.habitv.framework.plugin.api.ProviderPluginInterface;
+import com.dabi.habitv.framework.plugin.api.PluginProviderInterface;
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
 import com.dabi.habitv.framework.plugin.exception.ExecutorFailedException;
@@ -28,10 +28,10 @@ public interface ProcessEpisodeListener extends EventListener {
 
 	void exportFailed(final EpisodeDTO episode, final Exporter exporter, final ExecutorFailedException exception);
 
-	void providerDownloadCheckStarted(final ProviderPluginInterface provider);
+	void providerDownloadCheckStarted(final PluginProviderInterface provider);
 
 	void episodeReady(final EpisodeDTO episode);
 
-	void providerDownloadCheckDone(final ProviderPluginInterface provider);
+	void providerDownloadCheckDone(final PluginProviderInterface provider);
 
 }

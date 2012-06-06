@@ -11,9 +11,9 @@ import com.dabi.habitv.config.entities.Downloader;
 import com.dabi.habitv.config.entities.Exporter;
 import com.dabi.habitv.dldao.DownloadedDAO;
 import com.dabi.habitv.framework.plugin.api.CmdProgressionListener;
-import com.dabi.habitv.framework.plugin.api.ExporterPluginInterface;
+import com.dabi.habitv.framework.plugin.api.PluginExporterInterface;
 import com.dabi.habitv.framework.plugin.api.PluginDownloaderInterface;
-import com.dabi.habitv.framework.plugin.api.ProviderPluginInterface;
+import com.dabi.habitv.framework.plugin.api.PluginProviderInterface;
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
 import com.dabi.habitv.framework.plugin.exception.ExecutorFailedException;
@@ -33,9 +33,9 @@ public class ChannelDownloader implements Runnable {
 
 	private final Config config;
 
-	private final ProviderPluginInterface provider;
+	private final PluginProviderInterface provider;
 
-	private final PluginFactory<ExporterPluginInterface> exporterFactory;
+	private final PluginFactory<PluginExporterInterface> exporterFactory;
 
 	private final PluginFactory<PluginDownloaderInterface> dowloaderFactory;
 
@@ -44,7 +44,7 @@ public class ChannelDownloader implements Runnable {
 	private final String channel;
 
 	public ChannelDownloader(final String channel, final TaskMgr taskMgr, final ProcessEpisodeListener listener, final List<CategoryDTO> categoryList,
-			final Config config, final ProviderPluginInterface provider, final PluginFactory<ExporterPluginInterface> exporterFactory,
+			final Config config, final PluginProviderInterface provider, final PluginFactory<PluginExporterInterface> exporterFactory,
 			final PluginFactory<PluginDownloaderInterface> dowloaderFactory) {
 		this.taskMgr = taskMgr;
 		this.listener = listener;

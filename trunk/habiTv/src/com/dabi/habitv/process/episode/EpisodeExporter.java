@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.dabi.habitv.config.entities.Downloader;
 import com.dabi.habitv.framework.plugin.api.CmdProgressionListener;
-import com.dabi.habitv.framework.plugin.api.ExporterPluginInterface;
+import com.dabi.habitv.framework.plugin.api.PluginExporterInterface;
 import com.dabi.habitv.framework.plugin.api.PluginDownloaderInterface;
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
 import com.dabi.habitv.framework.plugin.exception.ExecutorFailedException;
@@ -20,7 +20,7 @@ public class EpisodeExporter {
 		this.episode = episode;
 	}
 
-	public void export(final String exportCmd, final ExporterPluginInterface pluginExporter, final CmdProgressionListener listener)
+	public void export(final String exportCmd, final PluginExporterInterface pluginExporter, final CmdProgressionListener listener)
 			throws ExecutorFailedException {
 		final String cmd = replaceAllToken(exportCmd);
 

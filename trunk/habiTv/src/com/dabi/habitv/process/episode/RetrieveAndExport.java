@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.dabi.habitv.config.entities.Config;
-import com.dabi.habitv.framework.plugin.api.ExporterPluginInterface;
+import com.dabi.habitv.framework.plugin.api.PluginExporterInterface;
 import com.dabi.habitv.framework.plugin.api.PluginDownloaderInterface;
-import com.dabi.habitv.framework.plugin.api.ProviderPluginInterface;
+import com.dabi.habitv.framework.plugin.api.PluginProviderInterface;
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
 import com.dabi.habitv.grabconfig.entities.Category;
 import com.dabi.habitv.grabconfig.entities.Channel;
@@ -18,11 +18,11 @@ import com.dabi.habitv.taskmanager.TaskTypeEnum;
 
 public class RetrieveAndExport {
 
-	private final PluginFactory<ProviderPluginInterface> pluginProviderFactory;
+	private final PluginFactory<PluginProviderInterface> pluginProviderFactory;
 
 	private final PluginFactory<PluginDownloaderInterface> pluginDownloaderFactory;
 
-	private final PluginFactory<ExporterPluginInterface> pluginExporterFactory;
+	private final PluginFactory<PluginExporterInterface> pluginExporterFactory;
 
 	private final Config config;
 
@@ -31,21 +31,21 @@ public class RetrieveAndExport {
 	public RetrieveAndExport(final Config config, final GrabConfig grabConfig) {
 		this.config = config;
 		this.grabConfig = grabConfig;
-		this.pluginProviderFactory = new PluginFactory<>(ProviderPluginInterface.class, config.getProviderPluginDir());
+		this.pluginProviderFactory = new PluginFactory<>(PluginProviderInterface.class, config.getProviderPluginDir());
 		this.pluginDownloaderFactory = new PluginFactory<>(PluginDownloaderInterface.class, config.getDownloaderPluginDir());
-		this.pluginExporterFactory = new PluginFactory<>(ExporterPluginInterface.class, config.getExporterPluginDir());
+		this.pluginExporterFactory = new PluginFactory<>(PluginExporterInterface.class, config.getExporterPluginDir());
 	}
 
 	public void execute(final ProcessEpisodeListener listener, final TaskMgr taskMgr) {
 
 		for (final Channel channel : grabConfig.getChannel()) {
-			final ProviderPluginInterface provider = pluginProviderFactory.findPlugin(channel.getName(), null);
+			final PluginProviderInterface provider = pluginProviderFactory.findPlugin(channel.getName(), null);
 			taskMgr.addTask(buildChannelSearchTask(channel, listener, provider, taskMgr));
 		}
 		listener.processDone();
 	}
 
-	private Task buildChannelSearchTask(final Channel channel, final ProcessEpisodeListener listener, final ProviderPluginInterface provider,
+	private Task buildChannelSearchTask(final Channel channel, final ProcessEpisodeListener listener, final PluginProviderInterface provider,
 			final TaskMgr taskMgr) {
 		ChannelDownloader channelDownloader = new ChannelDownloader(channel.getName(), taskMgr, listener, buildCategoryListDTO(channel.getName(),
 				channel.getCategory()), config, provider, pluginExporterFactory, pluginDownloaderFactory);
