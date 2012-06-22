@@ -9,28 +9,20 @@
 				minOccurs="1" />
 			<element name="indexDir" type="string" maxOccurs="1"
 				minOccurs="1" />
-			<element name="providerPluginDir" type="string" maxOccurs="1"
-				minOccurs="1" />
-			<element name="downloaderPluginDir" type="string" maxOccurs="1"
-				minOccurs="1" />
-			<element name="exporterPluginDir" type="string" maxOccurs="1"
-				minOccurs="1" />
+			<element name="providerPluginDir" type="string"
+				maxOccurs="1" minOccurs="1" />
+			<element name="downloaderPluginDir" type="string"
+				maxOccurs="1" minOccurs="1" />
+			<element name="exporterPluginDir" type="string"
+				maxOccurs="1" minOccurs="1" />
 			<element name="downloadOuput" type="string" maxOccurs="1"
-				minOccurs="1"></element>
-			<element name="downloader" type="tns:downloader" maxOccurs="unbounded"
 				minOccurs="1">
 			</element>
-			<element name="exporter" type="tns:exporter" maxOccurs="unbounded"
-				minOccurs="0" />
-			<element name="simultaneousChannelDownload" type="int"
-				maxOccurs="1" minOccurs="1">
+			<element name="downloader" type="tns:downloader"
+				maxOccurs="unbounded" minOccurs="1">
 			</element>
-			<element name="simultaneousEpisodeDownload" type="int"
-				maxOccurs="1" minOccurs="1">
-			</element>
-			<element name="simultaneousExport" type="int" maxOccurs="1"
-				minOccurs="1">
-			</element>
+			<element name="exporter" type="tns:exporter"
+				maxOccurs="unbounded" minOccurs="0" />
 			<element name="allDownloadTimeout" type="int" maxOccurs="1"
 				minOccurs="1">
 			</element>
@@ -38,6 +30,7 @@
 				minOccurs="1">
 			</element>
 
+			<element name="simultaneousTaskNumber" type="tns:simultaneousTaskNumber" maxOccurs="unbounded" minOccurs="0"></element>
 		</sequence>
 	</complexType>
 
@@ -72,6 +65,13 @@
 		<sequence>
 			<element name="reference" type="string"></element>
 			<element name="pattern" type="string"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="simultaneousTaskNumber">
+		<sequence>
+			<element name="taskName" type="string"></element>
+			<element name="size" type="int"></element>
 		</sequence>
 	</complexType>
 </schema>

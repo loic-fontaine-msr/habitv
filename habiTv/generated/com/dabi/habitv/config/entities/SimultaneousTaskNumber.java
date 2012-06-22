@@ -15,17 +15,17 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for downloader complex type.
+ * <p>Java class for simultaneousTaskNumber complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="downloader">
+ * &lt;complexType name="simultaneousTaskNumber">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="binPath" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="taskName" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="size" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -35,62 +35,54 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "downloader", propOrder = {
-    "name",
-    "binPath"
+@XmlType(name = "simultaneousTaskNumber", propOrder = {
+    "taskName",
+    "size"
 })
-public class Downloader {
+public class SimultaneousTaskNumber {
 
     @XmlElement(required = true)
-    protected String name;
-    protected String binPath;
+    protected String taskName;
+    protected int size;
 
     /**
-     * Gets the value of the name property.
+     * Gets the value of the taskName property.
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public String getName() {
-        return name;
+    public String getTaskName() {
+        return taskName;
     }
 
     /**
-     * Sets the value of the name property.
+     * Sets the value of the taskName property.
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setName(String value) {
-        this.name = value;
+    public void setTaskName(String value) {
+        this.taskName = value;
     }
 
     /**
-     * Gets the value of the binPath property.
+     * Gets the value of the size property.
      * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
      */
-    public String getBinPath() {
-        return binPath;
+    public int getSize() {
+        return size;
     }
 
     /**
-     * Sets the value of the binPath property.
+     * Sets the value of the size property.
      * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
      */
-    public void setBinPath(String value) {
-        this.binPath = value;
+    public void setSize(int value) {
+        this.size = value;
     }
 
 }

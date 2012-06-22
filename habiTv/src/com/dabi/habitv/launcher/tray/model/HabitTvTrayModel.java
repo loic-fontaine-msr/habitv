@@ -19,9 +19,9 @@ import com.dabi.habitv.taskmanager.TaskMgr;
 
 public class HabitTvTrayModel extends Observable {
 
-	private final RetrieveAndExport retrieveAndExport;
+	private RetrieveAndExport retrieveAndExport;
 
-	private final TaskMgr taskMgr;
+	private TaskMgr taskMgr;
 
 	private Config config = ConfigAccess.initConfig();
 
@@ -47,26 +47,26 @@ public class HabitTvTrayModel extends Observable {
 		return progressionModel;
 	}
 
-	public void addListener(HabiTvListener listener) {
+	public void addListener(final HabiTvListener listener) {
 		listeners.add(HabiTvListener.class, listener);
 	}
 
-	public void removeListener(HabiTvListener listener) {
+	public void removeListener(final HabiTvListener listener) {
 		listeners.remove(HabiTvListener.class, listener);
 	}
 
-	public void fireProcessChanged(ProcessStateEnum processStateEnum, String info) {
-		final HabiTvListener[] listenerList = (HabiTvListener[]) listeners.getListeners(HabiTvListener.class);
+	public void fireProcessChanged(final ProcessStateEnum processStateEnum, final String info) {
+		final HabiTvListener[] listenerList = listeners.getListeners(HabiTvListener.class);
 
-		for (HabiTvListener listener : listenerList) {
+		for (final HabiTvListener listener : listenerList) {
 			listener.processChanged(new ProcessChangedEvent(this, processStateEnum, info));
 		}
 	}
 
-	public void fireEpisodeChanged(EpisodeStateEnum episodeStateEnum, EpisodeDTO episode) {
-		HabiTvListener[] listenerList = (HabiTvListener[]) listeners.getListeners(HabiTvListener.class);
+	public void fireEpisodeChanged(final EpisodeStateEnum episodeStateEnum, final EpisodeDTO episode) {
+		final HabiTvListener[] listenerList = listeners.getListeners(HabiTvListener.class);
 
-		for (HabiTvListener listener : listenerList) {
+		for (final HabiTvListener listener : listenerList) {
 			listener.episodeChanged(new EpisodeChangedEvent(this, episode, episodeStateEnum));
 		}
 	}
@@ -108,7 +108,7 @@ public class HabitTvTrayModel extends Observable {
 					}
 					try {
 						Thread.sleep(demonTime);
-					} catch (InterruptedException e) {
+					} catch (final InterruptedException e) {
 						// may have been interrupted by a manually start
 						interrupted = true;
 					}
@@ -147,6 +147,8 @@ public class HabitTvTrayModel extends Observable {
 	public void reloadConfig() {
 		config = ConfigAccess.initConfig();
 		grabConfig = ConfigAccess.initGrabConfig();
+		retrieveAndExport = new RetrieveAndExport(config, grabConfig);
+		taskMgr = new TaskMgr(ConfigAccess.buildTaskType2ThreadPool(config));
 	}
 
 }
