@@ -24,16 +24,22 @@ public class TaskMgr {
 
 	private final Map<TaskTypeEnum, Map<String, Set<Task>>> taskType2Category2Tasks;
 
-	private final Map<TaskTypeEnum, Integer> taskType2ThreadPool;
+	private final Map<String, Integer> taskType2ThreadPool;
 
-	public TaskMgr(final Map<TaskTypeEnum, Integer> taskType2ThreadPool) {
+	public TaskMgr(final Map<String, Integer> taskType2ThreadPool) {
 		this.taskType2ThreadPool = taskType2ThreadPool;
-		this.taskType2Category2ThreadPool = new HashMap<>(TaskTypeEnum.values().length);
-		this.taskType2Category2Tasks = new HashMap<>();
+		taskType2Category2ThreadPool = new HashMap<>(TaskTypeEnum.values().length);
+		taskType2Category2Tasks = new HashMap<>();
 	}
 
-	private int getPoolSize(final TaskTypeEnum taskType) {
-		Integer size = taskType2ThreadPool.get(taskType);
+	private int getPoolSize(final TaskTypeEnum taskType, final String category) {
+		final String key;
+		if (category == null) {
+			key = taskType.name();
+		} else {
+			key = category;
+		}
+		Integer size = taskType2ThreadPool.get(key.toLowerCase());
 		if (size == null) {
 			size = HabitTvConf.DEFAULT_POOL_SIZE;
 		}
@@ -130,19 +136,19 @@ public class TaskMgr {
 
 		ExecutorService executorService = category2ThreadPool.get(searchCategory);
 		if (executorService == null) {
-			executorService = initExecutorService(getPoolSize(taskType));
+			executorService = initExecutorService(getPoolSize(taskType, category));
 			category2ThreadPool.put(searchCategory, executorService);
 		}
 		return executorService;
 	}
 
-	private ExecutorService initExecutorService(int poolSize) {
+	private ExecutorService initExecutorService(final int poolSize) {
 		return Executors.newFixedThreadPool(poolSize);
 	}
 
 	public void waitForEndTasks(final int timeOut) {
-		for (Map<String, ExecutorService> category2ExecutorService : taskType2Category2ThreadPool.values()) {
-			for (ExecutorService executorService : category2ExecutorService.values()) {
+		for (final Map<String, ExecutorService> category2ExecutorService : taskType2Category2ThreadPool.values()) {
+			for (final ExecutorService executorService : category2ExecutorService.values()) {
 				endThreadPool(executorService, timeOut);
 			}
 		}
@@ -152,15 +158,15 @@ public class TaskMgr {
 		threadPool.shutdown();
 		try {
 			threadPool.awaitTermination(timeOut, TimeUnit.SECONDS);
-		} catch (InterruptedException e) {
+		} catch (final InterruptedException e) {
 			throw new TechnicalException(e);
 		}
 	}
 
 	public void waitForEndTasks(final int timeOut, final TaskTypeEnum taskType) {
-		Map<String, ExecutorService> category2ExecutorService = taskType2Category2ThreadPool.get(taskType);
+		final Map<String, ExecutorService> category2ExecutorService = taskType2Category2ThreadPool.get(taskType);
 		if (category2ExecutorService != null) {
-			for (ExecutorService executorService : category2ExecutorService.values()) {
+			for (final ExecutorService executorService : category2ExecutorService.values()) {
 				endThreadPool(executorService, timeOut);
 			}
 		}
@@ -171,8 +177,8 @@ public class TaskMgr {
 	}
 
 	public void forceEnd() {
-		for (Map<String, ExecutorService> category2ExecutorService : taskType2Category2ThreadPool.values()) {
-			for (ExecutorService executorService : category2ExecutorService.values()) {
+		for (final Map<String, ExecutorService> category2ExecutorService : taskType2Category2ThreadPool.values()) {
+			for (final ExecutorService executorService : category2ExecutorService.values()) {
 				executorService.shutdownNow();
 			}
 		}

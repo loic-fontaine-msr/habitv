@@ -7,17 +7,18 @@ import java.util.Set;
 
 import com.dabi.habitv.config.HabitTvConf;
 import com.dabi.habitv.config.entities.Config;
-import com.dabi.habitv.config.entities.Downloader;
 import com.dabi.habitv.config.entities.Exporter;
 import com.dabi.habitv.dldao.DownloadedDAO;
 import com.dabi.habitv.framework.plugin.api.CmdProgressionListener;
 import com.dabi.habitv.framework.plugin.api.PluginExporterInterface;
-import com.dabi.habitv.framework.plugin.api.PluginDownloaderInterface;
 import com.dabi.habitv.framework.plugin.api.PluginProviderInterface;
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
+import com.dabi.habitv.framework.plugin.api.dto.DownloadersDTO;
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
+import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.framework.plugin.exception.ExecutorFailedException;
 import com.dabi.habitv.framework.plugin.exception.InvalidEpisodeException;
+import com.dabi.habitv.framework.plugin.exception.NoSuchDownloaderException;
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
 import com.dabi.habitv.plugin.PluginFactory;
 import com.dabi.habitv.taskmanager.Task;
@@ -37,7 +38,7 @@ public class ChannelDownloader implements Runnable {
 
 	private final PluginFactory<PluginExporterInterface> exporterFactory;
 
-	private final PluginFactory<PluginDownloaderInterface> dowloaderFactory;
+	private final DownloadersDTO downloaders;
 
 	private final ProcessEpisodeListener listener;
 
@@ -45,14 +46,14 @@ public class ChannelDownloader implements Runnable {
 
 	public ChannelDownloader(final String channel, final TaskMgr taskMgr, final ProcessEpisodeListener listener, final List<CategoryDTO> categoryList,
 			final Config config, final PluginProviderInterface provider, final PluginFactory<PluginExporterInterface> exporterFactory,
-			final PluginFactory<PluginDownloaderInterface> dowloaderFactory) {
+			final DownloadersDTO downloaders) {
 		this.taskMgr = taskMgr;
 		this.listener = listener;
 		this.config = config;
 		this.categoryList = categoryList;
 		this.provider = provider;
 		this.exporterFactory = exporterFactory;
-		this.dowloaderFactory = dowloaderFactory;
+		this.downloaders = downloaders;
 		this.channel = channel;
 	}
 
@@ -75,10 +76,9 @@ public class ChannelDownloader implements Runnable {
 				for (final EpisodeDTO episode : episodeList) {
 					// TODO Gérer les execptions sur un Episode sans tout
 					// arréter
-					final EpisodeExporter episodeExporter = new EpisodeExporter(episode);
 					if (filesDAO.isIndexCreated()) {
 						// producer download the file
-						Task dlTask = buildDownloadAndExportTask(episode, episodeExporter, filesDAO);
+						final Task dlTask = buildDownloadAndExportTask(episode, filesDAO);
 						taskMgr.addTask(dlTask);
 
 						if (dlTask.isAdded()) {
@@ -94,59 +94,48 @@ public class ChannelDownloader implements Runnable {
 		}
 	}
 
-	private Downloader findDowloader(final String downloaderName) {
-		for (Downloader currentDownloader : config.getDownloader()) {
-			if (currentDownloader.getName().equals(downloaderName)) {
-				return currentDownloader;
-			}
-		}
-		throw new IllegalArgumentException(downloaderName + " n'a pas été déclaré");
-	}
-
-	private Task buildDownloadAndExportTask(final EpisodeDTO episode, final EpisodeExporter episodeExporter, final DownloadedDAO filesDAO) {
-		Runnable job = new Runnable() {
+	private Task buildDownloadAndExportTask(final EpisodeDTO episode, final DownloadedDAO filesDAO) {
+		final Runnable job = new Runnable() {
 			@Override
 			public void run() {
 				try {
 					episode.check();
-				} catch (InvalidEpisodeException e) {
+				} catch (final InvalidEpisodeException e) {
 					throw new TechnicalException(e);
 				}
-				final String downloaderName = provider.getDownloader(episode.getVideoUrl());
-				final PluginDownloaderInterface pluginDownloader = dowloaderFactory.findPlugin(downloaderName, HabitTvConf.DEFAULT_DOWNLOADER);
-				final Downloader downloaderConfig = findDowloader(downloaderName);
 
 				try {
-					episodeExporter.download(downloaderConfig, pluginDownloader, provider.downloadCmd(episode.getVideoUrl()), episode.getVideoUrl(),
-							config.getDownloadOuput(), new CmdProgressionListener() {
-								@Override
-								public void listen(final String progression) {
-									listener.downloadingEpisode(episode, progression);
-								}
-							});
+					provider.download(TokenReplacer.replaceAll(config.getDownloadOuput(), episode), downloaders, new CmdProgressionListener() {
+						@Override
+						public void listen(final String progression) {
+							listener.downloadingEpisode(episode, progression);
+						}
+					}, episode);
 					listener.downloadedEpisode(episode);
 					filesDAO.addDownloadedFiles(episode.getName());
 
 					// add the export thread
-					taskMgr.addTask(buildExportTask(episode, config.getExporter(), episodeExporter, filesDAO, true));
-				} catch (ExecutorFailedException e) {
+					taskMgr.addTask(buildExportTask(episode, config.getExporter(), filesDAO, null));
+				} catch (final DownloadFailedException e) {
 					listener.downloadFailed(episode, e);
+				} catch (final NoSuchDownloaderException e) {
+					// TODO afficher message
+					throw new TechnicalException(e);
 				}
 			}
 		};
 		return new Task(TaskTypeEnum.DOWNLOAD, channel, episode.getVideoUrl(), job);
 	}
 
-	private Task buildExportTask(final EpisodeDTO episode, final List<Exporter> exporterList, final EpisodeExporter episodeExporter,
-			final DownloadedDAO filesDAO, final boolean rootCall) {
+	private Task buildExportTask(final EpisodeDTO episode, final List<Exporter> exporterList, final DownloadedDAO filesDAO, final String subExportTask) {
 		final Task task;
-		if (rootCall) {
+		if (subExportTask == null) {
 			task = new Task(TaskTypeEnum.EXPORT_MAIN, episode.getVideoUrl());
 		} else {
-			task = new Task(TaskTypeEnum.EXPORT, episode.getVideoUrl(), episode.getVideoUrl());
+			task = new Task(TaskTypeEnum.EXPORT, subExportTask, episode.getVideoUrl());
 		}
 
-		Runnable job = new Runnable() {
+		final Runnable job = new Runnable() {
 			@Override
 			public void run() {
 				boolean success = true;
@@ -155,20 +144,21 @@ public class ChannelDownloader implements Runnable {
 					if (validCondition(exporter, episode)) {
 						try {
 							listener.exportEpisode(episode, exporter, "");
-							episodeExporter.export(exporter.getCmd(), exporterFactory.findPlugin(exporter.getName(), HabitTvConf.DEFAULT_EXPORTER),
-									new CmdProgressionListener() {
-										@Override
-										public void listen(final String progression) {
-											listener.exportEpisode(episode, exporter, progression);
-										}
-									});
-						} catch (ExecutorFailedException e) {
+							final String cmd = TokenReplacer.replaceAll(exporter.getCmd(), episode);
+							final PluginExporterInterface pluginexporter = exporterFactory.findPlugin(exporter.getName(), HabitTvConf.DEFAULT_EXPORTER);
+							pluginexporter.export(cmd, new CmdProgressionListener() {
+								@Override
+								public void listen(final String progression) {
+									listener.exportEpisode(episode, exporter, progression);
+								}
+							});
+						} catch (final ExecutorFailedException e) {
 							listener.exportFailed(episode, exporter, e);
 							success = false;
 							break;
 						}
 						if (!exporter.getExporter().isEmpty()) {
-							Task subExportTask = buildExportTask(episode, exporter.getExporter(), episodeExporter, filesDAO, false);
+							final Task subExportTask = buildExportTask(episode, exporter.getExporter(), filesDAO, exporter.getName());
 							taskMgr.addTask(subExportTask);
 							taskList.add(subExportTask);
 						}
@@ -176,7 +166,9 @@ public class ChannelDownloader implements Runnable {
 				}
 
 				task.setSuccess((success));
-				if (rootCall) {
+				if (subExportTask == null) {// FIXME le thread principal attend
+											// et bloque un
+					// thread sans faire de traitement
 					// FIXME termine le pool alors qu'autres export ne pas avoir
 					// été ajouté
 					taskMgr.waitForEndTasks(config.getAllDownloadTimeout(), TaskTypeEnum.EXPORT, episode.getVideoUrl());
@@ -195,8 +187,8 @@ public class ChannelDownloader implements Runnable {
 	private boolean validCondition(final Exporter exporter, final EpisodeDTO episode) {
 		boolean ret = true;
 		if (exporter.getCondition() != null) {
-			String reference = exporter.getCondition().getReference();
-			String actualString = TokenReplacer.replaceRef(reference, episode);
+			final String reference = exporter.getCondition().getReference();
+			final String actualString = TokenReplacer.replaceRef(reference, episode);
 			ret = actualString.matches(exporter.getCondition().getPattern());
 		}
 		return ret;

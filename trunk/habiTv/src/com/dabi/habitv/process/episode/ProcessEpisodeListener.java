@@ -8,6 +8,7 @@ import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
 import com.dabi.habitv.framework.plugin.exception.ExecutorFailedException;
 
+//FIXME faire des Event
 public interface ProcessEpisodeListener extends EventListener {
 
 	void downloadCheckStarted();

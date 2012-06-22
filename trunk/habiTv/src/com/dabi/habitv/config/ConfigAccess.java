@@ -20,6 +20,7 @@ import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
 
 import com.dabi.habitv.config.entities.Config;
+import com.dabi.habitv.config.entities.SimultaneousTaskNumber;
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
 import com.dabi.habitv.grabconfig.entities.GrabConfig;
 import com.dabi.habitv.taskmanager.TaskTypeEnum;
@@ -62,17 +63,17 @@ public final class ConfigAccess {
 		final Schema schema;
 		try {
 			schema = schemaFactory.newSchema(new StreamSource(getInputFileInClasspath(xsdFile)));
-		} catch (SAXException e) {
+		} catch (final SAXException e) {
 			throw new TechnicalException(e);
 		}
 		unmarshaller.setSchema(schema);
 	}
 
-	public static Map<TaskTypeEnum, Integer> buildTaskType2ThreadPool(Config config) {
-		final Map<TaskTypeEnum, Integer> taskType2ThreadPool = new HashMap<>(TaskTypeEnum.values().length);
-		taskType2ThreadPool.put(TaskTypeEnum.DOWNLOAD, config.getSimultaneousEpisodeDownload());
-		taskType2ThreadPool.put(TaskTypeEnum.SEARCH, config.getSimultaneousChannelDownload());
-		taskType2ThreadPool.put(TaskTypeEnum.EXPORT_MAIN, config.getSimultaneousExport());
+	public static Map<String, Integer> buildTaskType2ThreadPool(final Config config) {
+		final Map<String, Integer> taskType2ThreadPool = new HashMap<>(TaskTypeEnum.values().length);
+		for (final SimultaneousTaskNumber simultaneousTaskNumber : config.getSimultaneousTaskNumber()) {
+			taskType2ThreadPool.put(simultaneousTaskNumber.getTaskName(), simultaneousTaskNumber.getSize());
+		}
 		return taskType2ThreadPool;
 	}
 
@@ -83,11 +84,11 @@ public final class ConfigAccess {
 			final Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 			setValidation(unmarshaller, GRAB_CONF_XSD);
 			grabConfig = ((GrabConfig) unmarshaller.unmarshal(new InputStreamReader(new FileInputStream(GRAB_CONF_FILE), HabitTvConf.ENCODING)));
-		} catch (JAXBException e) {
+		} catch (final JAXBException e) {
 			throw new TechnicalException(e);
-		} catch (UnsupportedEncodingException e) {
+		} catch (final UnsupportedEncodingException e) {
 			throw new TechnicalException(e);
-		} catch (FileNotFoundException e) {
+		} catch (final FileNotFoundException e) {
 			// will return null
 			LOG.debug("", e);
 		}
