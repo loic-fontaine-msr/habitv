@@ -35,4 +35,5 @@
 		</plugins>
 	</build>	
 	<version>1.1.0</version>
+	<description>not maintained any more</description>
 </project>
