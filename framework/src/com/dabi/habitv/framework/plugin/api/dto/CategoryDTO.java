@@ -12,7 +12,7 @@ import com.dabi.habitv.framework.plugin.utils.CheckUtils;
  * include and exclude
  * 
  */
-public class CategoryDTO implements Comparable<CategoryDTO> {
+public class CategoryDTO implements Comparable<CategoryDTO>, Cloneable {
 
 	final private String channel;
 
@@ -223,4 +223,12 @@ public class CategoryDTO implements Comparable<CategoryDTO> {
 		}
 		return ret;
 	}
+
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		// TODO Auto-generated method stub
+		return super.clone();
+	}
+	
+	
 }
