@@ -9,8 +9,8 @@
 		<groupId>com.dabi.habitv</groupId>
 		<version>LATEST</version>
 	</parent>
-	<artifactId>ffmpegExporter</artifactId>
-	<name>ffmpegExporter</name>
+	<artifactId>curlExporter</artifactId>
+	<name>curlExporter</name>
 	<dependencies>
 		<dependency>
 			<groupId>com.dabi.habitv</groupId>

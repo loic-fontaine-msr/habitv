@@ -132,7 +132,9 @@ public class ChannelDownloader implements Runnable {
 		if (subExportTask == null) {
 			task = new Task(TaskTypeEnum.EXPORT_MAIN, episode.getVideoUrl());
 		} else {
-			task = new Task(TaskTypeEnum.EXPORT, subExportTask, episode.getVideoUrl());
+			// task = new Task(TaskTypeEnum.EXPORT, subExportTask,
+			// episode.getVideoUrl()); FIXME should be
+			task = new Task(TaskTypeEnum.EXPORT, episode.getVideoUrl(), episode.getVideoUrl());
 		}
 
 		final Runnable job = new Runnable() {

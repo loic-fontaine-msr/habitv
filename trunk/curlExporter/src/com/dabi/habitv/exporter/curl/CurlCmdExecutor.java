@@ -16,7 +16,7 @@ public class CurlCmdExecutor extends CmdExecutor {
 	protected String handleProgression(final String line) {
 		// % Total % Received % Xferd Average Speed Time Time Time Current
 		// 3 17.6M 3 561k 0 0 705k 0 0:00:25 --:--:-- 0:00:25 799k
-		final Pattern pattern = Pattern.compile("\\s*[0-9]+\\s*[0-9A-Za-z.-]*\\s*([0-9A-Za-z.-]+).*$");
+		final Pattern pattern = Pattern.compile("\\s*(\\d*\\.*\\d*)\\s+.*$");
 		final Matcher matcher = pattern.matcher(line);
 		// lancement de la recherche de toutes les occurrences
 		final boolean hasMatched = matcher.find();
@@ -30,7 +30,7 @@ public class CurlCmdExecutor extends CmdExecutor {
 
 	@Override
 	protected boolean isSuccess(final String fullOutput) {
-		return getLastOutputLine().matches("\\s*[0-9A-Za-z.-]*\\s*[0-9A-Za-z.-]*\\s*(100).*$");
+		return getLastOutputLine().matches("\\s*(100)\\s+.*$");
 	}
 
 }
