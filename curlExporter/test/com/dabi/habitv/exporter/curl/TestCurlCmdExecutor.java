@@ -15,6 +15,10 @@ public class TestCurlCmdExecutor {
 		@Override
 		public void listen(String progression) {
 			this.progression = progression;
+			try {
+				Thread.sleep(3000);
+			} catch (InterruptedException e) {
+			}
 		}
 
 	}
@@ -32,7 +36,11 @@ public class TestCurlCmdExecutor {
 		protected Process buildProcess(String cmd) throws ExecutorFailedException {
 			String inputString = "% Total    % Received % Xferd  Average Speed   Time    Time     Time  Current"
 					+ "                                 Dload  Upload   Total   Spent    Left  Speed\n"
-					+ "100 18.6M    12.5     0  100 18.6M      0   928k  0:00:20  0:00:20 --:--:--  952k";
+					// +
+					// "100 18.6M    12.5     0  100 18.6M      0   928k  0:00:20  0:00:20 --:--:--  952k";
+					+ "  7.5 26.4M    0     0    7 2096k      0  1049k  0:00:25  0:00:01  0:00:24 1066k\n"
+					+ "100 33.9M    12.5     0    1  368k      0   502k  0:01:09 --:--:--  0:01:09  535k";
+			// 1 33.9M 0 0 1 368k 0 502k 0:01:09 --:--:-- 0:01:09 535k
 			return new FakeCurlUploadProcess(ret, inputString);
 		}
 
@@ -43,7 +51,7 @@ public class TestCurlCmdExecutor {
 		FakeProgressionListener fakeProgressionListener = new FakeProgressionListener();
 		final CurlCmdExecutor curlCmdExecutor = new FakeCurlCmdExecutor(0, "", fakeProgressionListener);
 		curlCmdExecutor.execute();
-		Assert.assertEquals("12.5", fakeProgressionListener.progression);
+		Assert.assertEquals("100", fakeProgressionListener.progression);
 		Assert.assertTrue(curlCmdExecutor.isSuccess(""));
 	}
 
@@ -55,7 +63,7 @@ public class TestCurlCmdExecutor {
 			curlCmdExecutor.execute();
 			Assert.fail("must be in error");
 		} catch (ExecutorFailedException e) {
-			Assert.assertEquals("12.5", fakeProgressionListener.progression);
+			Assert.assertEquals("100", fakeProgressionListener.progression);
 		}
 	}
 

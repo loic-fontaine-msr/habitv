@@ -27,6 +27,7 @@
 		<!-- <module>../youtubeDownloader</module>-->
 		<module>../cmdExporter</module>
 		<module>../ffmpegExporter</module>
+		<module>../curlExporter</module>
 		<module>../rtmpDumpDownloader</module>
 		<module>../RSSProvider</module>
 	</modules>

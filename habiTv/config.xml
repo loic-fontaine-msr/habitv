@@ -8,8 +8,7 @@
 	<providerPluginDir>../builder/pub/provider</providerPluginDir>
 	<downloaderPluginDir>../builder/pub/downloader</downloaderPluginDir>
 	<exporterPluginDir>../builder/pub/exporter</exporterPluginDir>
-	<downloadOuput>D:/divx/regular/#EPISODE_NAME_CUT#.#EXTENSION#
-	</downloadOuput>
+	<downloadOuput>D:/divx/regular/#EPISODE_NAME_CUT#.#EXTENSION#</downloadOuput>
 	<downloader>
 		<name>http</name>
 	</downloader>
@@ -46,7 +45,7 @@
 		<name>move</name>
 		<output>moving</output>
 		<cmd>cmd /c move /Y D:\divx\regular\#EPISODE_NAME_CUT#.avi
-			D:\divx\regular\avi
+			D:\divx\regular\avi\
 		</cmd>
 		<exporter>
 			<condition>

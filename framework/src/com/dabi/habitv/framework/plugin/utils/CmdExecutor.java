@@ -83,8 +83,8 @@ public class CmdExecutor {
 							lastOutputLine = line;
 							String handledLine = handleProgression(line);
 							if (listener != null && handledLine != null && (System.currentTimeMillis() - lastTime) > FrameworkConf.TIME_BETWEEN_LOG) {
-								listener.listen(handledLine);
 								lastTime = System.currentTimeMillis();
+								listener.listen(handledLine);
 							}
 						}
 					} finally {
