@@ -30,16 +30,16 @@ public final class DownloadedDAO {
 
 	private final boolean indexExist;
 
-	public DownloadedDAO(final String workingDir, final String channelName, final String tvShow) {
+	public DownloadedDAO(final String workingDir, final String channelName, final String tvShow, final String indexDir) {
 		super();
-		this.indexDir = workingDir + "/index";
+		this.indexDir = indexDir;
 		this.tvShow = tvShow;
 		this.channelName = channelName;
 		final File indexDirectory = new File(indexDir);
 		if (indexDirectory.exists()) {
-			this.indexExist = new File(getFileIndex()).exists();
+			indexExist = new File(getFileIndex()).exists();
 		} else {
-			this.indexExist = false;
+			indexExist = false;
 			if (!indexDirectory.mkdir()) {
 				throw new TechnicalException("Folder can't be created" + indexDirectory.getAbsolutePath());
 			}
@@ -62,16 +62,16 @@ public final class DownloadedDAO {
 			while ((ligne = lecteurAvecBuffer.readLine()) != null) {
 				fileList.add(ligne);
 			}
-		} catch (FileNotFoundException exc) {
+		} catch (final FileNotFoundException exc) {
 			// will return null
 			LOG.debug("", exc);
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			throw new TechnicalException(e);
 		} finally {
 			if (lecteurAvecBuffer != null) {
 				try {
 					lecteurAvecBuffer.close();
-				} catch (IOException e) {
+				} catch (final IOException e) {
 					throw new TechnicalException(e);
 				}
 			}
@@ -83,11 +83,11 @@ public final class DownloadedDAO {
 		PrintWriter writer;
 		try {
 			writer = new PrintWriter(new OutputStreamWriter(new FileOutputStream(getFileIndex(), true), "UTF-8"));
-			for (String file : files) {
+			for (final String file : files) {
 				writer.println(file);
 			}
 			writer.close();
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			throw new TechnicalException(e);
 		}
 	}
