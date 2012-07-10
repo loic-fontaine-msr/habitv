@@ -63,7 +63,7 @@ public class ChannelDownloader implements Runnable {
 				downloadEpisode(category.getSubCategories());
 			} else {
 				// dao to find dowloaded episodes
-				final DownloadedDAO filesDAO = new DownloadedDAO(config.getWorkingDir(), provider.getName(), category.getName());
+				final DownloadedDAO filesDAO = new DownloadedDAO(config.getWorkingDir(), provider.getName(), category.getName(), config.getIndexDir());
 				if (!filesDAO.isIndexCreated()) {
 					listener.buildEpisodeIndex(category);
 				}

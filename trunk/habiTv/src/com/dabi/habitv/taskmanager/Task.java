@@ -19,7 +19,7 @@ public class Task {
 		this.taskType = taskType;
 		this.category = category;
 		this.identifier = identifier;
-		this.added = false;
+		added = false;
 	}
 
 	public Task(final TaskTypeEnum taskType, final String identifier) {
@@ -32,7 +32,7 @@ public class Task {
 		this.category = category;
 		this.identifier = identifier;
 		this.runnable = runnable;
-		this.added = false;
+		added = false;
 	}
 
 	public Task(final TaskTypeEnum taskType, final String identifier, final Runnable runnable) {
@@ -55,11 +55,11 @@ public class Task {
 		return success;
 	}
 
-	public void setSuccess(boolean success) {
+	public void setSuccess(final boolean success) {
 		this.success = success;
 	}
 
-	public void setJob(Runnable runnable) {
+	public void setJob(final Runnable runnable) {
 		this.runnable = runnable;
 	}
 
@@ -76,7 +76,7 @@ public class Task {
 					final String threadName = taskType + "/" + category + "/" + identifier;
 					Thread.currentThread().setName(threadName);
 					runnable.run();
-				} finally {
+				} finally { // FIXME onTaskFailed
 					taskAction.onTaskEnd();
 				}
 			}
@@ -88,7 +88,7 @@ public class Task {
 	}
 
 	public void add() {
-		this.added = true;
+		added = true;
 	}
 
 	@Override
@@ -97,7 +97,7 @@ public class Task {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		boolean ret = false;
 		if (obj instanceof Task) {
 			ret = identifier.equals(((Task) obj).getIdentifier());
@@ -107,7 +107,7 @@ public class Task {
 
 	@Override
 	public String toString() {
-		StringBuilder ret = new StringBuilder();
+		final StringBuilder ret = new StringBuilder();
 		ret.append("taskType " + taskType);
 		ret.append(",category " + category);
 		ret.append(",identifier " + identifier);
