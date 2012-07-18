@@ -20,7 +20,7 @@ public final class HabiTvLauncher {
 
 	}
 
-	public static void main(final String[] args) throws InterruptedException {
+	private static void run() throws InterruptedException {
 		final Config config = ConfigAccess.initConfig();
 		final GrabConfig grabConfig = ConfigAccess.initGrabConfig();
 
@@ -66,6 +66,15 @@ public final class HabiTvLauncher {
 					Thread.sleep(demonTime);
 				}
 			}
+		}
+	}
+
+	public static void main(final String[] args) throws InterruptedException {
+		try {
+			run();
+		} catch (final Exception e) {
+			LOG.error("", e);
+			System.exit(1);
 		}
 	}
 }

@@ -4,6 +4,8 @@ import java.util.Observable;
 
 import javax.swing.event.EventListenerList;
 
+import org.apache.log4j.Logger;
+
 import com.dabi.habitv.config.ConfigAccess;
 import com.dabi.habitv.config.entities.Config;
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
@@ -23,9 +25,9 @@ public class HabitTvTrayModel extends Observable {
 
 	private TaskMgr taskMgr;
 
-	private Config config = ConfigAccess.initConfig();
+	private Config config;
 
-	private GrabConfig grabConfig = ConfigAccess.initGrabConfig();
+	private GrabConfig grabConfig;
 
 	private final EventListenerList listeners;
 
@@ -34,13 +36,21 @@ public class HabitTvTrayModel extends Observable {
 
 	private Thread demonThread;
 
+	private static final Logger LOG = Logger.getLogger(HabitTvTrayModel.class);
+
 	public HabitTvTrayModel() {
 		super();
-		retrieveAndExport = new RetrieveAndExport(config, grabConfig);
-		progressionModel = new ProgressionModel();
-		listeners = new EventListenerList();
-		taskMgr = new TaskMgr(ConfigAccess.buildTaskType2ThreadPool(config));
-
+		try {
+			config = ConfigAccess.initConfig();
+			grabConfig = ConfigAccess.initGrabConfig();
+			retrieveAndExport = new RetrieveAndExport(config, grabConfig);
+			progressionModel = new ProgressionModel();
+			listeners = new EventListenerList();
+			taskMgr = new TaskMgr(ConfigAccess.buildTaskType2ThreadPool(config));
+		} catch (final Exception e) {
+			LOG.error("", e);
+			throw e;
+		}
 	}
 
 	public ProgressionModel getProgressionModel() {
@@ -76,6 +86,15 @@ public class HabitTvTrayModel extends Observable {
 		demonThread = new Thread() {
 			@Override
 			public void run() {
+				try {
+					execute();
+				} catch (final Exception e) {
+					LOG.error("", e);
+					throw e;
+				}
+			}
+
+			private void execute() {
 				boolean interrupted = false;
 				final long confDemonTime;
 				if (config.getDemonTime() == null) {
