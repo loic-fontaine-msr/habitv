@@ -8,7 +8,7 @@ import com.dabi.habitv.framework.plugin.api.CmdProgressionListener;
 import com.dabi.habitv.framework.plugin.api.PluginDownloaderInterface;
 import com.dabi.habitv.framework.plugin.api.PluginProviderInterface;
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
-import com.dabi.habitv.framework.plugin.api.dto.DownloadersDTO;
+import com.dabi.habitv.framework.plugin.api.dto.DownloaderDTO;
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
 import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.framework.plugin.exception.NoSuchDownloaderException;
@@ -29,7 +29,7 @@ public class RSSPluginManager implements PluginProviderInterface {
 	}
 
 	@Override
-	public void download(final String downloadOuput, final DownloadersDTO downloaders, final CmdProgressionListener listener, final EpisodeDTO episode)
+	public void download(final String downloadOuput, final DownloaderDTO downloaders, final CmdProgressionListener listener, final EpisodeDTO episode)
 			throws DownloadFailedException, NoSuchDownloaderException {
 		final String downloaderName = RSSConf.DOWNLOADER;
 		final PluginDownloaderInterface pluginDownloader = downloaders.getDownloader(downloaderName);

@@ -37,10 +37,10 @@ public class EpisodeDTO implements Comparable<EpisodeDTO> {
 	@Override
 	public int hashCode() {
 		int ret;
-		if (this.videoUrl != null) {
-			ret = this.videoUrl.hashCode();
+		if (videoUrl != null) {
+			ret = videoUrl.hashCode();
 		} else {
-			ret = this.category.hashCode() + this.name.hashCode();
+			ret = category.hashCode() + name.hashCode();
 		}
 		return ret;
 	}
@@ -50,10 +50,10 @@ public class EpisodeDTO implements Comparable<EpisodeDTO> {
 		boolean ret = false;
 		if (obj instanceof EpisodeDTO) {
 			final EpisodeDTO episode = (EpisodeDTO) obj;
-			if (this.videoUrl != null && this.videoUrl.equals(episode.videoUrl)) {
+			if (videoUrl != null && videoUrl.equals(episode.videoUrl)) {
 				ret = true;
 			} else {
-				ret = this.category.equals(episode.getCategory()) && episode.getName().equals(this.name);
+				ret = category.equals(episode.getCategory()) && episode.getName().equals(name);
 			}
 		}
 		return ret;
@@ -61,7 +61,7 @@ public class EpisodeDTO implements Comparable<EpisodeDTO> {
 
 	@Override
 	public String toString() {
-		return this.getName();
+		return getCategory().getChannel() + "-" + getCategory().getName() + "-" + getName();
 	}
 
 	public String getVideoUrl() {
@@ -71,7 +71,7 @@ public class EpisodeDTO implements Comparable<EpisodeDTO> {
 	@Override
 	public int compareTo(final EpisodeDTO o) {
 		int ret = 0;
-		if (!this.equals(o)) {
+		if (!equals(o)) {
 			ret = category.compareTo(o.category);
 			if (ret == 0) {
 				ret = name.compareTo(o.name);

@@ -22,25 +22,25 @@ public final class SoirFootRetriever {
 	public static Set<EpisodeDTO> findEpisodeByCategory(final CategoryDTO category) {
 		final Set<EpisodeDTO> episodeList = new HashSet<>();
 		try {
-			Source source = new Source(new URL(SoirFootConf.HOME_URL + "/" + category.getId()));
-			for (Segment segment : source.getAllStartTags("div class=\"video_i\"")) {
+			final Source source = new Source(new URL(SoirFootConf.HOME_URL + "/" + category.getId()));
+			for (final Segment segment : source.getAllStartTags("div class=\"video_i\"")) {
 				try {
-					Element segmentA = segment.getChildElements().get(0).getChildElements().get(0);
-					String url = segmentA.getAttributeValue("href");
-					Source source2 = new Source(new URL(url));
+					final Element segmentA = segment.getChildElements().get(0).getChildElements().get(0);
+					final String url = segmentA.getAttributeValue("href");
+					final Source source2 = new Source(new URL(url));
 
 					String name = source2.getAllStartTags("h2 class=\"h2_artist\"").get(0).getElement().getContent().toString();
 					name = name.replaceAll("(\\d\\s*-\\s*\\d)", "").replaceAll("(\\d_*-_*\\d)", "");
 
 					// justin
-					for (Segment segment2 : source2.getAllStartTags("param name=\"flashvars\"")) {
-						String param = segment2.getChildElements().get(0).getAttributeValue("value");
+					for (final Segment segment2 : source2.getAllStartTags("param name=\"flashvars\"")) {
+						final String param = segment2.getChildElements().get(0).getAttributeValue("value");
 						if (param.contains("archive_id")) {
-							String archiveId = param.split("&")[0].split("=")[1];
-							String xmlUrl = SoirFootConf.JUSTIN_API_URL + archiveId + ".xml?onsite=true";
-							Source source3 = new Source(new URL(xmlUrl));
-							for (Segment segment3 : source3.getAllStartTags("video_file_url")) {
-								String flvUrl = segment3.getChildElements().get(0).getContent().toString();
+							final String archiveId = param.split("&")[0].split("=")[1];
+							final String xmlUrl = SoirFootConf.JUSTIN_API_URL + archiveId + ".xml?onsite=true";
+							final Source source3 = new Source(new URL(xmlUrl));
+							for (final Segment segment3 : source3.getAllStartTags("video_file_url")) {
+								final String flvUrl = segment3.getChildElements().get(0).getContent().toString();
 								episodeList.add(new EpisodeDTO(category, name, flvUrl));
 							}
 						}
@@ -66,13 +66,12 @@ public final class SoirFootRetriever {
 					// baseUrl + rtmpDumpUrl));
 					// }
 					// }
-				} catch (Exception e) {
+				} catch (final Exception e) {
 					throw new TechnicalException(e);
 				}
 			}
-		} catch (IOException e) {
-			throw new TechnicalException(e);// TODO throw functionnal
-											// checkFailedException
+		} catch (final IOException e) {
+			throw new TechnicalException(e);
 		}
 		return episodeList;
 	}
