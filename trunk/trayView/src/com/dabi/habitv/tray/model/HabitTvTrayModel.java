@@ -2,28 +2,20 @@ package com.dabi.habitv.tray.model;
 
 import java.util.Observable;
 
-import javax.swing.event.EventListenerList;
-
 import com.dabi.habitv.config.entities.Config;
 import com.dabi.habitv.core.config.ConfigAccess;
-import com.dabi.habitv.core.event.EpisodeStateEnum;
-import com.dabi.habitv.core.event.SearchStateEnum;
 import com.dabi.habitv.core.mgr.CoreManager;
-import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
 import com.dabi.habitv.grabconfig.entities.GrabConfig;
-import com.dabi.habitv.tray.EpisodeChangedEvent;
-import com.dabi.habitv.tray.HabiTvListener;
-import com.dabi.habitv.tray.ProcessChangedEvent;
+import com.dabi.habitv.tray.controller.CoreSubscriber;
+import com.dabi.habitv.tray.controller.SubscriberAdapter;
 
 public class HabitTvTrayModel extends Observable {
 
 	private final CoreManager coreManager;
 
-	private Config config = ConfigAccess.initConfig();
+	private final Config config = ConfigAccess.initConfig();
 
 	private GrabConfig grabConfig = ConfigAccess.initGrabConfig();
-
-	private final EventListenerList listeners;
 
 	private final ProgressionModel progressionModel;
 
@@ -33,35 +25,17 @@ public class HabitTvTrayModel extends Observable {
 		super();
 		coreManager = new CoreManager(config, grabConfig);
 		progressionModel = new ProgressionModel();
-		listeners = new EventListenerList();
+	}
+
+	public void attach(final CoreSubscriber coreSubscriber) {
+		final SubscriberAdapter subscriberAdapter = new SubscriberAdapter(coreSubscriber);
+		coreManager.getCategoryManager().getSearchCategoryPublisher().attach(subscriberAdapter.getSearchCategorySubscriber());
+		coreManager.getEpisodeManager().getRetreivePublisher().attach(subscriberAdapter.getRetreiveSubscriber());
+		coreManager.getEpisodeManager().getSearchPublisher().attach(subscriberAdapter.getSearchSubscriber());
 	}
 
 	public ProgressionModel getProgressionModel() {
 		return progressionModel;
-	}
-
-	public void addListener(final HabiTvListener listener) {
-		listeners.add(HabiTvListener.class, listener);
-	}
-
-	public void removeListener(final HabiTvListener listener) {
-		listeners.remove(HabiTvListener.class, listener);
-	}
-
-	public void fireProcessChanged(final SearchStateEnum processStateEnum, final String info) {
-		final HabiTvListener[] listenerList = listeners.getListeners(HabiTvListener.class);
-
-		for (final HabiTvListener listener : listenerList) {
-			listener.processChanged(new ProcessChangedEvent(this, processStateEnum, info));
-		}
-	}
-
-	public void fireEpisodeChanged(final EpisodeStateEnum episodeStateEnum, final EpisodeDTO episode) {
-		final HabiTvListener[] listenerList = listeners.getListeners(HabiTvListener.class);
-
-		for (final HabiTvListener listener : listenerList) {
-			listener.episodeChanged(new EpisodeChangedEvent(this, episode, episodeStateEnum));
-		}
 	}
 
 	public void startDownloadCheckDemon() {
@@ -84,18 +58,7 @@ public class HabitTvTrayModel extends Observable {
 					} else {
 						if (grabConfig == null) {
 							coreManager.findAndSaveCategory();
-							(new ProcessCategory()).execute(config, new ProcessCategoryListener() {
-
-								@Override
-								public void getProviderCategories(final String providerName) {
-									fireProcessChanged(SearchStateEnum.BUILDING_CATEGORIES, providerName);
-								}
-
-								@Override
-								public void categoriesSaved(final String grabconfigXmlFile) {
-									fireProcessChanged(SearchStateEnum.CATEGORIES_BUILD, grabconfigXmlFile);
-								}
-							});
+							grabConfig = ConfigAccess.initGrabConfig();
 						} else {
 							coreManager.retreiveEpisode();
 						}
@@ -138,8 +101,7 @@ public class HabitTvTrayModel extends Observable {
 		return config;
 	}
 
-	public void reloadConfig() {
-		config = ConfigAccess.initConfig();
+	public void reloadGrabConfig() {
 		grabConfig = ConfigAccess.initGrabConfig();
 		coreManager.reloadGrabConfig(grabConfig);
 	}

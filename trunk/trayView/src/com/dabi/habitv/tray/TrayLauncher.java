@@ -11,10 +11,10 @@ public class TrayLauncher {
 	}
 
 	public static void main(final String[] args) {
-		HabitTvTrayModel model = new HabitTvTrayModel();
-		TrayController controller = new TrayController(model);
-		HabiTvTrayView view = new HabiTvTrayView(controller);
-		model.addListener(view);
+		final HabitTvTrayModel model = new HabitTvTrayModel();
+		final TrayController controller = new TrayController(model);
+		final HabiTvTrayView view = new HabiTvTrayView(controller);
+		model.attach(view);
 		controller.startDownloadCheckDemon();
 	}
 

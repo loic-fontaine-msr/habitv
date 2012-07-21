@@ -9,15 +9,15 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Collection;
 
-import com.dabi.habitv.core.event.EpisodeStateEnum;
+import com.dabi.habitv.core.event.RetreiveEvent;
+import com.dabi.habitv.core.event.SearchCategoryEvent;
+import com.dabi.habitv.core.event.SearchEvent;
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
-import com.dabi.habitv.tray.EpisodeChangedEvent;
-import com.dabi.habitv.tray.HabiTvListener;
-import com.dabi.habitv.tray.ProcessChangedEvent;
+import com.dabi.habitv.tray.controller.CoreSubscriber;
 import com.dabi.habitv.tray.controller.TrayController;
 import com.dabi.habitv.tray.model.ActionProgress;
 
-public final class HabiTvTrayView implements HabiTvListener {
+public final class HabiTvTrayView implements CoreSubscriber {
 
 	private final TrayController controller;
 
@@ -34,12 +34,12 @@ public final class HabiTvTrayView implements HabiTvListener {
 		trayIcon = new TrayIcon(fixImage, "habiTv");
 		try {
 			init();
-		} catch (AWTException e) {
+		} catch (final AWTException e) {
 			throw new TechnicalException(e);
 		}
 	}
 
-	private Image getImage(String image) {
+	private Image getImage(final String image) {
 		return Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource(image));
 	}
 
@@ -87,7 +87,7 @@ public final class HabiTvTrayView implements HabiTvListener {
 
 	private String progressionToText(final Collection<ActionProgress> episodeName2ActionProgress) {
 		StringBuilder str = null;
-		for (ActionProgress actionProgress : episodeName2ActionProgress) {
+		for (final ActionProgress actionProgress : episodeName2ActionProgress) {
 			if (str == null) {
 				str = new StringBuilder();
 			} else {
@@ -110,8 +110,14 @@ public final class HabiTvTrayView implements HabiTvListener {
 	}
 
 	@Override
-	public void processChanged(final ProcessChangedEvent event) {
+	public void update(final SearchEvent event) {
 		switch (event.getState()) {
+		case ALL_RETREIVE_DONE:
+			trayIcon.setImage(fixImage);
+			break;
+		case ALL_SEARCH_DONE:
+
+			break;
 		case BUILD_INDEX:
 			trayIcon.displayMessage("Building Index", "Build Index for " + event.getInfo(), TrayIcon.MessageType.INFO);
 			break;
@@ -121,11 +127,65 @@ public final class HabiTvTrayView implements HabiTvListener {
 			trayIcon.setImage(animatedImage);
 			break;
 		case DONE:
-			trayIcon.setImage(fixImage);
+
 			break;
 		case ERROR:
-			trayIcon.displayMessage("Error", "En error has occured", TrayIcon.MessageType.ERROR);
+			trayIcon.displayMessage("Error", "En error has occured : " + event.getException().getMessage(), TrayIcon.MessageType.ERROR);
 			break;
+		case IDLE:
+
+			break;
+		default:
+			break;
+		}
+	}
+
+	@Override
+	public void update(final RetreiveEvent event) {
+		switch (event.getState()) {
+		case BUILD_INDEX:
+
+			break;
+		case DOWNLOAD_FAILED:
+			trayIcon.displayMessage("Warning", "Episode failed to download : " + event.getEpisode().getCategory() + " " + event.getEpisode().getName(),
+					TrayIcon.MessageType.WARNING);
+			break;
+		case DOWNLOADED:
+
+			break;
+		case DOWNLOADING:
+
+			break;
+		case EXPORT_FAILED:
+			trayIcon.displayMessage("Warning", "Export failed to download : " + event.getEpisode().getCategory() + " " + event.getEpisode().getName() + " "
+					+ event.getException().getMessage(), TrayIcon.MessageType.WARNING);
+			break;
+		case EXPORTING:
+
+			break;
+		case FAILED:
+			trayIcon.displayMessage("Error", "En error has occured : " + event.getException().getMessage() + " on episode " + event.getEpisode(),
+					TrayIcon.MessageType.WARNING);
+			break;
+		case READY:
+			trayIcon.displayMessage("Episode Ready", "The episode is ready : " + event.getEpisode().getCategory() + " " + event.getEpisode().getName(),
+					TrayIcon.MessageType.INFO);
+			break;
+		case TO_DOWNLOAD:
+			trayIcon.displayMessage("New Download", "Episode to download : " + event.getEpisode().getCategory() + " " + event.getEpisode().getName(),
+					TrayIcon.MessageType.INFO);
+			break;
+		case TO_EXPORT:
+
+			break;
+		default:
+			break;
+		}
+	}
+
+	@Override
+	public void update(final SearchCategoryEvent event) {
+		switch (event.getState()) {
 		case BUILDING_CATEGORIES:
 			trayIcon.displayMessage("Grabbing categories", "Grabbing categories for " + event.getInfo(), TrayIcon.MessageType.INFO);
 			trayIcon.setImage(animatedImage);
@@ -134,30 +194,14 @@ public final class HabiTvTrayView implements HabiTvListener {
 			trayIcon.displayMessage("Grabbing categories", "Categories built in " + event.getInfo(), TrayIcon.MessageType.INFO);
 			trayIcon.setImage(fixImage);
 			break;
-		default:
-			break;
-		}
-	}
+		case DONE:
 
-	@Override
-	public void episodeChanged(final EpisodeChangedEvent event) {
-		final EpisodeStateEnum episodeState = event.getState();
-		switch (episodeState) {
-		case TO_DOWNLOAD:
-			trayIcon.displayMessage("New Download", "Episode to download : " + event.getEpisode().getCategory() + " " + event.getEpisode().getName(),
-					TrayIcon.MessageType.INFO);
 			break;
-		case DOWNLOAD_FAILED:
-			trayIcon.displayMessage("Warning", "Episode failed to download : " + event.getEpisode().getCategory() + " " + event.getEpisode().getName(),
-					TrayIcon.MessageType.WARNING);
+		case ERROR:
+
 			break;
-		case EXPORT_FAILED:
-			trayIcon.displayMessage("Warning", "Export failed to download : " + event.getEpisode().getCategory() + " " + event.getEpisode().getName(),
-					TrayIcon.MessageType.WARNING);
-			break;
-		case READY:
-			trayIcon.displayMessage("Episode Ready", "The episode is ready : " + event.getEpisode().getCategory() + " " + event.getEpisode().getName(),
-					TrayIcon.MessageType.INFO);
+		case IDLE:
+
 			break;
 		default:
 			break;
