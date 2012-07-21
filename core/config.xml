@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:config xmlns:tns="http://www.dabi.com/habitv/config/entities"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.dabi.com/habitv/config/entities config.xsd ">
+	<!-- <demonTime>10</demonTime> -->
+	<workingDir>../builder/pub</workingDir>
+	<indexDir>../builder/index</indexDir>
+	<providerPluginDir>../builder/pub/provider</providerPluginDir>
+	<downloaderPluginDir>../builder/pub/downloader</downloaderPluginDir>
+	<exporterPluginDir>../builder/pub/exporter</exporterPluginDir>
+	<downloadOuput>../builder/pub/downloads/#EPISODE_NAME_CUT#.#EXTENSION#
+	</downloadOuput>
+	<downloader>
+		<name>http</name>
+	</downloader>
+	<downloader>
+		<name>rtmpdump</name>
+		<binPath>..\rtmpDumpDownloader\exe\rtmpdump.exe</binPath>
+	</downloader>
+	<downloader>
+		<name>aria2</name>
+		<binPath>..\aria2Downloader\exe\aria2c.exe</binPath>
+	</downloader>
+	<downloader>
+		<name>curl</name>
+		<binPath>..\curlDownloader\exe\curl.exe</binPath>
+	</downloader>
+	<exporter>
+		<condition>
+			<reference>#EXTENSION#</reference>
+			<pattern>mp4|flv</pattern>
+		</condition>
+		<name>ffmpeg</name>
+		<output>Re-encoding</output>
+		<cmd>../ffmpegExporter/exe/ffmpeg.exe -y -i
+			"D:\divx\regular\#EPISODE_NAME_CUT#.#EXTENSION#" -vtag DIVX -f avi
+			-vcodec mpeg4 -b 2600000 -acodec mp2 -ab 192000 -ar 48000 -ac 2
+			"D:\divx\regular\#EPISODE_NAME_CUT#.avi"
+		</cmd>
+	</exporter>
+	<exporter>
+		<condition>
+			<reference>#EXTENSION#</reference>
+			<pattern>mp4|flv</pattern>
+		</condition>
+		<name>move</name>
+		<output>moving</output>
+		<cmd>cmd /c move /Y D:\divx\regular\#EPISODE_NAME_CUT#.avi
+			D:\divx\regular\avi\
+		</cmd>
+	</exporter>
+	<exporter>
+		<condition>
+			<reference>#EXTENSION#</reference>
+			<pattern>mp4|flv</pattern>
+		</condition>
+		<name>curl</name>
+		<output>Transferring to freebox</output>
+		<cmd>..\curlDownloader\exe\curl.exe -T
+			"D:/divx/regular/avi/#EPISODE_NAME_CUT#.avi"
+			"ftp://freebox:4688@hd1.freebox.fr/Disque dur/#TVSHOW_NAME#/"
+			--ftp-create-dirs
+		</cmd>
+	</exporter>
+	<exporter>
+		<name>del</name>
+		<output>Deleting</output>
+		<cmd>cmd /c del D:\divx\regular\#EPISODE_NAME_NOSCORE#.#EXTENSION#
+		</cmd>
+	</exporter>
+	<allDownloadTimeout>3600</allDownloadTimeout>
+	<exportTimeout>3600</exportTimeout>
+	<simultaneousTaskNumber>
+		<taskName>category</taskName>
+		<size>5</size>
+	</simultaneousTaskNumber>	
+	<simultaneousTaskNumber>
+		<taskName>export</taskName>
+		<size>2</size>
+	</simultaneousTaskNumber>
+	<simultaneousTaskNumber>
+		<taskName>retreive</taskName>
+		<size>2</size>
+	</simultaneousTaskNumber>
+	<simultaneousTaskNumber>
+		<taskName>search</taskName>
+		<size>5</size>
+	</simultaneousTaskNumber>
+	<simultaneousTaskNumber>
+		<taskName>download</taskName>
+		<size>2</size>
+	</simultaneousTaskNumber>
+	<simultaneousTaskNumber>
+		<taskName>curl</taskName>
+		<size>2</size>
+	</simultaneousTaskNumber>
+</tns:config>
