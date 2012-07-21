@@ -1,4 +1,4 @@
-package com.dabi.habitv.plugin;
+package com.dabi.habitv.core.plugin;
 
 import java.io.File;
 import java.io.IOException;

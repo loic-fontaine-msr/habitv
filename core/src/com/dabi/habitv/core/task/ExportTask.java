@@ -34,7 +34,7 @@ public class ExportTask extends AbstractEpisodeTask {
 	@Override
 	protected void failed(final Exception e) {
 		LOG.error("Episode failed to export " + getEpisode() + " " + export.getName());
-		publisher.addNews(new RetreiveEvent(getEpisode(), EpisodeStateEnum.EXPORT_FAILED));
+		publisher.addNews(new RetreiveEvent(getEpisode(), EpisodeStateEnum.EXPORT_FAILED, e, export.getName()));
 	}
 
 	@Override
@@ -45,7 +45,7 @@ public class ExportTask extends AbstractEpisodeTask {
 	@Override
 	protected void started() {
 		LOG.error("Episode export starting" + getEpisode() + " " + export.getName());
-		publisher.addNews(new RetreiveEvent(getEpisode(), EpisodeStateEnum.EXPORTING));
+		publisher.addNews(new RetreiveEvent(getEpisode(), EpisodeStateEnum.EXPORTING, export.getName(), null));
 	}
 
 	@Override
@@ -54,7 +54,7 @@ public class ExportTask extends AbstractEpisodeTask {
 		pluginExporter.export(cmd, new CmdProgressionListener() {
 			@Override
 			public void listen(final String progression) {
-				publisher.addNews(new RetreiveEvent(getEpisode(), EpisodeStateEnum.EXPORTING, progression));
+				publisher.addNews(new RetreiveEvent(getEpisode(), EpisodeStateEnum.EXPORTING, export.getName(), progression));
 			}
 		});
 		return null;
