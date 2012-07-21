@@ -3,7 +3,7 @@ package com.dabi.habitv.framework.plugin.api;
 import java.util.Set;
 
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
-import com.dabi.habitv.framework.plugin.api.dto.DownloadersDTO;
+import com.dabi.habitv.framework.plugin.api.dto.DownloaderDTO;
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
 import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.framework.plugin.exception.NoSuchDownloaderException;
@@ -15,7 +15,6 @@ import com.dabi.habitv.framework.plugin.exception.NoSuchDownloaderException;
  * 
  */
 public interface PluginProviderInterface extends PluginBase {
-	// TODO ajouter download (Episode)
 	/**
 	 * Find episodes related to a category and sub categories
 	 * 
@@ -47,7 +46,7 @@ public interface PluginProviderInterface extends PluginBase {
 	 * @throws NoSuchDownloaderException
 	 *             downloader needed by provider can't be found
 	 */
-	void download(final String downloadOuput, final DownloadersDTO downloaders, final CmdProgressionListener cmdProgressionListener, final EpisodeDTO episode)
+	void download(final String downloadOuput, final DownloaderDTO downloaders, final CmdProgressionListener cmdProgressionListener, final EpisodeDTO episode)
 			throws DownloadFailedException, NoSuchDownloaderException;
 
 }

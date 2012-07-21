@@ -12,13 +12,13 @@ import com.dabi.habitv.framework.plugin.utils.CheckUtils;
  * include and exclude
  * 
  */
-public class CategoryDTO implements Comparable<CategoryDTO>, Cloneable {
+public class CategoryDTO implements Comparable<CategoryDTO> {
 
-	final private String channel;
+	private final String channel;
 
-	final private String name;
+	private final String name;
 
-	final private String identifier;
+	private final String identifier;
 
 	private List<CategoryDTO> subCategories;
 
@@ -26,7 +26,7 @@ public class CategoryDTO implements Comparable<CategoryDTO>, Cloneable {
 
 	private List<String> exclude;
 
-	private String extension;
+	private final String extension;
 
 	/**
 	 * Full Constructor
@@ -81,8 +81,8 @@ public class CategoryDTO implements Comparable<CategoryDTO>, Cloneable {
 	 * @return patterns to define which episode will be included in the category
 	 */
 	public List<String> getInclude() {
-		if (this.include == null) {
-			this.include = new ArrayList<>();
+		if (include == null) {
+			include = new ArrayList<>();
 		}
 		return include;
 	}
@@ -91,8 +91,8 @@ public class CategoryDTO implements Comparable<CategoryDTO>, Cloneable {
 	 * @return patterns to define which episode will be excluded of the category
 	 */
 	public List<String> getExclude() {
-		if (this.exclude == null) {
-			this.exclude = new ArrayList<>();
+		if (exclude == null) {
+			exclude = new ArrayList<>();
 		}
 		return exclude;
 	}
@@ -115,8 +115,8 @@ public class CategoryDTO implements Comparable<CategoryDTO>, Cloneable {
 	 * @return the sub categories, init list if empty
 	 */
 	public List<CategoryDTO> getSubCategories() {
-		if (this.subCategories == null) {
-			this.subCategories = new ArrayList<>();
+		if (subCategories == null) {
+			subCategories = new ArrayList<>();
 		}
 		return subCategories;
 	}
@@ -128,10 +128,10 @@ public class CategoryDTO implements Comparable<CategoryDTO>, Cloneable {
 	 *            the sub category to add
 	 */
 	public void addSubCategory(final CategoryDTO subCategory) {
-		if (this.subCategories == null) {
-			this.subCategories = new ArrayList<>();
+		if (subCategories == null) {
+			subCategories = new ArrayList<>();
 		}
-		this.subCategories.add(subCategory);
+		subCategories.add(subCategory);
 	}
 
 	/**
@@ -141,10 +141,10 @@ public class CategoryDTO implements Comparable<CategoryDTO>, Cloneable {
 	 *            the sub categories to add
 	 */
 	public void addSubCategories(final Collection<CategoryDTO> categoryListDTO) {
-		if (this.subCategories == null) {
-			this.subCategories = new ArrayList<>();
+		if (subCategories == null) {
+			subCategories = new ArrayList<>();
 		}
-		this.subCategories.addAll(categoryListDTO);
+		subCategories.addAll(categoryListDTO);
 	}
 
 	/**
@@ -179,7 +179,7 @@ public class CategoryDTO implements Comparable<CategoryDTO>, Cloneable {
 		boolean ret;
 		if (obj instanceof CategoryDTO) {
 			final CategoryDTO category = (CategoryDTO) obj;
-			ret = this.getName().equals(category.getName());
+			ret = getName().equals(category.getName());
 		} else {
 			ret = false;
 		}
@@ -216,19 +216,12 @@ public class CategoryDTO implements Comparable<CategoryDTO>, Cloneable {
 	 * @return int
 	 */
 	@Override
-	public int compareTo(CategoryDTO o) {
-		int ret = this.getChannel().compareTo(o.getChannel());
+	public int compareTo(final CategoryDTO o) {
+		int ret = getChannel().compareTo(o.getChannel());
 		if (ret != 0) {
-			ret = this.getId().compareTo(o.getId());
+			ret = getId().compareTo(o.getId());
 		}
 		return ret;
 	}
 
-	@Override
-	public Object clone() throws CloneNotSupportedException {
-		// TODO Auto-generated method stub
-		return super.clone();
-	}
-	
-	
 }

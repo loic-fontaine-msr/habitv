@@ -48,7 +48,7 @@ public class CmdExecutor {
 			// wait for both thread
 			outputThread.join();
 			errorThread.join();
-		} catch (InterruptedException e) {
+		} catch (final InterruptedException e) {
 			throw new ExecutorFailedException(cmd, fullOutput.toString());
 		} finally {
 			if (process != null) {
@@ -64,24 +64,25 @@ public class CmdExecutor {
 	protected Process buildProcess(final String cmd) throws ExecutorFailedException {
 		try {
 			return Runtime.getRuntime().exec(cmd);
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			throw new ExecutorFailedException(cmd, e.getMessage());
 		}
 	}
 
 	private Thread treatCmdOutput(final InputStream inputStream, final StringBuffer fullOutput) {
-		final Thread tread = new Thread() {// TODO log tout en DEBUG
+		final Thread tread = new Thread() {
 			@Override
 			public void run() {
 				try {
-					BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+					final BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
 					String line = "";
 					try {
 						long lastTime = 0;
 						while ((line = reader.readLine()) != null) {
 							fullOutput.append(line + "\n");
 							lastOutputLine = line;
-							String handledLine = handleProgression(line);
+							final String handledLine = handleProgression(line);
+							LOG.debug(line);
 							if (listener != null && handledLine != null && (System.currentTimeMillis() - lastTime) > FrameworkConf.TIME_BETWEEN_LOG) {
 								lastTime = System.currentTimeMillis();
 								listener.listen(handledLine);
@@ -90,7 +91,7 @@ public class CmdExecutor {
 					} finally {
 						reader.close();
 					}
-				} catch (IOException ioe) {
+				} catch (final IOException ioe) {
 					throw new TechnicalException(ioe);
 				}
 			}
