@@ -69,7 +69,7 @@ public final class EpisodeManager extends AbstractManager implements TaskAdder {
 
 			@Override
 			public void onFailed(final Throwable throwable) {
-				searchPublisher.addNews(new SearchEvent(SearchStateEnum.ERROR, throwable.getMessage()));
+				searchPublisher.addNews(new SearchEvent(SearchStateEnum.ERROR, throwable));
 			}
 
 			@Override
@@ -84,7 +84,7 @@ public final class EpisodeManager extends AbstractManager implements TaskAdder {
 
 			@Override
 			public void onFailed(final Throwable throwable) {
-				searchPublisher.addNews(new SearchEvent(SearchStateEnum.ERROR, throwable.getMessage()));
+				searchPublisher.addNews(new SearchEvent(SearchStateEnum.ERROR, throwable));
 			}
 
 			@Override
@@ -99,7 +99,7 @@ public final class EpisodeManager extends AbstractManager implements TaskAdder {
 
 			@Override
 			public void onFailed(final Throwable throwable) {
-				searchPublisher.addNews(new SearchEvent(SearchStateEnum.ERROR, throwable.getMessage()));
+				searchPublisher.addNews(new SearchEvent(SearchStateEnum.ERROR, throwable));
 			}
 
 			@Override

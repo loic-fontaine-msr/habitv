@@ -9,18 +9,28 @@ public final class RetreiveEvent extends AbstractEvent {
 
 	private final String progress;
 
+	private String operation;
+
 	public RetreiveEvent(final EpisodeDTO episode, final EpisodeStateEnum state, final String progress) {
-		super();
+		super(null);
 		this.episode = episode;
 		this.state = state;
 		this.progress = progress;
 	}
 
 	public RetreiveEvent(final EpisodeDTO episode, final EpisodeStateEnum state) {
-		super();
-		this.episode = episode;
-		this.state = state;
-		progress = null;
+		this(episode, state, (String) null);
+	}
+
+	public RetreiveEvent(final EpisodeDTO episode, final EpisodeStateEnum state, final Exception exception, final String operation) {
+		this(episode, state);
+		setException(exception);
+		this.operation = operation;
+	}
+
+	public RetreiveEvent(final EpisodeDTO episode, final EpisodeStateEnum state, final String operation, final String progression) {
+		this(episode, state, progression);
+		this.operation = operation;
 	}
 
 	public EpisodeDTO getEpisode() {
@@ -33,6 +43,10 @@ public final class RetreiveEvent extends AbstractEvent {
 
 	public String getProgress() {
 		return progress;
+	}
+
+	public String getOperation() {
+		return operation;
 	}
 
 }

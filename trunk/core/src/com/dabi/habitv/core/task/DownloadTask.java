@@ -46,7 +46,7 @@ public class DownloadTask extends AbstractEpisodeTask {
 			LOG.error("cmd was" + executorFailedException.getCmd());
 			LOG.error(executorFailedException.getFullOuput());
 		}
-		publisher.addNews(new RetreiveEvent(getEpisode(), EpisodeStateEnum.DOWNLOAD_FAILED));
+		publisher.addNews(new RetreiveEvent(getEpisode(), EpisodeStateEnum.DOWNLOAD_FAILED, e, "download"));
 	}
 
 	@Override
