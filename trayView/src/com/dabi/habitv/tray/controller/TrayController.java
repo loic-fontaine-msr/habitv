@@ -1,23 +1,13 @@
 package com.dabi.habitv.tray.controller;
 
-import org.apache.log4j.Logger;
-
-import com.dabi.habitv.config.entities.Exporter;
 import com.dabi.habitv.core.event.EpisodeStateEnum;
-import com.dabi.habitv.core.event.SearchStateEnum;
-import com.dabi.habitv.framework.plugin.api.PluginProviderInterface;
-import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
-import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
-import com.dabi.habitv.framework.plugin.exception.ExecutorFailedException;
-import com.dabi.habitv.framework.plugin.exception.TechnicalException;
+import com.dabi.habitv.core.event.RetreiveEvent;
+import com.dabi.habitv.core.event.SearchCategoryEvent;
+import com.dabi.habitv.core.event.SearchEvent;
 import com.dabi.habitv.framework.plugin.utils.ProcessingThread;
 import com.dabi.habitv.tray.model.HabitTvTrayModel;
 
-public class TrayController {
-
-	private final SearchEventController searchEventController = new SearchEventController(this);
-
-	private static final Logger LOG = Logger.getLogger(TrayController.class);
+public class TrayController implements CoreSubscriber {
 
 	private final HabitTvTrayModel habiModel;
 
@@ -37,106 +27,93 @@ public class TrayController {
 		getModel().startDownloadCheckDemon();
 	}
 
-	private void printStack() {
-		if (LOG.isDebugEnabled()) {
-			final int limit = 3;
-			int i = 0;
-			for (final StackTraceElement stackTraceElement : Thread.currentThread().getStackTrace()) {
-				if (i > 2) {
-					LOG.debug(stackTraceElement.getClassName() + "." + stackTraceElement.getMethodName() + "L" + stackTraceElement.getLineNumber());
-				}
-				if (i >= limit) {
-					break;
-				}
-				i++;
-			}
-		}
-	}
-
-	private void fireProcessChanged(final SearchStateEnum processStateEnum, final String info) {
-		LOG.debug("fireProcessChanged " + processStateEnum + " " + info);
-		printStack();
-		getModel().fireProcessChanged(processStateEnum, info);
-	}
-
-	private void fireEpisodeChanged(final EpisodeStateEnum episodeStateEnum, final EpisodeDTO episode) {
-		LOG.debug("fireProcessChanged " + episodeStateEnum + " " + episode);
-		getModel().fireEpisodeChanged(episodeStateEnum, episode);
-	}
-
 	@Override
-	public void downloadCheckStarted() {
-		fireProcessChanged(SearchStateEnum.CHECKING_EPISODES, null);
-	}
+	public void update(final SearchEvent event) {
+		switch (event.getState()) {
+		case ALL_RETREIVE_DONE:
 
-	@Override
-	public void downloadingEpisode(final EpisodeDTO episode, final String progress) {
-		getModel().getProgressionModel().updateActionProgress(episode, EpisodeStateEnum.DOWNLOADING, "", progress);
-	}
+			break;
+		case ALL_SEARCH_DONE:
 
-	@Override
-	public void processDone() {
-		// must wait for the next test since the model may not have been update
-		// yet
-		try {
-			Thread.sleep(7000);
-		} catch (final InterruptedException e) {
-			throw new TechnicalException(e);
-		}
-		if (getModel().getProgressionModel().isAllActionDone()) {
-			fireProcessChanged(SearchStateEnum.DONE, null);
+			break;
+		case BUILD_INDEX:
+
+			break;
+		case CHECKING_EPISODES:
+
+			break;
+		case DONE:
+
+			break;
+		case ERROR:
+
+			break;
+		case IDLE:
+
+			break;
+		default:
+			break;
 		}
 	}
 
 	@Override
-	public void buildEpisodeIndex(final CategoryDTO category) {
-		fireProcessChanged(SearchStateEnum.BUILD_INDEX, category.getName());
+	public void update(final RetreiveEvent event) {
+		switch (event.getState()) {
+		case BUILD_INDEX:
+
+			break;
+		case DOWNLOAD_FAILED:
+			getModel().getProgressionModel().updateActionProgress(event.getEpisode(), EpisodeStateEnum.DOWNLOAD_FAILED, event.getException().getMessage(), "");
+			break;
+		case DOWNLOADED:
+			getModel().getProgressionModel().updateActionProgress(event.getEpisode(), EpisodeStateEnum.DOWNLOADED, "", "");
+			break;
+		case DOWNLOADING:
+			getModel().getProgressionModel().updateActionProgress(event.getEpisode(), EpisodeStateEnum.DOWNLOADING, "", event.getProgress());
+			break;
+		case EXPORT_FAILED:
+			getModel().getProgressionModel().updateActionProgress(event.getEpisode(), EpisodeStateEnum.EXPORT_FAILED, event.getOperation(), "");
+			break;
+		case EXPORTING:
+			getModel().getProgressionModel().updateActionProgress(event.getEpisode(), EpisodeStateEnum.EXPORTING, event.getOperation(), event.getProgress());
+			break;
+		case FAILED:
+
+			break;
+		case READY:
+			getModel().getProgressionModel().updateActionProgress(event.getEpisode(), EpisodeStateEnum.READY, "", "");
+			break;
+		case TO_DOWNLOAD:
+
+			break;
+		case TO_EXPORT:
+
+			break;
+		default:
+			break;
+		}
 	}
 
 	@Override
-	public void episodeToDownload(final EpisodeDTO episode) {
-		getModel().getProgressionModel().updateActionProgress(episode, EpisodeStateEnum.TO_DOWNLOAD, "", "");
-		fireEpisodeChanged(EpisodeStateEnum.TO_DOWNLOAD, episode);
-	}
+	public void update(final SearchCategoryEvent event) {
+		switch (event.getState()) {
+		case BUILDING_CATEGORIES:
 
-	@Override
-	public void downloadedEpisode(final EpisodeDTO episode) {
-		getModel().getProgressionModel().updateActionProgress(episode, EpisodeStateEnum.DOWNLOADED, "", "");
-	}
+			break;
+		case CATEGORIES_BUILD:
 
-	@Override
-	public void downloadFailed(final EpisodeDTO episode, final ExecutorFailedException exception) {
-		getModel().getProgressionModel().updateActionProgress(episode, EpisodeStateEnum.DOWNLOAD_FAILED, exception.getMessage(), "");
-		fireEpisodeChanged(EpisodeStateEnum.DOWNLOAD_FAILED, episode);
-	}
+			break;
+		case DONE:
 
-	@Override
-	public void exportEpisode(final EpisodeDTO episode, final Exporter exporter, final String progression) {
-		getModel().getProgressionModel().updateActionProgress(episode, EpisodeStateEnum.EXPORTING, exporter.getOutput(), progression);
-	}
+			break;
+		case ERROR:
 
-	@Override
-	public void exportFailed(final EpisodeDTO episode, final Exporter exporter, final ExecutorFailedException exception) {
-		getModel().getProgressionModel().updateActionProgress(episode, EpisodeStateEnum.EXPORT_FAILED, exporter.getOutput(), "");
-		fireEpisodeChanged(EpisodeStateEnum.EXPORT_FAILED, episode);
-	}
+			break;
+		case IDLE:
 
-	@Override
-	public void providerDownloadCheckStarted(final PluginProviderInterface provider) {
-		fireProcessChanged(SearchStateEnum.CHECKING_EPISODES, provider.getName());
-	}
-
-	@Override
-	public void providerDownloadCheckDone(final PluginProviderInterface provider) {
-
-	}
-
-	@Override
-	public void episodeReady(final EpisodeDTO episode) {
-		getModel().getProgressionModel().updateActionProgress(episode, EpisodeStateEnum.READY, "", "");
-		fireEpisodeChanged(EpisodeStateEnum.READY, episode);
-		if (getModel().getProgressionModel().isAllActionDone()) {
-			fireProcessChanged(SearchStateEnum.DONE, null);
+			break;
+		default:
+			break;
 		}
 	}
 
@@ -151,6 +128,6 @@ public class TrayController {
 	}
 
 	public void reloadConfig() {
-		getModel().reloadConfig();
+		getModel().reloadGrabConfig();
 	}
 }
