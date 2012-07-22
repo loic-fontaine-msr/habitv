@@ -1,10 +1,11 @@
 package com.dabi.habitv.exporter.ffmpeg;
 
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.dabi.habitv.framework.plugin.api.CmdProgressionListener;
 import com.dabi.habitv.framework.plugin.utils.CmdExecutor;
+import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
 
 public class FFMPEGCmdExecutor extends CmdExecutor {
 
@@ -29,7 +30,7 @@ public class FFMPEGCmdExecutor extends CmdExecutor {
 		// si recherche fructueuse
 		if (hasMatched && duration != null) {
 			final long currentDuration = Double.valueOf(Double.parseDouble(matcher.group(matcher.groupCount()))).longValue();
-			ret = String.valueOf((currentDuration * 100 / duration));
+			ret = String.valueOf((currentDuration * PERCENTAGE / duration));
 		}
 		return ret;
 	}
@@ -49,7 +50,7 @@ public class FFMPEGCmdExecutor extends CmdExecutor {
 			final long hours = Long.valueOf(durationSplitted[0]);
 			final long minutes = Long.valueOf(durationSplitted[1]);
 			final long seconds = Double.valueOf(durationSplitted[2]).longValue();
-			ret = hours * 60 * 60 + minutes * 60 + seconds;
+			ret = TimeUnit.SECONDS.convert(hours, TimeUnit.HOURS) + TimeUnit.SECONDS.convert(minutes, TimeUnit.MINUTES) + seconds;
 		}
 		return ret;
 	}
