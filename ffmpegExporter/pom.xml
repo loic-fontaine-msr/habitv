@@ -48,4 +48,5 @@
 		</plugins>
 	</build>
 	<version>1.0</version>
+	<groupId>com.dabi.habitv</groupId>
 </project>
