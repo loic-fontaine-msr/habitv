@@ -1,4 +1,4 @@
-package com.dabi.habitv.tray.controller;
+package com.dabi.habitv.tray.subscriber;
 
 import com.dabi.habitv.core.event.RetreiveEvent;
 import com.dabi.habitv.core.event.SearchCategoryEvent;
