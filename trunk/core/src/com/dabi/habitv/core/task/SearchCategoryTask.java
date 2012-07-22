@@ -1,6 +1,6 @@
 package com.dabi.habitv.core.task;
 
-import com.dabi.habitv.framework.plugin.api.PluginProviderInterface;
+import com.dabi.habitv.framework.plugin.api.provider.PluginProviderInterface;
 
 public final class SearchCategoryTask extends AbstractTask<SearchCategoryResult> {
 

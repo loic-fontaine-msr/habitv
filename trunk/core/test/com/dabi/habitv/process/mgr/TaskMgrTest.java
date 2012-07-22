@@ -13,6 +13,7 @@ import org.junit.Test;
 
 import com.dabi.habitv.core.task.AbstractTask;
 import com.dabi.habitv.core.task.TaskMgr;
+import com.dabi.habitv.core.task.TaskMgrListener;
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
 
 public class TaskMgrTest {

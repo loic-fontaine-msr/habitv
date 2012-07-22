@@ -16,4 +16,8 @@ public final class HabitTvConf {
 
 	public static final Integer DEFAULT_POOL_SIZE = 2;
 
+	public static final long DEFAULT_DEMON_TIME_SEC = 1800;
+
+	public static final int CUT_SIZE = 40;
+
 }

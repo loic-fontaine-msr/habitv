@@ -16,10 +16,10 @@ import com.dabi.habitv.core.publisher.Publisher;
 import com.dabi.habitv.core.task.SearchCategoryResult;
 import com.dabi.habitv.core.task.SearchCategoryTask;
 import com.dabi.habitv.core.task.TaskMgr;
-import com.dabi.habitv.framework.plugin.api.PluginProviderInterface;
+import com.dabi.habitv.core.task.TaskMgrListener;
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
+import com.dabi.habitv.framework.plugin.api.provider.PluginProviderInterface;
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
-import com.dabi.habitv.process.mgr.TaskMgrListener;
 
 public class CategoryManager extends AbstractManager {
 

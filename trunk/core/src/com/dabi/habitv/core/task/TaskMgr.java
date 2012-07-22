@@ -9,9 +9,10 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
-import com.dabi.habitv.process.mgr.TaskMgrListener;
 
 public class TaskMgr<T extends AbstractTask<R>, R> {
+
+	private static final int DEFAULT_KEEP_ALIVE_TIME_SEC = 10;
 
 	private static final String DEFAULT = "default";
 
@@ -34,15 +35,16 @@ public class TaskMgr<T extends AbstractTask<R>, R> {
 	public Future<R> addTask(final T task, final String category) {
 		ExecutorService executorService = category2ExecutorService.get(category);
 		if (executorService == null) {
-			executorService = initExecutor(category);
+			executorService = initExecutor();
 			category2ExecutorService.put(category, executorService);
 		}
 		task.addedTo(category);
 		return executorService.submit(task);
 	}
 
-	private ExecutorService initExecutor(final String category) {
-		return new ThreadPoolExecutor(poolSize, poolSize, 10, TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(10)) {
+	private ExecutorService initExecutor() {
+		return new ThreadPoolExecutor(poolSize, poolSize, DEFAULT_KEEP_ALIVE_TIME_SEC, TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(
+				DEFAULT_KEEP_ALIVE_TIME_SEC)) {
 
 			@Override
 			public void afterExecute(final Runnable r, final Throwable t) {

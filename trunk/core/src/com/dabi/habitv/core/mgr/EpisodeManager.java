@@ -15,12 +15,12 @@ import com.dabi.habitv.core.task.RetreiveTask;
 import com.dabi.habitv.core.task.SearchTask;
 import com.dabi.habitv.core.task.TaskAdder;
 import com.dabi.habitv.core.task.TaskMgr;
+import com.dabi.habitv.core.task.TaskMgrListener;
 import com.dabi.habitv.core.task.TaskTypeEnum;
-import com.dabi.habitv.framework.plugin.api.PluginProviderInterface;
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
 import com.dabi.habitv.framework.plugin.api.dto.DownloaderDTO;
 import com.dabi.habitv.framework.plugin.api.dto.ExporterDTO;
-import com.dabi.habitv.process.mgr.TaskMgrListener;
+import com.dabi.habitv.framework.plugin.api.provider.PluginProviderInterface;
 
 public final class EpisodeManager extends AbstractManager implements TaskAdder {
 
@@ -41,7 +41,7 @@ public final class EpisodeManager extends AbstractManager implements TaskAdder {
 	private final Publisher<SearchEvent> searchPublisher;
 
 	public EpisodeManager(final DownloaderDTO downloader, final ExporterDTO exporter, final Collection<PluginProviderInterface> collection,
-			final String exporterPLuginDir, final Map<String, Integer> taskName2PoolSize) {
+			final Map<String, Integer> taskName2PoolSize) {
 		super(collection);
 
 		// task mgrs
