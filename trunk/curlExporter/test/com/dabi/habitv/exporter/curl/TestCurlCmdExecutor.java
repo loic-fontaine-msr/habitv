@@ -3,8 +3,8 @@ package com.dabi.habitv.exporter.curl;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.dabi.habitv.framework.plugin.api.CmdProgressionListener;
 import com.dabi.habitv.framework.plugin.exception.ExecutorFailedException;
+import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
 
 public class TestCurlCmdExecutor {
 
