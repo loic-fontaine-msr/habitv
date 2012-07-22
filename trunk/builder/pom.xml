@@ -15,7 +15,7 @@
 
 	<modules>
 		<module>../framework</module>	
-		<module>../habiTv</module>
+		<module>../core</module>
 		<module>../canalPlus</module>
 		<module>../m6</module>
 		<!-- <module>../soirFoot</module> -->
@@ -30,6 +30,8 @@
 		<module>../curlExporter</module>
 		<module>../rtmpDumpDownloader</module>
 		<module>../RSSProvider</module>
+		<module>../consoleView</module>
+		<module>../trayView</module>
 	</modules>
 
 	<build>
