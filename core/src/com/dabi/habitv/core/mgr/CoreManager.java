@@ -13,13 +13,13 @@ import com.dabi.habitv.config.entities.Exporter;
 import com.dabi.habitv.config.entities.SimultaneousTaskNumber;
 import com.dabi.habitv.core.dao.GrabConfigDAO;
 import com.dabi.habitv.core.plugin.PluginFactory;
-import com.dabi.habitv.framework.plugin.api.PluginDownloaderInterface;
-import com.dabi.habitv.framework.plugin.api.PluginExporterInterface;
-import com.dabi.habitv.framework.plugin.api.PluginProviderInterface;
+import com.dabi.habitv.framework.plugin.api.downloader.PluginDownloaderInterface;
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
 import com.dabi.habitv.framework.plugin.api.dto.DownloaderDTO;
 import com.dabi.habitv.framework.plugin.api.dto.ExportDTO;
 import com.dabi.habitv.framework.plugin.api.dto.ExporterDTO;
+import com.dabi.habitv.framework.plugin.api.exporter.PluginExporterInterface;
+import com.dabi.habitv.framework.plugin.api.provider.PluginProviderInterface;
 import com.dabi.habitv.grabconfig.entities.GrabConfig;
 
 public final class CoreManager {
@@ -49,7 +49,7 @@ public final class CoreManager {
 
 	public CategoryManager getCategoryManager() {
 		if (categoryManager == null) {
-			categoryManager = initCategoryManager(providerList, buildTaskName2PoolSizeMap);
+			categoryManager = new CategoryManager(providerList, buildTaskName2PoolSizeMap);
 		}
 		return categoryManager;
 	}
@@ -60,11 +60,6 @@ public final class CoreManager {
 			taskName2PoolSizeMap.put(simultaneousTaskNumber.getTaskName(), simultaneousTaskNumber.getSize());
 		}
 		return taskName2PoolSizeMap;
-	}
-
-	private CategoryManager initCategoryManager(final Collection<PluginProviderInterface> pluginProviderList, final Map<String, Integer> taskName2PoolSize) {
-		final CategoryManager categoryManager = new CategoryManager(pluginProviderList, taskName2PoolSize);
-		return categoryManager;
 	}
 
 	private List<ExportDTO> buildExporterListDTO(final List<Exporter> exporterList) {
@@ -80,7 +75,7 @@ public final class CoreManager {
 
 	public EpisodeManager getEpisodeManager() {
 		if (episodeManager == null) {
-			episodeManager = initEpisodeManager(providerList, config.getExporterPluginDir(), buildTaskName2PoolSizeMap);
+			initEpisodeManager(providerList, buildTaskName2PoolSizeMap);
 		}
 		return episodeManager;
 	}
@@ -93,8 +88,7 @@ public final class CoreManager {
 		return downloaderName2BinPath;
 	}
 
-	private EpisodeManager initEpisodeManager(final Collection<PluginProviderInterface> collection, final String exporterPluginDir,
-			final Map<String, Integer> taskName2PoolSize) {
+	private void initEpisodeManager(final Collection<PluginProviderInterface> collection, final Map<String, Integer> taskName2PoolSize) {
 		// downloaders factory
 		final PluginFactory<PluginDownloaderInterface> pluginDownloaderFactory = new PluginFactory<>(PluginDownloaderInterface.class,
 				config.getDownloaderPluginDir());
@@ -112,8 +106,7 @@ public final class CoreManager {
 		final ExporterDTO exporter = new ExporterDTO(exporterName2exporter, buildExporterListDTO(config.getExporter()));
 
 		// manager
-		final EpisodeManager episodeManager = new EpisodeManager(downloader, exporter, collection, exporterPluginDir, taskName2PoolSize);
-		return episodeManager;
+		episodeManager = new EpisodeManager(downloader, exporter, collection, taskName2PoolSize);
 	}
 
 	public void retreiveEpisode() {

@@ -34,7 +34,11 @@ public final class SearchEvent extends AbstractEvent {
 	}
 
 	public SearchEvent(final SearchStateEnum state, final Throwable throwable) {
-		this(state);
+		super(throwable);
+		channel = null;
+		category = null;
+		this.state = state;
+		info = null;
 	}
 
 	public String getChannel() {

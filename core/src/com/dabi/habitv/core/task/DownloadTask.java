@@ -3,15 +3,15 @@ package com.dabi.habitv.core.task;
 import com.dabi.habitv.core.dao.DownloadedDAO;
 import com.dabi.habitv.core.event.EpisodeStateEnum;
 import com.dabi.habitv.core.event.RetreiveEvent;
-import com.dabi.habitv.core.mgr.TokenReplacer;
 import com.dabi.habitv.core.publisher.Publisher;
-import com.dabi.habitv.framework.plugin.api.CmdProgressionListener;
-import com.dabi.habitv.framework.plugin.api.PluginProviderInterface;
+import com.dabi.habitv.core.token.TokenReplacer;
 import com.dabi.habitv.framework.plugin.api.dto.DownloaderDTO;
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
+import com.dabi.habitv.framework.plugin.api.provider.PluginProviderInterface;
 import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.framework.plugin.exception.ExecutorFailedException;
 import com.dabi.habitv.framework.plugin.exception.NoSuchDownloaderException;
+import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
 
 public class DownloadTask extends AbstractEpisodeTask {
 

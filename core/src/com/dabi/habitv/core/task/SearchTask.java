@@ -8,11 +8,11 @@ import com.dabi.habitv.core.event.RetreiveEvent;
 import com.dabi.habitv.core.event.SearchEvent;
 import com.dabi.habitv.core.event.SearchStateEnum;
 import com.dabi.habitv.core.publisher.Publisher;
-import com.dabi.habitv.framework.plugin.api.PluginProviderInterface;
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
 import com.dabi.habitv.framework.plugin.api.dto.DownloaderDTO;
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
 import com.dabi.habitv.framework.plugin.api.dto.ExporterDTO;
+import com.dabi.habitv.framework.plugin.api.provider.PluginProviderInterface;
 import com.dabi.habitv.utils.FilterUtils;
 
 public final class SearchTask extends AbstractTask<Object> {
@@ -72,7 +72,7 @@ public final class SearchTask extends AbstractTask<Object> {
 		return null;
 	}
 
-	private void findEpisodeByCategories(final List<CategoryDTO> categoryDTOs2) {
+	private void findEpisodeByCategories(final List<CategoryDTO> categoryDTOs) {
 		for (final CategoryDTO category : categoryDTOs) {
 			if (!category.getSubCategories().isEmpty()) {
 				findEpisodeByCategories(category.getSubCategories());

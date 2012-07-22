@@ -4,7 +4,7 @@ import java.util.Collection;
 
 import org.apache.log4j.Logger;
 
-import com.dabi.habitv.framework.plugin.api.PluginProviderInterface;
+import com.dabi.habitv.framework.plugin.api.provider.PluginProviderInterface;
 
 public abstract class AbstractManager {
 

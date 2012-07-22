@@ -2,13 +2,13 @@ package com.dabi.habitv.core.task;
 
 import com.dabi.habitv.core.event.EpisodeStateEnum;
 import com.dabi.habitv.core.event.RetreiveEvent;
-import com.dabi.habitv.core.mgr.TokenReplacer;
 import com.dabi.habitv.core.publisher.Publisher;
-import com.dabi.habitv.framework.plugin.api.CmdProgressionListener;
-import com.dabi.habitv.framework.plugin.api.PluginExporterInterface;
+import com.dabi.habitv.core.token.TokenReplacer;
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
 import com.dabi.habitv.framework.plugin.api.dto.ExportDTO;
+import com.dabi.habitv.framework.plugin.api.exporter.PluginExporterInterface;
 import com.dabi.habitv.framework.plugin.exception.ExportFailedException;
+import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
 
 public class ExportTask extends AbstractEpisodeTask {
 

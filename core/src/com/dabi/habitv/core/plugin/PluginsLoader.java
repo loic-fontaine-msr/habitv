@@ -18,6 +18,10 @@ import com.dabi.habitv.framework.plugin.exception.TechnicalException;
 
 public class PluginsLoader<P extends PluginBase> {
 
+	private static final String CLASS_EXTENSION = ".class";
+
+	private static final int CLASS_EXTENSION_SIZE = CLASS_EXTENSION.length();
+
 	private final List<File> files;
 
 	private final List<Plugin> classPluginProviders;
@@ -25,14 +29,23 @@ public class PluginsLoader<P extends PluginBase> {
 	private final Class<P> pluginInterface;
 
 	private class Plugin {
+		private final Class<P> classPluginProvider;
+		private final ClassLoader classLoaders;
+
 		public Plugin(final Class<P> classPluginProvider, final ClassLoader classLoaders) {
 			super();
 			this.classPluginProvider = classPluginProvider;
 			this.classLoaders = classLoaders;
 		}
 
-		final Class<P> classPluginProvider;
-		final ClassLoader classLoaders;
+		public Class<P> getClassPluginProvider() {
+			return classPluginProvider;
+		}
+
+		public ClassLoader getClassLoaders() {
+			return classLoaders;
+		}
+
 	}
 
 	public PluginsLoader(final Class<P> pluginInterface, final File[] files) {
@@ -49,10 +62,10 @@ public class PluginsLoader<P extends PluginBase> {
 		this.initializeLoader();
 
 		final List<P> tmpPlugins = new ArrayList<>(this.classPluginProviders.size());
-		for (Plugin plugin : this.classPluginProviders) {
+		for (final Plugin plugin : this.classPluginProviders) {
 			try {
-				final P pluginProviderInterface = plugin.classPluginProvider.newInstance();
-				pluginProviderInterface.setClassLoader(plugin.classLoaders);
+				final P pluginProviderInterface = plugin.getClassPluginProvider().newInstance();
+				pluginProviderInterface.setClassLoader(plugin.getClassLoaders());
 				tmpPlugins.add(pluginProviderInterface);
 			} catch (InstantiationException | IllegalAccessException e) {
 				throw new TechnicalException(e);
@@ -73,7 +86,7 @@ public class PluginsLoader<P extends PluginBase> {
 			return;
 		}
 
-		for (File file : this.files) {
+		for (final File file : this.files) {
 			if (!file.exists()) {
 				break;
 			}
@@ -112,8 +125,8 @@ public class PluginsLoader<P extends PluginBase> {
 
 			// On vérifie que le fichier courant est un .class (et pas un
 			// fichier d'informations du jar )
-			if (tmp.length() > 6 && tmp.substring(tmp.length() - 6).compareTo(".class") == 0) {
-				tmpClass = getClass(tmp.substring(0, tmp.length() - 6).replaceAll("/", "."), loader);
+			if (tmp.length() > CLASS_EXTENSION_SIZE && tmp.substring(tmp.length() - CLASS_EXTENSION_SIZE).compareTo(CLASS_EXTENSION) == 0) {
+				tmpClass = getClass(tmp.substring(0, tmp.length() - CLASS_EXTENSION_SIZE).replaceAll("/", "."), loader);
 				for (int i = 0; i < tmpClass.getInterfaces().length; i++) {
 
 					// Une classe ne doit pas appartenir à deux catégories
@@ -136,7 +149,7 @@ public class PluginsLoader<P extends PluginBase> {
 			@SuppressWarnings("unchecked")
 			final Class<P> forName = (Class<P>) Class.forName(tmp, true, loader);
 			tmpClass = forName;
-		} catch (ClassNotFoundException e) {
+		} catch (final ClassNotFoundException e) {
 			throw new TechnicalException(e);
 		}
 		return tmpClass;
@@ -146,7 +159,7 @@ public class PluginsLoader<P extends PluginBase> {
 		JarFile jar;
 		try {
 			jar = new JarFile(file.getAbsolutePath());
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			throw new TechnicalException(e);
 		}
 		return jar;
@@ -156,7 +169,7 @@ public class PluginsLoader<P extends PluginBase> {
 		URL url;
 		try {
 			url = file.toURI().toURL();
-		} catch (MalformedURLException e) {
+		} catch (final MalformedURLException e) {
 			throw new TechnicalException(e);
 		}
 		return url;
