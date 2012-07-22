@@ -1,9 +1,9 @@
 package com.dabi.habitv.exporter.curl;
 
-import com.dabi.habitv.framework.plugin.api.CmdProgressionListener;
-import com.dabi.habitv.framework.plugin.api.PluginExporterInterface;
+import com.dabi.habitv.framework.plugin.api.exporter.PluginExporterInterface;
 import com.dabi.habitv.framework.plugin.exception.ExecutorFailedException;
 import com.dabi.habitv.framework.plugin.exception.ExportFailedException;
+import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
 
 public class CurlPluginManager implements PluginExporterInterface {
 
