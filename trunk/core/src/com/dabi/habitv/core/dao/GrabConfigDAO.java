@@ -18,7 +18,6 @@ import org.apache.log4j.Logger;
 
 import com.dabi.habitv.core.config.ConfigAccess;
 import com.dabi.habitv.core.config.HabitTvConf;
-import com.dabi.habitv.core.mgr.EpisodeManager;
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
 import com.dabi.habitv.framework.plugin.exception.InvalidCategoryException;
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
@@ -28,7 +27,7 @@ import com.dabi.habitv.grabconfig.entities.GrabConfig;
 
 public class GrabConfigDAO {
 
-	private static final Logger LOGGER = Logger.getLogger(EpisodeManager.class);
+	private static final Logger LOGGER = Logger.getLogger(GrabConfigDAO.class);
 
 	public void saveGrabConfig(final Map<String, Set<CategoryDTO>> channel2Categories) {
 		final GrabConfig config = new GrabConfig();
