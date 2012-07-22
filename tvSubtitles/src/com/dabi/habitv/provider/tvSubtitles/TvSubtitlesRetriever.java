@@ -42,7 +42,7 @@ public final class TvSubtitlesRetriever {
 									&& segment2.getChildElements().get(0).getAllStartTags("div title").size() > 0) {
 								final String language = segment2.getChildElements().get(0).getChildElements().get(0).getAttributeValue("title");
 								String epName = segment2.getChildElements().get(0).getChildElements().get(0).getChildElements().get(1).getContent().toString();
-								epName = epName.substring(epName.lastIndexOf(">") + 1, epName.length());
+								epName = epName.substring(epName.lastIndexOf('>') + 1, epName.length());
 								if (language != null && (language.contains(TvSubtitlesConf.LANGUAGE) || language.contains(TvSubtitlesConf.LANGUAGE2))) {
 									final String dlUrl = segment2.getChildElements().get(0).getAttributeValue("href");
 									final Source source3 = new Source(new URL(TvSubtitlesConf.HOME_URL + dlUrl));
