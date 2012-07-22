@@ -3,8 +3,8 @@ package com.dabi.habitv.downloader.aria2;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.dabi.habitv.framework.plugin.api.CmdProgressionListener;
 import com.dabi.habitv.framework.plugin.utils.CmdExecutor;
+import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
 
 public class Aria2CmdExecutor extends CmdExecutor {
 
