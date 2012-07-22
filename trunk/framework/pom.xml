@@ -53,4 +53,5 @@
 		</plugins>
 	</build>
 
+	<groupId>com.dabi.habitv</groupId>
 </project>

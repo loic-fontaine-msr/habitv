@@ -7,13 +7,14 @@ import java.io.InputStreamReader;
 
 import org.apache.log4j.Logger;
 
-import com.dabi.habitv.framework.plugin.api.CmdProgressionListener;
 import com.dabi.habitv.framework.plugin.exception.ExecutorFailedException;
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
 
 public class CmdExecutor {
 
 	private static final Logger LOG = Logger.getLogger(CmdExecutor.class);
+
+	protected static final int PERCENTAGE = 100;
 
 	private final String cmd;
 
@@ -49,7 +50,7 @@ public class CmdExecutor {
 			outputThread.join();
 			errorThread.join();
 		} catch (final InterruptedException e) {
-			throw new ExecutorFailedException(cmd, fullOutput.toString());
+			throw new ExecutorFailedException(cmd, fullOutput.toString(), e);
 		} finally {
 			if (process != null) {
 				ProcessingThread.removeProcessing(process);
@@ -57,7 +58,7 @@ public class CmdExecutor {
 		}
 
 		if (process.exitValue() != 0 || (getLastOutputLine() != null && !isSuccess(fullOutput.toString()))) {
-			throw new ExecutorFailedException(cmd, fullOutput.toString());
+			throw new ExecutorFailedException(cmd, fullOutput.toString(), null);
 		}
 	}
 
@@ -65,7 +66,7 @@ public class CmdExecutor {
 		try {
 			return Runtime.getRuntime().exec(cmd);
 		} catch (final IOException e) {
-			throw new ExecutorFailedException(cmd, e.getMessage());
+			throw new ExecutorFailedException(cmd, e.getMessage(), e);
 		}
 	}
 
@@ -79,7 +80,8 @@ public class CmdExecutor {
 					try {
 						long lastTime = 0;
 						while ((line = reader.readLine()) != null) {
-							fullOutput.append(line + "\n");
+							fullOutput.append(line);
+							fullOutput.append("\n");
 							lastOutputLine = line;
 							final String handledLine = handleProgression(line);
 							LOG.debug(line);

@@ -13,23 +13,23 @@ public final class ProcessingThread {
 
 	}
 
-	private static final List<Process> processingList = Collections.synchronizedList(new LinkedList<Process>());
+	private static final List<Process> PROCESSING_LIST = Collections.synchronizedList(new LinkedList<Process>());
 
 	public static void addProcessing(final Process process) {
 		if (!blocker) {
-			processingList.add(process);
+			PROCESSING_LIST.add(process);
 		}
 	}
 
 	public static void removeProcessing(final Process process) {
 		if (!blocker) {
-			processingList.remove(process);
+			PROCESSING_LIST.remove(process);
 		}
 	}
 
 	public static void killAllProcessing() {
 		blocker = true;
-		Iterator<Process> it = processingList.iterator();
+		Iterator<Process> it = PROCESSING_LIST.iterator();
 		while (it.hasNext()) {
 			it.next().destroy();
 		}

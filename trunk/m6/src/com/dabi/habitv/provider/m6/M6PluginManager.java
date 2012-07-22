@@ -4,14 +4,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import com.dabi.habitv.framework.plugin.api.CmdProgressionListener;
-import com.dabi.habitv.framework.plugin.api.PluginDownloaderInterface;
-import com.dabi.habitv.framework.plugin.api.PluginProviderInterface;
+import com.dabi.habitv.framework.plugin.api.downloader.PluginDownloaderInterface;
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
 import com.dabi.habitv.framework.plugin.api.dto.DownloaderDTO;
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
+import com.dabi.habitv.framework.plugin.api.provider.PluginProviderInterface;
 import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.framework.plugin.exception.NoSuchDownloaderException;
+import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
 import com.dabi.habitv.framework.plugin.utils.FrameworkConf;
 import com.dabi.habitv.framework.plugin.utils.RetrieverUtils;
 
@@ -56,7 +56,6 @@ public class M6PluginManager implements PluginProviderInterface {
 		final String tokenContent = RetrieverUtils.getUrlContent(M6Conf.TOKEN_URL + episode.getVideoUrl());
 		final String tokenParam = tokenContent.split("\\?")[1];
 		final String tokenParamNoLang = tokenParam.substring(0, tokenParam.indexOf("&lang="));
-		final String cmdParam = M6Conf.DUMP_CMD.replace("#TOKEN#", tokenParamNoLang);
-		return cmdParam;
+		return M6Conf.DUMP_CMD.replace("#TOKEN#", tokenParamNoLang);
 	}
 }

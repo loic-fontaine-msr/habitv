@@ -2,7 +2,7 @@ package com.dabi.habitv.framework.plugin.api.dto;
 
 import java.util.Map;
 
-import com.dabi.habitv.framework.plugin.api.PluginDownloaderInterface;
+import com.dabi.habitv.framework.plugin.api.downloader.PluginDownloaderInterface;
 import com.dabi.habitv.framework.plugin.exception.NoSuchDownloaderException;
 
 public final class DownloaderDTO {

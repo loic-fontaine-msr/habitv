@@ -26,6 +26,10 @@ import com.dabi.habitv.framework.plugin.exception.TechnicalException;
  */
 public final class RetrieverUtils {
 
+	private static final int BUFFER_SIZE = 16384;
+
+	private static final int URL_BUFFER_SIZE = 256;
+
 	private RetrieverUtils() {
 
 	}
@@ -65,7 +69,7 @@ public final class RetrieverUtils {
 			input = new Base64InputStream(new URL(url).openStream());
 
 			int nRead;
-			final byte[] data = new byte[16384];
+			final byte[] data = new byte[BUFFER_SIZE];
 			final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
 			while ((nRead = input.read(data, 0, data.length)) != -1) {
 				buffer.write(data, 0, nRead);
@@ -130,7 +134,7 @@ public final class RetrieverUtils {
 		final InputStream in = getInputStreamFromUrl(url);
 		final StringBuffer sb = new StringBuffer();
 
-		final byte[] buffer = new byte[256];
+		final byte[] buffer = new byte[URL_BUFFER_SIZE];
 
 		while (true) {
 			int byteRead;
