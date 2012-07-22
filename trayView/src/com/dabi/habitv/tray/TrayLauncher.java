@@ -4,7 +4,7 @@ import com.dabi.habitv.tray.controller.TrayController;
 import com.dabi.habitv.tray.model.HabitTvTrayModel;
 import com.dabi.habitv.tray.view.HabiTvTrayView;
 
-public class TrayLauncher {
+public final class TrayLauncher {
 
 	private TrayLauncher() {
 

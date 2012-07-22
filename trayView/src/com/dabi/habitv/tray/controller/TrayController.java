@@ -6,6 +6,7 @@ import com.dabi.habitv.core.event.SearchCategoryEvent;
 import com.dabi.habitv.core.event.SearchEvent;
 import com.dabi.habitv.framework.plugin.utils.ProcessingThread;
 import com.dabi.habitv.tray.model.HabitTvTrayModel;
+import com.dabi.habitv.tray.subscriber.CoreSubscriber;
 
 public class TrayController implements CoreSubscriber {
 

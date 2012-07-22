@@ -4,10 +4,11 @@ import java.util.Observable;
 
 import com.dabi.habitv.config.entities.Config;
 import com.dabi.habitv.core.config.ConfigAccess;
+import com.dabi.habitv.core.config.HabitTvConf;
 import com.dabi.habitv.core.mgr.CoreManager;
 import com.dabi.habitv.grabconfig.entities.GrabConfig;
-import com.dabi.habitv.tray.controller.CoreSubscriber;
-import com.dabi.habitv.tray.controller.SubscriberAdapter;
+import com.dabi.habitv.tray.subscriber.CoreSubscriber;
+import com.dabi.habitv.tray.subscriber.SubscriberAdapter;
 
 public class HabitTvTrayModel extends Observable {
 
@@ -46,7 +47,7 @@ public class HabitTvTrayModel extends Observable {
 				boolean interrupted = false;
 				final long confDemonTime;
 				if (config.getDemonTime() == null) {
-					confDemonTime = 1800;
+					confDemonTime = HabitTvConf.DEFAULT_DEMON_TIME_SEC;
 				} else {
 					confDemonTime = config.getDemonTime();
 				}

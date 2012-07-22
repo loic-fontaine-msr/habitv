@@ -13,9 +13,9 @@ import com.dabi.habitv.core.event.RetreiveEvent;
 import com.dabi.habitv.core.event.SearchCategoryEvent;
 import com.dabi.habitv.core.event.SearchEvent;
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
-import com.dabi.habitv.tray.controller.CoreSubscriber;
 import com.dabi.habitv.tray.controller.TrayController;
 import com.dabi.habitv.tray.model.ActionProgress;
+import com.dabi.habitv.tray.subscriber.CoreSubscriber;
 
 public final class HabiTvTrayView implements CoreSubscriber {
 

@@ -14,7 +14,7 @@ import com.dabi.habitv.core.config.ConfigAccess;
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
 import com.dabi.habitv.tray.controller.TrayController;
 
-public class TrayMenu extends PopupMenu {
+public final class TrayMenu extends PopupMenu {
 
 	private static final long serialVersionUID = -1363830194310131496L;
 
@@ -41,10 +41,10 @@ public class TrayMenu extends PopupMenu {
 		startItem.addActionListener(actionListener);
 		this.add(startItem);
 
-		Menu folderSection = buildFolderMenuSection();
+		final Menu folderSection = buildFolderMenuSection();
 		this.add(folderSection);
 
-		Menu configSection = buildConfigMenuSection();
+		final Menu configSection = buildConfigMenuSection();
 		this.add(configSection);
 
 		MenuItem item = new MenuItem("Clear");
@@ -70,7 +70,7 @@ public class TrayMenu extends PopupMenu {
 	}
 
 	private Menu buildConfigMenuSection() {
-		Menu section = new Menu("Config");
+		final Menu section = new Menu("Config");
 
 		MenuItem item = new MenuItem("System");
 		ActionListener actionListener = new ActionListener() {
@@ -102,12 +102,12 @@ public class TrayMenu extends PopupMenu {
 		};
 		item.addActionListener(actionListener);
 		section.add(item);
-		
+
 		return section;
 	}
 
 	private Menu buildFolderMenuSection() {
-		Menu section = new Menu("Folders");
+		final Menu section = new Menu("Folders");
 
 		MenuItem item = new MenuItem("Index Folder");
 		ActionListener actionListener = new ActionListener() {
@@ -133,27 +133,29 @@ public class TrayMenu extends PopupMenu {
 	}
 
 	public void openIndexFolder() {
-		Config config = controller.getModel().getConfig();
+		final Config config = controller.getModel().getConfig();
 		open(config.getIndexDir());
 	}
 
-	static void open(String toOpen) {
+	static void open(final String toOpen) {
 		try {
-			String canonicalPath = new File(toOpen).getCanonicalPath();
-			if (toOpen == null)
+			final String canonicalPath = new File(toOpen).getCanonicalPath();
+			if (toOpen == null) {
 				throw new NullPointerException();
-			if (!Desktop.isDesktopSupported())
+			}
+			if (!Desktop.isDesktopSupported()) {
 				return;
-			Desktop desktop = Desktop.getDesktop();
+			}
+			final Desktop desktop = Desktop.getDesktop();
 
 			desktop.open(new File(canonicalPath));
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			throw new TechnicalException(e);
 		}
 	}
 
 	public void openDownloaderFolder() {
-		Config config = controller.getModel().getConfig();
+		final Config config = controller.getModel().getConfig();
 		open(config.getDownloadOuput().substring(0, config.getDownloadOuput().indexOf("#")));
 	}
 
