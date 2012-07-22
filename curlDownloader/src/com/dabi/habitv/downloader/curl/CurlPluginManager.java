@@ -2,10 +2,10 @@ package com.dabi.habitv.downloader.curl;
 
 import java.util.Map;
 
-import com.dabi.habitv.framework.plugin.api.CmdProgressionListener;
-import com.dabi.habitv.framework.plugin.api.PluginDownloaderInterface;
+import com.dabi.habitv.framework.plugin.api.downloader.PluginDownloaderInterface;
 import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.framework.plugin.exception.ExecutorFailedException;
+import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
 import com.dabi.habitv.framework.plugin.utils.FrameworkConf;
 
 public class CurlPluginManager implements PluginDownloaderInterface {

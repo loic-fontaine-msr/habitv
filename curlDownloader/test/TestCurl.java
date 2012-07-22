@@ -1,6 +1,6 @@
 import com.dabi.habitv.downloader.curl.CurlCmdExecutor;
-import com.dabi.habitv.framework.plugin.api.CmdProgressionListener;
 import com.dabi.habitv.framework.plugin.exception.ExecutorFailedException;
+import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
 
 public final class TestCurl {
 
