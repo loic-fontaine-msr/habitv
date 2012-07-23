@@ -1,10 +1,14 @@
 package com.dabi.habitv.core.dao;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -13,10 +17,10 @@ import java.util.Set;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 
 import org.apache.log4j.Logger;
 
-import com.dabi.habitv.core.config.ConfigAccess;
 import com.dabi.habitv.core.config.HabitTvConf;
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
 import com.dabi.habitv.framework.plugin.exception.InvalidCategoryException;
@@ -24,10 +28,17 @@ import com.dabi.habitv.framework.plugin.exception.TechnicalException;
 import com.dabi.habitv.grabconfig.entities.Category;
 import com.dabi.habitv.grabconfig.entities.Channel;
 import com.dabi.habitv.grabconfig.entities.GrabConfig;
+import com.dabi.habitv.utils.FileUtils;
 
 public class GrabConfigDAO {
 
 	private static final Logger LOGGER = Logger.getLogger(GrabConfigDAO.class);
+	private final String grabConfigFile;
+
+	public GrabConfigDAO(final String grabConfigFile) {
+		super();
+		this.grabConfigFile = grabConfigFile;
+	}
 
 	public void saveGrabConfig(final Map<String, Set<CategoryDTO>> channel2Categories) {
 		final GrabConfig config = new GrabConfig();
@@ -64,15 +75,15 @@ public class GrabConfigDAO {
 		return category;
 	}
 
-	private static void marshal(final GrabConfig config) {
+	private void marshal(final GrabConfig config) {
 		final JAXBContext jaxbContext;
 		FileOutputStream inputFile = null;
 		try {
-			jaxbContext = JAXBContext.newInstance(ConfigAccess.GRAB_CONF_PACKAGE_NAME);
+			jaxbContext = JAXBContext.newInstance(HabitTvConf.GRAB_CONF_PACKAGE_NAME);
 			final Marshaller marshaller = jaxbContext.createMarshaller();
 			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
 			marshaller.setProperty(Marshaller.JAXB_ENCODING, HabitTvConf.ENCODING);
-			inputFile = new FileOutputStream(HabitTvConf.GRABCONFIG_XML_FILE);
+			inputFile = new FileOutputStream(grabConfigFile);
 			marshaller.marshal(config, inputFile);
 		} catch (JAXBException | FileNotFoundException e) {
 			throw new TechnicalException(e);
@@ -87,8 +98,8 @@ public class GrabConfigDAO {
 		}
 	}
 
-	private static List<CategoryDTO> buildCategoryListDTO(final String channelName, final List<Category> categories) {
-		final List<CategoryDTO> categoryDTOs = new ArrayList<>(categories.size());
+	private static Set<CategoryDTO> buildCategoryListDTO(final String channelName, final List<Category> categories) {
+		final Set<CategoryDTO> categoryDTOs = new HashSet<>(categories.size());
 		CategoryDTO categoryDTO;
 		for (final Category category : categories) {
 			categoryDTO = new CategoryDTO(channelName, category.getName(), category.getId(), category.getInclude(), category.getExclude(),
@@ -99,11 +110,36 @@ public class GrabConfigDAO {
 		return categoryDTOs;
 	}
 
-	public Map<String, List<CategoryDTO>> loadGrabConfig(final GrabConfig grabConfig) {
-		final Map<String, List<CategoryDTO>> channel2Category = new HashMap<>();
+	public GrabConfig unmarshal() {
+		GrabConfig grabConfig = null;
+		try {
+			final JAXBContext jaxbContext = JAXBContext.newInstance(HabitTvConf.GRAB_CONF_PACKAGE_NAME);
+			final Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+			FileUtils.setValidation(unmarshaller, HabitTvConf.GRAB_CONF_XSD);
+			grabConfig = ((GrabConfig) unmarshaller.unmarshal(new InputStreamReader(new FileInputStream(grabConfigFile), HabitTvConf.ENCODING)));
+		} catch (final JAXBException e) {
+			throw new TechnicalException(e);
+		} catch (final UnsupportedEncodingException e) {
+			throw new TechnicalException(e);
+		} catch (final FileNotFoundException e) {
+			// will return null
+		}
+		return grabConfig;
+	}
+
+	private Map<String, Set<CategoryDTO>> buildCategoryDTO(final GrabConfig grabConfig) {
+		final Map<String, Set<CategoryDTO>> channel2Category = new HashMap<>();
 		for (final Channel channel : grabConfig.getChannel()) {
 			channel2Category.put(channel.getName(), buildCategoryListDTO(channel.getName(), channel.getCategory()));
 		}
 		return channel2Category;
+	}
+
+	public Map<String, Set<CategoryDTO>> load() {
+		return buildCategoryDTO(unmarshal());
+	}
+
+	public boolean exist() {
+		return (new File(grabConfigFile)).exists();
 	}
 }

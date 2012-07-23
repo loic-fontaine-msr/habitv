@@ -11,7 +11,7 @@ public final class DownloaderDTO {
 
 	private final Map<String, String> downloaderName2BinPath;
 
-	private final String downloadOutputDir;
+	private final String downloadOutput;
 
 	private final String indexDir;
 
@@ -20,7 +20,7 @@ public final class DownloaderDTO {
 		super();
 		this.downloaderName2downloader = downloaderName2downloader;
 		this.downloaderName2BinPath = downloaderName2BinPath;
-		this.downloadOutputDir = downloadOutputDir;
+		this.downloadOutput = downloadOutputDir;
 		this.indexDir = indexDir;
 	}
 
@@ -36,8 +36,8 @@ public final class DownloaderDTO {
 		return downloaderName2BinPath.get(downloaderName);
 	}
 
-	public String getDownloadOutputDir() {
-		return downloadOutputDir;
+	public String getDownloadOutput() {
+		return downloadOutput;
 	}
 
 	public String getIndexDir() {

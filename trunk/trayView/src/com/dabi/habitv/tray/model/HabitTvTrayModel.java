@@ -5,8 +5,8 @@ import java.util.Observable;
 import com.dabi.habitv.config.entities.Config;
 import com.dabi.habitv.core.config.ConfigAccess;
 import com.dabi.habitv.core.config.HabitTvConf;
+import com.dabi.habitv.core.dao.GrabConfigDAO;
 import com.dabi.habitv.core.mgr.CoreManager;
-import com.dabi.habitv.grabconfig.entities.GrabConfig;
 import com.dabi.habitv.tray.subscriber.CoreSubscriber;
 import com.dabi.habitv.tray.subscriber.SubscriberAdapter;
 
@@ -16,15 +16,16 @@ public class HabitTvTrayModel extends Observable {
 
 	private final Config config = ConfigAccess.initConfig();
 
-	private GrabConfig grabConfig = ConfigAccess.initGrabConfig();
-
 	private final ProgressionModel progressionModel;
 
 	private Thread demonThread;
 
+	private final GrabConfigDAO grabConfigDAO;
+
 	public HabitTvTrayModel() {
 		super();
-		coreManager = new CoreManager(config, grabConfig);
+		grabConfigDAO = new GrabConfigDAO(HabitTvConf.GRABCONFIG_XML_FILE);
+		coreManager = new CoreManager(config, grabConfigDAO.load());
 		progressionModel = new ProgressionModel();
 	}
 
@@ -57,11 +58,10 @@ public class HabitTvTrayModel extends Observable {
 					if (interrupted) {
 						interrupted = false;
 					} else {
-						if (grabConfig == null) {
-							coreManager.findAndSaveCategory();
-							grabConfig = ConfigAccess.initGrabConfig();
-						} else {
+						if (grabConfigDAO.exist()) {
 							coreManager.retreiveEpisode();
+						} else {
+							grabConfigDAO.saveGrabConfig(coreManager.findCategory());
 						}
 					}
 					try {
@@ -102,9 +102,8 @@ public class HabitTvTrayModel extends Observable {
 		return config;
 	}
 
-	public void reloadGrabConfig() {
-		grabConfig = ConfigAccess.initGrabConfig();
-		coreManager.reloadGrabConfig(grabConfig);
+	public void loadGrabConfig() {
+		coreManager.reloadGrabConfig(grabConfigDAO.load());
 	}
 
 }

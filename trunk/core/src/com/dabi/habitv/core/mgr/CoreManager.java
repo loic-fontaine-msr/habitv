@@ -11,7 +11,6 @@ import com.dabi.habitv.config.entities.Config;
 import com.dabi.habitv.config.entities.Downloader;
 import com.dabi.habitv.config.entities.Exporter;
 import com.dabi.habitv.config.entities.SimultaneousTaskNumber;
-import com.dabi.habitv.core.dao.GrabConfigDAO;
 import com.dabi.habitv.core.plugin.PluginFactory;
 import com.dabi.habitv.framework.plugin.api.downloader.PluginDownloaderInterface;
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
@@ -20,7 +19,6 @@ import com.dabi.habitv.framework.plugin.api.dto.ExportDTO;
 import com.dabi.habitv.framework.plugin.api.dto.ExporterDTO;
 import com.dabi.habitv.framework.plugin.api.exporter.PluginExporterInterface;
 import com.dabi.habitv.framework.plugin.api.provider.PluginProviderInterface;
-import com.dabi.habitv.grabconfig.entities.GrabConfig;
 
 public final class CoreManager {
 
@@ -30,18 +28,15 @@ public final class CoreManager {
 
 	private final Config config;
 
-	private Map<String, List<CategoryDTO>> categoriesToGrab;
+	private Map<String, Set<CategoryDTO>> categoriesToGrab;
 
 	private final Collection<PluginProviderInterface> providerList;
 
 	private final Map<String, Integer> buildTaskName2PoolSizeMap;
 
-	private final GrabConfigDAO grabConfigDAO;
-
-	public CoreManager(final Config config, final GrabConfig grabConfig) {
+	public CoreManager(final Config config, final Map<String, Set<CategoryDTO>> categoriesToGrab) {
 		this.config = config;
-		grabConfigDAO = new GrabConfigDAO();
-		categoriesToGrab = grabConfigDAO.loadGrabConfig(grabConfig);
+		this.categoriesToGrab = categoriesToGrab;
 		final PluginFactory<PluginProviderInterface> pluginProviderFactory = new PluginFactory<>(PluginProviderInterface.class, config.getProviderPluginDir());
 		providerList = pluginProviderFactory.getAllPlugin();
 		buildTaskName2PoolSizeMap = buildTaskName2PoolSizeMap(config.getSimultaneousTaskNumber());
@@ -113,9 +108,8 @@ public final class CoreManager {
 		getEpisodeManager().retreiveEpisode(providerList, categoriesToGrab);
 	}
 
-	public void findAndSaveCategory() {
-		final Map<String, Set<CategoryDTO>> channel2Categories = getCategoryManager().findCategory();
-		grabConfigDAO.saveGrabConfig(channel2Categories);
+	public Map<String, Set<CategoryDTO>> findCategory() {
+		return getCategoryManager().findCategory();
 	}
 
 	public void forceEnd() {
@@ -127,8 +121,8 @@ public final class CoreManager {
 		}
 	}
 
-	public void reloadGrabConfig(final GrabConfig grabConfig) {
-		categoriesToGrab = grabConfigDAO.loadGrabConfig(grabConfig);
+	public void reloadGrabConfig(final Map<String, Set<CategoryDTO>> categoriesToGrab) {
+		this.categoriesToGrab = categoriesToGrab;
 	}
 
 }

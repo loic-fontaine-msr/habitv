@@ -129,6 +129,6 @@ public class TrayController implements CoreSubscriber {
 	}
 
 	public void reloadConfig() {
-		getModel().reloadGrabConfig();
+		getModel().loadGrabConfig();
 	}
 }

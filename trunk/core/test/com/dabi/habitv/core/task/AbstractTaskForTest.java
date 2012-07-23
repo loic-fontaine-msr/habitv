@@ -1,4 +1,4 @@
-package com.dabi.habitv.process.mgr;
+package com.dabi.habitv.core.task;
 
 import com.dabi.habitv.core.task.AbstractTask;
 

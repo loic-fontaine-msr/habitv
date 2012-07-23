@@ -64,13 +64,38 @@ public class DownloadTask extends AbstractEpisodeTask {
 
 	@Override
 	protected Object doCall() throws DownloadFailedException, NoSuchDownloaderException {
-		provider.download(TokenReplacer.replaceAll(downloader.getDownloadOutputDir(), getEpisode()), downloader, new CmdProgressionListener() {
+		provider.download(TokenReplacer.replaceAll(downloader.getDownloadOutput(), getEpisode()), downloader, new CmdProgressionListener() {
 			@Override
 			public void listen(final String progression) {
 				publisher.addNews(new RetreiveEvent(getEpisode(), EpisodeStateEnum.DOWNLOADING, progression));
 			}
 		}, getEpisode());
 		return null;
+	}
+
+	@Override
+	public int hashCode() {
+		return getEpisode().hashCode() + downloader.hashCode();
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		boolean ret;
+		if (obj instanceof DownloadTask) {
+			final DownloadTask downloadTask = (DownloadTask) obj;
+			ret = getEpisode().equals(downloadTask.getEpisode());
+			if (getCategory() != null) {
+				ret = ret && getCategory().equals(downloadTask.getCategory());
+			}
+		} else {
+			ret = false;
+		}
+		return ret;
+	}
+
+	@Override
+	public String toString() {
+		return getEpisode() + " " + provider.getName() + " " + downloader.getDownloadOutput();
 	}
 
 }

@@ -1,8 +1,8 @@
 package com.dabi.habitv.core.mgr;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.Future;
 
 import com.dabi.habitv.core.event.RetreiveEvent;
@@ -56,7 +56,7 @@ public final class EpisodeManager extends AbstractManager implements TaskAdder {
 		this.exporter = exporter;
 	}
 
-	public void retreiveEpisode(final Collection<PluginProviderInterface> providerList, final Map<String, List<CategoryDTO>> channel2Categories) {
+	public void retreiveEpisode(final Collection<PluginProviderInterface> providerList, final Map<String, Set<CategoryDTO>> channel2Categories) {
 		for (final PluginProviderInterface provider : providerList) {
 			// method must be asynchronous
 			searchMgr.addTask(new SearchTask(provider, channel2Categories.get(provider.getName()), this, searchPublisher, retreivePublisher, downloader,

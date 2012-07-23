@@ -4,9 +4,10 @@ import org.apache.log4j.Logger;
 
 import com.dabi.habitv.config.entities.Config;
 import com.dabi.habitv.core.config.ConfigAccess;
+import com.dabi.habitv.core.config.HabitTvConf;
+import com.dabi.habitv.core.dao.GrabConfigDAO;
 import com.dabi.habitv.core.mgr.CoreManager;
 import com.dabi.habitv.framework.plugin.utils.ProcessingThread;
-import com.dabi.habitv.grabconfig.entities.GrabConfig;
 
 public final class HabiTvLauncher {
 
@@ -18,9 +19,8 @@ public final class HabiTvLauncher {
 
 	public static void main(final String[] args) throws InterruptedException {
 		final Config config = ConfigAccess.initConfig();
-		final GrabConfig grabConfig = ConfigAccess.initGrabConfig();
-
-		final CoreManager coreManager = new CoreManager(config, grabConfig);
+		final GrabConfigDAO grabConfigDAO = new GrabConfigDAO(HabitTvConf.GRABCONFIG_XML_FILE);
+		final CoreManager coreManager = new CoreManager(config, grabConfigDAO.load());
 
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 
@@ -33,10 +33,7 @@ public final class HabiTvLauncher {
 
 		});
 
-		if (grabConfig == null) {
-			LOG.info("Génération des catégories à télécharger");
-			coreManager.findAndSaveCategory();
-		} else {
+		if (grabConfigDAO.exist()) {
 			if (config.getDemonTime() == null) {
 				coreManager.retreiveEpisode();
 			} else {
@@ -47,6 +44,9 @@ public final class HabiTvLauncher {
 					Thread.sleep(demonTime);
 				}
 			}
+		} else {
+			LOG.info("Génération des catégories à télécharger");
+			grabConfigDAO.saveGrabConfig(coreManager.findCategory());
 		}
 	}
 }
