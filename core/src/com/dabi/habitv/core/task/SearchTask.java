@@ -1,6 +1,6 @@
 package com.dabi.habitv.core.task;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.Set;
 
 import com.dabi.habitv.core.dao.DownloadedDAO;
@@ -19,7 +19,7 @@ public final class SearchTask extends AbstractTask<Object> {
 
 	private final PluginProviderInterface provider;
 
-	private final List<CategoryDTO> categoryDTOs;
+	private final Set<CategoryDTO> categoryDTOs;
 
 	private final TaskAdder taskAdder;
 
@@ -31,7 +31,7 @@ public final class SearchTask extends AbstractTask<Object> {
 
 	private final ExporterDTO exporter;
 
-	public SearchTask(final PluginProviderInterface provider, final List<CategoryDTO> categoryDTOs, final TaskAdder taskAdder,
+	public SearchTask(final PluginProviderInterface provider, final Set<CategoryDTO> categoryDTOs, final TaskAdder taskAdder,
 			final Publisher<SearchEvent> searchPublisher, final Publisher<RetreiveEvent> retreivePublisher, final DownloaderDTO downloader,
 			final ExporterDTO exporter) {
 		this.provider = provider;
@@ -72,7 +72,7 @@ public final class SearchTask extends AbstractTask<Object> {
 		return null;
 	}
 
-	private void findEpisodeByCategories(final List<CategoryDTO> categoryDTOs) {
+	private void findEpisodeByCategories(final Collection<CategoryDTO> categoryDTOs) {
 		for (final CategoryDTO category : categoryDTOs) {
 			if (!category.getSubCategories().isEmpty()) {
 				findEpisodeByCategories(category.getSubCategories());

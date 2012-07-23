@@ -60,4 +60,28 @@ public class ExportTask extends AbstractEpisodeTask {
 		return null;
 	}
 
+	@Override
+	public int hashCode() {
+		return getEpisode().hashCode() + export.hashCode() + export.hashCode() + publisher.hashCode();
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		boolean ret;
+		if (obj instanceof ExportTask) {
+			final ExportTask exportTask = (ExportTask) obj;
+			ret = getEpisode().equals(exportTask.getEpisode());
+			if (export.getCmd() != null) {
+				ret = ret && export.getCmd().equals(export.getCmd());
+			}
+		} else {
+			ret = false;
+		}
+		return ret;
+	}
+
+	@Override
+	public String toString() {
+		return getEpisode() + " " + export.getName() + " " + pluginExporter.getName();
+	}
 }

@@ -18,7 +18,7 @@ import com.dabi.habitv.core.config.HabitTvConf;
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
 import com.dabi.habitv.utils.FileUtils;
 
-public final class DownloadedDAO {
+public class DownloadedDAO {
 
 	private static final Logger LOG = Logger.getLogger(DownloadedDAO.class);
 
@@ -28,7 +28,7 @@ public final class DownloadedDAO {
 
 	private final String channelName;
 
-	private final boolean indexExist;
+	private boolean indexExist;
 
 	public DownloadedDAO(final String channelName, final String tvShow, final String indexDir) {
 		super();
@@ -55,9 +55,9 @@ public final class DownloadedDAO {
 		BufferedReader lecteurAvecBuffer = null;
 		String ligne;
 
-		Set<String> fileList = null;
+		final Set<String> fileList = new HashSet<>();
 		try {
-			fileList = new HashSet<>();
+
 			lecteurAvecBuffer = new BufferedReader(new InputStreamReader(new FileInputStream(getFileIndex()), HabitTvConf.ENCODING));
 			while ((ligne = lecteurAvecBuffer.readLine()) != null) {
 				fileList.add(ligne);
@@ -94,5 +94,10 @@ public final class DownloadedDAO {
 
 	public boolean isIndexCreated() {
 		return indexExist;
+	}
+
+	public void initIndex() {
+		(new File(getFileIndex())).delete();
+		indexExist = false;
 	}
 }

@@ -20,4 +20,8 @@ public final class HabitTvConf {
 
 	public static final int CUT_SIZE = 40;
 
+	public static final String GRAB_CONF_XSD = "grab-config.xsd";
+
+	public static final String GRAB_CONF_PACKAGE_NAME = "com.dabi.habitv.grabconfig.entities";
+
 }

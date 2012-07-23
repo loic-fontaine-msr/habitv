@@ -78,16 +78,15 @@ public class RetreiveTask extends AbstractEpisodeTask {
 	private void export(final List<ExportDTO> exporterList) throws InterruptedException, ExecutionException {
 		for (final ExportDTO export : exporterList) {
 			if (validCondition(export, getEpisode())) {
-
 				final PluginExporterInterface pluginexporter = exporter.getExporter(export.getName(), HabitTvConf.DEFAULT_EXPORTER);
 				final Future<Object> futureExport = taskAdder.addExportTask(new ExportTask(getEpisode(), export, pluginexporter, retreivePublisher),
 						export.getName());
+				// wait for the current exportTask before running an other
+				futureExport.get();// TODO timeout ?
 				// sub export tasks are run asynchronously
 				if (!export.getExporter().isEmpty()) {
 					export(export.getExporter());
 				}
-				// wait for the current exportTask before running an other
-				futureExport.get();// TODO timeout ?
 			}
 		}
 	}

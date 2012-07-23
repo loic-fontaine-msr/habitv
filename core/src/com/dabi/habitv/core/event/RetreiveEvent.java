@@ -49,4 +49,45 @@ public final class RetreiveEvent extends AbstractEvent {
 		return operation;
 	}
 
+	@Override
+	public int hashCode() {
+		int ret = getEpisode().hashCode();
+		if (getState() != null) {
+			ret += getState().hashCode();
+		}
+		if (getProgress() != null) {
+			ret += getProgress().hashCode();
+		}
+		if (getOperation() != null) {
+			ret += getOperation().hashCode();
+		}
+		return ret;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		boolean ret;
+		if (obj instanceof RetreiveEvent) {
+			final RetreiveEvent event = (RetreiveEvent) obj;
+			ret = getEpisode().equals(event.getEpisode());
+			if (getState() != null) {
+				ret = ret && getState().equals(event.getState());
+			}
+			if (getOperation() != null) {
+				ret = ret && getOperation().equals(event.getOperation());
+			}
+			if (getProgress() != null) {
+				ret = ret && getProgress().equals(event.getProgress());
+			}
+		} else {
+			ret = false;
+		}
+		return ret;
+	}
+
+	@Override
+	public String toString() {
+		return episode.toString() + "/" + getOperation() + "/" + getProgress() + "/" + getState();
+	}
+
 }

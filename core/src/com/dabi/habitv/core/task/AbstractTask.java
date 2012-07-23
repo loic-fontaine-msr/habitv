@@ -22,12 +22,12 @@ public abstract class AbstractTask<R> implements Callable<R> {
 		try {
 			started();
 			result = doCall();
+			ended();
+			done = true;
 		} catch (final Exception e) {
 			failed(e);
 			throw new TechnicalException(e);
 		}
-		ended();
-		done = true;
 		return result;
 	}
 
