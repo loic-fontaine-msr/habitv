@@ -1,6 +1,7 @@
 package com.dabi.habitv.core.task;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -95,7 +96,7 @@ public class ExportTaskTest {
 
 			@Override
 			public void update(final RetreiveEvent event) {
-				assertTrue(event.hashCode() > 0);
+				assertNotNull(event.hashCode());
 				assertEquals(event, event);
 				switch (i) {
 				case 0:
