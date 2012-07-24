@@ -10,7 +10,7 @@ public abstract class AbstractEpisodeTask extends AbstractTask<Object> {
 		this.episode = episode;
 	}
 
-	protected EpisodeDTO getEpisode() {
+	public EpisodeDTO getEpisode() {
 		return episode;
 	}
 

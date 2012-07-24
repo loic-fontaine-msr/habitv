@@ -41,7 +41,7 @@ public class CategoryManager extends AbstractManager {
 		// search is parallelized, the final result will be build with the
 		// future result
 		for (final PluginProviderInterface provider : getPluginProviderList()) {
-			futureList.add(searchCategoryMgr.addTask(new SearchCategoryTask(provider.getName(), provider)));
+			futureList.add(searchCategoryMgr.addTask(new SearchCategoryTask(provider.getName(), provider, searchCategoryPublisher)));
 		}
 		for (final Future<SearchCategoryResult> futureResult : futureList) {
 			try {

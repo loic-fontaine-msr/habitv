@@ -1,6 +1,5 @@
 package com.dabi.habitv.core.event;
 
-
 public abstract class AbstractEvent {
 
 	private Throwable exception;
@@ -25,10 +24,12 @@ public abstract class AbstractEvent {
 
 	@Override
 	public boolean equals(final Object obj) {
-		boolean ret;
+		boolean ret = true;
 		if (obj instanceof AbstractEvent) {
 			final AbstractEvent abstractEvent = (AbstractEvent) obj;
-			ret = getException().equals(abstractEvent.getException());
+			if (getException() != null) {
+				ret = getException().equals(abstractEvent.getException());
+			}
 		} else {
 			ret = false;
 		}
