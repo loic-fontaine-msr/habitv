@@ -15,7 +15,7 @@ import com.dabi.habitv.framework.plugin.api.dto.ExporterDTO;
 import com.dabi.habitv.framework.plugin.api.provider.PluginProviderInterface;
 import com.dabi.habitv.utils.FilterUtils;
 
-public final class SearchTask extends AbstractTask<Object> {
+public class SearchTask extends AbstractTask<Object> {
 
 	private final PluginProviderInterface provider;
 
@@ -45,7 +45,7 @@ public final class SearchTask extends AbstractTask<Object> {
 
 	@Override
 	protected void added() {
-		LOG.info("Wainting for Searching episode for " + getCategory());
+		LOG.info("Waiting for Searching episode for " + getCategory());
 	}
 
 	@Override
@@ -78,8 +78,8 @@ public final class SearchTask extends AbstractTask<Object> {
 				findEpisodeByCategories(category.getSubCategories());
 			} else {
 				// dao to find dowloaded episodes
-				final DownloadedDAO filesDAO = new DownloadedDAO(provider.getName(), category.getName(), downloader.getIndexDir());
-				if (!filesDAO.isIndexCreated()) {
+				final DownloadedDAO dlDAO = buildDownloadDAO(category.getName());
+				if (!dlDAO.isIndexCreated()) {
 					LOG.info("Creating index for " + getCategory());
 					searchPublisher.addNews(new SearchEvent(provider.getName(), category.getName(), SearchStateEnum.BUILD_INDEX));
 				}
@@ -88,18 +88,22 @@ public final class SearchTask extends AbstractTask<Object> {
 				// filter episode lister by include/exclude and already
 				// downloaded
 				episodeList = FilterUtils.filterByIncludeExcludeAndDownloaded(episodeList, category.getInclude(), category.getExclude(),
-						filesDAO.findDownloadedFiles());
+						dlDAO.findDownloadedFiles());
 				for (final EpisodeDTO episode : episodeList) {
-					if (filesDAO.isIndexCreated()) {
+					if (dlDAO.isIndexCreated()) {
 						// producer download the file
 						taskAdder.addRetreiveTask(new RetreiveTask(episode, retreivePublisher, taskAdder, exporter, provider, downloader));
 					} else {
 						// if index has not been created the first run will only
 						// fill this file
-						filesDAO.addDownloadedFiles(episode.getName());
+						dlDAO.addDownloadedFiles(episode.getName());
 					}
 				}
 			}
 		}
+	}
+
+	protected DownloadedDAO buildDownloadDAO(final String categoyName) {
+		return new DownloadedDAO(provider.getName(), categoyName, downloader.getIndexDir());
 	}
 }

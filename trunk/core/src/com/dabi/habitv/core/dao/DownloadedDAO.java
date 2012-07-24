@@ -24,16 +24,16 @@ public class DownloadedDAO {
 
 	private final String indexDir;
 
-	private final String tvShow;
+	private final String category;
 
 	private final String channelName;
 
 	private boolean indexExist;
 
-	public DownloadedDAO(final String channelName, final String tvShow, final String indexDir) {
+	public DownloadedDAO(final String channelName, final String category, final String indexDir) {
 		super();
 		this.indexDir = indexDir;
-		this.tvShow = tvShow;
+		this.category = category;
 		this.channelName = channelName;
 		final File indexDirectory = new File(indexDir);
 		if (indexDirectory.exists()) {
@@ -47,7 +47,7 @@ public class DownloadedDAO {
 	}
 
 	private String getFileIndex() {
-		return (indexDir + "/" + FileUtils.sanitizeFilename(channelName + "_" + tvShow + ".index"));
+		return (indexDir + "/" + FileUtils.sanitizeFilename(channelName + "_" + getCategory() + ".index"));
 	}
 
 	public Set<String> findDownloadedFiles() {
@@ -99,5 +99,9 @@ public class DownloadedDAO {
 	public void initIndex() {
 		(new File(getFileIndex())).delete();
 		indexExist = false;
+	}
+
+	protected String getCategory() {
+		return category;
 	}
 }
