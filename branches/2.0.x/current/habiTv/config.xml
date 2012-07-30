@@ -4,7 +4,7 @@
 	xsi:schemaLocation="http://www.dabi.com/habitv/config/entities config.xsd ">
 	<!-- <demonTime>10</demonTime> -->
 	<workingDir>../builder/pub</workingDir>
-	<indexDir>C:/Program Files (x86)/habiTv/index</indexDir>
+	<indexDir>../builder/pub/index</indexDir>
 	<providerPluginDir>../builder/pub/provider</providerPluginDir>
 	<downloaderPluginDir>../builder/pub/downloader</downloaderPluginDir>
 	<exporterPluginDir>../builder/pub/exporter</exporterPluginDir>

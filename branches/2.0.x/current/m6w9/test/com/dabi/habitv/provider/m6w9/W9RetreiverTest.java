@@ -44,7 +44,7 @@ public class W9RetreiverTest {
 		final EpisodeDTO episode = it.next();
 		assertNotNull(episode);
 		assertNotNull(episode.getName());
-		assertNotNull(episode.getVideoUrl());
+		assertNotNull(episode.getUrl());
 	}
 
 }

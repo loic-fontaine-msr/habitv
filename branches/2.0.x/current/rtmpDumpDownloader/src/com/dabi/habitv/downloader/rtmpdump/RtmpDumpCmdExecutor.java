@@ -8,8 +8,11 @@ import com.dabi.habitv.framework.plugin.utils.CmdExecutor;
 
 public class RtmpDumpCmdExecutor extends CmdExecutor {
 
-	public RtmpDumpCmdExecutor(final String cmd,
-			final CmdProgressionListener listener) {
+	private double percentage;
+
+	private static final double MIN_PERCENTAGE = 99D;
+
+	public RtmpDumpCmdExecutor(final String cmd, final CmdProgressionListener listener) {
 		super(cmd, listener);
 	}
 
@@ -21,13 +24,14 @@ public class RtmpDumpCmdExecutor extends CmdExecutor {
 		String ret = null;
 		if (hasMatched) {
 			ret = matcher.group(matcher.groupCount());
+			percentage = Double.valueOf(ret);
 		}
 		return ret;
 	}
 
 	@Override
 	protected boolean isSuccess(final String fullOutput) {
-		return getLastOutputLine().contains("Download complete");
+		return getLastOutputLine().contains("Download complete") && percentage > MIN_PERCENTAGE;
 	}
 
 }

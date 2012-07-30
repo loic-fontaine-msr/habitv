@@ -18,7 +18,7 @@
 		<module>../habiTv</module>
 		<module>../canalPlus</module>
 		<module>../m6w9</module>
-		<!-- <module>../soirFoot</module> -->
+		<module>../tf1</module>
 		<module>../tvSubtitles</module>
 		<module>../cmdDownloader</module>
 		<!-- <module>../httpDownloader</module> -->

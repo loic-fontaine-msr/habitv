@@ -124,17 +124,17 @@ public class ChannelDownloader implements Runnable {
 				}
 			}
 		};
-		return new Task(TaskTypeEnum.DOWNLOAD, channel, episode.getVideoUrl(), job);
+		return new Task(TaskTypeEnum.DOWNLOAD, channel, episode.getUrl(), job);
 	}
 
 	private Task buildExportTask(final EpisodeDTO episode, final List<Exporter> exporterList, final DownloadedDAO filesDAO, final String subExportTask) {
 		final Task task;
 		if (subExportTask == null) {
-			task = new Task(TaskTypeEnum.EXPORT_MAIN, episode.getVideoUrl());
+			task = new Task(TaskTypeEnum.EXPORT_MAIN, episode.getUrl());
 		} else {
 			// task = new Task(TaskTypeEnum.EXPORT, subExportTask,
 			// episode.getVideoUrl()); FIXME should be
-			task = new Task(TaskTypeEnum.EXPORT, episode.getVideoUrl(), episode.getVideoUrl());
+			task = new Task(TaskTypeEnum.EXPORT, episode.getUrl(), episode.getUrl());
 		}
 
 		final Runnable job = new Runnable() {
@@ -173,7 +173,7 @@ public class ChannelDownloader implements Runnable {
 					// thread sans faire de traitement
 					// FIXME termine le pool alors qu'autres export ne pas avoir
 					// été ajouté
-					taskMgr.waitForEndTasks(config.getAllDownloadTimeout(), TaskTypeEnum.EXPORT, episode.getVideoUrl());
+					taskMgr.waitForEndTasks(config.getAllDownloadTimeout(), TaskTypeEnum.EXPORT, episode.getUrl());
 					task.setSuccess((success && isAllTaskSuccess(taskList)));
 					if (task.isSuccess()) {
 						listener.episodeReady(episode);

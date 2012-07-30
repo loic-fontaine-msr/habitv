@@ -9,20 +9,20 @@ public class EpisodeDTO implements Comparable<EpisodeDTO> {
 
 	private final String name;
 
-	private final String videoUrl;
+	private final String url;
 
 	public EpisodeDTO(final CategoryDTO category, final String name, final String videoUrl) {
 		this.category = category;
 		this.name = name;
-		this.videoUrl = videoUrl;
+		this.url = videoUrl;
 	}
 
 	public void check() throws InvalidEpisodeException {
 		if (!CheckUtils.checkMinSize(name)) {
 			throw new InvalidEpisodeException(name, InvalidEpisodeException.CauseField.NAME);
 		}
-		if (!CheckUtils.checkMinSize(videoUrl)) {
-			throw new InvalidEpisodeException(videoUrl, InvalidEpisodeException.CauseField.URL);
+		if (!CheckUtils.checkMinSize(url)) {
+			throw new InvalidEpisodeException(url, InvalidEpisodeException.CauseField.URL);
 		}
 	}
 
@@ -37,8 +37,8 @@ public class EpisodeDTO implements Comparable<EpisodeDTO> {
 	@Override
 	public int hashCode() {
 		int ret;
-		if (this.videoUrl != null) {
-			ret = this.videoUrl.hashCode();
+		if (this.url != null) {
+			ret = this.url.hashCode();
 		} else {
 			ret = this.category.hashCode() + this.name.hashCode();
 		}
@@ -50,7 +50,7 @@ public class EpisodeDTO implements Comparable<EpisodeDTO> {
 		boolean ret = false;
 		if (obj instanceof EpisodeDTO) {
 			final EpisodeDTO episode = (EpisodeDTO) obj;
-			if (this.videoUrl != null && this.videoUrl.equals(episode.videoUrl)) {
+			if (this.url != null && this.url.equals(episode.url)) {
 				ret = true;
 			} else {
 				ret = this.category.equals(episode.getCategory()) && episode.getName().equals(this.name);
@@ -64,8 +64,8 @@ public class EpisodeDTO implements Comparable<EpisodeDTO> {
 		return this.getName();
 	}
 
-	public String getVideoUrl() {
-		return videoUrl;
+	public String getUrl() {
+		return url;
 	}
 
 	@Override

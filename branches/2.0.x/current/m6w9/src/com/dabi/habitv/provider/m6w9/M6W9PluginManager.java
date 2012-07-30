@@ -81,11 +81,11 @@ public final class M6W9PluginManager implements PluginProviderInterface {
 		parameters.put(FrameworkConf.PARAMETER_BIN_PATH, downloaders.getBinPath(downloaderName));
 		parameters.put(FrameworkConf.PARAMETER_ARGS, buildDownloadParam(episode, dumpCmd));
 
-		pluginDownloader.download(episode.getVideoUrl(), downloadOuput, parameters, listener);
+		pluginDownloader.download(episode.getUrl(), downloadOuput, parameters, listener);
 	}
 
 	private String buildDownloadParam(final EpisodeDTO episode, final String dumpCmd) {
-		final String tokenContent = RetrieverUtils.getUrlContent(M6Conf.TOKEN_URL + episode.getVideoUrl());
+		final String tokenContent = RetrieverUtils.getUrlContent(M6Conf.TOKEN_URL + episode.getUrl());
 		final String tokenParam = tokenContent.split("\\?")[1];
 		final String tokenParamNoLang = tokenParam.substring(0, tokenParam.indexOf("&lang="));
 		final String cmdParam = dumpCmd.replace("#TOKEN#", tokenParamNoLang);

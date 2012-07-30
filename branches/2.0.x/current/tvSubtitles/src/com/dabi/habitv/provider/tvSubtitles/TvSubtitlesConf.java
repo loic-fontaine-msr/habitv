@@ -1,10 +1,6 @@
 package com.dabi.habitv.provider.tvSubtitles;
 
-public final class TvSubtitlesConf {
-
-	private TvSubtitlesConf() {
-
-	}
+public interface TvSubtitlesConf {
 
 	public static final String NAME = "tvSubtitles";
 	public static final String DOWNLOADER = "aria2";

@@ -61,14 +61,14 @@ public class SoirFootPluginManager implements PluginProviderInterface {
 	@Override
 	public void download(final String downloadOuput, final DownloadersDTO downloaders, final CmdProgressionListener listener, final EpisodeDTO episode)
 			throws DownloadFailedException, NoSuchDownloaderException {
-		final String downloaderName = getDownloader(episode.getVideoUrl());
+		final String downloaderName = getDownloader(episode.getUrl());
 		final PluginDownloaderInterface pluginDownloader = downloaders.getDownloader(downloaderName);
 
 		final Map<String, String> parameters = new HashMap<>(2);
 		parameters.put(FrameworkConf.PARAMETER_BIN_PATH, downloaders.getBinPath(downloaderName));
-		parameters.put(FrameworkConf.PARAMETER_ARGS, downloadCmd(episode.getVideoUrl()));
+		parameters.put(FrameworkConf.PARAMETER_ARGS, downloadCmd(episode.getUrl()));
 
-		pluginDownloader.download(episode.getVideoUrl(), downloadOuput, parameters, listener);
+		pluginDownloader.download(episode.getUrl(), downloadOuput, parameters, listener);
 	}
 
 	@Override
