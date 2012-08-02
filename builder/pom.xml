@@ -4,7 +4,7 @@
 
 	<groupId>com.dabi.habitv</groupId>
 	<artifactId>builder</artifactId>
-	<version>1.0.0</version>
+	<version>2.0.0</version>
 	<packaging>pom</packaging>
 
 	<name>Builder habiTv</name>
@@ -17,11 +17,11 @@
 		<module>../framework</module>	
 		<module>../core</module>
 		<module>../canalPlus</module>
-		<module>../m6</module>
-		<!-- <module>../soirFoot</module> -->
+		<module>../m6w9</module>
+		<module>../tf1</module>
 		<module>../tvSubtitles</module>
 		<module>../cmdDownloader</module>
-		<!-- <module>../httpDownloader</module> -->
+		<module>../pluzz</module>
 		<module>../aria2Downloader</module>
 		<module>../curlDownloader</module>
 		<!-- <module>../youtubeDownloader</module>-->
