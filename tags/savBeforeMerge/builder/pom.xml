@@ -1,0 +1,50 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.dabi.habitv</groupId>
+	<artifactId>builder</artifactId>
+	<version>1.0.0</version>
+	<packaging>pom</packaging>
+
+	<name>Builder habiTv</name>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<modules>
+		<module>../framework</module>	
+		<module>../core</module>
+		<module>../canalPlus</module>
+		<module>../m6</module>
+		<!-- <module>../soirFoot</module> -->
+		<module>../tvSubtitles</module>
+		<module>../cmdDownloader</module>
+		<!-- <module>../httpDownloader</module> -->
+		<module>../aria2Downloader</module>
+		<module>../curlDownloader</module>
+		<!-- <module>../youtubeDownloader</module>-->
+		<module>../cmdExporter</module>
+		<module>../ffmpegExporter</module>
+		<module>../curlExporter</module>
+		<module>../rtmpDumpDownloader</module>
+		<module>../RSSProvider</module>
+		<module>../consoleView</module>
+		<module>../trayView</module>
+	</modules>
+
+	<build>
+		<sourceDirectory>src</sourceDirectory>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>
