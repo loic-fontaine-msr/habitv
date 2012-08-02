@@ -45,6 +45,18 @@ public class TvSubtitlesPluginManagerTest {
 	}
 
 	@Test
+	public final void testFindEpisodeBreakingBad() {
+		final Set<EpisodeDTO> episodeList = manager.findEpisode(new CategoryDTO("", "", "tvshow-133-4.html", ""));
+		boolean contain = false;
+		for (final EpisodeDTO episode : episodeList) {
+			if (episode.getName().equals("Breaking Bad 5x03 (HDTV.FQM)")) {
+				contain = true;
+			}
+		}
+		assertTrue(contain);
+	}
+
+	@Test
 	public final void testFindEpisode() {
 		final Set<EpisodeDTO> episodeList = manager.findEpisode(new CategoryDTO("", "", "tvshow-950-2.html", ""));
 		boolean contain = false;
