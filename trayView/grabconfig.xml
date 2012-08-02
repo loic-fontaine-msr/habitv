@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:grabConfig xmlns:ns2="http://www.dabi.com/habitv/grabconfig/entities">
+    <channel>
+        <name>canalPlus</name>
+        <category>
+            <id>39</id>
+            <name>LES EMISSIONS QUOTIDIENNES</name>
+            <category>
+                <id>694388</id>
+                <name>BREF</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+    </channel>
+</ns2:grabConfig>

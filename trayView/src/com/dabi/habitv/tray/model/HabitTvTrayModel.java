@@ -25,7 +25,7 @@ public class HabitTvTrayModel extends Observable {
 	public HabitTvTrayModel() {
 		super();
 		grabConfigDAO = new GrabConfigDAO(HabitTvConf.GRABCONFIG_XML_FILE);
-		coreManager = new CoreManager(config, grabConfigDAO.load());
+		coreManager = new CoreManager(config);
 		progressionModel = new ProgressionModel();
 	}
 
@@ -59,7 +59,7 @@ public class HabitTvTrayModel extends Observable {
 						interrupted = false;
 					} else {
 						if (grabConfigDAO.exist()) {
-							coreManager.retreiveEpisode();
+							coreManager.retreiveEpisode(grabConfigDAO.load());
 						} else {
 							grabConfigDAO.saveGrabConfig(coreManager.findCategory());
 						}
@@ -84,7 +84,7 @@ public class HabitTvTrayModel extends Observable {
 		(new Thread() {
 			@Override
 			public void run() {
-				coreManager.retreiveEpisode();
+				coreManager.retreiveEpisode(grabConfigDAO.load());
 			}
 
 		}).start();
@@ -100,10 +100,6 @@ public class HabitTvTrayModel extends Observable {
 
 	public Config getConfig() {
 		return config;
-	}
-
-	public void loadGrabConfig() {
-		coreManager.reloadGrabConfig(grabConfigDAO.load());
 	}
 
 }

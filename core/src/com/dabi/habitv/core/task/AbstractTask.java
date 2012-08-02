@@ -10,10 +10,6 @@ public abstract class AbstractTask<R> implements Callable<R> {
 
 	protected static final Logger LOG = Logger.getLogger(AbstractTask.class);
 
-	private boolean added = false;
-
-	private boolean done = false;
-
 	private String category = null;
 
 	@Override
@@ -23,7 +19,6 @@ public abstract class AbstractTask<R> implements Callable<R> {
 			started();
 			result = doCall();
 			ended();
-			done = true;
 		} catch (final Exception e) {
 			failed(e);
 			throw new TechnicalException(e);
@@ -43,16 +38,7 @@ public abstract class AbstractTask<R> implements Callable<R> {
 
 	public final void addedTo(final String category) {
 		this.category = category;
-		added = true;
 		added();
-	}
-
-	public final boolean isAdded() {
-		return added;
-	}
-
-	public final boolean isDone() {
-		return done;
 	}
 
 	public final String getCategory() {

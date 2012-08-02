@@ -66,7 +66,7 @@ public class RetreiveTaskTest {
 		final CategoryDTO category = new CategoryDTO("channel", "category", "identifier", "extension");
 		String url = "videoUrl";
 		if (toFail) {
-			url = "1";
+			url = "";
 		}
 		final EpisodeDTO episode = new EpisodeDTO(category, "episode1234567890123456789012345678901234567890123456789", url);
 		final PluginProviderInterface provider = new PluginProviderInterface() {

@@ -50,7 +50,7 @@ public class SearchTask extends AbstractTask<Object> {
 
 	@Override
 	protected void failed(final Exception e) {
-		LOG.error("Searching episode for " + provider.getName() + " failed");
+		LOG.error("Searching episode for " + provider.getName() + " failed", e);
 		searchPublisher.addNews(new SearchEvent(provider.getName(), SearchStateEnum.ERROR));
 	}
 
@@ -80,7 +80,7 @@ public class SearchTask extends AbstractTask<Object> {
 				// dao to find dowloaded episodes
 				final DownloadedDAO dlDAO = buildDownloadDAO(category.getName());
 				if (!dlDAO.isIndexCreated()) {
-					LOG.info("Creating index for " + getCategory());
+					LOG.info("Creating index for " + category.getName());
 					searchPublisher.addNews(new SearchEvent(provider.getName(), category.getName(), SearchStateEnum.BUILD_INDEX));
 				}
 				// get list of downloadable episodes

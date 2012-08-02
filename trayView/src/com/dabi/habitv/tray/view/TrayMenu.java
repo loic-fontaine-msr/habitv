@@ -92,17 +92,6 @@ public final class TrayMenu extends PopupMenu {
 		item.addActionListener(actionListener);
 		section.add(item);
 
-		item = new MenuItem("Reload config");
-		actionListener = new ActionListener() {
-			@Override
-			public void actionPerformed(final ActionEvent actionEvent) {
-				controller.reloadConfig();
-			}
-
-		};
-		item.addActionListener(actionListener);
-		section.add(item);
-
 		return section;
 	}
 

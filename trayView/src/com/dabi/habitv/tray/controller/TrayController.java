@@ -99,10 +99,7 @@ public class TrayController implements CoreSubscriber {
 	public void update(final SearchCategoryEvent event) {
 		switch (event.getState()) {
 		case BUILDING_CATEGORIES:
-
-			break;
-		case CATEGORIES_BUILD:
-
+			// TODO mettre à jour model
 			break;
 		case DONE:
 
@@ -126,9 +123,5 @@ public class TrayController implements CoreSubscriber {
 
 	public void clear() {
 		getModel().clear();
-	}
-
-	public void reloadConfig() {
-		getModel().loadGrabConfig();
 	}
 }

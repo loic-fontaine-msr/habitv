@@ -28,15 +28,12 @@ public final class CoreManager {
 
 	private final Config config;
 
-	private Map<String, Set<CategoryDTO>> categoriesToGrab;
-
 	private final Collection<PluginProviderInterface> providerList;
 
 	private final Map<String, Integer> buildTaskName2PoolSizeMap;
 
-	public CoreManager(final Config config, final Map<String, Set<CategoryDTO>> categoriesToGrab) {
+	public CoreManager(final Config config) {
 		this.config = config;
-		this.categoriesToGrab = categoriesToGrab;
 		final PluginFactory<PluginProviderInterface> pluginProviderFactory = new PluginFactory<>(PluginProviderInterface.class, config.getProviderPluginDir());
 		providerList = pluginProviderFactory.getAllPlugin();
 		buildTaskName2PoolSizeMap = buildTaskName2PoolSizeMap(config.getSimultaneousTaskNumber());
@@ -60,9 +57,19 @@ public final class CoreManager {
 	private List<ExportDTO> buildExporterListDTO(final List<Exporter> exporterList) {
 		final List<ExportDTO> exportDTOList = new ArrayList<>(exporterList.size());
 		ExportDTO exportDTO;
+		String reference;
+		String pattern;
 		for (final Exporter exporter : exporterList) {
-			exportDTO = new ExportDTO(exporter.getCondition().getReference(), exporter.getCondition().getPattern(), exporter.getName(), exporter.getOutput(),
-					exporter.getCmd(), buildExporterListDTO(exporter.getExporter()));
+
+			if (exporter.getCondition() != null) {
+				reference = exporter.getCondition().getReference();
+				pattern = exporter.getCondition().getPattern();
+			} else {
+				reference = null;
+				pattern = null;
+			}
+			exportDTO = new ExportDTO(reference, pattern, exporter.getName(), exporter.getOutput(), exporter.getCmd(),
+					buildExporterListDTO(exporter.getExporter()));
 			exportDTOList.add(exportDTO);
 		}
 		return exportDTOList;
@@ -104,7 +111,7 @@ public final class CoreManager {
 		episodeManager = new EpisodeManager(downloader, exporter, collection, taskName2PoolSize);
 	}
 
-	public void retreiveEpisode() {
+	public void retreiveEpisode(final Map<String, Set<CategoryDTO>> categoriesToGrab) {
 		getEpisodeManager().retreiveEpisode(providerList, categoriesToGrab);
 	}
 
@@ -119,10 +126,6 @@ public final class CoreManager {
 		if (categoryManager != null) {
 			categoryManager.forceEnd();
 		}
-	}
-
-	public void reloadGrabConfig(final Map<String, Set<CategoryDTO>> categoriesToGrab) {
-		this.categoriesToGrab = categoriesToGrab;
 	}
 
 }

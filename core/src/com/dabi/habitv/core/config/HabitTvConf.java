@@ -13,7 +13,6 @@ public final class HabitTvConf {
 	public static final String GRABCONFIG_XML_FILE = "grabconfig.xml";
 
 	public static final String ENCODING = "UTF-8";
-
 	public static final Integer DEFAULT_POOL_SIZE = 2;
 
 	public static final long DEFAULT_DEMON_TIME_SEC = 1800;

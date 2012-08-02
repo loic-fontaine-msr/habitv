@@ -21,25 +21,25 @@ public final class SearchCategoryTask extends AbstractTask<SearchCategoryResult>
 
 	@Override
 	protected void added() {
-		LOG.error("Waiting for Grabing categories for " + channel);
+		LOG.error("Waiting for Grabbing categories for " + channel);
 		searchCategoryPublisher.addNews(new SearchCategoryEvent(channel, SearchCategoryStateEnum.CHANNEL_CATEGORIES_TO_BUILD));
 	}
 
 	@Override
 	protected void failed(final Exception e) {
-		LOG.error("Grabing categories for " + channel + " failed");
+		LOG.error("Grabbing categories for " + channel + " failed", e);
 		searchCategoryPublisher.addNews(new SearchCategoryEvent(channel, SearchCategoryStateEnum.ERROR));
 	}
 
 	@Override
 	protected void ended() {
-		LOG.info("Grabing categories for " + channel + " done");
-		searchCategoryPublisher.addNews(new SearchCategoryEvent(channel, SearchCategoryStateEnum.DONE));
+		LOG.info("Grabbing categories for " + channel + " done");
+		searchCategoryPublisher.addNews(new SearchCategoryEvent(channel, SearchCategoryStateEnum.CATEGORIES_BUILT));
 	}
 
 	@Override
 	protected void started() {
-		LOG.info("Grabing categories for " + channel + "...");
+		LOG.info("Grabbing categories for " + channel + "...");
 		searchCategoryPublisher.addNews(new SearchCategoryEvent(channel, SearchCategoryStateEnum.BUILDING_CATEGORIES));
 	}
 
