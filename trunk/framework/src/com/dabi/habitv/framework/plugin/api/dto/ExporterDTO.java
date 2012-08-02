@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.dabi.habitv.framework.plugin.api.exporter.PluginExporterInterface;
+import com.dabi.habitv.framework.plugin.exception.TechnicalException;
 
 public final class ExporterDTO {
 	private final Map<String, PluginExporterInterface> exporterName2exporter;
@@ -17,9 +18,12 @@ public final class ExporterDTO {
 	}
 
 	public PluginExporterInterface getExporter(final String exporterName, final String defaultExporter) {
-		final PluginExporterInterface exporter = exporterName2exporter.get(exporterName);
+		PluginExporterInterface exporter = exporterName2exporter.get(exporterName);
 		if (exporter == null) {
-			exporterName2exporter.get(defaultExporter);
+			exporter = exporterName2exporter.get(defaultExporter);
+		}
+		if (exporter == null) {
+			throw new TechnicalException("No exporter found for " + exporterName + "and no default exporter " + defaultExporter);
 		}
 		return exporter;
 	}

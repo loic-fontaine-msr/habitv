@@ -39,7 +39,7 @@ public class DownloadTask extends AbstractEpisodeTask {
 
 	@Override
 	protected void failed(final Exception e) {
-		LOG.error("Download failed for " + getEpisode());
+		LOG.error("Download failed for " + getEpisode(), e);
 		if (e instanceof ExecutorFailedException) {
 			final ExecutorFailedException executorFailedException = (ExecutorFailedException) e;
 			LOG.error("download of " + getEpisode().getCategory() + " - " + getEpisode().getName() + "failed");

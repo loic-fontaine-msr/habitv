@@ -59,8 +59,10 @@ public final class EpisodeManager extends AbstractManager implements TaskAdder {
 	public void retreiveEpisode(final Collection<PluginProviderInterface> providerList, final Map<String, Set<CategoryDTO>> channel2Categories) {
 		for (final PluginProviderInterface provider : providerList) {
 			// method must be asynchronous
-			searchMgr.addTask(new SearchTask(provider, channel2Categories.get(provider.getName()), this, searchPublisher, retreivePublisher, downloader,
-					exporter));
+			final Set<CategoryDTO> categories = channel2Categories.get(provider.getName());
+			if (categories != null && !categories.isEmpty()) {
+				searchMgr.addTask(new SearchTask(provider, categories, this, searchPublisher, retreivePublisher, downloader, exporter));
+			}
 		}
 	}
 

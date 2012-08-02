@@ -14,15 +14,15 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.dabi.habitv.framework.plugin.api.CmdProgressionListener;
-import com.dabi.habitv.framework.plugin.api.PluginDownloaderInterface;
-import com.dabi.habitv.framework.plugin.api.PluginProviderInterface;
+import com.dabi.habitv.framework.plugin.api.downloader.PluginDownloaderInterface;
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
-import com.dabi.habitv.framework.plugin.api.dto.DownloadersDTO;
+import com.dabi.habitv.framework.plugin.api.dto.DownloaderDTO;
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
+import com.dabi.habitv.framework.plugin.api.provider.PluginProviderInterface;
 import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.framework.plugin.exception.NoSuchDownloaderException;
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
+import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
 
 public class TvSubtitlesPluginManagerTest {
 
@@ -101,7 +101,7 @@ public class TvSubtitlesPluginManagerTest {
 		downloaderName2downloader.put("aria2", downloader);
 		final Map<String, String> downloaderName2BinPath = new HashMap<>();
 		downloaderName2BinPath.put("aria2", "bin");
-		final DownloadersDTO downloaders = new DownloadersDTO(downloaderName2downloader, downloaderName2BinPath);
+		final DownloaderDTO downloaders = new DownloaderDTO(downloaderName2downloader, downloaderName2BinPath, null, null);
 		final EpisodeDTO episode = new EpisodeDTO(null, "Resolutions", "subtitle-222987.html");
 		manager.download("downloadOuput", downloaders, new CmdProgressionListener() {
 

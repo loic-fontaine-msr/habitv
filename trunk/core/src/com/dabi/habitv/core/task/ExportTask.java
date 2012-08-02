@@ -33,7 +33,7 @@ public class ExportTask extends AbstractEpisodeTask {
 
 	@Override
 	protected void failed(final Exception e) {
-		LOG.error("Episode failed to export " + getEpisode() + " " + export.getName());
+		LOG.error("Episode failed to export " + getEpisode() + " " + export.getName(), e);
 		publisher.addNews(new RetreiveEvent(getEpisode(), EpisodeStateEnum.EXPORT_FAILED, e, export.getName()));
 	}
 

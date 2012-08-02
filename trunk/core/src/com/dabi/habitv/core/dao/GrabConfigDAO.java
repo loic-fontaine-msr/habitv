@@ -122,7 +122,7 @@ public class GrabConfigDAO {
 		} catch (final UnsupportedEncodingException e) {
 			throw new TechnicalException(e);
 		} catch (final FileNotFoundException e) {
-			// will return null
+			throw new TechnicalException(e);
 		}
 		return grabConfig;
 	}

@@ -1,0 +1,33 @@
+#surefire
+#Tue Jul 24 19:48:13 CEST 2012
+testClassesDirectory=D\:\\workspaces\\habiTv\\consoleView\\target\\test-classes
+classPathUrl.4=C\:\\Users\\bidou\\.m2\\repository\\javax\\xml\\bind\\jsr173_api\\1.0\\jsr173_api-1.0.jar
+classPathUrl.3=C\:\\Users\\bidou\\.m2\\repository\\javax\\xml\\bind\\jaxb-api\\2.0\\jaxb-api-2.0.jar
+classPathUrl.2=D\:\\workspaces\\habiTv\\builder\\pub\\lib\\core-3.0.jar
+useManifestOnlyJar=true
+classPathUrl.1=D\:\\workspaces\\habiTv\\consoleView\\target\\classes
+reportsDirectory=D\:\\workspaces\\habiTv\\consoleView\\target\\surefire-reports
+classPathUrl.0=D\:\\workspaces\\habiTv\\consoleView\\target\\test-classes
+dirscanner.0=directoryScannerOptions
+providerConfiguration=org.apache.maven.surefire.junit.JUnit3Provider
+testSuiteDefinitionTestSourceDirectory=D\:\\workspaces\\habiTv\\consoleView\\src\\test\\java
+surefireClassPathUrl.1=C\:\\Users\\bidou\\.m2\\repository\\org\\apache\\maven\\surefire\\surefire-api\\2.7.1\\surefire-api-2.7.1.jar
+surefireClassPathUrl.0=C\:\\Users\\bidou\\.m2\\repository\\org\\apache\\maven\\surefire\\surefire-junit3\\2.7.1\\surefire-junit3-2.7.1.jar
+report.2=org.apache.maven.surefire.report.XMLReporter
+useSystemClassLoader=true
+report.1=org.apache.maven.surefire.report.BriefFileReporter
+report.0=org.apache.maven.surefire.report.ForkingConsoleReporter
+excludes0=**/*$*
+isTrimStackTrace=true
+dirscanner.0.params=D\:\\workspaces\\habiTv\\consoleView\\target\\test-classes|[**/Test*.java, **/*Test.java, **/*TestCase.java]|[**/*$*]
+includes2=**/*TestCase.java
+enableAssertions=true
+includes1=**/*Test.java
+failIfNoTests=false
+includes0=**/Test*.java
+dirscanner.0.types=java.io.File|java.util.ArrayList|java.util.ArrayList
+classPathUrl.8=C\:\\Users\\bidou\\.m2\\repository\\log4j\\log4j\\1.2.15\\log4j-1.2.15.jar
+classPathUrl.7=C\:\\Users\\bidou\\.m2\\repository\\commons-codec\\commons-codec\\1.6\\commons-codec-1.6.jar
+childDelegation=false
+classPathUrl.6=D\:\\workspaces\\habiTv\\builder\\pub\\lib\\framework-2.0.jar
+classPathUrl.5=C\:\\Users\\bidou\\.m2\\repository\\javax\\activation\\activation\\1.1\\activation-1.1.jar

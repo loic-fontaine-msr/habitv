@@ -8,13 +8,6 @@ public final class SearchCategoryEvent extends AbstractEvent {
 
 	private final String info;
 
-	public SearchCategoryEvent(final String channel, final SearchCategoryStateEnum state, final String info) {
-		super(null);
-		this.channel = channel;
-		this.state = state;
-		this.info = info;
-	}
-
 	public SearchCategoryEvent(final String channel, final SearchCategoryStateEnum state) {
 		super(null);
 		this.channel = channel;

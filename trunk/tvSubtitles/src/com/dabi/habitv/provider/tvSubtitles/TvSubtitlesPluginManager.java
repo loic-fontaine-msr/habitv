@@ -13,6 +13,7 @@ import com.dabi.habitv.framework.plugin.api.provider.PluginProviderInterface;
 import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.framework.plugin.exception.NoSuchDownloaderException;
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
+import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
 import com.dabi.habitv.framework.plugin.utils.FrameworkConf;
 
 public class TvSubtitlesPluginManager implements PluginProviderInterface {
@@ -42,8 +43,8 @@ public class TvSubtitlesPluginManager implements PluginProviderInterface {
 	}
 
 	@Override
-	public void download(final String downloadOuput, final DownloaderDTO downloaders, final CmdProgressionListener listener, final EpisodeDTO episode)
-			throws DownloadFailedException, NoSuchDownloaderException {
+	public void download(final String downloadOuput, final DownloaderDTO downloaders, final CmdProgressionListener cmdProgressionListener,
+			final EpisodeDTO episode) throws DownloadFailedException, NoSuchDownloaderException {
 		final String downloaderName = TvSubtitlesConf.DOWNLOADER;
 		final PluginDownloaderInterface pluginDownloader = downloaders.getDownloader(downloaderName);
 
@@ -52,7 +53,7 @@ public class TvSubtitlesPluginManager implements PluginProviderInterface {
 
 		try {
 			pluginDownloader.download(TvSubtitlesConf.HOME_URL + "/" + TvSubtitlesRetriever.findDownloadLink(episode.getUrl()), downloadOuput, parameters,
-					listener);
+					cmdProgressionListener);
 		} catch (final IOException e) {
 			throw new TechnicalException(e);
 		}

@@ -27,6 +27,10 @@ public final class HabiTvTrayView implements CoreSubscriber {
 
 	private final Image animatedImage;
 
+	private boolean retreiveInProgress = false;
+
+	private boolean checkInProgress = false;
+
 	public HabiTvTrayView(final TrayController controller) {
 		this.controller = controller;
 		fixImage = getImage("fixe.gif");
@@ -113,18 +117,21 @@ public final class HabiTvTrayView implements CoreSubscriber {
 	public void update(final SearchEvent event) {
 		switch (event.getState()) {
 		case ALL_RETREIVE_DONE:
-			trayIcon.setImage(fixImage);
+			retreiveInProgress = false;
+			changeAnimation();
 			break;
 		case ALL_SEARCH_DONE:
-
+			checkInProgress = false;
+			changeAnimation();
 			break;
 		case BUILD_INDEX:
-			trayIcon.displayMessage("Building Index", "Build Index for " + event.getInfo(), TrayIcon.MessageType.INFO);
+			trayIcon.displayMessage("Building Index", "Build Index for " + event.getChannel() + " " + event.getCategory(), TrayIcon.MessageType.INFO);
 			break;
 		case CHECKING_EPISODES:
 			// trayIcon.displayMessage("Checking", "Checking for episodes",
 			// TrayIcon.MessageType.INFO);
-			trayIcon.setImage(animatedImage);
+			checkInProgress = true;
+			changeAnimation();
 			break;
 		case DONE:
 
@@ -137,6 +144,14 @@ public final class HabiTvTrayView implements CoreSubscriber {
 			break;
 		default:
 			break;
+		}
+	}
+
+	private void changeAnimation() {
+		if (retreiveInProgress || checkInProgress) {
+			trayIcon.setImage(animatedImage);
+		} else {
+			trayIcon.setImage(fixImage);
 		}
 	}
 
@@ -172,6 +187,7 @@ public final class HabiTvTrayView implements CoreSubscriber {
 					TrayIcon.MessageType.INFO);
 			break;
 		case TO_DOWNLOAD:
+			retreiveInProgress = true;
 			trayIcon.displayMessage("New Download", "Episode to download : " + event.getEpisode().getCategory() + " " + event.getEpisode().getName(),
 					TrayIcon.MessageType.INFO);
 			break;
@@ -187,15 +203,12 @@ public final class HabiTvTrayView implements CoreSubscriber {
 	public void update(final SearchCategoryEvent event) {
 		switch (event.getState()) {
 		case BUILDING_CATEGORIES:
-			trayIcon.displayMessage("Grabbing categories", "Grabbing categories for " + event.getInfo(), TrayIcon.MessageType.INFO);
+			trayIcon.displayMessage("Grabbing categories", "Grabbing categories for " + event.getChannel(), TrayIcon.MessageType.INFO);
 			trayIcon.setImage(animatedImage);
 			break;
-		case CATEGORIES_BUILD:
-			trayIcon.displayMessage("Grabbing categories", "Categories built in " + event.getInfo(), TrayIcon.MessageType.INFO);
-			trayIcon.setImage(fixImage);
-			break;
 		case DONE:
-
+			trayIcon.displayMessage("Grabbing categories", "Categories built in " + event.getInfo(), TrayIcon.MessageType.INFO);
+			changeAnimation();
 			break;
 		case ERROR:
 

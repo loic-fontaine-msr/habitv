@@ -52,7 +52,7 @@ public class RetreiveTask extends AbstractEpisodeTask {
 
 	@Override
 	protected void failed(final Exception e) {
-		LOG.error("Episode failed to retreive " + getEpisode());
+		LOG.error("Episode failed to retreive " + getEpisode(), e);
 		retreivePublisher.addNews(new RetreiveEvent(getEpisode(), EpisodeStateEnum.FAILED, e, "retreive"));
 	}
 

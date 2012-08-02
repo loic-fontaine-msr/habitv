@@ -13,11 +13,11 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.dabi.habitv.framework.plugin.api.CmdProgressionListener;
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
 import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.framework.plugin.exception.NoSuchDownloaderException;
+import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
 
 public class PluzzPluginManagerTest {
 
