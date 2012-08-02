@@ -37,7 +37,7 @@ public class RSSPluginManager implements PluginProviderInterface {
 		final Map<String, String> parameters = new HashMap<>(2);
 		parameters.put(FrameworkConf.PARAMETER_BIN_PATH, downloaders.getBinPath(downloaderName));
 
-		pluginDownloader.download(episode.getVideoUrl(), downloadOuput, parameters, listener);
+		pluginDownloader.download(episode.getUrl(), downloadOuput, parameters, listener);
 	}
 
 	@Override

@@ -5,6 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.net.URLConnection;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
@@ -43,8 +44,24 @@ public final class RetrieverUtils {
 	 * @return the input stream
 	 */
 	public static InputStream getInputStreamFromUrl(final String url) {
+		return getInputStreamFromUrl(url, null);
+	}
+
+	/**
+	 * Create an inputStream from an URL throws runtime technical exception if
+	 * fail
+	 * 
+	 * @param url
+	 *            the URL
+	 * @param userAgent
+	 *            the user agent
+	 * @return the input stream
+	 */
+	public static InputStream getInputStreamFromUrl(final String url, final String userAgent) {
 		try {
-			return new URL(url).openStream();
+			final URLConnection hc = (new URL(url)).openConnection();
+			hc.setRequestProperty("User-Agent", userAgent);
+			return hc.getInputStream();
 		} catch (final IOException e) {
 			throw new TechnicalException(e);
 		}
@@ -130,8 +147,12 @@ public final class RetrieverUtils {
 	}
 
 	public static String getUrlContent(final String url) {
+		return getUrlContent(url, null);
+	}
 
-		final InputStream in = getInputStreamFromUrl(url);
+	public static String getUrlContent(final String url, final String userAgent) {
+
+		final InputStream in = getInputStreamFromUrl(url, userAgent);
 		final StringBuffer sb = new StringBuffer();
 
 		final byte[] buffer = new byte[URL_BUFFER_SIZE];

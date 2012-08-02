@@ -20,6 +20,8 @@ public class CategoryDTO implements Comparable<CategoryDTO> {
 
 	private final String identifier;
 
+	private CategoryDTO fatherCategory;
+
 	private List<CategoryDTO> subCategories;
 
 	private List<String> include;
@@ -131,6 +133,7 @@ public class CategoryDTO implements Comparable<CategoryDTO> {
 		if (subCategories == null) {
 			subCategories = new ArrayList<>();
 		}
+		subCategory.setFatherCategory(this);
 		subCategories.add(subCategory);
 	}
 
@@ -143,6 +146,9 @@ public class CategoryDTO implements Comparable<CategoryDTO> {
 	public void addSubCategories(final Collection<CategoryDTO> categoryListDTO) {
 		if (subCategories == null) {
 			subCategories = new ArrayList<>();
+		}
+		for (final CategoryDTO subCategory : categoryListDTO) {
+			subCategory.setFatherCategory(this);
 		}
 		subCategories.addAll(categoryListDTO);
 	}
@@ -224,4 +230,19 @@ public class CategoryDTO implements Comparable<CategoryDTO> {
 		return ret;
 	}
 
+	/**
+	 * @see java.lang.Object#clone()
+	 */
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		return super.clone();
+	}
+
+	public CategoryDTO getFatherCategory() {
+		return fatherCategory;
+	}
+
+	private void setFatherCategory(final CategoryDTO fatherCategory) {
+		this.fatherCategory = fatherCategory;
+	}
 }
