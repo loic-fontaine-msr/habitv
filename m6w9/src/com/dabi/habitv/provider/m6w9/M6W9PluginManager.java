@@ -88,8 +88,7 @@ public final class M6W9PluginManager implements PluginProviderInterface {
 		final String tokenContent = RetrieverUtils.getUrlContent(M6Conf.TOKEN_URL + episode.getUrl());
 		final String tokenParam = tokenContent.split("\\?")[1];
 		final String tokenParamNoLang = tokenParam.substring(0, tokenParam.indexOf("&lang="));
-		final String cmdParam = dumpCmd.replace("#TOKEN#", tokenParamNoLang);
-		return cmdParam;
+		return dumpCmd.replace("#TOKEN#", tokenParamNoLang);
 	}
 
 }

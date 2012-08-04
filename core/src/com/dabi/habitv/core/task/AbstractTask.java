@@ -4,8 +4,6 @@ import java.util.concurrent.Callable;
 
 import org.apache.log4j.Logger;
 
-import com.dabi.habitv.framework.plugin.exception.TechnicalException;
-
 public abstract class AbstractTask<R> implements Callable<R> {
 
 	protected static final Logger LOG = Logger.getLogger(AbstractTask.class);
@@ -21,7 +19,7 @@ public abstract class AbstractTask<R> implements Callable<R> {
 			ended();
 		} catch (final Exception e) {
 			failed(e);
-			throw new TechnicalException(e);
+			throw new TaskFailedException(e);
 		}
 		return result;
 	}

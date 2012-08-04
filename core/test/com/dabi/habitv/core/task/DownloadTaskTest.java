@@ -79,7 +79,7 @@ public class DownloadTaskTest {
 			@Override
 			public void download(final String downloadOuput, final DownloaderDTO downloaders, final CmdProgressionListener cmdProgressionListener,
 					final EpisodeDTO episode) throws DownloadFailedException, NoSuchDownloaderException {
-				assertEquals("episode1234567890123456789012345678901234567890123456789/episode123456789012345678901234567890123/channel/category/extension",
+				assertEquals("episode1234567890123456789012345678901234567890123456789_episode123456789012345678901234567890123_channel_category_extension",
 						downloadOuput);
 
 				cmdProgressionListener.listen("0");
@@ -105,7 +105,7 @@ public class DownloadTaskTest {
 				cmdProgressionListener.listen("100");
 			}
 		};
-		final DownloaderDTO downloader = new DownloaderDTO(null, null, "#EPISODE_NAME#/#EPISODE_NAME_CUT#/#CHANNEL_NAME#/#TVSHOW_NAME#/#EXTENSION#", "indexDir");
+		final DownloaderDTO downloader = new DownloaderDTO(null, null, "#EPISODE_NAME#_#EPISODE_NAME_CUT#_#CHANNEL_NAME#_#TVSHOW_NAME#_#EXTENSION#", "indexDir");
 		final Publisher<RetreiveEvent> publisher = new Publisher<>();
 		final Subscriber<RetreiveEvent> subscriber = new Subscriber<RetreiveEvent>() {
 
@@ -170,4 +170,13 @@ public class DownloadTaskTest {
 		assertFalse(downloaded);
 	}
 
+	@Test
+	public final void testDownloadRemovePreviousFile() {
+		final String filename = "episode1234567890123456789012345678901234567890123456789_episode123456789012345678901234567890123_channel_category_extension";
+
+		init(false);
+		task.addedTo("download");
+		task.call();
+		assertTrue(downloaded);
+	}
 }

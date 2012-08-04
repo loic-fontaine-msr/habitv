@@ -127,8 +127,8 @@ public final class EpisodeManager extends AbstractManager implements TaskAdder {
 	}
 
 	@Override
-	public Future<Object> addDownloadTask(final DownloadTask downloadTask) {
-		return downloadMgr.addTask(downloadTask);
+	public Future<Object> addDownloadTask(final DownloadTask downloadTask, final String channel) {
+		return downloadMgr.addTask(downloadTask, channel);
 	}
 
 	@Override

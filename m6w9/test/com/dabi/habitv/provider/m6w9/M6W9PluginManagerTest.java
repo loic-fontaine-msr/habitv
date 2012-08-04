@@ -1,4 +1,4 @@
-package com.dabi.habitv.provider.tf1;
+package com.dabi.habitv.provider.m6w9;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -22,9 +22,9 @@ import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.framework.plugin.exception.NoSuchDownloaderException;
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
 
-public class TF1PluginManagerTest {
+public class M6W9PluginManagerTest {
 
-	private final TF1PluginManager manager = new TF1PluginManager();
+	M6W9PluginManager manager = new M6W9PluginManager();
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -43,44 +43,15 @@ public class TF1PluginManagerTest {
 	}
 
 	@Test
-	public final void testGetName() {
-		manager.setClassLoader(null);
-		assertEquals(manager.getName(), TF1Conf.NAME);
-	}
-
-	@Test
 	public final void testFindEpisode() {
-		final Set<EpisodeDTO> episodeList = manager.findEpisode(new CategoryDTO("channel", "casper", "casper", "mp4"));
+		final CategoryDTO category = new CategoryDTO("channel", "Un gars, une fille", "6026", "mp4");
+		final CategoryDTO father = new CategoryDTO("channel", "w9", "w9", "mp4");
+		father.addSubCategory(category);
+		final Set<EpisodeDTO> episodeList = manager.findEpisode(category);
 		boolean contain = false;
 		for (final EpisodeDTO episode : episodeList) {
-			if (episode.getName().equals("La saison des Gloutchs - Casper")) {
-				assertEquals("/casper/la-saison-des-gloutchs-casper-7400892.html", episode.getUrl());
-				contain = true;
-			}
-		}
-		assertTrue(contain);
-	}
-
-	@Test
-	public final void testFindEpisode50MinuteInside() {
-		final Set<EpisodeDTO> episodeList = manager.findEpisode(new CategoryDTO("channel", "50-mn-inside", "50-mn-inside", "mp4"));
-		boolean contain = false;
-		for (final EpisodeDTO episode : episodeList) {
-			if (episode.getName().equals("Emission du 28 juillet 2012")) {
-				assertEquals("/50-mn-inside/emission-du-28-juillet-2012-7425510.html", episode.getUrl());
-				contain = true;
-			}
-		}
-		assertTrue(contain);
-	}
-
-	@Test
-	public final void testFindEpisodeTelefoot() {
-		final Set<EpisodeDTO> episodeList = manager.findEpisode(new CategoryDTO("telefoot", "telefoot", "telefoot", "mp4"));
-		boolean contain = false;
-		for (final EpisodeDTO episode : episodeList) {
-			if (episode.getName().equals("(Re)Voir Téléfoot du dimanche 1er juillet 2012 en intégralité")) {
-				assertEquals("/telefoot/re-voir-telefoot-du-dimanche-1er-juillet-2012-en-integralite-7391330.html", episode.getUrl());
+			if (episode.getName().equals("Best of - La bouffe (1)")) {
+				assertEquals("mp4:production/w9replay/w9_un-gars-une-fille_345860_210620121730.mp4", episode.getUrl());
 				contain = true;
 			}
 		}
@@ -108,21 +79,23 @@ public class TF1PluginManagerTest {
 
 			@Override
 			public String getName() {
-				return "aria2";
+				return "rtmpdump";
 			}
 
 			@Override
 			public void download(final String downloadInput, final String downloadDestination, final Map<String, String> parameters,
 					final CmdProgressionListener listener) throws DownloadFailedException {
-				assertTrue(downloadInput.contains("casper-tf1"));
+				assertTrue(downloadInput.contains("fille"));
 			}
 		};
-		downloaderName2downloader.put("curl", downloader);
+		downloaderName2downloader.put("rtmpdump", downloader);
 		final Map<String, String> downloaderName2BinPath = new HashMap<>();
-		downloaderName2BinPath.put("curl", "bin");
+		downloaderName2BinPath.put("rtmpdump", "bin");
 		final DownloaderDTO downloaders = new DownloaderDTO(downloaderName2downloader, downloaderName2BinPath, null, null);
-		final EpisodeDTO episode = new EpisodeDTO(new CategoryDTO("casper", "casper", "casper", "casper"), "Casper",
-				"/casper/la-saison-des-gloutchs-casper-7400892.html");
+		final CategoryDTO category = new CategoryDTO("w9", "w9", "w9", "mp4");
+		final CategoryDTO subcategory = new CategoryDTO("w9", "w9", "w9", "mp4");
+		category.addSubCategory(subcategory);
+		final EpisodeDTO episode = new EpisodeDTO(category, "Best of - La bouffe (1)", "mp4:production/w9replay/w9_un-gars-une-fille_345860_210620121730.mp4");
 		manager.download("downloadOuput", downloaders, new CmdProgressionListener() {
 
 			@Override

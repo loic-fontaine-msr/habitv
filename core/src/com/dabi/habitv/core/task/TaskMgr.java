@@ -2,9 +2,9 @@ package com.dabi.habitv.core.task;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -43,8 +43,7 @@ public class TaskMgr<T extends AbstractTask<R>, R> {
 	}
 
 	private ExecutorService initExecutor() {
-		return new ThreadPoolExecutor(poolSize, poolSize, DEFAULT_KEEP_ALIVE_TIME_SEC, TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(
-				DEFAULT_KEEP_ALIVE_TIME_SEC)) {
+		return new ThreadPoolExecutor(poolSize, poolSize, DEFAULT_KEEP_ALIVE_TIME_SEC, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>()) {
 
 			@Override
 			public void afterExecute(final Runnable r, final Throwable t) {

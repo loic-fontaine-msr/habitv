@@ -31,6 +31,8 @@ public final class RetrieverUtils {
 
 	private static final int URL_BUFFER_SIZE = 256;
 
+	private static final String USER_AGENT = "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0)";
+
 	private RetrieverUtils() {
 
 	}
@@ -44,23 +46,9 @@ public final class RetrieverUtils {
 	 * @return the input stream
 	 */
 	public static InputStream getInputStreamFromUrl(final String url) {
-		return getInputStreamFromUrl(url, null);
-	}
-
-	/**
-	 * Create an inputStream from an URL throws runtime technical exception if
-	 * fail
-	 * 
-	 * @param url
-	 *            the URL
-	 * @param userAgent
-	 *            the user agent
-	 * @return the input stream
-	 */
-	public static InputStream getInputStreamFromUrl(final String url, final String userAgent) {
 		try {
 			final URLConnection hc = (new URL(url)).openConnection();
-			hc.setRequestProperty("User-Agent", userAgent);
+			hc.setRequestProperty("User-Agent", USER_AGENT);
 			return hc.getInputStream();
 		} catch (final IOException e) {
 			throw new TechnicalException(e);
@@ -83,7 +71,9 @@ public final class RetrieverUtils {
 		InputStream input = null;
 		try {
 
-			input = new Base64InputStream(new URL(url).openStream());
+			final URLConnection hc = (new URL(url)).openConnection();
+			hc.setRequestProperty("User-Agent", USER_AGENT);
+			input = new Base64InputStream(hc.getInputStream());
 
 			int nRead;
 			final byte[] data = new byte[BUFFER_SIZE];
@@ -147,12 +137,8 @@ public final class RetrieverUtils {
 	}
 
 	public static String getUrlContent(final String url) {
-		return getUrlContent(url, null);
-	}
 
-	public static String getUrlContent(final String url, final String userAgent) {
-
-		final InputStream in = getInputStreamFromUrl(url, userAgent);
+		final InputStream in = getInputStreamFromUrl(url);
 		final StringBuffer sb = new StringBuffer();
 
 		final byte[] buffer = new byte[URL_BUFFER_SIZE];

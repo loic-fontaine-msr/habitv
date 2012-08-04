@@ -85,7 +85,7 @@ public class TrayController implements CoreSubscriber {
 			getModel().getProgressionModel().updateActionProgress(event.getEpisode(), EpisodeStateEnum.READY, "", "");
 			break;
 		case TO_DOWNLOAD:
-
+			getModel().getProgressionModel().updateActionProgress(event.getEpisode(), EpisodeStateEnum.TO_DOWNLOAD, "", "");
 			break;
 		case TO_EXPORT:
 

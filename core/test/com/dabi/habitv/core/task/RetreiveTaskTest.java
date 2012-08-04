@@ -186,13 +186,13 @@ public class RetreiveTaskTest {
 			}
 
 			@Override
-			public Future<Object> addDownloadTask(final DownloadTask downloadTask) {
+			public Future<Object> addDownloadTask(final DownloadTask downloadTask, final String channel) {
 				assertEquals(new DownloadTask(episode, provider, downloader, publisher, downloadedDAO), downloadTask);
 				return fakeFuture();
 			}
 
 		};
-		task = new RetreiveTask(episode, publisher, taskAdder, exporter, provider, downloader);
+		task = new RetreiveTask(episode, publisher, taskAdder, exporter, provider, downloader, downloadedDAO);
 	}
 
 	private Future<Object> fakeFuture() {
