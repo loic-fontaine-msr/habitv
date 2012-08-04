@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.log4j.Logger;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
@@ -19,6 +20,8 @@ import com.dabi.habitv.framework.plugin.exception.TechnicalException;
 import com.dabi.habitv.framework.plugin.utils.RetrieverUtils;
 
 public class TF1Retreiver {
+
+	private static final Logger LOGGER = Logger.getLogger(TF1Retreiver.class);
 
 	public static Set<CategoryDTO> findCategory() {
 		final Set<CategoryDTO> categories = new HashSet<>();
@@ -48,9 +51,18 @@ public class TF1Retreiver {
 
 			final Elements select = con.get().select(".teaser");
 			for (final Element element : select) {
-				final String title = element.child(1).child(1).child(0).text();
-				final String url = element.child(1).child(1).child(0).attr("href");
-				episodes.add(new EpisodeDTO(category, title, url));
+				try {
+					final Element divInfoIntegrale = element.child(1);
+					if ("infosTeaser".equals(divInfoIntegrale.attr("class")) || "infosIntegrale".equals(divInfoIntegrale.attr("class"))) {
+						final String title = divInfoIntegrale.child(1).child(0).text();
+						final String url = divInfoIntegrale.child(1).child(0).attr("href");
+						episodes.add(new EpisodeDTO(category, title, url));
+					}
+				} catch (final IndexOutOfBoundsException e) {
+					LOGGER.error(element, e);
+					System.out.println(element);
+					throw new TechnicalException(e);
+				}
 			}
 		} catch (final IOException e) {
 			throw new TechnicalException(e);
@@ -101,11 +113,11 @@ public class TF1Retreiver {
 		final String mediaId = findMediaId(content);
 		final String urlForVideo = TF1Conf.WAT_HOME + "/get/" + contextRoot + "/" + mediaId
 				+ "?domain=videos.tf1.fr&version=WIN%2010,2,152,32&country=FR&getURL=1&token=" + buildToken(mediaId, findTimeStamp(), contextRoot);
-		return RetrieverUtils.getUrlContent(urlForVideo, TF1Conf.USER_AGENT);
+		return RetrieverUtils.getUrlContent(urlForVideo);
 	}
 
 	private static Long findTimeStamp() {
-		final String content = RetrieverUtils.getUrlContent(TF1Conf.WAT_HOME + "/servertime", TF1Conf.USER_AGENT);
+		final String content = RetrieverUtils.getUrlContent(TF1Conf.WAT_HOME + "/servertime");
 		return Long.valueOf(content.split("\\|")[0]);
 	}
 

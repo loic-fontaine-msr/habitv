@@ -34,13 +34,13 @@ public class RetreiveTask extends AbstractEpisodeTask {
 	private final DownloadedDAO downloadDAO;
 
 	public RetreiveTask(final EpisodeDTO episode, final Publisher<RetreiveEvent> publisher, final TaskAdder taskAdder, final ExporterDTO exporter,
-			final PluginProviderInterface provider, final DownloaderDTO downloader) {
+			final PluginProviderInterface provider, final DownloaderDTO downloader, final DownloadedDAO downloadDAO) {
 		super(episode);
 		retreivePublisher = publisher;
 		this.taskAdder = taskAdder;
 		this.exporter = exporter;
 		this.provider = provider;
-		downloadDAO = new DownloadedDAO(provider.getName(), episode.getName(), downloader.getIndexDir());
+		this.downloadDAO = downloadDAO;
 		this.downloader = downloader;
 	}
 
@@ -53,7 +53,8 @@ public class RetreiveTask extends AbstractEpisodeTask {
 	@Override
 	protected void failed(final Exception e) {
 		LOG.error("Episode failed to retreive " + getEpisode(), e);
-		retreivePublisher.addNews(new RetreiveEvent(getEpisode(), EpisodeStateEnum.FAILED, e, "retreive"));
+		// retreivePublisher.addNews(new RetreiveEvent(getEpisode(),
+		// EpisodeStateEnum.FAILED, e, "retreive"));
 	}
 
 	@Override
@@ -96,14 +97,20 @@ public class RetreiveTask extends AbstractEpisodeTask {
 		if (export.getConditionReference() != null) {
 			final String reference = export.getConditionReference();
 			final String actualString = TokenReplacer.replaceRef(reference, episode);
-			ret = actualString.matches(export.getConditionReference());
+			ret = actualString.matches(export.getConditionPattern());
 		}
 		return ret;
 	}
 
-	private void download() throws InterruptedException, ExecutionException {
-		final Future<Object> futureDl = taskAdder.addDownloadTask(new DownloadTask(getEpisode(), provider, downloader, retreivePublisher, downloadDAO));
-		futureDl.get();
+	private void download() {
+		final Future<Object> futureDl = taskAdder.addDownloadTask(new DownloadTask(getEpisode(), provider, downloader, retreivePublisher, downloadDAO),
+				getEpisode().getCategory().getChannel());
+		try {
+			futureDl.get();
+		} catch (InterruptedException | ExecutionException e) {
+			throw new TechnicalException(e); // TODO gérer des exceptions de
+												// type downloadfailedException
+		}
 	}
 
 	private void check() {

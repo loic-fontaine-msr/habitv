@@ -4,7 +4,7 @@ public class ExecutorFailedException extends Exception {
 
 	private static final long serialVersionUID = -3244886187302237470L;
 
-	private final String fullOuput;
+	private final String fullOuput;// TODO add last line
 
 	private final String cmd;
 

@@ -25,12 +25,12 @@ public class CanalPlusRetriever {
 
 		if (originalcategory.getSubCategories().isEmpty()) {
 			episodes = findEpisodeBySubCategory(originalcategory, originalcategory);
-			for (CategoryDTO subCategory : getCategoryById(originalcategory.getId())) {
+			for (final CategoryDTO subCategory : getCategoryById(originalcategory.getId())) {
 				episodes.addAll(findEpisodeBySubCategory(subCategory, originalcategory));
 			}
 		} else {
 			episodes = new HashSet<>();
-			for (CategoryDTO subCategory : originalcategory.getSubCategories()) {
+			for (final CategoryDTO subCategory : originalcategory.getSubCategories()) {
 				episodes.addAll(findEpisodeBySubCategory(subCategory, originalcategory));
 			}
 		}
@@ -42,7 +42,7 @@ public class CanalPlusRetriever {
 
 		final MEAS meas = (MEAS) RetrieverUtils.unmarshalInputStream(RetrieverUtils.getInputStreamFromUrl(CanalPlusConf.MEA_URL + identifier),
 				CanalPlusConf.MEA_PACKAGE_NAME, classLoader);
-		for (MEA mea : meas.getMEA()) {
+		for (final MEA mea : meas.getMEA()) {
 			categories
 					.add(new CategoryDTO(CanalPlusConf.NAME, mea.getINFOS().getTITRAGE().getSOUSTITRE(), String.valueOf(mea.getID()), CanalPlusConf.EXTENSION));
 		}
@@ -58,7 +58,7 @@ public class CanalPlusRetriever {
 
 	protected static Set<EpisodeDTO> buildFromVideo(final CategoryDTO category, final VIDEOS videos, final CategoryDTO originalCategory) {
 		final Set<EpisodeDTO> episodes = new HashSet<>();
-		for (VIDEO video : videos.getVIDEO()) {
+		for (final VIDEO video : videos.getVIDEO()) {
 			String videoUrl = video.getMEDIA().getVIDEOS().getHD();
 			if (videoUrl == null || videoUrl.length() < 2) {
 				videoUrl = video.getMEDIA().getVIDEOS().getHAUTDEBIT();
@@ -67,8 +67,8 @@ public class CanalPlusRetriever {
 				videoUrl = video.getMEDIA().getVIDEOS().getBASDEBIT();
 			}
 
-			String name = video.getINFOS().getTITRAGE().getSOUSTITRE();
-			if (category.getName().contains("FOOTBALL")) {
+			String name = video.getINFOS().getTITRAGE().getSOUSTITRE() + " - " + video.getINFOS().getTITRAGE().getTITRE();
+			if (originalCategory.getName().contains("FOOTBALL")) {
 				name = name.replaceAll("(\\d\\s*-\\s*\\d)", "").replaceAll("(\\d_*-_*\\d)", "");
 			}
 

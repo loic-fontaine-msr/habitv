@@ -212,7 +212,7 @@ public class SearchTaskTest {
 			}
 
 			@Override
-			public Future<Object> addDownloadTask(final DownloadTask downloadTask) {
+			public Future<Object> addDownloadTask(final DownloadTask downloadTask, final String channel) {
 				return null;
 			}
 

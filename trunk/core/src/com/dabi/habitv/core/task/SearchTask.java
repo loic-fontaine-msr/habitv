@@ -79,12 +79,12 @@ public class SearchTask extends AbstractTask<Object> {
 			} else {
 				// dao to find dowloaded episodes
 				final DownloadedDAO dlDAO = buildDownloadDAO(category.getName());
-				if (!dlDAO.isIndexCreated()) {
+				// get list of downloadable episodes
+				Set<EpisodeDTO> episodeList = provider.findEpisode(category);
+				if (!dlDAO.isIndexCreated() && !episodeList.isEmpty()) {
 					LOG.info("Creating index for " + category.getName());
 					searchPublisher.addNews(new SearchEvent(provider.getName(), category.getName(), SearchStateEnum.BUILD_INDEX));
 				}
-				// get list of downloadable episodes
-				Set<EpisodeDTO> episodeList = provider.findEpisode(category);
 				// filter episode lister by include/exclude and already
 				// downloaded
 				episodeList = FilterUtils.filterByIncludeExcludeAndDownloaded(episodeList, category.getInclude(), category.getExclude(),
@@ -92,7 +92,7 @@ public class SearchTask extends AbstractTask<Object> {
 				for (final EpisodeDTO episode : episodeList) {
 					if (dlDAO.isIndexCreated()) {
 						// producer download the file
-						taskAdder.addRetreiveTask(new RetreiveTask(episode, retreivePublisher, taskAdder, exporter, provider, downloader));
+						taskAdder.addRetreiveTask(new RetreiveTask(episode, retreivePublisher, taskAdder, exporter, provider, downloader, dlDAO));
 					} else {
 						// if index has not been created the first run will only
 						// fill this file

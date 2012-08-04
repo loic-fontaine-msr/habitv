@@ -7,6 +7,7 @@ import com.dabi.habitv.core.token.TokenReplacer;
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
 import com.dabi.habitv.framework.plugin.api.dto.ExportDTO;
 import com.dabi.habitv.framework.plugin.api.exporter.PluginExporterInterface;
+import com.dabi.habitv.framework.plugin.exception.ExecutorFailedException;
 import com.dabi.habitv.framework.plugin.exception.ExportFailedException;
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
 
@@ -34,7 +35,12 @@ public class ExportTask extends AbstractEpisodeTask {
 	@Override
 	protected void failed(final Exception e) {
 		LOG.error("Episode failed to export " + getEpisode() + " " + export.getName(), e);
-		publisher.addNews(new RetreiveEvent(getEpisode(), EpisodeStateEnum.EXPORT_FAILED, e, export.getName()));
+		if (e instanceof ExecutorFailedException) {
+			final ExecutorFailedException executorFailedException = (ExecutorFailedException) e;
+			LOG.error("cmd was" + executorFailedException.getCmd());
+			LOG.error(executorFailedException.getFullOuput());
+		}
+		publisher.addNews(new RetreiveEvent(getEpisode(), EpisodeStateEnum.EXPORT_FAILED, e, export.getOutput()));
 	}
 
 	@Override
@@ -45,7 +51,7 @@ public class ExportTask extends AbstractEpisodeTask {
 	@Override
 	protected void started() {
 		LOG.error("Episode export starting" + getEpisode() + " " + export.getName());
-		publisher.addNews(new RetreiveEvent(getEpisode(), EpisodeStateEnum.EXPORTING, export.getName(), null));
+		publisher.addNews(new RetreiveEvent(getEpisode(), EpisodeStateEnum.EXPORTING, export.getOutput(), null));
 	}
 
 	@Override
@@ -54,7 +60,7 @@ public class ExportTask extends AbstractEpisodeTask {
 		pluginExporter.export(cmd, new CmdProgressionListener() {
 			@Override
 			public void listen(final String progression) {
-				publisher.addNews(new RetreiveEvent(getEpisode(), EpisodeStateEnum.EXPORTING, export.getName(), progression));
+				publisher.addNews(new RetreiveEvent(getEpisode(), EpisodeStateEnum.EXPORTING, export.getOutput(), progression));
 			}
 		});
 		return null;
