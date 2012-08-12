@@ -8,6 +8,7 @@ import com.dabi.habitv.core.config.HabitTvConf;
 import com.dabi.habitv.core.dao.GrabConfigDAO;
 import com.dabi.habitv.core.mgr.CoreManager;
 import com.dabi.habitv.framework.plugin.utils.ProcessingThread;
+import com.dabi.habitv.framework.updater.UpdateUpdater;
 
 public final class ConsoleLauncher {
 
@@ -18,6 +19,7 @@ public final class ConsoleLauncher {
 	}
 
 	public static void main(final String[] args) throws InterruptedException {
+		UpdateUpdater.update();
 		try {
 			final Config config = ConfigAccess.initConfig();
 			final GrabConfigDAO grabConfigDAO = new GrabConfigDAO(HabitTvConf.GRABCONFIG_XML_FILE);
