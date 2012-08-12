@@ -14,24 +14,9 @@ public final class PluginFactory<P extends PluginBase> {
 
 	public PluginFactory(final Class<P> pluginInterface, final String pluginDir) {
 		final List<P> pluginProviderInterList = new PluginsLoader<>(pluginInterface, new File(pluginDir).listFiles()).loadAllProviderPlugins();
-		for (P plugin : pluginProviderInterList) {
+		for (final P plugin : pluginProviderInterList) {
 			pluginName2Plugin.put(plugin.getName(), plugin);
 		}
-	}
-
-	public P findPlugin(final String pluginName) {
-		return findPlugin(pluginName, null);
-	}
-
-	public P findPlugin(final String pluginName, final String defaultValue) {
-		P plugin = pluginName2Plugin.get(pluginName);
-		if (plugin == null) {
-			if (defaultValue == null) {
-				throw new IllegalArgumentException("Plugin not found " + pluginName);
-			}
-			plugin = findPlugin(defaultValue, null);
-		}
-		return plugin;
 	}
 
 	public Collection<P> getAllPlugin() {

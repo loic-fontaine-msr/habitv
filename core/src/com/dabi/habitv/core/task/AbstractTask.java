@@ -1,8 +1,12 @@
 package com.dabi.habitv.core.task;
 
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
+
+import com.dabi.habitv.framework.plugin.exception.TechnicalException;
 
 public abstract class AbstractTask<R> implements Callable<R> {
 
@@ -10,14 +14,25 @@ public abstract class AbstractTask<R> implements Callable<R> {
 
 	private String category = null;
 
+	private TaskListener listener;
+
+	private Future<R> future;
+
 	@Override
 	public final R call() {
 		R result;
 		try {
 			started();
+			Thread.currentThread().setName(toString());
 			result = doCall();
+			if (listener != null) {
+				listener.onTaskEnded();
+			}
 			ended();
 		} catch (final Exception e) {
+			if (listener != null) {
+				listener.onTaskEnded();
+			}
 			failed(e);
 			throw new TaskFailedException(e);
 		}
@@ -34,13 +49,33 @@ public abstract class AbstractTask<R> implements Callable<R> {
 
 	protected abstract R doCall() throws Exception;
 
-	public final void addedTo(final String category) {
+	public final void addedTo(final String category, final Future<R> future) {
 		this.category = category;
+		this.future = future;
 		added();
+	}
+
+	public void waitEndOfTreatment() {
+		getResult();
+	}
+
+	public R getResult() {
+		try {
+			return future.get();
+		} catch (InterruptedException | ExecutionException e) {
+			throw new TechnicalException(e);
+		}
 	}
 
 	public final String getCategory() {
 		return category;
 	}
+
+	public void setListener(final TaskListener listener) {
+		this.listener = listener;
+	}
+
+	@Override
+	public abstract String toString();
 
 }

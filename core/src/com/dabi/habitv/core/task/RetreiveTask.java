@@ -2,7 +2,6 @@ package com.dabi.habitv.core.task;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 
 import com.dabi.habitv.core.config.HabitTvConf;
 import com.dabi.habitv.core.dao.DownloadedDAO;
@@ -80,10 +79,10 @@ public class RetreiveTask extends AbstractEpisodeTask {
 		for (final ExportDTO export : exporterList) {
 			if (validCondition(export, getEpisode())) {
 				final PluginExporterInterface pluginexporter = exporter.getExporter(export.getName(), HabitTvConf.DEFAULT_EXPORTER);
-				final Future<Object> futureExport = taskAdder.addExportTask(new ExportTask(getEpisode(), export, pluginexporter, retreivePublisher),
-						export.getName());
+				final ExportTask exportTask = new ExportTask(getEpisode(), export, pluginexporter, retreivePublisher);
+				taskAdder.addExportTask(exportTask, export.getName());
 				// wait for the current exportTask before running an other
-				futureExport.get();// TODO timeout ?
+				exportTask.waitEndOfTreatment();
 				// sub export tasks are run asynchronously
 				if (!export.getExporter().isEmpty()) {
 					export(export.getExporter());
@@ -103,14 +102,10 @@ public class RetreiveTask extends AbstractEpisodeTask {
 	}
 
 	private void download() {
-		final Future<Object> futureDl = taskAdder.addDownloadTask(new DownloadTask(getEpisode(), provider, downloader, retreivePublisher, downloadDAO),
-				getEpisode().getCategory().getChannel());
-		try {
-			futureDl.get();
-		} catch (InterruptedException | ExecutionException e) {
-			throw new TechnicalException(e); // TODO gérer des exceptions de
-												// type downloadfailedException
-		}
+		final DownloadTask downloadTask = new DownloadTask(getEpisode(), provider, downloader, retreivePublisher, downloadDAO);
+		taskAdder.addDownloadTask(downloadTask, getEpisode().getCategory().getChannel());
+		downloadTask.waitEndOfTreatment();
+		// TODO gérer des exceptions de type downloadfailedException
 	}
 
 	private void check() {
@@ -119,5 +114,10 @@ public class RetreiveTask extends AbstractEpisodeTask {
 		} catch (final InvalidEpisodeException e) {
 			throw new TechnicalException(e);
 		}
+	}
+
+	@Override
+	public String toString() {
+		return "Retreiving" + getEpisode().toString();
 	}
 }

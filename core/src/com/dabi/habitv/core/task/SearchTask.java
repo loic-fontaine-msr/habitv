@@ -79,24 +79,31 @@ public class SearchTask extends AbstractTask<Object> {
 			} else {
 				// dao to find dowloaded episodes
 				final DownloadedDAO dlDAO = buildDownloadDAO(category.getName());
+				final Set<String> dlFiles = dlDAO.findDownloadedFiles();
+				final boolean indexCreated = dlDAO.isIndexCreated();
 				// get list of downloadable episodes
-				Set<EpisodeDTO> episodeList = provider.findEpisode(category);
-				if (!dlDAO.isIndexCreated() && !episodeList.isEmpty()) {
+				final Set<EpisodeDTO> episodeList = provider.findEpisode(category);
+				if (!indexCreated && !episodeList.isEmpty()) {
 					LOG.info("Creating index for " + category.getName());
 					searchPublisher.addNews(new SearchEvent(provider.getName(), category.getName(), SearchStateEnum.BUILD_INDEX));
 				}
+				// reinit index to purge non available files from index
+				// dlDAO.initIndex(); provider may re add an old dl file, so we
+				// shoudl'nt reinit index
 				// filter episode lister by include/exclude and already
 				// downloaded
-				episodeList = FilterUtils.filterByIncludeExcludeAndDownloaded(episodeList, category.getInclude(), category.getExclude(),
-						dlDAO.findDownloadedFiles());
+				boolean isDownloaded;
 				for (final EpisodeDTO episode : episodeList) {
-					if (dlDAO.isIndexCreated()) {
+					isDownloaded = dlFiles.contains(episode.getName());
+					if (indexCreated && FilterUtils.filterByIncludeExcludeAndDownloaded(episode, category.getInclude(), category.getExclude()) && !isDownloaded) {
 						// producer download the file
 						taskAdder.addRetreiveTask(new RetreiveTask(episode, retreivePublisher, taskAdder, exporter, provider, downloader, dlDAO));
 					} else {
 						// if index has not been created the first run will only
 						// fill this file
-						dlDAO.addDownloadedFiles(episode.getName());
+						if (!isDownloaded) {
+							dlDAO.addDownloadedFiles(episode.getName());
+						}
 					}
 				}
 			}
@@ -105,5 +112,10 @@ public class SearchTask extends AbstractTask<Object> {
 
 	protected DownloadedDAO buildDownloadDAO(final String categoyName) {
 		return new DownloadedDAO(provider.getName(), categoyName, downloader.getIndexDir());
+	}
+
+	@Override
+	public String toString() {
+		return "Searching" + provider.getName();
 	}
 }

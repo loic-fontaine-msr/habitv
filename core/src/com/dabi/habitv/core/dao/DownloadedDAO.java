@@ -79,7 +79,7 @@ public class DownloadedDAO {
 		return fileList;
 	}
 
-	public void addDownloadedFiles(final String... files) {
+	public synchronized void addDownloadedFiles(final String... files) {
 		PrintWriter writer;
 		try {
 			writer = new PrintWriter(new OutputStreamWriter(new FileOutputStream(getFileIndex(), true), "UTF-8"));
@@ -97,7 +97,9 @@ public class DownloadedDAO {
 	}
 
 	public void initIndex() {
-		(new File(getFileIndex())).delete();
+		final String fileIndex = getFileIndex();
+		(new File(fileIndex)).delete();
+		LOG.info("réinitialisation de l'index " + fileIndex);
 		indexExist = false;
 	}
 

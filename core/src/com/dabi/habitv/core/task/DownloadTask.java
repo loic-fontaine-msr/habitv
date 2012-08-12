@@ -1,5 +1,7 @@
 package com.dabi.habitv.core.task;
 
+import java.io.File;
+
 import com.dabi.habitv.core.dao.DownloadedDAO;
 import com.dabi.habitv.core.event.EpisodeStateEnum;
 import com.dabi.habitv.core.event.RetreiveEvent;
@@ -64,7 +66,13 @@ public class DownloadTask extends AbstractEpisodeTask {
 
 	@Override
 	protected Object doCall() throws DownloadFailedException, NoSuchDownloaderException {
-		provider.download(TokenReplacer.replaceAll(downloader.getDownloadOutput(), getEpisode()), downloader, new CmdProgressionListener() {
+		final String outputFilename = TokenReplacer.replaceAll(downloader.getDownloadOutput(), getEpisode());
+		// delete to prevent resuming since most of the download can't resume
+		final File outputFile = new File(outputFilename);
+		if (outputFile.exists()) {
+			outputFile.delete();
+		}
+		provider.download(outputFilename, downloader, new CmdProgressionListener() {
 			@Override
 			public void listen(final String progression) {
 				publisher.addNews(new RetreiveEvent(getEpisode(), EpisodeStateEnum.DOWNLOADING, progression));
@@ -95,7 +103,7 @@ public class DownloadTask extends AbstractEpisodeTask {
 
 	@Override
 	public String toString() {
-		return getEpisode() + " " + provider.getName() + " " + downloader.getDownloadOutput();
+		return "DL" + getEpisode() + " " + provider.getName() + " " + downloader.getDownloadOutput();
 	}
 
 }

@@ -3,7 +3,6 @@ package com.dabi.habitv.core.task;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -16,34 +15,38 @@ public class TaskMgr<T extends AbstractTask<R>, R> {
 
 	private static final String DEFAULT = "default";
 
-	private final int poolSize;
-
 	private final Map<String, ExecutorService> category2ExecutorService = new HashMap<String, ExecutorService>();
 
 	private final TaskMgrListener taskMgrListener;
 
-	public TaskMgr(final int poolSize, final TaskMgrListener taskMgrListener) {
+	private final int defaultPoolSize;
+
+	private final Map<String, Integer> category2PoolSize;
+
+	public TaskMgr(final int defaultPoolSize, final TaskMgrListener taskMgrListener, final Map<String, Integer> category2PoolSize) {
 		super();
-		this.poolSize = poolSize;
+		this.defaultPoolSize = defaultPoolSize;
 		this.taskMgrListener = taskMgrListener;
+		this.category2PoolSize = category2PoolSize;
 	}
 
-	public Future<R> addTask(final T task) {
-		return addTask(task, DEFAULT);
+	public void addTask(final T task) {
+		addTask(task, DEFAULT);
 	}
 
-	public Future<R> addTask(final T task, final String category) {
+	public synchronized void addTask(final T task, final String category) {
 		ExecutorService executorService = category2ExecutorService.get(category);
 		if (executorService == null) {
-			executorService = initExecutor();
+			executorService = initExecutor(category);
 			category2ExecutorService.put(category, executorService);
 		}
-		task.addedTo(category);
-		return executorService.submit(task);
+		task.addedTo(category, executorService.submit(task));
 	}
 
-	private ExecutorService initExecutor() {
-		return new ThreadPoolExecutor(poolSize, poolSize, DEFAULT_KEEP_ALIVE_TIME_SEC, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>()) {
+	private ExecutorService initExecutor(final String category) {
+		final int poolSize = findPoolSizeByCategory(category);
+		final ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(poolSize, poolSize, DEFAULT_KEEP_ALIVE_TIME_SEC, TimeUnit.SECONDS,
+				new LinkedBlockingQueue<Runnable>()) {
 
 			@Override
 			public void afterExecute(final Runnable r, final Throwable t) {
@@ -53,6 +56,22 @@ public class TaskMgr<T extends AbstractTask<R>, R> {
 				}
 			}
 		};
+		threadPoolExecutor.allowCoreThreadTimeOut(true);
+		return threadPoolExecutor;
+	}
+
+	interface PoolSizeFinder {
+		int findPoolSizeByCategory(String category);
+	}
+
+	private int findPoolSizeByCategory(final String category) {
+		Integer ret;
+		if (DEFAULT.equals(category) || category2PoolSize == null || !category2PoolSize.containsKey(category)) {
+			ret = defaultPoolSize;
+		} else {
+			ret = category2PoolSize.get(category);
+		}
+		return ret;
 	}
 
 	public void shutdown(final int timeoutMs) {
