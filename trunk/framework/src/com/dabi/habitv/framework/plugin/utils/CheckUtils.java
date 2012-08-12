@@ -1,5 +1,7 @@
 package com.dabi.habitv.framework.plugin.utils;
 
+import com.dabi.habitv.framework.FrameworkConf;
+
 public final class CheckUtils {
 
 	private CheckUtils() {
