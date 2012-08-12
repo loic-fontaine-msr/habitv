@@ -14,7 +14,7 @@ import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.framework.plugin.exception.NoSuchDownloaderException;
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
-import com.dabi.habitv.framework.plugin.utils.FrameworkConf;
+import com.dabi.habitv.framework.FrameworkConf;
 
 public class TvSubtitlesPluginManager implements PluginProviderInterface {
 
