@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 
 import org.apache.log4j.Logger;
 
+import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.exception.ExecutorFailedException;
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
 
@@ -74,6 +75,7 @@ public class CmdExecutor {
 		final Thread tread = new Thread() {
 			@Override
 			public void run() {
+				setName("ThreadOut" + cmd);
 				try {
 					final BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
 					String line = "";
