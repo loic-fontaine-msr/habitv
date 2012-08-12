@@ -49,7 +49,9 @@ public class ActionProgress implements Comparable<ActionProgress> {
 	public int compareTo(final ActionProgress o) {
 		int ret = state.compareTo(o.state);
 		if (ret == 0) {
-			ret = info.compareTo(o.info);
+			if (info != null) {
+				ret = info.compareTo(o.info);
+			}
 			if (ret == 0) {
 				ret = o.episode.compareTo(episode);
 			}

@@ -3,14 +3,15 @@ package com.dabi.habitv.tray.model;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.TreeSet;
+import java.util.LinkedList;
+import java.util.List;
 
 import com.dabi.habitv.core.event.EpisodeStateEnum;
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
 
 public class ProgressionModel {
 
-	private final Collection<ActionProgress> episodeName2ActionProgress = Collections.synchronizedCollection(new TreeSet<ActionProgress>());
+	private final List<ActionProgress> episodeName2ActionProgress = Collections.synchronizedList(new LinkedList<ActionProgress>());
 
 	public void updateActionProgress(final EpisodeDTO episode, final EpisodeStateEnum state, final String info, final String progression) {
 		ActionProgress actionInProgress = getAction(episode);
@@ -22,11 +23,12 @@ public class ProgressionModel {
 			actionInProgress.setProgress(progression);
 			actionInProgress.setInfo(info);
 		}
+		Collections.sort(episodeName2ActionProgress);
 	}
 
 	public ActionProgress getAction(final EpisodeDTO episode) {
 		ActionProgress ret = null;
-		for (ActionProgress actionProgress : episodeName2ActionProgress) {
+		for (final ActionProgress actionProgress : episodeName2ActionProgress) {
 			if (actionProgress.getEpisode().equals(episode)) {
 				ret = actionProgress;
 			}
@@ -40,7 +42,7 @@ public class ProgressionModel {
 
 	public boolean isAllActionDone() {
 		boolean ret = true;
-		for (ActionProgress actionProgress : episodeName2ActionProgress) {
+		for (final ActionProgress actionProgress : episodeName2ActionProgress) {
 			if (!isActionDone(actionProgress)) {
 				ret = false;
 				break;
@@ -49,16 +51,16 @@ public class ProgressionModel {
 		return ret;
 	}
 
-	private boolean isActionDone(ActionProgress actionProgress) {
-		EpisodeStateEnum state = actionProgress.getState();
+	private boolean isActionDone(final ActionProgress actionProgress) {
+		final EpisodeStateEnum state = actionProgress.getState();
 		return state.equals(EpisodeStateEnum.READY) || state.equals(EpisodeStateEnum.EXPORT_FAILED) || state.equals(EpisodeStateEnum.DOWNLOAD_FAILED);
 	}
 
 	public void clear() {
-		Iterator<ActionProgress> it = episodeName2ActionProgress.iterator();
+		final Iterator<ActionProgress> it = episodeName2ActionProgress.iterator();
 		ActionProgress actionProgress;
 		while (it.hasNext()) {
-			actionProgress = (ActionProgress) it.next();
+			actionProgress = it.next();
 			if (isActionDone(actionProgress)) {
 				it.remove();
 			}

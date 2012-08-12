@@ -2,6 +2,7 @@ package com.dabi.habitv.tray;
 
 import org.apache.log4j.Logger;
 
+import com.dabi.habitv.framework.updater.UpdateUpdater;
 import com.dabi.habitv.tray.controller.TrayController;
 import com.dabi.habitv.tray.model.HabitTvTrayModel;
 import com.dabi.habitv.tray.view.HabiTvTrayView;
@@ -15,6 +16,7 @@ public final class TrayLauncher {
 	}
 
 	public static void main(final String[] args) {
+		UpdateUpdater.update();
 		try {
 			final HabitTvTrayModel model = new HabitTvTrayModel();
 			final TrayController controller = new TrayController(model);
