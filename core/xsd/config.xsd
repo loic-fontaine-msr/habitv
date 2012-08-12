@@ -23,14 +23,7 @@
 			</element>
 			<element name="exporter" type="tns:exporter"
 				maxOccurs="unbounded" minOccurs="0" />
-			<element name="allDownloadTimeout" type="int" maxOccurs="1"
-				minOccurs="1">
-			</element>
-			<element name="exportTimeout" type="int" maxOccurs="1"
-				minOccurs="1">
-			</element>
-
-			<element name="simultaneousTaskNumber" type="tns:simultaneousTaskNumber" maxOccurs="unbounded" minOccurs="0"></element>
+			<element name="taskDefinition" type="tns:taskDefinition" maxOccurs="unbounded" minOccurs="0"></element>
 		</sequence>
 	</complexType>
 
@@ -68,7 +61,7 @@
 		</sequence>
 	</complexType>
 
-	<complexType name="simultaneousTaskNumber">
+	<complexType name="taskDefinition">
 		<sequence>
 			<element name="taskName" type="string"></element>
 			<element name="size" type="int"></element>
