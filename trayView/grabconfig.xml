@@ -1,79 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ns2:grabConfig xmlns:ns2="http://www.dabi.com/habitv/grabconfig/entities">
-<!-- 
-	<channel>
-		<name>tvSubtitles</name>
-		<category>
-			<id>tvshow-950-2.html</id>
-			<name>Awkward</name>
-			<extension>zip</extension>
-		</category>
-		<category>
-			<id>tvshow-133-4.html</id>
-			<name>Breaking Bad</name>
-			<extension>zip</extension>
-		</category>
-		<category>
-			<id>tvshow-7-8.html</id>
-			<name>Grey's Anatomy</name>
-			<extension>zip</extension>
-		</category>
-		<category>
-			<id>tvshow-911-2.html</id>
-			<name>Game of Thrones</name>
-			<extension>zip</extension>
-		</category>
-		<category>
-			<id>tvshow-967-1.html</id>
-			<name>Revenge</name>
-			<extension>zip</extension>
-		</category>
-		<category>
-			<id>tvshow-1104-1.html</id>
-			<name>The Client List</name>
-			<extension>zip</extension>
-		</category>
-		<category>
-			<id>tvshow-1105-1.html</id>
-			<name>Don't Trust The Bitch In Apartment 23</name>
-			<extension>zip</extension>
-		</category>
-		<category>
-			<id>tvshow-71-16.html</id>
-			<name>South Park</name>
-			<extension>zip</extension>
-		</category>
-	</channel> -->
+	<!-- <channel> <name>tvSubtitles</name> <category> <id>tvshow-950-2.html</id> 
+		<name>Awkward</name> <extension>zip</extension> </category> <category> <id>tvshow-133-4.html</id> 
+		<name>Breaking Bad</name> <extension>zip</extension> </category> <category> 
+		<id>tvshow-7-8.html</id> <name>Grey's Anatomy</name> <extension>zip</extension> 
+		</category> <category> <id>tvshow-911-2.html</id> <name>Game of Thrones</name> 
+		<extension>zip</extension> </category> <category> <id>tvshow-967-1.html</id> 
+		<name>Revenge</name> <extension>zip</extension> </category> <category> <id>tvshow-1104-1.html</id> 
+		<name>The Client List</name> <extension>zip</extension> </category> <category> 
+		<id>tvshow-1105-1.html</id> <name>Don't Trust The Bitch In Apartment 23</name> 
+		<extension>zip</extension> </category> <category> <id>tvshow-71-16.html</id> 
+		<name>South Park</name> <extension>zip</extension> </category> </channel> -->
 	<channel>
 		<name>m6w9</name>
 		<category>
-			<id>w9</id>
-			<name>w9</name>
-			<category>
-				<id>10084</id>
-				<name>A VOS CLIPS</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>3330</id>
-				<name>W9 HITS</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>3350</id>
-				<name>E-CLASSEMENT</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>11312</id>
-				<name>LE MEILLEUR DU TOP 50</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
 			<id>m6</id>
 			<name>m6</name>
+			<category>
+				<id>3538</id>
+				<name>Scènes de ménages</name>
+				<include>.*Episodes du.*</include>
+				<extension>mp4</extension>
+			</category>
 			<category>
 				<id>6026</id>
 				<name>Un gars, une fille</name>
@@ -100,12 +48,6 @@
 				<extension>mp4</extension>
 			</category>
 			<category>
-				<id>3538</id>
-				<name>Scènes de ménages</name>
-				<include>.*Episodes du.*</include>
-				<extension>mp4</extension>
-			</category>
-			<category>
 				<id>2360</id>
 				<name>Zone interdite</name>
 				<extension>mp4</extension>
@@ -113,6 +55,36 @@
 			<category>
 				<id>116</id>
 				<name>66 Minutes</name>
+				<extension>mp4</extension>
+			</category>
+			<category>
+				<id>2972</id>
+				<name>Le 1945</name>
+				<extension>mp4</extension>
+			</category>			
+			<extension>mp4</extension>
+		</category>
+		<category>
+			<id>w9</id>
+			<name>w9</name>
+			<category>
+				<id>11856</id>
+				<name>Un gars, une fille (W9)</name>
+				<extension>mp4</extension>
+			</category>
+			<category>
+				<id>3330</id>
+				<name>W9 HITS</name>
+				<extension>mp4</extension>
+			</category>
+			<category>
+				<id>3350</id>
+				<name>E-CLASSEMENT</name>
+				<extension>mp4</extension>
+			</category>
+			<category>
+				<id>11312</id>
+				<name>LE MEILLEUR DU TOP 50</name>
 				<extension>mp4</extension>
 			</category>
 			<extension>mp4</extension>
@@ -224,6 +196,7 @@
 		<category>
 			<id>50-mn-inside</id>
 			<name>50-mn-inside</name>
+			<exclude>.*Emission du.*</exclude>
 			<extension>mp4</extension>
 		</category>
 		<category>
@@ -232,4 +205,22 @@
 			<extension>mp4</extension>
 		</category>
 	</channel>
+	<!-- <channel>
+		<name>pluzz</name>
+		<category>
+			<id>Divertissement</id>
+			<name>Divertissement</name>
+			<category>
+				<id>Magazine</id>
+				<name>Magazine</name>
+				<category>
+					<id>7 jours</id>
+					<name>7 jours</name>
+					<extension>mp4</extension>
+				</category>
+				<extension>mp4</extension>
+			</category>
+			<extension>mp4</extension>
+		</category>
+	</channel>-->
 </ns2:grabConfig>
