@@ -1,6 +1,6 @@
 package com.dabi.habitv.downloader.curl;
 
-import com.dabi.habitv.framework.plugin.utils.FrameworkConf;
+import com.dabi.habitv.framework.FrameworkConf;
 
 public final class CurlConf {
 
