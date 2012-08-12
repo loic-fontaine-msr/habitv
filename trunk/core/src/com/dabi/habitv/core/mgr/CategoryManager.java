@@ -6,8 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 
 import com.dabi.habitv.core.config.HabitTvConf;
 import com.dabi.habitv.core.event.SearchCategoryEvent;
@@ -30,23 +28,27 @@ public class CategoryManager extends AbstractManager {
 	public CategoryManager(final Collection<PluginProviderInterface> pluginProviderList, final Map<String, Integer> taskName2PoolSize) {
 		super(pluginProviderList);
 		// task mgrs
-		searchCategoryMgr = new TaskMgr<SearchCategoryTask, SearchCategoryResult>(taskName2PoolSize.get("category"), buildCategoryTaskMgrListener());
+		searchCategoryMgr = new TaskMgr<SearchCategoryTask, SearchCategoryResult>(taskName2PoolSize.get("category"), buildCategoryTaskMgrListener(), null);
 		// publisher
 		searchCategoryPublisher = new Publisher<>();
 	}
 
 	public Map<String, Set<CategoryDTO>> findCategory() {
 		final Map<String, Set<CategoryDTO>> channel2Categories = new HashMap<>();
-		final List<Future<SearchCategoryResult>> futureList = new ArrayList<>();
+		final List<SearchCategoryTask> taskList = new ArrayList<>();
 		// search is parallelized, the final result will be build with the
 		// future result
 		for (final PluginProviderInterface provider : getPluginProviderList()) {
-			futureList.add(searchCategoryMgr.addTask(new SearchCategoryTask(provider.getName(), provider, searchCategoryPublisher)));
+			final SearchCategoryTask searchCategoryTask = new SearchCategoryTask(provider.getName(), provider, searchCategoryPublisher);
+			searchCategoryMgr.addTask(searchCategoryTask);
+			taskList.add(searchCategoryTask);
 		}
-		for (final Future<SearchCategoryResult> futureResult : futureList) {
+		SearchCategoryResult searchCategoryResult;
+		for (final SearchCategoryTask searchTask : taskList) {
 			try {
-				channel2Categories.put(futureResult.get().getChannel(), futureResult.get().getCategoryList());
-			} catch (InterruptedException | ExecutionException e) {
+				searchCategoryResult = searchTask.getResult();
+				channel2Categories.put(searchCategoryResult.getChannel(), searchCategoryResult.getCategoryList());
+			} catch (final TechnicalException e) {
 				searchCategoryPublisher.addNews(new SearchCategoryEvent(SearchCategoryStateEnum.ERROR, HabitTvConf.GRABCONFIG_XML_FILE));
 				throw new TechnicalException(e);
 			}

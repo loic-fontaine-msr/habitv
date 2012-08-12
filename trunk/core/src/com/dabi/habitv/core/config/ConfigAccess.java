@@ -13,7 +13,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
 import com.dabi.habitv.config.entities.Config;
-import com.dabi.habitv.config.entities.SimultaneousTaskNumber;
+import com.dabi.habitv.config.entities.TaskDefinition;
 import com.dabi.habitv.core.task.TaskTypeEnum;
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
 import com.dabi.habitv.utils.FileUtils;
@@ -46,8 +46,8 @@ public final class ConfigAccess {
 
 	public static Map<String, Integer> buildTaskType2ThreadPool(final Config config) {
 		final Map<String, Integer> taskType2ThreadPool = new HashMap<>(TaskTypeEnum.values().length);
-		for (final SimultaneousTaskNumber simultaneousTaskNumber : config.getSimultaneousTaskNumber()) {
-			taskType2ThreadPool.put(simultaneousTaskNumber.getTaskName(), simultaneousTaskNumber.getSize());
+		for (final TaskDefinition taskDefinition : config.getTaskDefinition()) {
+			taskType2ThreadPool.put(taskDefinition.getTaskName(), taskDefinition.getSize());
 		}
 		return taskType2ThreadPool;
 	}

@@ -10,7 +10,7 @@ import java.util.Set;
 import com.dabi.habitv.config.entities.Config;
 import com.dabi.habitv.config.entities.Downloader;
 import com.dabi.habitv.config.entities.Exporter;
-import com.dabi.habitv.config.entities.SimultaneousTaskNumber;
+import com.dabi.habitv.config.entities.TaskDefinition;
 import com.dabi.habitv.core.plugin.PluginFactory;
 import com.dabi.habitv.framework.plugin.api.downloader.PluginDownloaderInterface;
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
@@ -36,7 +36,7 @@ public final class CoreManager {
 		this.config = config;
 		final PluginFactory<PluginProviderInterface> pluginProviderFactory = new PluginFactory<>(PluginProviderInterface.class, config.getProviderPluginDir());
 		providerList = pluginProviderFactory.getAllPlugin();
-		buildTaskName2PoolSizeMap = buildTaskName2PoolSizeMap(config.getSimultaneousTaskNumber());
+		buildTaskName2PoolSizeMap = buildTaskName2PoolSizeMap(config.getTaskDefinition());
 	}
 
 	public CategoryManager getCategoryManager() {
@@ -46,10 +46,10 @@ public final class CoreManager {
 		return categoryManager;
 	}
 
-	private Map<String, Integer> buildTaskName2PoolSizeMap(final List<SimultaneousTaskNumber> simultaneousTaskNumberList) {
+	private Map<String, Integer> buildTaskName2PoolSizeMap(final List<TaskDefinition> taskList) {
 		final Map<String, Integer> taskName2PoolSizeMap = new HashMap<>();
-		for (final SimultaneousTaskNumber simultaneousTaskNumber : simultaneousTaskNumberList) {
-			taskName2PoolSizeMap.put(simultaneousTaskNumber.getTaskName(), simultaneousTaskNumber.getSize());
+		for (final TaskDefinition taskDefinition : taskList) {
+			taskName2PoolSizeMap.put(taskDefinition.getTaskName(), taskDefinition.getSize());
 		}
 		return taskName2PoolSizeMap;
 	}

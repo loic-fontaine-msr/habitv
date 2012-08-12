@@ -48,4 +48,9 @@ public final class SearchCategoryTask extends AbstractTask<SearchCategoryResult>
 		return new SearchCategoryResult(channel, provider.findCategory());
 	}
 
+	@Override
+	public String toString() {
+		return "SearchingCategory" + channel;
+	}
+
 }
