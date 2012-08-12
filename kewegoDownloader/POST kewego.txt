@@ -1,0 +1,14 @@
+POST /config/getStreamInit/ HTTP/1.1
+Host: api.kewego.com
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:14.0) Gecko/20100101 Firefox/14.0.1
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: fr,fr-fr;q=0.8,en-us;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate
+DNT: 1
+Connection: keep-alive
+Referer: http://s.kewego.com/swf/kp.swf?v=20120530
+Content-type: application/x-www-form-urlencoded
+X-KDORIGIN: http%3A//video.lequipe.fr/video/football/foot-l1-video-bande-annonce-saison-2012-2013/%3Fsig%3Db640e3b69ces
+Content-length: 99
+
+player%5Ftype=kp&sig=b640e3b69ces&playerKey=b7a2e6ce1157&request%5Fverbose=false&language%5Fcode=fr
