@@ -41,14 +41,15 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 				<configuration>
+				<finalName>${project.name}</finalName>
 					<outputDirectory>../builder/pub/lib</outputDirectory>
 					<archive>
 						<manifest>
 							<addClasspath>true</addClasspath>
-							<mainClass>com.dabi.habitv.launcher.HabiTvLauncher</mainClass>
+							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
 						</manifest>
 						<addMavenDescriptor>false</addMavenDescriptor>
-					</archive>
+					</archive>				
 				</configuration>
 			</plugin>
 			<plugin>
