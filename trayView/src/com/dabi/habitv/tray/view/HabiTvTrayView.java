@@ -172,7 +172,7 @@ public final class HabiTvTrayView implements CoreSubscriber {
 
 			break;
 		case EXPORT_FAILED:
-			trayIcon.displayMessage("Warning", "Export failed to download : " + event.getEpisode().getCategory() + " " + event.getEpisode().getName() + " "
+			trayIcon.displayMessage("Warning", "Export failed : " + event.getEpisode().getCategory() + " " + event.getEpisode().getName() + " "
 					+ event.getException().getMessage(), TrayIcon.MessageType.WARNING);
 			break;
 		case EXPORTING:
