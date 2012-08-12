@@ -60,7 +60,6 @@ public class TF1Retreiver {
 					}
 				} catch (final IndexOutOfBoundsException e) {
 					LOGGER.error(element, e);
-					System.out.println(element);
 					throw new TechnicalException(e);
 				}
 			}
