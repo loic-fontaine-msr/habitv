@@ -5,15 +5,15 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.dabi.habitv.core.task.AbstractTask;
-import com.dabi.habitv.core.task.TaskMgr;
-import com.dabi.habitv.core.task.TaskMgrListener;
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
 
 public class TaskMgrTest {
@@ -43,6 +43,9 @@ public class TaskMgrTest {
 	}
 
 	private void buildSimultaneousTask(final int taskNb, final String cat, final String cat2, final boolean shutdown) {
+		final Map<String, Integer> poolsSize = new HashMap<String, Integer>();
+		poolsSize.put(cat, 1);
+		poolsSize.put(cat2, 2);
 		taskMgr = new TaskMgr<AbstractTask<Object>, Object>(taskNb, new TaskMgrListener() {
 
 			@Override
@@ -54,7 +57,7 @@ public class TaskMgrTest {
 			public void onFailed(final Throwable throwable) {
 				allTreatmentDone = false;
 			}
-		}) {
+		}, poolsSize) {
 		};
 		AbstractTask<Object> task = new AbstractTaskForTest() {
 
@@ -80,6 +83,11 @@ public class TaskMgrTest {
 				throw new TechnicalException(e);
 			}
 
+			@Override
+			public String toString() {
+				return "task1";
+			}
+
 		};
 		if (cat == null) {
 			taskMgr.addTask(task);
@@ -103,6 +111,11 @@ public class TaskMgrTest {
 			protected void failed(final Exception e) {
 				taskMgr.shutdownNow();
 				throw new TechnicalException(e);
+			}
+
+			@Override
+			public String toString() {
+				return "task2";
 			}
 		};
 		if (cat2 == null) {
@@ -150,7 +163,7 @@ public class TaskMgrTest {
 				allTreatmentDone = false;
 			}
 
-		}) {
+		}, null) {
 		};
 		AbstractTask<Object> task = new AbstractTaskForTest() {
 
@@ -163,6 +176,11 @@ public class TaskMgrTest {
 			protected void failed(final Exception e) {
 				taskMgr.shutdownNow();
 				throw new TechnicalException(e);
+			}
+
+			@Override
+			public String toString() {
+				return "task1";
 			}
 
 		};
@@ -188,6 +206,11 @@ public class TaskMgrTest {
 			protected void failed(final Exception e) {
 				taskMgr.shutdownNow();
 				throw new TechnicalException(e);
+			}
+
+			@Override
+			public String toString() {
+				return "task2";
 			}
 
 		};

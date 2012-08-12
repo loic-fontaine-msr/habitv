@@ -120,7 +120,7 @@ public class SearchCategoryTaskTest {
 	@Test
 	public final void testSearchCategoryTaskSuccess() {
 		init(false);
-		task.addedTo("retreive");
+		task.addedTo("retreive", null);
 		task.call();
 		assertTrue(done);
 	}
@@ -128,7 +128,7 @@ public class SearchCategoryTaskTest {
 	@Test(expected = TechnicalException.class)
 	public final void testSearchCategoryTaskFailed() {
 		init(true);
-		task.addedTo("retreive");
+		task.addedTo("retreive", null);
 		task.call();
 		assertTrue(done);
 	}

@@ -140,14 +140,14 @@ public class ExportTaskTest {
 	@Test
 	public final void testExportTaskSuccess() {
 		init(false);
-		task.addedTo("export");
+		task.addedTo("export", null);
 		task.call();
 	}
 
 	@Test(expected = TechnicalException.class)
 	public final void testExportTaskFailed() {
 		init(true);
-		task.addedTo("export");
+		task.addedTo("export", null);
 		task.call();
 	}
 

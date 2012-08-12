@@ -10,10 +10,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -162,12 +158,11 @@ public class RetreiveTaskTest {
 			private int i = 0;
 
 			@Override
-			public Future<Object> addRetreiveTask(final RetreiveTask retreiveTask) {
-				return null;
+			public void addRetreiveTask(final RetreiveTask retreiveTask) {
 			}
 
 			@Override
-			public Future<Object> addExportTask(final ExportTask exportTask, final String category) {
+			public void addExportTask(final ExportTask exportTask, final String category) {
 				switch (i) {
 				case 0:
 					assertEquals(new ExportTask(episode, export1, pluginExporter, publisher), exportTask);
@@ -182,53 +177,21 @@ public class RetreiveTaskTest {
 					break;
 				}
 				i++;
-				return fakeFuture();
 			}
 
 			@Override
-			public Future<Object> addDownloadTask(final DownloadTask downloadTask, final String channel) {
+			public void addDownloadTask(final DownloadTask downloadTask, final String channel) {
 				assertEquals(new DownloadTask(episode, provider, downloader, publisher, downloadedDAO), downloadTask);
-				return fakeFuture();
 			}
 
 		};
 		task = new RetreiveTask(episode, publisher, taskAdder, exporter, provider, downloader, downloadedDAO);
 	}
 
-	private Future<Object> fakeFuture() {
-		return new Future<Object>() {
-
-			@Override
-			public boolean cancel(final boolean mayInterruptIfRunning) {
-				return false;
-			}
-
-			@Override
-			public boolean isCancelled() {
-				return false;
-			}
-
-			@Override
-			public boolean isDone() {
-				return true;
-			}
-
-			@Override
-			public Object get() throws InterruptedException, ExecutionException {
-				return null;
-			}
-
-			@Override
-			public Object get(final long timeout, final TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
-				return null;
-			}
-		};
-	}
-
 	@Test
 	public final void testRetreiveTaskSuccess() {
 		init(false);
-		task.addedTo("retreive");
+		task.addedTo("retreive", null);
 		task.call();
 		assertTrue(retreived);
 	}
@@ -236,7 +199,7 @@ public class RetreiveTaskTest {
 	@Test(expected = TechnicalException.class)
 	public final void testRetreiveTaskFailed() {
 		init(true);
-		task.addedTo("retreive");
+		task.addedTo("retreive", null);
 		task.call();
 	}
 
