@@ -7,7 +7,7 @@
 		<relativePath>../builder</relativePath>
 		<artifactId>builder</artifactId>
 		<groupId>com.dabi.habitv</groupId>
-		<version>2.0.0</version>
+		<version>LATEST</version>
 	</parent>
 	<artifactId>m6w9</artifactId>
 	<name>m6w9</name>
@@ -46,7 +46,15 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 				<configuration>
+				<finalName>${project.name}</finalName>
 					<outputDirectory>../builder/pub/provider</outputDirectory>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+						</manifest>
+						<addMavenDescriptor>false</addMavenDescriptor>
+					</archive>						
 				</configuration>
 			</plugin>
 		</plugins>
