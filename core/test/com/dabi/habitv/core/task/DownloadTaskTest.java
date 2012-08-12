@@ -5,6 +5,9 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Set;
 
 import org.junit.After;
@@ -25,7 +28,6 @@ import com.dabi.habitv.framework.plugin.api.provider.PluginProviderInterface;
 import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.framework.plugin.exception.ExecutorFailedException;
 import com.dabi.habitv.framework.plugin.exception.NoSuchDownloaderException;
-import com.dabi.habitv.framework.plugin.exception.TechnicalException;
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
 
 public class DownloadTaskTest {
@@ -157,26 +159,29 @@ public class DownloadTaskTest {
 	@Test
 	public final void testDownloadTaskSuccess() {
 		init(false);
-		task.addedTo("download");
+		task.addedTo("download", null);
 		task.call();
 		assertTrue(downloaded);
 	}
 
-	@Test(expected = TechnicalException.class)
+	@Test(expected = TaskFailedException.class)
 	public final void testDownloadTaskFailed() {
 		init(true);
-		task.addedTo("download");
+		task.addedTo("download", null);
 		task.call();
 		assertFalse(downloaded);
 	}
 
 	@Test
-	public final void testDownloadRemovePreviousFile() {
+	public final void testDownloadRemovePreviousFile() throws IOException {
 		final String filename = "episode1234567890123456789012345678901234567890123456789_episode123456789012345678901234567890123_channel_category_extension";
-
+		final FileWriter fileWriter = new FileWriter(filename);
+		fileWriter.write("test");
+		fileWriter.close();
 		init(false);
-		task.addedTo("download");
+		task.addedTo("download", null);
 		task.call();
 		assertTrue(downloaded);
+		assertTrue(!(new File(filename)).exists());
 	}
 }

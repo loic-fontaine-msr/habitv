@@ -11,7 +11,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.Future;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -189,7 +188,7 @@ public class SearchTaskTest {
 			private int i = 0;
 
 			@Override
-			public Future<Object> addRetreiveTask(final RetreiveTask retreiveTask) {
+			public void addRetreiveTask(final RetreiveTask retreiveTask) {
 				switch (i) {
 				case 0:
 					assertEquals(episode1, retreiveTask.getEpisode());
@@ -203,17 +202,14 @@ public class SearchTaskTest {
 					break;
 				}
 				i++;
-				return null;
 			}
 
 			@Override
-			public Future<Object> addExportTask(final ExportTask exportTask, final String category) {
-				return null;
+			public void addExportTask(final ExportTask exportTask, final String category) {
 			}
 
 			@Override
-			public Future<Object> addDownloadTask(final DownloadTask downloadTask, final String channel) {
-				return null;
+			public void addDownloadTask(final DownloadTask downloadTask, final String channel) {
 			}
 
 		};
@@ -266,7 +262,7 @@ public class SearchTaskTest {
 	@Test
 	public final void testSearchCategoryTaskSuccess() {
 		init(false);
-		task.addedTo("retreive");
+		task.addedTo("retreive", null);
 		task.call();
 		assertTrue(done);
 	}
@@ -274,7 +270,7 @@ public class SearchTaskTest {
 	@Test(expected = TechnicalException.class)
 	public final void testSearchCategoryTaskFailed() {
 		init(true);
-		task.addedTo("retreive");
+		task.addedTo("retreive", null);
 		task.call();
 		assertTrue(done);
 	}
