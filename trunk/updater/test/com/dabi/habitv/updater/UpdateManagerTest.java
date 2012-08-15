@@ -28,7 +28,7 @@ public class UpdateManagerTest {
 
 	@Test
 	public final void testProcess() {
-		final String site = "http://just.loic.free.fr/habitv";
+		final String site = "http://dabiboo.fr/habitv";
 		final UpdateManager updateManager = new UpdateManager(site, System.getProperty("user.dir") + "/habitv");
 		updateManager.process();
 	}

@@ -8,7 +8,11 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 
+import org.apache.log4j.Logger;
+
 public class Updater {
+
+	private static final Logger LOG = Logger.getLogger(Updater.class);
 
 	private final String updateSite;
 
@@ -65,7 +69,7 @@ public class Updater {
 		URLConnection connection = null;
 		InputStream is = null;
 		FileOutputStream destinationFile = null;
-
+		LOG.info("download file " + filePath + " to " + destination);
 		try {
 			// On crée l'URL
 			final URL url = new URL(filePath);
