@@ -32,9 +32,6 @@
 			<resource>
 				<directory>conf</directory>
 			</resource>
-			<resource>
-				<directory>img</directory>
-			</resource>			
 		</resources>
 		<plugins>
 			<plugin>
@@ -89,4 +86,5 @@
 		</plugins>
 	</build>
 	<version>3.0</version>
+	<groupId>com.dabi.habitv</groupId>
 </project>
