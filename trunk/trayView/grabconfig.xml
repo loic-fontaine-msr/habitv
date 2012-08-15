@@ -11,6 +11,24 @@
 		<id>tvshow-1105-1.html</id> <name>Don't Trust The Bitch In Apartment 23</name> 
 		<extension>zip</extension> </category> <category> <id>tvshow-71-16.html</id> 
 		<name>South Park</name> <extension>zip</extension> </category> </channel> -->
+    <channel>
+        <name>lequipe</name>
+        <category>
+            <id>Avant-Match</id>
+            <name>Avant-Match</name>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>Rencontre</id>
+            <name>Rencontre</name>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>Résumé</id>
+            <name>Résumé</name>
+            <extension>mp4</extension>
+        </category>
+    </channel>		
 	<channel>
 		<name>m6w9</name>
 		<category>

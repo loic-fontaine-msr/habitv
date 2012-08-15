@@ -33,6 +33,7 @@
 		<module>../RSSProvider</module>
 		<module>../consoleView</module>
 		<module>../trayView</module>
+		<module>../lequipe</module>
 	</modules>
 
 	<build>
