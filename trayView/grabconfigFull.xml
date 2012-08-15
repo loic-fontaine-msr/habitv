@@ -1,2010 +1,2948 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ns2:grabConfig xmlns:ns2="http://www.dabi.com/habitv/grabconfig/entities">
-	<channel>
-		<name>tf1</name>
-		<category>
-			<id>50-mn-inside</id>
-			<name>50-mn-inside</name>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>les-douze-coups-de-midi</id>
-			<name>les-douze-coups-de-midi</name>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>mini-justiciers</id>
-			<name>mini-justiciers</name>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>coucou-c-est-nous</id>
-			<name>coucou-c-est-nous</name>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>new-york-section-criminelle</id>
-			<name>new-york-section-criminelle</name>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>jt-we</id>
-			<name>jt-we</name>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>sept-a-huit</id>
-			<name>sept-a-huit</name>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>les-experts-manhattan</id>
-			<name>les-experts-manhattan</name>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>totally-spies</id>
-			<name>totally-spies</name>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>les-feux-de-l-amour</id>
-			<name>les-feux-de-l-amour</name>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>casper</id>
-			<name>casper</name>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>telefoot</id>
-			<name>telefoot</name>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>esprits-criminels</id>
-			<name>esprits-criminels</name>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>secret-story</id>
-			<name>secret-story</name>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>jt-13h</id>
-			<name>jt-13h</name>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>harry-roselmack-en-immersion</id>
-			<name>harry-roselmack-en-immersion</name>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>julie-lescaut</id>
-			<name>julie-lescaut</name>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>jt-20h</id>
-			<name>jt-20h</name>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>auto-moto</id>
-			<name>auto-moto</name>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>smash</id>
-			<name>smash</name>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>nos-chers-voisins</id>
-			<name>nos-chers-voisins</name>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>petits-plats-en-equilibre</id>
-			<name>petits-plats-en-equilibre</name>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>reportages</id>
-			<name>reportages</name>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>la-ou-je-t-emmenerai</id>
-			<name>la-ou-je-t-emmenerai</name>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>profilage</id>
-			<name>profilage</name>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>toute-la-musique-qu-on-aime</id>
-			<name>toute-la-musique-qu-on-aime</name>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>mon-assiette-sante</id>
-			<name>mon-assiette-sante</name>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>new-york-unite-speciale</id>
-			<name>new-york-unite-speciale</name>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>au-pied-du-mur</id>
-			<name>au-pied-du-mur</name>
-			<extension>mp4</extension>
-		</category>
-	</channel>
-	<channel>
-		<name>canalPlus</name>
-		<category>
-			<id>523</id>
-			<name>Toutes les vidéos CREA+</name>
-			<category>
-				<id>490719</id>
-				<name>CREA+</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>62</id>
-			<name>LES BUZZ DU WEB</name>
-			<category>
-				<id>694924</id>
-				<name>LE BOUCAN DU JOUR</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>118</id>
-			<name>CANAL STREET - LES INCONTOURNABLES</name>
-			<category>
-				<id>700287</id>
-				<name>SPORT</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>692589</id>
-				<name>HUMOUR</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>700492</id>
-				<name>CSMUSIQUE</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>692724</id>
-				<name>TENDANCES</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>700234</id>
-				<name>DANSE</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>119</id>
-			<name>Les Live de CANAL STREET</name>
-			<category>
-				<id>700492</id>
-				<name>CSMUSIQUE</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>746</id>
-			<name>GNARKS GNARKS</name>
-			<category>
-				<id>684104</id>
-				<name>GNARKS</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>843</id>
-			<name>LA QUESTION DE +</name>
-			<category>
-				<id>628543</id>
-				<name>LA QUESTION DE +</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>227</id>
-			<name>BONUS ET INTERVIEWS</name>
-			<category>
-				<id>652376</id>
-				<name>INTERVIEW</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>658634</id>
-				<name>UNE JOURNEE A CANNES AVEC</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>625329</id>
-				<name>CINEMA EN SALLES</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>645797</id>
-				<name>CANNES VU PAR</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>654373</id>
-				<name>MONTEE DES MARCHES</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>654388</id>
-				<name>PHOTOCALL</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>646689</id>
-				<name>CONFERENCE DE PRESSE</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>655399</id>
-				<name>BONUS</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>653453</id>
-				<name>MOMENT GLAMOUR</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>3</id>
-			<name>TOUT LE FOOTBALL</name>
-			<category>
-				<id>705044</id>
-				<name>FOOTBALL</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>864</id>
-			<name>SERIES - THE OFFICE saison 7</name>
-			<category>
-				<id>652430</id>
-				<name>THE OFFICE</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>82</id>
-			<name>COUPS DE COEUR EN SALLES DE CANAL</name>
-			<category>
-				<id>649027</id>
-				<name>INTERVIEW</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>673889</id>
-				<name>CINEMA EN SALLES</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>645703</id>
-				<name>CRITIQUE</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>647978</id>
-				<name>BONUS</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>645561</id>
-				<name>CANNES EXPRESS</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>859</id>
-			<name>GRAND JOURNAL</name>
-			<category>
-				<id>652376</id>
-				<name>INTERVIEW</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>652279</id>
-				<name>LE GRAND JOURNAL</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>652383</id>
-				<name>CRITIQUE</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>652382</id>
-				<name>BONUS</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>380</id>
-			<name>CIN'EXPRESS</name>
-			<category>
-				<id>453460</id>
-				<name>FESTIVAL EN VIDEO</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>693783</id>
-				<name>EMISSION</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>210</id>
-			<name>Juste Debout 2011 à Bercy</name>
-			<category>
-				<id>433630</id>
-				<name>TENDANCES</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>44</id>
-			<name>LES EMISSIONS EVENEMENTIELLES</name>
-			<category>
-				<id>648929</id>
-				<name>EMISSIONS EVENEMENTIELLES</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>507</id>
-			<name>La nuit des cons</name>
-			<category>
-				<id>325552</id>
-				<name>LA NUIT DES CONS</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>15</id>
-			<name>LES VIDEOS DU MOMENT</name>
-			<category>
-				<id>682125</id>
-				<name>BODY OF PROOF - SAISON 2</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>696826</id>
-				<name>STRIKE BACK - SAISON 2</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>690272</id>
-				<name>SKINS - SAISON 5</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>669978</id>
-				<name>MI - 5 - SAISON 9</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>669051</id>
-				<name>LASCARS - SAISON 1</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>698080</id>
-				<name>UNITED STATES OF TARA - SAISON 3</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>424</id>
-			<name>REPORTAGES DANSE</name>
-			<category>
-				<id>389680</id>
-				<name>TENDANCES</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>884</id>
-			<name>NURSE JACKIE 3</name>
-			<category>
-				<id>649700</id>
-				<name>NURSE JACKIE - SAISON 3</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>237</id>
-			<name>Les live du Grand journal</name>
-			<category>
-				<id>694384</id>
-				<name>LE GRAND JOURNAL</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>306</id>
-			<name>Canal Street - Les live</name>
-			<category>
-				<id>688889</id>
-				<name>ARTS</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>666601</id>
-				<name>CSMUSIQUE</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>32</id>
-			<name>LES INTERVIEWS</name>
-			<category>
-				<id>463613</id>
-				<name>ALBUM DE LA SEMAINE</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>63</id>
-			<name> LES EXCLUS</name>
-			<category>
-				<id>637281</id>
-				<name>DOCUMENTAIRES DIVERS</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>659894</id>
-				<name>LE MEILLEUR DU HIER</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>492292</id>
-				<name>EMISSIONS EVENEMENTIELLES</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>694924</id>
-				<name>LE BOUCAN DU JOUR</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>541512</id>
-				<name>SPECIAL INVESTIGATION</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>676367</id>
-				<name>LES NOUVEAUX EXPLORATEURS</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>39</id>
-			<name>LES EMISSIONS QUOTIDIENNES</name>
-			<category>
-				<id>679604</id>
-				<name>UNE MINUTE AVANT</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>678931</id>
-				<name>LA MATINALE</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>694884</id>
-				<name>LE GRAND JOURNAL</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>694343</id>
-				<name>LES GUIGNOLS</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>702754</id>
-				<name>LE PETIT JOURNAL</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>705002</id>
-				<name>LE JT DE CANAL+</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>694388</id>
-				<name>BREF</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>704962</id>
-				<name>ZAPPING</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>679571</id>
-				<name>LA NOUVELLE EDITION</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>47</id>
-			<name>LES EXCLUS DU WEB </name>
-			<category>
-				<id>693863</id>
-				<name>PEPITES SUR LE NET</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>678876</id>
-				<name>LA BOITE A QUESTIONS</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>627</id>
-			<name>BREF</name>
-			<category>
-				<id>694388</id>
-				<name>BREF</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>43</id>
-			<name>LES EMISSIONS DU DIMANCHE</name>
-			<category>
-				<id>681282</id>
-				<name>DIMANCHE+</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>704538</id>
-				<name>L'EFFET PAPILLON</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>694343</id>
-				<name>LES GUIGNOLS</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>704962</id>
-				<name>ZAPPING</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>681294</id>
-				<name>ACTION DISCRETE</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>105</id>
-			<name>Toutes les émissions</name>
-			<category>
-				<id>679604</id>
-				<name>UNE MINUTE AVANT</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>681282</id>
-				<name>DIMANCHE+</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>678931</id>
-				<name>LA MATINALE</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>687165</id>
-				<name>SALUT LES TERRIENS</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>680706</id>
-				<name>GROLAND</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>694343</id>
-				<name>LES GUIGNOLS</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>705002</id>
-				<name>LE JT DE CANAL+</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>702754</id>
-				<name>LE PETIT JOURNAL</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>694383</id>
-				<name>BREF</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>673722</id>
-				<name>JDJV</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>703141</id>
-				<name>L'EFFET PAPILLON</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>694884</id>
-				<name>LE GRAND JOURNAL</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>704459</id>
-				<name>SAV</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>701523</id>
-				<name>NEWS SHOW</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>704962</id>
-				<name>ZAPPING</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>679571</id>
-				<name>LA NOUVELLE EDITION</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>681294</id>
-				<name>ACTION DISCRETE</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>46</id>
-			<name>INTERVIEWS </name>
-			<category>
-				<id>652376</id>
-				<name>INTERVIEW</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>703794</id>
-				<name>CINEMA EN SALLES</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>597550</id>
-				<name>CESAR 2012</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>599640</id>
-				<name>OSCAR 2012</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>104</id>
-			<name>Le Grand Journal</name>
-			<category>
-				<id>694884</id>
-				<name>LE GRAND JOURNAL</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>932</id>
-			<name>Jamel Comedy Club - BONUS </name>
-			<category>
-				<id>688704</id>
-				<name>JAMEL COMEDY CLUB</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>7</id>
-			<name>LES EMISSIONS SPORT</name>
-			<category>
-				<id>647572</id>
-				<name>INTERIEUR SPORT</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>4</id>
-			<name>TOUT LE TENNIS / GOLF</name>
-			<category>
-				<id>702517</id>
-				<name>GOLF</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>698872</id>
-				<name>TENNIS</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>75</id>
-			<name>LES + VUES</name>
-			<category>
-				<id>210814</id>
-				<name>LA PUB DE CANAL+</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>376444</id>
-				<name>CREA+</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>325552</id>
-				<name>LA NUIT DES CONS</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>373411</id>
-				<name>VOS SAV</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>210808</id>
-				<name>AIR FUCK</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>76</id>
-			<name>LES + RECENTES</name>
-			<category>
-				<id>490719</id>
-				<name>CREA+</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>73</id>
-			<name>LES PLUS RECENTES</name>
-			<category>
-				<id>702517</id>
-				<name>GOLF</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>699498</id>
-				<name>BASKET</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>701899</id>
-				<name>RUGBY</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>705044</id>
-				<name>FOOTBALL</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>695611</id>
-				<name>AUTRES SPORTS</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>698872</id>
-				<name>TENNIS</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>698890</id>
-				<name>HANDBALL</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>856</id>
-			<name>MONTEES DES MARCHES</name>
-			<category>
-				<id>654387</id>
-				<name>MONTEE DES MARCHES</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>28</id>
-			<name>CULTURE</name>
-			<category>
-				<id>685291</id>
-				<name>MOULOUD ACHOUR</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>2</id>
-			<name>LES INCONTOURNABLES</name>
-			<category>
-				<id>326810</id>
-				<name>X GAMES</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>702517</id>
-				<name>GOLF</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>699498</id>
-				<name>BASKET</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>701899</id>
-				<name>RUGBY</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>705044</id>
-				<name>FOOTBALL</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>695611</id>
-				<name>AUTRES SPORTS</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>698872</id>
-				<name>TENNIS</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>647572</id>
-				<name>INTERIEUR SPORT</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>565</id>
-			<name>DESPERATE HOUSEWIVES 8 ALL</name>
-			<category>
-				<id>627883</id>
-				<name>DESPERATE HOUSEWIVES - SAISON 8</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>290</id>
-			<name>BA CANAL+</name>
-			<category>
-				<id>701093</id>
-				<name>BA A L'ANTENNE</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>11</id>
-			<name>LES EMISSIONS CINEMA</name>
-			<category>
-				<id>703066</id>
-				<name>EMISSION</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>561</id>
-			<name>CANNES EXPRESS</name>
-			<category>
-				<id>648675</id>
-				<name>CANNES EXPRESS</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>229</id>
-			<name>ZAPPING CANNOIS</name>
-			<category>
-				<id>654389</id>
-				<name>ZAPPING CANNOIS</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>130</id>
-			<name>Les émissions</name>
-			<category>
-				<id>673722</id>
-				<name>JDJV</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>687187</id>
-				<name>SALUT LES TERRIENS</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>680706</id>
-				<name>GROLAND</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>694884</id>
-				<name>LE GRAND JOURNAL</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>694343</id>
-				<name>LES GUIGNOLS</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>702754</id>
-				<name>LE PETIT JOURNAL</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>704459</id>
-				<name>SAV</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>701523</id>
-				<name>NEWS SHOW</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>704962</id>
-				<name>ZAPPING</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>194613</id>
-				<name>L'EDITION SPECIALE</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>681294</id>
-				<name>ACTION DISCRETE</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>510</id>
-			<name>les films suédés</name>
-			<category>
-				<id>226241</id>
-				<name>CREA+</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>107768</id>
-				<name>CINEMA EN SALLES</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>213902</id>
-				<name>LES FILMS FAITS A LA MAISON</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>24</id>
-			<name>LES DOCUMENTAIRES</name>
-			<category>
-				<id>648873</id>
-				<name>DOCUMENTAIRES DIVERS</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>676651</id>
-				<name>SPECIAL INVESTIGATION</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>676367</id>
-				<name>LES NOUVEAUX EXPLORATEURS</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>915</id>
-			<name>Stéphane Bak</name>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>506</id>
-			<name>Créez la pub de CANAL+</name>
-			<category>
-				<id>210814</id>
-				<name>LA PUB DE CANAL+</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>121</id>
-			<name>Street Tendances</name>
-			<category>
-				<id>666472</id>
-				<name>TENDANCES</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>6</id>
-			<name>TOUT LE RUGBY</name>
-			<category>
-				<id>701899</id>
-				<name>RUGBY</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>926</id>
-			<name>LASCARS</name>
-			<category>
-				<id>696834</id>
-				<name>LASCARS - SAISON 1</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>31</id>
-			<name>LES LIVE</name>
-			<category>
-				<id>673967</id>
-				<name>CONCERTS PRIVES</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>694384</id>
-				<name>LE GRAND JOURNAL</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>691764</id>
-				<name>ALBUM DE LA SEMAINE</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>544341</id>
-				<name>LA MUSICALE</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>9</id>
-			<name>AUTRES SPORTS - HOME SPORT</name>
-			<category>
-				<id>702517</id>
-				<name>GOLF</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>695611</id>
-				<name>AUTRES SPORTS</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>124</id>
-			<name>les interviews de Raphäl</name>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>511</id>
-			<name>La Factorire</name>
-			<category>
-				<id>381419</id>
-				<name>LA FACTORIRE</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>907</id>
-			<name>STRIKE BACK</name>
-			<category>
-				<id>696826</id>
-				<name>STRIKE BACK - SAISON 2</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>670757</id>
-				<name>STRIKE BACK - SAISON 1</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>895</id>
-			<name>CANNES VU PAR...</name>
-			<category>
-				<id>645797</id>
-				<name>CANNES VU PAR</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>10</id>
-			<name>LES DERNIERES BA</name>
-			<category>
-				<id>705000</id>
-				<name>CINEMA EN SALLES</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>226</id>
-			<name>CRITIQUES</name>
-			<category>
-				<id>628258</id>
-				<name>INTERVIEW</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>628144</id>
-				<name>CINEMA EN SALLES</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>703065</id>
-				<name>CRITIQUE</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>48</id>
-			<name>LES GUIGNOLS</name>
-			<category>
-				<id>694343</id>
-				<name>LES GUIGNOLS</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>108</id>
-			<name>Les Musiques des émissions</name>
-			<category>
-				<id>678401</id>
-				<name>LA MATINALE</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>694384</id>
-				<name>LE GRAND JOURNAL</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>77</id>
-			<name>Les mieux notées</name>
-			<category>
-				<id>213618</id>
-				<name>CREA+</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>37</id>
-			<name>L'HUMOUR DU WEEK-END </name>
-			<category>
-				<id>687187</id>
-				<name>SALUT LES TERRIENS</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>689788</id>
-				<name>GROLAND</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>687823</id>
-				<name>LES GUIGNOLS</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>701523</id>
-				<name>NEWS SHOW</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>681294</id>
-				<name>ACTION DISCRETE</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>880</id>
-			<name>VIDEOS CANNES 2012</name>
-			<category>
-				<id>658634</id>
-				<name>UNE JOURNEE A CANNES AVEC</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>654387</id>
-				<name>MONTEE DES MARCHES</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>654323</id>
-				<name>CEREMONIES</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>654388</id>
-				<name>PHOTOCALL</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>646689</id>
-				<name>CONFERENCE DE PRESSE</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>658647</id>
-				<name>AFTER CHINA</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>648675</id>
-				<name>CANNES EXPRESS</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>653403</id>
-				<name>BRIGADE DU STYLE</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>654385</id>
-				<name>BOUCAN CANNOIS</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>652376</id>
-				<name>INTERVIEW</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>654389</id>
-				<name>ZAPPING CANNOIS</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>698181</id>
-				<name>BATTLE CRITIQUE</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>659526</id>
-				<name>VERY BAD CANNES</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>645797</id>
-				<name>CANNES VU PAR</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>652409</id>
-				<name>LE GRAND JOURNAL</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>653323</id>
-				<name>GUILLARME</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>703065</id>
-				<name>CRITIQUE</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>655399</id>
-				<name>BONUS</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>653453</id>
-				<name>MOMENT GLAMOUR</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>72</id>
-			<name>LES PLUS VUES</name>
-			<category>
-				<id>423396</id>
-				<name>FOOTBALL</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>285428</id>
-				<name>INTERIEUR SPORT</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>112</id>
-			<name>Le Meilleur Du Hier</name>
-			<category>
-				<id>659894</id>
-				<name>LE MEILLEUR DU HIER</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>41</id>
-			<name>LES EMISSIONS DU SAMEDI</name>
-			<category>
-				<id>673722</id>
-				<name>JDJV</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>687165</id>
-				<name>SALUT LES TERRIENS</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>680706</id>
-				<name>GROLAND</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>705002</id>
-				<name>LE JT DE CANAL+</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>694383</id>
-				<name>BREF</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>701523</id>
-				<name>NEWS SHOW</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>704962</id>
-				<name>ZAPPING</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>680687</id>
-				<name>EMISSION</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>912</id>
-			<name>MI - 5 - SAISON 9 </name>
-			<category>
-				<id>659769</id>
-				<name>MI - 5 - SAISON 9</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>508</id>
-			<name>le mois désamours</name>
-			<category>
-				<id>297095</id>
-				<name>LE MOIS DES AMOURS</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>42</id>
-			<name>LA SELECTION CANAL</name>
-			<category>
-				<id>481688</id>
-				<name>CREA+</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>373226</id>
-				<name>VOS SAV</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>29</id>
-			<name>POLITIQUE</name>
-			<category>
-				<id>681282</id>
-				<name>DIMANCHE+</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>679516</id>
-				<name>LA MATINALE</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>194781</id>
-				<name>L'ACTU AVEC ITELE</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>691362</id>
-				<name>LE BOUCAN DU JOUR</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>705002</id>
-				<name>LE JT DE CANAL+</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>129</id>
-			<name>TOUS LES MEILLEURS MOMENTS DU GRAND JOURNAL</name>
-			<category>
-				<id>694915</id>
-				<name>LE GRAND JOURNAL</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>694343</id>
-				<name>LES GUIGNOLS</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>694914</id>
-				<name>LA METEO DE SOLWEIG</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>694388</id>
-				<name>BREF</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>704459</id>
-				<name>SAV</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>694918</id>
-				<name>LA BOITE A QUESTIONS</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>704962</id>
-				<name>ZAPPING</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>678885</id>
-				<name>EMISSION</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>5</id>
-			<name>TOUT LE BASKET</name>
-			<category>
-				<id>699498</id>
-				<name>BASKET</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>509</id>
-			<name>Viens jouer sur CANAL+</name>
-			<category>
-				<id>235198</id>
-				<name>VIENS JOUER SUR CANAL+</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>27</id>
-			<name>L'ACTUALITE</name>
-			<category>
-				<id>679837</id>
-				<name>LA PETITE SEMAINE</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>681282</id>
-				<name>DIMANCHE+</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>678931</id>
-				<name>LA MATINALE</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>703141</id>
-				<name>L'EFFET PAPILLON</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>203105</id>
-				<name>SPECIAL</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>705002</id>
-				<name>LE JT DE CANAL+</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>705016</id>
-				<name>SUJET</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>381</id>
-			<name>FACE A FACE(S)</name>
-			<category>
-				<id>544855</id>
-				<name>EMISSION</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>38</id>
-			<name>LES VIDEOS LES + VUES</name>
-			<category>
-				<id>505918</id>
-				<name>BREF</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>137775</id>
-				<name>PEPITES SUR LE NET</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-	</channel>
-	<channel>
-		<name>rss</name>
-		<category>
-			<id>Give RSS Url Here</id>
-			<name>Give RSS Label Here</name>
-			<include>Add include pattern</include>
-			<exclude>Add exclude pattern</exclude>
-			<extension>Give files extension Here</extension>
-		</category>
-	</channel>
-	<channel>
-		<name>pluzz</name>
-		<category>
-			<id>Divertissement</id>
-			<name>Divertissement</name>
-			<category>
-				<id>Magazine</id>
-				<name>Magazine</name>
-				<category>
-					<id>Consomag</id>
-					<name>Consomag</name>
-					<extension>mp4</extension>
-				</category>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-	</channel>
-	<channel>
-		<name>m6w9</name>
-		<category>
-			<id>w9</id>
-			<name>w9</name>
-			<category>
-				<id>3374</id>
-				<name>CAUCHEMAR EN CUISINE</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>10084</id>
-				<name>A VOS CLIPS</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>10606</id>
-				<name>W9 BOUTIQUE</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>11554</id>
-				<name>KAAMELOTT</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>8056</id>
-				<name>TALENT TOUT NEUF</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>3364</id>
-				<name>HIT TALENT</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>11856</id>
-				<name>Un gars, une fille (W9)</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>6026</id>
-				<name>Un gars, une fille</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>10268</id>
-				<name>LE CONVOI DE L'EXTREME : LA ROUTE DE L'HIMALAYA</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>12216</id>
-				<name>SWAMP PEOPLE : CHASSEURS DE CROCO</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>3330</id>
-				<name>W9 HITS</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>9970</id>
-				<name>GENERATION TOP 50</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>3350</id>
-				<name>E-CLASSEMENT</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>3348</id>
-				<name>QUOI DE NEUF ?</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>7642</id>
-				<name>BIGARD BOURRE BERCY</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>12194</id>
-				<name>LE CONVOI DE L'EXTREME : LES ROUTES DES ANDES</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>11916</id>
-				<name>SODA</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>3324</id>
-				<name>WAKE UP</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>11312</id>
-				<name>LE MEILLEUR DU TOP 50</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>3356</id>
-				<name>ENQUETE D'ACTION</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-		<category>
-			<id>m6</id>
-			<name>m6</name>
-			<category>
-				<id>9260</id>
-				<name>MON PERE, CE ROCKEUR</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>130</id>
-				<name>Maison à vendre</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>2302</id>
-				<name>Lou</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>6590</id>
-				<name>NATALIE WOOD, LE PRIX DE LA GLOIRE </name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>8082</id>
-				<name>UN TRESOR DANS VOTRE MAISON</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>2272</id>
-				<name>M6 Boutique</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>7814</id>
-				<name>N.C.I.S : Los Angeles</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>184</id>
-				<name>Belle toute nue</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>3212</id>
-				<name>VACANCES EN FAMILLE</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>6172</id>
-				<name>C'EST MA VIE</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>18</id>
-				<name>Un dîner presque parfait</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>12210</id>
-				<name>Un été pour grandir</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>2972</id>
-				<name>Le 1945</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>648</id>
-				<name>Accès privé</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>122</id>
-				<name>E=M6</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>2334</id>
-				<name>CHARLOTTE AUX FRAISES</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>2460</id>
-				<name>Enquête exclusive</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>12138</id>
-				<name>LE BUS</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>2856</id>
-				<name>ABSOLUMENT STARS</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>2284</id>
-				<name>Météo des plages</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>4862</id>
-				<name>LE 1245</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>9812</id>
-				<name>Hawaii 5-0</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>146</id>
-				<name>Capital</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>2666</id>
-				<name>UN ETE POUR S'AIMER</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>626</id>
-				<name>Le manège enchanté</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>2174</id>
-				<name>L'amour est dans le pré</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>142</id>
-				<name>D&amp;CO</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>2276</id>
-				<name>Cinésix</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>12074</id>
-				<name>JUSTIFIED</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>9488</id>
-				<name>Melrose Place nouvelle génération</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>12092</id>
-				<name>60 SECONDES CHRONO</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>2260</id>
-				<name>100% Mag</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>3538</id>
-				<name>Scènes de ménages</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>10300</id>
-				<name>LA VRAIE HISTOIRE DE...</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>2360</id>
-				<name>Zone interdite</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>12192</id>
-				<name>Empire</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>12084</id>
-				<name>En famille</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>2282</id>
-				<name>Météo</name>
-				<extension>mp4</extension>
-			</category>
-			<category>
-				<id>116</id>
-				<name>66 Minutes</name>
-				<extension>mp4</extension>
-			</category>
-			<extension>mp4</extension>
-		</category>
-	</channel>
+    <channel>
+        <name>lequipe</name>
+        <category>
+            <id>Avant-Match</id>
+            <name>Avant-Match</name>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>Rencontre</id>
+            <name>Rencontre</name>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>Résumé</id>
+            <name>Résumé</name>
+            <extension>mp4</extension>
+        </category>
+    </channel>
+    <channel>
+        <name>tf1</name>
+        <category>
+            <id>50-mn-inside</id>
+            <name>50-mn-inside</name>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>les-douze-coups-de-midi</id>
+            <name>les-douze-coups-de-midi</name>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>mini-justiciers</id>
+            <name>mini-justiciers</name>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>new-york-section-criminelle</id>
+            <name>new-york-section-criminelle</name>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>jt-we</id>
+            <name>jt-we</name>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>sept-a-huit</id>
+            <name>sept-a-huit</name>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>les-experts-las-vegas</id>
+            <name>les-experts-las-vegas</name>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>les-experts-manhattan</id>
+            <name>les-experts-manhattan</name>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>totally-spies</id>
+            <name>totally-spies</name>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>les-feux-de-l-amour</id>
+            <name>les-feux-de-l-amour</name>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>casper</id>
+            <name>casper</name>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>telefoot</id>
+            <name>telefoot</name>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>esprits-criminels</id>
+            <name>esprits-criminels</name>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>tout-le-monde-aime-la-france</id>
+            <name>tout-le-monde-aime-la-france</name>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>secret-story</id>
+            <name>secret-story</name>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>jt-13h</id>
+            <name>jt-13h</name>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>harry-roselmack-en-immersion</id>
+            <name>harry-roselmack-en-immersion</name>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>jt-20h</id>
+            <name>jt-20h</name>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>auto-moto</id>
+            <name>auto-moto</name>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>smash</id>
+            <name>smash</name>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>nos-chers-voisins</id>
+            <name>nos-chers-voisins</name>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>petits-plats-en-equilibre</id>
+            <name>petits-plats-en-equilibre</name>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>reportages</id>
+            <name>reportages</name>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>la-ou-je-t-emmenerai</id>
+            <name>la-ou-je-t-emmenerai</name>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>profilage</id>
+            <name>profilage</name>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>toute-la-musique-qu-on-aime</id>
+            <name>toute-la-musique-qu-on-aime</name>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>mon-assiette-sante</id>
+            <name>mon-assiette-sante</name>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>new-york-unite-speciale</id>
+            <name>new-york-unite-speciale</name>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>au-pied-du-mur</id>
+            <name>au-pied-du-mur</name>
+            <extension>mp4</extension>
+        </category>
+    </channel>
+    <channel>
+        <name>canalPlus</name>
+        <category>
+            <id>523</id>
+            <name>Toutes les vidéos CREA+</name>
+            <category>
+                <id>490719</id>
+                <name>CREA+</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>62</id>
+            <name>LES BUZZ DU WEB</name>
+            <category>
+                <id>694924</id>
+                <name>LE BOUCAN DU JOUR</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>118</id>
+            <name>CANAL STREET - LES INCONTOURNABLES</name>
+            <category>
+                <id>700287</id>
+                <name>SPORT</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>692589</id>
+                <name>HUMOUR</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>700492</id>
+                <name>CSMUSIQUE</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>692724</id>
+                <name>TENDANCES</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>707403</id>
+                <name>DANSE</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>119</id>
+            <name>Les Live de CANAL STREET</name>
+            <category>
+                <id>700492</id>
+                <name>CSMUSIQUE</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>746</id>
+            <name>GNARKS GNARKS</name>
+            <category>
+                <id>684104</id>
+                <name>GNARKS</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>843</id>
+            <name>LA QUESTION DE +</name>
+            <category>
+                <id>628543</id>
+                <name>LA QUESTION DE +</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>227</id>
+            <name>BONUS ET INTERVIEWS</name>
+            <category>
+                <id>652376</id>
+                <name>INTERVIEW</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>628144</id>
+                <name>CINEMA EN SALLES</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>658634</id>
+                <name>UNE JOURNEE A CANNES AVEC</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>645797</id>
+                <name>CANNES VU PAR</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>654373</id>
+                <name>MONTEE DES MARCHES</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>654388</id>
+                <name>PHOTOCALL</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>646689</id>
+                <name>CONFERENCE DE PRESSE</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>655399</id>
+                <name>BONUS</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>653453</id>
+                <name>MOMENT GLAMOUR</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>625329</id>
+                <name>EMISSION</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>3</id>
+            <name>TOUT LE FOOTBALL</name>
+            <category>
+                <id>711497</id>
+                <name>FOOTBALL</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>864</id>
+            <name>SERIES - THE OFFICE saison 7</name>
+            <category>
+                <id>652430</id>
+                <name>THE OFFICE</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>82</id>
+            <name>COUPS DE COEUR EN SALLES DE CANAL</name>
+            <category>
+                <id>649027</id>
+                <name>INTERVIEW</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>673889</id>
+                <name>CINEMA EN SALLES</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>645703</id>
+                <name>CRITIQUE</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>647978</id>
+                <name>BONUS</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>674567</id>
+                <name>EMISSION</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>645561</id>
+                <name>CANNES EXPRESS</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>859</id>
+            <name>GRAND JOURNAL</name>
+            <category>
+                <id>652376</id>
+                <name>INTERVIEW</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>652279</id>
+                <name>LE GRAND JOURNAL</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>652383</id>
+                <name>CRITIQUE</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>652382</id>
+                <name>BONUS</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>380</id>
+            <name>CIN'EXPRESS</name>
+            <category>
+                <id>453460</id>
+                <name>FESTIVAL EN VIDEO</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>686100</id>
+                <name>EMISSION</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>210</id>
+            <name>Juste Debout 2011 à Bercy</name>
+            <category>
+                <id>433630</id>
+                <name>TENDANCES</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>44</id>
+            <name>LES EMISSIONS EVENEMENTIELLES</name>
+            <category>
+                <id>648929</id>
+                <name>EMISSIONS EVENEMENTIELLES</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>507</id>
+            <name>La nuit des cons</name>
+            <category>
+                <id>325552</id>
+                <name>LA NUIT DES CONS</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>15</id>
+            <name>LES VIDEOS DU MOMENT</name>
+            <category>
+                <id>682125</id>
+                <name>BODY OF PROOF - SAISON 2</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>696826</id>
+                <name>STRIKE BACK - SAISON 2</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>694650</id>
+                <name>SKINS - SAISON 5</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>669978</id>
+                <name>MI - 5 - SAISON 9</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>669051</id>
+                <name>LASCARS - SAISON 1</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>700663</id>
+                <name>UNITED STATES OF TARA - SAISON 3</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>424</id>
+            <name>REPORTAGES DANSE</name>
+            <category>
+                <id>389680</id>
+                <name>TENDANCES</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>884</id>
+            <name>NURSE JACKIE 3</name>
+            <category>
+                <id>649700</id>
+                <name>NURSE JACKIE - SAISON 3</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>237</id>
+            <name>Les live du Grand journal</name>
+            <category>
+                <id>694384</id>
+                <name>LE GRAND JOURNAL</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>306</id>
+            <name>Canal Street - Les live</name>
+            <category>
+                <id>688889</id>
+                <name>ARTS</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>666601</id>
+                <name>CSMUSIQUE</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>32</id>
+            <name>LES INTERVIEWS</name>
+            <category>
+                <id>463613</id>
+                <name>ALBUM DE LA SEMAINE</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>63</id>
+            <name> LES EXCLUS</name>
+            <category>
+                <id>637281</id>
+                <name>DOCUMENTAIRES DIVERS</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>690921</id>
+                <name>LE MEILLEUR DU HIER</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>492292</id>
+                <name>EMISSIONS EVENEMENTIELLES</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>694924</id>
+                <name>LE BOUCAN DU JOUR</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>541512</id>
+                <name>SPECIAL INVESTIGATION</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>676367</id>
+                <name>LES NOUVEAUX EXPLORATEURS</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>39</id>
+            <name>LES EMISSIONS QUOTIDIENNES</name>
+            <category>
+                <id>679604</id>
+                <name>UNE MINUTE AVANT</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>678931</id>
+                <name>LA MATINALE</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>694884</id>
+                <name>LE GRAND JOURNAL</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>694343</id>
+                <name>LES GUIGNOLS</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>708858</id>
+                <name>LE JT DE CANAL+</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>711427</id>
+                <name>LE PETIT JOURNAL</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>694388</id>
+                <name>BREF</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>711447</id>
+                <name>ZAPPING</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>679571</id>
+                <name>LA NOUVELLE EDITION</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>47</id>
+            <name>LES EXCLUS DU WEB </name>
+            <category>
+                <id>693863</id>
+                <name>PEPITES SUR LE NET</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>678876</id>
+                <name>LA BOITE A QUESTIONS</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>627</id>
+            <name>BREF</name>
+            <category>
+                <id>694388</id>
+                <name>BREF</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>43</id>
+            <name>LES EMISSIONS DU DIMANCHE</name>
+            <category>
+                <id>681282</id>
+                <name>DIMANCHE+</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>709589</id>
+                <name>L'EFFET PAPILLON</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>694343</id>
+                <name>LES GUIGNOLS</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>711447</id>
+                <name>ZAPPING</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>681294</id>
+                <name>ACTION DISCRETE</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>105</id>
+            <name>Toutes les émissions</name>
+            <category>
+                <id>679604</id>
+                <name>UNE MINUTE AVANT</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>681282</id>
+                <name>DIMANCHE+</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>678931</id>
+                <name>LA MATINALE</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>687165</id>
+                <name>SALUT LES TERRIENS</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>680706</id>
+                <name>GROLAND</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>694343</id>
+                <name>LES GUIGNOLS</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>711427</id>
+                <name>LE PETIT JOURNAL</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>708782</id>
+                <name>LE JT DE CANAL+</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>694383</id>
+                <name>BREF</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>673722</id>
+                <name>JDJV</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>709605</id>
+                <name>L'EFFET PAPILLON</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>694884</id>
+                <name>LE GRAND JOURNAL</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>711566</id>
+                <name>SAV</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>710586</id>
+                <name>NEWS SHOW</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>711447</id>
+                <name>ZAPPING</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>679571</id>
+                <name>LA NOUVELLE EDITION</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>681294</id>
+                <name>ACTION DISCRETE</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>46</id>
+            <name>INTERVIEWS </name>
+            <category>
+                <id>652376</id>
+                <name>INTERVIEW</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>693773</id>
+                <name>CINEMA EN SALLES</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>597550</id>
+                <name>CESAR 2012</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>599640</id>
+                <name>OSCAR 2012</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>545132</id>
+                <name>EMISSION</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>104</id>
+            <name>Le Grand Journal</name>
+            <category>
+                <id>694884</id>
+                <name>LE GRAND JOURNAL</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>932</id>
+            <name>Jamel Comedy Club - BONUS </name>
+            <category>
+                <id>688704</id>
+                <name>JAMEL COMEDY CLUB</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>7</id>
+            <name>LES EMISSIONS SPORT</name>
+            <category>
+                <id>647572</id>
+                <name>INTERIEUR SPORT</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>4</id>
+            <name>TOUT LE TENNIS / GOLF</name>
+            <category>
+                <id>711433</id>
+                <name>GOLF</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>711434</id>
+                <name>TENNIS</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>75</id>
+            <name>LES + VUES</name>
+            <category>
+                <id>210814</id>
+                <name>LA PUB DE CANAL+</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>376444</id>
+                <name>CREA+</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>325552</id>
+                <name>LA NUIT DES CONS</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>373411</id>
+                <name>VOS SAV</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>210808</id>
+                <name>AIR FUCK</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>76</id>
+            <name>LES + RECENTES</name>
+            <category>
+                <id>490719</id>
+                <name>CREA+</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>73</id>
+            <name>LES PLUS RECENTES</name>
+            <category>
+                <id>711433</id>
+                <name>GOLF</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>699498</id>
+                <name>BASKET</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>706417</id>
+                <name>RUGBY</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>711497</id>
+                <name>FOOTBALL</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>695611</id>
+                <name>AUTRES SPORTS</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>711434</id>
+                <name>TENNIS</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>698890</id>
+                <name>HANDBALL</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>856</id>
+            <name>MONTEES DES MARCHES</name>
+            <category>
+                <id>654387</id>
+                <name>MONTEE DES MARCHES</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>28</id>
+            <name>CULTURE</name>
+            <category>
+                <id>685291</id>
+                <name>MOULOUD ACHOUR</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>2</id>
+            <name>LES INCONTOURNABLES</name>
+            <category>
+                <id>326810</id>
+                <name>X GAMES</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>711433</id>
+                <name>GOLF</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>699498</id>
+                <name>BASKET</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>706417</id>
+                <name>RUGBY</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>711497</id>
+                <name>FOOTBALL</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>695611</id>
+                <name>AUTRES SPORTS</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>711434</id>
+                <name>TENNIS</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>647572</id>
+                <name>INTERIEUR SPORT</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>565</id>
+            <name>DESPERATE HOUSEWIVES 8 ALL</name>
+            <category>
+                <id>627883</id>
+                <name>DESPERATE HOUSEWIVES - SAISON 8</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>290</id>
+            <name>BA CANAL+</name>
+            <category>
+                <id>711483</id>
+                <name>BA A L'ANTENNE</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>11</id>
+            <name>LES EMISSIONS CINEMA</name>
+            <category>
+                <id>703079</id>
+                <name>EMISSION</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>561</id>
+            <name>CANNES EXPRESS</name>
+            <category>
+                <id>648675</id>
+                <name>CANNES EXPRESS</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>229</id>
+            <name>ZAPPING CANNOIS</name>
+            <category>
+                <id>654389</id>
+                <name>ZAPPING CANNOIS</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>130</id>
+            <name>Les émissions</name>
+            <category>
+                <id>673722</id>
+                <name>JDJV</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>687187</id>
+                <name>SALUT LES TERRIENS</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>680706</id>
+                <name>GROLAND</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>694884</id>
+                <name>LE GRAND JOURNAL</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>694343</id>
+                <name>LES GUIGNOLS</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>711427</id>
+                <name>LE PETIT JOURNAL</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>711566</id>
+                <name>SAV</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>710586</id>
+                <name>NEWS SHOW</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>711447</id>
+                <name>ZAPPING</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>194613</id>
+                <name>L'EDITION SPECIALE</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>681294</id>
+                <name>ACTION DISCRETE</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>510</id>
+            <name>les films suédés</name>
+            <category>
+                <id>226241</id>
+                <name>CREA+</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>107768</id>
+                <name>CINEMA EN SALLES</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>213902</id>
+                <name>LES FILMS FAITS A LA MAISON</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>24</id>
+            <name>LES DOCUMENTAIRES</name>
+            <category>
+                <id>648873</id>
+                <name>DOCUMENTAIRES DIVERS</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>676651</id>
+                <name>SPECIAL INVESTIGATION</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>676367</id>
+                <name>LES NOUVEAUX EXPLORATEURS</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>915</id>
+            <name>Stéphane Bak</name>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>506</id>
+            <name>Créez la pub de CANAL+</name>
+            <category>
+                <id>210814</id>
+                <name>LA PUB DE CANAL+</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>121</id>
+            <name>Street Tendances</name>
+            <category>
+                <id>666472</id>
+                <name>TENDANCES</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>6</id>
+            <name>TOUT LE RUGBY</name>
+            <category>
+                <id>706417</id>
+                <name>RUGBY</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>926</id>
+            <name>LASCARS</name>
+            <category>
+                <id>696834</id>
+                <name>LASCARS - SAISON 1</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>31</id>
+            <name>LES LIVE</name>
+            <category>
+                <id>673967</id>
+                <name>CONCERTS PRIVES</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>694384</id>
+                <name>LE GRAND JOURNAL</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>691764</id>
+                <name>ALBUM DE LA SEMAINE</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>544341</id>
+                <name>LA MUSICALE</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>9</id>
+            <name>AUTRES SPORTS - HOME SPORT</name>
+            <category>
+                <id>711433</id>
+                <name>GOLF</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>695611</id>
+                <name>AUTRES SPORTS</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>124</id>
+            <name>les interviews de Raphäl</name>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>511</id>
+            <name>La Factorire</name>
+            <category>
+                <id>381419</id>
+                <name>LA FACTORIRE</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>907</id>
+            <name>STRIKE BACK</name>
+            <category>
+                <id>696826</id>
+                <name>STRIKE BACK - SAISON 2</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>670757</id>
+                <name>STRIKE BACK - SAISON 1</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>895</id>
+            <name>CANNES VU PAR...</name>
+            <category>
+                <id>645797</id>
+                <name>CANNES VU PAR</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>10</id>
+            <name>LES DERNIERES BA</name>
+            <category>
+                <id>711505</id>
+                <name>CINEMA EN SALLES</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>226</id>
+            <name>CRITIQUES</name>
+            <category>
+                <id>628258</id>
+                <name>INTERVIEW</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>628144</id>
+                <name>CINEMA EN SALLES</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>645703</id>
+                <name>CRITIQUE</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>48</id>
+            <name>LES GUIGNOLS</name>
+            <category>
+                <id>694343</id>
+                <name>LES GUIGNOLS</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>108</id>
+            <name>Les Musiques des émissions</name>
+            <category>
+                <id>678401</id>
+                <name>LA MATINALE</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>694384</id>
+                <name>LE GRAND JOURNAL</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>77</id>
+            <name>Les mieux notées</name>
+            <category>
+                <id>213618</id>
+                <name>CREA+</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>37</id>
+            <name>L'HUMOUR DU WEEK-END </name>
+            <category>
+                <id>687187</id>
+                <name>SALUT LES TERRIENS</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>689788</id>
+                <name>GROLAND</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>687823</id>
+                <name>LES GUIGNOLS</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>710586</id>
+                <name>NEWS SHOW</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>681294</id>
+                <name>ACTION DISCRETE</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>880</id>
+            <name>VIDEOS CANNES 2012</name>
+            <category>
+                <id>658634</id>
+                <name>UNE JOURNEE A CANNES AVEC</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>654387</id>
+                <name>MONTEE DES MARCHES</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>654323</id>
+                <name>CEREMONIES</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>654388</id>
+                <name>PHOTOCALL</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>646689</id>
+                <name>CONFERENCE DE PRESSE</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>658647</id>
+                <name>AFTER CHINA</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>648675</id>
+                <name>CANNES EXPRESS</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>653403</id>
+                <name>BRIGADE DU STYLE</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>654385</id>
+                <name>BOUCAN CANNOIS</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>652376</id>
+                <name>INTERVIEW</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>654389</id>
+                <name>ZAPPING CANNOIS</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>659526</id>
+                <name>VERY BAD CANNES</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>645797</id>
+                <name>CANNES VU PAR</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>652409</id>
+                <name>LE GRAND JOURNAL</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>653323</id>
+                <name>GUILLARME</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>645703</id>
+                <name>CRITIQUE</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>655399</id>
+                <name>BONUS</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>653453</id>
+                <name>MOMENT GLAMOUR</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>72</id>
+            <name>LES PLUS VUES</name>
+            <category>
+                <id>423396</id>
+                <name>FOOTBALL</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>285428</id>
+                <name>INTERIEUR SPORT</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>112</id>
+            <name>Le Meilleur Du Hier</name>
+            <category>
+                <id>690921</id>
+                <name>LE MEILLEUR DU HIER</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>41</id>
+            <name>LES EMISSIONS DU SAMEDI</name>
+            <category>
+                <id>673722</id>
+                <name>JDJV</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>687165</id>
+                <name>SALUT LES TERRIENS</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>680706</id>
+                <name>GROLAND</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>708782</id>
+                <name>LE JT DE CANAL+</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>694383</id>
+                <name>BREF</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>710586</id>
+                <name>NEWS SHOW</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>711430</id>
+                <name>ZAPPING</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>680687</id>
+                <name>EMISSION</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>912</id>
+            <name>MI - 5 - SAISON 9 </name>
+            <category>
+                <id>659769</id>
+                <name>MI - 5 - SAISON 9</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>508</id>
+            <name>le mois désamours</name>
+            <category>
+                <id>297095</id>
+                <name>LE MOIS DES AMOURS</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>42</id>
+            <name>LA SELECTION CANAL</name>
+            <category>
+                <id>481688</id>
+                <name>CREA+</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>373226</id>
+                <name>VOS SAV</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>29</id>
+            <name>POLITIQUE</name>
+            <category>
+                <id>681282</id>
+                <name>DIMANCHE+</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>679516</id>
+                <name>LA MATINALE</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>194781</id>
+                <name>L'ACTU AVEC ITELE</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>691362</id>
+                <name>LE BOUCAN DU JOUR</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>708858</id>
+                <name>LE JT DE CANAL+</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>129</id>
+            <name>TOUS LES MEILLEURS MOMENTS DU GRAND JOURNAL</name>
+            <category>
+                <id>694915</id>
+                <name>LE GRAND JOURNAL</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>694343</id>
+                <name>LES GUIGNOLS</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>694914</id>
+                <name>LA METEO DE SOLWEIG</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>694388</id>
+                <name>BREF</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>711566</id>
+                <name>SAV</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>694918</id>
+                <name>LA BOITE A QUESTIONS</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>711447</id>
+                <name>ZAPPING</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>678885</id>
+                <name>EMISSION</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>5</id>
+            <name>TOUT LE BASKET</name>
+            <category>
+                <id>699498</id>
+                <name>BASKET</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>509</id>
+            <name>Viens jouer sur CANAL+</name>
+            <category>
+                <id>235198</id>
+                <name>VIENS JOUER SUR CANAL+</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>27</id>
+            <name>L'ACTUALITE</name>
+            <category>
+                <id>679837</id>
+                <name>LA PETITE SEMAINE</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>681282</id>
+                <name>DIMANCHE+</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>678931</id>
+                <name>LA MATINALE</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>709605</id>
+                <name>L'EFFET PAPILLON</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>203105</id>
+                <name>SPECIAL</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>708858</id>
+                <name>LE JT DE CANAL+</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>711592</id>
+                <name>SUJET</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>381</id>
+            <name>FACE A FACE(S)</name>
+            <category>
+                <id>544855</id>
+                <name>EMISSION</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>38</id>
+            <name>LES VIDEOS LES + VUES</name>
+            <category>
+                <id>505918</id>
+                <name>BREF</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>137775</id>
+                <name>PEPITES SUR LE NET</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+    </channel>
+    <channel>
+        <name>rss</name>
+        <category>
+            <id>Give RSS Url Here</id>
+            <name>Give RSS Label Here</name>
+            <include>Add include pattern</include>
+            <exclude>Add exclude pattern</exclude>
+            <extension>Give files extension Here</extension>
+        </category>
+    </channel>
+    <channel>
+        <name>pluzz</name>
+        <category>
+            <id>Divertissement</id>
+            <name>Divertissement</name>
+            <category>
+                <id>Fort Boyard</id>
+                <name>Fort Boyard</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Impeccable !</id>
+                <name>Impeccable !</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>Culture</id>
+            <name>Culture</name>
+            <category>
+                <id>Tendance 1ère</id>
+                <name>Tendance 1ère</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Dans quelle étagère</id>
+                <name>Dans quelle étagère</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Des mots de minuit</id>
+                <name>Des mots de minuit</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Hebdo musique mag</id>
+                <name>Hebdo musique mag</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Nolwenn Leroy, nuit bretonne</id>
+                <name>Nolwenn Leroy, nuit bretonne</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Un livre un jour</id>
+                <name>Un livre un jour</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Aujourd'hui c'est Ferrier</id>
+                <name>Aujourd'hui c'est Ferrier</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Cali au printemps de Bourges</id>
+                <name>Cali au printemps de Bourges</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Danakil</id>
+                <name>Danakil</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Incroyablement Roumanoff</id>
+                <name>Incroyablement Roumanoff</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Monte le son! le live</id>
+                <name>Monte le son! le live</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Avis de sorties - France 5</id>
+                <name>Avis de sorties - France 5</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Aline au pays des merveilles</id>
+                <name>Aline au pays des merveilles</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Arthur H</id>
+                <name>Arthur H</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>Magazine</id>
+            <name>Magazine</name>
+            <category>
+                <id>7 jours</id>
+                <name>7 jours</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Invitez qui vous voulez</id>
+                <name>Invitez qui vous voulez</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Itinéraires</id>
+                <name>Itinéraires</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>La Santé d'Abord</id>
+                <name>La Santé d'Abord</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Soyons au net !</id>
+                <name>Soyons au net !</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Ti baba</id>
+                <name>Ti baba</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>13h15, le Dimanche</id>
+                <name>13h15, le Dimanche</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Carnets de voyage d'Envoyé Spécial</id>
+                <name>Carnets de voyage d'Envoyé Spécial</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Comment ca va bien ?</id>
+                <name>Comment ca va bien ?</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Consomag</id>
+                <name>Consomag</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Hello Goodbye</id>
+                <name>Hello Goodbye</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Le jour où tout a basculé</id>
+                <name>Le jour où tout a basculé</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>POINT ROUTE</id>
+                <name>POINT ROUTE</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Secrets d'histoire</id>
+                <name>Secrets d'histoire</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Toute une histoire</id>
+                <name>Toute une histoire</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Télématin</id>
+                <name>Télématin</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>30 millions d'amis</id>
+                <name>30 millions d'amis</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Côté jardin</id>
+                <name>Côté jardin</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Des racines et des ailes</id>
+                <name>Des racines et des ailes</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Faut pas rêver</id>
+                <name>Faut pas rêver</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Thalassa</id>
+                <name>Thalassa</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Vu du ciel</id>
+                <name>Vu du ciel</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>C dans l'air</id>
+                <name>C dans l'air</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>C'est notre affaire</id>
+                <name>C'est notre affaire</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Echappées belles</id>
+                <name>Echappées belles</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Emission de solutions - F5</id>
+                <name>Emission de solutions - F5</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Et si on changeait le monde-F5</id>
+                <name>Et si on changeait le monde-F5</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>La maison France 5</id>
+                <name>La maison France 5</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Les escapades de Petitrenaud</id>
+                <name>Les escapades de Petitrenaud</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>On n'est pas que des cobayes!</id>
+                <name>On n'est pas que des cobayes!</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Silence, ça pousse !</id>
+                <name>Silence, ça pousse !</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Couleurs outremers</id>
+                <name>Couleurs outremers</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Et si on changeait le monde-FÔ</id>
+                <name>Et si on changeait le monde-FÔ</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Les petits plats de Babette</id>
+                <name>Les petits plats de Babette</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Petite collection couleurs</id>
+                <name>Petite collection couleurs</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>Jeunesse</id>
+            <name>Jeunesse</name>
+            <category>
+                <id>Chaplin &amp; Co</id>
+                <name>Chaplin &amp; Co</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Les Dalton</id>
+                <name>Les Dalton</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Oggy et les cafards</id>
+                <name>Oggy et les cafards</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Popeye</id>
+                <name>Popeye</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Wakfu saison 1</id>
+                <name>Wakfu saison 1</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Avengers l'équipe des héros</id>
+                <name>Avengers l'équipe des héros</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Code Lyoko</id>
+                <name>Code Lyoko</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Men in black</id>
+                <name>Men in black</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>123BO</id>
+                <name>123BO</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Artzooka!</id>
+                <name>Artzooka!</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Emilie</id>
+                <name>Emilie</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Géronimo Stilton</id>
+                <name>Géronimo Stilton</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Les légendes de Tatonka</id>
+                <name>Les légendes de Tatonka</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Lulu Vroumette</id>
+                <name>Lulu Vroumette</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Minuscule</id>
+                <name>Minuscule</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Mouk</id>
+                <name>Mouk</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Poppy cat</id>
+                <name>Poppy cat</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>ZingZillas</id>
+                <name>ZingZillas</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Naruto</id>
+                <name>Naruto</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Podcats S1</id>
+                <name>Podcats S1</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Sally Bollywood</id>
+                <name>Sally Bollywood</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>Jeu</id>
+            <name>Jeu</name>
+            <category>
+                <id>Les Z'amours</id>
+                <name>Les Z'amours</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Motus</id>
+                <name>Motus</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Tout le monde veut prendre sa place</id>
+                <name>Tout le monde veut prendre sa place</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Des chiffres et des lettres</id>
+                <name>Des chiffres et des lettres</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Questions Pour Un Champion</id>
+                <name>Questions Pour Un Champion</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Questions pour un super champion</id>
+                <name>Questions pour un super champion</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Slam</id>
+                <name>Slam</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>Sport</id>
+            <name>Sport</name>
+            <category>
+                <id>Attitude Sport</id>
+                <name>Attitude Sport</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Tour cycliste de Guadeloupe</id>
+                <name>Tour cycliste de Guadeloupe</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>JO Londres 2012 - F2</id>
+                <name>JO Londres 2012 - F2</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>En course sur France 3</id>
+                <name>En course sur France 3</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>JO Londres 2012 - F3</id>
+                <name>JO Londres 2012 - F3</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>JO : Football (France 4)</id>
+                <name>JO : Football (France 4)</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Destination Glisse</id>
+                <name>Destination Glisse</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>JO : Football (France Ô)</id>
+                <name>JO : Football (France Ô)</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>O2</id>
+                <name>O2</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Riding zone Best of</id>
+                <name>Riding zone Best of</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>Info</id>
+            <name>Info</name>
+            <category>
+                <id>JT Guadeloupe</id>
+                <name>JT Guadeloupe</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>JT Guyane</id>
+                <name>JT Guyane</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>JT Martinique</id>
+                <name>JT Martinique</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>JT Mayotte (français)</id>
+                <name>JT Mayotte (français)</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>JT Mayotte (mahorais)</id>
+                <name>JT Mayotte (mahorais)</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>JT Nouvelle Calédonie</id>
+                <name>JT Nouvelle Calédonie</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>JT Polynésie (français)</id>
+                <name>JT Polynésie (français)</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>JT Polynésie (polynésien)</id>
+                <name>JT Polynésie (polynésien)</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>JT Réunion</id>
+                <name>JT Réunion</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>JT Réunion Midi</id>
+                <name>JT Réunion Midi</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>JT Saint-Pierre et Miquelon</id>
+                <name>JT Saint-Pierre et Miquelon</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>JT Wallis et Futuna (wallisien)</id>
+                <name>JT Wallis et Futuna (wallisien)</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>JT - 06h30</id>
+                <name>JT - 06h30</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>JT 13h</id>
+                <name>JT 13h</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>JT 20h</id>
+                <name>JT 20h</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>12-13 Dimanche</id>
+                <name>12-13 Dimanche</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>JT 12-13 Edition Nationale</id>
+                <name>JT 12-13 Edition Nationale</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>JT 19-20 Edition Nationale</id>
+                <name>JT 19-20 Edition Nationale</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Soir 3</id>
+                <name>Soir 3</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Outremers Actu</id>
+                <name>Outremers Actu</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Tout monde info</id>
+                <name>Tout monde info</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>Autre</id>
+            <name>Autre</name>
+            <category>
+                <id>Chrétiens Orientaux</id>
+                <name>Chrétiens Orientaux</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Islam</id>
+                <name>Islam</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Judaïca</id>
+                <name>Judaïca</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Le Jour du Seigneur</id>
+                <name>Le Jour du Seigneur</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Météo JT 13h</id>
+                <name>Météo JT 13h</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Météo JT 20h</id>
+                <name>Météo JT 20h</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Météo des plages France 2</id>
+                <name>Météo des plages France 2</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Orthodoxie</id>
+                <name>Orthodoxie</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Présence protestante</id>
+                <name>Présence protestante</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Sagesses bouddhistes</id>
+                <name>Sagesses bouddhistes</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Météo JT 12-13</id>
+                <name>Météo JT 12-13</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Météo JT 19-20</id>
+                <name>Météo JT 19-20</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>Série &amp; fiction</id>
+            <name>Série &amp; fiction</name>
+            <category>
+                <id>Amour gloire et beauté</id>
+                <name>Amour gloire et beauté</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Coeur Océan - F2</id>
+                <name>Coeur Océan - F2</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Des jours et des vies</id>
+                <name>Des jours et des vies</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Lignes de vie</id>
+                <name>Lignes de vie</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Strictement platonique</id>
+                <name>Strictement platonique</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Commissaire Montalbano</id>
+                <name>Commissaire Montalbano</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Dark Blue</id>
+                <name>Dark Blue</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Fais pas ci fais pas ça</id>
+                <name>Fais pas ci fais pas ça</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Le temps est à l'orage</id>
+                <name>Le temps est à l'orage</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Samantha oups</id>
+                <name>Samantha oups</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Stonehenge apocalypse</id>
+                <name>Stonehenge apocalypse</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>El Diablo</id>
+                <name>El Diablo</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>La Reina del sur</id>
+                <name>La Reina del sur</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Le clone</id>
+                <name>Le clone</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Les flamboyants</id>
+                <name>Les flamboyants</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Terre Indigo</id>
+                <name>Terre Indigo</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>Documentaire</id>
+            <name>Documentaire</name>
+            <category>
+                <id>20 ans à Paris</id>
+                <name>20 ans à Paris</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>A bord de l'express côtier</id>
+                <name>A bord de l'express côtier</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Dans le secret du grand bazar</id>
+                <name>Dans le secret du grand bazar</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Des trains pas comme les autres</id>
+                <name>Des trains pas comme les autres</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Farangs...oui mais Français !</id>
+                <name>Farangs...oui mais Français !</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>La peur du croco</id>
+                <name>La peur du croco</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Les grands espaces de l'ouest</id>
+                <name>Les grands espaces de l'ouest</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Métiers dangereux et spectaculaires</id>
+                <name>Métiers dangereux et spectaculaires</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Rendez-vous en terre inconnue</id>
+                <name>Rendez-vous en terre inconnue</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Emmenez-moi...chez Serge Lama</id>
+                <name>Emmenez-moi...chez Serge Lama</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Strip-Tease</id>
+                <name>Strip-Tease</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>SOS vétérinaires</id>
+                <name>SOS vétérinaires</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Sur la terre des dinosaures</id>
+                <name>Sur la terre des dinosaures</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Sur la terre des monstres</id>
+                <name>Sur la terre des monstres</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Attention chiens gentils</id>
+                <name>Attention chiens gentils</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Compteurs d'îles</id>
+                <name>Compteurs d'îles</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Dangers dans le ciel</id>
+                <name>Dangers dans le ciel</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Des trains pas comme les autres F5</id>
+                <name>Des trains pas comme les autres F5</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Empreintes</id>
+                <name>Empreintes</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Evolutions</id>
+                <name>Evolutions</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Expédition grand rift</id>
+                <name>Expédition grand rift</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Fourchette et sac à dos</id>
+                <name>Fourchette et sac à dos</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Je ne devrais pas être en vie</id>
+                <name>Je ne devrais pas être en vie</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>La légende du roi Arthur</id>
+                <name>La légende du roi Arthur</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Le Nil : la magie des eaux</id>
+                <name>Le Nil : la magie des eaux</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Le clan des suricates</id>
+                <name>Le clan des suricates</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Le meilleur poulet du monde</id>
+                <name>Le meilleur poulet du monde</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Les Report-Terre</id>
+                <name>Les Report-Terre</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Les carnets de route de François B.</id>
+                <name>Les carnets de route de François B.</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Nus et culottés</id>
+                <name>Nus et culottés</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Peuples du monde</id>
+                <name>Peuples du monde</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Planète très insolite - Australie</id>
+                <name>Planète très insolite - Australie</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Sale temps pour la planète</id>
+                <name>Sale temps pour la planète</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Tabernas, le désert en Europe</id>
+                <name>Tabernas, le désert en Europe</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Une maison, un écrivain</id>
+                <name>Une maison, un écrivain</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Vaccins, le virus du doute</id>
+                <name>Vaccins, le virus du doute</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Vu sur terre</id>
+                <name>Vu sur terre</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Appelé par la forêt</id>
+                <name>Appelé par la forêt</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>Les aventuriers d'Explô</id>
+                <name>Les aventuriers d'Explô</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+    </channel>
+    <channel>
+        <name>m6w9</name>
+        <category>
+            <id>w9</id>
+            <name>w9</name>
+            <category>
+                <id>3374</id>
+                <name>CAUCHEMAR EN CUISINE</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>10084</id>
+                <name>A VOS CLIPS</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>10606</id>
+                <name>W9 BOUTIQUE</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>8056</id>
+                <name>TALENT TOUT NEUF</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>3364</id>
+                <name>HIT TALENT</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>11856</id>
+                <name>Un gars, une fille (W9)</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>6026</id>
+                <name>Un gars, une fille</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>10268</id>
+                <name>LE CONVOI DE L'EXTREME : LA ROUTE DE L'HIMALAYA</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>12216</id>
+                <name>SWAMP PEOPLE : CHASSEURS DE CROCO</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>3330</id>
+                <name>W9 HITS</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>9970</id>
+                <name>GENERATION TOP 50</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>3350</id>
+                <name>E-CLASSEMENT</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>3348</id>
+                <name>QUOI DE NEUF ?</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>12172</id>
+                <name>ABSOLUMENT JENIFER</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>12194</id>
+                <name>LE CONVOI DE L'EXTREME : LES ROUTES DES ANDES</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>11916</id>
+                <name>SODA</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>3324</id>
+                <name>WAKE UP</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>11312</id>
+                <name>LE MEILLEUR DU TOP 50</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>3356</id>
+                <name>ENQUETE D'ACTION</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>m6</id>
+            <name>m6</name>
+            <category>
+                <id>130</id>
+                <name>Maison à vendre</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>2302</id>
+                <name>Lou</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>8082</id>
+                <name>UN TRESOR DANS VOTRE MAISON</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>184</id>
+                <name>Belle toute nue</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>7814</id>
+                <name>N.C.I.S : Los Angeles</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>2272</id>
+                <name>M6 Boutique</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>18</id>
+                <name>Un dîner presque parfait</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>6172</id>
+                <name>C'EST MA VIE</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>6026</id>
+                <name>Un gars, une fille</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>3116</id>
+                <name>BRICOLAGE ET REMUE-MENAGE</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>7128</id>
+                <name>UNE STAR ASSASSINEE</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>2972</id>
+                <name>Le 1945</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>9264</id>
+                <name>UNE SI LONGUE ABSENCE</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>648</id>
+                <name>Accès privé</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>11584</id>
+                <name>ZITA DANS LA PEAU DE ...</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>122</id>
+                <name>E=M6</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>3102</id>
+                <name>AMOUR RIME AVEC TOUJOURS</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>2184</id>
+                <name>Sport 6</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>2334</id>
+                <name>CHARLOTTE AUX FRAISES</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>2460</id>
+                <name>Enquête exclusive</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>12138</id>
+                <name>LE BUS</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>2856</id>
+                <name>ABSOLUMENT STARS</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>2284</id>
+                <name>Météo des plages</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>4862</id>
+                <name>LE 1245</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>9812</id>
+                <name>Hawaii 5-0</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>146</id>
+                <name>Capital</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>626</id>
+                <name>Le manège enchanté</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>2174</id>
+                <name>L'amour est dans le pré</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>142</id>
+                <name>D&amp;CO</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>2276</id>
+                <name>Cinésix</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>12074</id>
+                <name>JUSTIFIED</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>2260</id>
+                <name>100% Mag</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>3538</id>
+                <name>Scènes de ménages</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>10300</id>
+                <name>LA VRAIE HISTOIRE DE...</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>2360</id>
+                <name>Zone interdite</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>12084</id>
+                <name>En famille</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>2282</id>
+                <name>Météo</name>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>116</id>
+                <name>66 Minutes</name>
+                <extension>mp4</extension>
+            </category>
+            <extension>mp4</extension>
+        </category>
+    </channel>
 </ns2:grabConfig>
