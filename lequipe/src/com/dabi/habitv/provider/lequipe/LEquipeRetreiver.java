@@ -88,12 +88,14 @@ public class LEquipeRetreiver {
 		try {
 			final Connection con = Jsoup.connect(LEquipeConf.HOME_URL + LEquipeConf.VIDEO_URL);
 
-			final Elements select = con.get().select(".item");
+			final Elements select = con.get().select(".autres-videos").get(1).child(3).child(0).children();
 			for (final Element ulRencontre : select) {
-				final Element aHref = ulRencontre.child(0);
-				final String name = aHref.child(2).text();
-				final String videoUrl = aHref.attr("href");
-				episodeList.add(new EpisodeDTO(category, name, videoUrl));
+				if (ulRencontre.children().size() > 0) {
+					final Element aHref = ulRencontre.child(0);
+					final String name = aHref.child(2).text();
+					final String videoUrl = aHref.attr("href");
+					episodeList.add(new EpisodeDTO(category, name, videoUrl));
+				}
 			}
 		} catch (final IOException e) {
 			throw new TechnicalException(e);
