@@ -14,6 +14,6 @@ public interface FrameworkConf {
 
 	long TIME_BETWEEN_LOG = 2000L;
 
-	String UPDATE_URL = "http://just.loic.free.fr/habitv";
+	String UPDATE_URL = "http://dabiboo.free.fr/habitv";
 
 }

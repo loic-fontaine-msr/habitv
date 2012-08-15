@@ -10,7 +10,7 @@
 	<artifactId>updater</artifactId>
 	<packaging>jar</packaging>
 	<name>updater</name>
-	<version>1.0</version>
+	<version>3.0.0</version>
 	<dependencies>
 		<dependency>
 			<groupId>com.dabi.habitv</groupId>

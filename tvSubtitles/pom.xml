@@ -7,7 +7,7 @@
 		<relativePath>../builder</relativePath>
 		<artifactId>builder</artifactId>
 		<groupId>com.dabi.habitv</groupId>
-		<version>2.0.0</version>
+		<version>LATEST</version>
 	</parent>
 	<artifactId>tvSubtitles</artifactId>
 	<name>tvSubtitles</name>
@@ -42,6 +42,6 @@
 			</plugin>
 		</plugins>
 	</build>	
-	<version>2.0</version>
+	<version>3.0.0</version>
 	<groupId>com.dabi.habitv</groupId>
 </project>

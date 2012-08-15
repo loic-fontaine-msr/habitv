@@ -50,10 +50,7 @@
 		</condition>
 		<name>curl</name>
 		<output>Transferring to freebox</output>
-		<cmd>..\curlDownloader\exe\curl.exe -T
-			"D:/divx/regular/avi/#TVSHOW_NAME#-#EPISODE_NAME_CUT#.avi"
-			"ftp://freebox:4688@hd1.freebox.fr/Disque
-			dur/#TVSHOW_NAME#/#EPISODE_NAME_CUT#.avi" --ftp-create-dirs
+		<cmd>..\curlDownloader\exe\curl.exe -T "D:/divx/regular/avi/#TVSHOW_NAME#-#EPISODE_NAME_CUT#.avi" "ftp://freebox:4688@hd1.freebox.fr/Disque dur/#TVSHOW_NAME#/#EPISODE_NAME_CUT#.avi" --ftp-create-dirs
 		</cmd>
 	</exporter>
 	<exporter>

@@ -10,7 +10,7 @@
 	<artifactId>trayView</artifactId>
 	<packaging>jar</packaging>
 	<name>trayView</name>
-	<version>1.0</version>
+	<version>3.0.0</version>
 	<dependencies>
 		<dependency>
 			<groupId>com.dabi.habitv</groupId>
@@ -43,12 +43,17 @@
 		</dependency>
 	</dependencies>
 	<build>
+		<resources>
+			<resource>
+				<directory>img</directory>
+			</resource>
+		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 				<configuration>
-				<finalName>${project.name}</finalName>
+					<finalName>${project.name}</finalName>
 					<outputDirectory>../builder/pub/lib</outputDirectory>
 					<archive>
 						<manifest>
