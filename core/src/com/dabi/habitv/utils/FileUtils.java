@@ -25,7 +25,7 @@ public final class FileUtils {
 	 * @return
 	 */
 	public static String sanitizeFilename(final String name) {
-		return name.replaceAll("[\\s,:\\\\/*?|<>&]", "_");
+		return name.replaceAll("[\\s,:\\\\/*?|<>&«»()\"\']", "_");
 	}
 
 	public static void setValidation(final Unmarshaller unmarshaller, final String xsdFile) {

@@ -53,10 +53,14 @@ public class TF1Retreiver {
 			for (final Element element : select) {
 				try {
 					final Element divInfoIntegrale = element.child(1);
-					if ("infosTeaser".equals(divInfoIntegrale.attr("class")) || "infosIntegrale".equals(divInfoIntegrale.attr("class"))) {
-						final String title = divInfoIntegrale.child(1).child(0).text();
-						final String url = divInfoIntegrale.child(1).child(0).attr("href");
-						episodes.add(new EpisodeDTO(category, title, url));
+					if (("description".equals(divInfoIntegrale.attr("class")) || "infosTeaser".equals(divInfoIntegrale.attr("class")) || "infosIntegrale"
+							.equals(divInfoIntegrale.attr("class"))) && divInfoIntegrale.children().size() > 1) {
+						final Element child = divInfoIntegrale.child(1);
+						if (!child.children().isEmpty()) {
+							final String title = child.child(0).text();
+							final String url = child.child(0).attr("href");
+							episodes.add(new EpisodeDTO(category, title, url));
+						}
 					}
 				} catch (final IndexOutOfBoundsException e) {
 					LOGGER.error(element, e);
@@ -130,6 +134,8 @@ public class TF1Retreiver {
 		// si recherche fructueuse
 		if (hasMatched) {
 			ret = matcher.group(matcher.groupCount());
+		} else {
+			throw new TechnicalException("can't find mediaId");
 		}
 		return ret;
 	}

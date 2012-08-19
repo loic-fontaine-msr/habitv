@@ -67,6 +67,7 @@ public class DownloadTask extends AbstractEpisodeTask {
 	@Override
 	protected Object doCall() throws DownloadFailedException, NoSuchDownloaderException {
 		final String outputFilename = TokenReplacer.replaceAll(downloader.getDownloadOutput(), getEpisode());
+		final String outputTmpFileName = outputFilename + ".tmp";
 		// delete to prevent resuming since most of the download can't resume
 		final File outputFile = new File(outputFilename);
 		if (outputFile.exists()) {
@@ -78,6 +79,7 @@ public class DownloadTask extends AbstractEpisodeTask {
 				publisher.addNews(new RetreiveEvent(getEpisode(), EpisodeStateEnum.DOWNLOADING, progression));
 			}
 		}, getEpisode());
+		(new File(outputTmpFileName)).renameTo(new File(outputFilename));
 		return null;
 	}
 

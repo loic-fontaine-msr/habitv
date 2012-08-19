@@ -51,8 +51,11 @@ public class LEquipePluginManagerTest {
 		assertEquals(manager.getName(), LEquipeConf.NAME);
 	}
 
-	private void checkFindEpisode(final String categoryName, final String episodeName, final String url) {
-		final CategoryDTO category = new CategoryDTO("channel", categoryName, categoryName, "mp4");
+	private void checkFindEpisode(final String mainCategory, final String categoryName, final String categoryId, final String episodeName, final String url) {
+		final CategoryDTO mainCategoryDTO = new CategoryDTO("channel", mainCategory, mainCategory, "mp4");
+		final CategoryDTO category = new CategoryDTO("channel", categoryName, categoryId, "mp4");
+		mainCategoryDTO.addSubCategory(category);
+
 		final Set<EpisodeDTO> episodeList = manager.findEpisode(category);
 		boolean contain = false;
 		for (final EpisodeDTO episode : episodeList) {
@@ -66,20 +69,26 @@ public class LEquipePluginManagerTest {
 
 	@Test
 	public final void testFindEpisode() {
-		checkFindEpisode("Rencontre", "Sochaux - Bastia", "/video/football/ligue-1/2012-2013/1ere-journee/sochaux-bastia/");
-		checkFindEpisode("Résumé", "Le résumé de la 1ère journée de Ligue 1", "/video/football/ligue-1/");
-		checkFindEpisode("Avant-Match", "Reims trace son histoire",
-				"/video/football/ligue-1/2012-2013/1ere-journee/reims-marseille/reims-trace-son-histoire/31f5765d039s/");
+		checkFindEpisode("BASKET / HAND /VOLLEY", "handball", "/cat/handball/", "Hand - JO : Fernandez, pourvu que ça dure...",
+				"/video/handball/hand-jo-fernandez-pourvu-que-ca-dure/recentes/page/1/?sig=91748711217s");
 	}
 
 	@Test
 	public final void testFindCategory() {
 		final Set<CategoryDTO> categories = manager.findCategory();
 		assertTrue(!categories.isEmpty());
+		boolean contain = false;
 		for (final CategoryDTO categoryDTO : categories) {
 			assertNotNull(categoryDTO.getName());
-			assertTrue("Rencontre".equals(categoryDTO.getName()) || "Résumé".equals(categoryDTO.getName()) || "Avant-Match".equals(categoryDTO.getName()));
+			if ("FOOTBALL".equals(categoryDTO.getName())) {
+				for (final CategoryDTO subCategoryDTO : categoryDTO.getSubCategories()) {
+					if ("Ligue 1".equals(subCategoryDTO.getName())) {
+						contain = true;
+					}
+				}
+			}
 		}
+		assertTrue(contain);
 	}
 
 	@Test
@@ -91,7 +100,7 @@ public class LEquipePluginManagerTest {
 			public void listen(final String progression) {
 				LOG.info(progression);
 			}
-		}, new EpisodeDTO(null, "test", "/video/football/ligue-1/2012-2013/1ere-journee/reims-marseille/reims-marseille-0-1/2ee01cfaa2ds/"));
+		}, new EpisodeDTO(null, "test", "/video/football-ligue-1/sochaux-bastia-2-3/recentes/page/2/?sig=3d07e67c196s"));
 	}
 
 	private DownloaderDTO buildDownloaders() {

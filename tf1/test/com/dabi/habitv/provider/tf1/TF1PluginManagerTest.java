@@ -122,7 +122,7 @@ public class TF1PluginManagerTest {
 		downloaderName2BinPath.put("curl", "bin");
 		final DownloaderDTO downloaders = new DownloaderDTO(downloaderName2downloader, downloaderName2BinPath, null, null);
 		final EpisodeDTO episode = new EpisodeDTO(new CategoryDTO("casper", "casper", "casper", "casper"), "Casper",
-				"/casper/la-saison-des-gloutchs-casper-7400892.html");
+				"/casper/l-attaque-des-poux-geants-casper-7460059.html");
 		manager.download("downloadOuput", downloaders, new CmdProgressionListener() {
 
 			@Override
