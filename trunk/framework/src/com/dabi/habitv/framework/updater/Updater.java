@@ -42,7 +42,11 @@ public class Updater {
 			final File[] listFiles = current.listFiles();
 			if (listFiles != null) {
 				for (final File currentFile : listFiles) {
-					updateFileOrFolder(fileToUpdate + "/" + currentFile.getName(), currentFile, tempDir);
+					try {
+						updateFileOrFolder(fileToUpdate + "/" + currentFile.getName(), currentFile, tempDir);
+					} catch (final IOException e) {
+						LOG.error(currentFile + " update error", e);
+					}
 				}
 			}
 		}

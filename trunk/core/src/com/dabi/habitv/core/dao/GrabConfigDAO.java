@@ -63,6 +63,7 @@ public class GrabConfigDAO {
 		category.setId(categoryDTO.getId());
 		category.setName(categoryDTO.getName());
 		category.setExtension(categoryDTO.getExtension());
+		category.setToDownload(false);
 		for (final String exclude : categoryDTO.getExclude()) {
 			category.getExclude().add(exclude);
 		}
@@ -102,10 +103,12 @@ public class GrabConfigDAO {
 		final Set<CategoryDTO> categoryDTOs = new HashSet<>(categories.size());
 		CategoryDTO categoryDTO;
 		for (final Category category : categories) {
-			categoryDTO = new CategoryDTO(channelName, category.getName(), category.getId(), category.getInclude(), category.getExclude(),
-					category.getExtension());
-			categoryDTO.addSubCategories(buildCategoryListDTO(channelName, category.getCategory()));
-			categoryDTOs.add(categoryDTO);
+			if (category.getToDownload() == null || category.getToDownload()) {
+				categoryDTO = new CategoryDTO(channelName, category.getName(), category.getId(), category.getInclude(), category.getExclude(),
+						category.getExtension());
+				categoryDTO.addSubCategories(buildCategoryListDTO(channelName, category.getCategory()));
+				categoryDTOs.add(categoryDTO);
+			}
 		}
 		return categoryDTOs;
 	}

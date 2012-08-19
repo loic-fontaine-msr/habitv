@@ -1,7 +1,6 @@
 package com.dabi.habitv.provider.lequipe;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -34,11 +33,7 @@ public class LEquipePluginManager implements PluginProviderInterface {
 
 	@Override
 	public Set<CategoryDTO> findCategory() {
-		final Set<CategoryDTO> categories = new HashSet<>();
-		categories.add(new CategoryDTO(LEquipeConf.NAME, "Rencontre", "Rencontre", LEquipeConf.EXTENSION));
-		categories.add(new CategoryDTO(LEquipeConf.NAME, "Résumé", "Résumé", LEquipeConf.EXTENSION));
-		categories.add(new CategoryDTO(LEquipeConf.NAME, "Avant-Match", "Avant-Match", LEquipeConf.EXTENSION));
-		return categories;
+		return LEquipeRetreiver.findCategory();
 	}
 
 	@Override
