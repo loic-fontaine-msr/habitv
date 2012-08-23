@@ -73,7 +73,7 @@ public class DownloadTask extends AbstractEpisodeTask {
 		if (outputFile.exists()) {
 			outputFile.delete();
 		}
-		provider.download(outputFilename, downloader, new CmdProgressionListener() {
+		provider.download(outputTmpFileName, downloader, new CmdProgressionListener() {
 			@Override
 			public void listen(final String progression) {
 				publisher.addNews(new RetreiveEvent(getEpisode(), EpisodeStateEnum.DOWNLOADING, progression));
