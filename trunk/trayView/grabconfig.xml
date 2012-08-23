@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ns2:grabConfig xmlns:ns2="http://www.dabi.com/habitv/grabconfig/entities">
     <channel>
+        <name>beinsport</name>
+        <category>
+            <id>beinsport</id>
+            <name>beinsport</name>
+            <toDownload>true</toDownload>
+            <include>.*Barcelone.*</include>
+            <extension>mp4</extension>
+        </category>
+    </channel>
+    <channel>
         <name>lequipe</name>
         <category>
             <id>/cat/cyclisme/</id>
