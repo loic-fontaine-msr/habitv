@@ -11,12 +11,16 @@ import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
 
 public class ProgressionModel {
 
-	private final List<ActionProgress> episodeName2ActionProgress = Collections.synchronizedList(new LinkedList<ActionProgress>());
+	private final List<ActionProgress> episodeName2ActionProgress = Collections
+			.synchronizedList(new LinkedList<ActionProgress>());
 
-	public void updateActionProgress(final EpisodeDTO episode, final EpisodeStateEnum state, final String info, final String progression) {
+	public void updateActionProgress(final EpisodeDTO episode,
+			final EpisodeStateEnum state, final String info,
+			final String progression) {
 		ActionProgress actionInProgress = getAction(episode);
 		if (actionInProgress == null) {
-			actionInProgress = new ActionProgress(state, progression, info, episode);
+			actionInProgress = new ActionProgress(state, progression, info,
+					episode);
 			episodeName2ActionProgress.add(actionInProgress);
 		} else {
 			actionInProgress.setState(state);
@@ -53,11 +57,15 @@ public class ProgressionModel {
 
 	private boolean isActionDone(final ActionProgress actionProgress) {
 		final EpisodeStateEnum state = actionProgress.getState();
-		return state.equals(EpisodeStateEnum.READY) || state.equals(EpisodeStateEnum.EXPORT_FAILED) || state.equals(EpisodeStateEnum.DOWNLOAD_FAILED);
+		return state != null
+				&& (state.equals(EpisodeStateEnum.READY)
+						|| state.equals(EpisodeStateEnum.EXPORT_FAILED) || state
+							.equals(EpisodeStateEnum.DOWNLOAD_FAILED));
 	}
 
 	public void clear() {
-		final Iterator<ActionProgress> it = episodeName2ActionProgress.iterator();
+		final Iterator<ActionProgress> it = episodeName2ActionProgress
+				.iterator();
 		ActionProgress actionProgress;
 		while (it.hasNext()) {
 			actionProgress = it.next();

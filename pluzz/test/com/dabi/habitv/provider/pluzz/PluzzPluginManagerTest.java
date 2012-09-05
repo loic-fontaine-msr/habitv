@@ -49,16 +49,13 @@ public class PluzzPluginManagerTest {
 
 	@Test
 	public final void testFindEpisode() {
-		final CategoryDTO category = new CategoryDTO("channel", "Minuscule", "Minuscule", "mp4");
+		final CategoryDTO category = new CategoryDTO("channel", "Gumball", "Gumball", "mp4");
 		final CategoryDTO surCategory = new CategoryDTO("channel", "Jeunesse", "http://feeds.feedburner.com/Pluzz-Jeunesse?format=xml", "mp4");
 		surCategory.addSubCategory(category);
 		final Set<EpisodeDTO> episodeList = manager.findEpisode(category);
 		boolean contain = false;
 		for (final EpisodeDTO episode : episodeList) {
-			if (episode.getName().equals("201208010940")) {
-				assertEquals("http://feedproxy.google.com/~r/Pluzz-Jeunesse/~3/hxtr1zpTQYs/minuscule-2012-08-01-09h40.html", episode.getUrl());
-				contain = true;
-			}
+			assertNotNull(episode.getUrl());
 		}
 		assertTrue(contain);
 	}
@@ -81,6 +78,6 @@ public class PluzzPluginManagerTest {
 			public void listen(final String progression) {
 				LOG.info(progression);
 			}
-		}, new EpisodeDTO(null, "test", "http://www.pluzz.fr/minuscule-2012-08-01-09h40.html"));
+		}, new EpisodeDTO(null, "test", "http://www.pluzz.fr/meteo-a-la-carte.html"));
 	}
 }

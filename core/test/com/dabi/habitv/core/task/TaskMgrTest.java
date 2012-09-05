@@ -42,22 +42,26 @@ public class TaskMgrTest {
 	public void tearDown() throws Exception {
 	}
 
-	private void buildSimultaneousTask(final int taskNb, final String cat, final String cat2, final boolean shutdown) {
+	private void buildSimultaneousTask(final int taskNb, final String cat,
+			final String cat2, final boolean shutdown) {
 		final Map<String, Integer> poolsSize = new HashMap<String, Integer>();
 		poolsSize.put(cat, 1);
-		poolsSize.put(cat2, 2);
-		taskMgr = new TaskMgr<AbstractTask<Object>, Object>(taskNb, new TaskMgrListener() {
+		if (cat != null && !cat.equals(cat2)) {
+			poolsSize.put(cat2, 2);
+		}
+		taskMgr = new TaskMgr<AbstractTask<Object>, Object>(taskNb,
+				new TaskMgrListener() {
 
-			@Override
-			public void onAllTreatmentDone() {
-				allTreatmentDone = true;
-			}
+					@Override
+					public void onAllTreatmentDone() {
+						allTreatmentDone = true;
+					}
 
-			@Override
-			public void onFailed(final Throwable throwable) {
-				allTreatmentDone = false;
-			}
-		}, poolsSize) {
+					@Override
+					public void onFailed(final Throwable throwable) {
+						allTreatmentDone = false;
+					}
+				}, poolsSize) {
 		};
 		AbstractTask<Object> task = new AbstractTaskForTest() {
 
@@ -143,6 +147,13 @@ public class TaskMgrTest {
 	}
 
 	@Test
+	public final void canRunOnly1TaskSimultaOnSameCategort() {
+		buildSimultaneousTask(1, "cat", "cat", true);
+		assertEquals(1, test2);
+		assertEquals(1, test1);
+	}
+
+	@Test
 	public final void canRunSimultaneusAsyncTaskOnDifferentThreadPoolExecutor() {
 		// 2 differents category for 2 PoolExecutor
 		buildSimultaneousTask(1, "1", "2", true);
@@ -150,20 +161,22 @@ public class TaskMgrTest {
 		assertEquals(-1, test1);
 	}
 
-	private void buildSimultaneousTaskWithError(final int taskNb, final String cat, final String cat2) {
-		taskMgr = new TaskMgr<AbstractTask<Object>, Object>(taskNb, new TaskMgrListener() {
+	private void buildSimultaneousTaskWithError(final int taskNb,
+			final String cat, final String cat2) {
+		taskMgr = new TaskMgr<AbstractTask<Object>, Object>(taskNb,
+				new TaskMgrListener() {
 
-			@Override
-			public void onAllTreatmentDone() {
-				allTreatmentDone = true;
-			}
+					@Override
+					public void onAllTreatmentDone() {
+						allTreatmentDone = true;
+					}
 
-			@Override
-			public void onFailed(final Throwable throwable) {
-				allTreatmentDone = false;
-			}
+					@Override
+					public void onFailed(final Throwable throwable) {
+						allTreatmentDone = false;
+					}
 
-		}, null) {
+				}, null) {
 		};
 		AbstractTask<Object> task = new AbstractTaskForTest() {
 

@@ -31,7 +31,7 @@ public class Aria2PluginManager implements PluginDownloaderInterface {
 		String cmd = binParam + " ";
 		final String cmdParam = parameters.get(FrameworkConf.PARAMETER_ARGS);
 		if (cmdParam == null) {
-			cmd += Aria2Conf.CMD;
+			cmd += Aria2Conf.CMD2;
 		} else {
 			cmd += cmdParam;
 		}
