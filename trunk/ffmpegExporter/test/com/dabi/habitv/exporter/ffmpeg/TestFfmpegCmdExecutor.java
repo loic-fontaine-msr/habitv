@@ -1,4 +1,4 @@
-package com.dabi.habitv.exporter.curl;
+package com.dabi.habitv.exporter.ffmpeg;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -6,7 +6,7 @@ import org.junit.Test;
 import com.dabi.habitv.framework.plugin.exception.ExecutorFailedException;
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
 
-public class TestCurlCmdExecutor {
+public class TestFfmpegCmdExecutor {
 
 	private class FakeProgressionListener implements CmdProgressionListener {
 
@@ -23,7 +23,7 @@ public class TestCurlCmdExecutor {
 
 	}
 
-	private class FakeCurlCmdExecutor extends CurlCmdExecutor {
+	private class FakeCurlCmdExecutor extends FFMPEGCmdExecutor {
 
 		int ret;
 
@@ -41,7 +41,7 @@ public class TestCurlCmdExecutor {
 					+ "  7.5 26.4M    0     0    7 2096k      0  1049k  0:00:25  0:00:01  0:00:24 1066k\n"
 					+ "100 33.9M    12.5     0    1  368k      0   502k  0:01:09 --:--:--  0:01:09  535k";
 			// 1 33.9M 0 0 1 368k 0 502k 0:01:09 --:--:-- 0:01:09 535k
-			return new FakeCurlUploadProcess(ret, inputString);
+			return new FakeFfmpegProcess(ret, inputString);
 		}
 
 	}
@@ -49,7 +49,7 @@ public class TestCurlCmdExecutor {
 	@Test
 	public void displayProgressionAndEndProperly() throws ExecutorFailedException {
 		FakeProgressionListener fakeProgressionListener = new FakeProgressionListener();
-		final CurlCmdExecutor curlCmdExecutor = new FakeCurlCmdExecutor(0, "", fakeProgressionListener);
+		final FFMPEGCmdExecutor curlCmdExecutor = new FakeCurlCmdExecutor(0, "", fakeProgressionListener);
 		curlCmdExecutor.execute();
 		Assert.assertEquals("100", fakeProgressionListener.progression);
 		Assert.assertTrue(curlCmdExecutor.isSuccess(""));
@@ -58,7 +58,7 @@ public class TestCurlCmdExecutor {
 	@Test
 	public void displayProgressionAndEndWithError() {
 		FakeProgressionListener fakeProgressionListener = new FakeProgressionListener();
-		final CurlCmdExecutor curlCmdExecutor = new FakeCurlCmdExecutor(1, "", fakeProgressionListener);
+		final FFMPEGCmdExecutor curlCmdExecutor = new FakeCurlCmdExecutor(1, "", fakeProgressionListener);
 		try {
 			curlCmdExecutor.execute();
 			Assert.fail("must be in error");

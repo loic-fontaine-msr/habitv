@@ -34,7 +34,7 @@ public class BeinSportPluginManager implements PluginProviderInterface {
 	public Set<EpisodeDTO> findEpisode(final CategoryDTO category) {
 		return BeinSportRetreiver.findEpisodeByCategory(classLoader, category,
 				RetrieverUtils
-						.getInputStreamFromUrl((BeinSportConf.CATALOG_URL)));
+						.getInputStreamFromUrl((BeinSportConf.CATALOG_URL2)));
 	}
 
 	@Override

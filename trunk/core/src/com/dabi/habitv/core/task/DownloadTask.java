@@ -25,8 +25,11 @@ public class DownloadTask extends AbstractEpisodeTask {
 
 	private final DownloadedDAO downloadedDAO;
 
-	public DownloadTask(final EpisodeDTO episode, final PluginProviderInterface provider, final DownloaderDTO downloader,
-			final Publisher<RetreiveEvent> publisher, final DownloadedDAO downloadedDAO) {
+	public DownloadTask(final EpisodeDTO episode,
+			final PluginProviderInterface provider,
+			final DownloaderDTO downloader,
+			final Publisher<RetreiveEvent> publisher,
+			final DownloadedDAO downloadedDAO) {
 		super(episode);
 		this.provider = provider;
 		this.downloader = downloader;
@@ -44,41 +47,55 @@ public class DownloadTask extends AbstractEpisodeTask {
 		LOG.error("Download failed for " + getEpisode(), e);
 		if (e instanceof ExecutorFailedException) {
 			final ExecutorFailedException executorFailedException = (ExecutorFailedException) e;
-			LOG.error("download of " + getEpisode().getCategory() + " - " + getEpisode().getName() + "failed");
+			LOG.error("download of " + getEpisode().getCategory() + " - "
+					+ getEpisode().getName() + "failed");
 			LOG.error("cmd was" + executorFailedException.getCmd());
 			LOG.error(executorFailedException.getFullOuput());
 		}
-		publisher.addNews(new RetreiveEvent(getEpisode(), EpisodeStateEnum.DOWNLOAD_FAILED, e, "download"));
+		publisher.addNews(new RetreiveEvent(getEpisode(),
+				EpisodeStateEnum.DOWNLOAD_FAILED, e, "download"));
 	}
 
 	@Override
 	protected void ended() {
 		LOG.info("Download of " + getEpisode() + " done");
 		downloadedDAO.addDownloadedFiles(getEpisode().getName());
-		publisher.addNews(new RetreiveEvent(getEpisode(), EpisodeStateEnum.DOWNLOADED));
+		publisher.addNews(new RetreiveEvent(getEpisode(),
+				EpisodeStateEnum.DOWNLOADED));
 	}
 
 	@Override
 	protected void started() {
 		LOG.info("Download of " + getEpisode() + " is starting");
-		publisher.addNews(new RetreiveEvent(getEpisode(), EpisodeStateEnum.DOWNLOADING));
+		publisher.addNews(new RetreiveEvent(getEpisode(),
+				EpisodeStateEnum.DOWNLOADING));
 	}
 
 	@Override
-	protected Object doCall() throws DownloadFailedException, NoSuchDownloaderException {
-		final String outputFilename = TokenReplacer.replaceAll(downloader.getDownloadOutput(), getEpisode());
-		final String outputTmpFileName = outputFilename + ".tmp";
+	protected Object doCall() throws DownloadFailedException,
+			NoSuchDownloaderException {
+		final String outputFilename = TokenReplacer.replaceAll(
+				downloader.getDownloadOutput(), getEpisode());
+		final String outputTmpFileName;
+		if (!outputFilename.contains(".torrent")) {
+			outputTmpFileName = outputFilename + ".tmp";
+		} else {
+			outputTmpFileName = outputFilename;
+		}
+		//
 		// delete to prevent resuming since most of the download can't resume
 		final File outputFile = new File(outputFilename);
 		if (outputFile.exists()) {
 			outputFile.delete();
 		}
-		provider.download(outputTmpFileName, downloader, new CmdProgressionListener() {
-			@Override
-			public void listen(final String progression) {
-				publisher.addNews(new RetreiveEvent(getEpisode(), EpisodeStateEnum.DOWNLOADING, progression));
-			}
-		}, getEpisode());
+		provider.download(outputTmpFileName, downloader,
+				new CmdProgressionListener() {
+					@Override
+					public void listen(final String progression) {
+						publisher.addNews(new RetreiveEvent(getEpisode(),
+								EpisodeStateEnum.DOWNLOADING, progression));
+					}
+				}, getEpisode());
 		(new File(outputTmpFileName)).renameTo(new File(outputFilename));
 		return null;
 	}
@@ -105,7 +122,8 @@ public class DownloadTask extends AbstractEpisodeTask {
 
 	@Override
 	public String toString() {
-		return "DL" + getEpisode() + " " + provider.getName() + " " + downloader.getDownloadOutput();
+		return "DL" + getEpisode() + " " + provider.getName() + " "
+				+ downloader.getDownloadOutput();
 	}
 
 }

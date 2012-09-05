@@ -17,8 +17,10 @@ import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.protocol.ClientContext;
 import org.apache.http.conn.params.ConnRoutePNames;
+import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
@@ -59,6 +61,7 @@ public class Browser {
 
 	private final Logger m_logger;
 	private String m_reason;
+	private String referer;
 
 	private static String m_proxy = null;
 
@@ -87,8 +90,10 @@ public class Browser {
 			final Pattern _pattern = Pattern.compile("http://([^:]+?):(\\d+)");
 			final Matcher _matcher = _pattern.matcher(m_proxy);
 			_matcher.find();
-			final HttpHost _proxy = new HttpHost(_matcher.group(1), Integer.parseInt(_matcher.group(2)));
-			m_httpClient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, _proxy);
+			final HttpHost _proxy = new HttpHost(_matcher.group(1),
+					Integer.parseInt(_matcher.group(2)));
+			m_httpClient.getParams().setParameter(
+					ConnRoutePNames.DEFAULT_PROXY, _proxy);
 		}
 
 		// m_httpClient.getParams().setParameter(CoreProtocolPNames.USER_AGENT,
@@ -101,18 +106,22 @@ public class Browser {
 
 		final HttpContext localContext = new BasicHttpContext();
 		localContext.setAttribute(ClientContext.COOKIE_STORE, m_cookieStore);
-
 		final HttpGet httpget = new HttpGet(url);
+		httpget.addHeader("Referer", referer);
 		m_logger.log(Level.FINEST, "executing request " + httpget.getURI());
-		final HttpResponse response = m_httpClient.execute(httpget, localContext);
+		final HttpResponse response = m_httpClient.execute(httpget,
+				localContext);
 		final HttpEntity entity = response.getEntity();
 
-		if (response.getStatusLine().getStatusCode() < 200 || response.getStatusLine().getStatusCode() >= 400) {
-			m_logger.log(Level.FINEST, "Error Retrieving webpage " + url + ": error " + response.getStatusLine().getStatusCode());
+		if (response.getStatusLine().getStatusCode() < 200
+				|| response.getStatusLine().getStatusCode() >= 400) {
+			m_logger.log(Level.FINEST, "Error Retrieving webpage " + url
+					+ ": error " + response.getStatusLine().getStatusCode());
 			m_statusCode = response.getStatusLine().getStatusCode();
 			m_reason = response.getStatusLine().getReasonPhrase();
 			EntityUtils.consume(entity);
-			throw new IOException("Got bad response, error code = " + response.getStatusLine().getStatusCode());
+			throw new IOException("Got bad response, error code = "
+					+ response.getStatusLine().getStatusCode());
 		}
 
 		if (entity != null) {
@@ -157,5 +166,14 @@ public class Browser {
 			return m_browser;
 		}
 
+	}
+
+	public void appendCookie(String name, String value) {
+		Cookie cookie = new BasicClientCookie(name, value);
+		m_cookieStore.addCookie(cookie);
+	}
+
+	public void addReferer(String referer) {
+		this.referer = referer; 
 	}
 }

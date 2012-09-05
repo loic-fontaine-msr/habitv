@@ -9,7 +9,8 @@ public class ActionProgress implements Comparable<ActionProgress> {
 	private String info;
 	private final EpisodeDTO episode;
 
-	public ActionProgress(final EpisodeStateEnum state, final String progress, final String info, final EpisodeDTO episode) {
+	public ActionProgress(final EpisodeStateEnum state, final String progress,
+			final String info, final EpisodeDTO episode) {
 		super();
 		this.state = state;
 		this.progress = progress;
@@ -49,7 +50,7 @@ public class ActionProgress implements Comparable<ActionProgress> {
 	public int compareTo(final ActionProgress o) {
 		int ret = state.compareTo(o.state);
 		if (ret == 0) {
-			if (o.info != null) {
+			if (o.info != null && info != null) {
 				ret = o.info.compareTo(info);
 			}
 			if (ret == 0) {

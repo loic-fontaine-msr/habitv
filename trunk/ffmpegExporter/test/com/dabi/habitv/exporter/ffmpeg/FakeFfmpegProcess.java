@@ -1,16 +1,16 @@
-package com.dabi.habitv.exporter.curl;
+package com.dabi.habitv.exporter.ffmpeg;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public class FakeCurlUploadProcess extends Process {
+public class FakeFfmpegProcess extends Process {
 
 	private final int ret;
 
 	private final String inputString;
 
-	public FakeCurlUploadProcess(final int ret, final String inputString) {
+	public FakeFfmpegProcess(final int ret, final String inputString) {
 		this.ret = ret;
 		this.inputString = inputString;
 	}
