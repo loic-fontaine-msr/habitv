@@ -56,6 +56,7 @@ public class PluzzPluginManagerTest {
 		boolean contain = false;
 		for (final EpisodeDTO episode : episodeList) {
 			assertNotNull(episode.getUrl());
+			contain = true;
 		}
 		assertTrue(contain);
 	}

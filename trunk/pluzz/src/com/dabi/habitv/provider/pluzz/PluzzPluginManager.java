@@ -38,7 +38,7 @@ public class PluzzPluginManager implements PluginProviderInterface {
 	public void download(final String downloadOuput, final DownloaderDTO downloaders, final CmdProgressionListener cmdProgressionListener,
 			final EpisodeDTO episode) throws DownloadFailedException, NoSuchDownloaderException {
 		try {
-			new JPluzzDL(episode.getUrl(), downloadOuput, false, null, cmdProgressionListener);
+			new JPluzzDL(episode.getUrl(), downloadOuput, cmdProgressionListener);
 		} catch (final Exception e) {
 			throw new TechnicalException(e);
 		}
