@@ -1,16 +1,12 @@
 package com.dabi.habitv.provider.pluzz.jpluzz;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.zip.InflaterInputStream;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -39,8 +35,6 @@ public class PluzzDLF4M {
 	private float duration;
 
 	private String pv2;
-
-	private int bitrate;
 
 	private String urlFrag;
 
@@ -71,25 +65,12 @@ public class PluzzDLF4M {
 		String manifest = browser.getFileAsString(manifestURLToken);
 		// Parse le manifest
 		parseManifest(manifestURL, manifest);
-		// Calcul les elements
-		String hdnea = manifestURLToken.substring(manifestURLToken
-				.indexOf("hdnea"));
 		String[] pv2T = pv2.split(";");
-		String pv20 = pv2T[0];
 		String hdntl = pv2T[1];
-		String pvtokenData = "st=0000000000~exp=9999999999~acl=%2f%2a~data="
-				+ pv20 + "!" + getPlayerHash();
-		String pvtoken = "pvtoken="
-				+ pvtokenData
-				+ "~hmac="
-				+ hmacEncode(Hex.decodeHex(JPluzzConf.HMAC_KEY.toCharArray()),
-						pvtokenData);
 
 		// Creation de la video
 
 		int premierFragment = 1;
-		boolean telechargementFini = false;
-
 		OutputStream videoFileOutputStream = openNewVideo();
 
 		// Calcul l'estimation du nombre de fragments
@@ -102,7 +83,7 @@ public class PluzzDLF4M {
 		int old = -1;
 		browser.appendCookie("hdntl", hdntl);
 		try {
-			while (true) {//FIXME i<bnmax
+			while (i <= nbFragMax) {
 				browser.addReferer("http://fpdownload.adobe.com/strobe/FlashMediaPlayback_101.swf");
 				final byte[] frag = browser.getFile(urlFrag + i);
 				int start = startOfVideo(i, new String(frag, "US-ASCII"));
@@ -264,7 +245,6 @@ public class PluzzDLF4M {
 			final NodeList _childs = _root.getElementsByTagName("media");
 			final Element _media = (Element) _childs
 					.item(_childs.getLength() - 1);
-			bitrate = Integer.parseInt(_media.getAttribute("bitrate"));
 			final String _urlBootstrap = _media.getAttribute("url");
 			urlFrag = manifestUrl.substring(0,
 					manifestUrl.lastIndexOf("manifest.f4m"))
@@ -279,44 +259,6 @@ public class PluzzDLF4M {
 			throw new TechnicalException("Impossible de parser le manifest");
 		}
 
-	}
-
-	private static byte[] decompressSWF(final byte[] swfData)
-			throws IOException {
-		final ByteArrayOutputStream _result = new ByteArrayOutputStream();
-		final byte[] _buf = new byte[BUFFER_LEN];
-
-		final InputStream _is = new ByteArrayInputStream(swfData);
-
-		_is.read(_buf, 0, 3);
-		final String _magic = new String(_buf, 0, 3, "ISO-8859-1");
-		if (_magic.equals("CWS")) {
-			_result.write("FWS".getBytes("ISO-8859-1"));
-		}
-
-		final byte[] _buf2 = new byte[5];
-		_is.read(_buf2, 0, 5);
-		_result.write(_buf2);
-
-		final ByteArrayOutputStream _ba = new ByteArrayOutputStream();
-		final InflaterInputStream _ins = new InflaterInputStream(_is);
-		int i;
-		while ((i = _ins.read()) != -1) {
-			_ba.write(i);
-		}
-		_result.write(_ba.toByteArray());
-
-		if (_ins != null) {
-			_ins.close();
-		}
-		if (_ba != null) {
-			_ba.close();
-		}
-		if (_is != null) {
-			_is.close();
-		}
-
-		return _result.toByteArray();
 	}
 
 	public static String hexDigest(final byte[] b) {
@@ -335,23 +277,5 @@ public class PluzzDLF4M {
 		_result = Hex.decodeHex(hexString.toCharArray());
 
 		return _result;
-	}
-
-	private String getPlayerHash() throws IOException,
-			NoSuchAlgorithmException, DecoderException {
-
-		final byte[] _b = browser
-				.getFile("http://static.francetv.fr/players/Flash.H264/player.swf");
-
-		final byte[] _b2 = decompressSWF(_b);
-
-		final MessageDigest digest = MessageDigest.getInstance("SHA-256");
-		digest.update(_b2);
-		String result = hexDigest(digest.digest());
-		final byte[] hexString = a2bHex(result);
-		final byte[] _b64 = Base64.encodeBase64(hexString);
-		result = new String(_b64);
-		return result;
-
 	}
 }
