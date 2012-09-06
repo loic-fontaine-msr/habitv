@@ -3,8 +3,6 @@ package com.dabi.habitv.provider.pluzz.jpluzz;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -24,6 +22,7 @@ import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
+import org.apache.log4j.Logger;
 
 /**
  * 
@@ -55,25 +54,25 @@ public class Browser {
 	 * simplify the process of processing the HTTP response and releasing
 	 * associated resources.
 	 */
-	private final HttpClient m_httpClient;
-	private final CookieStore m_cookieStore;
-	private int m_statusCode = 200;
+	private final HttpClient httpClient;
+	private final CookieStore cookieStore;
+	private int statusCode = 200;
 
-	private final Logger m_logger;
-	private String m_reason;
+	private final Logger logger;
+	private String reason;
 	private String referer;
 
-	private static String m_proxy = null;
+	private static String proxy = null;
 
 	public String getReason() {
-		return m_reason;
+		return reason;
 	}
 
 	public int getStatusCode() {
-		return m_statusCode;
+		return statusCode;
 	}
 
-	final static String[] m_userAgents = {
+	static final String[] USER_AGENTS = {
 			"Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_5_5; fr-fr) AppleWebKit/525.18 (KHTML, like Gecko) Version/3.1.2 Safari/525.20.1",
 			"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/535.1 (KHTML, like Gecko) Chrome/14.0.835.186 Safari/535.1",
 			"Mozilla/5.0 (Windows; U; Windows NT 6.0; en-US) AppleWebKit/525.13 (KHTML, like Gecko) Chrome/0.2.149.27 Safari/525.13",
@@ -84,61 +83,57 @@ public class Browser {
 			"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/535.8 (KHTML, like Gecko) Chrome/17.0.940.0 Safari/535.8" };
 
 	private Browser() {
-		m_logger = Logger.getLogger(Browser.class.getName());
-		m_httpClient = new DefaultHttpClient();
-		if (m_proxy != null) {
+		logger = Logger.getLogger(Browser.class.getName());
+		httpClient = new DefaultHttpClient();
+		if (proxy != null) {
 			final Pattern _pattern = Pattern.compile("http://([^:]+?):(\\d+)");
-			final Matcher _matcher = _pattern.matcher(m_proxy);
-			_matcher.find();
-			final HttpHost _proxy = new HttpHost(_matcher.group(1),
-					Integer.parseInt(_matcher.group(2)));
-			m_httpClient.getParams().setParameter(
+			final Matcher matcher = _pattern.matcher(proxy);
+			matcher.find();
+			final HttpHost _proxy = new HttpHost(matcher.group(1),
+					Integer.parseInt(matcher.group(2)));
+			httpClient.getParams().setParameter(
 					ConnRoutePNames.DEFAULT_PROXY, _proxy);
 		}
 
-		// m_httpClient.getParams().setParameter(CoreProtocolPNames.USER_AGENT,
-		// userAgent);
-		m_cookieStore = new BasicCookieStore();
-
+		cookieStore = new BasicCookieStore();
+		//httpClient.getParams().setParameter(CoreProtocolPNames.USER_AGENT, userAgent);
 	}
 
 	public byte[] getFile(final String url) throws IOException {
 
 		final HttpContext localContext = new BasicHttpContext();
-		localContext.setAttribute(ClientContext.COOKIE_STORE, m_cookieStore);
+		localContext.setAttribute(ClientContext.COOKIE_STORE, cookieStore);
 		final HttpGet httpget = new HttpGet(url);
 		httpget.addHeader("Referer", referer);
-		m_logger.log(Level.FINEST, "executing request " + httpget.getURI());
-		final HttpResponse response = m_httpClient.execute(httpget,
+		logger.debug("executing request " + httpget.getURI());
+		final HttpResponse response = httpClient.execute(httpget,
 				localContext);
 		final HttpEntity entity = response.getEntity();
 
 		if (response.getStatusLine().getStatusCode() < 200
 				|| response.getStatusLine().getStatusCode() >= 400) {
-			m_logger.log(Level.FINEST, "Error Retrieving webpage " + url
+			logger.debug("Error Retrieving webpage " + url
 					+ ": error " + response.getStatusLine().getStatusCode());
-			m_statusCode = response.getStatusLine().getStatusCode();
-			m_reason = response.getStatusLine().getReasonPhrase();
+			statusCode = response.getStatusLine().getStatusCode();
+			reason = response.getStatusLine().getReasonPhrase();
 			EntityUtils.consume(entity);
 			throw new IOException("Got bad response, error code = "
 					+ response.getStatusLine().getStatusCode());
 		}
 
 		if (entity != null) {
-			// m_encoding = entity.getContentEncoding().toString();
-			m_logger.log(Level.FINEST, entity.getContentType().getValue());
-			// String _body = EntityUtils.toString(entity,"ISO-8859-1");
-			final InputStream _is = entity.getContent();
-			final ByteArrayOutputStream _baos = new ByteArrayOutputStream();
-			int _i;
-			while ((_i = _is.read()) != -1) {
-				_baos.write(_i);
-				_baos.flush();
+			logger.debug(entity.getContentType().getValue());
+			final InputStream is = entity.getContent();
+			final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			int i;
+			while ((i = is.read()) != -1) {
+				baos.write(i);
+				baos.flush();
 			}
-			_baos.close();
-			_is.close();
+			baos.close();
+			is.close();
 			EntityUtils.consume(entity);
-			return _baos.toByteArray();
+			return baos.toByteArray();
 		}
 		return null;
 	}
@@ -148,29 +143,29 @@ public class Browser {
 	}
 
 	public void close() {
-		m_httpClient.getConnectionManager().shutdown();
+		httpClient.getConnectionManager().shutdown();
 	}
 
 	public static void setProxy(final String proxy) {
-		Browser.m_proxy = proxy;
+		Browser.proxy = proxy;
 	}
 
 	public static class BrowserSingleton {
 
-		private static Browser m_browser = null;
+		private static Browser browser = null;
 
 		public static Browser getBrowser() {
-			if (m_browser == null) {
-				m_browser = new Browser();
+			if (browser == null) {
+				browser = new Browser();
 			}
-			return m_browser;
+			return browser;
 		}
 
 	}
 
 	public void appendCookie(String name, String value) {
 		Cookie cookie = new BasicClientCookie(name, value);
-		m_cookieStore.addCookie(cookie);
+		cookieStore.addCookie(cookie);
 	}
 
 	public void addReferer(String referer) {

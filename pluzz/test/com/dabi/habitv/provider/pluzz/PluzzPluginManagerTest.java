@@ -79,6 +79,6 @@ public class PluzzPluginManagerTest {
 			public void listen(final String progression) {
 				LOG.info(progression);
 			}
-		}, new EpisodeDTO(null, "test", "http://www.pluzz.fr/meteo-a-la-carte.html"));
+		}, new EpisodeDTO(null, "test", "http://feedproxy.google.com/~r/Pluzz-Jeunesse/~3/7t19VQDIwDY/gumball-2012-09-05-10h05.html"));
 	}
 }
