@@ -22,14 +22,15 @@ public final class RSSRetriever {
 
 	}
 
-	public static Set<EpisodeDTO> findEpisodeByCategory(final ClassLoader classLoader, final CategoryDTO category) {
+	public static Set<EpisodeDTO> findEpisodeByCategory(
+			final ClassLoader classLoader, final CategoryDTO category) {
 		final Set<EpisodeDTO> episodeList;
 		URL feedUrl;
 		try {
 			feedUrl = new URL(category.getId());
 
-			SyndFeedInput input = new SyndFeedInput();
-			SyndFeed feed = input.build(new XmlReader(feedUrl));
+			final SyndFeedInput input = new SyndFeedInput();
+			final SyndFeed feed = input.build(new XmlReader(feedUrl));
 			episodeList = convertFeedToEpisodeList(feed, category);
 		} catch (IllegalArgumentException | FeedException | IOException e) {
 			throw new TechnicalException(e);
@@ -37,14 +38,22 @@ public final class RSSRetriever {
 		return episodeList;
 	}
 
-	private static Set<EpisodeDTO> convertFeedToEpisodeList(final SyndFeed feed, final CategoryDTO category) {
+	private static Set<EpisodeDTO> convertFeedToEpisodeList(
+			final SyndFeed feed, final CategoryDTO category) {
 		final Set<EpisodeDTO> episodeList = new HashSet<EpisodeDTO>();
-		List<?> entries = feed.getEntries();
-		for (Object object : entries) {
-			SyndEntry entry = (SyndEntry) object;
-			episodeList.add(new EpisodeDTO(category, entry.getTitle(), ((SyndEnclosure) entry.getEnclosures().get(0)).getUrl()));
+		final List<?> entries = feed.getEntries();
+		for (final Object object : entries) {
+			final SyndEntry entry = (SyndEntry) object;
+			final List<?> enclosures = entry.getEnclosures();
+			String url;
+			if (!enclosures.isEmpty()) {
+				url = ((SyndEnclosure) enclosures.get(0)).getUrl();
+			} else {
+				url = entry.getLink();
+			}
+
+			episodeList.add(new EpisodeDTO(category, entry.getTitle(), url));
 		}
 		return episodeList;
 	}
-
 }

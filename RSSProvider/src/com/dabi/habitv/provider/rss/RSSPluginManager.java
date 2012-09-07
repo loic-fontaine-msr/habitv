@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.api.downloader.PluginDownloaderInterface;
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
 import com.dabi.habitv.framework.plugin.api.dto.DownloaderDTO;
@@ -12,7 +13,6 @@ import com.dabi.habitv.framework.plugin.api.provider.PluginProviderInterface;
 import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.framework.plugin.exception.NoSuchDownloaderException;
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
-import com.dabi.habitv.framework.FrameworkConf;
 
 public class RSSPluginManager implements PluginProviderInterface {
 
@@ -31,7 +31,12 @@ public class RSSPluginManager implements PluginProviderInterface {
 	@Override
 	public void download(final String downloadOuput, final DownloaderDTO downloaders, final CmdProgressionListener listener, final EpisodeDTO episode)
 			throws DownloadFailedException, NoSuchDownloaderException {
-		final String downloaderName = RSSConf.DOWNLOADER;
+		final String downloaderName;
+		if (episode.getUrl().contains("youtube")) {
+			downloaderName = RSSConf.YOUTUBE_DOWNLOADER;
+		} else {
+			downloaderName = RSSConf.DOWNLOADER;
+		}
 		final PluginDownloaderInterface pluginDownloader = downloaders.getDownloader(downloaderName);
 
 		final Map<String, String> parameters = new HashMap<>(2);

@@ -22,10 +22,10 @@
 		<module>../tf1</module>
 		<module>../tvSubtitles</module>
 		<module>../cmdDownloader</module>
-		<!-- <module>../pluzz</module> -->
+		<module>../pluzz</module>
 		<module>../aria2Downloader</module>
 		<module>../curlDownloader</module>
-		<!-- <module>../youtubeDownloader</module>-->
+		<module>../youtubeDownloader</module>
 		<module>../cmdExporter</module>
 		<module>../ffmpegExporter</module>
 		<module>../curlExporter</module>

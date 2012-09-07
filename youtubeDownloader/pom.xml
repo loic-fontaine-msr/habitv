@@ -17,6 +17,16 @@
 			<artifactId>framework</artifactId>
 			<version>LATEST</version>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.1.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpcore</artifactId>
+			<version>4.1.4</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
@@ -24,7 +34,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 				<configuration>
-				<finalName>${project.name}</finalName>
+					<finalName>${project.name}</finalName>
 					<outputDirectory>../builder/pub/downloader</outputDirectory>
 					<archive>
 						<manifest>
@@ -32,7 +42,7 @@
 							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
 						</manifest>
 						<addMavenDescriptor>false</addMavenDescriptor>
-					</archive>						
+					</archive>
 				</configuration>
 			</plugin>
 		</plugins>
