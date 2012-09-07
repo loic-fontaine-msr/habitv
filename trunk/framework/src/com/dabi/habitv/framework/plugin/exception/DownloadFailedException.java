@@ -1,12 +1,18 @@
 package com.dabi.habitv.framework.plugin.exception;
 
-//TODO ne pas hériter, prendre une exception en parametre
-public class DownloadFailedException extends ExecutorFailedException {
+/**
+ * Telechargement echoue
+ */
+public class DownloadFailedException extends Exception {
 
-	private static final long serialVersionUID = 7423803197905025435L;
+	private static final long serialVersionUID = -7917171517194292179L;
 
-	public DownloadFailedException(final ExecutorFailedException executorFailedException) {
-		super(executorFailedException.getCmd(), executorFailedException.getFullOuput(), null);
+	public DownloadFailedException(final Exception exception) {
+		super(exception);
+	}
+
+	public DownloadFailedException(final String message) {
+		super(message);
 	}
 
 }

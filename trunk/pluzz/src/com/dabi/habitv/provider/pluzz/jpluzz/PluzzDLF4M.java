@@ -172,7 +172,7 @@ public class PluzzDLF4M {
 	private OutputStream openNewVideo() {
 		FileOutputStream videoFileOutputStream = null;
 		try {
-
+//FIXME create downloads dir
 			videoFileOutputStream = new FileOutputStream(downloadOuput);
 			videoFileOutputStream
 					.write(a2bHex("464c56010500000009000000001200010c00000000000000"));
@@ -187,7 +187,7 @@ public class PluzzDLF4M {
 				} catch (final IOException e1) {
 				}
 			}
-			throw new TechnicalException("Erreur d'�criture ");
+			throw new TechnicalException("Erreur d'ecriture ");
 		}
 		return videoFileOutputStream;
 	}
