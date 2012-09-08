@@ -51,14 +51,17 @@ public class YoutubeDownloader {
 	private static final Pattern commaPattern = Pattern.compile(",");
 	private static final Pattern equalPattern = Pattern.compile("=");
 
-	public static int findBestFormat(final String downloadInput) {
+	public static Integer findBestFormat(final String downloadInput) {
 		final Pattern pattern = Pattern.compile("itag=(\\d+)\\,");
 		final Matcher matcher = pattern.matcher(RetrieverUtils.getUrlContent(downloadInput));
 		final List<Integer> formatList = new LinkedList<>();
 		while (matcher.find()) {
 			formatList.add(Integer.valueOf(matcher.group(matcher.groupCount())));
 		}
-		return Collections.max(formatList);
+		if (!formatList.isEmpty()) {
+			return Collections.max(formatList);
+		}
+		return null;
 	}
 
 	public static String getYoutubeId(final String downloadInput) {
@@ -72,7 +75,7 @@ public class YoutubeDownloader {
 		return ret;
 	}
 
-	public static void download(final String videoId, final int format, final String outputFile, final CmdProgressionListener listener) {
+	public static void download(final String url, final String videoId, final int format, final String outputFile, final CmdProgressionListener listener) {
 		log.fine("Retrieving " + videoId);
 		final List<NameValuePair> qparams = new ArrayList<NameValuePair>();
 		qparams.add(new BasicNameValuePair("video_id", videoId));
@@ -134,13 +137,93 @@ public class YoutubeDownloader {
 					}
 				}
 
-				if (downloadUrl != null) {
-					downloadWithHttpClient(YoutubeConf.USER_AGENT, downloadUrl, new File(outputFile), listener);
-				} else {
-					throw new TechnicalException("no link");
+				if (downloadUrl == null) {
+					downloadUrl = error150Url(url);
 				}
+				downloadWithHttpClient(YoutubeConf.USER_AGENT, downloadUrl, new File(outputFile), listener);
 			}
 		}
+	}
+
+	public static String unescapeYoutubeUrl(final String s) {
+		char ch;
+		final StringBuilder sb = new StringBuilder();
+		int j;
+		int i;
+		for (i = 0; i < s.length(); i++) {
+			ch = s.charAt(i);
+			switch (ch) {
+			case '\\':
+				ch = s.charAt(++i);
+				StringBuilder sb2 = null;
+				switch (ch) {
+				/* unicode */
+				case 'u':
+					sb2 = new StringBuilder();
+					i++;
+					j = i + 4;
+					for (; i < j; i++) {
+						ch = s.charAt(i);
+						if (sb2.length() > 0 || ch != '0') {
+							sb2.append(ch);
+						}
+					}
+					i--;
+					sb.append((char) Long.parseLong(sb2.toString(), 16));
+					continue;
+					/* Hex */
+				case 'x':
+					sb2 = new StringBuilder();
+					i++;
+					j = i + 2;
+					for (; i < j; i++) {
+						ch = s.charAt(i);
+						sb2.append(ch);
+					}
+					i--;
+					sb.append((char) Long.parseLong(sb2.toString(), 16));
+					continue;
+				default:
+					sb.append(ch);
+					continue;
+				}
+
+			}
+			sb.append(ch);
+		}
+
+		return sb.toString();
+	}
+
+	public static String error150Url(String url) {
+		String pageCode = RetrieverUtils.getUrlContent(url);
+		Matcher fmtMatcher = Pattern.compile("\"url_encoded_fmt_stream_map\": \"(.+)\"", Pattern.CASE_INSENSITIVE).matcher(pageCode);
+		if (fmtMatcher.find()) {
+			String strFmtMap = fmtMatcher.group(1);
+			String decodedUrls;
+			try {
+				decodedUrls = URLDecoder.decode(strFmtMap, YoutubeConf.ENCODING);
+			} catch (UnsupportedEncodingException e) {
+				throw new TechnicalException(e);
+			}
+			if (decodedUrls != null) {
+				String[] vUrls = Pattern.compile(",").split(decodedUrls);
+				for (String elem : vUrls) {
+					elem = unescapeYoutubeUrl(elem);
+
+					Matcher urlMatcher = Pattern.compile("url=(http://.+&itag=(\\d+).*)&type=.*", Pattern.CASE_INSENSITIVE).matcher(elem);
+					String downloadUrl = null;
+					if (urlMatcher.find()) {
+						downloadUrl = urlMatcher.group(1);
+						return downloadUrl;
+						// String fmt = urlMatcher.group(2);
+						// format = getVideoFormat(Integer.parseInt(fmt));
+					}
+				}
+			}
+			return decodedUrls;
+		}
+		throw new TechnicalException("no url");
 	}
 
 	private static void downloadWithHttpClient(final String userAgent, final String downloadUrl, final File outputfile, final CmdProgressionListener listener) {
@@ -174,7 +257,7 @@ public class YoutubeDownloader {
 				outputfile.delete();
 			}
 			FileOutputStream outstream = null;
-			int byteProgress=0;
+			int byteProgress = 0;
 			try {
 				outstream = new FileOutputStream(outputfile);
 				final byte[] buffer = new byte[2048];
@@ -183,8 +266,8 @@ public class YoutubeDownloader {
 				String progress;
 				while ((count = instream2.read(buffer)) != -1) {
 					outstream.write(buffer, 0, count);
-					byteProgress+=count;
-					progress =  String.valueOf(Math.round(Math.min(100,Double.valueOf(byteProgress)/Double.valueOf(length)*100)));
+					byteProgress += count;
+					progress = String.valueOf(Math.round(Math.min(100, Double.valueOf(byteProgress) / Double.valueOf(length) * 100)));
 					if (listener != null && progress != null && (System.currentTimeMillis() - lastTime) > FrameworkConf.TIME_BETWEEN_LOG) {
 						lastTime = System.currentTimeMillis();
 						listener.listen(progress);

@@ -23,7 +23,7 @@ public class YoutubePluginManager implements PluginDownloaderInterface {
 			final CmdProgressionListener listener) throws DownloadFailedException {
 		final String videoId = YoutubeDownloader.getYoutubeId(downloadInput);
 		final int format = YoutubeDownloader.findBestFormat(downloadInput);
-		YoutubeDownloader.download(videoId, format, downloadDestination,listener);
+		YoutubeDownloader.download(downloadInput, videoId, format, downloadDestination, listener);
 	}
 
 }
