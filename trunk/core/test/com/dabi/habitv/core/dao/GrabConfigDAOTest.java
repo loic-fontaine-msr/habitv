@@ -8,6 +8,7 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -17,6 +18,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.dabi.habitv.core.dao.GrabConfigDAO.LoadModeEnum;
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
 
 public class GrabConfigDAOTest {
@@ -46,25 +48,50 @@ public class GrabConfigDAOTest {
 
 	@Test
 	public final void testSaveAndLoadGrabConfig() {
-		final Map<String, Set<CategoryDTO>> channel2Categories = new HashMap<>();
-		Set<CategoryDTO> categories = new HashSet<>();
-		CategoryDTO category = new CategoryDTO("channel1", "cat1", "cat1I", Arrays.asList(new String[] { "inc1", "inc2" }), Arrays.asList(new String[] {
-				"exc1", "exc2" }), "ext");
-		categories.add(category);
-		category = new CategoryDTO("channel1", "cat2", "cat2I", Arrays.asList(new String[] { "inc1", "inc2" }), Arrays.asList(new String[] { "exc1", "exc2" }),
-				"ext2");
-		category.addSubCategory(new CategoryDTO("sub", "sub", "sub", "sub"));
-		categories.add(category);
-		channel2Categories.put("channel1", categories);
-		categories = new HashSet<>();
-		category = new CategoryDTO("channel2", "cat3", "cat3I", Arrays.asList(new String[] { "inc1", "inc2" }), Arrays.asList(new String[] { "exc1", "exc2" }),
-				"ext");
-		categories.add(category);
-		channel2Categories.put("channel2", categories);
+		final Map<String, Set<CategoryDTO>> channel2Categories = buildChannelMap(true, false);
 		assertFalse(dao.exist());
 		dao.saveGrabConfig(channel2Categories);
 		assertTrue((new File(XML_FILE)).exists());
-		final Map<String, Set<CategoryDTO>> channel2CategoriesTotest = dao.load();
+		final Map<String, Set<CategoryDTO>> channel2CategoriesTotest = dao.load(LoadModeEnum.ALL);
 		assertEquals(channel2Categories, channel2CategoriesTotest);
+	}
+
+	@Test
+	public final void testUpdateGrabConfig() {
+		Map<String, Set<CategoryDTO>> channel2Categories = buildChannelMap(true, false);
+		assertFalse(dao.exist());
+		dao.saveGrabConfig(channel2Categories);
+		assertTrue((new File(XML_FILE)).exists());
+		channel2Categories = buildChannelMap(false, true);
+		dao.updateGrabConfig(channel2Categories);
+		final Map<String, Set<CategoryDTO>> channel2CategoriesTotest = dao.load(LoadModeEnum.ALL);
+		assertEquals(channel2CategoriesTotest.get("channel1").toArray(new CategoryDTO[0])[0].getExclude().toArray(new String[0])[0], "exc1");
+		assertEquals(channel2CategoriesTotest.get("channel1").toArray(new CategoryDTO[0])[0].getInclude().toArray(new String[0])[0], "inc1");
+		assertTrue(channel2CategoriesTotest.get("channel1").toArray(new CategoryDTO[0])[0].getSubCategories().get(0).getName().equals("sub2"));
+	}
+
+	private Map<String, Set<CategoryDTO>> buildChannelMap(boolean inc, boolean sup) {
+		final Map<String, Set<CategoryDTO>> channel2Categories = new HashMap<>();
+		Set<CategoryDTO> categories = new HashSet<>();
+		List<String> includeList = null;
+		List<String> excludeList = null;
+		if (inc) {
+			includeList = Arrays.asList(new String[] { "inc1", "inc2" });
+			excludeList = Arrays.asList(new String[] { "exc1", "exc2" });
+		}
+		CategoryDTO category = new CategoryDTO("channel1", "cat1", "cat1I", includeList, excludeList, "ext");
+		categories.add(category);
+		category = new CategoryDTO("channel1", "cat2", "cat2I", includeList, excludeList, "ext2");
+		category.addSubCategory(new CategoryDTO("sub", "sub", "sub", "sub"));
+		if (sup) {
+			category.addSubCategory(new CategoryDTO("sub2", "sub2", "sub2", "sub2"));
+		}
+		categories.add(category);
+		channel2Categories.put("channel1", categories);
+		categories = new HashSet<>();
+		category = new CategoryDTO("channel2", "cat3", "cat3I", includeList, excludeList, "ext");
+		categories.add(category);
+		channel2Categories.put("channel2", categories);
+		return channel2Categories;
 	}
 }
