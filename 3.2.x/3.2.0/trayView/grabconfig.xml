@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:grabConfig xmlns:ns2="http://www.dabi.com/habitv/grabconfig/entities">
+	<channel>
+		<name>rss</name>
+		<category>
+			<id>http://showrss.karmorra.info/rss.php?user_id=85413&amp;hd=0&amp;proper=null
+			</id>
+			<name>All Series</name>
+			<extension>torrent</extension>
+		</category>
+		<category>
+			<id>https://gdata.youtube.com/feeds/api/standardfeeds/most_popular</id>
+			<name>Youtube Most Popular</name>
+			<extension>torrent</extension>
+		</category>		
+	</channel>
+</ns2:grabConfig>
