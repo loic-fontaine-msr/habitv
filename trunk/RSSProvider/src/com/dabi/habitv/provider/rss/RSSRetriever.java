@@ -22,8 +22,7 @@ public final class RSSRetriever {
 
 	}
 
-	public static Set<EpisodeDTO> findEpisodeByCategory(
-			final ClassLoader classLoader, final CategoryDTO category) {
+	public static Set<EpisodeDTO> findEpisodeByCategory(final ClassLoader classLoader, final CategoryDTO category) {
 		final Set<EpisodeDTO> episodeList;
 		URL feedUrl;
 		try {
@@ -38,21 +37,22 @@ public final class RSSRetriever {
 		return episodeList;
 	}
 
-	private static Set<EpisodeDTO> convertFeedToEpisodeList(
-			final SyndFeed feed, final CategoryDTO category) {
+	private static Set<EpisodeDTO> convertFeedToEpisodeList(final SyndFeed feed, final CategoryDTO category) {
 		final Set<EpisodeDTO> episodeList = new HashSet<EpisodeDTO>();
 		final List<?> entries = feed.getEntries();
-		for (final Object object : entries) {
-			final SyndEntry entry = (SyndEntry) object;
-			final List<?> enclosures = entry.getEnclosures();
-			String url;
-			if (!enclosures.isEmpty()) {
-				url = ((SyndEnclosure) enclosures.get(0)).getUrl();
-			} else {
-				url = entry.getLink();
-			}
+		if (!entries.isEmpty()) {
+			for (final Object object : entries) {// FIXME error ici non affichée
+				final SyndEntry entry = (SyndEntry) object;
+				final List<?> enclosures = entry.getEnclosures();
+				String url;
+				if (!enclosures.isEmpty()) {
+					url = ((SyndEnclosure) enclosures.get(0)).getUrl();
+				} else {
+					url = entry.getLink();
+				}
 
-			episodeList.add(new EpisodeDTO(category, entry.getTitle(), url));
+				episodeList.add(new EpisodeDTO(category, entry.getTitle(), url));
+			}
 		}
 		return episodeList;
 	}
