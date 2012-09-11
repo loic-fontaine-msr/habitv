@@ -92,6 +92,16 @@ public final class TrayMenu extends PopupMenu {
 		item.addActionListener(actionListener);
 		section.add(item);
 
+		item = new MenuItem("Update Grab config");
+		actionListener = new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent actionEvent) {
+				updateGrabConfig();
+			}
+		};
+		item.addActionListener(actionListener);
+		section.add(item);
+
 		return section;
 	}
 
@@ -154,5 +164,9 @@ public final class TrayMenu extends PopupMenu {
 
 	public void openGrabConfig() {
 		open(ConfigAccess.GRAB_CONF_FILE);
+	}
+
+	private void updateGrabConfig() {
+		controller.updateGrabConfig();
 	}
 }

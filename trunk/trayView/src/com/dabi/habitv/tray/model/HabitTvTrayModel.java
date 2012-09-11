@@ -102,4 +102,8 @@ public class HabitTvTrayModel extends Observable {
 		return config;
 	}
 
+	public void updateGrabConfig() {
+		grabConfigDAO.updateGrabConfig(grabConfigDAO.load());
+	}
+
 }
