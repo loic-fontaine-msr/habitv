@@ -1,9 +1,13 @@
 package com.dabi.habitv.framework.plugin.api.dto;
 
+import java.io.Serializable;
+
 import com.dabi.habitv.framework.plugin.exception.InvalidEpisodeException;
 import com.dabi.habitv.framework.plugin.utils.CheckUtils;
 
-public class EpisodeDTO implements Comparable<EpisodeDTO> {
+public class EpisodeDTO implements Comparable<EpisodeDTO>, Serializable {
+
+	private static final long serialVersionUID = 1042642346549389101L;
 
 	private final CategoryDTO category;
 

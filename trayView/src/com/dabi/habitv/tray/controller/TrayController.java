@@ -123,4 +123,8 @@ public class TrayController implements CoreSubscriber {
 	public void clear() {
 		getModel().clear();
 	}
+
+	public void updateGrabConfig() {
+		getModel().updateGrabConfig();
+	}
 }

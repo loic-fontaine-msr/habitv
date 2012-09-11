@@ -1,5 +1,6 @@
 package com.dabi.habitv.framework.plugin.api.dto;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -12,7 +13,9 @@ import com.dabi.habitv.framework.plugin.utils.CheckUtils;
  * include and exclude
  * 
  */
-public class CategoryDTO implements Comparable<CategoryDTO> {
+public class CategoryDTO implements Comparable<CategoryDTO>, Serializable {
+
+	private static final long serialVersionUID = -7926371729459853575L;
 
 	private final String channel;
 
