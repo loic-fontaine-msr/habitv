@@ -1,0 +1,16 @@
+_ca_AD
+_da_DK
+_de_DE
+_el_GR
+_es_ES
+_fr_FR
+_he_IL
+_hu_HU
+_it_IT
+_nl_NL
+_no_NO
+_pl_PL
+_pt_BR
+_pt_PT
+_sv_SE
+_tr_TR
