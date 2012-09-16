@@ -5,6 +5,7 @@ import java.util.concurrent.ExecutionException;
 
 import com.dabi.habitv.core.config.HabitTvConf;
 import com.dabi.habitv.core.dao.DownloadedDAO;
+import com.dabi.habitv.core.dao.EpisodeExportState;
 import com.dabi.habitv.core.event.EpisodeStateEnum;
 import com.dabi.habitv.core.event.RetreiveEvent;
 import com.dabi.habitv.core.publisher.Publisher;
@@ -32,6 +33,8 @@ public class RetreiveTask extends AbstractEpisodeTask {
 
 	private final DownloadedDAO downloadDAO;
 
+	private EpisodeExportState episodeExportState;
+
 	public RetreiveTask(final EpisodeDTO episode, final Publisher<RetreiveEvent> publisher, final TaskAdder taskAdder, final ExporterDTO exporter,
 			final PluginProviderInterface provider, final DownloaderDTO downloader, final DownloadedDAO downloadDAO) {
 		super(episode);
@@ -41,6 +44,7 @@ public class RetreiveTask extends AbstractEpisodeTask {
 		this.provider = provider;
 		this.downloadDAO = downloadDAO;
 		this.downloader = downloader;
+		episodeExportState = null;
 	}
 
 	@Override
@@ -52,8 +56,6 @@ public class RetreiveTask extends AbstractEpisodeTask {
 	@Override
 	protected void failed(final Exception e) {
 		LOG.error("Episode failed to retreive " + getEpisode(), e);
-		// retreivePublisher.addNews(new RetreiveEvent(getEpisode(),
-		// EpisodeStateEnum.FAILED, e, "retreive"));
 	}
 
 	@Override
@@ -69,17 +71,24 @@ public class RetreiveTask extends AbstractEpisodeTask {
 
 	@Override
 	protected Object doCall() throws InterruptedException, ExecutionException {
-		check();
-		download();
+		if (!exportOnly()) {
+			check();
+			download();
+		}
 		export(exporter.getExporterList());
 		return null;
 	}
 
+	private boolean exportOnly() {
+		return episodeExportState != null;
+	}
+
 	private void export(final List<ExportDTO> exporterList) throws InterruptedException, ExecutionException {
+		int i = 0;
 		for (final ExportDTO export : exporterList) {
-			if (validCondition(export, getEpisode())) {
+			if (validCondition(export, getEpisode()) && episodeExportResume(i)) {
 				final PluginExporterInterface pluginexporter = exporter.getExporter(export.getName(), HabitTvConf.DEFAULT_EXPORTER);
-				final ExportTask exportTask = new ExportTask(getEpisode(), export, pluginexporter, retreivePublisher);
+				final ExportTask exportTask = new ExportTask(getEpisode(), export, pluginexporter, retreivePublisher, i);
 				taskAdder.addExportTask(exportTask, export.getName());
 				// wait for the current exportTask before running an other
 				exportTask.waitEndOfTreatment();
@@ -88,7 +97,14 @@ public class RetreiveTask extends AbstractEpisodeTask {
 					export(export.getExporter());
 				}
 			}
+			i++;
 		}
+	}
+
+	private boolean episodeExportResume(final int i) {
+		// soit il n'y a pas à reprendre soit il faut reprendre et c'est l'étape
+		// à reprendre
+		return episodeExportState == null || i >= episodeExportState.getState();
 	}
 
 	private boolean validCondition(final ExportDTO export, final EpisodeDTO episode) {
@@ -119,5 +135,9 @@ public class RetreiveTask extends AbstractEpisodeTask {
 	@Override
 	public String toString() {
 		return "Retreiving" + getEpisode().toString();
+	}
+
+	public void setEpisodeExportState(final EpisodeExportState episodeExportState) {
+		this.episodeExportState = episodeExportState;
 	}
 }

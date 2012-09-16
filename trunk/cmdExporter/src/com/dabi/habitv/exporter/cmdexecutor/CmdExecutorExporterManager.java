@@ -7,7 +7,7 @@ import com.dabi.habitv.framework.plugin.utils.CmdExecutor;
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
 
 
-public final class CmdExecutorExporterManager implements PluginExporterInterface {
+public final class CmdExecutorExporterManager implements PluginExporterInterface { // NO_UCD (unused code)
 
 	@Override
 	public String getName() {

@@ -3,6 +3,7 @@ package com.dabi.habitv.core.dao;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Collection;
@@ -10,17 +11,39 @@ import java.util.Collection;
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
 
 public class ExportDAO {
-	public synchronized void  addExportStep(EpisodeExportState episodeExportState) {
+	public synchronized void addExportStep(EpisodeExportState episodeExportState) {
 		EpisodeExportIndexRoot root = loadEpisodeExportIndexRoot();
-		root.addEpisodeExportStates(episodeExportState);
+		if (!root.getEpisodeExportStates().contains(episodeExportState)) {
+			root.addEpisodeExportStates(episodeExportState);
+			saveExportIndex(root);
+		}
+	}
+
+	private void saveExportIndex(EpisodeExportIndexRoot root) {
+		FileOutputStream fichier = null;
+		ObjectOutputStream oos = null;
 		try {
-			FileOutputStream fichier = new FileOutputStream(getExportIndexFileName(), false);
-			ObjectOutputStream oos = new ObjectOutputStream(fichier);
+			fichier = new FileOutputStream(getExportIndexFileName(), false);
+			oos = new ObjectOutputStream(fichier);
 			oos.writeObject(root);
 			oos.flush();
-			oos.close();
 		} catch (java.io.IOException e) {
 			throw new TechnicalException(e);
+		} finally {
+			if (fichier != null) {
+				try {
+					fichier.close();
+				} catch (IOException e) {
+					throw new TechnicalException(e);
+				}
+			}
+			if (oos != null) {
+				try {
+					oos.close();
+				} catch (IOException e) {
+					throw new TechnicalException(e);
+				}
+			}
 		}
 	}
 
@@ -30,13 +53,30 @@ public class ExportDAO {
 		if (!index.exists()) {
 			root = new EpisodeExportIndexRoot();
 		} else {
+			FileInputStream fichier = null;
+			ObjectInputStream ois = null;
 			try {
-				FileInputStream fichier = new FileInputStream(index);
-				ObjectInputStream ois = new ObjectInputStream(fichier);
+				fichier = new FileInputStream(index);
+				ois = new ObjectInputStream(fichier);
 				root = (EpisodeExportIndexRoot) ois.readObject();
 				return root;
 			} catch (java.io.IOException | ClassNotFoundException e) {
 				throw new TechnicalException(e);
+			} finally {
+				if (ois != null) {
+					try {
+						ois.close();
+					} catch (IOException e) {
+						throw new TechnicalException(e);
+					}
+				}
+				if (fichier != null) {
+					try {
+						fichier.close();
+					} catch (IOException e) {
+						throw new TechnicalException(e);
+					}
+				}
 			}
 		}
 		return root;
@@ -52,6 +92,14 @@ public class ExportDAO {
 
 	public void init() {
 		final File index = new File(getExportIndexFileName());
-		index.delete();
+		if (!index.delete()) {
+			throw new TechnicalException("can't delete");
+		}
+	}
+
+	public synchronized void removeExportStep(EpisodeExportState episodeExportState) {
+		EpisodeExportIndexRoot root = loadEpisodeExportIndexRoot();
+		root.removeEpisodeExportStates(episodeExportState);
+		saveExportIndex(root);
 	}
 }

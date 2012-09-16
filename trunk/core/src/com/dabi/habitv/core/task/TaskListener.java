@@ -4,4 +4,6 @@ public interface TaskListener {
 
 	void onTaskEnded();
 
+	void onTaskFailed();
+
 }

@@ -110,8 +110,8 @@ public class SearchTask extends AbstractTask<Object> {
 		}
 	}
 
-	protected DownloadedDAO buildDownloadDAO(final String categoyName) {
-		return new DownloadedDAO(provider.getName(), categoyName, downloader.getIndexDir());
+	protected DownloadedDAO buildDownloadDAO(final String categoryName) {
+		return new DownloadedDAO(provider.getName(), categoryName, downloader.getIndexDir());
 	}
 
 	@Override

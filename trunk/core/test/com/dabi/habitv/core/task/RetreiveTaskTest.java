@@ -165,11 +165,11 @@ public class RetreiveTaskTest {
 			public void addExportTask(final ExportTask exportTask, final String category) {
 				switch (i) {
 				case 0:
-					assertEquals(new ExportTask(episode, export1, pluginExporter, publisher), exportTask);
+					assertEquals(new ExportTask(episode, export1, pluginExporter, publisher, 0), exportTask);
 					assertNull(category);
 					break;
 				case 1:
-					assertEquals(new ExportTask(episode, subExporter, pluginExporter, publisher), exportTask);
+					assertEquals(new ExportTask(episode, subExporter, pluginExporter, publisher, 0), exportTask);
 					assertNull(category);
 					break;
 				default:

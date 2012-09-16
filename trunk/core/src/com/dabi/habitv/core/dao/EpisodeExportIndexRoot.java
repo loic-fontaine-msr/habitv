@@ -3,7 +3,7 @@ package com.dabi.habitv.core.dao;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class EpisodeExportIndexRoot implements Serializable {
+class EpisodeExportIndexRoot implements Serializable {
 
 	private static final long serialVersionUID = 511460727727263392L;
 
@@ -15,6 +15,10 @@ public class EpisodeExportIndexRoot implements Serializable {
 
 	public void addEpisodeExportStates(EpisodeExportState episodeExportState) {
 		this.episodeExportStates.add(episodeExportState);
+	}
+
+	public void removeEpisodeExportStates(EpisodeExportState episodeExportState) {
+		this.episodeExportStates.remove(episodeExportState);
 	}
 
 }

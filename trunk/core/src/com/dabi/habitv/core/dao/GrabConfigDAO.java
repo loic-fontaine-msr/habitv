@@ -119,7 +119,7 @@ public class GrabConfigDAO {
 		return categoryDTOs;
 	}
 
-	public GrabConfig unmarshal() {
+	private GrabConfig unmarshal() {
 		GrabConfig grabConfig = null;
 		try {
 			final JAXBContext jaxbContext = JAXBContext.newInstance(HabitTvConf.GRAB_CONF_PACKAGE_NAME);
@@ -151,7 +151,7 @@ public class GrabConfigDAO {
 		ALL, TO_DOWNLOAD_ONLY;
 	}
 
-	public Map<String, Set<CategoryDTO>> load(LoadModeEnum loadMode) {
+	Map<String, Set<CategoryDTO>> load(LoadModeEnum loadMode) {
 		return buildCategoryDTO(unmarshal(), loadMode);
 	}
 

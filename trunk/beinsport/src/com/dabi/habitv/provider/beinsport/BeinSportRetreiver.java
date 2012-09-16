@@ -9,13 +9,13 @@ import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
 import com.dabi.habitv.framework.plugin.utils.RetrieverUtils;
 
-public class BeinSportRetreiver {
+class BeinSportRetreiver {
 
 	private BeinSportRetreiver() {
 
 	}
 
-	public static Set<EpisodeDTO> findEpisodeByCategory(
+	static Set<EpisodeDTO> findEpisodeByCategory(
 			final ClassLoader classLoader, final CategoryDTO category,
 			final InputStream inputStream) {
 		final Data data = (Data) RetrieverUtils.unmarshalInputStream(

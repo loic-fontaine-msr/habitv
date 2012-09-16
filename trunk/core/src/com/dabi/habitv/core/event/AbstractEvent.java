@@ -4,7 +4,7 @@ public abstract class AbstractEvent {
 
 	private Throwable exception;
 
-	public AbstractEvent(final Throwable exception) {
+	AbstractEvent(final Throwable exception) {
 		super();
 		this.exception = exception;
 	}

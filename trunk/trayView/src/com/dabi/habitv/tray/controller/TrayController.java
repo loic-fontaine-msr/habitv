@@ -127,4 +127,16 @@ public class TrayController implements CoreSubscriber {
 	public void updateGrabConfig() {
 		getModel().updateGrabConfig();
 	}
+
+	public void reDoExport() {
+		getModel().reDoExport();
+	}
+
+	public boolean hasExportToResume() {
+		return getModel().hasExportToResume();
+	}
+
+	public void clearExport() {
+		getModel().clearExport();
+	}
 }

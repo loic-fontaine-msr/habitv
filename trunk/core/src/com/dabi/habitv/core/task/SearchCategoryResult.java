@@ -10,7 +10,7 @@ public class SearchCategoryResult {
 
 	private final Set<CategoryDTO> categoryList;
 
-	public SearchCategoryResult(final String channel, final Set<CategoryDTO> categoryList) {
+	SearchCategoryResult(final String channel, final Set<CategoryDTO> categoryList) {
 		super();
 		this.channel = channel;
 		this.categoryList = categoryList;

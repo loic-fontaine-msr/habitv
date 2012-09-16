@@ -132,7 +132,7 @@ public class ExportTaskTest {
 		;
 		final ExportDTO export = new ExportDTO("conditionReference", "conditionPattern", "name", "output",
 				"#EPISODE_NAME#/#EPISODE_NAME_CUT#/#CHANNEL_NAME#/#TVSHOW_NAME#/#EXTENSION#", null);
-		task = new ExportTask(episode, export, pluginExporter, publisher);
+		task = new ExportTask(episode, export, pluginExporter, publisher, 0);
 		assertTrue(task.equals(task));
 		assertEquals(task.hashCode(), task.hashCode());
 	}
