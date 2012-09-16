@@ -1,31 +1,27 @@
 package com.dabi.habitv.provider.canalplus;
 
-public final class CanalPlusConf {
+interface CanalPlusConf {
 
-	private CanalPlusConf() {
+	String NAME = "canalPlus";
 
-	}
+	String INITPLAYER_URL = "http://service.canal-plus.com/video/rest/initPlayer/cplus";
 
-	public static final String NAME = "canalPlus";
+	String MEA_URL = "http://service.canal-plus.com/video/rest/getMEAs/cplus/";
 
-	public static final String INITPLAYER_URL = "http://service.canal-plus.com/video/rest/initPlayer/cplus";
+	String VIDEO_URL = "http://service.canal-plus.com/video/rest/getVideosLiees/cplus/";
 
-	public static final String MEA_URL = "http://service.canal-plus.com/video/rest/getMEAs/cplus/";
+	String MEA_PACKAGE_NAME = "com.dabi.habitv.provider.canalplus.mea.entities";
 
-	public static final String VIDEO_URL = "http://service.canal-plus.com/video/rest/getVideosLiees/cplus/";
+	String VIDEO_PACKAGE_NAME = "com.dabi.habitv.provider.canalplus.video.entities";
 
-	public static final String MEA_PACKAGE_NAME = "com.dabi.habitv.provider.canalplus.mea.entities";
+	String INITPLAYER_PACKAGE_NAME = "com.dabi.habitv.provider.canalplus.initplayer.entities";
 
-	public static final String VIDEO_PACKAGE_NAME = "com.dabi.habitv.provider.canalplus.video.entities";
+	String RTMDUMP = "rtmpdump";
 
-	public static final String INITPLAYER_PACKAGE_NAME = "com.dabi.habitv.provider.canalplus.initplayer.entities";
+	String RTMPDUMP_PREFIX = "rtmp:";
 
-	public static final String RTMDUMP = "rtmpdump";
+	String CURL = "curl";
 
-	public static final String RTMPDUMP_PREFIX = "rtmp:";
-
-	public static final String CURL = "curl";
-
-	public static final String EXTENSION = "mp4";
+	String EXTENSION = "mp4";
 
 }

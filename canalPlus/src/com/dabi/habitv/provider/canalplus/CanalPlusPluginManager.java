@@ -14,7 +14,7 @@ import com.dabi.habitv.framework.plugin.exception.NoSuchDownloaderException;
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
 import com.dabi.habitv.framework.FrameworkConf;
 
-public class CanalPlusPluginManager implements PluginProviderInterface {
+public class CanalPlusPluginManager implements PluginProviderInterface { // NO_UCD (unused code)
 
 	private ClassLoader classLoader;
 

@@ -12,11 +12,11 @@ import com.dabi.habitv.provider.canalplus.initplayer.entities.THEMATIQUE;
 import com.dabi.habitv.provider.canalplus.mea.entities.MEA;
 import com.dabi.habitv.provider.canalplus.mea.entities.MEAS;
 
-public class CanalPlusCategoriesFinder {
+class CanalPlusCategoriesFinder {
 
 	private final ClassLoader classLoader;
 
-	public CanalPlusCategoriesFinder(final ClassLoader classLoader) {
+	CanalPlusCategoriesFinder(final ClassLoader classLoader) {
 		this.classLoader = classLoader;
 	}
 
