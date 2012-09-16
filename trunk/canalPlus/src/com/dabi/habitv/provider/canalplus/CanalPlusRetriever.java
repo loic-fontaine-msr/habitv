@@ -12,11 +12,11 @@ import com.dabi.habitv.provider.canalplus.mea.entities.MEAS;
 import com.dabi.habitv.provider.canalplus.video.entities.VIDEO;
 import com.dabi.habitv.provider.canalplus.video.entities.VIDEOS;
 
-public class CanalPlusRetriever {
+class CanalPlusRetriever {
 
 	private final ClassLoader classLoader;
 
-	public CanalPlusRetriever(final ClassLoader classLoader) {
+	CanalPlusRetriever(final ClassLoader classLoader) {
 		this.classLoader = classLoader;
 	}
 
@@ -56,7 +56,7 @@ public class CanalPlusRetriever {
 		return buildFromVideo(category, videos, originalcategory);
 	}
 
-	protected static Set<EpisodeDTO> buildFromVideo(final CategoryDTO category, final VIDEOS videos, final CategoryDTO originalCategory) {
+	private static Set<EpisodeDTO> buildFromVideo(final CategoryDTO category, final VIDEOS videos, final CategoryDTO originalCategory) {
 		final Set<EpisodeDTO> episodes = new HashSet<>();
 		for (final VIDEO video : videos.getVIDEO()) {
 			String videoUrl = video.getMEDIA().getVIDEOS().getHD();
