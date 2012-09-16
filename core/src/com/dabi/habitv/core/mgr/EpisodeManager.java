@@ -5,6 +5,9 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import com.dabi.habitv.core.dao.DownloadedDAO;
+import com.dabi.habitv.core.dao.EpisodeExportState;
+import com.dabi.habitv.core.dao.ExportDAO;
 import com.dabi.habitv.core.event.RetreiveEvent;
 import com.dabi.habitv.core.event.SearchEvent;
 import com.dabi.habitv.core.event.SearchStateEnum;
@@ -43,9 +46,11 @@ public final class EpisodeManager extends AbstractManager implements TaskAdder {
 
 	private final Set<Integer> runningRetreiveTasks = new HashSet<>();
 
-	public EpisodeManager(final DownloaderDTO downloader, final ExporterDTO exporter, final Collection<PluginProviderInterface> collection,
+	private final ExportDAO exportDAO = new ExportDAO();
+
+	EpisodeManager(final DownloaderDTO downloader, final ExporterDTO exporter, final Collection<PluginProviderInterface> pluginProviderList,
 			final Map<String, Integer> taskName2PoolSize) {
-		super(collection);
+		super(pluginProviderList);
 
 		// task mgrs
 		retreiveMgr = new TaskMgr<RetreiveTask, Object>(taskName2PoolSize.get(TaskTypeEnum.retreive.toString()), buildRetreiveTaskMgrListener(),
@@ -61,9 +66,8 @@ public final class EpisodeManager extends AbstractManager implements TaskAdder {
 		this.exporter = exporter;
 	}
 
-	public void retreiveEpisode(final Collection<PluginProviderInterface> providerList, final Map<String, Set<CategoryDTO>> channel2Categories) {
-		for (final PluginProviderInterface provider : providerList) {
-			// method must be asynchronous
+	void retreiveEpisode(final Map<String, Set<CategoryDTO>> channel2Categories) {
+		for (final PluginProviderInterface provider : getPluginProviderList()) {
 			final Set<CategoryDTO> categories = channel2Categories.get(provider.getName());
 			if (categories != null && !categories.isEmpty()) {
 				searchMgr.addTask(new SearchTask(provider, categories, this, searchPublisher, retreivePublisher, downloader, exporter));
@@ -149,6 +153,11 @@ public final class EpisodeManager extends AbstractManager implements TaskAdder {
 				public void onTaskEnded() {
 					runningRetreiveTasks.remove(retreiveTask.getEpisode().hashCode());
 				}
+
+				@Override
+				public void onTaskFailed() {
+					runningRetreiveTasks.remove(retreiveTask.getEpisode().hashCode());
+				}
 			});
 			runningRetreiveTasks.add(retreiveTask.getEpisode().hashCode());
 			retreiveMgr.addTask(retreiveTask);
@@ -158,6 +167,20 @@ public final class EpisodeManager extends AbstractManager implements TaskAdder {
 	@Override
 	public void addExportTask(final ExportTask exportTask, final String category) {
 		exportMgr.addTask(exportTask, category);
+		final EpisodeExportState episodeExportState = new EpisodeExportState(exportTask.getEpisode(), exportTask.getRank());
+		exportDAO.addExportStep(episodeExportState);
+		exportTask.setListener(new TaskListener() {
+
+			@Override
+			public void onTaskEnded() {
+				exportDAO.removeExportStep(episodeExportState);
+			}
+
+			@Override
+			public void onTaskFailed() {
+
+			}
+		});
 	}
 
 	public Publisher<RetreiveEvent> getRetreivePublisher() {
@@ -168,10 +191,41 @@ public final class EpisodeManager extends AbstractManager implements TaskAdder {
 		return searchPublisher;
 	}
 
-	public void forceEnd() {
+	void forceEnd() {
 		exportMgr.shutdownNow();
 		retreiveMgr.shutdownNow();
 		searchMgr.shutdownNow();
+	}
+
+	void reTryExport() {
+		if (!exportDAO.loadExportStep().isEmpty()) {
+			getSearchPublisher().addNews(new SearchEvent(SearchStateEnum.RESUME_EXPORT));
+		}
+		for (EpisodeExportState episodeExportState : exportDAO.loadExportStep()) {
+			String channel = episodeExportState.getEpisode().getCategory().getChannel();
+			DownloadedDAO dlDAO = new DownloadedDAO(channel, episodeExportState.getEpisode().getCategory().getName(), downloader.getIndexDir());
+			RetreiveTask retreiveTask = new RetreiveTask(episodeExportState.getEpisode(), retreivePublisher, this, exporter, getProviderByName(channel),
+					downloader, dlDAO);
+			retreiveTask.setEpisodeExportState(episodeExportState);
+			addRetreiveTask(retreiveTask);
+		}
+	}
+
+	private PluginProviderInterface getProviderByName(String channel) {
+		for (PluginProviderInterface provider : getPluginProviderList()) {
+			if (provider.getName().equals(channel)) {
+				return provider;
+			}
+		}
+		return null;
+	}
+
+	public boolean hasExportToResume() {
+		return !exportDAO.loadExportStep().isEmpty();
+	}
+
+	public void clearExport() {
+		exportDAO.init();
 	}
 
 }

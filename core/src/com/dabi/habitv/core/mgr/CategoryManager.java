@@ -25,7 +25,7 @@ public class CategoryManager extends AbstractManager {
 
 	private final Publisher<SearchCategoryEvent> searchCategoryPublisher;
 
-	public CategoryManager(final Collection<PluginProviderInterface> pluginProviderList, final Map<String, Integer> taskName2PoolSize) {
+	CategoryManager(final Collection<PluginProviderInterface> pluginProviderList, final Map<String, Integer> taskName2PoolSize) {
 		super(pluginProviderList);
 		// task mgrs
 		searchCategoryMgr = new TaskMgr<SearchCategoryTask, SearchCategoryResult>(taskName2PoolSize.get("category"), buildCategoryTaskMgrListener(), null);
@@ -33,7 +33,7 @@ public class CategoryManager extends AbstractManager {
 		searchCategoryPublisher = new Publisher<>();
 	}
 
-	public Map<String, Set<CategoryDTO>> findCategory() {
+	Map<String, Set<CategoryDTO>> findCategory() {
 		final Map<String, Set<CategoryDTO>> channel2Categories = new HashMap<>();
 		final List<SearchCategoryTask> taskList = new ArrayList<>();
 		// search is parallelized, the final result will be build with the
@@ -75,7 +75,7 @@ public class CategoryManager extends AbstractManager {
 		return searchCategoryPublisher;
 	}
 
-	public void forceEnd() {
+	void forceEnd() {
 		searchCategoryMgr.shutdownNow();
 	}
 

@@ -6,9 +6,9 @@ import java.util.regex.Pattern;
 import com.dabi.habitv.framework.plugin.utils.CmdExecutor;
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
 
-public class Aria2CmdExecutor extends CmdExecutor {
+class Aria2CmdExecutor extends CmdExecutor {
 
-	public Aria2CmdExecutor(final String cmd, final CmdProgressionListener listener) {
+	Aria2CmdExecutor(final String cmd, final CmdProgressionListener listener) {
 		super(cmd, listener);
 	}
 

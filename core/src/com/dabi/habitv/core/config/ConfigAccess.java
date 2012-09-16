@@ -4,8 +4,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
@@ -13,8 +11,6 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
 import com.dabi.habitv.config.entities.Config;
-import com.dabi.habitv.config.entities.TaskDefinition;
-import com.dabi.habitv.core.task.TaskTypeEnum;
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
 import com.dabi.habitv.utils.FileUtils;
 
@@ -42,13 +38,5 @@ public final class ConfigAccess {
 		} catch (JAXBException | UnsupportedEncodingException | FileNotFoundException e) {
 			throw new TechnicalException(e);
 		}
-	}
-
-	public static Map<String, Integer> buildTaskType2ThreadPool(final Config config) {
-		final Map<String, Integer> taskType2ThreadPool = new HashMap<>(TaskTypeEnum.values().length);
-		for (final TaskDefinition taskDefinition : config.getTaskDefinition()) {
-			taskType2ThreadPool.put(taskDefinition.getTaskName(), taskDefinition.getSize());
-		}
-		return taskType2ThreadPool;
 	}
 }

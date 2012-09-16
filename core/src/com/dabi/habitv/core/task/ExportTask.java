@@ -19,11 +19,15 @@ public class ExportTask extends AbstractEpisodeTask {
 
 	private final Publisher<RetreiveEvent> publisher;
 
-	public ExportTask(final EpisodeDTO episode, final ExportDTO export, final PluginExporterInterface pluginExporter, final Publisher<RetreiveEvent> publisher) {
+	private final int rank;
+
+	public ExportTask(final EpisodeDTO episode, final ExportDTO export, final PluginExporterInterface pluginExporter, final Publisher<RetreiveEvent> publisher,
+			final int rank) {
 		super(episode);
 		this.export = export;
 		this.pluginExporter = pluginExporter;
 		this.publisher = publisher;
+		this.rank = rank;
 	}
 
 	@Override
@@ -90,4 +94,10 @@ public class ExportTask extends AbstractEpisodeTask {
 	public String toString() {
 		return getEpisode() + " " + export.getName() + " " + pluginExporter.getName();
 	}
+
+	public int getRank() {
+		return rank;
+	}
+	
+	
 }

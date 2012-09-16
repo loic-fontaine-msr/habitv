@@ -90,7 +90,7 @@ public final class CoreManager {
 		return downloaderName2BinPath;
 	}
 
-	private void initEpisodeManager(final Collection<PluginProviderInterface> collection, final Map<String, Integer> taskName2PoolSize) {
+	private void initEpisodeManager(final Collection<PluginProviderInterface> pluginProviderList, final Map<String, Integer> taskName2PoolSize) {
 		// downloaders factory
 		final PluginFactory<PluginDownloaderInterface> pluginDownloaderFactory = new PluginFactory<>(PluginDownloaderInterface.class,
 				config.getDownloaderPluginDir());
@@ -108,11 +108,11 @@ public final class CoreManager {
 		final ExporterDTO exporter = new ExporterDTO(exporterName2exporter, buildExporterListDTO(config.getExporter()));
 
 		// manager
-		episodeManager = new EpisodeManager(downloader, exporter, collection, taskName2PoolSize);
+		episodeManager = new EpisodeManager(downloader, exporter, pluginProviderList, taskName2PoolSize);
 	}
 
 	public void retreiveEpisode(final Map<String, Set<CategoryDTO>> categoriesToGrab) {
-		getEpisodeManager().retreiveEpisode(providerList, categoriesToGrab);
+		getEpisodeManager().retreiveEpisode(categoriesToGrab);
 	}
 
 	public Map<String, Set<CategoryDTO>> findCategory() {
@@ -126,6 +126,18 @@ public final class CoreManager {
 		if (categoryManager != null) {
 			categoryManager.forceEnd();
 		}
+	}
+
+	public void reDoExport() {
+		episodeManager.reTryExport();
+	}
+
+	public boolean hasExportToResume() {
+		return episodeManager.hasExportToResume();
+	}
+
+	public void clearExport() {
+		episodeManager.clearExport();
 	}
 
 }

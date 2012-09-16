@@ -10,7 +10,7 @@ import com.dabi.habitv.core.mgr.CoreManager;
 import com.dabi.habitv.framework.plugin.utils.ProcessingThread;
 import com.dabi.habitv.framework.updater.UpdateUpdater;
 
-public final class ConsoleLauncher {
+public final class ConsoleLauncher { // NO_UCD (unused code)
 
 	private static final Logger LOG = Logger.getLogger(ConsoleLauncher.class);
 

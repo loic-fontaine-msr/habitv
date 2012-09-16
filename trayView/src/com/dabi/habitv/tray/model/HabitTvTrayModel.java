@@ -103,7 +103,19 @@ public class HabitTvTrayModel extends Observable {
 	}
 
 	public void updateGrabConfig() {
-		grabConfigDAO.updateGrabConfig(grabConfigDAO.load());
+		grabConfigDAO.updateGrabConfig(coreManager.findCategory());
+	}
+
+	public void reDoExport() {
+		coreManager.reDoExport();
+	}
+
+	public boolean hasExportToResume() {
+		return coreManager.hasExportToResume();
+	}
+
+	public void clearExport() {
+		coreManager.clearExport();
 	}
 
 }

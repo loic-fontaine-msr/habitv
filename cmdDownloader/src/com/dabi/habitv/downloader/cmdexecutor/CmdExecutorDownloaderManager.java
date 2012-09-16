@@ -9,7 +9,7 @@ import com.dabi.habitv.framework.plugin.utils.CmdExecutor;
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
 import com.dabi.habitv.framework.FrameworkConf;
 
-public final class CmdExecutorDownloaderManager implements PluginDownloaderInterface {
+public final class CmdExecutorDownloaderManager implements PluginDownloaderInterface { // NO_UCD (unused code)
 
 	@Override
 	public String getName() {

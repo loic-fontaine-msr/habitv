@@ -20,8 +20,6 @@ public final class TrayMenu extends PopupMenu {
 
 	private final TrayController controller;
 
-	private MenuItem startItem;
-
 	public TrayMenu(final TrayController controller) {
 		super();
 		this.controller = controller;
@@ -29,7 +27,7 @@ public final class TrayMenu extends PopupMenu {
 	}
 
 	private void init() {
-		startItem = new MenuItem("Check");
+		final MenuItem startItem = new MenuItem("Check");
 		ActionListener actionListener = new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent actionEvent) {
@@ -40,6 +38,9 @@ public final class TrayMenu extends PopupMenu {
 		};
 		startItem.addActionListener(actionListener);
 		this.add(startItem);
+
+		final Menu exportSection = buildExportMenuSection();
+		this.add(exportSection);
 
 		final Menu folderSection = buildFolderMenuSection();
 		this.add(folderSection);
@@ -67,6 +68,33 @@ public final class TrayMenu extends PopupMenu {
 		item.addActionListener(actionListener);
 		this.add(item);
 
+	}
+
+	private Menu buildExportMenuSection() {
+		final Menu section = new Menu("Export");
+
+		final MenuItem redoExport = new MenuItem("Redo export");
+		ActionListener actionListener = new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent actionEvent) {
+				redoExport.setEnabled(false);
+				controller.reDoExport();
+				redoExport.setEnabled(true);
+			}
+		};
+		redoExport.addActionListener(actionListener);
+		section.add(redoExport);
+
+		MenuItem clearExport = new MenuItem("Clear Export");
+		actionListener = new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent actionEvent) {
+				controller.clearExport();
+			}
+		};
+		clearExport.addActionListener(actionListener);
+		section.add(clearExport);
+		return section;
 	}
 
 	private Menu buildConfigMenuSection() {

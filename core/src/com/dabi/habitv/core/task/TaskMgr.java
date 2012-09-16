@@ -60,10 +60,6 @@ public class TaskMgr<T extends AbstractTask<R>, R> {
 		return threadPoolExecutor;
 	}
 
-	interface PoolSizeFinder {
-		int findPoolSizeByCategory(String category);
-	}
-
 	private int findPoolSizeByCategory(final String category) {
 		Integer ret;
 		if (DEFAULT.equals(category) || category2PoolSize == null || !category2PoolSize.containsKey(category)) {
@@ -74,7 +70,7 @@ public class TaskMgr<T extends AbstractTask<R>, R> {
 		return ret;
 	}
 
-	public void shutdown(final int timeoutMs) {
+	void shutdown(final int timeoutMs) {
 		for (final ExecutorService executorService : category2ExecutorService.values()) {
 			try {
 				executorService.awaitTermination(timeoutMs, TimeUnit.MILLISECONDS);

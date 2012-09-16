@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
 
-public abstract class AbstractTask<R> implements Callable<R> {
+abstract class AbstractTask<R> implements Callable<R> {
 
 	protected static final Logger LOG = Logger.getLogger(AbstractTask.class);
 
@@ -19,7 +19,7 @@ public abstract class AbstractTask<R> implements Callable<R> {
 	private Future<R> future;
 
 	@Override
-	public final R call() {
+	public final R call() { // NO_UCD (test only)
 		R result;
 		try {
 			started();
@@ -31,7 +31,7 @@ public abstract class AbstractTask<R> implements Callable<R> {
 			ended();
 		} catch (final Exception e) {
 			if (listener != null) {
-				listener.onTaskEnded();
+				listener.onTaskFailed();
 			}
 			failed(e);
 			throw new TaskFailedException(e);
@@ -49,13 +49,13 @@ public abstract class AbstractTask<R> implements Callable<R> {
 
 	protected abstract R doCall() throws Exception;
 
-	public final void addedTo(final String category, final Future<R> future) {
+	final void addedTo(final String category, final Future<R> future) {
 		this.category = category;
 		this.future = future;
 		added();
 	}
 
-	public void waitEndOfTreatment() {
+	void waitEndOfTreatment() {
 		getResult();
 	}
 

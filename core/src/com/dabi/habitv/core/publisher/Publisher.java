@@ -21,7 +21,7 @@ public class Publisher<E extends AbstractEvent> {
 		notify(event);
 	}
 
-	protected void notify(final E event) {
+	private void notify(final E event) {
 		for (final Subscriber<E> subscriber : subscribers) {
 			subscriber.update(event);
 		}

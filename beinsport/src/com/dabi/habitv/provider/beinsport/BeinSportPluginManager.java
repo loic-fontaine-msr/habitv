@@ -16,7 +16,7 @@ import com.dabi.habitv.framework.plugin.exception.NoSuchDownloaderException;
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
 import com.dabi.habitv.framework.plugin.utils.RetrieverUtils;
 
-public class BeinSportPluginManager implements PluginProviderInterface {
+public class BeinSportPluginManager implements PluginProviderInterface { // NO_UCD (test only)
 
 	private ClassLoader classLoader;
 

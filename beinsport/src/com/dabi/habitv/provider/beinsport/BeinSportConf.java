@@ -1,6 +1,6 @@
 package com.dabi.habitv.provider.beinsport;
 
-public interface BeinSportConf {
+interface BeinSportConf {
 
 	String NAME = "beinsport";
 

@@ -128,15 +128,20 @@ public final class HabiTvTrayView implements CoreSubscriber {
 			trayIcon.displayMessage("Building Index", "Build Index for " + event.getChannel() + " " + event.getCategory(), TrayIcon.MessageType.INFO);
 			break;
 		case CHECKING_EPISODES:
-			// trayIcon.displayMessage("Checking", "Checking for episodes",
-			// TrayIcon.MessageType.INFO);
 			checkInProgress = true;
+			changeAnimation();
+			break;
+		case RESUME_EXPORT:
+			trayIcon.displayMessage("Resuming Export", "Reloading export", TrayIcon.MessageType.INFO);
+			retreiveInProgress = true;
 			changeAnimation();
 			break;
 		case DONE:
 
 			break;
 		case ERROR:
+			checkInProgress = false;
+			changeAnimation();			
 			trayIcon.displayMessage("Error", "En error has occured : " + event.getException().getMessage(), TrayIcon.MessageType.ERROR);
 			break;
 		case IDLE:

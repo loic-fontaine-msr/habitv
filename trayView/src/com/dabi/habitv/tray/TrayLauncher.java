@@ -23,7 +23,6 @@ public final class TrayLauncher {
 			final HabiTvTrayView view = new HabiTvTrayView(controller);
 			model.attach(view);
 			model.attach(controller);
-			controller.updateGrabConfig();
 			controller.startDownloadCheckDemon();
 		} catch (final Exception e) {
 			LOG.error("", e);

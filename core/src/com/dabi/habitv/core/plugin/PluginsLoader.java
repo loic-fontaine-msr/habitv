@@ -16,7 +16,7 @@ import java.util.jar.JarFile;
 import com.dabi.habitv.framework.plugin.api.PluginBase;
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
 
-public class PluginsLoader<P extends PluginBase> {
+class PluginsLoader<P extends PluginBase> {
 
 	private static final String CLASS_EXTENSION = ".class";
 
@@ -48,7 +48,7 @@ public class PluginsLoader<P extends PluginBase> {
 
 	}
 
-	public PluginsLoader(final Class<P> pluginInterface, final File[] files) {
+	PluginsLoader(final Class<P> pluginInterface, final File[] files) {
 		if (files == null || files.length == 0) {
 			throw new IllegalArgumentException("files lists can't be empty");
 		}
@@ -57,7 +57,7 @@ public class PluginsLoader<P extends PluginBase> {
 		this.pluginInterface = pluginInterface;
 	}
 
-	public List<P> loadAllProviderPlugins() {
+	List<P> loadAllProviderPlugins() {
 
 		this.initializeLoader();
 

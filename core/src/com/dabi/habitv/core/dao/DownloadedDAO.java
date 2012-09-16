@@ -96,7 +96,7 @@ public class DownloadedDAO {
 		return indexExist;
 	}
 
-	public void initIndex() {
+	void initIndex() {
 		final String fileIndex = getFileIndex();
 		(new File(fileIndex)).delete();
 		LOG.info("réinitialisation de l'index " + fileIndex);

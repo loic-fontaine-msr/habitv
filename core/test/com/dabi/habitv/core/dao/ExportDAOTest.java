@@ -33,6 +33,13 @@ public class ExportDAOTest {
 	public void tearDown() throws Exception {
 	}
 
+
+//	@Test
+//	public final void testA() {
+//		Collection<EpisodeExportState> exportStep = dao.loadExportStep();
+//		assertTrue(exportStep.isEmpty());
+//	}
+	
 	@Test
 	public final void testSaveAndLoadExportStep() {
 		CategoryDTO category = new CategoryDTO("channel", "name", "id", "ext");
