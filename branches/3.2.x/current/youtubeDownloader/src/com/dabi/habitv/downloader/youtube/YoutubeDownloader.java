@@ -52,16 +52,19 @@ public class YoutubeDownloader {
 	private static final Pattern equalPattern = Pattern.compile("=");
 
 	public static Integer findBestFormat(final String downloadInput) {
-		final Pattern pattern = Pattern.compile("itag=(\\d+)\\,");
+		final Pattern pattern = Pattern.compile("itag=(\\d+)(,|\\\\)");
 		final Matcher matcher = pattern.matcher(RetrieverUtils.getUrlContent(downloadInput));
 		final List<Integer> formatList = new LinkedList<>();
 		while (matcher.find()) {
-			formatList.add(Integer.valueOf(matcher.group(matcher.groupCount())));
+			formatList.add(Integer.valueOf(matcher.group(1)));
 		}
-		if (!formatList.isEmpty()) {
-			return Collections.max(formatList);
+		final Integer ret;
+		if (formatList.isEmpty()) {
+			ret = 43;
+		} else {
+			ret = Collections.max(formatList);
 		}
-		return null;
+		return ret;
 	}
 
 	public static String getYoutubeId(final String downloadInput) {
