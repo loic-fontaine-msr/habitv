@@ -1,5 +1,8 @@
 package com.dabi.habitv.provider.m6w9;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -17,7 +20,7 @@ import com.dabi.habitv.framework.plugin.exception.TechnicalException;
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
 import com.dabi.habitv.framework.plugin.utils.RetrieverUtils;
 
-public final class M6W9PluginManager implements PluginProviderInterface {
+public class M6W9PluginManager implements PluginProviderInterface {
 
 	private ClassLoader classLoader;
 
@@ -84,11 +87,46 @@ public final class M6W9PluginManager implements PluginProviderInterface {
 		pluginDownloader.download(episode.getUrl(), downloadOuput, parameters, listener);
 	}
 
-	private String buildDownloadParam(final EpisodeDTO episode, final String dumpCmd) {
-		final String tokenContent = RetrieverUtils.getUrlContent(M6Conf.TOKEN_URL + episode.getUrl());
-		final String tokenParam = tokenContent.split("\\?")[1];
-		final String tokenParamNoLang = tokenParam.substring(0, tokenParam.indexOf("&lang="));
-		return dumpCmd.replace("#TOKEN#", tokenParamNoLang);
+	private String buildDownloadParam(final EpisodeDTO episode, final String dumpCmd) throws DownloadFailedException {
+		String param1 = episode.getUrl();
+		long param2 = (getServerDate()).getTime() / 1000;
+		String loc_3 = param1.substring(4, param1.length());
+		long loc_4 = param2 + M6W9Conf.DELAY;
+		String loc_5 = (M6W9Conf.LIMELIGHT_APPLICATION_NAME + loc_3) + "?s=" + param2 + "&e=" + loc_4;
+		String loc_6 = MD5hash(M6W9Conf.LIMELIGHT_SECRET_KEY + loc_5);
+		String loc_7 = "s=" + param2 + "&e=" + loc_4 + "&h=" + loc_6;
+		return dumpCmd.replace("#TOKEN#", loc_7);
+	}
+//
+//	private String buildDownloadParam(final EpisodeDTO episode, final String dumpCmd) {
+//		final String tokenContent = RetrieverUtils.getUrlContent(M6Conf.TOKEN_URL + episode.getUrl());
+//		final String tokenParam = tokenContent.split("\\?")[1];
+//		final String tokenParamNoLang = tokenParam.substring(0, tokenParam.indexOf("&lang="));
+//		return dumpCmd.replace("#TOKEN#", tokenParamNoLang);
+//	}
+
+	
+	protected Date getServerDate() {
+		return new Date();
+	}
+
+	private String MD5hash(String toHash) {
+		byte[] hash;
+		try {
+			hash = MessageDigest.getInstance("MD5").digest(toHash.getBytes());
+		} catch (NoSuchAlgorithmException e) {
+			throw new TechnicalException(e);
+		}
+		StringBuilder hashString = new StringBuilder();
+		for (int i = 0; i < hash.length; i++) {
+			String hex = Integer.toHexString(hash[i]);
+			if (hex.length() == 1) {
+				hashString.append('0');
+				hashString.append(hex.charAt(hex.length() - 1));
+			} else
+				hashString.append(hex.substring(hex.length() - 2));
+		}
+		return hashString.toString();
 	}
 
 }

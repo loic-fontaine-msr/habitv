@@ -12,4 +12,7 @@ public final class M6W9Conf {
 	public static final String PACKAGE_NAME = "com.dabi.habitv.provider.m6.entities";
 	public static final String AGENT = "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0)";
 
+	public static final int DELAY = 86400;
+	public static final String LIMELIGHT_APPLICATION_NAME = "/a2883/e1/";
+	public static final String LIMELIGHT_SECRET_KEY = "vw8kuo85j2xMc";
 }
