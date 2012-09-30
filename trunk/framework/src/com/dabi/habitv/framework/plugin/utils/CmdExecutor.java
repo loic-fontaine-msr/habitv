@@ -23,16 +23,18 @@ public class CmdExecutor {
 
 	private String lastOutputLine = null;
 
-	public CmdExecutor(final String cmd, final CmdProgressionListener listener) {
+	private final String cmdProcessor;
+
+	private static final String CMD_TOKEN = "#CMD#";
+
+	public CmdExecutor(final String cmdProcessor, final String cmd, final CmdProgressionListener listener) {
 		super();
+		this.cmdProcessor = cmdProcessor;
 		this.cmd = cmd;
 		this.listener = listener;
 	}
 
 	public void execute() throws ExecutorFailedException {
-		if (LOG.isDebugEnabled()) {
-			LOG.debug("cmd : " + cmd);
-		}
 		final StringBuffer fullOutput = new StringBuffer();
 
 		final Process process = buildProcess(cmd);
@@ -65,7 +67,23 @@ public class CmdExecutor {
 
 	protected Process buildProcess(final String cmd) throws ExecutorFailedException {
 		try {
-			return Runtime.getRuntime().exec(cmd);
+			if (cmdProcessor == null || cmdProcessor.isEmpty()) {
+				if (LOG.isDebugEnabled()) {
+					LOG.debug("cmd : " + cmd);
+				}
+				return Runtime.getRuntime().exec(cmd);
+			} else {
+				String[] cmdArgs = cmdProcessor.split(" ");
+				for (int i = 0; i < cmdArgs.length; i++) {
+					if (cmdArgs[i].contains(CMD_TOKEN)) {
+						cmdArgs[i] = cmdArgs[i].replace(CMD_TOKEN, cmd);
+					}
+				}
+				if (LOG.isDebugEnabled()) {
+					LOG.debug("cmd : " + cmdArgs);
+				}
+				return Runtime.getRuntime().exec(cmdArgs);
+			}
 		} catch (final IOException e) {
 			throw new ExecutorFailedException(cmd, e.getMessage(), e);
 		}

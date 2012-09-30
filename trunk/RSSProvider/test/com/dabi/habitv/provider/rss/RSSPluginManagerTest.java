@@ -17,13 +17,13 @@ import com.dabi.habitv.framework.plugin.exception.NoSuchDownloaderException;
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
 
 public class RSSPluginManagerTest {
-	
+
 	RSSPluginManager manager = new RSSPluginManager();
 
 	@Test
 	public void testFindEpisode() {
 		final CategoryDTO category = new CategoryDTO("RSS", "Java Hub", "http://gdata.youtube.com/feeds/base/users/JavaTutorialHub/uploads", "flv");
-		final Set<EpisodeDTO> episodes = manager.findEpisode(category );
+		final Set<EpisodeDTO> episodes = manager.findEpisode(category);
 		assertTrue(!episodes.isEmpty());
 	}
 
@@ -51,13 +51,13 @@ public class RSSPluginManagerTest {
 			@Override
 			public void download(final String downloadInput, final String downloadDestination, final Map<String, String> parameters,
 					final CmdProgressionListener listener) throws DownloadFailedException {
-				assertTrue(downloadInput.length()>0);
+				assertTrue(downloadInput.length() > 0);
 			}
 		};
 		downloaderName2downloader.put(downloader.getName(), downloader);
 		final Map<String, String> downloaderName2BinPath = new HashMap<>();
 		downloaderName2BinPath.put(downloader.getName(), "bin");
-		final DownloaderDTO downloaders = new DownloaderDTO(downloaderName2downloader, downloaderName2BinPath, null, null);
+		final DownloaderDTO downloaders = new DownloaderDTO(null, downloaderName2downloader, downloaderName2BinPath, null, null);
 		final CategoryDTO category = new CategoryDTO("rss", "rss", "rss", "flv");
 		final EpisodeDTO episode = new EpisodeDTO(category, "test", "http://www.youtube.com/watch?v=gg3ARiiSAfM&feature=plcp");
 		manager.download("downloadOuput", downloaders, new CmdProgressionListener() {

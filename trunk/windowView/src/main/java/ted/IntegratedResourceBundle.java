@@ -31,49 +31,42 @@ import java.util.ResourceBundle;
  */
 public class IntegratedResourceBundle extends ListResourceBundle {
 
-	private Locale	locale;
+	private Locale locale;
 
-  private Object[][] contents;
+	private Object[][] contents;
 
-  public
-  IntegratedResourceBundle(
-		ResourceBundle main)
-  {
-	  locale = main.getLocale();
+	public IntegratedResourceBundle(ResourceBundle main) {
+		locale = main.getLocale();
 
-	  Hashtable messages = new Hashtable();
+		Hashtable<String,Object> messages = new Hashtable<>();
 
-	  addResourceMessages(main, messages);
+		addResourceMessages(main, messages);
 
-	  
-	 contents = new Object[messages.size()][2];
+		contents = new Object[messages.size()][2];
 
-	 int i = 0;
+		int i = 0;
 
-	 for (Enumeration enumeration = messages.keys(); enumeration.hasMoreElements();) {
-	      String key = (String) enumeration.nextElement();
-	      contents[i][0] = key;
-	      contents[i++][1] = messages.get(key);
-	 }
-  }
+		for (Enumeration<String> enumeration = messages.keys(); enumeration.hasMoreElements();) {
+			String key = enumeration.nextElement();
+			contents[i][0] = key;
+			contents[i++][1] = messages.get(key);
+		}
+	}
 
-  public Locale getLocale()
-  {
-      return locale;
-  }
+	public Locale getLocale() {
+		return locale;
+	}
 
-  public Object[][] getContents() {
-	    return contents;
-  }
+	public Object[][] getContents() {
+		return contents;
+	}
 
-  private void
-  addResourceMessages(ResourceBundle bundle, Hashtable messages)
-  {
-    if (bundle != null) {
-      for (Enumeration enumeration = bundle.getKeys(); enumeration.hasMoreElements();) {
-        String key = (String) enumeration.nextElement();
-        messages.put(key, bundle.getObject(key));
-      }
-    }
-  }
+	private void addResourceMessages(ResourceBundle bundle, Hashtable<String, Object> messages) {
+		if (bundle != null) {
+			for (Enumeration<String> enumeration = bundle.getKeys(); enumeration.hasMoreElements();) {
+				String key = enumeration.nextElement();
+				messages.put(key, bundle.getObject(key));
+			}
+		}
+	}
 }

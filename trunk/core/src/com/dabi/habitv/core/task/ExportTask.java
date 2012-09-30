@@ -61,7 +61,7 @@ public class ExportTask extends AbstractEpisodeTask {
 	@Override
 	protected Object doCall() throws ExportFailedException {
 		final String cmd = TokenReplacer.replaceAll(export.getCmd(), getEpisode());
-		pluginExporter.export(cmd, new CmdProgressionListener() {
+		pluginExporter.export(export.getCmdProcessor(), cmd, new CmdProgressionListener() {
 			@Override
 			public void listen(final String progression) {
 				publisher.addNews(new RetreiveEvent(getEpisode(), EpisodeStateEnum.EXPORTING, export.getOutput(), progression));
@@ -98,6 +98,5 @@ public class ExportTask extends AbstractEpisodeTask {
 	public int getRank() {
 		return rank;
 	}
-	
-	
+
 }

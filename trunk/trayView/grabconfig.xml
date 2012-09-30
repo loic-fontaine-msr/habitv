@@ -7398,7 +7398,7 @@
         <category>
             <id>50-mn-inside</id>
             <name>50-mn-inside</name>
-            <toDownload>false</toDownload>
+            <toDownload>true</toDownload>
             <extension>mp4</extension>
         </category>
         <category>
@@ -7446,7 +7446,7 @@
         <category>
             <id>casper</id>
             <name>casper</name>
-            <toDownload>false</toDownload>
+            <toDownload>true</toDownload>
             <extension>mp4</extension>
         </category>
         <category>
@@ -9760,7 +9760,7 @@
             <category>
                 <id>Oggy et les cafards</id>
                 <name>Oggy et les cafards</name>
-                <toDownload>false</toDownload>
+                <toDownload>true</toDownload>
                 <extension>mp4</extension>
             </category>
             <category>
@@ -10927,7 +10927,7 @@
             <category>
                 <id>3538</id>
                 <name>Scènes de ménages</name>
-                <toDownload>false</toDownload>
+                <toDownload>true</toDownload>
                 <extension>mp4</extension>
             </category>
             <category>

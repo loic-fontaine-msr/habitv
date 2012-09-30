@@ -8,6 +8,8 @@ import java.awt.TrayIcon.MessageType;
 
 import javax.swing.ImageIcon;
 
+import ted.view.TedMainDialog;
+
 
 public class TedNativeTrayIcon implements ted.TrayIcon
 {

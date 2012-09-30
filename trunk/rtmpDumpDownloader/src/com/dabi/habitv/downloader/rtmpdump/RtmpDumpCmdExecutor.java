@@ -12,8 +12,8 @@ public class RtmpDumpCmdExecutor extends CmdExecutor {
 
 	private static final double MIN_PERCENTAGE = 99D;
 
-	public RtmpDumpCmdExecutor(final String cmd, final CmdProgressionListener listener) {
-		super(cmd, listener);
+	public RtmpDumpCmdExecutor(final String cmdProcessor, final String cmd, final CmdProgressionListener listener) {
+		super(cmdProcessor, cmd, listener);
 	}
 
 	@Override

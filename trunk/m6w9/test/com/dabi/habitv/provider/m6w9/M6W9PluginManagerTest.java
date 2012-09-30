@@ -95,15 +95,14 @@ public class M6W9PluginManagerTest {
 			public void download(final String downloadInput, final String downloadDestination, final Map<String, String> parameters,
 					final CmdProgressionListener listener) throws DownloadFailedException {
 				System.out.println(parameters.get(FrameworkConf.PARAMETER_ARGS).replace("#FILE_DEST#", "test.flv").replace("#VIDEO_URL#", downloadInput));
-				assertEquals(parameters
-						.get(FrameworkConf.PARAMETER_ARGS),
+				assertEquals(parameters.get(FrameworkConf.PARAMETER_ARGS),
 						"-r \"rtmpe://groupemsix.fcod.llnwd.net/a2883/e1/#VIDEO_URL#?s=1348406&e=1434806&h=688d2d5b2d2050db299abd8bd2f3497c\" -c 1935 -m 10 -o \"#FILE_DEST#\"");
 			}
 		};
 		downloaderName2downloader.put("rtmpdump", downloader);
 		final Map<String, String> downloaderName2BinPath = new HashMap<>();
 		downloaderName2BinPath.put("rtmpdump", "bin");
-		final DownloaderDTO downloaders = new DownloaderDTO(downloaderName2downloader, downloaderName2BinPath, null, null);
+		final DownloaderDTO downloaders = new DownloaderDTO(null, downloaderName2downloader, downloaderName2BinPath, null, null);
 		final CategoryDTO category = new CategoryDTO("m6", "m6", "m6", "mp4");
 		final CategoryDTO subcategory = new CategoryDTO("m6", "m6", "m6", "mp4");
 		category.addSubCategory(subcategory);

@@ -9,7 +9,9 @@ import com.dabi.habitv.framework.plugin.utils.CmdExecutor;
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
 import com.dabi.habitv.framework.FrameworkConf;
 
-public final class CmdExecutorDownloaderManager implements PluginDownloaderInterface { // NO_UCD (unused code)
+public final class CmdExecutorDownloaderManager implements PluginDownloaderInterface { // NO_UCD
+																						// (unused
+																						// code)
 
 	@Override
 	public String getName() {
@@ -32,7 +34,7 @@ public final class CmdExecutorDownloaderManager implements PluginDownloaderInter
 		replaceIfContains(cmd, FrameworkConf.DOWNLOAD_DESTINATION, downloadDestination);
 
 		try {
-			new CmdExecutor(cmd, listener).execute();
+			new CmdExecutor(parameters.get(FrameworkConf.CMD_PROCESSOR), cmd, listener).execute();
 		} catch (ExecutorFailedException e) {
 			throw new DownloadFailedException(e);
 		}

@@ -44,6 +44,8 @@ public class LEquipePluginManager implements PluginProviderInterface {
 
 		final Map<String, String> parameters = new HashMap<>(2);
 		parameters.put(FrameworkConf.PARAMETER_BIN_PATH, downloaders.getBinPath(downloaderName));
+		parameters.put(FrameworkConf.CMD_PROCESSOR,
+				downloaders.getCmdProcessor());
 
 		pluginDownloader.download(LEquipeRetreiver.findDownloadlink(episode.getUrl()), downloadOuput, parameters, cmdProgressionListener);
 	}

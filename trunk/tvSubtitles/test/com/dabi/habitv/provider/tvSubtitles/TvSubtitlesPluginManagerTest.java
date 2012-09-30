@@ -101,7 +101,7 @@ public class TvSubtitlesPluginManagerTest {
 		downloaderName2downloader.put("aria2", downloader);
 		final Map<String, String> downloaderName2BinPath = new HashMap<>();
 		downloaderName2BinPath.put("aria2", "bin");
-		final DownloaderDTO downloaders = new DownloaderDTO(downloaderName2downloader, downloaderName2BinPath, null, null);
+		final DownloaderDTO downloaders = new DownloaderDTO(null, downloaderName2downloader, downloaderName2BinPath, null, null);
 		final EpisodeDTO episode = new EpisodeDTO(null, "Resolutions", "subtitle-222987.html");
 		manager.download("downloadOuput", downloaders, new CmdProgressionListener() {
 

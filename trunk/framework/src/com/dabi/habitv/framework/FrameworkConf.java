@@ -16,4 +16,5 @@ public interface FrameworkConf {
 
 	String UPDATE_URL = "http://dabiboo.free.fr/habitv";
 
+	String CMD_PROCESSOR = "CMD_PROCESSOR";
 }

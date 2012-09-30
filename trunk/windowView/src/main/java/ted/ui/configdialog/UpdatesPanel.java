@@ -13,7 +13,7 @@ import javax.swing.JSeparator;
 
 import ted.Lang;
 import ted.TedConfig;
-import ted.TedMainDialog;
+import ted.view.TedMainDialog;
 
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;

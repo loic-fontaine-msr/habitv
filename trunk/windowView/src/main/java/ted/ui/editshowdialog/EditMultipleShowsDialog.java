@@ -13,10 +13,10 @@ import javax.swing.JPanel;
 
 import ted.BrowserLauncher;
 import ted.Lang;
-import ted.TedMainDialog;
 import ted.TedSerie;
 import ted.TedSystemInfo;
 import ted.interfaces.PanelSwitcher;
+import ted.view.TedMainDialog;
 
 public class EditMultipleShowsDialog extends javax.swing.JDialog implements ActionListener, PanelSwitcher
 

@@ -9,6 +9,8 @@ import org.jdesktop.jdic.init.JdicManager;
 import org.jdesktop.jdic.tray.SystemTray;
 import org.jdesktop.jdic.tray.TrayIcon;
 
+import ted.view.TedMainDialog;
+
 public class TedTrayIcon implements ted.TrayIcon
 {
 	

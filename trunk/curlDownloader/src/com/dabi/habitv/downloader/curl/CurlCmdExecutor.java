@@ -8,8 +8,8 @@ import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
 
 public class CurlCmdExecutor extends CmdExecutor {
 
-	public CurlCmdExecutor(final String cmd, final CmdProgressionListener listener) {
-		super(cmd, listener);
+	public CurlCmdExecutor(final String cmdProcessor, final String cmd, final CmdProgressionListener listener) {
+		super(cmdProcessor, cmd, listener);
 	}
 
 	@Override

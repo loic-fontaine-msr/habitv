@@ -18,9 +18,9 @@ public class FFMPEGManager implements PluginExporterInterface {
 	}
 
 	@Override
-	public void export(final String cmd, final CmdProgressionListener listener) throws ExportFailedException {
+	public void export(final String cmdProcessor, final String cmd, final CmdProgressionListener listener) throws ExportFailedException {
 		try {
-			(new FFMPEGCmdExecutor(cmd, listener)).execute();
+			(new FFMPEGCmdExecutor(cmdProcessor, cmd, listener)).execute();
 		} catch (ExecutorFailedException e) {
 			throw new ExportFailedException(e);
 		}

@@ -43,6 +43,7 @@ public class TF1PluginManager implements PluginProviderInterface {
 
 		final Map<String, String> parameters = new HashMap<>(2);
 		parameters.put(FrameworkConf.PARAMETER_BIN_PATH, downloaders.getBinPath(TF1Conf.CURL));
+		parameters.put(FrameworkConf.CMD_PROCESSOR, downloaders.getCmdProcessor());
 
 		pluginDownloader.download(TF1Retreiver.findFinalUrl(episode), downloadOuput, parameters, cmdProgressionListener);
 	}

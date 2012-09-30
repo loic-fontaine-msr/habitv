@@ -27,7 +27,6 @@ import javax.swing.event.ListSelectionListener;
 import ted.BrowserLauncher;
 import ted.Lang;
 import ted.TedConfig;
-import ted.TedMainDialog;
 import ted.TedSerie;
 import ted.TedSystemInfo;
 import ted.datastructures.SimpleTedSerie;
@@ -35,6 +34,7 @@ import ted.datastructures.StandardStructure;
 import ted.interfaces.EpisodeChooserListener;
 import ted.ui.TableRenderer;
 import ted.ui.editshowdialog.EditShowDialog;
+import ted.view.TedMainDialog;
 
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;

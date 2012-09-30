@@ -1,5 +1,7 @@
 package ted;
 
+import ted.view.TedMainDialog;
+
 import com.apple.eawt.Application;
 import com.apple.eawt.ApplicationAdapter;
 import com.apple.eawt.ApplicationEvent;

@@ -41,8 +41,8 @@ public class TedSerie implements Serializable, Comparable<TedSerie> {
 	final static int STATUS_HIATUS = 3;
 	final static int STATUS_HOLD = 2;
 	final static int STATUS_PAUSE = 1;
-	final static int STATUS_CHECK = 0;
-	final static int STATUS_DISABLED = 4;
+	public final static int STATUS_CHECK = 0;
+	public final static int STATUS_DISABLED = 4;
 	public final static int IS_PARSING = 1;
 	final static int IS_IDLE = 0;
 	final long serialVersionUID = 7210007788942770687L;

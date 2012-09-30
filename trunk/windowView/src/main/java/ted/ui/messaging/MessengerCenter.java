@@ -3,8 +3,8 @@ package ted.ui.messaging;
 import com.growl.Growl;
 
 import ted.TedConfig;
-import ted.TedMainDialog;
 import ted.TedSystemInfo;
+import ted.view.TedMainDialog;
 
 public class MessengerCenter 
 {

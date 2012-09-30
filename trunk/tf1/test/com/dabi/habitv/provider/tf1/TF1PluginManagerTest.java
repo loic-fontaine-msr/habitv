@@ -120,7 +120,7 @@ public class TF1PluginManagerTest {
 		downloaderName2downloader.put("curl", downloader);
 		final Map<String, String> downloaderName2BinPath = new HashMap<>();
 		downloaderName2BinPath.put("curl", "bin");
-		final DownloaderDTO downloaders = new DownloaderDTO(downloaderName2downloader, downloaderName2BinPath, null, null);
+		final DownloaderDTO downloaders = new DownloaderDTO(null, downloaderName2downloader, downloaderName2BinPath, null, null);
 		final EpisodeDTO episode = new EpisodeDTO(new CategoryDTO("casper", "casper", "casper", "casper"), "Casper",
 				"/casper/l-attaque-des-poux-geants-casper-7460059.html");
 		manager.download("downloadOuput", downloaders, new CmdProgressionListener() {

@@ -1,4 +1,4 @@
-package ted;
+package ted.view;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -20,10 +20,29 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.filechooser.FileFilter;
 
+import ted.BrowserLauncher;
+import ted.Lang;
+import ted.TedAboutDialog;
+import ted.TedConfig;
+import ted.TedCounter;
+import ted.TedLog;
+import ted.TedMainMacListener;
+import ted.TedMainMenuBar;
+import ted.TedMainToolBar;
+import ted.TedNativeTrayIcon;
+import ted.TedSerie;
+import ted.TedSystemInfo;
+import ted.TedTablePopupMenu;
+import ted.TedTranslateDialog;
+import ted.TedTrayIcon;
+import ted.TedUpdateWindow;
+import ted.TrayIcon;
+import ted.WindowComponentListener;
 import ted.infrastructure.ITedMain;
 import ted.infrastructure.TedMainCore;
 import ted.ui.TimedOptionPane;
@@ -92,7 +111,6 @@ public class TedMainDialog extends javax.swing.JFrame implements ActionListener,
 	private TrayIcon tedTray;
 
 	private JPanel jStatusPanel;
-	private JPanel jPanel1;
 
 	private boolean osHasTray = false;
 	private boolean stopParsing = false;
@@ -172,8 +190,14 @@ public class TedMainDialog extends javax.swing.JFrame implements ActionListener,
 			tMenuBar = new TedMainMenuBar(this);
 			setJMenuBar(tMenuBar);
 
+			//tab
+			JTabbedPane tabbedPane = new JTabbedPane();
+			this.getContentPane().add(tabbedPane); //FIXME Tab
+			tabbedPane.addTab("title1",new JPanel());
+			tabbedPane.addTab("title2",new JPanel());
+			
 			// fill panel on window
-			jPanel1 = new JPanel();
+			JPanel jPanel1 = new JPanel();
 			this.getContentPane().add(jPanel1);
 			jPanel1.setMaximumSize(new java.awt.Dimension(32767, 20));
 

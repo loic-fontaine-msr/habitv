@@ -2,6 +2,8 @@ package ted;
 
 import javax.swing.JToolBar;
 
+import ted.view.TedMainDialog;
+
 /**
  * TED: Torrent Episode Downloader (2005 - 2007)
  * 

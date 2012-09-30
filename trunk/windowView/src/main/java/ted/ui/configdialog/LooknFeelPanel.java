@@ -17,8 +17,8 @@ import javax.swing.JSeparator;
 import ted.Lang;
 import ted.TedColorPicker;
 import ted.TedConfig;
-import ted.TedMainDialog;
 import ted.TedSystemInfo;
+import ted.view.TedMainDialog;
 
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;

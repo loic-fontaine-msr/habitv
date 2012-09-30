@@ -8,8 +8,8 @@ import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
 
 class Aria2CmdExecutor extends CmdExecutor {
 
-	Aria2CmdExecutor(final String cmd, final CmdProgressionListener listener) {
-		super(cmd, listener);
+	Aria2CmdExecutor(final String cmdProcessor, final String cmd, final CmdProgressionListener listener) {
+		super(cmdProcessor, cmd, listener);
 	}
 
 	@Override

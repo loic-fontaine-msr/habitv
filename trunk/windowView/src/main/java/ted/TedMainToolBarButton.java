@@ -4,6 +4,8 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
+import ted.view.TedMainDialog;
+
 /**
  * TED: Torrent Episode Downloader (2005 - 2007)
  * 

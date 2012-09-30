@@ -6,6 +6,6 @@ import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
 
 public interface PluginExporterInterface extends PluginBase {
 
-	void export(final String cmd, final CmdProgressionListener listener) throws ExportFailedException;
+	void export(final String cmdProcessor, final String cmd, final CmdProgressionListener listener) throws ExportFailedException;
 
 }
