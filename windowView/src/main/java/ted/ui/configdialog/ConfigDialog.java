@@ -11,8 +11,8 @@ import javax.swing.JPanel;
 
 import ted.Lang;
 import ted.TedConfig;
-import ted.TedMainDialog;
 import ted.TedSystemInfo;
+import ted.view.TedMainDialog;
 
 /**
 * This code was edited or generated using CloudGarden's Jigloo

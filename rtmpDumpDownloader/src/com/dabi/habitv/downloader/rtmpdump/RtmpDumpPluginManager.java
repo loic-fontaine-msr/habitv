@@ -21,8 +21,8 @@ public class RtmpDumpPluginManager implements PluginDownloaderInterface {
 	}
 
 	@Override
-	public void download(final String downloadInput, final String downloadDestination, final Map<String, String> parameters, final CmdProgressionListener listener)
-			throws DownloadFailedException {
+	public void download(final String downloadInput, final String downloadDestination, final Map<String, String> parameters,
+			final CmdProgressionListener listener) throws DownloadFailedException {
 
 		String binParam = parameters.get(FrameworkConf.PARAMETER_BIN_PATH);
 		if (binParam == null) {
@@ -38,7 +38,7 @@ public class RtmpDumpPluginManager implements PluginDownloaderInterface {
 		cmd = cmd.replaceFirst(FrameworkConf.DOWNLOAD_INPUT, downloadInput);
 		cmd = cmd.replaceFirst(FrameworkConf.DOWNLOAD_DESTINATION, downloadDestination);
 		try {
-			(new RtmpDumpCmdExecutor(cmd, listener)).execute();
+			(new RtmpDumpCmdExecutor(parameters.get(FrameworkConf.CMD_PROCESSOR), cmd, listener)).execute();
 		} catch (ExecutorFailedException e) {
 			throw new DownloadFailedException(e);
 		}

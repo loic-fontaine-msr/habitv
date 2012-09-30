@@ -18,9 +18,9 @@ public class CurlPluginManager implements PluginExporterInterface {
 	}
 
 	@Override
-	public void export(String cmd, CmdProgressionListener listener) throws ExportFailedException {
+	public void export(String cmdProcessor, String cmd, CmdProgressionListener listener) throws ExportFailedException {
 		try {
-			(new CurlCmdExecutor(cmd, listener)).execute();
+			(new CurlCmdExecutor(cmdProcessor, cmd, listener)).execute();
 		} catch (ExecutorFailedException e) {
 			throw new ExportFailedException(e);
 		}

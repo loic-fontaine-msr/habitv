@@ -14,7 +14,7 @@ import com.dabi.habitv.core.event.SearchStateEnum;
 import com.dabi.habitv.core.publisher.Publisher;
 import com.dabi.habitv.core.task.DownloadTask;
 import com.dabi.habitv.core.task.ExportTask;
-import com.dabi.habitv.core.task.RetreiveTask;
+import com.dabi.habitv.core.task.RetrieveTask;
 import com.dabi.habitv.core.task.SearchTask;
 import com.dabi.habitv.core.task.TaskAdder;
 import com.dabi.habitv.core.task.TaskListener;
@@ -28,7 +28,7 @@ import com.dabi.habitv.framework.plugin.api.provider.PluginProviderInterface;
 
 public final class EpisodeManager extends AbstractManager implements TaskAdder {
 
-	private final TaskMgr<RetreiveTask, Object> retreiveMgr;
+	private final TaskMgr<RetrieveTask, Object> retreiveMgr;
 
 	private final TaskMgr<DownloadTask, Object> downloadMgr;
 
@@ -53,7 +53,7 @@ public final class EpisodeManager extends AbstractManager implements TaskAdder {
 		super(pluginProviderList);
 
 		// task mgrs
-		retreiveMgr = new TaskMgr<RetreiveTask, Object>(taskName2PoolSize.get(TaskTypeEnum.retreive.toString()), buildRetreiveTaskMgrListener(),
+		retreiveMgr = new TaskMgr<RetrieveTask, Object>(taskName2PoolSize.get(TaskTypeEnum.retreive.toString()), buildRetreiveTaskMgrListener(),
 				taskName2PoolSize);
 		downloadMgr = new TaskMgr<DownloadTask, Object>(taskName2PoolSize.get(TaskTypeEnum.download.toString()), buildDownloadTaskMgrListener(),
 				taskName2PoolSize);
@@ -140,12 +140,12 @@ public final class EpisodeManager extends AbstractManager implements TaskAdder {
 		downloadMgr.addTask(downloadTask, channel);
 	}
 
-	private synchronized boolean isRetreiveTaskAdded(final RetreiveTask retreiveTask) {
+	private synchronized boolean isRetreiveTaskAdded(final RetrieveTask retreiveTask) {
 		return runningRetreiveTasks.contains(retreiveTask.getEpisode().hashCode());
 	}
 
 	@Override
-	public void addRetreiveTask(final RetreiveTask retreiveTask) {
+	public void addRetreiveTask(final RetrieveTask retreiveTask) {
 		if (!isRetreiveTaskAdded(retreiveTask)) {
 			retreiveTask.setListener(new TaskListener() {
 
@@ -204,7 +204,7 @@ public final class EpisodeManager extends AbstractManager implements TaskAdder {
 		for (EpisodeExportState episodeExportState : exportDAO.loadExportStep()) {
 			String channel = episodeExportState.getEpisode().getCategory().getChannel();
 			DownloadedDAO dlDAO = new DownloadedDAO(channel, episodeExportState.getEpisode().getCategory().getName(), downloader.getIndexDir());
-			RetreiveTask retreiveTask = new RetreiveTask(episodeExportState.getEpisode(), retreivePublisher, this, exporter, getProviderByName(channel),
+			RetrieveTask retreiveTask = new RetrieveTask(episodeExportState.getEpisode(), retreivePublisher, this, exporter, getProviderByName(channel),
 					downloader, dlDAO);
 			retreiveTask.setEpisodeExportState(episodeExportState);
 			addRetreiveTask(retreiveTask);

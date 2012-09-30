@@ -2,8 +2,8 @@ package ted.ui.messaging;
 
 import javax.swing.JOptionPane;
 
-import ted.TedMainDialog;
 import ted.ui.TimedOptionPane;
+import ted.view.TedMainDialog;
 
 public class PopupMessenger implements MessengerInterface 
 {

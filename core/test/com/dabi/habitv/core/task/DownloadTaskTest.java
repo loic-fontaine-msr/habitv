@@ -107,7 +107,7 @@ public class DownloadTaskTest {
 				cmdProgressionListener.listen("100");
 			}
 		};
-		final DownloaderDTO downloader = new DownloaderDTO(null, null, "#EPISODE_NAME#_#EPISODE_NAME_CUT#_#CHANNEL_NAME#_#TVSHOW_NAME#_#EXTENSION#", "indexDir");
+		final DownloaderDTO downloader = new DownloaderDTO(null, null, null, "#EPISODE_NAME#_#EPISODE_NAME_CUT#_#CHANNEL_NAME#_#TVSHOW_NAME#_#EXTENSION#", "indexDir");
 		final Publisher<RetreiveEvent> publisher = new Publisher<>();
 		final Subscriber<RetreiveEvent> subscriber = new Subscriber<RetreiveEvent>() {
 

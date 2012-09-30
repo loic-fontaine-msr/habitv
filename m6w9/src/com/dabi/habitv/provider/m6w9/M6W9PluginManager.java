@@ -83,6 +83,7 @@ public class M6W9PluginManager implements PluginProviderInterface {
 		final Map<String, String> parameters = new HashMap<>(2);
 		parameters.put(FrameworkConf.PARAMETER_BIN_PATH, downloaders.getBinPath(downloaderName));
 		parameters.put(FrameworkConf.PARAMETER_ARGS, buildDownloadParam(episode, dumpCmd));
+		parameters.put(FrameworkConf.CMD_PROCESSOR, downloaders.getCmdProcessor());
 
 		pluginDownloader.download(episode.getUrl(), downloadOuput, parameters, listener);
 	}
@@ -97,15 +98,18 @@ public class M6W9PluginManager implements PluginProviderInterface {
 		String loc_7 = "s=" + param2 + "&e=" + loc_4 + "&h=" + loc_6;
 		return dumpCmd.replace("#TOKEN#", loc_7);
 	}
-//
-//	private String buildDownloadParam(final EpisodeDTO episode, final String dumpCmd) {
-//		final String tokenContent = RetrieverUtils.getUrlContent(M6Conf.TOKEN_URL + episode.getUrl());
-//		final String tokenParam = tokenContent.split("\\?")[1];
-//		final String tokenParamNoLang = tokenParam.substring(0, tokenParam.indexOf("&lang="));
-//		return dumpCmd.replace("#TOKEN#", tokenParamNoLang);
-//	}
 
-	
+	//
+	// private String buildDownloadParam(final EpisodeDTO episode, final String
+	// dumpCmd) {
+	// final String tokenContent = RetrieverUtils.getUrlContent(M6Conf.TOKEN_URL
+	// + episode.getUrl());
+	// final String tokenParam = tokenContent.split("\\?")[1];
+	// final String tokenParamNoLang = tokenParam.substring(0,
+	// tokenParam.indexOf("&lang="));
+	// return dumpCmd.replace("#TOKEN#", tokenParamNoLang);
+	// }
+
 	protected Date getServerDate() {
 		return new Date();
 	}

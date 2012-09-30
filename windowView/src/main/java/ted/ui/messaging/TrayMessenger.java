@@ -1,7 +1,7 @@
 package ted.ui.messaging;
 
-import ted.TedMainDialog;
 import ted.TrayIcon;
+import ted.view.TedMainDialog;
 
 public class TrayMessenger implements MessengerInterface 
 {

@@ -16,13 +16,13 @@ import javax.swing.JPanel;
 import ted.BrowserLauncher;
 import ted.Lang;
 import ted.TedDailySerie;
-import ted.TedMainDialog;
 import ted.TedSerie;
 import ted.TedSystemInfo;
 import ted.datastructures.DailyDate;
 import ted.datastructures.SeasonEpisode;
 import ted.datastructures.StandardStructure;
 import ted.interfaces.PanelSwitcher;
+import ted.view.TedMainDialog;
 
 
 /**

@@ -8,17 +8,19 @@ public class ExportDTO {
 	private final String conditionPattern;
 	private final String name;
 	private final String output;
+	private final String cmdProcessor;
 	private final String cmd;
 	private final List<ExportDTO> exporter;
 
-	public ExportDTO(final String conditionReference, final String conditionPattern, final String name, final String output, final String cmd,
-			final List<ExportDTO> exporter) {
+	public ExportDTO(final String conditionReference, final String conditionPattern, final String name, final String output, final String cmdProcessor,
+			final String cmd, final List<ExportDTO> exporter) {
 		super();
 		this.conditionReference = conditionReference;
 		this.conditionPattern = conditionPattern;
 		this.name = name;
 		this.output = output;
 		this.cmd = cmd;
+		this.cmdProcessor = cmdProcessor;
 		this.exporter = exporter;
 	}
 
@@ -46,4 +48,7 @@ public class ExportDTO {
 		return exporter;
 	}
 
+	public String getCmdProcessor() {
+		return cmdProcessor;
+	}
 }

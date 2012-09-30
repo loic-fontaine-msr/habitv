@@ -44,7 +44,7 @@ public class Aria2PluginManager implements PluginDownloaderInterface { // NO_UCD
 		cmd = cmd.replaceFirst(Aria2Conf.FILE_NAME, fileName);
 		cmd = cmd.replaceFirst(Aria2Conf.DIR_DEST, dirDest);
 		try {
-			(new Aria2CmdExecutor(cmd, listener)).execute();
+			(new Aria2CmdExecutor(parameters.get(FrameworkConf.CMD_PROCESSOR), cmd, listener)).execute();
 		} catch (final ExecutorFailedException e) {
 			throw new DownloadFailedException(e);
 		}

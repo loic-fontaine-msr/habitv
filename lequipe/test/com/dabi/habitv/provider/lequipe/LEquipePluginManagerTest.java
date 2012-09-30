@@ -126,6 +126,6 @@ public class LEquipePluginManagerTest {
 		downloaderName2downloader.put("curl", downloader);
 		final Map<String, String> downloaderName2BinPath = new HashMap<>();
 		downloaderName2BinPath.put("curl", "bin");
-		return new DownloaderDTO(downloaderName2downloader, downloaderName2BinPath, null, null);
+		return new DownloaderDTO(null, downloaderName2downloader, downloaderName2BinPath, null, null);
 	}
 }

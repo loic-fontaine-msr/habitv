@@ -1,5 +1,7 @@
 package ted;
 
+import ted.view.TedMainDialog;
+
 
 public class TedMain {
 

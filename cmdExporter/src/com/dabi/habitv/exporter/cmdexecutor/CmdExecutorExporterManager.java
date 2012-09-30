@@ -6,8 +6,9 @@ import com.dabi.habitv.framework.plugin.exception.ExportFailedException;
 import com.dabi.habitv.framework.plugin.utils.CmdExecutor;
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
 
-
-public final class CmdExecutorExporterManager implements PluginExporterInterface { // NO_UCD (unused code)
+public final class CmdExecutorExporterManager implements PluginExporterInterface { // NO_UCD
+																					// (unused
+																					// code)
 
 	@Override
 	public String getName() {
@@ -18,11 +19,11 @@ public final class CmdExecutorExporterManager implements PluginExporterInterface
 	public void setClassLoader(final ClassLoader classLoader) {
 		// no need
 	}
-	
+
 	@Override
-	public void export(final String cmd, final CmdProgressionListener listener) throws ExportFailedException {
+	public void export(final String cmdProcessor, final String cmd, final CmdProgressionListener listener) throws ExportFailedException {
 		try {
-			new CmdExecutor(cmd, listener).execute();
+			new CmdExecutor(cmdProcessor, cmd, listener).execute();
 		} catch (ExecutorFailedException e) {
 			throw new ExportFailedException(e);
 		}

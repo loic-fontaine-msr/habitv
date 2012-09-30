@@ -37,7 +37,7 @@ import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
 
 public class RetreiveTaskTest {
 
-	private RetreiveTask task;
+	private RetrieveTask task;
 
 	private boolean retreived;
 
@@ -93,7 +93,7 @@ public class RetreiveTaskTest {
 			}
 		};
 
-		final DownloaderDTO downloader = new DownloaderDTO(null, null,
+		final DownloaderDTO downloader = new DownloaderDTO(null, null, null,
 				"episode1234567890123456789012345678901234567890123456789/episode123456789012345678901234567890123/channel/category/extension", "indexDir");
 		final Publisher<RetreiveEvent> publisher = new Publisher<>();
 		final Subscriber<RetreiveEvent> subscriber = new Subscriber<RetreiveEvent>() {
@@ -139,18 +139,18 @@ public class RetreiveTaskTest {
 			}
 
 			@Override
-			public void export(final String cmd, final CmdProgressionListener listener) throws ExportFailedException {
+			public void export(final String cmdProcessor, final String cmd, final CmdProgressionListener listener) throws ExportFailedException {
 
 			}
 		};
 		exporterName2exporter.put("exporter", pluginExporter);
 		final List<ExportDTO> exporterList = new ArrayList<>();
 		final List<ExportDTO> exporterSubList = new ArrayList<>();
-		final ExportDTO subExporter = new ExportDTO("#EPISODE_NAME#", "episode", "exporter", "subexport1Out", "subcmd 1", null);
+		final ExportDTO subExporter = new ExportDTO("#EPISODE_NAME#", "episode", "exporter", "subexport1Out", null, "subcmd 1", null);
 		exporterSubList.add(subExporter);
-		final ExportDTO export1 = new ExportDTO("#EPISODE_NAME#", "episode", "export1", "export1Out", "cmd 1", exporterSubList);
+		final ExportDTO export1 = new ExportDTO("#EPISODE_NAME#", "episode", "export1", "export1Out", null, "cmd 1", exporterSubList);
 		exporterList.add(export1);
-		final ExportDTO export2 = new ExportDTO("#EPISODE_NAME#", "episode2", "export2", "export2Out", "cmd 2", null);
+		final ExportDTO export2 = new ExportDTO("#EPISODE_NAME#", "episode2", "export2", "export2Out", null, "cmd 2", null);
 		exporterList.add(export2);
 		final ExporterDTO exporter = new ExporterDTO(exporterName2exporter, exporterList);
 		final TaskAdder taskAdder = new TaskAdder() {
@@ -158,7 +158,7 @@ public class RetreiveTaskTest {
 			private int i = 0;
 
 			@Override
-			public void addRetreiveTask(final RetreiveTask retreiveTask) {
+			public void addRetreiveTask(final RetrieveTask retreiveTask) {
 			}
 
 			@Override
@@ -185,7 +185,7 @@ public class RetreiveTaskTest {
 			}
 
 		};
-		task = new RetreiveTask(episode, publisher, taskAdder, exporter, provider, downloader, downloadedDAO);
+		task = new RetrieveTask(episode, publisher, taskAdder, exporter, provider, downloader, downloadedDAO);
 	}
 
 	@Test

@@ -26,8 +26,7 @@ public class BeinSportPluginManagerTest {
 
 	private final BeinSportPluginManager manager = new BeinSportPluginManager();
 
-	private static final Logger LOG = Logger
-			.getLogger(BeinSportPluginManagerTest.class);
+	private static final Logger LOG = Logger.getLogger(BeinSportPluginManagerTest.class);
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -52,8 +51,7 @@ public class BeinSportPluginManagerTest {
 	}
 
 	private void checkFindEpisode(final String episodeName, final String url) {
-		final Set<EpisodeDTO> episodeList = manager
-				.findEpisode(new CategoryDTO(null, null, null, null));
+		final Set<EpisodeDTO> episodeList = manager.findEpisode(new CategoryDTO(null, null, null, null));
 		boolean contain = false;
 		for (final EpisodeDTO episode : episodeList) {
 			if (episode.getName().equals(episodeName)) {
@@ -66,8 +64,7 @@ public class BeinSportPluginManagerTest {
 
 	@Test
 	public final void testFindEpisode() {
-		checkFindEpisode(
-				"DTM, Nurburgring - Spengler remporte la 6e course de la saison",
+		checkFindEpisode("DTM, Nurburgring - Spengler remporte la 6e course de la saison",
 				"http://vod.beinsport.aka.oss1.performgroup.com/20120820/16r4s6i04and919yjn80zcv2od.mp4");
 	}
 
@@ -78,21 +75,15 @@ public class BeinSportPluginManagerTest {
 	}
 
 	@Test
-	public void testDownload() throws DownloadFailedException,
-			NoSuchDownloaderException {
+	public void testDownload() throws DownloadFailedException, NoSuchDownloaderException {
 		final DownloaderDTO downloaders = buildDownloaders();
-		manager.download(
-				"./test.flv",
-				downloaders,
-				new CmdProgressionListener() {
+		manager.download("./test.flv", downloaders, new CmdProgressionListener() {
 
-					@Override
-					public void listen(final String progression) {
-						LOG.info(progression);
-					}
-				},
-				new EpisodeDTO(null, "test",
-						"http://vod.beinsport.aka.oss1.performgroup.com/20120820/16r4s6i04and919yjn80zcv2od.mp4"));
+			@Override
+			public void listen(final String progression) {
+				LOG.info(progression);
+			}
+		}, new EpisodeDTO(null, "test", "http://vod.beinsport.aka.oss1.performgroup.com/20120820/16r4s6i04and919yjn80zcv2od.mp4"));
 	}
 
 	private DownloaderDTO buildDownloaders() {
@@ -110,18 +101,14 @@ public class BeinSportPluginManagerTest {
 			}
 
 			@Override
-			public void download(final String downloadInput,
-					final String downloadDestination,
-					final Map<String, String> parameters,
-					final CmdProgressionListener listener)
-					throws DownloadFailedException {
+			public void download(final String downloadInput, final String downloadDestination, final Map<String, String> parameters,
+					final CmdProgressionListener listener) throws DownloadFailedException {
 				assertTrue(downloadInput.contains("performgroup"));
 			}
 		};
 		downloaderName2downloader.put("curl", downloader);
 		final Map<String, String> downloaderName2BinPath = new HashMap<>();
 		downloaderName2BinPath.put("curl", "bin");
-		return new DownloaderDTO(downloaderName2downloader,
-				downloaderName2BinPath, null, null);
+		return new DownloaderDTO(null, downloaderName2downloader, downloaderName2BinPath, null, null);
 	}
 }

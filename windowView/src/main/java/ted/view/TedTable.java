@@ -1,4 +1,4 @@
-package ted;
+package ted.view;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -16,6 +16,11 @@ import javax.swing.JViewport;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 
+import ted.Lang;
+import ted.TedConfig;
+import ted.TedSerie;
+import ted.TedTableModel;
+import ted.TedTablePopupMenu;
 import ted.renderer.TedTableRowRenderer;
 import ted.ui.editshowdialog.EditShowDialog;
 

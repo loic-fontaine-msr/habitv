@@ -19,7 +19,7 @@ import com.dabi.habitv.framework.plugin.api.provider.PluginProviderInterface;
 import com.dabi.habitv.framework.plugin.exception.InvalidEpisodeException;
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
 
-public class RetreiveTask extends AbstractEpisodeTask {
+public class RetrieveTask extends AbstractEpisodeTask {
 
 	private final Publisher<RetreiveEvent> retreivePublisher;
 
@@ -35,7 +35,7 @@ public class RetreiveTask extends AbstractEpisodeTask {
 
 	private EpisodeExportState episodeExportState;
 
-	public RetreiveTask(final EpisodeDTO episode, final Publisher<RetreiveEvent> publisher, final TaskAdder taskAdder, final ExporterDTO exporter,
+	public RetrieveTask(final EpisodeDTO episode, final Publisher<RetreiveEvent> publisher, final TaskAdder taskAdder, final ExporterDTO exporter,
 			final PluginProviderInterface provider, final DownloaderDTO downloader, final DownloadedDAO downloadDAO) {
 		super(episode);
 		retreivePublisher = publisher;

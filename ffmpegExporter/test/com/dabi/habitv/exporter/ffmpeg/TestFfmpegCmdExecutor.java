@@ -28,7 +28,7 @@ public class TestFfmpegCmdExecutor {
 		int ret;
 
 		public FakeCurlCmdExecutor(int ret, String cmd, CmdProgressionListener listener) {
-			super(cmd, listener);
+			super(null, cmd, listener);
 			this.ret = ret;
 		}
 

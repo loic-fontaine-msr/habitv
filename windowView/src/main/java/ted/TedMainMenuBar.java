@@ -6,6 +6,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JSeparator;
 
+import ted.view.TedMainDialog;
+
 
 /**
 * This code was edited or generated using CloudGarden's Jigloo

@@ -61,7 +61,7 @@ public class ExportTaskTest {
 			}
 
 			@Override
-			public void export(final String cmd, final CmdProgressionListener cmdProgressionListener) throws ExportFailedException {
+			public void export(final String cmdProcessor, final String cmd, final CmdProgressionListener cmdProgressionListener) throws ExportFailedException {
 				assertEquals("episode1234567890123456789012345678901234567890123456789/episode123456789012345678901234567890123/channel/category/extension",
 						cmd);
 
@@ -130,7 +130,7 @@ public class ExportTaskTest {
 		};
 		publisher.attach(subscriber);
 		;
-		final ExportDTO export = new ExportDTO("conditionReference", "conditionPattern", "name", "output",
+		final ExportDTO export = new ExportDTO("conditionReference", "conditionPattern", "name", "output", null,
 				"#EPISODE_NAME#/#EPISODE_NAME_CUT#/#CHANNEL_NAME#/#TVSHOW_NAME#/#EXTENSION#", null);
 		task = new ExportTask(episode, export, pluginExporter, publisher, 0);
 		assertTrue(task.equals(task));

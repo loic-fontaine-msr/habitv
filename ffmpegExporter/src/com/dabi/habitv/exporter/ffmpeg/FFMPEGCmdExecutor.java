@@ -13,16 +13,15 @@ public class FFMPEGCmdExecutor extends CmdExecutor {
 
 	private static final Logger LOG = Logger.getLogger(CmdExecutor.class);
 
-	private double percentage;
-
-	private static final double MIN_PERCENTAGE = 99D;
+	// private double percentage;
+	//
+	// private static final double MIN_PERCENTAGE = 99D;
 
 	public static final String NAME = "ffmpeg";
 	private Long duration = null;
 
-	public FFMPEGCmdExecutor(final String cmd,
-			final CmdProgressionListener listener) {
-		super(cmd, listener);
+	public FFMPEGCmdExecutor(final String cmdProcessor, final String cmd, final CmdProgressionListener listener) {
+		super(cmdProcessor, cmd, listener);
 	}
 
 	@Override
@@ -38,11 +37,9 @@ public class FFMPEGCmdExecutor extends CmdExecutor {
 		String ret = null;
 		// si recherche fructueuse
 		if (hasMatched && duration != null) {
-			final long currentDuration = Double.valueOf(
-					Double.parseDouble(matcher.group(matcher.groupCount())))
-					.longValue();
+			final long currentDuration = Double.valueOf(Double.parseDouble(matcher.group(matcher.groupCount()))).longValue();
 			ret = String.valueOf((currentDuration * PERCENTAGE / duration));
-			percentage = Double.valueOf(ret);
+//			percentage = Double.valueOf(ret);
 		}
 		return ret;
 	}
@@ -57,16 +54,12 @@ public class FFMPEGCmdExecutor extends CmdExecutor {
 		Long ret = null;
 		// si recherche fructueuse
 		if (hasMatched) {
-			final String durationFormatted = matcher
-					.group(matcher.groupCount());
+			final String durationFormatted = matcher.group(matcher.groupCount());
 			final String[] durationSplitted = durationFormatted.split(":");
 			final long hours = Long.valueOf(durationSplitted[0]);
 			final long minutes = Long.valueOf(durationSplitted[1]);
-			final long seconds = Double.valueOf(durationSplitted[2])
-					.longValue();
-			ret = TimeUnit.SECONDS.convert(hours, TimeUnit.HOURS)
-					+ TimeUnit.SECONDS.convert(minutes, TimeUnit.MINUTES)
-					+ seconds;
+			final long seconds = Double.valueOf(durationSplitted[2]).longValue();
+			ret = TimeUnit.SECONDS.convert(hours, TimeUnit.HOURS) + TimeUnit.SECONDS.convert(minutes, TimeUnit.MINUTES) + seconds;
 		}
 		return ret;
 	}
@@ -76,7 +69,7 @@ public class FFMPEGCmdExecutor extends CmdExecutor {
 		// return
 		// getLastOutputLine().matches("video:\\d*kB audio:\\d*kB global headers:\\d*kB muxing overhead.*");
 		LOG.info("last" + getLastOutputLine());
-		//return percentage > MIN_PERCENTAGE; FIXME
+		// return percentage > MIN_PERCENTAGE; FIXME
 		return true;
 	}
 

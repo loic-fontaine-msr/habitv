@@ -15,9 +15,12 @@ public final class DownloaderDTO {
 
 	private final String indexDir;
 
-	public DownloaderDTO(final Map<String, PluginDownloaderInterface> downloaderName2downloader, final Map<String, String> downloaderName2BinPath,
-			final String downloadOutputDir, final String indexDir) {
+	private final String cmdProcessor;
+
+	public DownloaderDTO(final String cmdProcessor, final Map<String, PluginDownloaderInterface> downloaderName2downloader,
+			final Map<String, String> downloaderName2BinPath, final String downloadOutputDir, final String indexDir) {
 		super();
+		this.cmdProcessor = cmdProcessor;
 		this.downloaderName2downloader = downloaderName2downloader;
 		this.downloaderName2BinPath = downloaderName2BinPath;
 		this.downloadOutput = downloadOutputDir;
@@ -44,4 +47,7 @@ public final class DownloaderDTO {
 		return indexDir;
 	}
 
+	public String getCmdProcessor() {
+		return cmdProcessor;
+	}
 }

@@ -68,7 +68,7 @@ public final class CoreManager {
 				reference = null;
 				pattern = null;
 			}
-			exportDTO = new ExportDTO(reference, pattern, exporter.getName(), exporter.getOutput(), exporter.getCmd(),
+			exportDTO = new ExportDTO(reference, pattern, exporter.getName(), exporter.getOutput(), config.getCmdProcessor(), exporter.getCmd(),
 					buildExporterListDTO(exporter.getExporter()));
 			exportDTOList.add(exportDTO);
 		}
@@ -99,7 +99,8 @@ public final class CoreManager {
 		// downloaders bin path
 		final Map<String, String> downloaderName2BinPath = buildDownloadersBinPath(config.getDownloader());
 		// DL DTO
-		final DownloaderDTO downloader = new DownloaderDTO(downloaderName2downloader, downloaderName2BinPath, config.getDownloadOuput(), config.getIndexDir());
+		final DownloaderDTO downloader = new DownloaderDTO(config.getCmdProcessor(), downloaderName2downloader, downloaderName2BinPath,
+				config.getDownloadOuput(), config.getIndexDir());
 		// exporters factory
 		final PluginFactory<PluginExporterInterface> pluginExporterFactory = new PluginFactory<>(PluginExporterInterface.class, config.getExporterPluginDir());
 		// map of exporters by name

@@ -32,7 +32,7 @@ public class CurlPluginManager implements PluginDownloaderInterface {
 		cmd = cmd.replaceFirst(FrameworkConf.DOWNLOAD_INPUT, downloadInput);
 		cmd = cmd.replaceFirst(FrameworkConf.DOWNLOAD_DESTINATION, downloadDestination);
 		try {
-			(new CurlCmdExecutor(cmd, listener)).execute();
+			(new CurlCmdExecutor(parameters.get(FrameworkConf.CMD_PROCESSOR), cmd, listener)).execute();
 		} catch (ExecutorFailedException e) {
 			throw new DownloadFailedException(e);
 		}

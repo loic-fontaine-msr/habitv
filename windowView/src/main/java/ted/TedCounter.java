@@ -1,5 +1,7 @@
 package ted;
 
+import ted.view.TedMainDialog;
+
 
 /**
  * TED: Torrent Episode Downloader (2005 - 2006)

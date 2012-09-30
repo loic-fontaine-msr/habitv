@@ -9,6 +9,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
 
+import ted.view.TedMainDialog;
+
 /**
  * TED: Torrent Episode Downloader (2005 - 2006)
  * 
