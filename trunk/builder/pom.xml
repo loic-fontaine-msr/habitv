@@ -35,6 +35,7 @@
 		<module>../trayView</module>
 		<module>../lequipe</module>
 		<module>../beinsport</module>
+		<module>../arte</module>
 	</modules>
 
 	<build>
