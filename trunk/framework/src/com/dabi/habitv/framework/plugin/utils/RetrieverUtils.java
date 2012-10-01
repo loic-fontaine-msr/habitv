@@ -1,9 +1,12 @@
 package com.dabi.habitv.framework.plugin.utils;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.security.InvalidKeyException;
@@ -29,7 +32,7 @@ public final class RetrieverUtils {
 
 	private static final int BUFFER_SIZE = 16384;
 
-	private static final int URL_BUFFER_SIZE = 256;
+	// private static final int URL_BUFFER_SIZE = 256;
 
 	private static final String USER_AGENT = "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0)";
 
@@ -137,26 +140,49 @@ public final class RetrieverUtils {
 	}
 
 	public static String getUrlContent(final String url) {
+		return getUrlContent(url, null);
+	}
+
+	public static String getUrlContent(final String url, final String encoding) {
 
 		final InputStream in = getInputStreamFromUrl(url);
+		final BufferedReader reader;
+		try {
+			if (encoding != null) {
+				reader = new BufferedReader(new InputStreamReader(in, encoding));
+			} else {
+				reader = new BufferedReader(new InputStreamReader(in));
+			}
+		} catch (UnsupportedEncodingException e) {
+			throw new TechnicalException(e);
+		}
 		final StringBuffer sb = new StringBuffer();
 
-		final byte[] buffer = new byte[URL_BUFFER_SIZE];
-
-		while (true) {
-			int byteRead;
-			try {
-				byteRead = in.read(buffer);
-			} catch (final IOException e) {
-				throw new TechnicalException(e);
+		String readLine;
+		try {
+			while ((readLine = reader.readLine()) != null) {
+				sb.append(readLine);
 			}
-			if (byteRead == -1) {
-				break;
-			}
-			for (int i = 0; i < byteRead; i++) {
-				sb.append((char) buffer[i]);
-			}
+		} catch (IOException e) {
+			throw new TechnicalException(e);
 		}
+
+		// final byte[] buffer = new byte[URL_BUFFER_SIZE];
+		//
+		// while (true) {
+		// int byteRead;
+		// try {
+		// byteRead = in.read(buffer);
+		// } catch (final IOException e) {
+		// throw new TechnicalException(e);
+		// }
+		// if (byteRead == -1) {
+		// break;
+		// }
+		// for (int i = 0; i < byteRead; i++) {
+		// sb.append((char) buffer[i]);
+		// }
+		// }
 		return sb.toString();
 
 	}

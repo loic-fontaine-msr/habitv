@@ -52,6 +52,7 @@ public class CmdExecutor {
 			// wait for both thread
 			outputThread.join();
 			errorThread.join();
+			process.waitFor();
 		} catch (final InterruptedException e) {
 			throw new ExecutorFailedException(cmd, fullOutput.toString(), e);
 		} finally {
