@@ -42,14 +42,12 @@ public class DownloadTask extends AbstractEpisodeTask {
 	@Override
 	protected void failed(final Exception e) {
 		LOG.error("Download failed for " + getEpisode(), e);
-		if (e instanceof Exception) {
-			final Exception exceptionCause = (ExecutorFailedException) e.getCause();
-			if (exceptionCause instanceof ExecutorFailedException) {
-				ExecutorFailedException executorFailedException = (ExecutorFailedException) exceptionCause;
-				LOG.error("download of " + getEpisode().getCategory() + " - " + getEpisode().getName() + "failed");
-				LOG.error("cmd was" + executorFailedException.getCmd());
-				LOG.error(executorFailedException.getFullOuput());
-			}
+		final Exception exceptionCause = (Exception) e.getCause();
+		if (exceptionCause instanceof ExecutorFailedException) {
+			ExecutorFailedException executorFailedException = (ExecutorFailedException) exceptionCause;
+			LOG.error("download of " + getEpisode().getCategory() + " - " + getEpisode().getName() + "failed");
+			LOG.error("cmd was" + executorFailedException.getCmd());
+			LOG.error(executorFailedException.getFullOuput());
 		}
 		publisher.addNews(new RetreiveEvent(getEpisode(), EpisodeStateEnum.DOWNLOAD_FAILED, e, "download"));
 	}
