@@ -21,6 +21,8 @@ import com.dabi.habitv.framework.plugin.utils.RetrieverUtils;
 
 public class TF1Retreiver {
 
+	private static final Pattern MEDIAID_PATTERN = Pattern.compile("mediaId : (\\d*),");
+
 	private static final Logger LOGGER = Logger.getLogger(TF1Retreiver.class);
 
 	public static Set<CategoryDTO> findCategory() {
@@ -105,7 +107,7 @@ public class TF1Retreiver {
 	public static String findFinalUrl(final EpisodeDTO episode) {
 		final String content = RetrieverUtils.getUrlContent(TF1Conf.HOME_URL + episode.getUrl());
 		final boolean hd = content.contains("content=\"720\"");
-		// TODO remplacer par appel à
+		// peut être remplace par un appel à
 		// http://www.wat.tv/interface/contentv3/8635245
 		String contextRoot;
 		if (hd) {
@@ -125,13 +127,9 @@ public class TF1Retreiver {
 	}
 
 	private static String findMediaId(final String content) {
-		// compilation de la regex
-		final Pattern pattern = Pattern.compile("mediaId : (\\d*),");
-		final Matcher matcher = pattern.matcher(content);
-		// lancement de la recherche de toutes les occurrences
+		final Matcher matcher = MEDIAID_PATTERN.matcher(content);
 		final boolean hasMatched = matcher.find();
 		String ret = null;
-		// si recherche fructueuse
 		if (hasMatched) {
 			ret = matcher.group(matcher.groupCount());
 		} else {

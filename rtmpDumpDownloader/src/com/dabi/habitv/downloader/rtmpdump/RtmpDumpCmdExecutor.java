@@ -12,14 +12,15 @@ public class RtmpDumpCmdExecutor extends CmdExecutor {
 
 	private static final double MIN_PERCENTAGE = 99D;
 
+	private static final Pattern PROGRESS_PATTERN = Pattern.compile("\\((\\d+\\.\\d)%\\)$");
+
 	public RtmpDumpCmdExecutor(final String cmdProcessor, final String cmd, final CmdProgressionListener listener) {
 		super(cmdProcessor, cmd, listener);
 	}
 
 	@Override
 	protected String handleProgression(final String line) {
-		final Pattern pattern = Pattern.compile("\\((\\d+\\.\\d)%\\)$");
-		final Matcher matcher = pattern.matcher(line);
+		final Matcher matcher = PROGRESS_PATTERN.matcher(line);
 		final boolean hasMatched = matcher.find();
 		String ret = null;
 		if (hasMatched) {

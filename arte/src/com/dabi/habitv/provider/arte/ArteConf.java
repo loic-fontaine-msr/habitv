@@ -17,4 +17,6 @@ interface ArteConf {
 	String ID_EPISODE_TOKEN = "#ID_EPISODE#";
 
 	String XML_INFO_URL = "http://videos.arte.tv/fr/do_delegate/videos/" + ID_EPISODE_TOKEN + ",view,asPlayerXml.xml";
+
+	String ENCODING = "UTF-8";
 }

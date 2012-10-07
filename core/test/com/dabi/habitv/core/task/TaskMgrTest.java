@@ -42,26 +42,24 @@ public class TaskMgrTest {
 	public void tearDown() throws Exception {
 	}
 
-	private void buildSimultaneousTask(final int taskNb, final String cat,
-			final String cat2, final boolean shutdown) {
+	private void buildSimultaneousTask(final int taskNb, final String cat, final String cat2, final boolean shutdown) {
 		final Map<String, Integer> poolsSize = new HashMap<String, Integer>();
 		poolsSize.put(cat, 1);
 		if (cat != null && !cat.equals(cat2)) {
 			poolsSize.put(cat2, 2);
 		}
-		taskMgr = new TaskMgr<AbstractTask<Object>, Object>(taskNb,
-				new TaskMgrListener() {
+		taskMgr = new TaskMgr<AbstractTask<Object>, Object>(taskNb, new TaskMgrListener() {
 
-					@Override
-					public void onAllTreatmentDone() {
-						allTreatmentDone = true;
-					}
+			@Override
+			public void onAllTreatmentDone() {
+				allTreatmentDone = true;
+			}
 
-					@Override
-					public void onFailed(final Throwable throwable) {
-						allTreatmentDone = false;
-					}
-				}, poolsSize) {
+			@Override
+			public void onFailed(final Throwable throwable) {
+				allTreatmentDone = false;
+			}
+		}, poolsSize) {
 		};
 		AbstractTask<Object> task = new AbstractTaskForTest() {
 
@@ -82,7 +80,7 @@ public class TaskMgrTest {
 			}
 
 			@Override
-			protected void failed(final Exception e) {
+			protected void failed(final Throwable e) {
 				taskMgr.shutdownNow();
 				throw new TechnicalException(e);
 			}
@@ -112,7 +110,7 @@ public class TaskMgrTest {
 			}
 
 			@Override
-			protected void failed(final Exception e) {
+			protected void failed(final Throwable e) {
 				taskMgr.shutdownNow();
 				throw new TechnicalException(e);
 			}
@@ -161,22 +159,20 @@ public class TaskMgrTest {
 		assertEquals(-1, test1);
 	}
 
-	private void buildSimultaneousTaskWithError(final int taskNb,
-			final String cat, final String cat2) {
-		taskMgr = new TaskMgr<AbstractTask<Object>, Object>(taskNb,
-				new TaskMgrListener() {
+	private void buildSimultaneousTaskWithError(final int taskNb, final String cat, final String cat2) {
+		taskMgr = new TaskMgr<AbstractTask<Object>, Object>(taskNb, new TaskMgrListener() {
 
-					@Override
-					public void onAllTreatmentDone() {
-						allTreatmentDone = true;
-					}
+			@Override
+			public void onAllTreatmentDone() {
+				allTreatmentDone = true;
+			}
 
-					@Override
-					public void onFailed(final Throwable throwable) {
-						allTreatmentDone = false;
-					}
+			@Override
+			public void onFailed(final Throwable throwable) {
+				allTreatmentDone = false;
+			}
 
-				}, null) {
+		}, null) {
 		};
 		AbstractTask<Object> task = new AbstractTaskForTest() {
 
@@ -186,7 +182,7 @@ public class TaskMgrTest {
 			}
 
 			@Override
-			protected void failed(final Exception e) {
+			protected void failed(final Throwable e) {
 				taskMgr.shutdownNow();
 				throw new TechnicalException(e);
 			}
@@ -216,7 +212,7 @@ public class TaskMgrTest {
 			}
 
 			@Override
-			protected void failed(final Exception e) {
+			protected void failed(final Throwable e) {
 				taskMgr.shutdownNow();
 				throw new TechnicalException(e);
 			}

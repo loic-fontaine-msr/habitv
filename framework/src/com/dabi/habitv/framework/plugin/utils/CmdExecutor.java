@@ -54,7 +54,7 @@ public class CmdExecutor {
 			errorThread.join();
 			process.waitFor();
 		} catch (final InterruptedException e) {
-			throw new ExecutorFailedException(cmd, fullOutput.toString(), e);
+			throw new ExecutorFailedException(cmd, fullOutput.toString(), lastOutputLine, e);
 		} finally {
 			if (process != null) {
 				ProcessingThread.removeProcessing(process);
@@ -62,7 +62,7 @@ public class CmdExecutor {
 		}
 
 		if (process.exitValue() != 0 || (getLastOutputLine() != null && !isSuccess(fullOutput.toString()))) {
-			throw new ExecutorFailedException(cmd, fullOutput.toString(), null);
+			throw new ExecutorFailedException(cmd, fullOutput.toString(), lastOutputLine, null);
 		}
 	}
 
@@ -74,7 +74,7 @@ public class CmdExecutor {
 				}
 				return Runtime.getRuntime().exec(cmd);
 			} else {
-				String[] cmdArgs = cmdProcessor.split(" ");
+				final String[] cmdArgs = cmdProcessor.split(" ");
 				for (int i = 0; i < cmdArgs.length; i++) {
 					if (cmdArgs[i].contains(CMD_TOKEN)) {
 						cmdArgs[i] = cmdArgs[i].replace(CMD_TOKEN, cmd);
@@ -86,7 +86,7 @@ public class CmdExecutor {
 				return Runtime.getRuntime().exec(cmdArgs);
 			}
 		} catch (final IOException e) {
-			throw new ExecutorFailedException(cmd, e.getMessage(), e);
+			throw new ExecutorFailedException(cmd, e.getMessage(), e.getMessage(), e);
 		}
 	}
 

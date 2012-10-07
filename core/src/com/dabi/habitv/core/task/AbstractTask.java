@@ -29,7 +29,7 @@ abstract class AbstractTask<R> implements Callable<R> {
 				listener.onTaskEnded();
 			}
 			ended();
-		} catch (final Exception e) {
+		} catch (final Throwable e) {
 			if (listener != null) {
 				listener.onTaskFailed();
 			}
@@ -41,7 +41,7 @@ abstract class AbstractTask<R> implements Callable<R> {
 
 	protected abstract void added();
 
-	protected abstract void failed(Exception e);
+	protected abstract void failed(Throwable e);
 
 	protected abstract void ended();
 

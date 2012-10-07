@@ -55,7 +55,7 @@ public class DownloadTaskTest {
 	public void init(final boolean toFail) {
 		final CategoryDTO category = new CategoryDTO("channel", "category", "identifier", "extension");
 		final EpisodeDTO episode = new EpisodeDTO(category, "episode1234567890123456789012345678901234567890123456789", "videoUrl");
-		final ExecutorFailedException executorFailedException = new ExecutorFailedException("cmd", "fullOuput", null);
+		final ExecutorFailedException executorFailedException = new ExecutorFailedException("cmd", "fullOuput", "lastline", null);
 		final DownloadFailedException downloadFailedException = new DownloadFailedException(executorFailedException);
 		final PluginProviderInterface provider = new PluginProviderInterface() {
 
@@ -107,7 +107,8 @@ public class DownloadTaskTest {
 				cmdProgressionListener.listen("100");
 			}
 		};
-		final DownloaderDTO downloader = new DownloaderDTO(null, null, null, "#EPISODE_NAME#_#EPISODE_NAME_CUT#_#CHANNEL_NAME#_#TVSHOW_NAME#_#EXTENSION#", "indexDir");
+		final DownloaderDTO downloader = new DownloaderDTO(null, null, null, "#EPISODE_NAME#_#EPISODE_NAME_CUT#_#CHANNEL_NAME#_#TVSHOW_NAME#_#EXTENSION#",
+				"indexDir");
 		final Publisher<RetreiveEvent> publisher = new Publisher<>();
 		final Subscriber<RetreiveEvent> subscriber = new Subscriber<RetreiveEvent>() {
 

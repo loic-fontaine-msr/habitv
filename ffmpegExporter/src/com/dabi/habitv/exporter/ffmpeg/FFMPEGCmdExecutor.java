@@ -4,18 +4,18 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.log4j.Logger;
-
 import com.dabi.habitv.framework.plugin.utils.CmdExecutor;
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
 
 public class FFMPEGCmdExecutor extends CmdExecutor {
 
-	private static final Logger LOG = Logger.getLogger(CmdExecutor.class);
+	private static final Pattern DURATION_PATTERN = Pattern.compile("Duration: (.*?), start:");
 
-	// private double percentage;
-	//
-	// private static final double MIN_PERCENTAGE = 99D;
+	private static final Pattern TIME_PATTERN = Pattern.compile("time=(.*?) bitrate");
+
+	private double percentage;
+
+	private static final double MIN_PERCENTAGE = 99D;
 
 	public static final String NAME = "ffmpeg";
 	private Long duration = null;
@@ -29,9 +29,7 @@ public class FFMPEGCmdExecutor extends CmdExecutor {
 		if (duration == null) {
 			duration = findDuration(line);
 		}
-		// compilation de la regex
-		final Pattern pattern = Pattern.compile("time=(.*?) bitrate");
-		final Matcher matcher = pattern.matcher(line);
+		final Matcher matcher = TIME_PATTERN.matcher(line);
 		// lancement de la recherche de toutes les occurrences
 		final boolean hasMatched = matcher.find();
 		String ret = null;
@@ -39,16 +37,14 @@ public class FFMPEGCmdExecutor extends CmdExecutor {
 		if (hasMatched && duration != null) {
 			final long currentDuration = Double.valueOf(Double.parseDouble(matcher.group(matcher.groupCount()))).longValue();
 			ret = String.valueOf((currentDuration * PERCENTAGE / duration));
-//			percentage = Double.valueOf(ret);
+			percentage = Double.valueOf(ret);
 		}
 		return ret;
 	}
 
 	private static Long findDuration(final String line) {
-		// compilation de la regex
-		final Pattern pattern = Pattern.compile("Duration: (.*?), start:");
 		// création d’un moteur de recherche
-		final Matcher matcher = pattern.matcher(line);
+		final Matcher matcher = DURATION_PATTERN.matcher(line);
 		// lancement de la recherche de toutes les occurrences
 		final boolean hasMatched = matcher.find();
 		Long ret = null;
@@ -66,11 +62,7 @@ public class FFMPEGCmdExecutor extends CmdExecutor {
 
 	@Override
 	protected boolean isSuccess(final String fullOutput) {
-		// return
-		// getLastOutputLine().matches("video:\\d*kB audio:\\d*kB global headers:\\d*kB muxing overhead.*");
-		LOG.info("last" + getLastOutputLine());
-		// return percentage > MIN_PERCENTAGE; FIXME
-		return true;
+		return percentage > MIN_PERCENTAGE;
 	}
 
 }

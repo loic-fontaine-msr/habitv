@@ -54,7 +54,7 @@ public class RetrieveTask extends AbstractEpisodeTask {
 	}
 
 	@Override
-	protected void failed(final Exception e) {
+	protected void failed(final Throwable e) {
 		LOG.error("Episode failed to retreive " + getEpisode(), e);
 	}
 
@@ -121,7 +121,6 @@ public class RetrieveTask extends AbstractEpisodeTask {
 		final DownloadTask downloadTask = new DownloadTask(getEpisode(), provider, downloader, retreivePublisher, downloadDAO);
 		taskAdder.addDownloadTask(downloadTask, getEpisode().getCategory().getChannel());
 		downloadTask.waitEndOfTreatment();
-		// TODO gérer des exceptions de type downloadfailedException
 	}
 
 	private void check() {

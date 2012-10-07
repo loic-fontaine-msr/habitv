@@ -8,17 +8,16 @@ import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
 
 class Aria2CmdExecutor extends CmdExecutor {
 
+	private static final Pattern PROGRESS_PATTERN = Pattern.compile("\\[.*\\((.*)\\%\\).*\\]");
+
 	Aria2CmdExecutor(final String cmdProcessor, final String cmd, final CmdProgressionListener listener) {
 		super(cmdProcessor, cmd, listener);
 	}
 
 	@Override
 	protected String handleProgression(final String line) {
-		final Pattern pattern = Pattern.compile("\\[.*\\((.*)\\%\\).*\\]");
-		final Matcher matcher = pattern.matcher(line);
-		// lancement de la recherche de toutes les occurrences
+		final Matcher matcher = PROGRESS_PATTERN.matcher(line);
 		final boolean hasMatched = matcher.find();
-		// si recherche fructueuse
 		String ret = null;
 		if (hasMatched) {
 			ret = matcher.group(matcher.groupCount());

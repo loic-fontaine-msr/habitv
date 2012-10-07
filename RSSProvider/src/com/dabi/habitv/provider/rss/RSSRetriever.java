@@ -41,7 +41,7 @@ public final class RSSRetriever {
 		final Set<EpisodeDTO> episodeList = new HashSet<EpisodeDTO>();
 		final List<?> entries = feed.getEntries();
 		if (!entries.isEmpty()) {
-			for (final Object object : entries) {// FIXME error ici non affichée
+			for (final Object object : entries) {
 				final SyndEntry entry = (SyndEntry) object;
 				final List<?> enclosures = entry.getEnclosures();
 				String url;

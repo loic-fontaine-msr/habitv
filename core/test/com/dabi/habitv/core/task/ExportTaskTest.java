@@ -47,7 +47,7 @@ public class ExportTaskTest {
 	public void init(final boolean toFail) {
 		final CategoryDTO category = new CategoryDTO("channel", "category", "identifier", "extension");
 		final EpisodeDTO episode = new EpisodeDTO(category, "episode1234567890123456789012345678901234567890123456789", "videoUrl");
-		final ExecutorFailedException executorFailedException = new ExecutorFailedException("cmd", "fullOuput", null);
+		final ExecutorFailedException executorFailedException = new ExecutorFailedException("cmd", "fullOuput", "lastLine", null);
 		final ExportFailedException exportFailedException = new ExportFailedException(executorFailedException);
 		final PluginExporterInterface pluginExporter = new PluginExporterInterface() {
 
