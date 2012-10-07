@@ -44,8 +44,7 @@ public class PluzzDLF4M {
 
 	private final String downloadOuput;
 
-	public PluzzDLF4M(final CmdProgressionListener progressionListener,
-			final String downloadOuput) {
+	public PluzzDLF4M(final CmdProgressionListener progressionListener, final String downloadOuput) {
 		this.progressionListener = progressionListener;
 		this.downloadOuput = downloadOuput;
 	}
@@ -59,20 +58,16 @@ public class PluzzDLF4M {
 		// Lien du manifest (apres le token)
 		String manifestURLToken;
 		try {
-			manifestURLToken = browser
-					.getFileAsString("http://hdfauth.francetv.fr/esi/urltokengen2.html?url="
-							+ subUrl);
+			manifestURLToken = browser.getFileAsString("http://hdfauth.francetv.fr/esi/urltokengen2.html?url=" + subUrl);
 		} catch (final IOException e) {
-			throw new DownloadFailedException(
-					"Erreur lors de la recuperation de l'URL du manifest");
+			throw new DownloadFailedException("Erreur lors de la recuperation de l'URL du manifest");
 		}
 		String manifest;
 		try {
 			// Recupere le manifest
 			manifest = browser.getFileAsString(manifestURLToken);
 		} catch (final IOException e) {
-			throw new DownloadFailedException(
-					"Erreur lors de la recuperation de l'URL du manifest");
+			throw new DownloadFailedException("Erreur lors de la recuperation de l'URL du manifest");
 		}
 		// Parse le manifest
 		parseManifest(manifestURL, manifest);
@@ -133,8 +128,7 @@ public class PluzzDLF4M {
 
 	}
 
-	private int handleProgression(final int nbMax, final int indice,
-			final int old) {
+	private int handleProgression(final int nbMax, final int indice, final int old) {
 		final float f = (float) indice / (float) nbMax;
 		return Math.min((int) (f * 100), 100);
 	}
@@ -155,8 +149,7 @@ public class PluzzDLF4M {
 				int tagLen = 0;
 				byte[] b;
 				try {
-					b = (fragData.substring(start, start + 4))
-							.getBytes("US-ASCII");
+					b = (fragData.substring(start, start + 4)).getBytes("US-ASCII");
 				} catch (final UnsupportedEncodingException e) {
 					throw new TechnicalException(e);
 				}
@@ -172,10 +165,8 @@ public class PluzzDLF4M {
 	private OutputStream openNewVideo() {
 		FileOutputStream videoFileOutputStream = null;
 		try {
-//FIXME create downloads dir
 			videoFileOutputStream = new FileOutputStream(downloadOuput);
-			videoFileOutputStream
-					.write(a2bHex("464c56010500000009000000001200010c00000000000000"));
+			videoFileOutputStream.write(a2bHex("464c56010500000009000000001200010c00000000000000"));
 			videoFileOutputStream.write(flvHeader);
 			videoFileOutputStream.write(a2bHex("00000000"));
 			videoFileOutputStream.flush();
@@ -194,32 +185,23 @@ public class PluzzDLF4M {
 
 	private void parseManifest(final String manifestUrl, final String manifest) {
 		try {
-			final DocumentBuilderFactory factory = DocumentBuilderFactory
-					.newInstance();
+			final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			factory.setValidating(false);
 
 			final DocumentBuilder constructeur = factory.newDocumentBuilder();
-			final InputStream _inputStream = new ByteArrayInputStream(
-					manifest.getBytes());
+			final InputStream _inputStream = new ByteArrayInputStream(manifest.getBytes());
 			final Document document = constructeur.parse(_inputStream);
 
 			final Element _root = document.getDocumentElement();
 
-			duration = Float.parseFloat(((Element) _root.getElementsByTagName(
-					"duration").item(0)).getTextContent());
-			pv2 = ((Element) _root.getElementsByTagName("pv-2.0").item(0))
-					.getTextContent();
+			duration = Float.parseFloat(((Element) _root.getElementsByTagName("duration").item(0)).getTextContent());
+			pv2 = ((Element) _root.getElementsByTagName("pv-2.0").item(0)).getTextContent();
 
 			final NodeList _childs = _root.getElementsByTagName("media");
-			final Element _media = (Element) _childs
-					.item(_childs.getLength() - 1);
+			final Element _media = (Element) _childs.item(_childs.getLength() - 1);
 			final String _urlBootstrap = _media.getAttribute("url");
-			urlFrag = manifestUrl.substring(0,
-					manifestUrl.lastIndexOf("manifest.f4m"))
-					+ _urlBootstrap + "Seg1-Frag";
-			flvHeader = Base64
-					.decodeBase64(((Element) _media.getElementsByTagName(
-							"metadata").item(0)).getTextContent());
+			urlFrag = manifestUrl.substring(0, manifestUrl.lastIndexOf("manifest.f4m")) + _urlBootstrap + "Seg1-Frag";
+			flvHeader = Base64.decodeBase64(((Element) _media.getElementsByTagName("metadata").item(0)).getTextContent());
 
 		} catch (final IOException | SAXException | ParserConfigurationException e) {
 			throw new TechnicalException(e);

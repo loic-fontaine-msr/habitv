@@ -8,6 +8,8 @@ import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
 
 public class CurlCmdExecutor extends CmdExecutor {
 
+	private static final Pattern PROGRESS_PATTERN = Pattern.compile("^\\s*(\\d+).*$");
+
 	public CurlCmdExecutor(final String cmdProcessor, final String cmd, final CmdProgressionListener listener) {
 		super(cmdProcessor, cmd, listener);
 	}
@@ -16,11 +18,8 @@ public class CurlCmdExecutor extends CmdExecutor {
 	protected String handleProgression(final String line) {
 		// % Total % Received % Xferd Average Speed Time Time Time Current
 		// 3 17.6M 3 561k 0 0 705k 0 0:00:25 --:--:-- 0:00:25 799k
-		final Pattern pattern = Pattern.compile("^\\s*(\\d+).*$");
-		final Matcher matcher = pattern.matcher(line);
-		// lancement de la recherche de toutes les occurrences
+		final Matcher matcher = PROGRESS_PATTERN.matcher(line);
 		final boolean hasMatched = matcher.find();
-		// si recherche fructueuse
 		String ret = null;
 		if (hasMatched) {
 			ret = matcher.group(matcher.groupCount());

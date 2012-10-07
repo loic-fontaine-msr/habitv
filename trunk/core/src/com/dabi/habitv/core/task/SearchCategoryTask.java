@@ -26,7 +26,7 @@ public final class SearchCategoryTask extends AbstractTask<SearchCategoryResult>
 	}
 
 	@Override
-	protected void failed(final Exception e) {
+	protected void failed(final Throwable e) {
 		LOG.error("Grabbing categories for " + channel + " failed", e);
 		searchCategoryPublisher.addNews(new SearchCategoryEvent(channel, SearchCategoryStateEnum.ERROR));
 	}

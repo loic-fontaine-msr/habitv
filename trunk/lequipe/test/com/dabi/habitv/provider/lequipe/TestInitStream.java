@@ -1,4 +1,5 @@
 package com.dabi.habitv.provider.lequipe;
+
 import static org.junit.Assert.assertEquals;
 
 import java.io.BufferedReader;
@@ -20,6 +21,8 @@ import org.junit.Test;
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
 
 public class TestInitStream {
+
+	private static final Pattern PLALYER_APPPATTERN = Pattern.compile("<playerAppToken>(.*)</playerAppToken>");
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -64,7 +67,6 @@ public class TestInitStream {
 			final OutputStreamWriter wr = new OutputStreamWriter(hc.getOutputStream());
 			wr.write(data);
 			wr.flush();
-			// return hc.getInputStream();
 
 			// Get the response
 			final BufferedReader rd = new BufferedReader(new InputStreamReader(hc.getInputStream()));
@@ -77,11 +79,8 @@ public class TestInitStream {
 			wr.close();
 			rd.close();
 
-			final Pattern pattern = Pattern.compile("<playerAppToken>(.*)</playerAppToken>");
-			final Matcher matcher = pattern.matcher(builder.toString());
-			// lancement de la recherche de toutes les occurrences
+			final Matcher matcher = PLALYER_APPPATTERN.matcher(builder.toString());
 			final boolean hasMatched = matcher.find();
-			// si recherche fructueuse
 			String ret = null;
 			if (hasMatched) {
 				ret = matcher.group(matcher.groupCount());

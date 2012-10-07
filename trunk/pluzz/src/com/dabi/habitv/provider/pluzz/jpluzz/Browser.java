@@ -45,10 +45,13 @@ import org.apache.log4j.Logger;
  *          You should have received a copy of the GNU General Public License
  *          along with this program; if not, write to the Free Software
  *          Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
- *          02110-1301, USA
+ *          02110-1301, USAb
  */
 
 public class Browser {
+
+	private static final Pattern PROXY_PATTERN = Pattern.compile("http://([^:]+?):(\\d+)");
+
 	/**
 	 * This example demonstrates the use of the {@link ResponseHandler} to
 	 * simplify the process of processing the HTTP response and releasing
@@ -86,17 +89,15 @@ public class Browser {
 		logger = Logger.getLogger(Browser.class.getName());
 		httpClient = new DefaultHttpClient();
 		if (proxy != null) {
-			final Pattern _pattern = Pattern.compile("http://([^:]+?):(\\d+)");
-			final Matcher matcher = _pattern.matcher(proxy);
+			final Matcher matcher = PROXY_PATTERN.matcher(proxy);
 			matcher.find();
-			final HttpHost _proxy = new HttpHost(matcher.group(1),
-					Integer.parseInt(matcher.group(2)));
-			httpClient.getParams().setParameter(
-					ConnRoutePNames.DEFAULT_PROXY, _proxy);
+			final HttpHost _proxy = new HttpHost(matcher.group(1), Integer.parseInt(matcher.group(2)));
+			httpClient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, _proxy);
 		}
 
 		cookieStore = new BasicCookieStore();
-		//httpClient.getParams().setParameter(CoreProtocolPNames.USER_AGENT, userAgent);
+		// httpClient.getParams().setParameter(CoreProtocolPNames.USER_AGENT,
+		// userAgent);
 	}
 
 	public byte[] getFile(final String url) throws IOException {
@@ -106,19 +107,15 @@ public class Browser {
 		final HttpGet httpget = new HttpGet(url);
 		httpget.addHeader("Referer", referer);
 		logger.debug("executing request " + httpget.getURI());
-		final HttpResponse response = httpClient.execute(httpget,
-				localContext);
+		final HttpResponse response = httpClient.execute(httpget, localContext);
 		final HttpEntity entity = response.getEntity();
 
-		if (response.getStatusLine().getStatusCode() < 200
-				|| response.getStatusLine().getStatusCode() >= 400) {
-			logger.debug("Error Retrieving webpage " + url
-					+ ": error " + response.getStatusLine().getStatusCode());
+		if (response.getStatusLine().getStatusCode() < 200 || response.getStatusLine().getStatusCode() >= 400) {
+			logger.debug("Error Retrieving webpage " + url + ": error " + response.getStatusLine().getStatusCode());
 			statusCode = response.getStatusLine().getStatusCode();
 			reason = response.getStatusLine().getReasonPhrase();
 			EntityUtils.consume(entity);
-			throw new IOException("Got bad response, error code = "
-					+ response.getStatusLine().getStatusCode());
+			throw new IOException("Got bad response, error code = " + response.getStatusLine().getStatusCode());
 		}
 
 		if (entity != null) {
@@ -163,12 +160,12 @@ public class Browser {
 
 	}
 
-	public void appendCookie(String name, String value) {
-		Cookie cookie = new BasicClientCookie(name, value);
+	public void appendCookie(final String name, final String value) {
+		final Cookie cookie = new BasicClientCookie(name, value);
 		cookieStore.addCookie(cookie);
 	}
 
-	public void addReferer(String referer) {
-		this.referer = referer; 
+	public void addReferer(final String referer) {
+		this.referer = referer;
 	}
 }

@@ -11,7 +11,6 @@ import com.dabi.habitv.framework.plugin.api.dto.DownloaderDTO;
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
 import com.dabi.habitv.framework.plugin.api.provider.PluginProviderInterface;
 import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
-import com.dabi.habitv.framework.plugin.exception.ExecutorFailedException;
 import com.dabi.habitv.framework.plugin.exception.NoSuchDownloaderException;
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
 
@@ -40,15 +39,8 @@ public class DownloadTask extends AbstractEpisodeTask {
 	}
 
 	@Override
-	protected void failed(final Exception e) {
+	protected void failed(final Throwable e) {
 		LOG.error("Download failed for " + getEpisode(), e);
-		final Exception exceptionCause = (Exception) e.getCause();
-		if (exceptionCause instanceof ExecutorFailedException) {
-			ExecutorFailedException executorFailedException = (ExecutorFailedException) exceptionCause;
-			LOG.error("download of " + getEpisode().getCategory() + " - " + getEpisode().getName() + "failed");
-			LOG.error("cmd was" + executorFailedException.getCmd());
-			LOG.error(executorFailedException.getFullOuput());
-		}
 		publisher.addNews(new RetreiveEvent(getEpisode(), EpisodeStateEnum.DOWNLOAD_FAILED, e, "download"));
 	}
 
@@ -77,6 +69,10 @@ public class DownloadTask extends AbstractEpisodeTask {
 		//
 		// delete to prevent resuming since most of the download can't resume
 		final File outputFile = new File(outputFilename);
+		// create download dir if doesn't exist
+		if (!outputFile.getParentFile().exists()) {
+			outputFile.getParentFile().mkdir();
+		}
 		if (outputFile.exists()) {
 			outputFile.delete();
 		}

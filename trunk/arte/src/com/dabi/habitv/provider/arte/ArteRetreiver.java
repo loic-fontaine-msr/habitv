@@ -26,6 +26,12 @@ class ArteRetreiver {
 
 	private static final String SEP = "/";
 
+	private static final Pattern REF_PATTERN = Pattern.compile("<video lang=\"fr\" ref=\"([^\\\"]*)\"\\s/>");
+
+	private static final Pattern QUALITY_PATTERN = Pattern.compile("<url quality=\"(\\w+)\">([^\\<]*)</url>");
+
+	private static final Pattern LINK_TITLE_PATTERN = Pattern.compile("<a href=\"([^\\,]*),view,rss.xml\" class=\"rss\">([^\\<]*)</a>");
+
 	private ArteRetreiver() {
 
 	}
@@ -34,7 +40,7 @@ class ArteRetreiver {
 		final Set<EpisodeDTO> episodeList;
 		try {
 			final SyndFeedInput input = new SyndFeedInput();
-			final SyndFeed feed = input.build(new XmlReader(inputStream, true, "UTF-8"));
+			final SyndFeed feed = input.build(new XmlReader(inputStream, true, ArteConf.ENCODING));
 			episodeList = convertFeedToEpisodeList(feed, category);
 		} catch (IllegalArgumentException | FeedException | IOException e) {
 			throw new TechnicalException(e);
@@ -52,11 +58,9 @@ class ArteRetreiver {
 		return episodeList;
 	}
 
-	public static Set<CategoryDTO> findCategories(String urlContent) {
-		Set<CategoryDTO> categoryDTOs = new HashSet<>();
-		// compilation de la regex
-		final Pattern pattern = Pattern.compile("<a href=\"([^\\,]*),view,rss.xml\" class=\"rss\">([^\\<]*)</a>");
-		final Matcher matcher = pattern.matcher(urlContent);
+	public static Set<CategoryDTO> findCategories(final String urlContent) {
+		final Set<CategoryDTO> categoryDTOs = new HashSet<>();
+		final Matcher matcher = LINK_TITLE_PATTERN.matcher(urlContent);
 		String categoryName;
 		String identifier;
 		while (matcher.find()) {
@@ -67,30 +71,27 @@ class ArteRetreiver {
 		return categoryDTOs;
 	}
 
-	private static String findShowIdentifier(String url) {
-		String[] subUrl = url.split(SEP);
+	private static String findShowIdentifier(final String url) {
+		final String[] subUrl = url.split(SEP);
 		if (subUrl.length > 2) {
 			return subUrl[subUrl.length - 2] + SEP + subUrl[subUrl.length - 1];
 		}
-		return null;
+		throw new TechnicalException("can't find show identifier");
 	}
 
-	public static String buildDownloadLink(String url) throws DownloadFailedException {
-		String episodeId = findEpisodeIdentifier(url);
-		String xmlInfo = RetrieverUtils.getUrlContent(ArteConf.XML_INFO_URL.replace(ArteConf.ID_EPISODE_TOKEN, episodeId));
-		Pattern pattern = Pattern.compile("<video lang=\"fr\" ref=\"([^\\\"]*)\"\\s/>"); // FIXME
-																							// static
-		Matcher matcher = pattern.matcher(xmlInfo);
+	public static String buildDownloadLink(final String url) throws DownloadFailedException {
+		final String episodeId = findEpisodeIdentifier(url);
+		final String xmlInfo = RetrieverUtils.getUrlContent(ArteConf.XML_INFO_URL.replace(ArteConf.ID_EPISODE_TOKEN, episodeId), ArteConf.ENCODING);
+		Matcher matcher = REF_PATTERN.matcher(xmlInfo);
 		final String xmlVideoInfoUrl;
 		if (matcher.find()) {
 			xmlVideoInfoUrl = matcher.group(matcher.groupCount());
 		} else {
 			throw new DownloadFailedException("can't find xml video info url");
 		}
-		String xmlVideoInfo = RetrieverUtils.getUrlContent(xmlVideoInfoUrl);
-		pattern = Pattern.compile("<url quality=\"(\\w+)\">([^\\<]*)</url>");
-		matcher = pattern.matcher(xmlVideoInfo);
-		Map<String, String> qualityToVideoUrl = new HashMap<>();
+		final String xmlVideoInfo = RetrieverUtils.getUrlContent(xmlVideoInfoUrl, ArteConf.ENCODING);
+		matcher = QUALITY_PATTERN.matcher(xmlVideoInfo);
+		final Map<String, String> qualityToVideoUrl = new HashMap<>();
 		String videoUrl;
 		String quality;
 		while (matcher.find()) {
@@ -101,7 +102,7 @@ class ArteRetreiver {
 		return findBestQuality(qualityToVideoUrl);
 	}
 
-	private static String findBestQuality(Map<String, String> qualityToVideoUrl) throws DownloadFailedException {
+	private static String findBestQuality(final Map<String, String> qualityToVideoUrl) throws DownloadFailedException {
 		String videoUrl = qualityToVideoUrl.get("hd");
 		if (videoUrl == null) {
 			videoUrl = qualityToVideoUrl.get("sd");
@@ -117,11 +118,11 @@ class ArteRetreiver {
 		return videoUrl;
 	}
 
-	private static String findEpisodeIdentifier(String url) {
-		String[] subUrl = url.split(SEP);
+	private static String findEpisodeIdentifier(final String url) throws DownloadFailedException {
+		final String[] subUrl = url.split(SEP);
 		if (subUrl.length > 1) {
 			return subUrl[subUrl.length - 1].replace(".html", "");
 		}
-		return null;
+		throw new DownloadFailedException("Episode identifier not found");
 	}
 }

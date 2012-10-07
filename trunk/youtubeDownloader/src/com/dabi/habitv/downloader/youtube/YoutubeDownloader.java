@@ -18,7 +18,6 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -36,24 +35,28 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
+import org.apache.log4j.Logger;
 
 import com.dabi.habitv.framework.FrameworkConf;
+import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
 import com.dabi.habitv.framework.plugin.utils.RetrieverUtils;
 
 public class YoutubeDownloader {
 
-	public static String newline = System.getProperty("line.separator");
-	private static final Logger log = Logger.getLogger(YoutubeDownloader.class.getCanonicalName());
-	private static final String scheme = "http";
-	private static final String host = "www.youtube.com";
-	private static final Pattern commaPattern = Pattern.compile(",");
-	private static final Pattern equalPattern = Pattern.compile("=");
+	private static final Logger LOG = Logger.getLogger(YoutubeDownloader.class.getCanonicalName());
+	private static final String SCHEME = "http";
+	private static final String HOST = "www.youtube.com";
+	private static final Pattern COMMA_PATTERN = Pattern.compile(",");
+	private static final Pattern EQUAL_PATTERN = Pattern.compile("=");
+	private static final Pattern ITAG_PATTERN = Pattern.compile("itag=(\\d+)(,|\\\\)");
+	private static final Pattern ITAG_150_PATTERN = Pattern.compile("url=(http://.+&itag=(\\d+).*)&type=.*", Pattern.CASE_INSENSITIVE);
+	private static final Pattern VIDEOID_PATTERN = Pattern.compile("(?<=videos\\/|v=)([\\w-]+)");
+	private static final Pattern URL_MAP_PATTERN = Pattern.compile("\"url_encoded_fmt_stream_map\": \"(.+)\"", Pattern.CASE_INSENSITIVE);
 
 	public static Integer findBestFormat(final String downloadInput) {
-		final Pattern pattern = Pattern.compile("itag=(\\d+)(,|\\\\)");
-		final Matcher matcher = pattern.matcher(RetrieverUtils.getUrlContent(downloadInput));
+		final Matcher matcher = ITAG_PATTERN.matcher(RetrieverUtils.getUrlContent(downloadInput));
 		final List<Integer> formatList = new LinkedList<>();
 		while (matcher.find()) {
 			formatList.add(Integer.valueOf(matcher.group(1)));
@@ -68,8 +71,7 @@ public class YoutubeDownloader {
 	}
 
 	public static String getYoutubeId(final String downloadInput) {
-		final Pattern pattern = Pattern.compile("(?<=videos\\/|v=)([\\w-]+)");
-		final Matcher matcher = pattern.matcher(downloadInput);
+		final Matcher matcher = VIDEOID_PATTERN.matcher(downloadInput);
 		final boolean hasMatched = matcher.find();
 		String ret = null;
 		if (hasMatched) {
@@ -78,8 +80,9 @@ public class YoutubeDownloader {
 		return ret;
 	}
 
-	public static void download(final String url, final String videoId, final int format, final String outputFile, final CmdProgressionListener listener) {
-		log.fine("Retrieving " + videoId);
+	public static void download(final String url, final String videoId, final int format, final String outputFile, final CmdProgressionListener listener)
+			throws DownloadFailedException {
+		LOG.debug("Retrieving " + videoId);
 		final List<NameValuePair> qparams = new ArrayList<NameValuePair>();
 		qparams.add(new BasicNameValuePair("video_id", videoId));
 		qparams.add(new BasicNameValuePair("fmt", "" + format));
@@ -98,7 +101,7 @@ public class YoutubeDownloader {
 		final HttpGet httpget = new HttpGet(uri);
 		httpget.setHeader("User-Agent", YoutubeConf.USER_AGENT);
 
-		log.finer("Executing " + uri);
+		LOG.debug("Executing " + uri);
 		HttpResponse response;
 		try {
 			response = httpclient.execute(httpget, localContext);
@@ -127,11 +130,11 @@ public class YoutubeDownloader {
 				for (final NameValuePair pair : infoMap) {
 					final String key = pair.getName();
 					final String val = pair.getValue();
-					log.finest(key + "=" + val);
+					LOG.debug(key + "=" + val);
 					if (key.equals("url_encoded_fmt_stream_map")) {
-						final String[] formats = commaPattern.split(val);
+						final String[] formats = COMMA_PATTERN.split(val);
 						for (final String fmt : formats) {
-							final String[] fmtPieces = equalPattern.split(fmt);
+							final String[] fmtPieces = EQUAL_PATTERN.split(fmt);
 							if (fmtPieces.length > 0) {
 								// in the end, download somethin!
 								downloadUrl = fmtPieces[1];
@@ -198,29 +201,27 @@ public class YoutubeDownloader {
 		return sb.toString();
 	}
 
-	public static String error150Url(String url) {
-		String pageCode = RetrieverUtils.getUrlContent(url);
-		Matcher fmtMatcher = Pattern.compile("\"url_encoded_fmt_stream_map\": \"(.+)\"", Pattern.CASE_INSENSITIVE).matcher(pageCode);
+	public static String error150Url(final String url) {
+		final String pageCode = RetrieverUtils.getUrlContent(url);
+		final Matcher fmtMatcher = URL_MAP_PATTERN.matcher(pageCode);
 		if (fmtMatcher.find()) {
-			String strFmtMap = fmtMatcher.group(1);
+			final String strFmtMap = fmtMatcher.group(1);
 			String decodedUrls;
 			try {
 				decodedUrls = URLDecoder.decode(strFmtMap, YoutubeConf.ENCODING);
-			} catch (UnsupportedEncodingException e) {
+			} catch (final UnsupportedEncodingException e) {
 				throw new TechnicalException(e);
 			}
 			if (decodedUrls != null) {
-				String[] vUrls = Pattern.compile(",").split(decodedUrls);
+				final String[] vUrls = COMMA_PATTERN.split(decodedUrls);
 				for (String elem : vUrls) {
 					elem = unescapeYoutubeUrl(elem);
 
-					Matcher urlMatcher = Pattern.compile("url=(http://.+&itag=(\\d+).*)&type=.*", Pattern.CASE_INSENSITIVE).matcher(elem);
+					final Matcher urlMatcher = ITAG_150_PATTERN.matcher(elem);
 					String downloadUrl = null;
 					if (urlMatcher.find()) {
 						downloadUrl = urlMatcher.group(1);
 						return downloadUrl;
-						// String fmt = urlMatcher.group(2);
-						// format = getVideoFormat(Integer.parseInt(fmt));
 					}
 				}
 			}
@@ -229,7 +230,8 @@ public class YoutubeDownloader {
 		throw new TechnicalException("no url");
 	}
 
-	private static void downloadWithHttpClient(final String userAgent, final String downloadUrl, final File outputfile, final CmdProgressionListener listener) {
+	private static void downloadWithHttpClient(final String userAgent, final String downloadUrl, final File outputfile, final CmdProgressionListener listener)
+			throws DownloadFailedException {
 		HttpGet httpget2;
 		try {
 			httpget2 = new HttpGet(URLDecoder.decode(downloadUrl, YoutubeConf.ENCODING));
@@ -238,7 +240,7 @@ public class YoutubeDownloader {
 		}
 		httpget2.setHeader("User-Agent", userAgent);
 
-		log.finer("Executing " + httpget2.getURI());
+		LOG.debug("Executing " + httpget2.getURI());
 		final HttpClient httpclient2 = new DefaultHttpClient();
 		HttpResponse response2;
 		try {
@@ -247,7 +249,10 @@ public class YoutubeDownloader {
 			throw new TechnicalException(e);
 		}
 		final HttpEntity entity2 = response2.getEntity();
-		if (entity2 != null && response2.getStatusLine().getStatusCode() == 200) {//FIXME 403
+		if (response2.getStatusLine().getStatusCode() == 403) {
+			throw new DownloadFailedException("can't download : 403 unauthorized");
+		}
+		if (entity2 != null && response2.getStatusLine().getStatusCode() == 200) {
 			final long length = entity2.getContentLength();
 			InputStream instream2;
 			try {
@@ -255,7 +260,7 @@ public class YoutubeDownloader {
 			} catch (IllegalStateException | IOException e) {
 				throw new TechnicalException(e);
 			}
-			log.finer("Writing " + length + " bytes to " + outputfile);
+			LOG.debug("Writing " + length + " bytes to " + outputfile);
 			if (outputfile.exists()) {
 				outputfile.delete();
 			}
@@ -293,7 +298,7 @@ public class YoutubeDownloader {
 	}
 
 	private static URI getUri(final String path, final List<NameValuePair> qparams) throws URISyntaxException {
-		final URI uri = URIUtils.createURI(scheme, host, -1, "/" + path, URLEncodedUtils.format(qparams, YoutubeConf.ENCODING), null);
+		final URI uri = URIUtils.createURI(SCHEME, HOST, -1, "/" + path, URLEncodedUtils.format(qparams, YoutubeConf.ENCODING), null);
 		return uri;
 	}
 

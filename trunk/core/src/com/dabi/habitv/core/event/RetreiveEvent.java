@@ -22,7 +22,7 @@ public final class RetreiveEvent extends AbstractEvent {
 		this(episode, state, (String) null);
 	}
 
-	public RetreiveEvent(final EpisodeDTO episode, final EpisodeStateEnum state, final Exception exception, final String operation) {
+	public RetreiveEvent(final EpisodeDTO episode, final EpisodeStateEnum state, final Throwable exception, final String operation) {
 		this(episode, state);
 		setException(exception);
 		this.operation = operation;

@@ -49,7 +49,7 @@ public class SearchTask extends AbstractTask<Object> {
 	}
 
 	@Override
-	protected void failed(final Exception e) {
+	protected void failed(final Throwable e) {
 		LOG.error("Searching episode for " + provider.getName() + " failed", e);
 		searchPublisher.addNews(new SearchEvent(provider.getName(), SearchStateEnum.ERROR));
 	}

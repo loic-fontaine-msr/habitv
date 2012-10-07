@@ -10,7 +10,9 @@ import com.dabi.habitv.utils.FileUtils;
 
 public final class TokenReplacer {
 
-	private TokenReplacer() {
+	private final Integer tokenCutValueMaxSize;
+
+	public TokenReplacer(final Integer tokenCutValueMaxSize) {
 
 	}
 

@@ -35,7 +35,7 @@ public class ArtePluginManager implements PluginProviderInterface { // NO_UCD
 
 	@Override
 	public Set<CategoryDTO> findCategory() {
-		return ArteRetreiver.findCategories(RetrieverUtils.getUrlContent(ArteConf.RSS_PAGE, "UTF-8"));
+		return ArteRetreiver.findCategories(RetrieverUtils.getUrlContent(ArteConf.RSS_PAGE, ArteConf.ENCODING));
 	}
 
 	@Override
