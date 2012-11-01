@@ -23,7 +23,7 @@ public final class CmdExecutorExporterManager implements PluginExporterInterface
 	@Override
 	public void export(final String cmdProcessor, final String cmd, final CmdProgressionListener listener) throws ExportFailedException {
 		try {
-			new CmdExecutor(cmdProcessor, cmd, listener).execute();
+			new CmdExecutor(cmdProcessor, cmd, CmdExporterConf.MAX_HUNG_TIME, listener).execute();
 		} catch (ExecutorFailedException e) {
 			throw new ExportFailedException(e);
 		}

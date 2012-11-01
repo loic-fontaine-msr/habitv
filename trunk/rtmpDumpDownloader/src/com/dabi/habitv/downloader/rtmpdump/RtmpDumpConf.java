@@ -10,4 +10,6 @@ public final class RtmpDumpConf {
 
 	public static final String DUMP_CMD = "-r \"#VIDEO_URL#\" -o \"#FILE_DEST#\"";
 
+	public static final long MAX_HUNG_TIME = 300000L;
+
 }

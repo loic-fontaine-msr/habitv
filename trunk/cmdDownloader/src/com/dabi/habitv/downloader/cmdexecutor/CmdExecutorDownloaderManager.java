@@ -2,12 +2,12 @@ package com.dabi.habitv.downloader.cmdexecutor;
 
 import java.util.Map;
 
+import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.api.downloader.PluginDownloaderInterface;
 import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.framework.plugin.exception.ExecutorFailedException;
 import com.dabi.habitv.framework.plugin.utils.CmdExecutor;
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
-import com.dabi.habitv.framework.FrameworkConf;
 
 public final class CmdExecutorDownloaderManager implements PluginDownloaderInterface { // NO_UCD
 																						// (unused
@@ -34,7 +34,7 @@ public final class CmdExecutorDownloaderManager implements PluginDownloaderInter
 		replaceIfContains(cmd, FrameworkConf.DOWNLOAD_DESTINATION, downloadDestination);
 
 		try {
-			new CmdExecutor(parameters.get(FrameworkConf.CMD_PROCESSOR), cmd, listener).execute();
+			new CmdExecutor(parameters.get(FrameworkConf.CMD_PROCESSOR), cmd, CmdDownloaderConf.MAX_HUNG_TIME, listener).execute();
 		} catch (ExecutorFailedException e) {
 			throw new DownloadFailedException(e);
 		}

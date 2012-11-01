@@ -12,5 +12,7 @@ public final class CurlConf {
 
 	public static final String CURL_CMD = " \"" + FrameworkConf.DOWNLOAD_INPUT
 			+ "\"  -C - -L -g -A \"Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0)\" -o \"" + FrameworkConf.DOWNLOAD_DESTINATION + "\" ";
+	
+	public static final long MAX_HUNG_TIME = 100000L;
 
 }

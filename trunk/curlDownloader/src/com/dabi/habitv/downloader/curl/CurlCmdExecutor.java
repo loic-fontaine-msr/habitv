@@ -11,7 +11,7 @@ public class CurlCmdExecutor extends CmdExecutor {
 	private static final Pattern PROGRESS_PATTERN = Pattern.compile("^\\s*(\\d+).*$");
 
 	public CurlCmdExecutor(final String cmdProcessor, final String cmd, final CmdProgressionListener listener) {
-		super(cmdProcessor, cmd, listener);
+		super(cmdProcessor, cmd, CurlConf.MAX_HUNG_TIME, listener);
 	}
 
 	@Override

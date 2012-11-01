@@ -9,7 +9,7 @@ import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
 
 public class FFMPEGCmdExecutor extends CmdExecutor {
 
-	private static final Pattern DURATION_PATTERN = Pattern.compile("Duration: (.*?), start:");
+	private static final Pattern PERCENTAGE_PATTERN = Pattern.compile(".*\\((\\d+\\.+\\d+)%\\).*");
 
 	private static final Pattern TIME_PATTERN = Pattern.compile("time=(.*?) bitrate");
 
@@ -21,7 +21,7 @@ public class FFMPEGCmdExecutor extends CmdExecutor {
 	private Long duration = null;
 
 	public FFMPEGCmdExecutor(final String cmdProcessor, final String cmd, final CmdProgressionListener listener) {
-		super(cmdProcessor, cmd, listener);
+		super(cmdProcessor, cmd, FFMPEGConf.MAX_HUNG_TIME, listener);
 	}
 
 	@Override
@@ -38,13 +38,28 @@ public class FFMPEGCmdExecutor extends CmdExecutor {
 			final long currentDuration = Double.valueOf(Double.parseDouble(matcher.group(matcher.groupCount()))).longValue();
 			ret = String.valueOf((currentDuration * PERCENTAGE / duration));
 			percentage = Double.valueOf(ret);
+		} else {
+			ret = matchPercentage(line);
+		}
+		return ret;
+	}
+
+	private String matchPercentage(String line) {
+		// création d’un moteur de recherche
+		final Matcher matcher = PERCENTAGE_PATTERN.matcher(line);
+		// lancement de la recherche de toutes les occurrences
+		final boolean hasMatched = matcher.find();
+		String ret = null;
+		// si recherche fructueuse
+		if (hasMatched) {
+			ret = matcher.group(matcher.groupCount());
 		}
 		return ret;
 	}
 
 	private static Long findDuration(final String line) {
 		// création d’un moteur de recherche
-		final Matcher matcher = DURATION_PATTERN.matcher(line);
+		final Matcher matcher = PERCENTAGE_PATTERN.matcher(line);
 		// lancement de la recherche de toutes les occurrences
 		final boolean hasMatched = matcher.find();
 		Long ret = null;
