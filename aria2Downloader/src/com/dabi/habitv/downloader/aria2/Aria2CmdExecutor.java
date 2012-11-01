@@ -11,7 +11,7 @@ class Aria2CmdExecutor extends CmdExecutor {
 	private static final Pattern PROGRESS_PATTERN = Pattern.compile("\\[.*\\((.*)\\%\\).*\\]");
 
 	Aria2CmdExecutor(final String cmdProcessor, final String cmd, final CmdProgressionListener listener) {
-		super(cmdProcessor, cmd, listener);
+		super(cmdProcessor, cmd, Aria2Conf.MAX_HUNG_TIME, listener);
 	}
 
 	@Override

@@ -10,4 +10,5 @@ interface Aria2Conf {
 
 	String DIR_DEST = "#DEST_DIR#";
 
+	long MAX_HUNG_TIME = 360000L;
 }

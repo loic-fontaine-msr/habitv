@@ -17,8 +17,6 @@ public final class DownloaderDTO {
 
 	private final String cmdProcessor;
 
-	private final Integer tokenCutValueMaxSize;
-
 	public DownloaderDTO(final String cmdProcessor, final Map<String, PluginDownloaderInterface> downloaderName2downloader,
 			final Map<String, String> downloaderName2BinPath, final String downloadOutputDir, final String indexDir) {
 		super();

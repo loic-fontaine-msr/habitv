@@ -15,7 +15,7 @@ public class RtmpDumpCmdExecutor extends CmdExecutor {
 	private static final Pattern PROGRESS_PATTERN = Pattern.compile("\\((\\d+\\.\\d)%\\)$");
 
 	public RtmpDumpCmdExecutor(final String cmdProcessor, final String cmd, final CmdProgressionListener listener) {
-		super(cmdProcessor, cmd, listener);
+		super(cmdProcessor, cmd, RtmpDumpConf.MAX_HUNG_TIME,listener);
 	}
 
 	@Override

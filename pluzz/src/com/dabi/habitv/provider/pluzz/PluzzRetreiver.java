@@ -28,8 +28,9 @@ public class PluzzRetreiver {
 	public static Set<CategoryDTO> findCategory() {
 		final Set<CategoryDTO> categories = new HashSet<>();
 
+		Connection con = null;
 		try {
-			final Connection con = Jsoup.connect(PluzzConf.HOME_URL);
+			con = Jsoup.connect(PluzzConf.HOME_URL);
 
 			final Elements select = con.get().select(".rub");
 			CategoryDTO fatherCategory = null;

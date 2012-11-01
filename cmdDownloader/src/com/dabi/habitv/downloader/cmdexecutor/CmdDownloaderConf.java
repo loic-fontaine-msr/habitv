@@ -3,4 +3,5 @@ interface CmdDownloaderConf {
 
 	String NAME = "cmdDownloader";
 
+	public static final long MAX_HUNG_TIME = 300000L;
 }

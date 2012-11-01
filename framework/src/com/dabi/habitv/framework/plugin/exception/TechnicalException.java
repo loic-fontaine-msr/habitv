@@ -3,8 +3,8 @@ package com.dabi.habitv.framework.plugin.exception;
 
 public class TechnicalException extends RuntimeException {
 
-	public TechnicalException(final Throwable throwable) {
-		super(throwable);
+	public TechnicalException(final Throwable e) {
+		super(e);
 	}
 
 	public TechnicalException(final String string) {

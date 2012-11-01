@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 
 import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.exception.ExecutorFailedException;
+import com.dabi.habitv.framework.plugin.exception.HungProcessException;
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
 
 public class CmdExecutor {
@@ -27,11 +28,17 @@ public class CmdExecutor {
 
 	private static final String CMD_TOKEN = "#CMD#";
 
-	public CmdExecutor(final String cmdProcessor, final String cmd, final CmdProgressionListener listener) {
+	private final long maxHungTime;
+
+	private boolean hungThread;
+
+	public CmdExecutor(final String cmdProcessor, final String cmd, long maxHungTime, final CmdProgressionListener listener) {
 		super();
 		this.cmdProcessor = cmdProcessor;
 		this.cmd = cmd;
 		this.listener = listener;
+		this.maxHungTime = maxHungTime;
+		this.hungThread = false;
 	}
 
 	public void execute() throws ExecutorFailedException {
@@ -52,7 +59,12 @@ public class CmdExecutor {
 			// wait for both thread
 			outputThread.join();
 			errorThread.join();
-			process.waitFor();
+			if (hungThread) {
+				process.destroy();
+				throw new HungProcessException(cmd, fullOutput.toString(), lastOutputLine, maxHungTime);
+			} else {
+				process.waitFor();
+			}
 		} catch (final InterruptedException e) {
 			throw new ExecutorFailedException(cmd, fullOutput.toString(), lastOutputLine, e);
 		} finally {
@@ -98,16 +110,21 @@ public class CmdExecutor {
 				try {
 					final BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
 					String line = "";
+					String lastHandledLine;
+					String handledLine = null;
 					try {
 						long lastTime = 0;
-						while ((line = reader.readLine()) != null) {
+						while ((line = reader.readLine()) != null && !hungThread) {
 							fullOutput.append(line);
 							fullOutput.append("\n");
 							lastOutputLine = line;
-							final String handledLine = handleProgression(line);
+							lastHandledLine = handledLine;
+							handledLine = handleProgression(line);
 							LOG.debug(line);
-							if (listener != null && handledLine != null && (System.currentTimeMillis() - lastTime) > FrameworkConf.TIME_BETWEEN_LOG) {
-								lastTime = System.currentTimeMillis();
+							final long now = System.currentTimeMillis();
+							if (listener != null && handledLine != null && (now - lastTime) > FrameworkConf.TIME_BETWEEN_LOG) {
+								hungThread = isHungProcess(lastHandledLine, handledLine, now, lastTime, maxHungTime);
+								lastTime = now;
 								listener.listen(handledLine);
 							}
 						}
@@ -120,6 +137,10 @@ public class CmdExecutor {
 			}
 		};
 		return tread;
+	}
+
+	private boolean isHungProcess(String lastHandledLine, String currentHandledLine, long now, long lastTime, long maxHungTime) {
+		return lastHandledLine != null && currentHandledLine != null && (currentHandledLine.equals(lastHandledLine)) && (now - lastTime) > maxHungTime;
 	}
 
 	protected String getLastOutputLine() {

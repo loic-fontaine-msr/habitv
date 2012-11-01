@@ -10,7 +10,7 @@ public interface HabitTvConf {
 	
 	long DEFAULT_DEMON_TIME_SEC = 1800;
 
-	int CUT_SIZE = 40;
+	int DEFAULT_CUT_SIZE = 40;
 
 	String GRAB_CONF_XSD = "grab-config.xsd";
 
