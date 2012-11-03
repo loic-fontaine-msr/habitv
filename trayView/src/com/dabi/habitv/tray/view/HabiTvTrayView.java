@@ -1,3 +1,4 @@
+
 package com.dabi.habitv.tray.view;
 
 import java.awt.AWTException;
@@ -13,6 +14,7 @@ import com.dabi.habitv.core.event.RetreiveEvent;
 import com.dabi.habitv.core.event.SearchCategoryEvent;
 import com.dabi.habitv.core.event.SearchEvent;
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
+import com.dabi.habitv.tray.Messages;
 import com.dabi.habitv.tray.controller.TrayController;
 import com.dabi.habitv.tray.model.ActionProgress;
 import com.dabi.habitv.tray.subscriber.CoreSubscriber;
@@ -33,9 +35,9 @@ public final class HabiTvTrayView implements CoreSubscriber {
 
 	public HabiTvTrayView(final TrayController controller) {
 		this.controller = controller;
-		fixImage = getImage("fixe.gif");
-		animatedImage = getImage("anim.gif");
-		trayIcon = new TrayIcon(fixImage, "habiTv");
+		fixImage = getImage("fixe.gif"); //$NON-NLS-1$
+		animatedImage = getImage("anim.gif"); //$NON-NLS-1$
+		trayIcon = new TrayIcon(fixImage, Messages.getString("HabiTvTrayView.2")); //$NON-NLS-1$
 		try {
 			init();
 		} catch (final AWTException e) {
@@ -79,7 +81,7 @@ public final class HabiTvTrayView implements CoreSubscriber {
 				@Override
 				public void mouseClicked(final MouseEvent mouseEvent) {
 					if (!controller.getModel().getProgressionModel().getEpisodeName2ActionProgress().isEmpty()) {
-						trayIcon.displayMessage("Processing", progressionToText(controller.getModel().getProgressionModel().getEpisodeName2ActionProgress()),
+						trayIcon.displayMessage(Messages.getString("HabiTvTrayView.3"), progressionToText(controller.getModel().getProgressionModel().getEpisodeName2ActionProgress()), //$NON-NLS-1$
 								TrayIcon.MessageType.INFO);
 					}
 				}
@@ -95,20 +97,20 @@ public final class HabiTvTrayView implements CoreSubscriber {
 			if (str == null) {
 				str = new StringBuilder();
 			} else {
-				str.append("\n");
+				str.append("\n"); //$NON-NLS-1$
 			}
-			str.append(actionProgress.getEpisode().getCategory() + " " + actionProgress.getEpisode().getName() + " ");
+			str.append(actionProgress.getEpisode().getCategory() + " " + actionProgress.getEpisode().getName() + " "); //$NON-NLS-1$ //$NON-NLS-2$
 			String progression = actionProgress.getProgress();
 			if (progression != null && progression.length() > 0) {
-				progression = progression + "%";
+				progression = progression + "%"; //$NON-NLS-1$
 			} else {
-				progression = "";
+				progression = ""; //$NON-NLS-1$
 			}
 			String info = actionProgress.getInfo();
 			if (info == null) {
-				info = "";
+				info = ""; //$NON-NLS-1$
 			}
-			str.append(actionProgress.getState().name() + " " + info + " " + progression);
+			str.append(actionProgress.getState().name() + " " + info + " " + progression); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		return str.toString();
 	}
@@ -125,14 +127,14 @@ public final class HabiTvTrayView implements CoreSubscriber {
 			changeAnimation();
 			break;
 		case BUILD_INDEX:
-			trayIcon.displayMessage("Building Index", "Build Index for " + event.getChannel() + " " + event.getCategory(), TrayIcon.MessageType.INFO);
+			trayIcon.displayMessage(Messages.getString("HabiTvTrayView.12"), Messages.getString("HabiTvTrayView.13") + event.getChannel() + " " + event.getCategory(), TrayIcon.MessageType.INFO); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			break;
 		case CHECKING_EPISODES:
 			checkInProgress = true;
 			changeAnimation();
 			break;
 		case RESUME_EXPORT:
-			trayIcon.displayMessage("Resuming Export", "Reloading export", TrayIcon.MessageType.INFO);
+			trayIcon.displayMessage(Messages.getString("HabiTvTrayView.15"), Messages.getString("HabiTvTrayView.16"), TrayIcon.MessageType.INFO); //$NON-NLS-1$ //$NON-NLS-2$
 			retreiveInProgress = true;
 			changeAnimation();
 			break;
@@ -142,7 +144,7 @@ public final class HabiTvTrayView implements CoreSubscriber {
 		case ERROR:
 			checkInProgress = false;
 			changeAnimation();			
-			trayIcon.displayMessage("Error", "En error has occured : " + event.getException().getMessage(), TrayIcon.MessageType.ERROR);
+			trayIcon.displayMessage(Messages.getString("HabiTvTrayView.17"), Messages.getString("HabiTvTrayView.18") + event.getException().getMessage(), TrayIcon.MessageType.ERROR); //$NON-NLS-1$ //$NON-NLS-2$
 			break;
 		case IDLE:
 
@@ -167,7 +169,7 @@ public final class HabiTvTrayView implements CoreSubscriber {
 
 			break;
 		case DOWNLOAD_FAILED:
-			trayIcon.displayMessage("Warning", "Episode failed to download : " + event.getEpisode().getCategory() + " " + event.getEpisode().getName(),
+			trayIcon.displayMessage(Messages.getString("HabiTvTrayView.19"), Messages.getString("HabiTvTrayView.20") + event.getEpisode().getCategory() + " " + event.getEpisode().getName(), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 					TrayIcon.MessageType.WARNING);
 			break;
 		case DOWNLOADED:
@@ -177,23 +179,23 @@ public final class HabiTvTrayView implements CoreSubscriber {
 
 			break;
 		case EXPORT_FAILED:
-			trayIcon.displayMessage("Warning", "Export failed : " + event.getEpisode().getCategory() + " " + event.getEpisode().getName() + " "
+			trayIcon.displayMessage(Messages.getString("HabiTvTrayView.22"), Messages.getString("HabiTvTrayView.23") + event.getEpisode().getCategory() + " " + event.getEpisode().getName() + " " //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 					+ event.getException().getMessage(), TrayIcon.MessageType.WARNING);
 			break;
 		case EXPORTING:
 
 			break;
 		case FAILED:
-			trayIcon.displayMessage("Error", "En error has occured : " + event.getException().getMessage() + " on episode " + event.getEpisode(),
+			trayIcon.displayMessage(Messages.getString("HabiTvTrayView.26"), Messages.getString("HabiTvTrayView.27") + event.getException().getMessage() + Messages.getString("HabiTvTrayView.28") + event.getEpisode(), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 					TrayIcon.MessageType.WARNING);
 			break;
 		case READY:
-			trayIcon.displayMessage("Episode Ready", "The episode is ready : " + event.getEpisode().getCategory() + " " + event.getEpisode().getName(),
+			trayIcon.displayMessage(Messages.getString("HabiTvTrayView.29"), Messages.getString("HabiTvTrayView.30") + event.getEpisode().getCategory() + " " + event.getEpisode().getName(), //$NON-NLS-1$ //$NON-NLS-2$
 					TrayIcon.MessageType.INFO);
 			break;
 		case TO_DOWNLOAD:
 			retreiveInProgress = true;
-			trayIcon.displayMessage("New Download", "Episode to download : " + event.getEpisode().getCategory() + " " + event.getEpisode().getName(),
+			trayIcon.displayMessage(Messages.getString("HabiTvTrayView.32"), Messages.getString("HabiTvTrayView.33") + event.getEpisode().getCategory() + " " + event.getEpisode().getName(), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 					TrayIcon.MessageType.INFO);
 			break;
 		case TO_EXPORT:
@@ -208,11 +210,11 @@ public final class HabiTvTrayView implements CoreSubscriber {
 	public void update(final SearchCategoryEvent event) {
 		switch (event.getState()) {
 		case BUILDING_CATEGORIES:
-			trayIcon.displayMessage("Grabbing categories", "Grabbing categories for " + event.getChannel(), TrayIcon.MessageType.INFO);
+			trayIcon.displayMessage(Messages.getString("HabiTvTrayView.35"), Messages.getString("HabiTvTrayView.36") + event.getChannel(), TrayIcon.MessageType.INFO); //$NON-NLS-1$ //$NON-NLS-2$
 			trayIcon.setImage(animatedImage);
 			break;
 		case DONE:
-			trayIcon.displayMessage("Grabbing categories", "Categories built in " + event.getInfo(), TrayIcon.MessageType.INFO);
+			trayIcon.displayMessage(Messages.getString("HabiTvTrayView.37"), Messages.getString("HabiTvTrayView.38") + event.getInfo(), TrayIcon.MessageType.INFO); //$NON-NLS-1$ //$NON-NLS-2$
 			changeAnimation();
 			break;
 		case ERROR:

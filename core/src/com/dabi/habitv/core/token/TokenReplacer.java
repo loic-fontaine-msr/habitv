@@ -1,5 +1,6 @@
 package com.dabi.habitv.core.token;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -57,26 +58,29 @@ public final class TokenReplacer {
 				return ensure(episode.getCategory().getExtension());
 			}
 		});
-
-		setCutSize(HabitTvConf.DEFAULT_CUT_SIZE);
 	}
 
 	private static String ensure(final String input) {
 		return FileUtils.sanitizeFilename(input);
 	}
 
-	public static void setCutSize(final int cutSize) {
-
-		for (final Entry<String, Replacer> ref2Replacer : REF2REPLACER.entrySet()) {
+	public static void setCutSize(final Integer cutSize) {
+		final int size;
+		if (cutSize == null) {
+			size = HabitTvConf.DEFAULT_CUT_SIZE;
+		} else {
+			size = cutSize;
+		}
+		for (final Entry<String, Replacer> ref2Replacer : new ArrayList<>(REF2REPLACER.entrySet())) {
 			String key = ref2Replacer.getKey();
 			// remove last #
-			key = key.substring(0, key.length() - 2) + "_CUT#";
+			key = key.substring(0, key.length() - 1) + "_CUT#";
 			REF2REPLACER.put(key, new Replacer() {
-				
+
 				@Override
 				String replace(EpisodeDTO episode) {
 					final String replaced = ref2Replacer.getValue().replace(episode);
-					return replaced.substring(0, Math.min(cutSize, replaced.length() - 1));
+					return replaced.substring(0, Math.min(size, replaced.length() - 1));
 				}
 			});
 		}
