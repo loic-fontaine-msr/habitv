@@ -47,6 +47,12 @@
 			<resource>
 				<directory>img</directory>
 			</resource>
+			<resource>
+				<directory>src</directory>
+				<includes>
+					<include>**/*properties</include>
+				</includes>
+			</resource>			
 		</resources>
 		<plugins>
 			<plugin>

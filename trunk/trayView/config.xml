@@ -3,6 +3,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.dabi.com/habitv/config/entities config.xsd ">
 	<demonTime>1800</demonTime>
+	<fileNameCutSize>50</fileNameCutSize>
 	<workingDir>../builder/pub</workingDir>
 	<indexDir>../builder/pub/index</indexDir>
 	<providerPluginDir>../builder/pub/provider</providerPluginDir>

@@ -27,7 +27,7 @@ public final class TrayMenu extends PopupMenu {
 	}
 
 	private void init() {
-		final MenuItem startItem = new MenuItem("Check");
+		final MenuItem startItem = new MenuItem(Messages.getString("TrayMenu.0")); //$NON-NLS-1$
 		ActionListener actionListener = new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent actionEvent) {
@@ -48,7 +48,7 @@ public final class TrayMenu extends PopupMenu {
 		final Menu configSection = buildConfigMenuSection();
 		this.add(configSection);
 
-		MenuItem item = new MenuItem("Clear");
+		MenuItem item = new MenuItem(Messages.getString("TrayMenu.1")); //$NON-NLS-1$
 		actionListener = new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent actionEvent) {
@@ -58,7 +58,7 @@ public final class TrayMenu extends PopupMenu {
 		item.addActionListener(actionListener);
 		this.add(item);
 
-		item = new MenuItem("Quitter");
+		item = new MenuItem(Messages.getString("TrayMenu.2")); //$NON-NLS-1$
 		actionListener = new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent actionEvent) {
@@ -71,9 +71,9 @@ public final class TrayMenu extends PopupMenu {
 	}
 
 	private Menu buildExportMenuSection() {
-		final Menu section = new Menu("Export");
+		final Menu section = new Menu(Messages.getString("TrayMenu.3")); //$NON-NLS-1$
 
-		final MenuItem redoExport = new MenuItem("Redo export");
+		final MenuItem redoExport = new MenuItem(Messages.getString("TrayMenu.4")); //$NON-NLS-1$
 		ActionListener actionListener = new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent actionEvent) {
@@ -85,7 +85,7 @@ public final class TrayMenu extends PopupMenu {
 		redoExport.addActionListener(actionListener);
 		section.add(redoExport);
 
-		MenuItem clearExport = new MenuItem("Clear Export");
+		MenuItem clearExport = new MenuItem(Messages.getString("TrayMenu.5")); //$NON-NLS-1$
 		actionListener = new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent actionEvent) {
@@ -98,9 +98,9 @@ public final class TrayMenu extends PopupMenu {
 	}
 
 	private Menu buildConfigMenuSection() {
-		final Menu section = new Menu("Config");
+		final Menu section = new Menu(Messages.getString("TrayMenu.6")); //$NON-NLS-1$
 
-		MenuItem item = new MenuItem("System");
+		MenuItem item = new MenuItem(Messages.getString("TrayMenu.7")); //$NON-NLS-1$
 		ActionListener actionListener = new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent actionEvent) {
@@ -110,7 +110,7 @@ public final class TrayMenu extends PopupMenu {
 		item.addActionListener(actionListener);
 		section.add(item);
 
-		item = new MenuItem("Grab config");
+		item = new MenuItem(Messages.getString("TrayMenu.8")); //$NON-NLS-1$
 		actionListener = new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent actionEvent) {
@@ -120,7 +120,7 @@ public final class TrayMenu extends PopupMenu {
 		item.addActionListener(actionListener);
 		section.add(item);
 
-		item = new MenuItem("Update Grab config");
+		item = new MenuItem(Messages.getString("TrayMenu.9")); //$NON-NLS-1$
 		actionListener = new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent actionEvent) {
@@ -134,9 +134,9 @@ public final class TrayMenu extends PopupMenu {
 	}
 
 	private Menu buildFolderMenuSection() {
-		final Menu section = new Menu("Folders");
+		final Menu section = new Menu(Messages.getString("TrayMenu.10")); //$NON-NLS-1$
 
-		MenuItem item = new MenuItem("Index Folder");
+		MenuItem item = new MenuItem(Messages.getString("TrayMenu.11")); //$NON-NLS-1$
 		ActionListener actionListener = new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent actionEvent) {
@@ -146,7 +146,7 @@ public final class TrayMenu extends PopupMenu {
 		item.addActionListener(actionListener);
 		section.add(item);
 
-		item = new MenuItem("Download Folder");
+		item = new MenuItem(Messages.getString("TrayMenu.12")); //$NON-NLS-1$
 		actionListener = new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent actionEvent) {
@@ -183,7 +183,7 @@ public final class TrayMenu extends PopupMenu {
 
 	public void openDownloaderFolder() {
 		final Config config = controller.getModel().getConfig();
-		open(config.getDownloadOuput().substring(0, config.getDownloadOuput().indexOf("#")));
+		open(config.getDownloadOuput().substring(0, config.getDownloadOuput().indexOf("#"))); //$NON-NLS-1$
 	}
 
 	public void openConfig() {

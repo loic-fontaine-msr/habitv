@@ -52,7 +52,6 @@ public class TestFfmpegCmdExecutor {
 		final FFMPEGCmdExecutor curlCmdExecutor = new FakeCurlCmdExecutor(0, "", fakeProgressionListener);
 		curlCmdExecutor.execute();
 		Assert.assertEquals("100", fakeProgressionListener.progression);
-		Assert.assertTrue(curlCmdExecutor.isSuccess(""));
 	}
 
 	@Test
