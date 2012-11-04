@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<program id="18">
+					<detail>
+						<intitule><![CDATA[Le Zap]]></intitule>
+						<accroche><![CDATA[]]></accroche>
+						<duree>3500</duree>
+						<resume><![CDATA[
+Un zapping étonnant qui s’adresse à la génération qui a grandi avec une télécommande à portée de la main. Vidéos amateurs, people, passages télé... Internet fourmille de séquences toutes plus drôles, plus insolites, les unes que les autres. "Le Zap" a ainsi déniché les plus belles chutes, des fous-rires mémorables, des performances étonnantes... pour surprendre encore et encore. Détente et surprises 
+sont au rendez-vous de ce programme pas comme les autres.
+]]></resume>
+						<category>5</category>
+
+						<visuel_iphone><![CDATA[http://media.d17.tv/image/upload/2012-10/d17-le-zap_unnqo_640x360.jpg]]></visuel_iphone>
+						<visuel_ipad_portrait><![CDATA[http://media.d17.tv/image/upload/2012-10/d17-le-zap_unnqo_768x432.jpg]]></visuel_ipad_portrait>
+						<visuel_ipad_paysage><![CDATA[http://media.d17.tv/image/upload/2012-10/d17-le-zap_unnqo_785x442.jpg]]></visuel_ipad_paysage>
+
+						<note>4</note>
+						<nb_comm>631</nb_comm>
+					
+							<flux_bande_annonce_iphone><![CDATA[http://bollore-mobile.cdn.hexaglobe.net/HexaglobeMediaPlatformLite/proxy/iphoneas/1FA031322/1FA031322.m3u8]]></flux_bande_annonce_iphone>
+							<flux_bande_annonce_ipad><![CDATA[http://bollore-mobile.cdn.hexaglobe.net/HexaglobeMediaPlatformLite/proxy/iphoneas/1FA031322/1FA031322.m3u8]]></flux_bande_annonce_ipad>
+
+							<preroll>
+								<preroll_url><![CDATA[http://www.d17.tv/api/applicationv2/flux/ad/type/video/id/15585]]></preroll_url>
+							</preroll>
+						<url_partage_programme_facebook><![CDATA[http://www.d17.tv/programs/le-zap]]></url_partage_programme_facebook><intitule_prochain_episode><![CDATA[Prochaine diffusion]]></intitule_prochain_episode>
+											<date>2012-11-09 20:50:00</date>
+					</detail>
+
+					<replays>
+					
+									<replay id="15689"><replay_intitule><![CDATA[Replay]]></replay_intitule>
+									<replay_sous_titre><![CDATA[]]></replay_sous_titre>
+
+									<replay_visuel_iphone><![CDATA[http://media.d17.tv/image/upload/2012-10/d17-le-zap_unnqo_200x114.jpg]]></replay_visuel_iphone>
+									<replay_visuel_ipad><![CDATA[http://media.d17.tv/image/upload/2012-10/d17-le-zap_unnqo_230x129.jpg]]></replay_visuel_ipad>
+
+									<replay_flux_replay_iphone><![CDATA[http://bollore-mobile.cdn.hexaglobe.net/HexaglobeMediaPlatformLite/proxy/iphoneas/1FA032552/1FA032552.m3u8]]></replay_flux_replay_iphone>
+									<replay_flux_replay_ipad><![CDATA[http://bollore-mobile.cdn.hexaglobe.net/HexaglobeMediaPlatformLite/proxy/iphoneas/1FA032552/1FA032552.m3u8]]></replay_flux_replay_ipad>
+
+									<replay_note>0</replay_note>
+
+									<preroll>
+										<preroll_url><![CDATA[http://www.d17.tv/api/applicationv2/flux/ad/type/video/id/15689]]></preroll_url>
+									</preroll>
+
+								</replay>
+							<replay id="15585">
+								<replay_intitule><![CDATA[Bande-annonce]]></replay_intitule>
+								<replay_sous_titre><![CDATA[]]></replay_sous_titre>
+
+								<replay_visuel_iphone><![CDATA[http://media.d17.tv/image/upload/2012-10/d17-le-zap_unnqo_200x114.jpg]]></replay_visuel_iphone>
+								<replay_visuel_ipad><![CDATA[http://media.d17.tv/image/upload/2012-10/d17-le-zap_unnqo_230x129.jpg]]></replay_visuel_ipad>
+
+								<replay_flux_replay_iphone><![CDATA[http://bollore-mobile.cdn.hexaglobe.net/HexaglobeMediaPlatformLite/proxy/iphoneas/1FA031322/1FA031322.m3u8]]></replay_flux_replay_iphone>
+								<replay_flux_replay_ipad><![CDATA[http://bollore-mobile.cdn.hexaglobe.net/HexaglobeMediaPlatformLite/proxy/iphoneas/1FA031322/1FA031322.m3u8]]></replay_flux_replay_ipad>
+
+								<replay_note>0</replay_note>
+
+								<preroll>
+									<preroll_url><![CDATA[http://www.d17.tv/api/applicationv2/flux/ad/type/video/id/15585]]></preroll_url>
+								</preroll>
+
+							</replay>
+					</replays>
+					<diffusions>
+					
+							<diffusion>
+								<detail><![CDATA[Vendredi 09/11 - 20h50 - 22h25]]></detail>
+							</diffusion>
+							
+							<diffusion>
+								<detail><![CDATA[Vendredi 09/11 - 22h25 - 23h25]]></detail>
+							</diffusion>
+							
+					</diffusions>
+					</program>
