@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+  <xs:element name="rubriques">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="rubrique"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="rubrique">
+    <xs:complexType mixed="true">
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="label"/>
+        <xs:element ref="programs"/>
+      </xs:choice>
+      <xs:attribute name="id" type="xs:integer"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="programs">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="program"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="program">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="type"/>
+        <xs:element ref="label"/>
+        <xs:element ref="tagline"/>
+        <xs:element ref="short_description"/>
+        <xs:element ref="program_url_partage"/>
+        <xs:element ref="img"/>
+        <xs:element ref="rubrique"/>
+      </xs:sequence>
+      <xs:attribute name="id" use="required" type="xs:integer"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="type" type="xs:NCName"/>
+  <xs:element name="tagline">
+    <xs:complexType/>
+  </xs:element>
+  <xs:element name="short_description" type="xs:string"/>
+  <xs:element name="program_url_partage" type="xs:anyURI"/>
+  <xs:element name="img" type="xs:anyURI"/>
+  <xs:element name="label" type="xs:string"/>
+</xs:schema>
