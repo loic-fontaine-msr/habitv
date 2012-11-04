@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+  <xs:element name="programs">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="programs_visuel_ipad_portrait"/>
+        <xs:element ref="programs_visuel_ipad_paysage"/>
+        <xs:element maxOccurs="unbounded" ref="program"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="programs_visuel_ipad_portrait" type="xs:anyURI"/>
+  <xs:element name="programs_visuel_ipad_paysage" type="xs:anyURI"/>
+  <xs:element name="program">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="intitule"/>
+        <xs:element ref="resume"/>
+        <xs:element ref="nb_comm"/>
+        <xs:element ref="visuel_iphone"/>
+        <xs:element ref="visuel_ipad_portrait"/>
+        <xs:element ref="visuel_ipad_paysage"/>
+        <xs:element ref="note"/>
+      </xs:sequence>
+      <xs:attribute name="id" use="required" type="xs:integer"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="intitule" type="xs:string"/>
+  <xs:element name="resume">
+    <xs:complexType/>
+  </xs:element>
+  <xs:element name="nb_comm" type="xs:integer"/>
+  <xs:element name="visuel_iphone" type="xs:anyURI"/>
+  <xs:element name="visuel_ipad_portrait" type="xs:anyURI"/>
+  <xs:element name="visuel_ipad_paysage" type="xs:anyURI"/>
+  <xs:element name="note" type="xs:integer"/>
+</xs:schema>
