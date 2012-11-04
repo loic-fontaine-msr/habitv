@@ -23,6 +23,8 @@
 		<module>../tvSubtitles</module>
 		<module>../cmdDownloader</module>
 		<module>../pluzz</module>
+		<module>../d8</module>
+		<module>../d17</module>
 		<module>../aria2Downloader</module>
 		<module>../curlDownloader</module>
 		<module>../youtubeDownloader</module>
