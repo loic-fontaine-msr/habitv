@@ -167,24 +167,30 @@ public final class RetrieverUtils {
 			throw new TechnicalException(e);
 		}
 
-		// final byte[] buffer = new byte[URL_BUFFER_SIZE];
-		//
-		// while (true) {
-		// int byteRead;
-		// try {
-		// byteRead = in.read(buffer);
-		// } catch (final IOException e) {
-		// throw new TechnicalException(e);
-		// }
-		// if (byteRead == -1) {
-		// break;
-		// }
-		// for (int i = 0; i < byteRead; i++) {
-		// sb.append((char) buffer[i]);
-		// }
-		// }
 		return sb.toString();
 
 	}
 
+	public static String getUrlContentRef(final String url, final String referer) {
+
+		try {
+			final URLConnection hc = (new URL(url)).openConnection();
+			hc.setRequestProperty("User-Agent", USER_AGENT);
+			hc.setRequestProperty("referer", referer);
+			final InputStream in = hc.getInputStream();
+
+			final BufferedReader reader;
+			reader = new BufferedReader(new InputStreamReader(in));
+			final StringBuffer sb = new StringBuffer();
+
+			String readLine;
+			while ((readLine = reader.readLine()) != null) {
+				sb.append(readLine);
+			}
+			return sb.toString();
+		} catch (IOException e) {
+			throw new TechnicalException(e);
+		}
+
+	}
 }
