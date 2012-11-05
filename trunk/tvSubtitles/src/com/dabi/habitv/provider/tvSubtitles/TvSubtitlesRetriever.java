@@ -9,6 +9,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.Segment;
@@ -21,6 +23,8 @@ import com.dabi.habitv.framework.plugin.exception.TechnicalException;
 
 public final class TvSubtitlesRetriever {
 
+	private static final Pattern EP_NUMBER_PATTERN = Pattern.compile(".*\\s+(\\d+x\\d+)\\s+.*");
+
 	private TvSubtitlesRetriever() {
 
 	}
@@ -31,7 +35,7 @@ public final class TvSubtitlesRetriever {
 			for (final Segment segment : source.getAllStartTags("tr align=\"middle\" bgcolor=\"#ffffff\"")) {
 				if (segment.getChildElements().size() > 0 && segment.getChildElements().get(0).getChildElements().size() > 0) {
 					final String url = segment.getChildElements().get(0).getChildElements().get(1).getChildElements().get(0).getAttributeValue("href");
-					episodeList.addAll(findReleaseByEpisode(category, url));
+					episodeList.addAll(findReleaseByEpisode(category, url, false));
 				}
 			}
 		} catch (final IOException e) {
@@ -39,6 +43,28 @@ public final class TvSubtitlesRetriever {
 		}
 		return episodeList;
 
+	}
+
+	public static Set<EpisodeDTO> filterByEpNumberOnly(Set<EpisodeDTO> episodeList) {
+		final Set<EpisodeDTO> newEpisodeList = new HashSet<>();
+		final Set<String> epNumberList = new HashSet<>();
+		String epNumber;
+		for (EpisodeDTO episode : episodeList) {
+			epNumber = findEpNumber(episode);
+			if (!episodeList.contains(epNumber)) {
+				newEpisodeList.add(new EpisodeDTO(episode.getCategory(), epNumber, episode.getUrl()));
+				epNumberList.add(epNumber);
+			}
+		}
+		return newEpisodeList;
+	}
+
+	private static String findEpNumber(EpisodeDTO episode) {
+		final Matcher matcher = EP_NUMBER_PATTERN.matcher(episode.getName());
+		if (matcher.find()) {
+			return matcher.group(matcher.groupCount());
+		}
+		return null;
 	}
 
 	public static Set<EpisodeDTO> findEpisodeByCategory(final CategoryDTO category) throws IOException {
@@ -60,7 +86,8 @@ public final class TvSubtitlesRetriever {
 		return episodeList;
 	}
 
-	private static Collection<EpisodeDTO> findReleaseByEpisode(final CategoryDTO category, final String episodeUrl) throws MalformedURLException, IOException {
+	public static Collection<EpisodeDTO> findReleaseByEpisode(final CategoryDTO category, final String episodeUrl, final boolean dlLink)
+			throws MalformedURLException, IOException {
 		final Source source = new Source(new URL(TvSubtitlesConf.HOME_URL + "/" + episodeUrl));
 		Integer previousRate = null;
 		final Map<String, Integer> nameToRate = new HashMap<>();
@@ -77,7 +104,7 @@ public final class TvSubtitlesRetriever {
 						previousRate = nameToRate.get(epName);
 
 						if (previousRate == null || rate > previousRate) {
-							nameToEpisode.put(epName, new EpisodeDTO(category, epName, dlUrl));
+							nameToEpisode.put(epName, new EpisodeDTO(category, epName, (dlLink) ? dlUrl : episodeUrl));
 							nameToRate.put(epName, rate);
 						}
 						previousRate = rate;
