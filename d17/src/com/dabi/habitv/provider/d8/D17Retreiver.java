@@ -6,8 +6,6 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.xml.bind.JAXBElement;
-
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
@@ -20,10 +18,12 @@ import com.dabi.habitv.framework.plugin.exception.TechnicalException;
 import com.dabi.habitv.framework.plugin.utils.RetrieverUtils;
 import com.dabi.habitv.provider.d17.cat.Program;
 import com.dabi.habitv.provider.d17.cat.Programs;
+import com.dabi.habitv.provider.d17.ep.Replay;
 
 class D17Retreiver {
 
-	private static final Pattern JS_URL_PATTERN = Pattern.compile("<script type=[\'|\"]text/javascript[\'|\"] src=[\'|\"]([^\'\"]*player-vod-ads.js.[^\'\"]*)[\'|\"]></script>");
+	private static final Pattern JS_URL_PATTERN = Pattern
+			.compile("<script type=[\'|\"]text/javascript[\'|\"] src=[\'|\"]([^\'\"]*player-vod-ads.js.[^\'\"]*)[\'|\"]></script>");
 	private static final Pattern BASE_URL_PATTERN = Pattern.compile(".*baseUrl:\\s*\\\'(.*/)\\\',.*");
 	private static final Pattern FLV_URL_PATTERN = Pattern.compile(".*url : \\\'([^\\\']*)\\\'\\s*},");
 
@@ -55,7 +55,7 @@ class D17Retreiver {
 		// si un seul épisode, il faut ajouter la date dans le titre pour
 		// pouvoir le redl quand il change
 		if (episodes.size() == 1) {
-			String date = findDate(classLoader, category);
+			String date = findMarker(classLoader, category);
 			final Set<EpisodeDTO> episodesDated = new HashSet<>();
 			for (EpisodeDTO episodeDTO : episodes) {
 				episodesDated.add(new EpisodeDTO(category, episodeDTO.getName() + " " + date, episodeDTO.getUrl()));
@@ -66,21 +66,24 @@ class D17Retreiver {
 		return episodes;
 	}
 
-	private static String findDate(ClassLoader classLoader, CategoryDTO category) {
+	private static String findMarker(ClassLoader classLoader, CategoryDTO category) {
 
 		final com.dabi.habitv.provider.d17.ep.Program program = (com.dabi.habitv.provider.d17.ep.Program) RetrieverUtils.unmarshalInputStream(RetrieverUtils
 				.getInputStreamFromUrl(String.format(D17Conf.PROGRAM_API_URL, category.getId())), com.dabi.habitv.provider.d17.ep.Program.class.getPackage()
 				.getName(), classLoader);
-		String ret ="";
-		for (Object object : program.getDetail().getContent()) {
-			if (object instanceof JAXBElement){
-				JAXBElement<?> element =(JAXBElement<?>) object;
-				if ("date".equals(element.getName().getLocalPart())){
-					ret =  (String) element.getValue();
-					break;
-				}
+		String ret = "";
+		for (Replay replay : program.getReplays().getReplay()) {
+			if ("Replay".equals(replay.getReplayIntitule())) {
+				ret = String.valueOf(replay.getId());
 			}
-			
+			// if (object instanceof JAXBElement){
+			// JAXBElement<?> element =(JAXBElement<?>) object;
+			// if ("date".equals(element.getName().getLocalPart())){
+			// ret = (String) element.getValue();
+			// break;
+			// }
+			// }
+
 		}
 		return ret;
 	}

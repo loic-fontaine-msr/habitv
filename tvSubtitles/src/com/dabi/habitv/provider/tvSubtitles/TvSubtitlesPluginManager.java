@@ -1,10 +1,12 @@
 package com.dabi.habitv.provider.tvSubtitles;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.api.downloader.PluginDownloaderInterface;
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
 import com.dabi.habitv.framework.plugin.api.dto.DownloaderDTO;
@@ -14,14 +16,13 @@ import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.framework.plugin.exception.NoSuchDownloaderException;
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
-import com.dabi.habitv.framework.FrameworkConf;
 
 public class TvSubtitlesPluginManager implements PluginProviderInterface {
 
 	@Override
 	public Set<EpisodeDTO> findEpisode(final CategoryDTO category) {
 		try {
-			return TvSubtitlesRetriever.findEpisodeByCategory(category);
+			return TvSubtitlesRetriever.filterByEpNumberOnly(TvSubtitlesRetriever.findEpisodeByCategory(category));
 		} catch (final IOException e) {
 			throw new TechnicalException(e);
 		}
@@ -52,12 +53,26 @@ public class TvSubtitlesPluginManager implements PluginProviderInterface {
 		parameters.put(FrameworkConf.PARAMETER_BIN_PATH, downloaders.getBinPath(downloaderName));
 		parameters.put(FrameworkConf.CMD_PROCESSOR, downloaders.getCmdProcessor());
 
+		Collection<EpisodeDTO> releaseList;
 		try {
-			pluginDownloader.download(TvSubtitlesConf.HOME_URL + "/" + TvSubtitlesRetriever.findDownloadLink(episode.getUrl()), downloadOuput, parameters,
-					cmdProgressionListener);
-		} catch (final IOException e) {
+			releaseList = TvSubtitlesRetriever.findReleaseByEpisode(null, episode.getUrl(), true);
+		} catch (IOException e) {
 			throw new TechnicalException(e);
 		}
+
+		for (EpisodeDTO episodeDTO : releaseList) {
+			try {
+				pluginDownloader.download(TvSubtitlesConf.HOME_URL + "/" + TvSubtitlesRetriever.findDownloadLink(episodeDTO.getUrl()),
+						buildDownloadOuput(episodeDTO, downloadOuput), parameters, cmdProgressionListener);
+			} catch (final IOException e) {
+				throw new TechnicalException(e);
+			}
+		}
+	}
+
+	private String buildDownloadOuput(EpisodeDTO episodeDTO, String downloadOuput) {
+		return downloadOuput.substring(0, downloadOuput.lastIndexOf("/")+1) + episodeDTO.getName().replaceAll("[\\s,:\\\\/*?!|<>&«»()\"\']", "_") + "."
+				+ TvSubtitlesConf.EXTENSION;
 	}
 
 }
