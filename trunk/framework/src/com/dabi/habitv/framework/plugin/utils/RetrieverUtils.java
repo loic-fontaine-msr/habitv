@@ -153,7 +153,7 @@ public final class RetrieverUtils {
 			} else {
 				reader = new BufferedReader(new InputStreamReader(in));
 			}
-		} catch (UnsupportedEncodingException e) {
+		} catch (final UnsupportedEncodingException e) {
 			throw new TechnicalException(e);
 		}
 		final StringBuffer sb = new StringBuffer();
@@ -161,9 +161,9 @@ public final class RetrieverUtils {
 		String readLine;
 		try {
 			while ((readLine = reader.readLine()) != null) {
-				sb.append(readLine);
+				sb.append(readLine+"\r\n");
 			}
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			throw new TechnicalException(e);
 		}
 
@@ -188,9 +188,32 @@ public final class RetrieverUtils {
 				sb.append(readLine);
 			}
 			return sb.toString();
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			throw new TechnicalException(e);
 		}
 
+	}
+
+	public static byte[] getUrlContentBytes(final String url) {
+		final InputStream in = getInputStreamFromUrl(url);
+		final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		int i;
+		try {
+			while ((i = in.read()) != -1) {
+				baos.write(i);
+				baos.flush();
+			}
+			baos.close();
+			in.close();
+		} catch (final IOException e) {
+			throw new TechnicalException(e);
+		} finally {
+			try {
+				in.close();
+			} catch (final IOException e) {
+				// should log ?
+			}
+		}
+		return baos.toByteArray();
 	}
 }

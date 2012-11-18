@@ -25,6 +25,10 @@
 		<name>curl</name>
 		<binPath>..\curlDownloader\exe\curl.exe</binPath>
 	</downloader>
+	<downloader>
+		<name>ffmpeg</name>
+		<binPath>..\ffmpegExporter\exe\ffmpeg.exe</binPath>
+	</downloader>	
 	<exporter>
 		<condition>
 			<reference>#EXTENSION#</reference>

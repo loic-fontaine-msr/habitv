@@ -25,6 +25,10 @@
 		<name>curl</name>
 		<binPath>bin\curl.exe</binPath>
 	</downloader>
+	<downloader>
+		<name>ffmpeg</name>
+		<binPath>bin\ffmpeg.exe</binPath>
+	</downloader>	
 	<taskDefinition>
 		<taskName>category</taskName>
 		<size>5</size>

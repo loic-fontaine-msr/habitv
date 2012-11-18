@@ -4,11 +4,15 @@ public interface PluzzConf {
 
 	String NAME = "pluzz";
 
-	String HOME_URL = "http://pluzz.francetv.fr";
+	String EXTENSION = "avi";
 
-	String EXTENSION = "mp4";
+	String ASSEMBLE_CMD = "%s -isync -i \"concat:%s\" -c copy %s";
 
-	String USER_AGENT = "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0)";
+	String ZIP_URL = "http://webservices.francetelevisions.fr/catchup/flux/flux_main.zip";
 
-	String RSS_URL = "http://feeds.feedburner.com/Pluzz-#CATEGORY#?format=xml";
+	long MAX_CACHE_ARCHIVE_TIME_MS = 60000L;
+
+	String ASSEMBLER = "ffmpeg";
+
+	String BASE_URL = "http://medias2.francetv.fr/catchup-mobile";
 }

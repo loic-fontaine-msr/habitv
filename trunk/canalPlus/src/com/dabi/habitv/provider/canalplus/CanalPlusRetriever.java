@@ -7,6 +7,7 @@ import java.util.Set;
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
 import com.dabi.habitv.framework.plugin.utils.RetrieverUtils;
+import com.dabi.habitv.framework.plugin.utils.SoccerUtils;
 import com.dabi.habitv.provider.canalplus.mea.entities.MEA;
 import com.dabi.habitv.provider.canalplus.mea.entities.MEAS;
 import com.dabi.habitv.provider.canalplus.video.entities.VIDEO;
@@ -69,7 +70,7 @@ class CanalPlusRetriever {
 
 			String name = video.getINFOS().getTITRAGE().getSOUSTITRE() + " - " + video.getINFOS().getTITRAGE().getTITRE();
 			if (originalCategory.getName().contains("FOOTBALL")) {
-				name = name.replaceAll("(\\d\\s*-\\s*\\d)", "").replaceAll("(\\d_*-_*\\d)", "");
+				name = SoccerUtils.maskScore(name);
 			}
 
 			// il est possible que plusieurs épisode s'appelle du soustitre
