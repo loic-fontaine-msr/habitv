@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -14,6 +16,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
+import com.dabi.habitv.framework.plugin.api.dto.DownloaderDTO;
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
 import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.framework.plugin.exception.NoSuchDownloaderException;
@@ -53,12 +56,9 @@ public class PluzzPluginManagerTest {
 		final CategoryDTO surCategory = new CategoryDTO("channel", "Jeunesse", "http://feeds.feedburner.com/Pluzz-Jeunesse?format=xml", "mp4");
 		surCategory.addSubCategory(category);
 		final Set<EpisodeDTO> episodeList = manager.findEpisode(category);
-		boolean contain = false;
 		for (final EpisodeDTO episode : episodeList) {
 			assertNotNull(episode.getUrl());
-			contain = true;
 		}
-		assertTrue(contain);
 	}
 
 	@Test
@@ -73,12 +73,15 @@ public class PluzzPluginManagerTest {
 
 	@Test
 	public void testDownload() throws DownloadFailedException, NoSuchDownloaderException {
-		manager.download("./test.flv", null, new CmdProgressionListener() {
+		final Map<String, String> downloaderName2BinPath = new HashMap<String, String>();
+		downloaderName2BinPath.put(PluzzConf.ASSEMBLER, "ffmpeg");
+		final DownloaderDTO downloaders = new DownloaderDTO(null, null, downloaderName2BinPath, null, null);
+		manager.download("./test.flv", downloaders, new CmdProgressionListener() {
 
 			@Override
 			public void listen(final String progression) {
 				LOG.info(progression);
 			}
-		}, new EpisodeDTO(null, "test", "http://feedproxy.google.com/~r/Pluzz-Jeunesse/~3/7t19VQDIwDY/gumball-2012-09-05-10h05.html"));
+		}, new EpisodeDTO(null, "test", "/france-dom-tom/non-token/non-drm/m3u8/2012/S46/J5/72496473-20121116-840k.m3u8"));
 	}
 }

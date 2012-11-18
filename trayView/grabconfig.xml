@@ -7514,6 +7514,54 @@
             <toDownload>false</toDownload>
             <extension>zip</extension>
         </category>
+        <category>
+            <id>tvshow-1225-1.html</id>
+            <name>Horror in the east</name>
+            <toDownload>false</toDownload>
+            <extension>zip</extension>
+        </category>
+        <category>
+            <id>tvshow-1223-0.html</id>
+            <name>Dunkirk</name>
+            <toDownload>false</toDownload>
+            <extension>zip</extension>
+        </category>
+        <category>
+            <id>tvshow-1219-4.html</id>
+            <name>Adventure Time</name>
+            <toDownload>false</toDownload>
+            <extension>zip</extension>
+        </category>
+        <category>
+            <id>tvshow-1221-10.html</id>
+            <name>Mythbusters</name>
+            <toDownload>false</toDownload>
+            <extension>zip</extension>
+        </category>
+        <category>
+            <id>tvshow-1224-24.html</id>
+            <name>Simpson</name>
+            <toDownload>false</toDownload>
+            <extension>zip</extension>
+        </category>
+        <category>
+            <id>tvshow-1226-1.html</id>
+            <name>King of Baking</name>
+            <toDownload>false</toDownload>
+            <extension>zip</extension>
+        </category>
+        <category>
+            <id>tvshow-1222-1.html</id>
+            <name>Secret State</name>
+            <toDownload>false</toDownload>
+            <extension>zip</extension>
+        </category>
+        <category>
+            <id>tvshow-1220-1.html</id>
+            <name>Halo 4: Forward Unto Dawn</name>
+            <toDownload>false</toDownload>
+            <extension>zip</extension>
+        </category>
     </channel>
     <channel>
         <name>tf1</name>
@@ -7730,6 +7778,24 @@
         <category>
             <id>masterchef</id>
             <name>masterchef</name>
+            <toDownload>false</toDownload>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>camping-paradis</id>
+            <name>camping-paradis</name>
+            <toDownload>false</toDownload>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>confessions-intimes</id>
+            <name>confessions-intimes</name>
+            <toDownload>false</toDownload>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>no-limit</id>
+            <name>no-limit</name>
             <toDownload>false</toDownload>
             <extension>mp4</extension>
         </category>
@@ -7956,6 +8022,12 @@
             <category>
                 <id>756694</id>
                 <name>DANSE</name>
+                <toDownload>false</toDownload>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>763092</id>
+                <name>ARTS</name>
                 <toDownload>false</toDownload>
                 <extension>mp4</extension>
             </category>
@@ -8397,6 +8469,42 @@
                 <toDownload>false</toDownload>
                 <extension>mp4</extension>
             </category>
+            <category>
+                <id>760385</id>
+                <name>SPORT</name>
+                <toDownload>false</toDownload>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>765933</id>
+                <name>LE BOUCAN DU JOUR</name>
+                <toDownload>false</toDownload>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>741705</id>
+                <name>HUMOUR</name>
+                <toDownload>false</toDownload>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>738188</id>
+                <name>CSMUSIQUE</name>
+                <toDownload>false</toDownload>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>763087</id>
+                <name>TENDANCES</name>
+                <toDownload>false</toDownload>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>766386</id>
+                <name>DANSE</name>
+                <toDownload>false</toDownload>
+                <extension>mp4</extension>
+            </category>
             <extension>mp4</extension>
         </category>
         <category>
@@ -8643,6 +8751,12 @@
                 <toDownload>false</toDownload>
                 <extension>mp4</extension>
             </category>
+            <category>
+                <id>760087</id>
+                <name>CINEPLUS</name>
+                <toDownload>false</toDownload>
+                <extension>mp4</extension>
+            </category>
             <extension>mp4</extension>
         </category>
         <category>
@@ -8688,6 +8802,18 @@
             <category>
                 <id>759470</id>
                 <name>HANDBALL</name>
+                <toDownload>false</toDownload>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>762939</id>
+                <name>AUTRES SPORTS</name>
+                <toDownload>false</toDownload>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>765983</id>
+                <name>INTERIEUR SPORT</name>
                 <toDownload>false</toDownload>
                 <extension>mp4</extension>
             </category>
@@ -8853,6 +8979,12 @@
                 <toDownload>false</toDownload>
                 <extension>mp4</extension>
             </category>
+            <category>
+                <id>766269</id>
+                <name>SALUT LES TERRIENS</name>
+                <toDownload>false</toDownload>
+                <extension>mp4</extension>
+            </category>
             <extension>mp4</extension>
         </category>
         <category>
@@ -8976,6 +9108,12 @@
             <category>
                 <id>759475</id>
                 <name>LES NOUVEAUX EXPLORATEURS</name>
+                <toDownload>false</toDownload>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>766494</id>
+                <name>LE SUPPLEMENT</name>
                 <toDownload>false</toDownload>
                 <extension>mp4</extension>
             </category>
@@ -9426,1677 +9564,6 @@
         </category>
     </channel>
     <channel>
-        <name>pluzz</name>
-        <category>
-            <id>Divertissement</id>
-            <name>Divertissement</name>
-            <toDownload>false</toDownload>
-            <category>
-                <id>Stars &amp; Novelas - Guadeloupe</id>
-                <name>Stars &amp; Novelas - Guadeloupe</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Stars &amp; Novelas - Martinique</id>
-                <name>Stars &amp; Novelas - Martinique</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Stars &amp; Novelas - Polynésie</id>
-                <name>Stars &amp; Novelas - Polynésie</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Stars &amp; Novelas - Réunion</id>
-                <name>Stars &amp; Novelas - Réunion</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Fort Boyard</id>
-                <name>Fort Boyard</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Les années bonheur</id>
-                <name>Les années bonheur</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Mon Taratata à moi</id>
-                <name>Mon Taratata à moi</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>ONDAR Show</id>
-                <name>ONDAR Show</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>On n'demande qu'à en rire</id>
-                <name>On n'demande qu'à en rire</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Rire ensemble contre le racisme</id>
-                <name>Rire ensemble contre le racisme</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Roumanoff et les garçons</id>
-                <name>Roumanoff et les garçons</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Vivement dimanche prochain</id>
-                <name>Vivement dimanche prochain</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Vous trouvez ça normal ?!</id>
-                <name>Vous trouvez ça normal ?!</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Chabada</id>
-                <name>Chabada</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Dany Boon au Palais des glaces</id>
-                <name>Dany Boon au Palais des glaces</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Fidèles au poste !</id>
-                <name>Fidèles au poste !</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Dance St !</id>
-                <name>Dance St !</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Soul Nation</id>
-                <name>Soul Nation</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Street Chef</id>
-                <name>Street Chef</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Les grands du rire</id>
-                <name>Les grands du rire</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Tout n'est pas permis</id>
-                <name>Tout n'est pas permis</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Champs-Elysées</id>
-                <name>Champs-Elysées</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <extension>mp4</extension>
-        </category>
-        <category>
-            <id>Culture</id>
-            <name>Culture</name>
-            <toDownload>false</toDownload>
-            <category>
-                <id>Galigalang</id>
-                <name>Galigalang</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Parler vrai</id>
-                <name>Parler vrai</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Tendance 1ère</id>
-                <name>Tendance 1ère</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Zic Clip</id>
-                <name>Zic Clip</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>(c) France - F2</id>
-                <name>(c) France - F2</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Dans quelle éta-gère</id>
-                <name>Dans quelle éta-gère</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Des mots de minuit</id>
-                <name>Des mots de minuit</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Hebdo musique mag</id>
-                <name>Hebdo musique mag</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Plein 2 ciné</id>
-                <name>Plein 2 ciné</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Thé ou café</id>
-                <name>Thé ou café</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>(c) France - F3</id>
-                <name>(c) France - F3</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Ce soir (ou jamais!)</id>
-                <name>Ce soir (ou jamais!)</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Espace Francophone</id>
-                <name>Espace Francophone</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Les carnets de Julie</id>
-                <name>Les carnets de Julie</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Promenades musicales à Budapest</id>
-                <name>Promenades musicales à Budapest</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Un livre un jour</id>
-                <name>Un livre un jour</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>DJ Zebra aux Franco</id>
-                <name>DJ Zebra aux Franco</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Le ciné de Luigi</id>
-                <name>Le ciné de Luigi</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>(c) France - F5</id>
-                <name>(c) France - F5</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Avis de sorties - France 5</id>
-                <name>Avis de sorties - France 5</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Entrée libre</id>
-                <name>Entrée libre</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>La grande librairie</id>
-                <name>La grande librairie</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>C koi ta Zik</id>
-                <name>C koi ta Zik</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Gloria Gaynor</id>
-                <name>Gloria Gaynor</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>James Brown : Live at Montreux</id>
-                <name>James Brown : Live at Montreux</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Le Lab. Ô</id>
-                <name>Le Lab. Ô</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Tropismes</id>
-                <name>Tropismes</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <extension>mp4</extension>
-        </category>
-        <category>
-            <id>Magazine</id>
-            <name>Magazine</name>
-            <toDownload>false</toDownload>
-            <category>
-                <id>7 actu</id>
-                <name>7 actu</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>7 jours</id>
-                <name>7 jours</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>La Santé d'Abord</id>
-                <name>La Santé d'Abord</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Parler vrai</id>
-                <name>Parler vrai</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Pas un zeste</id>
-                <name>Pas un zeste</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Soyons au net !</id>
-                <name>Soyons au net !</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Ti baba</id>
-                <name>Ti baba</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Tous chérubins</id>
-                <name>Tous chérubins</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Toute nouvelle tendance</id>
-                <name>Toute nouvelle tendance</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>13h15, le Dimanche</id>
-                <name>13h15, le Dimanche</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>13h15, le Samedi</id>
-                <name>13h15, le Samedi</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>C'est au programme</id>
-                <name>C'est au programme</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Comment ca va bien ?</id>
-                <name>Comment ca va bien ?</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Complément d'enquête</id>
-                <name>Complément d'enquête</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Consomag</id>
-                <name>Consomag</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Envoyé spécial</id>
-                <name>Envoyé spécial</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Faites entrer l'accusé</id>
-                <name>Faites entrer l'accusé</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Le jour où tout a basculé</id>
-                <name>Le jour où tout a basculé</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Mots croisés</id>
-                <name>Mots croisés</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>On n'est pas couché</id>
-                <name>On n'est pas couché</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Paris en plus grand</id>
-                <name>Paris en plus grand</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Toute une histoire</id>
-                <name>Toute une histoire</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Télématin</id>
-                <name>Télématin</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Une idée de ton père - F2</id>
-                <name>Une idée de ton père - F2</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>30 millions d'amis</id>
-                <name>30 millions d'amis</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Avenue de l'Europe</id>
-                <name>Avenue de l'Europe</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>C'est pas sorcier</id>
-                <name>C'est pas sorcier</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Côté jardin</id>
-                <name>Côté jardin</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Et si on changeait le monde-F3</id>
-                <name>Et si on changeait le monde-F3</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>L'ombre d'un doute</id>
-                <name>L'ombre d'un doute</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Midi en France</id>
-                <name>Midi en France</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Météo à la carte</id>
-                <name>Météo à la carte</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Questions au gouvernement</id>
-                <name>Questions au gouvernement</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Thalassa</id>
-                <name>Thalassa</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Une idée de ton père - F3</id>
-                <name>Une idée de ton père - F3</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Bons plans</id>
-                <name>Bons plans</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>DST : Dussart surveille la télé</id>
-                <name>DST : Dussart surveille la télé</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>19h Paul Amar</id>
-                <name>19h Paul Amar</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Allo Rufo</id>
-                <name>Allo Rufo</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Allô docteurs</id>
-                <name>Allô docteurs</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>C dans l'air</id>
-                <name>C dans l'air</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>C politique</id>
-                <name>C politique</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>C à dire</id>
-                <name>C à dire</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>C à vous</id>
-                <name>C à vous</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>C à vous, la suite</id>
-                <name>C à vous, la suite</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>C à vous, le meilleur</id>
-                <name>C à vous, le meilleur</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>C'est notre affaire</id>
-                <name>C'est notre affaire</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Dr Cac</id>
-                <name>Dr Cac</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Echappées belles</id>
-                <name>Echappées belles</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Et si on changeait le monde - F5</id>
-                <name>Et si on changeait le monde - F5</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>L'emploi par le net</id>
-                <name>L'emploi par le net</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>L'oeil et la main</id>
-                <name>L'oeil et la main</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>La maison France 5</id>
-                <name>La maison France 5</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Le Vinvinteur</id>
-                <name>Le Vinvinteur</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Le magazine de la santé</id>
-                <name>Le magazine de la santé</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Le monde en face</id>
-                <name>Le monde en face</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Les escapades de Petitrenaud</id>
-                <name>Les escapades de Petitrenaud</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Les maternelles</id>
-                <name>Les maternelles</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Médias, le magazine</id>
-                <name>Médias, le magazine</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>On n'est pas que des cobayes !</id>
-                <name>On n'est pas que des cobayes !</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Parlons Passion</id>
-                <name>Parlons Passion</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Silence, ça pousse !</id>
-                <name>Silence, ça pousse !</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Une idée de ton père - F5</id>
-                <name>Une idée de ton père - F5</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>10 minutes pour le dire</id>
-                <name>10 minutes pour le dire</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>A nous deux</id>
-                <name>A nous deux</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Archipels</id>
-                <name>Archipels</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Couleurs outremers</id>
-                <name>Couleurs outremers</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Investigatiôns</id>
-                <name>Investigatiôns</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Le monde vu par...</id>
-                <name>Le monde vu par...</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Les petits plats de Babette</id>
-                <name>Les petits plats de Babette</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Tendances Ô</id>
-                <name>Tendances Ô</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Toutes les France</id>
-                <name>Toutes les France</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Envoyé spécial - la suite</id>
-                <name>Envoyé spécial - la suite</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <extension>mp4</extension>
-        </category>
-        <category>
-            <id>Jeunesse</id>
-            <name>Jeunesse</name>
-            <toDownload>false</toDownload>
-            <category>
-                <id>Angelo la débrouille</id>
-                <name>Angelo la débrouille</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Chaplin &amp; Co</id>
-                <name>Chaplin &amp; Co</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Garfield</id>
-                <name>Garfield</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Lego Star Wars</id>
-                <name>Lego Star Wars</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Mandarine &amp; Cow</id>
-                <name>Mandarine &amp; Cow</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Ninjago</id>
-                <name>Ninjago</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Oggy et les cafards</id>
-                <name>Oggy et les cafards</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Une minute au musée</id>
-                <name>Une minute au musée</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Winx Club</id>
-                <name>Winx Club</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Code Lyoko</id>
-                <name>Code Lyoko</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Des baskets dans l'assiette</id>
-                <name>Des baskets dans l'assiette</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Wakfu saison 1</id>
-                <name>Wakfu saison 1</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>A table T'choupi</id>
-                <name>A table T'choupi</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Artzooka!</id>
-                <name>Artzooka!</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Brico Club</id>
-                <name>Brico Club</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Chloé magique</id>
-                <name>Chloé magique</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Célestin</id>
-                <name>Célestin</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Dino train</id>
-                <name>Dino train</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>La cuisine est un jeu d'enfants</id>
-                <name>La cuisine est un jeu d'enfants</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Le petit dinosaure</id>
-                <name>Le petit dinosaure</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Lulu Vroumette</id>
-                <name>Lulu Vroumette</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Mini loup</id>
-                <name>Mini loup</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Mouk</id>
-                <name>Mouk</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Sam le pompier</id>
-                <name>Sam le pompier</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>T'choupi et Doudou</id>
-                <name>T'choupi et Doudou</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Tom Tom et Nana</id>
-                <name>Tom Tom et Nana</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Umizoomi</id>
-                <name>Umizoomi</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Foot 2 Rue</id>
-                <name>Foot 2 Rue</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>H2O s3</id>
-                <name>H2O s3</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Les Dalton</id>
-                <name>Les Dalton</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <extension>mp4</extension>
-        </category>
-        <category>
-            <id>Jeu</id>
-            <name>Jeu</name>
-            <toDownload>false</toDownload>
-            <category>
-                <id>Cash</id>
-                <name>Cash</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Les Z'amours</id>
-                <name>Les Z'amours</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Motus</id>
-                <name>Motus</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Seriez-vous un bon expert ?</id>
-                <name>Seriez-vous un bon expert ?</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Tout le monde veut prendre sa place</id>
-                <name>Tout le monde veut prendre sa place</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Volte-face</id>
-                <name>Volte-face</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Des chiffres et des lettres</id>
-                <name>Des chiffres et des lettres</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Question pour un super champion</id>
-                <name>Question pour un super champion</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Questions Pour Un Champion</id>
-                <name>Questions Pour Un Champion</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Slam</id>
-                <name>Slam</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <extension>mp4</extension>
-        </category>
-        <category>
-            <id>Sport</id>
-            <name>Sport</name>
-            <toDownload>false</toDownload>
-            <category>
-                <id>973 chrono</id>
-                <name>973 chrono</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Attitude Sport</id>
-                <name>Attitude Sport</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Code phare</id>
-                <name>Code phare</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Foot 1ère</id>
-                <name>Foot 1ère</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Le Mag des sports</id>
-                <name>Le Mag des sports</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Tuaro Sports</id>
-                <name>Tuaro Sports</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Stade 2</id>
-                <name>Stade 2</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>En course sur France 3</id>
-                <name>En course sur France 3</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Tout le sport</id>
-                <name>Tout le sport</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Riding zone</id>
-                <name>Riding zone</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <extension>mp4</extension>
-        </category>
-        <category>
-            <id>Info</id>
-            <name>Info</name>
-            <toDownload>false</toDownload>
-            <category>
-                <id>Atu Dire (français)</id>
-                <name>Atu Dire (français)</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Atu Dire (tahitien)</id>
-                <name>Atu Dire (tahitien)</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>JT 13h (Guadeloupe)</id>
-                <name>JT 13h (Guadeloupe)</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>JT 13h (martinique)</id>
-                <name>JT 13h (martinique)</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>JT Guadeloupe</id>
-                <name>JT Guadeloupe</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>JT Guyane</id>
-                <name>JT Guyane</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>JT Mayotte (français)</id>
-                <name>JT Mayotte (français)</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>JT Mayotte (mahorais)</id>
-                <name>JT Mayotte (mahorais)</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>JT Nouvelle Calédonie</id>
-                <name>JT Nouvelle Calédonie</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>JT Polynésie (français)</id>
-                <name>JT Polynésie (français)</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>JT Réunion</id>
-                <name>JT Réunion</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>JT Réunion Midi</id>
-                <name>JT Réunion Midi</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>JT Saint-Pierre et Miquelon</id>
-                <name>JT Saint-Pierre et Miquelon</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>JT Wallis et Futuna (français)</id>
-                <name>JT Wallis et Futuna (français)</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>JT Wallis et Futuna (wallisien)</id>
-                <name>JT Wallis et Futuna (wallisien)</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Journal du Pacifique</id>
-                <name>Journal du Pacifique</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Midi Guyane</id>
-                <name>Midi Guyane</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Ora No te Motu</id>
-                <name>Ora No te Motu</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Soir 1ère</id>
-                <name>Soir 1ère</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Ve'a Tahiti</id>
-                <name>Ve'a Tahiti</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>JT 06h30</id>
-                <name>JT 06h30</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>JT 13h</id>
-                <name>JT 13h</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>JT 20h</id>
-                <name>JT 20h</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>12-13 Dimanche</id>
-                <name>12-13 Dimanche</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>JT 12-13 Edition Nationale</id>
-                <name>JT 12-13 Edition Nationale</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>JT 19-20 Edition Nationale</id>
-                <name>JT 19-20 Edition Nationale</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Soir 3</id>
-                <name>Soir 3</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Info Afrique</id>
-                <name>Info Afrique</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Infô Midi</id>
-                <name>Infô Midi</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Infô matin</id>
-                <name>Infô matin</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Infô soir</id>
-                <name>Infô soir</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <extension>mp4</extension>
-        </category>
-        <category>
-            <id>Autre</id>
-            <name>Autre</name>
-            <toDownload>false</toDownload>
-            <category>
-                <id>Chrétiens Orientaux</id>
-                <name>Chrétiens Orientaux</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Islam</id>
-                <name>Islam</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Judaïca</id>
-                <name>Judaïca</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Le Jour du Seigneur</id>
-                <name>Le Jour du Seigneur</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Messe</id>
-                <name>Messe</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Météo JT 13h</id>
-                <name>Météo JT 13h</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Météo JT 20h</id>
-                <name>Météo JT 20h</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Orthodoxie</id>
-                <name>Orthodoxie</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Présence protestante</id>
-                <name>Présence protestante</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Sagesses bouddhistes</id>
-                <name>Sagesses bouddhistes</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Source de vie</id>
-                <name>Source de vie</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Météo JT 12-13</id>
-                <name>Météo JT 12-13</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Météo JT 19-20</id>
-                <name>Météo JT 19-20</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <extension>mp4</extension>
-        </category>
-        <category>
-            <id>Série &amp; fiction</id>
-            <name>Série &amp; fiction</name>
-            <toDownload>false</toDownload>
-            <category>
-                <id>Amour gloire et beauté</id>
-                <name>Amour gloire et beauté</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Boulevard du Palais</id>
-                <name>Boulevard du Palais</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Castle</id>
-                <name>Castle</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Chante !</id>
-                <name>Chante !</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Des jours et des vies</id>
-                <name>Des jours et des vies</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Les enquêtes de Murdoch</id>
-                <name>Les enquêtes de Murdoch</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Mademoiselle Drot</id>
-                <name>Mademoiselle Drot</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Plus Belle La Vie</id>
-                <name>Plus Belle La Vie</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Si près de chez vous</id>
-                <name>Si près de chez vous</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Tempêtes</id>
-                <name>Tempêtes</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Un crime oublié</id>
-                <name>Un crime oublié</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Being Human</id>
-                <name>Being Human</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Crash canyon</id>
-                <name>Crash canyon</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Jamais 2 sans 3</id>
-                <name>Jamais 2 sans 3</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Métal hurlant</id>
-                <name>Métal hurlant</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Plus Belle La Vie - F4</id>
-                <name>Plus Belle La Vie - F4</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Blue Exorcist</id>
-                <name>Blue Exorcist</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Eyeshield 21</id>
-                <name>Eyeshield 21</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>India, a Love Story</id>
-                <name>India, a Love Story</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>La Reina del sur</id>
-                <name>La Reina del sur</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Le clone</id>
-                <name>Le clone</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Le corps du désir</id>
-                <name>Le corps du désir</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Plus Belle La Vie, la collec'</id>
-                <name>Plus Belle La Vie, la collec'</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Frère et soeur</id>
-                <name>Frère et soeur</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <extension>mp4</extension>
-        </category>
-        <category>
-            <id>Documentaire</id>
-            <name>Documentaire</name>
-            <toDownload>false</toDownload>
-            <category>
-                <id>Grandeurs nature</id>
-                <name>Grandeurs nature</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Infrarouge</id>
-                <name>Infrarouge</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Les gens du fleuve</id>
-                <name>Les gens du fleuve</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Ce qu'ils savaient</id>
-                <name>Ce qu'ils savaient</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Melvin et Jeane, la révolte et l'ex</id>
-                <name>Melvin et Jeane, la révolte et l'ex</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Signé Mireille Dumas</id>
-                <name>Signé Mireille Dumas</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Au coeur du paradis blanc</id>
-                <name>Au coeur du paradis blanc</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Chicago, vivre avec les gangs</id>
-                <name>Chicago, vivre avec les gangs</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Chine sauvage</id>
-                <name>Chine sauvage</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Empreintes</id>
-                <name>Empreintes</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Empreintes - programme court</id>
-                <name>Empreintes - programme court</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>In vivo, l'intégrale</id>
-                <name>In vivo, l'intégrale</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>L'histoire du monde</id>
-                <name>L'histoire du monde</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>La Galerie France 5</id>
-                <name>La Galerie France 5</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>La route du Pacifique Sud...</id>
-                <name>La route du Pacifique Sud...</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Les lionnes de la rivière de sable</id>
-                <name>Les lionnes de la rivière de sable</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Les naufragés du rêve américain</id>
-                <name>Les naufragés du rêve américain</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Les requins-baleines des Galápagos</id>
-                <name>Les requins-baleines des Galápagos</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Les routes de l'impossible</id>
-                <name>Les routes de l'impossible</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Restauration française...</id>
-                <name>Restauration française...</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Superstructures SOS</id>
-                <name>Superstructures SOS</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Une vie de moineau</id>
-                <name>Une vie de moineau</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Verdict</id>
-                <name>Verdict</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>De la Nouvelle-Orléans à Washington</id>
-                <name>De la Nouvelle-Orléans à Washington</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>ExplÔ</id>
-                <name>ExplÔ</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>I Have a Dream : la trilogie</id>
-                <name>I Have a Dream : la trilogie</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Au coeur des tribus</id>
-                <name>Au coeur des tribus</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <category>
-                <id>Les Korowai, peuple des arbres</id>
-                <name>Les Korowai, peuple des arbres</name>
-                <toDownload>false</toDownload>
-                <extension>mp4</extension>
-            </category>
-            <extension>mp4</extension>
-        </category>
-    </channel>
-    <channel>
         <name>m6w9</name>
         <category>
             <id>w9</id>
@@ -11201,6 +9668,18 @@
             <category>
                 <id>12395</id>
                 <name>W9 HOME CONCERTS</name>
+                <toDownload>false</toDownload>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>10606</id>
+                <name>W9 BOUTIQUE</name>
+                <toDownload>false</toDownload>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>12507</id>
+                <name>W9 HOME FESTIVAL</name>
                 <toDownload>false</toDownload>
                 <extension>mp4</extension>
             </category>
@@ -11486,6 +9965,78 @@
                 <toDownload>false</toDownload>
                 <extension>mp4</extension>
             </category>
+            <category>
+                <id>6790</id>
+                <name>LETTRES A UN SOLDAT</name>
+                <toDownload>false</toDownload>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>130</id>
+                <name>Maison à vendre</name>
+                <toDownload>false</toDownload>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>12531</id>
+                <name>HAWTHORNE : INFIRMIERE EN CHEF</name>
+                <toDownload>false</toDownload>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>12491</id>
+                <name>LA METHODE CLAIRE</name>
+                <toDownload>false</toDownload>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>2184</id>
+                <name>Sport 6</name>
+                <toDownload>false</toDownload>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>12501</id>
+                <name>ROMANCE IRLANDAISE</name>
+                <toDownload>false</toDownload>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>12551</id>
+                <name>LE PETIT SPIROU</name>
+                <toDownload>false</toDownload>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>12615</id>
+                <name>CHANGER DE SEXE A TOUT PRIX</name>
+                <toDownload>false</toDownload>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>8</id>
+                <name>Californication</name>
+                <toDownload>false</toDownload>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>2866</id>
+                <name>PREMIERS DOUTES</name>
+                <toDownload>false</toDownload>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>3248</id>
+                <name>UNE CELIBATAIRE A NEW YORK</name>
+                <toDownload>false</toDownload>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>4898</id>
+                <name>La jeune fille aux fleurs</name>
+                <toDownload>false</toDownload>
+                <extension>mp4</extension>
+            </category>
             <extension>mp4</extension>
         </category>
     </channel>
@@ -11543,6 +10094,12 @@
                 <toDownload>false</toDownload>
                 <extension>mp4</extension>
             </category>
+            <category>
+                <id>http://www.d8.tv/program/la-folle-histoire-du-palmashow</id>
+                <name>La folle histoire du Palmashow</name>
+                <toDownload>false</toDownload>
+                <extension>mp4</extension>
+            </category>
             <extension>mp4</extension>
         </category>
         <category>
@@ -11558,6 +10115,18 @@
             <category>
                 <id>http://www.d8.tv/program/une-hirondelle-a-fait-le-printemps</id>
                 <name>Une hirondelle a fait le printemps</name>
+                <toDownload>false</toDownload>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>http://www.d8.tv/program/l-evade-d-alcatraz</id>
+                <name>L'évadé d'Alcatraz</name>
+                <toDownload>false</toDownload>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>http://www.d8.tv/program/lady-chatterley</id>
+                <name>Lady Chatterley</name>
                 <toDownload>false</toDownload>
                 <extension>mp4</extension>
             </category>
@@ -11588,6 +10157,18 @@
             <category>
                 <id>http://www.d8.tv/program/leverage</id>
                 <name>Leverage </name>
+                <toDownload>false</toDownload>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>http://www.d8.tv/program/navarro</id>
+                <name>Navarro</name>
+                <toDownload>false</toDownload>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>http://www.d8.tv/program/braquo-2</id>
+                <name>Braquo 2</name>
                 <toDownload>false</toDownload>
                 <extension>mp4</extension>
             </category>
@@ -11690,6 +10271,12 @@
             <category>
                 <id>http://www.d8.tv/program/presume-innocent</id>
                 <name>Présumé Innocent</name>
+                <toDownload>false</toDownload>
+                <extension>mp4</extension>
+            </category>
+            <category>
+                <id>http://www.d8.tv/program/en-quete-de-solutions</id>
+                <name>En quête de solutions</name>
                 <toDownload>false</toDownload>
                 <extension>mp4</extension>
             </category>
@@ -11835,6 +10422,2709 @@
             <name>Le Zap Choc</name>
             <toDownload>false</toDownload>
             <extension>mp4</extension>
+        </category>
+        <category>
+            <id>1236</id>
+            <name>Top 90</name>
+            <toDownload>false</toDownload>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>1303</id>
+            <name>Virgin Radio Fans</name>
+            <toDownload>false</toDownload>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>1285</id>
+            <name>Nuit Rock Muse</name>
+            <toDownload>false</toDownload>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>1304</id>
+            <name>Battle of the year</name>
+            <toDownload>false</toDownload>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>51</id>
+            <name>Top D17</name>
+            <toDownload>false</toDownload>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>1261</id>
+            <name>Nuit Bloc Party</name>
+            <toDownload>false</toDownload>
+            <extension>mp4</extension>
+        </category>
+        <category>
+            <id>1267</id>
+            <name>Les dossiers secrets du paranormal</name>
+            <toDownload>false</toDownload>
+            <extension>mp4</extension>
+        </category>
+    </channel>
+    <channel>
+        <name>pluzz</name>
+        <category>
+            <id></id>
+            <name></name>
+            <toDownload>false</toDownload>
+            <category>
+                <id>20h30_le_dimanche</id>
+                <name>20h30 le dimanche</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>emission_de_solutions</id>
+                <name>Emission de solutions</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>cdaujourdhui__france_2</id>
+                <name>CD'aujourd'hui</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>d_art_d_art</id>
+                <name>D'art d'art</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>expression_directe_f2</id>
+                <name>Expression directe</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>la_parenthese_inattendue</id>
+                <name>La parenthèse inattendue</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>grand_public</id>
+                <name>Grand public</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>point_route</id>
+                <name>Point route</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>expression_directe_f3</id>
+                <name>Expression directe</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>apassionata</id>
+                <name>L'Italienne à Alger</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>master_classe_france_4</id>
+                <name>Master classe France 4</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>emission_de_solutions_f5</id>
+                <name>Emission de solutions</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>expression_directe_f5</id>
+                <name>Expression directe</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>o_feminin</id>
+                <name>Ô féminin</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id></id>
+                <name>Infô-Afrique</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>post_scriptum</id>
+                <name>Post scriptum</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>meteo_saint_pierre_et_miquelon_1ere</id>
+                <name>Météo</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>c_tanou</id>
+                <name>C tanou</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>midi_service</id>
+                <name>Midi service</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>bien_chef</id>
+                <name>Bien chef</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>meteo_polynesie_1ere_polynesien</id>
+                <name>Météo</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>studio_1ere</id>
+                <name>Studio 1ère</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>meteo_polynesie_1ere</id>
+                <name>Météo</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>meteo_wallis_et_futuna_1ere</id>
+                <name>Météo</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>meteo_mayotte_1ere</id>
+                <name>Météo</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>rayon_zik</id>
+                <name>Rayon zik'x</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>meteo_nouvelle_caledonie_1ere</id>
+                <name>Météo</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>meteo_reunion_1ere</id>
+                <name>Météo</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>meteo_guyane_1ere</id>
+                <name>Météo</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>meteo</id>
+                <name>Météo</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>pep_s</id>
+                <name>Pep's</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>buzz_1ere</id>
+                <name>Buzz 1ère</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>tandakayou</id>
+                <name>Tandakayou</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>droit_de_suite</id>
+                <name>Droit de suite</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>rayon_zik_x</id>
+                <name>Saveurs fa'a'apu</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>cabotage</id>
+                <name>Cabotage</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>meteo_mayotte_1ere_mahorais</id>
+                <name>Météo</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>meteo_martinique_1ere</id>
+                <name>Météo</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <extension>avi</extension>
+        </category>
+        <category>
+            <id>Divertissement</id>
+            <name>Divertissement</name>
+            <toDownload>false</toDownload>
+            <category>
+                <id>on_n_demande_qu_a_en_rire</id>
+                <name>On n'demande qu'à en rire</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>la_grande_battle</id>
+                <name>La grande battle</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>vous_trouvez_ca_normal</id>
+                <name>Vous trouvez ça normal ?!</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>taratata__france_2</id>
+                <name>Taratata</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>roumanoff_et_les_garcons</id>
+                <name>Roumanoff et les garçons</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>ondar_show</id>
+                <name>ONDAR Show</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>le_monde_d_apres</id>
+                <name>Le monde d'après</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>les_grands_du_rire</id>
+                <name>Les grands du rire</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>chabada</id>
+                <name>Chabada</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>le_cine_du_comite</id>
+                <name>Le ciné du Comité</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>fideles_au_poste</id>
+                <name>Fidèles au poste !</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>dance_street</id>
+                <name>Dance St. !</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>stars_novelas_polynesie</id>
+                <name>Stars &amp; Novelas</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>stars_novelas_guadeloupe</id>
+                <name>Stars &amp; Novelas</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>match_en_cuisine</id>
+                <name>Match en cuisine</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>stars_novelas_nc</id>
+                <name>Stars &amp; Novelas</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>stars_novelas_wallis_et_futuna</id>
+                <name>Stars &amp; Novelas</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>stars_novelas_reunion</id>
+                <name>Stars &amp; Novelas</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <extension>avi</extension>
+        </category>
+        <category>
+            <id>Culture</id>
+            <name>Culture</name>
+            <toDownload>false</toDownload>
+            <category>
+                <id>dans_quelle_etagere</id>
+                <name>Dans quelle éta-gère</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>plein_2_cine</id>
+                <name>Plein 2 ciné</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>des_mots_de_minuit</id>
+                <name>Des mots de minuit</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>the_ou_cafe</id>
+                <name>Thé ou café</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>planete_musique_mag</id>
+                <name>Hebdo musique mag</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>un_livre_un_jour</id>
+                <name>Un livre, un jour</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>ce_soir_ou_jamais</id>
+                <name>Ce soir (ou jamais !)</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>espace_francophone</id>
+                <name>Espace francophone</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>les_carnets_de_julie</id>
+                <name>Les carnets de Julie</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>le_cine_de_luigi</id>
+                <name>Le ciné de Luigi</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>le_printemps_de_bourges</id>
+                <name>Eiffel</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>le_pere_noel_est_une_ordure</id>
+                <name>Le Père Noël est une ordure</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>monte_le_son</id>
+                <name>Monte le son !</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>avis_de_sorties__france_5</id>
+                <name>Avis de sorties</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>entree_libre</id>
+                <name>Entrée libre</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>la_grande_librairie</id>
+                <name>La grande librairie</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>le_lab_o</id>
+                <name>Le Lab.Ô</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>le_ring</id>
+                <name>Le ring</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>tropismes</id>
+                <name>Tropismes</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>via_cultura</id>
+                <name>Via cultura</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>samedi_et_vous</id>
+                <name>Samedi et vous</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>cap_sud_ouest</id>
+                <name>Cap Sud-Ouest</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>fare_maohi</id>
+                <name>Fare Maohi</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>street_vibz</id>
+                <name>Street vibz</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>galigalang</id>
+                <name>Galigalang</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>tendance_1ere</id>
+                <name>Tendances 1ère</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>question_de_generation</id>
+                <name>Question de génération</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>zik_clip</id>
+                <name>Zic clips</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <extension>avi</extension>
+        </category>
+        <category>
+            <id>Magazine</id>
+            <name>Magazine</name>
+            <toDownload>false</toDownload>
+            <category>
+                <id>faites_entrer_l_accuse</id>
+                <name>Faites entrer l'accusé</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>telematin</id>
+                <name>Télématin</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>cest_au_programme</id>
+                <name>C'est au programme</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>une_idee_de_ton_pere_f2</id>
+                <name>Une idée de ton père</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>consomag</id>
+                <name>Consomag</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>toute_une_histoire</id>
+                <name>Toute une histoire</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>comment_ca_va_bien</id>
+                <name>Comment ça va bien !</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>le_jour_ou_tout_a_bascule</id>
+                <name>Le jour où tout a basculé</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>paris_en_plus_grand</id>
+                <name>Paris en plus grand</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>mots_croises</id>
+                <name>Mots croisés</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>envoye_special</id>
+                <name>Envoyé spécial</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>complement_denquete</id>
+                <name>Complément d'enquête</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>13h15_le_samedi</id>
+                <name>13h15, le samedi...</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>envoye_special_la_suite</id>
+                <name>Envoyé spécial : la suite</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>on_nest_pas_couche</id>
+                <name>On n'est pas couché</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>13h15_le_dimanche</id>
+                <name>13h15, le dimanche...</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>midi_en_france_1ere_partie</id>
+                <name>Midi en France</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>meteo_a_la_carte</id>
+                <name>Météo à la carte</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>une_idee_de_ton_pere_f3</id>
+                <name>Une idée de ton père</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>et_si_on_changeait_le_monde_f3</id>
+                <name>Et si on changeait le monde</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>questions_au_gouvernement</id>
+                <name>Questions au gouvernement</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>des_racines_et_des_ailes</id>
+                <name>Des racines et des ailes</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>pieces_a_conviction</id>
+                <name>Pièces à conviction</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>thalassa</id>
+                <name>Thalassa</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>cest_pas_sorcier</id>
+                <name>C'est pas sorcier</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>30_millions_d_amis</id>
+                <name>30 millions d'amis</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>avenue_de_leurope</id>
+                <name>Avenue de l'Europe</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>cote_jardin</id>
+                <name>Côté jardin</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>faut_pas_rater_ca</id>
+                <name>#Faut pas rater ça !</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>dst_dussart_surveille_la_tele</id>
+                <name>DST : Dussart surveille la télé</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>bons_plans</id>
+                <name>Bons plans</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>le_vinvinteur</id>
+                <name>Le vinvinteur</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>lemploi_par_le_net</id>
+                <name>L'emploi par le Net</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>loeil_et_la_main</id>
+                <name>L'oeil et la main</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>les_maternelles</id>
+                <name>Les maternelles</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>allo_rufo</id>
+                <name>Allô Rufo</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>le_magazine_de_la_sante</id>
+                <name>Le magazine de la santé</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>allo_docteurs</id>
+                <name>Allô, docteurs !</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>c_a_dire</id>
+                <name>C à dire ?!</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>une_idee_de_ton_pere_f5</id>
+                <name>Une idée de ton père</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>c_dans_lair</id>
+                <name>C dans l'air</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>c_a_vous</id>
+                <name>C à vous</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>dr_cac_programme_long</id>
+                <name>Dr CAC</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>c_a_vous_la_suite</id>
+                <name>C à vous la suite</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>parlons_passion</id>
+                <name>Parlons passion</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>le_monde_en_face</id>
+                <name>Le monde en face</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>la_maison_france_5</id>
+                <name>La maison France 5</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>silence_ca_pousse_</id>
+                <name>Silence, ça pousse !</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>cest_notre_affaire</id>
+                <name>C'est notre affaire</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>on_n_est_pas_que_des_cobayes</id>
+                <name>On n'est pas que des cobayes !</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>et_si_on_changeait_le_monde_f5</id>
+                <name>Et si on changeait le monde</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>c_a_vous_les_meilleurs_moments</id>
+                <name>C à vous, le meilleur</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>19h_paul_amar</id>
+                <name>19 H Paul Amar</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>echappees_belles</id>
+                <name>Echappées belles</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>les_escapades_de_petitrenaud</id>
+                <name>Les escapades de Petitrenaud</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>medias_le_mag</id>
+                <name>Médias, le magazine</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>10_minutes_pour_le_dire</id>
+                <name>10 minutes pour le dire</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>toutes_les_france</id>
+                <name>Toutes les France</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>couleurs_outremers</id>
+                <name>La petite collection couleurs Outremers</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>investigations</id>
+                <name>Investigatiôns</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>o_bout_de_la_nuit</id>
+                <name>Ô bout de la nuit</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>a_nous_deux</id>
+                <name>A nous deux</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>les_petits_plats_de_babette</id>
+                <name>Les p'tits plats de Babette</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>le_monde_vu_par</id>
+                <name>Le monde vu par...</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>l_edition_de_l_emploi</id>
+                <name>L'édition de l'emploi</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>rund_um</id>
+                <name>Rund um</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>manghja_inseme</id>
+                <name>Manghja Inseme</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>prima_inseme</id>
+                <name>Prima Inseme</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>sera_inseme</id>
+                <name>Sera Inseme</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>la_voix_est_libre_cote_dazur</id>
+                <name>La voix est libre</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>la_voix_est_libre_alpes</id>
+                <name>La voix est libre</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>la_voix_est_libre_auvergne</id>
+                <name>La voix est libre</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>la_voix_est_libre_bourgogne</id>
+                <name>La voix est libre</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>ca_me_regarde</id>
+                <name>La voix est libre</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>la_voix_est_libre_rhone_alpes</id>
+                <name>La voix est libre</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>la_voix_est_libre_centre</id>
+                <name>La voix est libre</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>la_voix_est_libre_ile_de_france</id>
+                <name>La voix est libre</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>la_voix_est_libre_provence_alpes</id>
+                <name>La voix est libre</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>la_voix_est_libre_bretagne</id>
+                <name>La voix est libre</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>la_voix_est_libre_pays_de_la_loire</id>
+                <name>La voix est libre</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>la_voix_est_libre_lorraine</id>
+                <name>La voix est libre</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>la_voix_est_libre_nord_pas_de_calais</id>
+                <name>La voix est libre</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>la_voix_est_libre_picardie</id>
+                <name>La voix est libre</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>la_voix_est_libre_midi_pyrenees</id>
+                <name>La voix est libre</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>la_voix_est_libre_languedoc_roussillon</id>
+                <name>La voix est libre</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>la_voix_est_libre_alsace</id>
+                <name>La voix est libre</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>la_voix_est_libre_basse_normandie</id>
+                <name>La voix est libre</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>la_voix_est_libre_haute_normandie</id>
+                <name>La voix est libre</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>la_voix_est_libre_limousin</id>
+                <name>La voix est libre</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>la_voix_est_libre_poitou_charentes</id>
+                <name>La voix est libre</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>la_voix_est_libre_champagne_ardenne</id>
+                <name>12/13 Champagne-Ardenne</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>goutez_voir</id>
+                <name>Goûtez voir</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>vues_sur_loire</id>
+                <name>Vues sur Loire</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>rendez_vous_au_gite</id>
+                <name>Rendez-vous au gîte</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>gsuntheim</id>
+                <name>GsunTheim</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>invitez_qui_vous_voulez</id>
+                <name>Invitez qui vous voulez</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>midi_services</id>
+                <name>Services 1ère</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>toute_nouvelle_tendance</id>
+                <name>T.N.T Reboot</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>pas_un_zeste</id>
+                <name>Pas un zeste</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>caraibe</id>
+                <name>Caraïbes, le mensuel</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>itineraires</id>
+                <name>Itinéraires</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>le_sept_huit</id>
+                <name>Grand matin</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>dz_le_magazine</id>
+                <name>Dz</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>tous_cherubins</id>
+                <name>Tous chérubin</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>faut_qu_on_se_parle</id>
+                <name>Faut qu'on se parle</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>gazon_d_riz</id>
+                <name>Gazon d'ri</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>ti_baba</id>
+                <name>Ti baba</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>7_jours</id>
+                <name>7 jours</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>la_sante_d_abord</id>
+                <name>La santé d'abord</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>loca_terre</id>
+                <name>Loca terre</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>rando_pei</id>
+                <name>Rando Pei</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <extension>avi</extension>
+        </category>
+        <category>
+            <id>Jeunesse</id>
+            <name>Jeunesse</name>
+            <toDownload>false</toDownload>
+            <category>
+                <id>garfield</id>
+                <name>Garfield &amp; Cie</name>
+                <toDownload>true</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>ninjago</id>
+                <name>Ninjago</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>une_minute_au_musee</id>
+                <name>Une minute au musée : Les arts de l'Islam</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>oggy_et_les_cafards</id>
+                <name>Oggy et les cafards</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>les_dalton</id>
+                <name>Les Dalton</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>chaplin_co</id>
+                <name>Chaplin &amp; Co</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>des_baskets_dans_l_assiette</id>
+                <name>Des baskets dans l'assiette</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>code_lyoko</id>
+                <name>Code Lyokô</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>avengers</id>
+                <name>Avengers : L'équipe des super héros</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>64_rue_du_zoo</id>
+                <name>64 rue du zoo</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>sam_le_pompier</id>
+                <name>Sam le pompier</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>dino_train</id>
+                <name>Le Dino train</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>mini_loup</id>
+                <name>Mini-Loup</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>martha_bla_bla</id>
+                <name>Martha bla bla</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>celestin</id>
+                <name>Célestin</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>chloe_magique</id>
+                <name>Chloé Magique</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>t_choupi_et_doudou</id>
+                <name>T'choupi et Doudou</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>a_table_t_choupi</id>
+                <name>A table Tchoupi</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>la_cuisine_est_un_jeu_d_enfants</id>
+                <name>La cuisine est un jeu d'enfants</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>umizoomi</id>
+                <name>Umizoomi</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>lulu_vroumette</id>
+                <name>Lulu Vroumette</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>mouk</id>
+                <name>Mouk</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>emilie</id>
+                <name>Emilie</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>artzooka</id>
+                <name>Artzooka</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>foot_2_rue</id>
+                <name>Foot 2 rue</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>h2o_s3</id>
+                <name>H2O</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <extension>avi</extension>
+        </category>
+        <category>
+            <id>Jeu</id>
+            <name>Jeu</name>
+            <toDownload>false</toDownload>
+            <category>
+                <id>motus</id>
+                <name>Motus</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>les_z_amours</id>
+                <name>Les Z'amours</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>tout_le_monde_veut_prendre_sa_place</id>
+                <name>Tout le monde veut prendre sa place</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>seriez_vous_un_bon_expert</id>
+                <name>Seriez-vous un bon expert ?</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>n_oubliez_pas_les_paroles</id>
+                <name>N'oubliez pas les paroles</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>des_chiffres_et_des_lettres</id>
+                <name>Des chiffres et des lettres</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>harry</id>
+                <name>Harry</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>slam</id>
+                <name>Slam</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>questions_pour_un_champion</id>
+                <name>Questions pour un champion</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>question_pour_un_super_champion</id>
+                <name>Questions pour un super champion</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>cash</id>
+                <name>Cash</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>qui_est_le_genie</id>
+                <name>Qui est le génie ?</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>le_roi_du_bocal</id>
+                <name>Le roi du bocal</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <extension>avi</extension>
+        </category>
+        <category>
+            <id>Autre</id>
+            <name>Autre</name>
+            <toDownload>false</toDownload>
+            <category>
+                <id>meteo_jt20h</id>
+                <name>Météo 2</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>meteo_jt_13h</id>
+                <name>Météo 2</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>sagesses_bouddhistes</id>
+                <name>Sagesses bouddhistes</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>islam</id>
+                <name>Islam</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>judaica</id>
+                <name>Judaïca</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>chretiens_orientaux</id>
+                <name>Chrétiens orientaux : foi, espérance et traditions</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>presence_protestante</id>
+                <name>Présence protestante</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>le_jour_du_seigneur</id>
+                <name>Le jour du Seigneur</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>meteo_jt_1213</id>
+                <name>Météo</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>meteo_jt_1920</id>
+                <name>Météo</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <extension>avi</extension>
+        </category>
+        <category>
+            <id>Documentaire</id>
+            <name>Documentaire</name>
+            <toDownload>false</toDownload>
+            <category>
+                <id>au_clair_de_la_lune</id>
+                <name>Les clés de l'orchestre de Jean-François Zygel</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>gabfai_la_petite_flamme</id>
+                <name>Gabfai, la petite flamme</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>infrarouge</id>
+                <name>Les enfants de la précarité et de l'amour</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>grandeurs_nature</id>
+                <name>Grandeurs nature</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>docs_interdits_case_f3</id>
+                <name>Les ch'tis d'Allah, le gang de Roubaix</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>la_case_de_l_oncle_doc</id>
+                <name>Nantes sous les bombes alliées</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>histoire_de_l_amerique</id>
+                <name>Histoire de l'Amérique</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>douaniers_au_coeur_des_trafics</id>
+                <name>Douaniers au coeur de tous les trafics</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>le_doc_du_dimanche</id>
+                <name>Diesel, le scandale français</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>attentats_de_1986_la_guerre_cachee</id>
+                <name>Attentats de 1986, la guerre cachée</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>vu_sur_terre</id>
+                <name>Vu sur Terre</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>voyages_en_rivieres</id>
+                <name>Voyages en rivières</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>les_heritiers_pasteur</id>
+                <name>Les héritiers Pasteur</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>las_vegas_terminus</id>
+                <name>Las Vegas, terminus</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>les_predateurs_d_afrique</id>
+                <name>Les prédateurs d'Afrique</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>gros_plan_sur_la_nature</id>
+                <name>Gros plan sur la nature</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>chine_sauvage</id>
+                <name>Chine sauvage</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>terres_sauvages_de_russie</id>
+                <name>Terres sauvages de Russie</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>l_histoire_du_monde</id>
+                <name>L'histoire du monde</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>empreintes_programme_court</id>
+                <name>Empreintes</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>empreintes</id>
+                <name>Empreintes</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>in_vivo_l_integrale</id>
+                <name>In Vivo, l'intégrale</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>au_coeur_des_tribus</id>
+                <name>Au coeur des tribus</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>les_lionnes_blanches_de_timbavati</id>
+                <name>Les lionnes blanches de Timbavati</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>verdict</id>
+                <name>Verdict</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>la_galerie_france_5</id>
+                <name>La galerie France 5</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>superstructures_sos</id>
+                <name>Superstructures SOS</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>france_o_folies_2012</id>
+                <name>France Ô Folies 2012</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>espaces_intercalaires</id>
+                <name>Espaces intercalaires</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>explo</id>
+                <name>ExplÔ</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <extension>avi</extension>
+        </category>
+        <category>
+            <id>Série &amp; Fiction</id>
+            <name>Série &amp; Fiction</name>
+            <toDownload>false</toDownload>
+            <category>
+                <id>des_jours_et_des_vies</id>
+                <name>Des jours et des vies</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>amour_gloire_et_beaute</id>
+                <name>Amour, gloire et beauté</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>vestiaires</id>
+                <name>Vestiaires</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>castle_20h35</id>
+                <name>Castle</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>fais_pas_ci_fais_pas_ca</id>
+                <name>Fais pas ci, fais pas ça</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>main_courante</id>
+                <name>Main courante</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>chante</id>
+                <name>Chante !</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>les_enquetes_de_murdoch</id>
+                <name>Les enquêtes de Murdoch</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>si_pres_de_chez_vous</id>
+                <name>Si près de chez vous</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>plus_belle_la_vie</id>
+                <name>Plus belle la vie</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>louis_la_brocante</id>
+                <name>Louis la Brocante</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>tout_est_bon_dans_le_cochon</id>
+                <name>Tout est bon dans le cochon</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>le_desamour</id>
+                <name>Le désamour</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>lignes_de_vie</id>
+                <name>Lignes de vie</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>plus_belle_la_vie_f4</id>
+                <name>Plus belle la vie</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>les_piliers_de_la_terre</id>
+                <name>Les piliers de la Terre</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>arn_le_chevalier_du_temple</id>
+                <name>Arn, chevalier du Temple</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>earth_s_final_hour_le_compte_a</id>
+                <name>Alerte planète Terre</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>plus_belle_la_vie_fo</id>
+                <name>Plus belle la vie, la collec'</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>le_corps_du_desir</id>
+                <name>Le corps du désir</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>india_a_love_story</id>
+                <name>India, a Love Story</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>surf_academy</id>
+                <name>Surf Academy</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>le_clone</id>
+                <name>Le clone</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>famille_d_accueil_fo</id>
+                <name>Famille d'accueil</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>eyeshield_21</id>
+                <name>Eyeshield 21</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>blue_exorcist</id>
+                <name>Blue Exorcist</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>la_reina_del_sur</id>
+                <name>La Reina del Sur</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>koloks_n_co</id>
+                <name>Koloks'n co</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <extension>avi</extension>
+        </category>
+        <category>
+            <id>Info</id>
+            <name>Info</name>
+            <toDownload>false</toDownload>
+            <category>
+                <id>jt20h</id>
+                <name>Journal</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>jt_06h30</id>
+                <name>Journal</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>jt_13h</id>
+                <name>Journal</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>conference_de_presse_du_president</id>
+                <name>Conférence de presse du président de la République François Hollande</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>soir_3</id>
+                <name>Soir 3</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>jt_1213</id>
+                <name>12/13 : Journal national</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>jt_1920</id>
+                <name>19/20 : Journal national</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>12_13_dimanche</id>
+                <name>12/13 dimanche</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>info_afrique</id>
+                <name>Infô-Afrique</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>info_matin</id>
+                <name>Infô matin</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>info_midi</id>
+                <name>Infô midi</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>info_soir</id>
+                <name>Infô soir</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>jt_1213_aquitaine</id>
+                <name>12/13 Aquitaine</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>jt_1213_pays_de_la_loire</id>
+                <name>12/13 Pays de la Loire</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>jt_1213_paris_ile_de_france</id>
+                <name>12/13 Paris Ile-de-France</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>jt_1213_centre</id>
+                <name>12/13 Centre</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>jt_1213_alsace</id>
+                <name>12/13 Alsace</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>jt_1213_basse_normandie</id>
+                <name>12/13 Basse-Normandie</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>jt_1213_haute_normandie</id>
+                <name>12/13 Haute-Normandie</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>jt_1213_limousin</id>
+                <name>12/13 Limousin</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>jt_1213_poitou_charentes</id>
+                <name>12/13 Poitou-Charentes</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>jt_1213_nord_pas_de_calais</id>
+                <name>12/13 Nord Pas-de-Calais</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>jt_1213_picardie</id>
+                <name>12/13 Picardie</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>jt_1213_languedoc_roussillon</id>
+                <name>12/13 Languedoc-Roussillon</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>jt_1213_midi_pyrenees</id>
+                <name>12/13 Midi-Pyrénées</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>jt_local_12_13_an_taol_lagad</id>
+                <name>12/13 An Taol Lagad</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>jt_1213_lorraine</id>
+                <name>12/13 Lorraine</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>jt_1213_champagne_ardenne</id>
+                <name>12/13 Champagne-Ardenne</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>jt_1213_alpes</id>
+                <name>12/13 Alpes</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>jt_1213_auvergne</id>
+                <name>12/13 Auvergne</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>jt_1213_rhone_alpes</id>
+                <name>12/13 Rhône-Alpes</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>jt_1213_bourgogne</id>
+                <name>12/13 Bourgogne</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>jt_1213_franche_comte</id>
+                <name>12/13 Franche-Comté</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>jt_1213_cote_dazur</id>
+                <name>12/13 Côte d'Azur</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>jt_1213_provence_alpes</id>
+                <name>12/13 Provence Alpes</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>jt_1213_corse</id>
+                <name>Corsica Prima</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>jt_1213_bretagne</id>
+                <name>12/13 Bretagne</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>jt_1920_aquitaine</id>
+                <name>19/20 Aquitaine</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>jt_1920_pays_de_la_loire</id>
+                <name>19/20 Pays de la Loire</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>jt_1920_paris_ile_de_france</id>
+                <name>19/20 Paris Ile-de-France</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>jt_1920_centre</id>
+                <name>19/20 Centre</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>jt_1920_alsace</id>
+                <name>19/20 Alsace</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>jt_1920_basse_normandie</id>
+                <name>19/20 Basse-Normandie</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>jt_1920_haute_normandie</id>
+                <name>19/20 Haute-Normandie</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>jt_1920_limousin</id>
+                <name>19/20 Limousin</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>jt_1920_poitou_charentes</id>
+                <name>19/20 Poitou-Charentes</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>jt_1920_nord_pas_de_calais</id>
+                <name>19/20 Nord Pas-de-Calais</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>jt_1920_picardie</id>
+                <name>19/20 Picardie</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>jt_1920_languedoc_roussillon</id>
+                <name>19/20 Languedoc-Roussillon</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>jt_1920_midi_pyrenees</id>
+                <name>19/20 Midi-Pyrénées</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>jt_1920_bretagne</id>
+                <name>19/20 Bretagne</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>jt_1920_lorraine</id>
+                <name>19/20 Lorraine</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>jt_1920_champagne_ardenne</id>
+                <name>19/20 Champagne-Ardenne</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>jt_1920_alpes</id>
+                <name>19/20 Alpes</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>jt_1920_auvergne</id>
+                <name>19/20 Auvergne</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>jt_1920_rhone_alpes</id>
+                <name>19/20 Rhône-Alpes</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>jt_1920_bourgogne</id>
+                <name>19/20 Bourgogne</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>jt_1920_franche_comte</id>
+                <name>19/20 Franche-Comté</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>jt_1920_cote_dazur</id>
+                <name>19/20 Côte d'Azur</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>jt_1920_provence_alpes</id>
+                <name>19/20 Provence Alpes</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>jt_1920_corse</id>
+                <name>Corsica Sera</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>soir_3_corse</id>
+                <name>Corsica Sera</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>soir_3_aquitaine</id>
+                <name>Soir 3 Aquitaine</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>soir_3_pays_de_la_loire</id>
+                <name>Soir 3 Pays de la Loire</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>soir_3_paris_ile_de_france</id>
+                <name>Soir 3 Paris Ile-de-France</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>soir_3_centre</id>
+                <name>Soir 3 Centre</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>soir_3_alsace</id>
+                <name>Soir 3 Alsace</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>soir_3_basse_normandie</id>
+                <name>Soir 3 Basse-Normandie</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>soir_3_haute_normandie</id>
+                <name>Soir 3 Haute-Normandie</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>soir_3_limousin</id>
+                <name>Soir 3 Limousin</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>soir_3_poitou_charentes</id>
+                <name>Soir 3 Poitou-Charentes</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>soir_3_nord_pas_de_calais</id>
+                <name>Soir 3 Nord Pas-de-Calais</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>soir_3_picardie</id>
+                <name>Soir 3 Picardie</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>soir_3_languedoc_roussillon</id>
+                <name>Soir 3 Languedoc-Roussillon</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>soir_3_midi_pyrenees</id>
+                <name>Soir 3 Midi-Pyrénées</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>soir_3_bretagne</id>
+                <name>Soir 3 Bretagne</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>soir_3_lorraine</id>
+                <name>Soir 3 Lorraine</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>soir_3_champagne_ardenne</id>
+                <name>Soir 3 Champagne-Ardenne</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>soir_3_alpes</id>
+                <name>Soir 3 Alpes</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>soir_3_auvergne</id>
+                <name>Soir 3 Auvergne</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>soir_3_rhone_alpes</id>
+                <name>Soir 3 Rhône-Alpes</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>soir_3_bourgogne</id>
+                <name>Soir 3 Bourgogne</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>soir_3_franche_comte</id>
+                <name>Soir 3 Franche-Comté</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>soir_3_cote_dazur</id>
+                <name>Soir 3 Côte d'Azur</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>soir_3_provence_alpes</id>
+                <name>Soir 3 Provence Alpes</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>jt_saint_pierre_et_miquelon</id>
+                <name>Le journal de Saint-Pierre-et-Miquelon</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>jt_reunion_midi</id>
+                <name>Journal Réunion 1ère</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>jt_13h_guadeloupe</id>
+                <name>13 heures</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>jt_13h_martinique</id>
+                <name>Infos 13</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>info_13h00_guyane</id>
+                <name>Midi Guyane</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>journal_du_pacifique</id>
+                <name>Le journal du Pacifique</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>jt_polynesie_polynesien</id>
+                <name>Ve'a Tahiti</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>info_1ere</id>
+                <name>Soir 1ère</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>jt_polynesie</id>
+                <name>JT Polynésie</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>jt_mayotte</id>
+                <name>JT Mayotte</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>jt_wallis_et_futuna</id>
+                <name>JT Wallis-et-Futuna</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>jt_wallis_et_futuna_francais</id>
+                <name>JT Wallis-et-Futuna</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>jt_reunion</id>
+                <name>Journal Réunion 1ère</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>jt_nouvelle_caledonie</id>
+                <name>Journal local</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>jt_guadeloupe</id>
+                <name>Le journal Guadeloupe</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>jt_guyane</id>
+                <name>Le journal Guyane 1ère</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>jt_mayotte_mahorais</id>
+                <name>JT Mayotte</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>infos_route</id>
+                <name>Météo des routes</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>soir_1ere</id>
+                <name>Soir 1ère</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>kosalafe</id>
+                <name>Kosalafé</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>ora_no_te_motu</id>
+                <name>Ora no te motu</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>atu_dire_tahitien</id>
+                <name>A tu dire</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <extension>avi</extension>
+        </category>
+        <category>
+            <id>Sport</id>
+            <name>Sport</name>
+            <toDownload>false</toDownload>
+            <category>
+                <id>le_geste_parfait_f2</id>
+                <name>Le geste parfait</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>patinage_artistique_trophee_bompard</id>
+                <name>Patinage artistique</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>rugby_france_argentine</id>
+                <name>Rugby</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>stade_2</id>
+                <name>Stade 2</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>tout_le_sport</id>
+                <name>Tout le sport</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>en_course_sur_france_3</id>
+                <name>En course sur France 3</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>patinage_artistique_f3</id>
+                <name>Patinage artistique</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>couleurs_sport</id>
+                <name>Couleurs sport</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>football_coupe_de_france</id>
+                <name>Football</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>riding_zone</id>
+                <name>Riding Zone</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>foot_e_basta</id>
+                <name>Foot e basta</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>foot_1ere</id>
+                <name>Foot 1ère</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>infosports</id>
+                <name>Infosports</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>le_mag_des_sports</id>
+                <name>Mag des sports</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>sport_premiere</id>
+                <name>Sports 1ère</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>sport_1ere_martinique</id>
+                <name>Sport 1ère</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>maxride</id>
+                <name>Max'Ride</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>code_phare</id>
+                <name>Code phare</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>attitude_sport</id>
+                <name>Attitude sport</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>sports_1ere</id>
+                <name>Sport 1ère</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <extension>avi</extension>
+        </category>
+        <category>
+            <id>Magazine,Culture</id>
+            <name>Magazine,Culture</name>
+            <toDownload>false</toDownload>
+            <category>
+                <id>pourquoi_chercher_plus_loin_ca</id>
+                <name>Pourquoi chercher plus loin ?</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <category>
+                <id>parler_vrai</id>
+                <name>Parler vrai</name>
+                <toDownload>false</toDownload>
+                <extension>avi</extension>
+            </category>
+            <extension>avi</extension>
         </category>
     </channel>
 </ns2:grabConfig>

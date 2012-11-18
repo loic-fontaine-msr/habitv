@@ -53,7 +53,7 @@ class ArteRetreiver {
 		final List<?> entries = feed.getEntries();
 		for (final Object object : entries) {
 			final SyndEntry entry = (SyndEntry) object;
-			episodeList.add(new EpisodeDTO(category, entry.getTitle(), entry.getLink()));
+			episodeList.add(new EpisodeDTO(category, entry.getTitle() + " " + entry.getPublishedDate(), entry.getLink()));
 		}
 		return episodeList;
 	}
