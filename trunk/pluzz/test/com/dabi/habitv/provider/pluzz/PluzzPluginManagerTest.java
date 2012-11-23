@@ -76,7 +76,7 @@ public class PluzzPluginManagerTest {
 		final Map<String, String> downloaderName2BinPath = new HashMap<String, String>();
 		downloaderName2BinPath.put(PluzzConf.ASSEMBLER, "ffmpeg");
 		final DownloaderDTO downloaders = new DownloaderDTO(null, null, downloaderName2BinPath, null, null);
-		manager.download("./test.flv", downloaders, new CmdProgressionListener() {
+		manager.download("./test.avi", downloaders, new CmdProgressionListener() {
 
 			@Override
 			public void listen(final String progression) {
