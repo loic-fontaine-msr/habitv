@@ -89,7 +89,10 @@ public class PluzzDLM3U8 {
 		// corriger fichier video ffmpeg -isync -i test.avi -c copy test2.avi
 		// ffmpeg -isync -i "concat:file-01.mpeg.ts|file-02.mpeg.ts" -f mpeg
 		try {
-			new CmdExecutor(null, String.format(assemblerCmd, assembler, tmpVideoFile, downloadOuput), 2000, null).execute();
+			// fmpeg veut l'extension .avi
+			final String downloadOuputAvi = downloadOuput + ".avi";
+			new CmdExecutor(null, String.format(assemblerCmd, assembler, tmpVideoFile, downloadOuputAvi), 2000, null).execute();
+			(new File(downloadOuputAvi)).renameTo(new File(downloadOuput));
 		} catch (final ExecutorFailedException e) {
 			throw new TechnicalException(e);
 		}
