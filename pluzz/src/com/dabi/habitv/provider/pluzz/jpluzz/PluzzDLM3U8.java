@@ -14,7 +14,6 @@ import com.dabi.habitv.framework.plugin.exception.ExecutorFailedException;
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
 import com.dabi.habitv.framework.plugin.utils.CmdExecutor;
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
-import com.dabi.habitv.framework.plugin.utils.FileUtils;
 import com.dabi.habitv.framework.plugin.utils.RetrieverUtils;
 import com.dabi.habitv.provider.pluzz.PluzzConf;
 
@@ -29,6 +28,8 @@ public class PluzzDLM3U8 {
 	private final String assemblerCmd;
 
 	private final String assembler;
+
+	private FileOutputStream fOutputStream = null;;
 
 	public PluzzDLM3U8(final CmdProgressionListener progressionListener, final String downloadOuput, final String assemblerCmd, final String assembler) {
 		this.progressionListener = progressionListener;
@@ -53,36 +54,44 @@ public class PluzzDLM3U8 {
 		// Ajout des fragments
 		int i = 1;
 		int old = -1;
-		final StringBuilder finalFragList = new StringBuilder();
-		final List<File> fragmentFile = new ArrayList<>(nbFragMax);
-		for (final String fragment : fragments) {
-			final String fragmentFileName = FileUtils.sanitizeFilename(fragment);
-			try {
-				downloadFragment(fragmentBaseUrl + fragment, fragmentFileName);
-				fragmentFile.add(new File(fragmentFileName));
-				// Affichage de la progression
-				final int newP = handleProgression(nbFragMax, i, old);
-				if (newP != old) {
-					progressionListener.listen(String.valueOf(newP));
-					old = newP;
-					LOGGER.debug("Avancement : " + newP + " %");
+		final String tmpVideoFile = downloadOuput + ".frg";
+		new File(tmpVideoFile).delete();
+		try {
+			fOutputStream = new FileOutputStream(tmpVideoFile);
+			for (final String fragment : fragments) {
+				try {
+					downloadFragment(fragmentBaseUrl + fragment);
+					// Affichage de la progression
+					final int newP = handleProgression(nbFragMax, i, old);
+					if (newP != old) {
+						progressionListener.listen(String.valueOf(newP));
+						old = newP;
+						LOGGER.debug("Avancement : " + newP + " %");
+					}
+					i++;
+				} catch (final IOException e) {
+					throw new TechnicalException(e);
 				}
-				i++;
-				finalFragList.append(fragmentFileName + "|");
-			} catch (final IOException e) {
-				throw new TechnicalException(e);
+			}
+		} catch (final FileNotFoundException e) {
+			throw new DownloadFailedException(e);
+		} finally {
+			if (fOutputStream != null) {
+				try {
+					fOutputStream.flush();
+					fOutputStream.close();
+				} catch (final IOException e) {
+					LOGGER.error("", e);
+				}
 			}
 		}
 
+		// corriger fichier video ffmpeg -isync -i test.avi -c copy test2.avi
 		// ffmpeg -isync -i "concat:file-01.mpeg.ts|file-02.mpeg.ts" -f mpeg
 		try {
-			new File(downloadOuput).delete();
-			new CmdExecutor(null, String.format(assemblerCmd, assembler, finalFragList.toString(), downloadOuput), 2000, null).execute();
+			new CmdExecutor(null, String.format(assemblerCmd, assembler, tmpVideoFile, downloadOuput), 2000, null).execute();
 		} catch (final ExecutorFailedException e) {
 			throw new TechnicalException(e);
-		}
-		for (final File fragment : fragmentFile) {
-			fragment.delete();
 		}
 		LOGGER.debug("done");
 	}
@@ -103,15 +112,9 @@ public class PluzzDLM3U8 {
 		return manifestUrl.substring(0, manifestUrl.lastIndexOf("/")) + "/";
 	}
 
-	private void downloadFragment(final String fragmentUrl, final String fragmentFileName) throws FileNotFoundException, IOException {
-		final FileOutputStream out = new FileOutputStream(fragmentFileName);
+	private void downloadFragment(final String fragmentUrl) throws FileNotFoundException, IOException {
 		final byte[] frag = RetrieverUtils.getUrlContentBytes(fragmentUrl);
-		try {
-			out.write(frag);
-			out.flush();
-		} finally {
-			out.close();
-		}
+		fOutputStream.write(frag);
 	}
 
 	private int handleProgression(final int nbMax, final int indice, final int old) {

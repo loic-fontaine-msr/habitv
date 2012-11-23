@@ -13013,7 +13013,7 @@
             <category>
                 <id>tout_le_sport</id>
                 <name>Tout le sport</name>
-                <toDownload>false</toDownload>
+                <toDownload>true</toDownload>
                 <extension>avi</extension>
             </category>
             <category>

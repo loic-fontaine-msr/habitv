@@ -67,10 +67,10 @@ public class PluzzPluginManager implements PluginProviderInterface {
 	public void download(final String downloadOuput, final DownloaderDTO downloaders, final CmdProgressionListener cmdProgressionListener,
 			final EpisodeDTO episode) throws DownloadFailedException, NoSuchDownloaderException {
 		final String assemblerBinPath = downloaders.getBinPath(PluzzConf.ASSEMBLER);
-		if (assemblerBinPath==null) {
-			throw new TechnicalException(PluzzConf.ASSEMBLER+" downloader can't be found, add it the config.xml");
+		if (assemblerBinPath == null) {
+			throw new TechnicalException(PluzzConf.ASSEMBLER + " downloader can't be found, add it the config.xml");
 		}
-		final PluzzDLM3U8 dl = new PluzzDLM3U8(cmdProgressionListener, downloadOuput, PluzzConf.ASSEMBLE_CMD, assemblerBinPath);
+		final PluzzDLM3U8 dl = new PluzzDLM3U8(cmdProgressionListener, downloadOuput, PluzzConf.CORRECT_VIDEO_CMD, assemblerBinPath);
 		dl.dl(episode.getUrl());
 	}
 
