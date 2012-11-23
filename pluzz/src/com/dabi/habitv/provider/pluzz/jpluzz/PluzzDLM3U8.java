@@ -92,6 +92,7 @@ public class PluzzDLM3U8 {
 			// fmpeg veut l'extension .avi
 			final String downloadOuputAvi = downloadOuput + ".avi";
 			new CmdExecutor(null, String.format(assemblerCmd, assembler, tmpVideoFile, downloadOuputAvi), 2000, null).execute();
+			(new File(tmpVideoFile)).delete();
 			(new File(downloadOuputAvi)).renameTo(new File(downloadOuput));
 		} catch (final ExecutorFailedException e) {
 			throw new TechnicalException(e);
