@@ -32,7 +32,7 @@ public class CmdExecutor {
 
 	private boolean hungThread;
 
-	public CmdExecutor(final String cmdProcessor, final String cmd, long maxHungTime, final CmdProgressionListener listener) {
+	public CmdExecutor(final String cmdProcessor, final String cmd, final long maxHungTime, final CmdProgressionListener listener) {
 		super();
 		this.cmdProcessor = cmdProcessor;
 		this.cmd = cmd;
@@ -139,7 +139,12 @@ public class CmdExecutor {
 		return tread;
 	}
 
-	private boolean isHungProcess(String lastHandledLine, String currentHandledLine, long now, long lastTime, long maxHungTime) {
+	private boolean isHungProcess(final String lastHandledLine, final String currentHandledLine, final long now, final long lastTime, final long maxHungTime) {
+		LOG.debug("lastHandledLine"+lastHandledLine);
+		LOG.debug("currentHandledLine"+currentHandledLine);
+		LOG.debug("now"+now);
+		LOG.debug("lastTime"+lastTime);
+		LOG.debug("maxHungTime"+maxHungTime);
 		return lastHandledLine != null && currentHandledLine != null && (currentHandledLine.equals(lastHandledLine)) && (now - lastTime) > maxHungTime;
 	}
 

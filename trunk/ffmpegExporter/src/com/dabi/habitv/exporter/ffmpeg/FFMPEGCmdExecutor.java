@@ -4,10 +4,14 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.log4j.Logger;
+
 import com.dabi.habitv.framework.plugin.utils.CmdExecutor;
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
 
 public class FFMPEGCmdExecutor extends CmdExecutor {
+
+	private static final Logger LOG = Logger.getLogger(FFMPEGCmdExecutor.class);
 
 	private static final Pattern PERCENTAGE_PATTERN = Pattern.compile(".*\\((\\d+\\.+\\d+)%\\).*");
 
@@ -22,8 +26,13 @@ public class FFMPEGCmdExecutor extends CmdExecutor {
 		super(cmdProcessor, cmd, FFMPEGConf.MAX_HUNG_TIME, listener);
 	}
 
+	private long toLong(final String duration){
+		return Double.valueOf(Double.parseDouble(duration)).longValue();
+	}
+
 	@Override
 	protected String handleProgression(final String line) {
+		LOG.debug(line);
 		if (duration == null) {
 			duration = findDuration(line);
 		}
@@ -33,15 +42,28 @@ public class FFMPEGCmdExecutor extends CmdExecutor {
 		String ret = null;
 		// si recherche fructueuse
 		if (hasMatched && duration != null) {
-			final long currentDuration = Double.valueOf(Double.parseDouble(matcher.group(matcher.groupCount()))).longValue();
+			final String stringDuration = matcher.group(matcher.groupCount());
+			final String[] durationTab = stringDuration.split(":");
+			long currentDuration = 0;
+			final int l = durationTab.length;
+			if (l>0){
+				currentDuration+=toLong(durationTab[l-1]);
+				if (l>1){
+					currentDuration+=TimeUnit.MINUTES.toSeconds(toLong(durationTab[l-2]));
+				}
+				if (l>2){
+					currentDuration+=TimeUnit.HOURS.toSeconds(toLong(durationTab[l-3]));
+				}
+			}
 			ret = String.valueOf((currentDuration * PERCENTAGE / duration));
 		} else {
 			ret = matchPercentage(line);
 		}
+		LOG.debug("ret " + ret);
 		return ret;
 	}
 
-	private String matchPercentage(String line) {
+	private String matchPercentage(final String line) {
 		// création d’un moteur de recherche
 		final Matcher matcher = PERCENTAGE_PATTERN.matcher(line);
 		// lancement de la recherche de toutes les occurrences

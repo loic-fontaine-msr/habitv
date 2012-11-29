@@ -36,7 +36,7 @@
 		</condition>
 		<name>ffmpeg</name>
 		<output>Re-encoding</output>
-		<cmd>../ffmpegExporter/exe/ffmpeg.exe -y -i "../builder/pub/downloads/#TVSHOW_NAME#-#EPISODE_NAME_CUT#.#EXTENSION#" -vtag DIVX -f avi -vcodec mpeg4 -b 2600000 -acodec mp2 -ab 192000 -ar 48000 -ac 2 "D:\divx\regular\#TVSHOW_NAME#-#EPISODE_NAME_CUT#.avi"</cmd>
+		<cmd>D:\script\video\gen\convertAviMp2Auto.bat "../builder/pub/downloads/#TVSHOW_NAME#-#EPISODE_NAME_CUT#.#EXTENSION#" "D:\divx\regular\#TVSHOW_NAME#-#EPISODE_NAME_CUT#.avi"</cmd>
 	</exporter>
 	<exporter>
 		<condition>
