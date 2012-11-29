@@ -84,6 +84,11 @@ public class TestNotification {
 					Thread.sleep(5000); // time after which pop up will be
 					// disappeared.
 					frame.dispose();
+					frame.setVisible(false);
+					Thread.sleep(5000);
+					frame.setVisible(true);
+					Thread.sleep(5000);
+					frame.setVisible(false);
 				} catch (final InterruptedException e) {
 					e.printStackTrace();
 				}
