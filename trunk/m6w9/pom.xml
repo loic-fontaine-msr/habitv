@@ -13,9 +13,14 @@
 	<name>m6w9</name>
 	<dependencies>
 		<dependency>
-			<groupId>javax.xml.bind</groupId>
-			<artifactId>jaxb-api</artifactId>
-			<version>2.0</version>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+			<version>2.0.6</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.0.6</version>
 		</dependency>
 		<dependency>
 			<groupId>com.dabi.habitv</groupId>
@@ -26,22 +31,6 @@
 	<build>
 		<sourceDirectory>src</sourceDirectory>
 		<plugins>
-			<plugin>
-				<groupId>com.sun.tools.xjc.maven2</groupId>
-				<artifactId>maven-jaxb-plugin</artifactId>
-				<executions>
-					<execution>
-						<goals>
-							<goal>generate</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<generatePackage>com.dabi.habitv.provider.m6.entities</generatePackage>
-					<schemaDirectory>xsd</schemaDirectory>
-					<generateDirectory>generated</generateDirectory>
-				</configuration>
-			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
@@ -59,6 +48,6 @@
 			</plugin>
 		</plugins>
 	</build>
-	<version>3.3.0</version>
+	<version>3.4.2</version>
 	<groupId>com.dabi.habitv</groupId>
 </project>

@@ -52,27 +52,22 @@ public class M6W9PluginManagerTest {
 	}
 
 	@Test
-	public final void testFindEpisode() {
-		final CategoryDTO category = new CategoryDTO("channel", "Un gars, une fille", "6026", "mp4");
-		final CategoryDTO father = new CategoryDTO("channel", "w9", "w9", "mp4");
-		father.addSubCategory(category);
-		final Set<EpisodeDTO> episodeList = manager.findEpisode(category);
-		boolean contain = false;
-		for (final EpisodeDTO episode : episodeList) {
-			if (episode.getName().equals("Best of - La bouffe (1)")) {
-				assertEquals("mp4:production/w9replay/w9_un-gars-une-fille_345860_210620121730.mp4", episode.getUrl());
-				contain = true;
-			}
-		}
-		assertTrue(contain);
-	}
-
-	@Test
 	public final void testFindCategory() {
 		final Set<CategoryDTO> categories = manager.findCategory();
 		assertTrue(!categories.isEmpty());
 		for (final CategoryDTO categoryDTO : categories) {
 			assertNotNull(categoryDTO.getName());
+		}
+	}
+
+	@Test
+	public final void testFindEpisode() {
+		final CategoryDTO category = new CategoryDTO("channel", "Un gars, une fille", "6026", "mp4");
+		final CategoryDTO father = new CategoryDTO("channel", "w9", "w9", "mp4");
+		father.addSubCategory(category);
+		final Set<EpisodeDTO> episodeList = manager.findEpisode(category);
+		for (final EpisodeDTO episode : episodeList) {
+			assertNotNull(episode.getUrl());
 		}
 	}
 
@@ -110,7 +105,7 @@ public class M6W9PluginManagerTest {
 		// "rtmpe://groupemsix.fcod.llnwd.net/a2883/e1/mp4:production/regienum/m6_le-1945_426675_220920121945.mp4?s=1348406067&e=1348492467&h=8a560ba69be703f6cd0cc038dc9003f6"
 		// -c 1935 -m 10 -o
 		// "Le 1945 - Edition du 22 septembre_M6_2012_09_22_19_45.tmp.flv"
-		final EpisodeDTO episode = new EpisodeDTO(category, "Best of - La bouffe (1)", "mp4:production/regienum/m6_le-1945_426675_220920121945.mp4");
+		final EpisodeDTO episode = new EpisodeDTO(category, "scène", "11257469");
 		manager.download("downloadOuput", downloaders, new CmdProgressionListener() {
 
 			@Override
