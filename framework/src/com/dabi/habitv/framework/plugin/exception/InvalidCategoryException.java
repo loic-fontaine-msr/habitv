@@ -1,6 +1,10 @@
 package com.dabi.habitv.framework.plugin.exception;
 
+import org.apache.log4j.Logger;
+
 public class InvalidCategoryException extends Exception {
+
+	private static final Logger LOG = Logger.getLogger(InvalidCategoryException.class);
 
 	private static final long serialVersionUID = 3244569227497186902L;
 
@@ -18,6 +22,7 @@ public class InvalidCategoryException extends Exception {
 
 	public InvalidCategoryException(final String errorField, final CauseField cause) {
 		super();
+		LOG.error("invalid category "+ errorField);
 		this.errorField = errorField;
 		this.causeField = cause;
 	}
