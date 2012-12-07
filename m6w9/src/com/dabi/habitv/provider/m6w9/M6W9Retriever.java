@@ -55,28 +55,28 @@ public final class M6W9Retriever {
 		// valeur :
 		// name
 
-		buildCategoryList((Map<String, Object>) userData.get("pgmList"), categories, channel);
-		buildEpisodeList((Map<String, Object>) userData.get("clpList"), catName2Episode, categories, channel);
+		buildCategoryList((Map<String, Object>) userData.get("pgmList"), categories);
+		buildEpisodeList((Map<String, Object>) userData.get("clpList"), catName2Episode, categories);
 	}
 
-	private static void buildCategoryList(final Map<String, Object> categoryMap, final Map<String, CategoryDTO> categories, final String channel) {
+	private static void buildCategoryList(final Map<String, Object> categoryMap, final Map<String, CategoryDTO> categories) {
 		for (final Entry<String, Object> catElt : categoryMap.entrySet()) {
 			@SuppressWarnings("unchecked")
 			final Map<String, Object> categoryFields = (Map<String, Object>) catElt.getValue();
 			final String catId = catElt.getKey();
-			categories.put(catId, new CategoryDTO(channel, (String) categoryFields.get("name"), catId, M6W9Conf.EXTENSION));
+			categories.put(catId, new CategoryDTO(M6W9Conf.NAME, (String) categoryFields.get("name"), catId, M6W9Conf.EXTENSION));
 		}
 	}
 
 	private static void buildEpisodeList(final Map<String, Object> episodeMap, final Map<String, Collection<EpisodeDTO>> catName2Episode,
-			final Map<String, CategoryDTO> categories, final String channel) {
+			final Map<String, CategoryDTO> categories) {
 		for (final Entry<String, Object> episodeElt : episodeMap.entrySet()) {
 			@SuppressWarnings("unchecked")
 			final Map<String, Object> episodeFields = (Map<String, Object>) episodeElt.getValue();
 			final String catId = String.valueOf(episodeFields.get("idPgm"));
 			final CategoryDTO category = categories.get(catId);
 			if (category == null) {
-				categories.put(catId, new CategoryDTO(channel, null, catId, M6W9Conf.EXTENSION));
+				categories.put(catId, new CategoryDTO(M6W9Conf.NAME, null, catId, M6W9Conf.EXTENSION));
 			}
 			addEpisodeToCat(new EpisodeDTO(category, (String) episodeFields.get("clpName"), episodeElt.getKey()), catName2Episode);
 		}
