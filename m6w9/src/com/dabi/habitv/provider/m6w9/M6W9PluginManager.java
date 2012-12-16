@@ -77,7 +77,14 @@ public class M6W9PluginManager implements PluginProviderInterface {
 		final String id1 = id.substring(id.length() - 2, id.length());
 		final String id2 = id.substring(id.length() - 4, id.length() - 2);
 
-		final String episodeUrl = M6W9Retriever.findFinalLink(RetrieverUtils.getInputStreamFromUrl(String.format(M6W9Conf.CLIP_URL, id1, id2, id)));
+		String episodeUrl;
+		try {//TODO peut mieux faire
+			episodeUrl = M6W9Retriever
+					.findFinalLink(RetrieverUtils.getInputStreamFromUrl(String.format(M6W9Conf.CLIP_URL, M6W9Conf.M6_URL_NAME, id1, id2, id)));
+		} catch (final TechnicalException e) {
+			episodeUrl = M6W9Retriever
+					.findFinalLink(RetrieverUtils.getInputStreamFromUrl(String.format(M6W9Conf.CLIP_URL, M6W9Conf.W9_URL_NAME, id1, id2, id)));
+		}
 
 		final Map<String, String> parameters = new HashMap<>(2);
 		parameters.put(FrameworkConf.PARAMETER_BIN_PATH, downloaders.getBinPath(downloaderName));
