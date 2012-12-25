@@ -48,6 +48,6 @@
 			</plugin>
 		</plugins>
 	</build>
-	<version>3.4.2</version>
+	<version>3.4.4</version>
 	<groupId>com.dabi.habitv</groupId>
 </project>
