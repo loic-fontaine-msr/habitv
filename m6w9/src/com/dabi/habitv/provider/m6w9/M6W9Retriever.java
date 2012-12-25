@@ -107,10 +107,18 @@ public final class M6W9Retriever {
 			final Map<String, Object> clipMap = (Map<String, Object>) objectClip;
 			final String quality = (String) clipMap.get("quality");
 			link = (String) clipMap.get("url");
-			if ("hd".equals(quality)){
+			if ("hd".equals(quality)) {
 				break;
 			}
 		}
+		if (!link.endsWith(".mp4")) {
+			link = toMp4(link);
+		}
 		return link;
+	}
+
+	private static String toMp4(final String link) {
+
+		return "mp4:production/regienum" + link.substring(link.lastIndexOf("/"), link.lastIndexOf(".")) + ".mp4";
 	}
 }
