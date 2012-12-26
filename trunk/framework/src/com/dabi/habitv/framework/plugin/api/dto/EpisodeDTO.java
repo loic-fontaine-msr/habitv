@@ -15,6 +15,8 @@ public class EpisodeDTO implements Comparable<EpisodeDTO>, Serializable {
 
 	private final String url;
 
+	private int num = 0;
+
 	public EpisodeDTO(final CategoryDTO category, final String name, final String videoUrl) {
 		this.category = category;
 		this.name = name;
@@ -82,6 +84,14 @@ public class EpisodeDTO implements Comparable<EpisodeDTO>, Serializable {
 			}
 		}
 		return ret;
+	}
+
+	public int getNum() {
+		return num;
+	}
+
+	public void setNum(final int i) {
+		this.num = i;
 	}
 
 }

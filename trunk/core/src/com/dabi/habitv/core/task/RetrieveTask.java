@@ -111,7 +111,7 @@ public class RetrieveTask extends AbstractEpisodeTask {
 		boolean ret = true;
 		if (export.getConditionReference() != null) {
 			final String reference = export.getConditionReference();
-			final String actualString = TokenReplacer.replaceRef(reference, episode);
+			final String actualString = TokenReplacer.replaceAll(reference, episode);
 			ret = actualString.matches(export.getConditionPattern());
 		}
 		return ret;

@@ -93,7 +93,9 @@ public class SearchTask extends AbstractTask<Object> {
 				// filter episode lister by include/exclude and already
 				// downloaded
 				boolean isDownloaded;
+				int i = 0;
 				for (final EpisodeDTO episode : episodeList) {
+					episode.setNum(i);
 					isDownloaded = dlFiles.contains(episode.getName());
 					if (indexCreated && FilterUtils.filterByIncludeExcludeAndDownloaded(episode, category.getInclude(), category.getExclude()) && !isDownloaded) {
 						// producer download the file
@@ -105,6 +107,7 @@ public class SearchTask extends AbstractTask<Object> {
 							dlDAO.addDownloadedFiles(episode.getName());
 						}
 					}
+					i++;
 				}
 			}
 		}
