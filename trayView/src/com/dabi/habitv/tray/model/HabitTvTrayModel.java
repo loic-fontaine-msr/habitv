@@ -2,15 +2,21 @@ package com.dabi.habitv.tray.model;
 
 import java.util.Observable;
 
+import org.apache.log4j.Logger;
+
 import com.dabi.habitv.config.entities.Config;
 import com.dabi.habitv.core.config.ConfigAccess;
 import com.dabi.habitv.core.config.HabitTvConf;
 import com.dabi.habitv.core.dao.GrabConfigDAO;
+import com.dabi.habitv.core.event.SearchEvent;
+import com.dabi.habitv.core.event.SearchStateEnum;
 import com.dabi.habitv.core.mgr.CoreManager;
 import com.dabi.habitv.tray.subscriber.CoreSubscriber;
 import com.dabi.habitv.tray.subscriber.SubscriberAdapter;
 
 public class HabitTvTrayModel extends Observable {
+
+	private static final Logger LOG = Logger.getLogger(HabitTvTrayModel.class);
 
 	private final CoreManager coreManager;
 
@@ -53,22 +59,31 @@ public class HabitTvTrayModel extends Observable {
 					confDemonTime = config.getDemonTime();
 				}
 				final long demonTime = confDemonTime * 1000L;
+				boolean still = true;
 				// demon mode
-				while (true) {
+				while (still) {
 					if (interrupted) {
 						interrupted = false;
 					} else {
-						if (grabConfigDAO.exist()) {
-							coreManager.retreiveEpisode(grabConfigDAO.load());
-						} else {
-							grabConfigDAO.saveGrabConfig(coreManager.findCategory());
+						try {
+							if (grabConfigDAO.exist()) {
+								coreManager.retreiveEpisode(grabConfigDAO.load());
+							} else {
+								grabConfigDAO.saveGrabConfig(coreManager.findCategory());
+							}
+						} catch (final Exception e) {
+							LOG.error("", e);
+							coreManager.getEpisodeManager().getSearchPublisher().addNews(new SearchEvent(SearchStateEnum.ERROR, e));
+							still = false;
 						}
 					}
-					try {
-						Thread.sleep(demonTime);
-					} catch (final InterruptedException e) {
-						// may have been interrupted by a manually start
-						interrupted = true;
+					if (still) {
+						try {
+							Thread.sleep(demonTime);
+						} catch (final InterruptedException e) {
+							// may have been interrupted by a manually start
+							interrupted = true;
+						}
 					}
 				}
 			}
