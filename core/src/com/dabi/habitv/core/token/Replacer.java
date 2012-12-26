@@ -1,5 +1,7 @@
 package com.dabi.habitv.core.token;
 
+import java.util.List;
+
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
 
 abstract class Replacer {
@@ -11,15 +13,15 @@ abstract class Replacer {
 		replacer = null;
 	}
 
-	Replacer(Replacer replacer) {
+	Replacer(final Replacer replacer) {
 		super();
 		this.replacer = replacer;
 	}
 
-	abstract String replace(EpisodeDTO episode);
+	abstract String replace(EpisodeDTO episode, List<String> params);
 
 	Replacer getReplacer() {
 		return replacer;
 	}
-	
+
 }
