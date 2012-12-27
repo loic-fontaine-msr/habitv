@@ -8,6 +8,12 @@ public interface TF1Conf {
 
 	String CURL = "curl";
 
+	String RTMDUMP = "rtmpdump";
+
+	String RTMPDUMP_PREFIX = "rtmp";
+
+	String DUMP_CMD="-r \"#VIDEO_URL#\" -c 1935 -m 10 -w 288902587f13ebfd9971092eab9fd78fcc23b400caa9061a73eb87b0f13c6b41 -x 343854 -o \"#FILE_DEST#\"";
+
 	String EXTENSION = "mp4";
 
 	String WAT_HOME = "http://www.wat.tv";

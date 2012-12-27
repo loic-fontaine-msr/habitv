@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.api.downloader.PluginDownloaderInterface;
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
 import com.dabi.habitv.framework.plugin.api.dto.DownloaderDTO;
@@ -12,7 +13,6 @@ import com.dabi.habitv.framework.plugin.api.provider.PluginProviderInterface;
 import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.framework.plugin.exception.NoSuchDownloaderException;
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
-import com.dabi.habitv.framework.FrameworkConf;
 
 public class TF1PluginManager implements PluginProviderInterface {
 
@@ -36,16 +36,34 @@ public class TF1PluginManager implements PluginProviderInterface {
 		return TF1Retreiver.findCategory();
 	}
 
+	private String getDownloader(final String url) {
+		String downloaderName;
+		if (url.startsWith(TF1Conf.RTMPDUMP_PREFIX)) {
+			downloaderName = TF1Conf.RTMDUMP;
+		} else {
+			downloaderName = TF1Conf.CURL;
+		}
+		return downloaderName;
+	}
+
 	@Override
 	public void download(final String downloadOuput, final DownloaderDTO downloaders, final CmdProgressionListener cmdProgressionListener,
 			final EpisodeDTO episode) throws DownloadFailedException, NoSuchDownloaderException {
-		final PluginDownloaderInterface pluginDownloader = downloaders.getDownloader(TF1Conf.CURL);
+		String videoUrl = TF1Retreiver.findFinalUrl(episode);
+		final String downloaderName = getDownloader(videoUrl);
+		final PluginDownloaderInterface pluginDownloader = downloaders.getDownloader(downloaderName);
 
 		final Map<String, String> parameters = new HashMap<>(2);
-		parameters.put(FrameworkConf.PARAMETER_BIN_PATH, downloaders.getBinPath(TF1Conf.CURL));
+		parameters.put(FrameworkConf.PARAMETER_BIN_PATH, downloaders.getBinPath(downloaderName));
 		parameters.put(FrameworkConf.CMD_PROCESSOR, downloaders.getCmdProcessor());
 
-		pluginDownloader.download(TF1Retreiver.findFinalUrl(episode), downloadOuput, parameters, cmdProgressionListener);
+		if (TF1Conf.RTMDUMP.equals(downloaderName)) {
+			videoUrl = videoUrl.replace(",rtmpte", "");
+			videoUrl = videoUrl.substring(0, videoUrl.lastIndexOf("?"));
+			parameters.put(FrameworkConf.PARAMETER_ARGS, TF1Conf.DUMP_CMD);
+		}
+
+		pluginDownloader.download(videoUrl, downloadOuput, parameters, cmdProgressionListener);
 	}
 
 }
