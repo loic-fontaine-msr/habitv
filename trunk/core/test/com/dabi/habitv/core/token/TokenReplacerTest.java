@@ -41,8 +41,8 @@ public class TokenReplacerTest {
 	@Test
 	public final void testReplaceAll() {
 		assertEquals(
-				(new SimpleDateFormat("yyyyMM").format(new Date()) + " epN channel catName extension " + new SimpleDateFormat("yyyy").format(new Date())),
-				TokenReplacer.replaceAll("#DATETIME§yyyyMM# #EPISODE§3# #CHANNEL# #CATEGORY# #EXTENSION# #DATETIME§yyyy#", episode));
+				(new SimpleDateFormat("yyyyMMDD").format(new Date()) + " epN channel catName extension " + new SimpleDateFormat("yyyy").format(new Date())),
+				TokenReplacer.replaceAll("#DATETIME§yyyyMMDD# #EPISODE§3# #CHANNEL# #CATEGORY# #EXTENSION# #DATETIME§yyyy#", episode));
 		assertEquals("channel epName channel catName extension", TokenReplacer.replaceAll("#CHANNEL# #EPISODE# #CHANNEL# #CATEGORY# #EXTENSION#", episode));
 	}
 
