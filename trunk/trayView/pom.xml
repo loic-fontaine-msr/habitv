@@ -10,7 +10,7 @@
 	<artifactId>trayView</artifactId>
 	<packaging>jar</packaging>
 	<name>trayView</name>
-	<version>3.4.0</version>
+	<version>3.5.1</version>
 	<dependencies>
 		<dependency>
 			<groupId>com.dabi.habitv</groupId>
