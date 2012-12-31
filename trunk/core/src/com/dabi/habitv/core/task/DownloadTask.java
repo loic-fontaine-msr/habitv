@@ -12,6 +12,7 @@ import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
 import com.dabi.habitv.framework.plugin.api.provider.PluginProviderInterface;
 import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.framework.plugin.exception.NoSuchDownloaderException;
+import com.dabi.habitv.framework.plugin.exception.TechnicalException;
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
 
 public class DownloadTask extends AbstractEpisodeTask {
@@ -74,7 +75,9 @@ public class DownloadTask extends AbstractEpisodeTask {
 			outputFile.getParentFile().mkdir();
 		}
 		if (outputFile.exists()) {
-			outputFile.delete();
+			if (!outputFile.delete()) {
+				throw new TechnicalException("can't delete file " + outputFile.getAbsolutePath());
+			}
 		}
 		provider.download(outputTmpFileName, downloader, new CmdProgressionListener() {
 			@Override
@@ -82,7 +85,9 @@ public class DownloadTask extends AbstractEpisodeTask {
 				publisher.addNews(new RetreiveEvent(getEpisode(), EpisodeStateEnum.DOWNLOADING, progression));
 			}
 		}, getEpisode());
-		(new File(outputTmpFileName)).renameTo(new File(outputFilename));
+		if (!(new File(outputTmpFileName)).renameTo(new File(outputFilename))){
+			throw new TechnicalException("can't rename");
+		}
 		return null;
 	}
 

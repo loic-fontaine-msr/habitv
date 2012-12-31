@@ -32,6 +32,8 @@ public class CmdExecutor {
 
 	private boolean hungThread;
 
+	private boolean ended = false;
+
 	public CmdExecutor(final String cmdProcessor, final String cmd, final long maxHungTime, final CmdProgressionListener listener) {
 		super();
 		this.cmdProcessor = cmdProcessor;
@@ -56,9 +58,14 @@ public class CmdExecutor {
 			final Thread errorThread = treatCmdOutput(process.getErrorStream(), fullOutput);
 			errorThread.start();
 
+			if (getHungProcessTime() != -1) {
+				final Thread killThread = buildKillerThread(fullOutput, process);
+				killThread.start();
+			}
 			// wait for both thread
-			outputThread.join();
 			errorThread.join();
+			outputThread.join();
+			ended = true;
 			if (hungThread) {
 				process.destroy();
 				throw new HungProcessException(cmd, fullOutput.toString(), lastOutputLine, maxHungTime);
@@ -76,6 +83,37 @@ public class CmdExecutor {
 		if (process.exitValue() != 0 || (getLastOutputLine() != null && !isSuccess(fullOutput.toString()))) {
 			throw new ExecutorFailedException(cmd, fullOutput.toString(), lastOutputLine, null);
 		}
+	}
+
+	private Thread buildKillerThread(final StringBuffer fullOutput, final Process process) {
+		final Thread tread = new Thread() {
+			@Override
+			public void run() {
+				setName("KillerThread" + cmd);
+
+				String oldOutPut = fullOutput.toString();
+				String newOutPut = fullOutput.toString();
+				while (!hungThread && !ended) {
+					try {
+						Thread.sleep(getHungProcessTime());
+					} catch (final InterruptedException e) {
+						throw new TechnicalException(e);
+					}
+					newOutPut = fullOutput.toString();
+					if (oldOutPut != null && oldOutPut.equals(newOutPut)) {
+						hungThread = true;
+						process.destroy();
+					} else {
+						oldOutPut = fullOutput.toString();
+					}
+				}
+			}
+		};
+		return tread;
+	}
+
+	protected long getHungProcessTime() {
+		return -1;
 	}
 
 	protected Process buildProcess(final String cmd) throws ExecutorFailedException {
@@ -140,11 +178,11 @@ public class CmdExecutor {
 	}
 
 	private boolean isHungProcess(final String lastHandledLine, final String currentHandledLine, final long now, final long lastTime, final long maxHungTime) {
-		LOG.debug("lastHandledLine"+lastHandledLine);
-		LOG.debug("currentHandledLine"+currentHandledLine);
-		LOG.debug("now"+now);
-		LOG.debug("lastTime"+lastTime);
-		LOG.debug("maxHungTime"+maxHungTime);
+		LOG.debug("lastHandledLine" + lastHandledLine);
+		LOG.debug("currentHandledLine" + currentHandledLine);
+		LOG.debug("now" + now);
+		LOG.debug("lastTime" + lastTime);
+		LOG.debug("maxHungTime" + maxHungTime);
 		return lastHandledLine != null && currentHandledLine != null && (currentHandledLine.equals(lastHandledLine)) && (now - lastTime) > maxHungTime;
 	}
 
