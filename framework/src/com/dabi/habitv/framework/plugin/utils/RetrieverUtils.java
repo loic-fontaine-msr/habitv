@@ -51,6 +51,8 @@ public final class RetrieverUtils {
 	public static InputStream getInputStreamFromUrl(final String url) {
 		try {
 			final URLConnection hc = (new URL(url)).openConnection();
+			hc.setConnectTimeout(15000);
+			hc.setReadTimeout(15000);
 			hc.setRequestProperty("User-Agent", USER_AGENT);
 			return hc.getInputStream();
 		} catch (final IOException e) {
@@ -161,7 +163,7 @@ public final class RetrieverUtils {
 		String readLine;
 		try {
 			while ((readLine = reader.readLine()) != null) {
-				sb.append(readLine+"\r\n");
+				sb.append(readLine + "\r\n");
 			}
 		} catch (final IOException e) {
 			throw new TechnicalException(e);

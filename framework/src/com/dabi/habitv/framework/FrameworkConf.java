@@ -14,6 +14,8 @@ public interface FrameworkConf {
 
 	long TIME_BETWEEN_LOG = 2000L;
 
+	long HUNG_PROCESS_TIME = 5000L;
+
 	String UPDATE_URL = "http://dabiboo.free.fr/habitv";
 
 	String CMD_PROCESSOR = "CMD_PROCESSOR";

@@ -3,6 +3,7 @@ package com.dabi.habitv.downloader.rtmpdump;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.utils.CmdExecutor;
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
 
@@ -15,7 +16,7 @@ public class RtmpDumpCmdExecutor extends CmdExecutor {
 	private static final Pattern PROGRESS_PATTERN = Pattern.compile("\\((\\d+\\.\\d)%\\)$");
 
 	public RtmpDumpCmdExecutor(final String cmdProcessor, final String cmd, final CmdProgressionListener listener) {
-		super(cmdProcessor, cmd, RtmpDumpConf.MAX_HUNG_TIME,listener);
+		super(cmdProcessor, cmd, RtmpDumpConf.MAX_HUNG_TIME, listener);
 	}
 
 	@Override
@@ -33,6 +34,11 @@ public class RtmpDumpCmdExecutor extends CmdExecutor {
 	@Override
 	protected boolean isSuccess(final String fullOutput) {
 		return getLastOutputLine().contains("Download complete") && percentage > MIN_PERCENTAGE;
+	}
+
+	@Override
+	protected long getHungProcessTime() {
+		return FrameworkConf.HUNG_PROCESS_TIME;
 	}
 
 }

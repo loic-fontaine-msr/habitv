@@ -110,7 +110,7 @@ public final class HabiTvTrayView implements CoreSubscriber {
 			if (info == null) {
 				info = ""; //$NON-NLS-1$
 			}
-			str.append(actionProgress.getState().name() + " " + info + " " + progression); //$NON-NLS-1$ //$NON-NLS-2$
+			str.append(Messages.getString("HabiTvTrayView."+actionProgress.getState().name().toLowerCase()) + " " + info + " " + progression); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		return str.toString();
 	}
@@ -143,7 +143,7 @@ public final class HabiTvTrayView implements CoreSubscriber {
 			break;
 		case ERROR:
 			checkInProgress = false;
-			changeAnimation();			
+			changeAnimation();
 			trayIcon.displayMessage(Messages.getString("HabiTvTrayView.17"), Messages.getString("HabiTvTrayView.18") + event.getException().getMessage(), TrayIcon.MessageType.ERROR); //$NON-NLS-1$ //$NON-NLS-2$
 			break;
 		case IDLE:
