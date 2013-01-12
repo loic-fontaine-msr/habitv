@@ -22,6 +22,7 @@ import javax.xml.bind.JAXBException;
 
 import org.apache.commons.codec.binary.Base64InputStream;
 
+import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
 
 /**
@@ -46,13 +47,19 @@ public final class RetrieverUtils {
 	 * 
 	 * @param url
 	 *            the URL
+	 * @param timeOut
 	 * @return the input stream
 	 */
 	public static InputStream getInputStreamFromUrl(final String url) {
+		return getInputStreamFromUrl(url, FrameworkConf.TIME_OUT_MS);
+	}
+	public static InputStream getInputStreamFromUrl(final String url, final Integer timeOut) {
 		try {
 			final URLConnection hc = (new URL(url)).openConnection();
-			hc.setConnectTimeout(15000);
-			hc.setReadTimeout(15000);
+			if (timeOut != null) {
+				hc.setConnectTimeout(timeOut);
+				hc.setReadTimeout(timeOut);
+			}
 			hc.setRequestProperty("User-Agent", USER_AGENT);
 			return hc.getInputStream();
 		} catch (final IOException e) {
@@ -197,7 +204,7 @@ public final class RetrieverUtils {
 	}
 
 	public static byte[] getUrlContentBytes(final String url) {
-		final InputStream in = getInputStreamFromUrl(url);
+		final InputStream in = getInputStreamFromUrl(url, null);
 		final ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		int i;
 		try {
