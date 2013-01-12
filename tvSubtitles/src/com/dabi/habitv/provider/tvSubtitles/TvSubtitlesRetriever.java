@@ -3,6 +3,7 @@ package com.dabi.habitv.provider.tvSubtitles;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -17,6 +18,7 @@ import net.htmlparser.jericho.Segment;
 import net.htmlparser.jericho.Source;
 import net.htmlparser.jericho.StartTag;
 
+import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
@@ -45,11 +47,11 @@ public final class TvSubtitlesRetriever {
 
 	}
 
-	public static Set<EpisodeDTO> filterByEpNumberOnly(Set<EpisodeDTO> episodeList) {
+	public static Set<EpisodeDTO> filterByEpNumberOnly(final Set<EpisodeDTO> episodeList) {
 		final Set<EpisodeDTO> newEpisodeList = new HashSet<>();
 		final Set<String> epNumberList = new HashSet<>();
 		String epNumber;
-		for (EpisodeDTO episode : episodeList) {
+		for (final EpisodeDTO episode : episodeList) {
 			epNumber = findEpNumber(episode);
 			if (!episodeList.contains(epNumber)) {
 				newEpisodeList.add(new EpisodeDTO(episode.getCategory(), epNumber, episode.getUrl()));
@@ -59,7 +61,7 @@ public final class TvSubtitlesRetriever {
 		return newEpisodeList;
 	}
 
-	private static String findEpNumber(EpisodeDTO episode) {
+	private static String findEpNumber(final EpisodeDTO episode) {
 		final Matcher matcher = EP_NUMBER_PATTERN.matcher(episode.getName());
 		if (matcher.find()) {
 			return matcher.group(matcher.groupCount());
@@ -69,7 +71,13 @@ public final class TvSubtitlesRetriever {
 
 	public static Set<EpisodeDTO> findEpisodeByCategory(final CategoryDTO category) throws IOException {
 		final Set<EpisodeDTO> episodeList = new HashSet<>();
-		final Source source = new Source(new URL(TvSubtitlesConf.HOME_URL + "/" + category.getId()));
+		final URL url = new URL(TvSubtitlesConf.HOME_URL + "/" + category.getId());
+		final URLConnection urlConn = url.openConnection();
+		urlConn.setConnectTimeout(FrameworkConf.TIME_OUT_MS);
+		urlConn.setReadTimeout(FrameworkConf.TIME_OUT_MS);
+		urlConn.setRequestProperty("User-Agent", TvSubtitlesConf.USER_AGENT);
+
+		final Source source = new Source(urlConn);
 		final Segment seasonTabP = source.getAllStartTags("p class=\"description\"").get(0);
 		final List<Element> seasonLinks = seasonTabP.getChildElements().get(0).getChildElements();
 		if (!seasonLinks.isEmpty()) {
@@ -88,7 +96,15 @@ public final class TvSubtitlesRetriever {
 
 	public static Collection<EpisodeDTO> findReleaseByEpisode(final CategoryDTO category, final String episodeUrl, final boolean dlLink)
 			throws MalformedURLException, IOException {
-		final Source source = new Source(new URL(TvSubtitlesConf.HOME_URL + "/" + episodeUrl));
+
+		final URL url = new URL(TvSubtitlesConf.HOME_URL + "/" + episodeUrl);
+		final URLConnection urlConn = url.openConnection();
+		urlConn.setConnectTimeout(FrameworkConf.TIME_OUT_MS);
+		urlConn.setReadTimeout(FrameworkConf.TIME_OUT_MS);
+		urlConn.setRequestProperty("User-Agent", TvSubtitlesConf.USER_AGENT);
+
+		final Source source = new Source(urlConn);
+
 		Integer previousRate = null;
 		final Map<String, Integer> nameToRate = new HashMap<>();
 		final Map<String, EpisodeDTO> nameToEpisode = new HashMap<>();
@@ -131,7 +147,14 @@ public final class TvSubtitlesRetriever {
 	}
 
 	public static String findDownloadLink(final String dlUrl) throws IOException {
-		final Source source = new Source(new URL(TvSubtitlesConf.HOME_URL + "/" + dlUrl));
+		final URL url = new URL(TvSubtitlesConf.HOME_URL + "/" + dlUrl);
+		final URLConnection urlConn = url.openConnection();
+		urlConn.setConnectTimeout(FrameworkConf.TIME_OUT_MS);
+		urlConn.setReadTimeout(FrameworkConf.TIME_OUT_MS);
+		urlConn.setRequestProperty("User-Agent", TvSubtitlesConf.USER_AGENT);
+
+		final Source source = new Source(urlConn);
+
 		for (final Segment segment : source.getAllStartTags("a href=")) {
 			if (segment.getChildElements().size() > 0) {
 				final List<StartTag> imgTag = segment.getChildElements().get(0).getAllStartTags("img src");

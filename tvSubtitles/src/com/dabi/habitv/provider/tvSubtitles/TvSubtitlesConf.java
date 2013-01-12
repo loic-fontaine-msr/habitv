@@ -10,5 +10,6 @@ public interface TvSubtitlesConf {
 	public static final String LANGUAGE = "French";
 	public static final String LANGUAGE2 = "Français";
 	public static final String EXTENSION = "zip";
+	public static final String USER_AGENT = "\"Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0)\"";;
 
 }
