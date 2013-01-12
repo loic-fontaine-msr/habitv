@@ -85,7 +85,8 @@ public class DownloadTask extends AbstractEpisodeTask {
 				publisher.addNews(new RetreiveEvent(getEpisode(), EpisodeStateEnum.DOWNLOADING, progression));
 			}
 		}, getEpisode());
-		if (!(new File(outputTmpFileName)).renameTo(new File(outputFilename))){
+		final File file = new File(outputTmpFileName);
+		if (file.exists() && !file.renameTo(new File(outputFilename))){
 			throw new TechnicalException("can't rename");
 		}
 		return null;
