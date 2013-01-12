@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
+
 import com.dabi.habitv.core.config.HabitTvConf;
 import com.dabi.habitv.core.event.SearchCategoryEvent;
 import com.dabi.habitv.core.event.SearchCategoryStateEnum;
@@ -24,6 +26,8 @@ public class CategoryManager extends AbstractManager {
 	private final TaskMgr<SearchCategoryTask, SearchCategoryResult> searchCategoryMgr;
 
 	private final Publisher<SearchCategoryEvent> searchCategoryPublisher;
+
+	private static final Logger LOG = Logger.getLogger(CategoryManager.class);
 
 	CategoryManager(final Collection<PluginProviderInterface> pluginProviderList, final Map<String, Integer> taskName2PoolSize) {
 		super(pluginProviderList);
@@ -50,7 +54,9 @@ public class CategoryManager extends AbstractManager {
 				channel2Categories.put(searchCategoryResult.getChannel(), searchCategoryResult.getCategoryList());
 			} catch (final TechnicalException e) {
 				searchCategoryPublisher.addNews(new SearchCategoryEvent(SearchCategoryStateEnum.ERROR, HabitTvConf.GRABCONFIG_XML_FILE));
-				throw new TechnicalException(e);
+				// throw new TechnicalException(e);
+				// if one plugin failed keep generating the grabconfig file
+				LOG.error("one plugin failed, keep generating the grabconfig file", e);
 			}
 		}
 		return channel2Categories;
