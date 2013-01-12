@@ -15,8 +15,8 @@ import com.dabi.habitv.framework.plugin.exception.NoSuchDownloaderException;
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
 
 public class D8PluginManager implements PluginProviderInterface { // NO_UCD
-																	// (test
-																	// only)
+	// (test
+	// only)
 
 	private ClassLoader classLoader;
 
@@ -40,18 +40,29 @@ public class D8PluginManager implements PluginProviderInterface { // NO_UCD
 		return D8Retreiver.findCategories(classLoader);
 	}
 
+	private String getDownloader(final String url) {
+		String downloaderName;
+		if (url.startsWith(D8Conf.RTMPDUMP_PREFIX)) {
+			downloaderName = D8Conf.RTMDUMP;
+		} else {
+			downloaderName = D8Conf.CURL;
+		}
+		return downloaderName;
+	}
+
 	@Override
-	public void download(final String downloadOuput, final DownloaderDTO downloaders, final CmdProgressionListener cmdProgressionListener,
+	public void download(final String downloadOuput, final DownloaderDTO downloaders, final CmdProgressionListener listener,
 			final EpisodeDTO episode) throws DownloadFailedException, NoSuchDownloaderException {
-		final String downloaderName = D8Conf.CURL;
+		final String videoUrl = D8Retreiver.findVideoUrl(episode.getUrl());
+		final String downloaderName = getDownloader(videoUrl);
 		final PluginDownloaderInterface pluginDownloader = downloaders.getDownloader(downloaderName);
 
 		final Map<String, String> parameters = new HashMap<>(2);
 		parameters.put(FrameworkConf.PARAMETER_BIN_PATH, downloaders.getBinPath(downloaderName));
-		parameters.put(FrameworkConf.CMD_PROCESSOR, downloaders.getCmdProcessor());
+		parameters.put(FrameworkConf.CMD_PROCESSOR,
+				downloaders.getCmdProcessor());
 
-		final String url = D8Retreiver.findEpisodeUrl(episode);
-		pluginDownloader.download(url, downloadOuput, parameters, cmdProgressionListener);
+		pluginDownloader.download(videoUrl, downloadOuput, parameters, listener);
 	}
 
 }
