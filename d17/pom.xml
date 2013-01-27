@@ -32,40 +32,6 @@
 		<sourceDirectory>src</sourceDirectory>
 		<plugins>
 			<plugin>
-				<groupId>com.sun.tools.xjc.maven2</groupId>
-				<artifactId>maven-jaxb-plugin</artifactId>
-<executions>
-					<execution>
-						<id>initplayer</id>
-						<goals>
-							<goal>generate</goal>
-						</goals>
-						<configuration>
-							<generatePackage>com.dabi.habitv.provider.d17.cat</generatePackage>
-							<includeSchemas>
-								<includeSchema>d17.xsd</includeSchema>
-							</includeSchemas>
-							<schemaDirectory>xsd</schemaDirectory>
-							<generateDirectory>generated</generateDirectory>
-						</configuration>
-					</execution>
-					<execution>
-						<id>mea</id>
-						<goals>
-							<goal>generate</goal>
-						</goals>
-						<configuration>
-							<generatePackage>com.dabi.habitv.provider.d17.ep</generatePackage>
-							<includeSchemas>
-								<includeSchema>program.xsd</includeSchema>
-							</includeSchemas>
-							<schemaDirectory>xsd</schemaDirectory>
-							<generateDirectory>generated</generateDirectory>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 				<configuration>
@@ -82,7 +48,7 @@
 			</plugin>
 		</plugins>
 	</build>
-	<version>3.5.2</version>
+	<version>3.6.0</version>
 	<description></description>
 	<groupId>com.dabi.habitv</groupId>
 </project>

@@ -32,22 +32,6 @@
 		<sourceDirectory>src</sourceDirectory>
 		<plugins>
 			<plugin>
-				<groupId>com.sun.tools.xjc.maven2</groupId>
-				<artifactId>maven-jaxb-plugin</artifactId>
-				<executions>
-					<execution>
-						<goals>
-							<goal>generate</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<generatePackage>com.dabi.habitv.provider.d8</generatePackage>
-					<schemaDirectory>xsd</schemaDirectory>
-					<generateDirectory>generated</generateDirectory>
-				</configuration>
-			</plugin>
-			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 				<configuration>
@@ -64,7 +48,7 @@
 			</plugin>
 		</plugins>
 	</build>
-	<version>3.5.2</version>
+	<version>3.6.0</version>
 	<description></description>
 	<groupId>com.dabi.habitv</groupId>
 </project>
