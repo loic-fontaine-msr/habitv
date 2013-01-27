@@ -3,6 +3,7 @@ package com.dabi.habitv.provider.tf1;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -22,6 +23,8 @@ import com.dabi.habitv.framework.plugin.utils.RetrieverUtils;
 public class TF1Retreiver {
 
 	private static final Pattern MEDIAID_PATTERN = Pattern.compile("mediaId : (\\d*),");
+
+	private static final Pattern VIDEO_ID_PATTERN = Pattern.compile("\"id\"\\s*:\\s*(\\d+)");
 
 	private static final Logger LOGGER = Logger.getLogger(TF1Retreiver.class);
 
@@ -104,21 +107,33 @@ public class TF1Retreiver {
 		return hashString.toString() + "/" + dateS;
 	}
 
-	public static String findFinalUrl(final EpisodeDTO episode) {
+	public static VideoStruct findFinalUrl(final EpisodeDTO episode) {
 		final String content = RetrieverUtils.getUrlContent(TF1Conf.HOME_URL + episode.getUrl());
-		final boolean hd = content.contains("content=\"720\"");
-		// peut être remplace par un appel à
-		// http://www.wat.tv/interface/contentv3/8635245
+		final String mainMediaId = findMediaId(content);
+		final String videoInfoContent = RetrieverUtils.getUrlContent(TF1Conf.VIDEO_INFO + mainMediaId);
+		final boolean hd = videoInfoContent.contains("\"hasHD\":true");
+		final Collection<String> mediaIdList = findMediaIdList(videoInfoContent);
+		return new VideoStruct(hd, mediaIdList);
+	}
+
+	private static Set<String> findMediaIdList(final String content) {
+		final Set<String> mediaIdList = new HashSet<>();
+		final Matcher matcher = VIDEO_ID_PATTERN.matcher(content);
+		while (matcher.find()) {
+			mediaIdList.add(matcher.group().split(":")[1]);
+		}
+		return mediaIdList;
+	}
+
+	public static String buildUrlVideoInfo(final String mediaId, final boolean hd) {
 		String contextRoot;
 		if (hd) {
 			contextRoot = "webhd";
 		} else {
 			contextRoot = "web";
 		}
-		final String mediaId = findMediaId(content);
-		final String urlForVideo = TF1Conf.WAT_HOME + "/get/" + contextRoot + "/" + mediaId
-				+ "?domain=videos.tf1.fr&version=WIN%2010,2,152,32&country=FR&getURL=1&token=" + buildToken(mediaId, findTimeStamp(), contextRoot);
-		return RetrieverUtils.getUrlContent(urlForVideo);
+		return TF1Conf.WAT_HOME + "/get/" + contextRoot + "/" + mediaId + "?domain=videos.tf1.fr&version=WIN%2010,2,152,32&country=FR&getURL=1&token="
+		+ buildToken(mediaId, findTimeStamp(), contextRoot);
 	}
 
 	private static Long findTimeStamp() {
