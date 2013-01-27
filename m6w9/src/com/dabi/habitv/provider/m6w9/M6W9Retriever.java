@@ -93,7 +93,7 @@ public final class M6W9Retriever {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static String findFinalLink(final InputStream in) {
+	public static LinkedList<String> findFinalLink(final InputStream in) {
 		Map<String, CategoryDTO> data;
 		try {
 			data = mapper.readValue(in, Map.class);
@@ -102,19 +102,22 @@ public final class M6W9Retriever {
 		}
 
 		final Map<String, Object> assetMap = (Map<String, Object>) data.get("asset");
-		String link = null;
+		final LinkedList<String> linkList = new LinkedList<>();
+		String link;
 		for (final Object objectClip : assetMap.values()) {
 			final Map<String, Object> clipMap = (Map<String, Object>) objectClip;
 			final String quality = (String) clipMap.get("quality");
 			link = (String) clipMap.get("url");
+			if (!link.endsWith(".mp4")) {
+				link = toMp4(link);
+			}
 			if ("hd".equals(quality)) {
-				break;
+				linkList.addFirst(link);
+			} else {
+				linkList.add(link);
 			}
 		}
-		if (!link.endsWith(".mp4")) {
-			link = toMp4(link);
-		}
-		return link;
+		return linkList;
 	}
 
 	private static String toMp4(final String link) {
