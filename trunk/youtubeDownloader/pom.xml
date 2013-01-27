@@ -17,16 +17,6 @@
 			<artifactId>framework</artifactId>
 			<version>LATEST</version>
 		</dependency>
-		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpclient</artifactId>
-			<version>4.1.3</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpcore</artifactId>
-			<version>4.1.4</version>
-		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
@@ -45,8 +35,26 @@
 					</archive>
 				</configuration>
 			</plugin>
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>install</phase>
+						<configuration>
+							<tasks>
+								<copy todir="../builder/pub/bin">
+									<fileset dir="exe" />
+								</copy>
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 	<groupId>com.dabi.habitv</groupId>
-	<version>3.3.0</version>
+	<version>3.6.0</version>
 </project>

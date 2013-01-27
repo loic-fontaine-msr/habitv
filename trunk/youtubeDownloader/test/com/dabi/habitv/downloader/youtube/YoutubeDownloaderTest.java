@@ -1,9 +1,5 @@
 package com.dabi.habitv.downloader.youtube;
 
-import static org.junit.Assert.assertEquals;
-
-import java.io.UnsupportedEncodingException;
-
 import org.junit.Test;
 
 import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
@@ -13,11 +9,6 @@ public class YoutubeDownloaderTest {
 
 	private final YoutubePluginManager manager = new YoutubePluginManager();
 
-	@Test
-	public void testFormat() throws UnsupportedEncodingException {
-		assertEquals(Integer.valueOf(44), YoutubeDownloader.findBestFormat("http://www.youtube.com/watch?v=gg3ARiiSAfM&feature=plcp"));
-		assertEquals("gg3ARiiSAfM", YoutubeDownloader.getYoutubeId("http://www.youtube.com/watch?v=gg3ARiiSAfM&feature=plcp"));
-	}
 
 	@Test
 	public void testDownload() throws DownloadFailedException {
@@ -29,7 +20,7 @@ public class YoutubeDownloaderTest {
 			}
 		});
 	}
-	
+
 	@Test
 	public void testDownloadProtected() throws DownloadFailedException {
 
