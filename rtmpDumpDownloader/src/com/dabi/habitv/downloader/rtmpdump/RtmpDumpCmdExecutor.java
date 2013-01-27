@@ -3,7 +3,6 @@ package com.dabi.habitv.downloader.rtmpdump;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.utils.CmdExecutor;
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
 
@@ -38,7 +37,7 @@ public class RtmpDumpCmdExecutor extends CmdExecutor {
 
 	@Override
 	protected long getHungProcessTime() {
-		return FrameworkConf.HUNG_PROCESS_TIME;
+		return RtmpDumpConf.HUNG_PROCESS_TIME;
 	}
 
 }

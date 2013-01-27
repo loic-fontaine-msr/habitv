@@ -12,4 +12,6 @@ public final class RtmpDumpConf {
 
 	public static final long MAX_HUNG_TIME = 300000L;
 
+	public static final long HUNG_PROCESS_TIME = 30000L;
+
 }
