@@ -39,14 +39,21 @@ class D8Retreiver {
 		final Set<EpisodeDTO> episodes = new HashSet<>();
 
 		try {
-			final Connection con = Jsoup.connect(D8Conf.HOME_URL+category.getId());
+			final Connection con = Jsoup.connect(D8Conf.HOME_URL + category.getId());
 
 			final Elements select = con.get().select(".list-programmes-emissions").get(0).children();
 			for (final Element liElement : select) {
 				try {
 					final Element aLink = liElement.child(0);
 					final String title = aLink.child(1).child(0).text() + " - " + aLink.child(1).child(1).text();
-					final String url = aLink.attr("href").split("vid=")[1].split("&")[0];
+					String attr;
+					if (aLink.hasAttr("href")) {
+						attr = "href";
+					} else {
+						attr = "data-href";
+					}
+
+					final String url = aLink.attr(attr).split("vid=")[1].split("&")[0];
 					episodes.add(new EpisodeDTO(category, title, url));
 				} catch (final IndexOutOfBoundsException e) {
 					throw new TechnicalException(e);
