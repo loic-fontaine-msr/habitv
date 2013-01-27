@@ -158,11 +158,12 @@ public class RetreiveTaskTest {
 			private int i = 0;
 
 			@Override
-			public void addRetreiveTask(final RetrieveTask retreiveTask) {
+			public TaskAdResult addRetreiveTask(final RetrieveTask retreiveTask) {
+				return new TaskAdResult(TaskState.ADDED);
 			}
 
 			@Override
-			public void addExportTask(final ExportTask exportTask, final String category) {
+			public TaskAdResult addExportTask(final ExportTask exportTask, final String category) {
 				switch (i) {
 				case 0:
 					assertEquals(new ExportTask(episode, export1, pluginExporter, publisher, 0), exportTask);
@@ -177,11 +178,13 @@ public class RetreiveTaskTest {
 					break;
 				}
 				i++;
+				return new TaskAdResult(TaskState.ADDED);
 			}
 
 			@Override
-			public void addDownloadTask(final DownloadTask downloadTask, final String channel) {
+			public TaskAdResult addDownloadTask(final DownloadTask downloadTask, final String channel) {
 				assertEquals(new DownloadTask(episode, provider, downloader, publisher, downloadedDAO), downloadTask);
+				return new TaskAdResult(TaskState.ADDED);
 			}
 
 		};

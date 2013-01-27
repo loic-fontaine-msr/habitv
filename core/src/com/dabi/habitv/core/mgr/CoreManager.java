@@ -111,7 +111,7 @@ public final class CoreManager {
 		final ExporterDTO exporter = new ExporterDTO(exporterName2exporter, buildExporterListDTO(config.getExporter()));
 
 		// manager
-		episodeManager = new EpisodeManager(downloader, exporter, pluginProviderList, taskName2PoolSize);
+		episodeManager = new EpisodeManager(downloader, exporter, pluginProviderList, taskName2PoolSize, config.getMaxAttempts());
 	}
 
 	public void retreiveEpisode(final Map<String, Set<CategoryDTO>> categoriesToGrab) {

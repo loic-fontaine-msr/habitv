@@ -99,7 +99,11 @@ public class SearchTask extends AbstractTask<Object> {
 					isDownloaded = dlFiles.contains(episode.getName());
 					if (indexCreated && FilterUtils.filterByIncludeExcludeAndDownloaded(episode, category.getInclude(), category.getExclude()) && !isDownloaded) {
 						// producer download the file
-						taskAdder.addRetreiveTask(new RetrieveTask(episode, retreivePublisher, taskAdder, exporter, provider, downloader, dlDAO));
+						final TaskAdResult state = taskAdder.addRetreiveTask(new RetrieveTask(episode, retreivePublisher, taskAdder, exporter, provider, downloader,
+								dlDAO));
+						if (TaskState.TO_MANY_FAILED.equals(state.getState())) {
+							dlDAO.addDownloadedFiles(episode.getName());
+						}
 					} else {
 						// if index has not been created the first run will only
 						// fill this file
