@@ -6,8 +6,11 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
+
+import org.apache.log4j.Logger;
 
 import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.api.downloader.PluginDownloaderInterface;
@@ -23,6 +26,8 @@ import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
 import com.dabi.habitv.framework.plugin.utils.RetrieverUtils;
 
 public class M6W9PluginManager implements PluginProviderInterface {
+
+	private static final Logger LOG = Logger.getLogger(M6W9PluginManager.class);
 
 	private Archive cachedArchive;
 
@@ -77,21 +82,36 @@ public class M6W9PluginManager implements PluginProviderInterface {
 		final String id1 = id.substring(id.length() - 2, id.length());
 		final String id2 = id.substring(id.length() - 4, id.length() - 2);
 
-		String episodeUrl;
-		try {//TODO peut mieux faire
-			episodeUrl = M6W9Retriever
-					.findFinalLink(RetrieverUtils.getInputStreamFromUrl(String.format(M6W9Conf.CLIP_URL, M6W9Conf.M6_URL_NAME, id1, id2, id)));
+		LinkedList<String> episodeUrlList;
+		try {// TODO peut mieux faire
+			episodeUrlList = M6W9Retriever.findFinalLink(RetrieverUtils.getInputStreamFromUrl(String.format(M6W9Conf.CLIP_URL, M6W9Conf.M6_URL_NAME, id1, id2,
+					id)));
 		} catch (final TechnicalException e) {
-			episodeUrl = M6W9Retriever
-					.findFinalLink(RetrieverUtils.getInputStreamFromUrl(String.format(M6W9Conf.CLIP_URL, M6W9Conf.W9_URL_NAME, id1, id2, id)));
+			episodeUrlList = M6W9Retriever.findFinalLink(RetrieverUtils.getInputStreamFromUrl(String.format(M6W9Conf.CLIP_URL, M6W9Conf.W9_URL_NAME, id1, id2,
+					id)));
 		}
 
-		final Map<String, String> parameters = new HashMap<>(2);
-		parameters.put(FrameworkConf.PARAMETER_BIN_PATH, downloaders.getBinPath(downloaderName));
-		parameters.put(FrameworkConf.PARAMETER_ARGS, buildDownloadParam(episodeUrl, M6W9Conf.DUMP_CMD));
-		parameters.put(FrameworkConf.CMD_PROCESSOR, downloaders.getCmdProcessor());
+		int i = 0;
+		for (final String episodeUrl : episodeUrlList) {
+			final Map<String, String> parameters = new HashMap<>(2);
+			parameters.put(FrameworkConf.PARAMETER_BIN_PATH, downloaders.getBinPath(downloaderName));
+			parameters.put(FrameworkConf.PARAMETER_ARGS, buildDownloadParam(episodeUrl, M6W9Conf.RTMPDUMP_CMD));
+			parameters.put(FrameworkConf.CMD_PROCESSOR, downloaders.getCmdProcessor());
 
-		pluginDownloader.download(episodeUrl, downloadOuput, parameters, listener);
+			i++;
+			try {
+				pluginDownloader.download(episodeUrl, downloadOuput, parameters, listener);
+				break;
+			} catch (final DownloadFailedException | TechnicalException e) {
+				LOG.error("", e);
+				// will try next link if there is
+				if (i < episodeUrlList.size()) {
+					continue;
+				} else {
+					throw e;
+				}
+			}
+		}
 	}
 
 	private String buildDownloadParam(final String episodeUrl, final String dumpCmd) throws DownloadFailedException {
