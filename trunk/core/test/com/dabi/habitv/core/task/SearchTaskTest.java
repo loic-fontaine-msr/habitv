@@ -188,7 +188,7 @@ public class SearchTaskTest {
 			private int i = 0;
 
 			@Override
-			public void addRetreiveTask(final RetrieveTask retreiveTask) {
+			public TaskAdResult addRetreiveTask(final RetrieveTask retreiveTask) {
 				switch (i) {
 				case 0:
 					assertEquals(episode1, retreiveTask.getEpisode());
@@ -202,14 +202,17 @@ public class SearchTaskTest {
 					break;
 				}
 				i++;
+				return new TaskAdResult(TaskState.ADDED);
 			}
 
 			@Override
-			public void addExportTask(final ExportTask exportTask, final String category) {
+			public TaskAdResult addExportTask(final ExportTask exportTask, final String category) {
+				return new TaskAdResult(TaskState.ADDED);
 			}
 
 			@Override
-			public void addDownloadTask(final DownloadTask downloadTask, final String channel) {
+			public TaskAdResult addDownloadTask(final DownloadTask downloadTask, final String channel) {
+				return new TaskAdResult(TaskState.ADDED);
 			}
 
 		};

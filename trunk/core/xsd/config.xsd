@@ -3,29 +3,31 @@
 	targetNamespace="http://www.dabi.com/habitv/config/entities">
 	<complexType name="config">
 		<sequence>
-			<element name="cmdProcessor" type="string" maxOccurs="1" minOccurs="0"></element>		
-			<element name="demonTime" type="int" maxOccurs="1"
+			<element name="maxAttempts" type="int" maxOccurs="1"
 				minOccurs="0" />
+			<element name="cmdProcessor" type="string" maxOccurs="1"
+				minOccurs="0"></element>
+			<element name="demonTime" type="int" maxOccurs="1" minOccurs="0" />
 			<element name="fileNameCutSize" type="int" maxOccurs="1"
-				minOccurs="0" />				
+				minOccurs="0" />
 			<element name="workingDir" type="string" maxOccurs="1"
 				minOccurs="1" />
 			<element name="indexDir" type="string" maxOccurs="1"
 				minOccurs="1" />
-			<element name="providerPluginDir" type="string"
-				maxOccurs="1" minOccurs="1" />
-			<element name="downloaderPluginDir" type="string"
-				maxOccurs="1" minOccurs="1" />
-			<element name="exporterPluginDir" type="string"
-				maxOccurs="1" minOccurs="1" />
+			<element name="providerPluginDir" type="string" maxOccurs="1"
+				minOccurs="1" />
+			<element name="downloaderPluginDir" type="string" maxOccurs="1"
+				minOccurs="1" />
+			<element name="exporterPluginDir" type="string" maxOccurs="1"
+				minOccurs="1" />
 			<element name="downloadOuput" type="string" maxOccurs="1"
 				minOccurs="1">
 			</element>
-			<element name="downloader" type="tns:downloader"
-				maxOccurs="unbounded" minOccurs="1">
+			<element name="downloader" type="tns:downloader" maxOccurs="unbounded"
+				minOccurs="1">
 			</element>
-			<element name="exporter" type="tns:exporter"
-				maxOccurs="unbounded" minOccurs="0" />
+			<element name="exporter" type="tns:exporter" maxOccurs="unbounded"
+				minOccurs="0" />
 			<element name="taskDefinition" type="tns:taskDefinition"
 				maxOccurs="unbounded" minOccurs="0">
 			</element>
@@ -37,26 +39,24 @@
 	<complexType name="downloader">
 		<sequence>
 			<element name="name" type="string" maxOccurs="1" minOccurs="1"></element>
-			<element name="binPath" type="string" maxOccurs="1" minOccurs="0"></element>
+			<element name="binPath" type="string" maxOccurs="1"
+				minOccurs="0"></element>
 		</sequence>
 	</complexType>
 
 	<complexType name="exporter">
 		<sequence>
-			<element name="condition" type="tns:conditionType"
-				maxOccurs="1" minOccurs="0">
+			<element name="condition" type="tns:conditionType" maxOccurs="1"
+				minOccurs="0">
 			</element>
-			<element name="name" type="string" maxOccurs="1"
-				minOccurs="1">
+			<element name="name" type="string" maxOccurs="1" minOccurs="1">
 			</element>
-			<element name="output" type="string" maxOccurs="1"
-				minOccurs="1">
+			<element name="output" type="string" maxOccurs="1" minOccurs="1">
 			</element>
-			<element name="cmd" type="string" maxOccurs="1"
-				minOccurs="1">
+			<element name="cmd" type="string" maxOccurs="1" minOccurs="1">
 			</element>
-			<element name="exporter" type="tns:exporter"
-				maxOccurs="unbounded" minOccurs="0">
+			<element name="exporter" type="tns:exporter" maxOccurs="unbounded"
+				minOccurs="0">
 			</element>
 		</sequence>
 	</complexType>
