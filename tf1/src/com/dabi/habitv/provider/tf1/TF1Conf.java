@@ -17,4 +17,10 @@ public interface TF1Conf {
 	String EXTENSION = "mp4";
 
 	String WAT_HOME = "http://www.wat.tv";
+
+	String VIDEO_INFO = "http://www.wat.tv/interface/contentv3/";
+
+	String CORRECT_VIDEO_CMD = "%s -isync -i %s -c copy %s";
+
+	String ASSEMBLER = "ffmpeg";
 }
