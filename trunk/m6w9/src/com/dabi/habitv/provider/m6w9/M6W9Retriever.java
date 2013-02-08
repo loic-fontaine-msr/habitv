@@ -31,6 +31,7 @@ public final class M6W9Retriever {
 		try {
 			loadChannel(M6W9Conf.M6_NAME, M6W9Conf.M6_URL_NAME, categories, catName2Episode);
 			loadChannel(M6W9Conf.W9_NAME, M6W9Conf.W9_URL_NAME, categories, catName2Episode);
+			loadChannel(M6W9Conf.SIXTER_NAME, M6W9Conf.SIXTER_URL_NAME, categories, catName2Episode);
 		} catch (final IOException e) {
 			throw new TechnicalException(e);
 		}

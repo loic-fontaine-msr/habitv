@@ -87,8 +87,13 @@ public class M6W9PluginManager implements PluginProviderInterface {
 			episodeUrlList = M6W9Retriever.findFinalLink(RetrieverUtils.getInputStreamFromUrl(String.format(M6W9Conf.CLIP_URL, M6W9Conf.M6_URL_NAME, id1, id2,
 					id)));
 		} catch (final TechnicalException e) {
-			episodeUrlList = M6W9Retriever.findFinalLink(RetrieverUtils.getInputStreamFromUrl(String.format(M6W9Conf.CLIP_URL, M6W9Conf.W9_URL_NAME, id1, id2,
-					id)));
+			try {
+				episodeUrlList = M6W9Retriever.findFinalLink(RetrieverUtils.getInputStreamFromUrl(String.format(M6W9Conf.CLIP_URL, M6W9Conf.W9_URL_NAME, id1,
+						id2, id)));
+			} catch (final TechnicalException e1) {
+				episodeUrlList = M6W9Retriever.findFinalLink(RetrieverUtils.getInputStreamFromUrl(String.format(M6W9Conf.CLIP_URL, M6W9Conf.SIXTER_URL_NAME, id1,
+						id2, id)));
+			}
 		}
 
 		int i = 0;

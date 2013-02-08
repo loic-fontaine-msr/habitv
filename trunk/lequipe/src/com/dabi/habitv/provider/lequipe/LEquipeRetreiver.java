@@ -22,6 +22,7 @@ import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
 import com.dabi.habitv.framework.plugin.utils.RetrieverUtils;
+import com.dabi.habitv.framework.plugin.utils.SoccerUtils;
 
 public class LEquipeRetreiver {
 
@@ -51,7 +52,7 @@ public class LEquipeRetreiver {
 				for (final Element aResult : elementsByClass.get(0).children()) {
 					final String hRef = aResult.attr("href");
 					final String name = aResult.getElementsByClass("title").text();
-					episodeList.add(new EpisodeDTO(category, name, hRef));
+					episodeList.add(new EpisodeDTO(category, SoccerUtils.maskScore(name), hRef));
 				}
 			} else {
 				final Elements divResults = elementsByClass.get(0).child(0).children();
@@ -60,7 +61,7 @@ public class LEquipeRetreiver {
 						final Element aResult = divResult.child(0);
 						final String hRef = aResult.attr("href");
 						final String name = aResult.child(2).text();
-						episodeList.add(new EpisodeDTO(category, name, hRef));
+						episodeList.add(new EpisodeDTO(category, SoccerUtils.maskScore(name), hRef));
 					}
 				}
 			}
@@ -137,7 +138,7 @@ public class LEquipeRetreiver {
 		} else {
 			throw new TechnicalException("can't find token");
 		}
-		return "\"http://api.kewego.com/video/getStream/?appToken=" + token + "&sig=" + sig + "&format=w640&v=2749\"";
+		return "\"http://api.kewego.com/video/getStream/?appToken=" + token + "&sig=" + sig + "&format=high&v=2749\"";
 	}
 
 	public static Set<CategoryDTO> findCategory() {

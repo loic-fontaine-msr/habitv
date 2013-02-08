@@ -50,22 +50,15 @@ public class BeinSportPluginManagerTest {
 		assertEquals(manager.getName(), BeinSportConf.NAME);
 	}
 
-	private void checkFindEpisode(final String episodeName, final String url) {
-		final Set<EpisodeDTO> episodeList = manager.findEpisode(new CategoryDTO(null, null, null, null));
-		boolean contain = false;
-		for (final EpisodeDTO episode : episodeList) {
-			if (episode.getName().equals(episodeName)) {
-				assertEquals(url, episode.getUrl());
-				contain = true;
-			}
-		}
-		assertTrue(contain);
-	}
-
 	@Test
 	public final void testFindEpisode() {
-		checkFindEpisode("DTM, Nurburgring - Spengler remporte la 6e course de la saison",
-				"http://vod.beinsport.aka.oss1.performgroup.com/20120820/16r4s6i04and919yjn80zcv2od.mp4");
+		Set<EpisodeDTO> episodeList = manager.findEpisode(new CategoryDTO(BeinSportConf.REPLAY_CATEGORY, BeinSportConf.REPLAY_CATEGORY,
+				BeinSportConf.REPLAY_CATEGORY, null));
+		assertTrue(!episodeList.isEmpty());
+		episodeList = manager.findEpisode(new CategoryDTO(BeinSportConf.VIDEOS_CATEGORY, BeinSportConf.VIDEOS_CATEGORY, BeinSportConf.VIDEOS_CATEGORY, null));
+		assertTrue(!episodeList.isEmpty());
+		episodeList = manager.findEpisode(new CategoryDTO(BeinSportConf.NAME, "le-club", "/replay/category/3363/name/le-club", null));
+		assertTrue(!episodeList.isEmpty());
 	}
 
 	@Test
@@ -77,6 +70,15 @@ public class BeinSportPluginManagerTest {
 	@Test
 	public void testDownload() throws DownloadFailedException, NoSuchDownloaderException {
 		final DownloaderDTO downloaders = buildDownloaders();
+
+		manager.download("./test.flv", downloaders, new CmdProgressionListener() {
+
+			@Override
+			public void listen(final String progression) {
+				LOG.info(progression);
+			}
+		}, new EpisodeDTO(null, "test", "/replay/category/3361/video/423981/title/lexpresso-0102"));
+
 		manager.download("./test.flv", downloaders, new CmdProgressionListener() {
 
 			@Override
@@ -88,7 +90,7 @@ public class BeinSportPluginManagerTest {
 
 	private DownloaderDTO buildDownloaders() {
 		final Map<String, PluginDownloaderInterface> downloaderName2downloader = new HashMap<>();
-		final PluginDownloaderInterface downloader = new PluginDownloaderInterface() {
+		PluginDownloaderInterface downloader = new PluginDownloaderInterface() {
 
 			@Override
 			public void setClassLoader(final ClassLoader classLoader) {
@@ -107,8 +109,28 @@ public class BeinSportPluginManagerTest {
 			}
 		};
 		downloaderName2downloader.put("curl", downloader);
+		downloader = new PluginDownloaderInterface() {
+
+			@Override
+			public void setClassLoader(final ClassLoader classLoader) {
+
+			}
+
+			@Override
+			public String getName() {
+				return "rtmpdump";
+			}
+
+			@Override
+			public void download(final String downloadInput, final String downloadDestination, final Map<String, String> parameters,
+					final CmdProgressionListener listener) throws DownloadFailedException {
+				assertTrue(downloadInput.length() > 0);
+			}
+		};
+		downloaderName2downloader.put("rtmpdump", downloader);
 		final Map<String, String> downloaderName2BinPath = new HashMap<>();
 		downloaderName2BinPath.put("curl", "bin");
+		downloaderName2BinPath.put("rtmpdump", "bin");
 		return new DownloaderDTO(null, downloaderName2downloader, downloaderName2BinPath, null, null);
 	}
 }
