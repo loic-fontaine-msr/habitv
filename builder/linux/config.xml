@@ -29,7 +29,11 @@
 	<downloader>
 		<name>ffmpeg</name>
 		<binPath>ffmpeg</binPath>
-	</downloader>	
+	</downloader>
+	<downloader>
+		<name>youtube</name>
+		<binPath>youtube-dl</binPath>
+	</downloader>		
 	<taskDefinition>
 		<taskName>category</taskName>
 		<size>5</size>

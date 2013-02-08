@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -26,10 +28,14 @@ import org.xml.sax.SAXException;
 
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
+import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
 import com.dabi.habitv.framework.plugin.utils.RetrieverUtils;
 
 class D8Retreiver {
+
+	private static final Pattern VID_PATTERN = Pattern.compile(".*<canal:player.*videoId=\"(\\d+)\".*");
+	private static final Pattern DOMAIN_PATTERN = Pattern.compile("var sDocumentHttp = \'(.*)\';");
 
 	private D8Retreiver() {
 
@@ -41,28 +47,76 @@ class D8Retreiver {
 		try {
 			final Connection con = Jsoup.connect(D8Conf.HOME_URL + category.getId());
 
-			final Elements select = con.get().select(".list-programmes-emissions").get(0).children();
-			for (final Element liElement : select) {
-				try {
+			Elements select = con.get().select(".list-programmes-emissions");
+
+			if (!select.isEmpty()) {
+
+				final Elements emission = select.get(0).children();
+				for (final Element liElement : emission) {
 					final Element aLink = liElement.child(0);
 					final String title = aLink.child(1).child(0).text() + " - " + aLink.child(1).child(1).text();
-					String attr;
-					if (aLink.hasAttr("href")) {
-						attr = "href";
-					} else {
-						attr = "data-href";
-					}
-
-					final String url = aLink.attr(attr).split("vid=")[1].split("&")[0];
+					final String attr = getAttrName(aLink);
+					final String url = getVidId(aLink, attr);
 					episodes.add(new EpisodeDTO(category, title, url));
-				} catch (final IndexOutOfBoundsException e) {
-					throw new TechnicalException(e);
+				}
+			} else {
+				final String domain = findMatch(con.get().html(), DOMAIN_PATTERN);
+				select = con.get().select("a");
+				for (final Element aLink : select) {
+					final String attr = getAttrName(aLink);
+					final String title = getTitle(aLink).trim();
+					String url = aLink.attr(attr);
+					if (url.contains("vid=")) {
+						url = getVidId(aLink, attr);
+						episodes.add(new EpisodeDTO(category, title, url));
+					} else if (url.contains("epi_id=")) {
+						final String epContent = RetrieverUtils.getUrlContent(domain + url);
+						final String ret = findMatch(epContent, VID_PATTERN);
+						episodes.add(new EpisodeDTO(category, title, ret));
+					}
 				}
 			}
 		} catch (final IOException e) {
 			throw new TechnicalException(e);
 		}
 		return episodes;
+	}
+
+	private static String findMatch(final String epContent, final Pattern pattern) {
+		final Matcher matcher = pattern.matcher(epContent);
+		final boolean hasMatched = matcher.find();
+		String ret = null;
+		if (hasMatched) {
+			ret = matcher.group(matcher.groupCount());
+		}
+		return ret;
+	}
+
+	private static String getVidId(final Element aLink, final String attr) {
+		return aLink.attr(attr).split("vid=")[1].split("&")[0];
+	}
+
+	private static String getTitle(final Element aLink) {
+		final Element lastE = aLink;
+		if (!lastE.children().isEmpty()) {
+			final StringBuilder title = new StringBuilder();
+			for (final Element child : lastE.children()) {
+				title.append(" " + getTitle(child));
+			}
+			return title.toString();
+		} else {
+			return aLink.text();
+		}
+	}
+
+	private static String getAttrName(final Element aLink) {
+		String attr;
+		if (aLink.hasAttr("href")) {
+			attr = "href";
+		} else {
+			attr = "data-href";
+		}
+		return attr;
 	}
 
 	public static Set<CategoryDTO> findCategories(final ClassLoader classLoader) {
@@ -111,7 +165,7 @@ class D8Retreiver {
 		return categories;
 	}
 
-	public static String findVideoUrl(final String id) {
+	public static String findVideoUrl(final String id) throws DownloadFailedException {
 		try {
 			final DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
 			domFactory.setNamespaceAware(true); // never forget this!
@@ -123,22 +177,26 @@ class D8Retreiver {
 			final XPathExpression expr = xpath.compile("//VIDEO[ID='" + id + "']/MEDIA/VIDEOS");
 
 			final Object result = expr.evaluate(doc, XPathConstants.NODESET);
-			final NodeList nodes = ((NodeList) result).item(0).getChildNodes();
-			final Map<String, String> q2url = new HashMap<>();
-			for (int i = 0; i < nodes.getLength(); i++) {
-				q2url.put(nodes.item(i).getLocalName(), nodes.item(i).getTextContent());
-			}
+			final NodeList nodeList = (NodeList) result;
+			if (nodeList.getLength() > 0) {
+				final NodeList nodes = nodeList.item(0).getChildNodes();
+				final Map<String, String> q2url = new HashMap<>();
+				for (int i = 0; i < nodes.getLength(); i++) {
+					q2url.put(nodes.item(i).getLocalName(), nodes.item(i).getTextContent());
+				}
 
-			String videoUrl = q2url.get("HD");
-			if (videoUrl == null) {
-				videoUrl = q2url.get("HAUT_DEBIT");
+				String videoUrl = q2url.get("HD");
+				if (videoUrl == null) {
+					videoUrl = q2url.get("HAUT_DEBIT");
+				}
+				if (videoUrl == null) {
+					videoUrl = q2url.get("BAS_DEBIT");
+				}
+				return videoUrl;
 			}
-			if (videoUrl == null) {
-				videoUrl = q2url.get("BAS_DEBIT");
-			}
-			return videoUrl;
 		} catch (IOException | XPathExpressionException | SAXException | ParserConfigurationException e) {
 			throw new TechnicalException(e);
 		}
+		return null;
 	}
 }

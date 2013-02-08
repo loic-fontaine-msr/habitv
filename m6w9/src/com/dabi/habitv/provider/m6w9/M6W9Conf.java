@@ -15,6 +15,8 @@ public interface M6W9Conf {
 	String M6_URL_NAME = "m6replay";
 	String W9_NAME = "w9";
 	String W9_URL_NAME = "w9replay";
+	String SIXTER_NAME = "6ter";
+	String SIXTER_URL_NAME = "6terreplay";
 	String CATALOG_URL = "http://static.m6replay.fr/catalog/m6group_web/%s/catalogue.json";
 	String CLIP_URL = "http://static.m6replay.fr/catalog/m6group_web/%s/clip/%s/%s/clip_infos-%s.json";
 	String RTMPDUMP_CMD = "-r \"rtmpe://groupemsix.fcod.llnwd.net/a2883/e1/#VIDEO_URL#?#TOKEN#\" -c 1935 -m 10 -o \"#FILE_DEST#\"";
