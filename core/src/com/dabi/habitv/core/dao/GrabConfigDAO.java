@@ -83,20 +83,20 @@ public class GrabConfigDAO {
 
 	private void marshal(final GrabConfig config) {
 		final JAXBContext jaxbContext;
-		FileOutputStream inputFile = null;
+		FileOutputStream outputFile = null;
 		try {
 			jaxbContext = JAXBContext.newInstance(HabitTvConf.GRAB_CONF_PACKAGE_NAME);
 			final Marshaller marshaller = jaxbContext.createMarshaller();
 			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
 			marshaller.setProperty(Marshaller.JAXB_ENCODING, HabitTvConf.ENCODING);
-			inputFile = new FileOutputStream(grabConfigFile);
-			marshaller.marshal(config, inputFile);
+			outputFile = new FileOutputStream(grabConfigFile);
+			marshaller.marshal(config, outputFile);
 		} catch (JAXBException | FileNotFoundException e) {
 			throw new TechnicalException(e);
 		} finally {
-			if (inputFile != null) {
+			if (outputFile != null) {
 				try {
-					inputFile.close();
+					outputFile.close();
 				} catch (final IOException e) {
 					throw new TechnicalException(e);
 				}

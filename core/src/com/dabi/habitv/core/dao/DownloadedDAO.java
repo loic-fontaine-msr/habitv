@@ -82,7 +82,7 @@ public class DownloadedDAO {
 	public synchronized void addDownloadedFiles(final String... files) {
 		PrintWriter writer;
 		try {
-			writer = new PrintWriter(new OutputStreamWriter(new FileOutputStream(getFileIndex(), true), "UTF-8"));
+			writer = new PrintWriter(new OutputStreamWriter(new FileOutputStream(getFileIndex(), true), HabitTvConf.ENCODING));
 			for (final String file : files) {
 				writer.println(file);
 			}

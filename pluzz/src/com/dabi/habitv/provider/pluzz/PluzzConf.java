@@ -4,11 +4,9 @@ public interface PluzzConf {
 
 	String NAME = "pluzz";
 
-	String EXTENSION = "avi";
+	String EXT = "mp4";
 
-	String ASSEMBLE_CMD = "%s -isync -i \"concat:%s\" -c copy %s";
-
-	String CORRECT_VIDEO_CMD = "%s -isync -i %s -c copy %s";
+	String CORRECT_VIDEO_CMD_MP4 = "%s -isync -i %s -c copy -absf aac_adtstoasc -f mp4 -y %s";
 
 	String ZIP_URL = "http://webservices.francetelevisions.fr/catchup/flux/flux_main.zip";
 

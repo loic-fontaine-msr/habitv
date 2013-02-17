@@ -1,6 +1,7 @@
 package com.dabi.habitv.utils;
 
 import java.io.InputStream;
+import java.text.Normalizer;
 
 import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.stream.StreamSource;
@@ -25,7 +26,11 @@ public final class FileUtils {
 	 * @return
 	 */
 	public static String sanitizeFilename(final String name) {
-		return name.replaceAll("[\\s,:\\\\/*?!|<>&«»()\"\']", "_");
+		return removeNonASCII(name.replaceAll("[\\s,:\\\\/*?!|<>&«»()\"\']", "_"));
+	}
+
+	private static String removeNonASCII(final String string) {
+		return Normalizer.normalize(string, Normalizer.Form.NFD).replaceAll("[\u0300-\u036F]", "");
 	}
 
 	public static void setValidation(final Unmarshaller unmarshaller, final String xsdFile) {

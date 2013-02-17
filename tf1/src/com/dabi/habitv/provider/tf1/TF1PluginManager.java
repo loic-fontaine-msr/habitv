@@ -3,6 +3,7 @@ package com.dabi.habitv.provider.tf1;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -65,7 +66,14 @@ public class TF1PluginManager implements PluginProviderInterface {
 		}
 
 		final String firstMediaID = videoStruct.getMediaIdList().iterator().next();
-		final String downloaderName = getDownloader(firstMediaID);
+
+		String videoUrl;
+		try {
+			videoUrl = RetrieverUtils.getUrlContent(TF1Retreiver.buildUrlVideoInfo(firstMediaID, "webhd"));
+		} catch (final Exception e) {
+			videoUrl = RetrieverUtils.getUrlContent(TF1Retreiver.buildUrlVideoInfo(firstMediaID, "web"));
+		}
+		final String downloaderName = getDownloader(videoUrl);
 		final PluginDownloaderInterface pluginDownloader = downloaders.getDownloader(downloaderName);
 
 		final Map<String, String> parameters = new HashMap<>(2);
@@ -73,14 +81,12 @@ public class TF1PluginManager implements PluginProviderInterface {
 		parameters.put(FrameworkConf.CMD_PROCESSOR, downloaders.getCmdProcessor());
 
 		if (TF1Conf.RTMDUMP.equals(downloaderName)) {
-			String videoUrl = RetrieverUtils.getUrlContent(TF1Retreiver.buildUrlVideoInfo(firstMediaID,videoStruct.isHd()));
 			videoUrl = videoUrl.replace(",rtmpte", "");
 			videoUrl = videoUrl.substring(0, videoUrl.lastIndexOf("?"));
 			parameters.put(FrameworkConf.PARAMETER_ARGS, TF1Conf.DUMP_CMD);
 			pluginDownloader.download(videoUrl, downloadOuput, parameters, cmdProgressionListener);
 		} else {
 			if (videoStruct.getMediaIdList().size() == 1) {
-				final String videoUrl = RetrieverUtils.getUrlContent(TF1Retreiver.buildUrlVideoInfo(firstMediaID,videoStruct.isHd()));
 				pluginDownloader.download(videoUrl, downloadOuput, parameters, cmdProgressionListener);
 			} else {
 				final String assemblerBinPath = downloaders.getBinPath(TF1Conf.ASSEMBLER);
@@ -109,8 +115,16 @@ public class TF1PluginManager implements PluginProviderInterface {
 			final String tmpVideoFile = downloadOutput + "-" + i + ".frg";
 			try {
 				fOutputStream = new FileOutputStream(tmpVideoFile);
-				fOutputStream
-				.write(RetrieverUtils.getUrlContentBytes(RetrieverUtils.getUrlContent(TF1Retreiver.buildUrlVideoInfo(mediaId, false))));
+
+				final byte[] buffer = new byte[1024]; // Adjust if you want
+				int bytesRead;
+				final InputStream input = RetrieverUtils.getInputStreamFromUrl(RetrieverUtils.getUrlContent(TF1Retreiver.buildUrlVideoInfo(mediaId, "web")));
+				while ((bytesRead = input.read(buffer)) != -1) {
+					fOutputStream.write(buffer, 0, bytesRead);
+				}//TODO dl avec curl et gérer la progression
+
+				// fOutputStream.write(RetrieverUtils.getUrlContentBytes(RetrieverUtils.getUrlContent(TF1Retreiver.buildUrlVideoInfo(mediaId,
+				// "web"))));
 				// Affichage de la progression
 				final int newP = handleProgression(videoStruct.getMediaIdList().size(), i, old);
 				if (newP != old) {
