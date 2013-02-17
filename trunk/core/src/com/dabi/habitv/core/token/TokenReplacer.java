@@ -104,7 +104,7 @@ public final class TokenReplacer {
 	}
 
 	private static String cut(final int size, final String toCut) {
-		return toCut.substring(0, Math.min(size, toCut.length() - 1));
+		return toCut.substring(0, Math.min(size, toCut.length()));
 	}
 
 	public static void setCutSize(final Integer cutSize) {

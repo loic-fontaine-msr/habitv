@@ -111,14 +111,14 @@ public class JsonArchiveParser {
 		final String fatherCatName = (String) objectProgramme.get("rubrique");
 		CategoryDTO fatherCategory = catName2RootCat.get(fatherCatName);
 		if (fatherCategory == null) {
-			fatherCategory = new CategoryDTO(PluzzConf.NAME, fatherCatName, fatherCatName, PluzzConf.EXTENSION);
+			fatherCategory = new CategoryDTO(PluzzConf.NAME, fatherCatName, fatherCatName, PluzzConf.EXT);
 			catName2RootCat.put(fatherCatName, fatherCategory);
 		}
 		final String catId = (String) objectProgramme.get("code_programme");
 		final String name = (String) objectProgramme.get("titre");
 		CategoryDTO category = catId2LeafCat.get(catId);
 		if (category == null) {
-			category = new CategoryDTO(PluzzConf.NAME, name, catId, PluzzConf.EXTENSION);
+			category = new CategoryDTO(PluzzConf.NAME, name, catId, PluzzConf.EXT);
 			catId2LeafCat.put(catId, category);
 			fatherCategory.addSubCategory(category);
 		}

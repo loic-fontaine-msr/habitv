@@ -34,7 +34,7 @@ public class TF1RetreiverTest {
 
 	@Test
 	public final void testBuildToken() throws IOException {
-		assertEquals("9e302fdbbb5aa2c17d58587ab6c684d2/50168a49", TF1Retreiver.buildToken("8635245", 1343654473L, "webhd"));
+		assertEquals("d2fcec2208324ba9bdc73e0143c24e66/511960cf", TF1Retreiver.buildToken("8249273", "1360617679", "web"));
 		final URL url = new URL(
 				"http://www.wat.tv/get/webhd/8639443?domain=videos.tf1.fr&version=WIN%2010,2,152,32&country=FR&getURL=1&token=e6f3c1df3a252d8f21da772cec1b3192/50167cb4");
 		final URLConnection hc = url.openConnection();

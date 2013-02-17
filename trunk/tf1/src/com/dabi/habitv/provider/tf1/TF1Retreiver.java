@@ -3,8 +3,10 @@ package com.dabi.habitv.provider.tf1;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -25,6 +27,8 @@ public class TF1Retreiver {
 	private static final Pattern MEDIAID_PATTERN = Pattern.compile("mediaId : (\\d*),");
 
 	private static final Pattern VIDEO_ID_PATTERN = Pattern.compile("\"id\"\\s*:\\s*(\\d+)");
+
+	private static final Pattern FILES_PATTERN = Pattern.compile(".*\"files\"\\s*:\\s*\\[(.*)\\].*");
 
 	private static final Logger LOGGER = Logger.getLogger(TF1Retreiver.class);
 
@@ -78,10 +82,11 @@ public class TF1Retreiver {
 		return episodes;
 	}
 
-	static String buildToken(final String id, final Long timestamp, final String contextRoot) {
+	static String buildToken(final String id, final String timestamp, final String contextRoot) {
 		// my $hexdate = sprintf("%x",time());
 		// fill up triling zeroes
-		final String dateS = String.format("%x", timestamp);
+		// final String dateS = String.format("%x", timestamp);
+		final String dateS = Long.toHexString(Long.valueOf(timestamp)).toLowerCase();
 		final StringBuilder dateSC = new StringBuilder(dateS);
 		for (int i = 0; i < (dateS.length() - 8); i++) {
 			dateSC.append("0");
@@ -116,29 +121,44 @@ public class TF1Retreiver {
 		return new VideoStruct(hd, mediaIdList);
 	}
 
-	private static Set<String> findMediaIdList(final String content) {
-		final Set<String> mediaIdList = new HashSet<>();
-		final Matcher matcher = VIDEO_ID_PATTERN.matcher(content);
+	private static Collection<String> findMediaIdList(final String content) {
+		//find fragment "files"
+		Matcher matcher = FILES_PATTERN.matcher(content);
+		final boolean hasMatched = matcher.find();
+		String files = null;
+		final Set<String> fragIdList = new HashSet<>();
+		if (hasMatched) {
+			files = matcher.group(matcher.groupCount());
+			matcher = VIDEO_ID_PATTERN.matcher(files);
+			while (matcher.find()) {
+				fragIdList.add(matcher.group().split(":")[1]);
+			}
+		} else {
+			throw new TechnicalException("can't find mediaId");
+		}
+
+		//find all files
+		final List<String> mediaIdList = new ArrayList<>();
+		matcher = VIDEO_ID_PATTERN.matcher(content);
 		while (matcher.find()) {
 			mediaIdList.add(matcher.group().split(":")[1]);
 		}
-		return mediaIdList;
-	}
 
-	public static String buildUrlVideoInfo(final String mediaId, final boolean hd) {
-		String contextRoot;
-		if (hd) {
-			contextRoot = "webhd";
-		} else {
-			contextRoot = "web";
+		if (fragIdList.isEmpty()){
+			return mediaIdList;
 		}
-		return TF1Conf.WAT_HOME + "/get/" + contextRoot + "/" + mediaId + "?domain=videos.tf1.fr&version=WIN%2010,2,152,32&country=FR&getURL=1&token="
-		+ buildToken(mediaId, findTimeStamp(), contextRoot);
+
+		return fragIdList;
 	}
 
-	private static Long findTimeStamp() {
+	public static String buildUrlVideoInfo(final String mediaId, final String contextRoot) {
+		return TF1Conf.WAT_HOME + "/get/" + contextRoot + "/" + mediaId + "?token=" + buildToken(mediaId, findTimeStamp(), contextRoot)
+				+ "&country=FR&getURL=1&version=WIN 11,5,502,146";
+	}
+
+	private static String findTimeStamp() {
 		final String content = RetrieverUtils.getUrlContent(TF1Conf.WAT_HOME + "/servertime");
-		return Long.valueOf(content.split("\\|")[0]);
+		return content.split("\\|")[0];
 	}
 
 	private static String findMediaId(final String content) {

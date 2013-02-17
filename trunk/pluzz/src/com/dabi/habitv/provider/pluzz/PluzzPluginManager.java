@@ -70,7 +70,7 @@ public class PluzzPluginManager implements PluginProviderInterface {
 		if (assemblerBinPath == null) {
 			throw new TechnicalException(PluzzConf.ASSEMBLER + " downloader can't be found, add it the config.xml");
 		}
-		final PluzzDLM3U8 dl = new PluzzDLM3U8(cmdProgressionListener, downloadOuput, PluzzConf.CORRECT_VIDEO_CMD, assemblerBinPath);
+		final PluzzDLM3U8 dl = new PluzzDLM3U8(cmdProgressionListener, downloadOuput, PluzzConf.CORRECT_VIDEO_CMD_MP4, assemblerBinPath);
 		dl.dl(episode.getUrl());
 	}
 
