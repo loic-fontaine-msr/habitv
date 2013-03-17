@@ -43,7 +43,7 @@ public class RSSPluginManager implements PluginProviderInterface {
 		parameters.put(FrameworkConf.PARAMETER_BIN_PATH, downloaders.getBinPath(downloaderName));
 		parameters.put(FrameworkConf.CMD_PROCESSOR, downloaders.getCmdProcessor());
 
-		pluginDownloader.download(episode.getUrl(), downloadOuput, parameters, listener);
+		pluginDownloader.download(episode.getUrl(), downloadOuput, parameters, listener, downloaders.getProtocol2proxy());
 	}
 
 	@Override

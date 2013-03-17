@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.api.downloader.PluginDownloaderInterface;
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
 import com.dabi.habitv.framework.plugin.api.dto.DownloaderDTO;
@@ -12,9 +13,10 @@ import com.dabi.habitv.framework.plugin.api.provider.PluginProviderInterface;
 import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.framework.plugin.exception.NoSuchDownloaderException;
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
-import com.dabi.habitv.framework.FrameworkConf;
 
-public class CanalPlusPluginManager implements PluginProviderInterface { // NO_UCD (unused code)
+public class CanalPlusPluginManager implements PluginProviderInterface { // NO_UCD
+	// (unused
+	// code)
 
 	private ClassLoader classLoader;
 
@@ -49,7 +51,7 @@ public class CanalPlusPluginManager implements PluginProviderInterface { // NO_U
 		parameters.put(FrameworkConf.CMD_PROCESSOR,
 				downloaders.getCmdProcessor());
 
-		pluginDownloader.download(episode.getUrl(), downloadOuput, parameters, listener);
+		pluginDownloader.download(episode.getUrl(), downloadOuput, parameters, listener, downloaders.getProtocol2proxy());
 	}
 
 	@Override

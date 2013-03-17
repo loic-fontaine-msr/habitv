@@ -162,6 +162,8 @@ public final class EpisodeManager extends AbstractManager implements TaskAdder {
 			final Integer attempts = (attemptsM == null) ? 0 : attemptsM;
 			if (tooManyAttempts(attempts)) {
 				state = TaskState.TO_MANY_FAILED;
+				//reinit counter
+				downloadAttempts.remove(retreiveTask.getEpisode());
 			} else {
 
 				retreiveTask.setListener(new TaskListener() {
@@ -189,7 +191,7 @@ public final class EpisodeManager extends AbstractManager implements TaskAdder {
 	}
 
 	private boolean tooManyAttempts(final Integer attempts) {
-		return maxAttempts != null && attempts > maxAttempts;
+		return maxAttempts != null && attempts >= maxAttempts;
 	}
 
 	@Override

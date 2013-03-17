@@ -3,31 +3,35 @@
 	targetNamespace="http://www.dabi.com/habitv/config/entities">
 	<complexType name="config">
 		<sequence>
+			<element name="proxy" type="tns:Proxy" maxOccurs="unbounded"
+				minOccurs="0"></element>
 			<element name="maxAttempts" type="int" maxOccurs="1"
 				minOccurs="0" />
 			<element name="cmdProcessor" type="string" maxOccurs="1"
-				minOccurs="0"></element>
-			<element name="demonTime" type="int" maxOccurs="1" minOccurs="0" />
+				minOccurs="0">
+			</element>
+			<element name="demonTime" type="int" maxOccurs="1"
+				minOccurs="0" />
 			<element name="fileNameCutSize" type="int" maxOccurs="1"
 				minOccurs="0" />
 			<element name="workingDir" type="string" maxOccurs="1"
 				minOccurs="1" />
 			<element name="indexDir" type="string" maxOccurs="1"
 				minOccurs="1" />
-			<element name="providerPluginDir" type="string" maxOccurs="1"
-				minOccurs="1" />
-			<element name="downloaderPluginDir" type="string" maxOccurs="1"
-				minOccurs="1" />
-			<element name="exporterPluginDir" type="string" maxOccurs="1"
-				minOccurs="1" />
+			<element name="providerPluginDir" type="string"
+				maxOccurs="1" minOccurs="1" />
+			<element name="downloaderPluginDir" type="string"
+				maxOccurs="1" minOccurs="1" />
+			<element name="exporterPluginDir" type="string"
+				maxOccurs="1" minOccurs="1" />
 			<element name="downloadOuput" type="string" maxOccurs="1"
 				minOccurs="1">
 			</element>
-			<element name="downloader" type="tns:downloader" maxOccurs="unbounded"
-				minOccurs="1">
+			<element name="downloader" type="tns:downloader"
+				maxOccurs="unbounded" minOccurs="1">
 			</element>
-			<element name="exporter" type="tns:exporter" maxOccurs="unbounded"
-				minOccurs="0" />
+			<element name="exporter" type="tns:exporter"
+				maxOccurs="unbounded" minOccurs="0" />
 			<element name="taskDefinition" type="tns:taskDefinition"
 				maxOccurs="unbounded" minOccurs="0">
 			</element>
@@ -72,6 +76,14 @@
 		<sequence>
 			<element name="taskName" type="string"></element>
 			<element name="size" type="int"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="Proxy">
+		<sequence>
+			<element name="protocol" type="string"></element>		
+			<element name="host" type="string"></element>
+			<element name="port" type="int"></element>
 		</sequence>
 	</complexType>
 </schema>

@@ -2,13 +2,16 @@ package com.dabi.habitv.downloader.aria2;
 
 import java.util.Map;
 
+import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.api.downloader.PluginDownloaderInterface;
+import com.dabi.habitv.framework.plugin.api.dto.ProxyDTO;
 import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.framework.plugin.exception.ExecutorFailedException;
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
-import com.dabi.habitv.framework.FrameworkConf;
 
-public class Aria2PluginManager implements PluginDownloaderInterface { // NO_UCD (unused code)
+public class Aria2PluginManager implements PluginDownloaderInterface { // NO_UCD
+	// (unused
+	// code)
 
 	@Override
 	public String getName() {
@@ -22,7 +25,7 @@ public class Aria2PluginManager implements PluginDownloaderInterface { // NO_UCD
 
 	@Override
 	public void download(final String downloadInput, final String downloadDestination, final Map<String, String> parameters,
-			final CmdProgressionListener listener) throws DownloadFailedException {
+			final CmdProgressionListener listener, final Map<ProxyDTO.ProtocolEnum, ProxyDTO> proxies) throws DownloadFailedException {
 
 		final String binParam = parameters.get(FrameworkConf.PARAMETER_BIN_PATH);
 		if (binParam == null) {
@@ -34,6 +37,10 @@ public class Aria2PluginManager implements PluginDownloaderInterface { // NO_UCD
 			cmd += Aria2Conf.CMD2;
 		} else {
 			cmd += cmdParam;
+		}
+		final ProxyDTO httpProxy = proxies.get(ProxyDTO.ProtocolEnum.HTTP);
+		if (httpProxy != null) {
+			cmd += " --all-proxy='http://" + httpProxy.getHost() + ":" + httpProxy.getPort() + "'";
 		}
 		cmd = cmd.replaceFirst(FrameworkConf.DOWNLOAD_INPUT, downloadInput);
 

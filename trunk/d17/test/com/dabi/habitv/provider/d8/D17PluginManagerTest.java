@@ -18,6 +18,7 @@ import com.dabi.habitv.framework.plugin.api.downloader.PluginDownloaderInterface
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
 import com.dabi.habitv.framework.plugin.api.dto.DownloaderDTO;
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
+import com.dabi.habitv.framework.plugin.api.dto.ProxyDTO;
 import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.framework.plugin.exception.NoSuchDownloaderException;
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
@@ -90,7 +91,7 @@ public class D17PluginManagerTest {
 
 			@Override
 			public void download(final String downloadInput, final String downloadDestination, final Map<String, String> parameters,
-					final CmdProgressionListener listener) throws DownloadFailedException {
+					final CmdProgressionListener listener, final Map<ProxyDTO.ProtocolEnum, ProxyDTO> proxies) throws DownloadFailedException {
 				assertTrue(downloadInput.length() > 0);
 			}
 		};
@@ -109,7 +110,7 @@ public class D17PluginManagerTest {
 
 			@Override
 			public void download(final String downloadInput, final String downloadDestination, final Map<String, String> parameters,
-					final CmdProgressionListener listener) throws DownloadFailedException {
+					final CmdProgressionListener listener, final Map<ProxyDTO.ProtocolEnum, ProxyDTO> proxies) throws DownloadFailedException {
 				assertTrue(downloadInput.length() > 0);
 			}
 		};

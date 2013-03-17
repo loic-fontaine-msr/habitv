@@ -67,7 +67,11 @@ public class EpisodeDTO implements Comparable<EpisodeDTO>, Serializable {
 
 	@Override
 	public String toString() {
-		return getCategory().getChannel() + "-" + getCategory().getName() + "-" + getName();
+		return getFullName();
+	}
+
+	public String getFullName() {
+		return getCategory().getChannel() + "-" + getCategory().getName() + "-" + getName() + "-"+getNum();
 	}
 
 	public String getUrl() {

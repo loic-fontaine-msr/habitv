@@ -105,7 +105,7 @@ public class M6W9PluginManager implements PluginProviderInterface {
 
 			i++;
 			try {
-				pluginDownloader.download(episodeUrl, downloadOuput, parameters, listener);
+				pluginDownloader.download(episodeUrl, downloadOuput, parameters, listener, downloaders.getProtocol2proxy());
 				break;
 			} catch (final DownloadFailedException | TechnicalException e) {
 				LOG.error("", e);

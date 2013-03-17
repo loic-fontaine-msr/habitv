@@ -47,7 +47,7 @@ public class LEquipePluginManager implements PluginProviderInterface {
 		parameters.put(FrameworkConf.CMD_PROCESSOR,
 				downloaders.getCmdProcessor());
 
-		pluginDownloader.download(LEquipeRetreiver.findDownloadlink(episode.getUrl()), downloadOuput, parameters, cmdProgressionListener);
+		pluginDownloader.download(LEquipeRetreiver.findDownloadlink(episode.getUrl()), downloadOuput, parameters, cmdProgressionListener, downloaders.getProtocol2proxy());
 	}
 
 }

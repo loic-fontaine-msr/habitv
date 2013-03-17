@@ -20,6 +20,7 @@ import com.dabi.habitv.framework.plugin.api.downloader.PluginDownloaderInterface
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
 import com.dabi.habitv.framework.plugin.api.dto.DownloaderDTO;
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
+import com.dabi.habitv.framework.plugin.api.dto.ProxyDTO;
 import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.framework.plugin.exception.NoSuchDownloaderException;
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
@@ -88,7 +89,7 @@ public class M6W9PluginManagerTest {
 
 			@Override
 			public void download(final String downloadInput, final String downloadDestination, final Map<String, String> parameters,
-					final CmdProgressionListener listener) throws DownloadFailedException {
+					final CmdProgressionListener listener, final Map<ProxyDTO.ProtocolEnum, ProxyDTO> proxies) throws DownloadFailedException {
 				System.out.println(parameters.get(FrameworkConf.PARAMETER_ARGS).replace("#FILE_DEST#", "test.flv").replace("#VIDEO_URL#", downloadInput));
 				assertEquals(parameters.get(FrameworkConf.PARAMETER_ARGS),
 						"-r \"rtmpe://groupemsix.fcod.llnwd.net/a2883/e1/#VIDEO_URL#?s=1348406&e=1434806&h=688d2d5b2d2050db299abd8bd2f3497c\" -c 1935 -m 10 -o \"#FILE_DEST#\"");

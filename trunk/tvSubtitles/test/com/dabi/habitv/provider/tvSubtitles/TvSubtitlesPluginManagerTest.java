@@ -18,6 +18,7 @@ import com.dabi.habitv.framework.plugin.api.downloader.PluginDownloaderInterface
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
 import com.dabi.habitv.framework.plugin.api.dto.DownloaderDTO;
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
+import com.dabi.habitv.framework.plugin.api.dto.ProxyDTO;
 import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.framework.plugin.exception.NoSuchDownloaderException;
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
@@ -46,13 +47,13 @@ public class TvSubtitlesPluginManagerTest {
 	@Test
 	public final void testFindEpisodeBreakingBad() {
 		final Set<EpisodeDTO> episodeList = manager.findEpisode(new CategoryDTO("", "", "tvshow-133-4.html", ""));
-		assertTrue(episodeList.size()>0);
+		assertTrue(episodeList.size() > 0);
 	}
 
 	@Test
 	public final void testFindEpisode() {
 		final Set<EpisodeDTO> episodeList = manager.findEpisode(new CategoryDTO("", "", "tvshow-950-2.html", ""));
-		assertTrue(episodeList.size()>0);
+		assertTrue(episodeList.size() > 0);
 	}
 
 	@Test
@@ -81,7 +82,7 @@ public class TvSubtitlesPluginManagerTest {
 
 			@Override
 			public void download(final String downloadInput, final String downloadDestination, final Map<String, String> parameters,
-					final CmdProgressionListener listener) throws DownloadFailedException {
+					final CmdProgressionListener listener, final Map<ProxyDTO.ProtocolEnum, ProxyDTO> proxies) throws DownloadFailedException {
 				assertEquals(downloadInput, "http://www.tvsubtitles.net/download-222987.html");
 			}
 		};
