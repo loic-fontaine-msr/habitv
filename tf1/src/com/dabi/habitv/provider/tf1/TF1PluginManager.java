@@ -84,10 +84,10 @@ public class TF1PluginManager implements PluginProviderInterface {
 			videoUrl = videoUrl.replace(",rtmpte", "");
 			videoUrl = videoUrl.substring(0, videoUrl.lastIndexOf("?"));
 			parameters.put(FrameworkConf.PARAMETER_ARGS, TF1Conf.DUMP_CMD);
-			pluginDownloader.download(videoUrl, downloadOuput, parameters, cmdProgressionListener);
+			pluginDownloader.download(videoUrl, downloadOuput, parameters, cmdProgressionListener, downloaders.getProtocol2proxy());
 		} else {
 			if (videoStruct.getMediaIdList().size() == 1) {
-				pluginDownloader.download(videoUrl, downloadOuput, parameters, cmdProgressionListener);
+				pluginDownloader.download(videoUrl, downloadOuput, parameters, cmdProgressionListener, downloaders.getProtocol2proxy());
 			} else {
 				final String assemblerBinPath = downloaders.getBinPath(TF1Conf.ASSEMBLER);
 				if (assemblerBinPath == null) {

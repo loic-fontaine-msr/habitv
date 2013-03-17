@@ -17,14 +17,22 @@ public final class DownloaderDTO {
 
 	private final String cmdProcessor;
 
+	private final Map<ProxyDTO.ProtocolEnum, ProxyDTO> protocol2proxy;
+
 	public DownloaderDTO(final String cmdProcessor, final Map<String, PluginDownloaderInterface> downloaderName2downloader,
-			final Map<String, String> downloaderName2BinPath, final String downloadOutputDir, final String indexDir) {
+			final Map<String, String> downloaderName2BinPath, final String downloadOutputDir, final String indexDir, final Map<ProxyDTO.ProtocolEnum, ProxyDTO> protocol2proxy) {
 		super();
 		this.cmdProcessor = cmdProcessor;
 		this.downloaderName2downloader = downloaderName2downloader;
 		this.downloaderName2BinPath = downloaderName2BinPath;
 		this.downloadOutput = downloadOutputDir;
 		this.indexDir = indexDir;
+		this.protocol2proxy = protocol2proxy;
+	}
+
+	public DownloaderDTO(final String cmdProcessor, final Map<String, PluginDownloaderInterface> downloaderName2downloader,
+			final Map<String, String> downloaderName2BinPath, final String downloadOutputDir, final String indexDir) {
+		this(cmdProcessor, downloaderName2downloader, downloaderName2BinPath, downloadOutputDir, indexDir, null);
 	}
 
 	public PluginDownloaderInterface getDownloader(final String downloaderName) throws NoSuchDownloaderException {
@@ -50,4 +58,9 @@ public final class DownloaderDTO {
 	public String getCmdProcessor() {
 		return cmdProcessor;
 	}
+
+	public Map<ProxyDTO.ProtocolEnum, ProxyDTO> getProtocol2proxy() {
+		return protocol2proxy;
+	}
+
 }

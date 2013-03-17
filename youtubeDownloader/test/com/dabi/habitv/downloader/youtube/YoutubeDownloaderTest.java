@@ -9,7 +9,6 @@ public class YoutubeDownloaderTest {
 
 	private final YoutubePluginManager manager = new YoutubePluginManager();
 
-
 	@Test
 	public void testDownload() throws DownloadFailedException {
 		manager.download("http://www.youtube.com/watch?v=gg3ARiiSAfM&feature=plcp", "./test.flv", null, new CmdProgressionListener() {
@@ -18,7 +17,7 @@ public class YoutubeDownloaderTest {
 			public void listen(final String progression) {
 				System.out.println(progression);
 			}
-		});
+		}, null);
 	}
 
 	@Test
@@ -30,6 +29,6 @@ public class YoutubeDownloaderTest {
 			public void listen(final String progression) {
 				System.out.println(progression);
 			}
-		});
+		}, null);
 	}
 }

@@ -61,7 +61,7 @@ public class D17PluginManager implements PluginProviderInterface { // NO_UCD
 		parameters.put(FrameworkConf.PARAMETER_BIN_PATH, downloaders.getBinPath(downloaderName));
 		parameters.put(FrameworkConf.CMD_PROCESSOR, downloaders.getCmdProcessor());
 
-		pluginDownloader.download(videoUrl, downloadOuput, parameters, listener);
+		pluginDownloader.download(videoUrl, downloadOuput, parameters, listener, downloaders.getProtocol2proxy());
 	}
 
 }

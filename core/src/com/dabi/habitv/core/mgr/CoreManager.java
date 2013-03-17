@@ -10,6 +10,7 @@ import java.util.Set;
 import com.dabi.habitv.config.entities.Config;
 import com.dabi.habitv.config.entities.Downloader;
 import com.dabi.habitv.config.entities.Exporter;
+import com.dabi.habitv.config.entities.Proxy;
 import com.dabi.habitv.config.entities.TaskDefinition;
 import com.dabi.habitv.core.plugin.PluginFactory;
 import com.dabi.habitv.core.token.TokenReplacer;
@@ -18,6 +19,7 @@ import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
 import com.dabi.habitv.framework.plugin.api.dto.DownloaderDTO;
 import com.dabi.habitv.framework.plugin.api.dto.ExportDTO;
 import com.dabi.habitv.framework.plugin.api.dto.ExporterDTO;
+import com.dabi.habitv.framework.plugin.api.dto.ProxyDTO;
 import com.dabi.habitv.framework.plugin.api.exporter.PluginExporterInterface;
 import com.dabi.habitv.framework.plugin.api.provider.PluginProviderInterface;
 
@@ -33,12 +35,33 @@ public final class CoreManager {
 
 	private final Map<String, Integer> buildTaskName2PoolSizeMap;
 
+	private final Map<ProxyDTO.ProtocolEnum, ProxyDTO> protocol2proxy;
+
 	public CoreManager(final Config config) {
 		this.config = config;
 		final PluginFactory<PluginProviderInterface> pluginProviderFactory = new PluginFactory<>(PluginProviderInterface.class, config.getProviderPluginDir());
 		providerList = pluginProviderFactory.getAllPlugin();
 		buildTaskName2PoolSizeMap = buildTaskName2PoolSizeMap(config.getTaskDefinition());
 		TokenReplacer.setCutSize(config.getFileNameCutSize());
+
+		final List<Proxy> configProxyList = config.getProxy();
+		if (configProxyList != null && configProxyList.size() > 0) {
+			protocol2proxy = new HashMap<ProxyDTO.ProtocolEnum, ProxyDTO>();
+			for (final Proxy proxy : configProxyList) {
+				protocol2proxy.put(ProxyDTO.ProtocolEnum.valueOf(proxy.getProtocol()), new ProxyDTO(proxy.getHost(), proxy.getPort()));
+			}
+			final ProxyDTO httpProxy = protocol2proxy.get(ProxyDTO.ProtocolEnum.HTTP);
+			if (httpProxy != null) {
+				setHttpProxy(httpProxy);
+			}
+		} else {
+			protocol2proxy = null;
+		}
+	}
+
+	private void setHttpProxy(final ProxyDTO httpProxy) {
+		System.setProperty("http.proxyHost", httpProxy.getHost());
+		System.setProperty("http.proxyPort", String.valueOf(httpProxy.getPort()));
 	}
 
 	public CategoryManager getCategoryManager() {
@@ -102,7 +125,7 @@ public final class CoreManager {
 		final Map<String, String> downloaderName2BinPath = buildDownloadersBinPath(config.getDownloader());
 		// DL DTO
 		final DownloaderDTO downloader = new DownloaderDTO(config.getCmdProcessor(), downloaderName2downloader, downloaderName2BinPath,
-				config.getDownloadOuput(), config.getIndexDir());
+				config.getDownloadOuput(), config.getIndexDir(), protocol2proxy);
 		// exporters factory
 		final PluginFactory<PluginExporterInterface> pluginExporterFactory = new PluginFactory<>(PluginExporterInterface.class, config.getExporterPluginDir());
 		// map of exporters by name

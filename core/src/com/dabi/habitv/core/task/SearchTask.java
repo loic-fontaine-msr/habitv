@@ -3,6 +3,7 @@ package com.dabi.habitv.core.task;
 import java.util.Collection;
 import java.util.Set;
 
+import com.dabi.habitv.core.dao.DlErrorDAO;
 import com.dabi.habitv.core.dao.DownloadedDAO;
 import com.dabi.habitv.core.event.RetreiveEvent;
 import com.dabi.habitv.core.event.SearchEvent;
@@ -81,6 +82,10 @@ public class SearchTask extends AbstractTask<Object> {
 				final DownloadedDAO dlDAO = buildDownloadDAO(category.getName());
 				final Set<String> dlFiles = dlDAO.findDownloadedFiles();
 				final boolean indexCreated = dlDAO.isIndexCreated();
+				// dao to find error download episodes
+				final DlErrorDAO errorDAO = new DlErrorDAO();
+				final Set<String> errorFiles = errorDAO.findDownloadedErrorFiles();
+
 				// get list of downloadable episodes
 				final Set<EpisodeDTO> episodeList = provider.findEpisode(category);
 				if (!indexCreated && !episodeList.isEmpty()) {
@@ -93,21 +98,24 @@ public class SearchTask extends AbstractTask<Object> {
 				// filter episode lister by include/exclude and already
 				// downloaded
 				boolean isDownloaded;
+				boolean isErrorDownloaded;
 				int i = 0;
 				for (final EpisodeDTO episode : episodeList) {
 					episode.setNum(i);
 					isDownloaded = dlFiles.contains(episode.getName());
-					if (indexCreated && FilterUtils.filterByIncludeExcludeAndDownloaded(episode, category.getInclude(), category.getExclude()) && !isDownloaded) {
+					isErrorDownloaded = errorFiles.contains(episode.getFullName());
+					if (indexCreated && FilterUtils.filterByIncludeExcludeAndDownloaded(episode, category.getInclude(), category.getExclude()) && !isDownloaded
+							&& !isErrorDownloaded) {
 						// producer download the file
-						final TaskAdResult state = taskAdder.addRetreiveTask(new RetrieveTask(episode, retreivePublisher, taskAdder, exporter, provider, downloader,
-								dlDAO));
+						final TaskAdResult state = taskAdder.addRetreiveTask(new RetrieveTask(episode, retreivePublisher, taskAdder, exporter, provider,
+								downloader, dlDAO));
 						if (TaskState.TO_MANY_FAILED.equals(state.getState())) {
-							dlDAO.addDownloadedFiles(episode.getName());
+							errorDAO.addDownloadErrorFiles(episode.getFullName());
 						}
 					} else {
 						// if index has not been created the first run will only
 						// fill this file
-						if (!isDownloaded) {
+						if (!isDownloaded && !isErrorDownloaded) {
 							dlDAO.addDownloadedFiles(episode.getName());
 						}
 					}

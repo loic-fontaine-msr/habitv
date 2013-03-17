@@ -4,6 +4,7 @@ import java.util.Map;
 
 import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.api.downloader.PluginDownloaderInterface;
+import com.dabi.habitv.framework.plugin.api.dto.ProxyDTO;
 import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.framework.plugin.exception.ExecutorFailedException;
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
@@ -22,7 +23,7 @@ public class YoutubePluginManager implements PluginDownloaderInterface {
 
 	@Override
 	public void download(final String downloadInput, final String downloadDestination, final Map<String, String> parameters,
-			final CmdProgressionListener listener) throws DownloadFailedException {
+			final CmdProgressionListener listener, final Map<ProxyDTO.ProtocolEnum, ProxyDTO> proxies) throws DownloadFailedException {
 		final String binParam = parameters.get(FrameworkConf.PARAMETER_BIN_PATH);
 		if (binParam == null) {
 			throw new IllegalArgumentException("bin path parameters must be defined");
@@ -36,6 +37,10 @@ public class YoutubePluginManager implements PluginDownloaderInterface {
 		}
 		cmd = cmd.replaceFirst(FrameworkConf.DOWNLOAD_INPUT, downloadInput);
 		cmd = cmd.replaceFirst(FrameworkConf.DOWNLOAD_DESTINATION, downloadDestination);
+		//		if (proxyDTO!=null){
+		//			TODO youtube-dl supports downloading videos through a proxy, by setting the http_proxy environment variable to the proxy URL, as in http://proxy_machine_name:port/.
+		//		}
+
 		try {
 			(new YoutubeDLCmdExecutor(parameters.get(FrameworkConf.CMD_PROCESSOR), cmd, listener)).execute();
 		} catch (final ExecutorFailedException e) {

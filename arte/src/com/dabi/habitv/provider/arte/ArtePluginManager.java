@@ -48,7 +48,7 @@ public class ArtePluginManager implements PluginProviderInterface { // NO_UCD
 		parameters.put(FrameworkConf.PARAMETER_BIN_PATH, downloaders.getBinPath(downloaderName));
 		parameters.put(FrameworkConf.CMD_PROCESSOR, downloaders.getCmdProcessor());
 
-		pluginDownloader.download(ArteRetreiver.buildDownloadLink(episode.getUrl()), downloadOuput, parameters, cmdProgressionListener);
+		pluginDownloader.download(ArteRetreiver.buildDownloadLink(episode.getUrl()), downloadOuput, parameters, cmdProgressionListener, downloaders.getProtocol2proxy());
 	}
 
 }

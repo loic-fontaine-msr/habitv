@@ -56,21 +56,21 @@ public class TvSubtitlesPluginManager implements PluginProviderInterface {
 		Collection<EpisodeDTO> releaseList;
 		try {
 			releaseList = TvSubtitlesRetriever.findReleaseByEpisode(null, episode.getUrl(), true);
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			throw new TechnicalException(e);
 		}
 
-		for (EpisodeDTO episodeDTO : releaseList) {
+		for (final EpisodeDTO episodeDTO : releaseList) {
 			try {
 				pluginDownloader.download(TvSubtitlesConf.HOME_URL + "/" + TvSubtitlesRetriever.findDownloadLink(episodeDTO.getUrl()),
-						buildDownloadOuput(episodeDTO, downloadOuput), parameters, cmdProgressionListener);
+						buildDownloadOuput(episodeDTO, downloadOuput), parameters, cmdProgressionListener, downloaders.getProtocol2proxy());
 			} catch (final IOException e) {
 				throw new TechnicalException(e);
 			}
 		}
 	}
 
-	private String buildDownloadOuput(EpisodeDTO episodeDTO, String downloadOuput) {
+	private String buildDownloadOuput(final EpisodeDTO episodeDTO, final String downloadOuput) {
 		return downloadOuput.substring(0, downloadOuput.lastIndexOf("/")+1) + episodeDTO.getName().replaceAll("[\\s,:\\\\/*?!|<>&«»()\"\']", "_") + "."
 				+ TvSubtitlesConf.EXTENSION;
 	}
