@@ -1,11 +1,14 @@
 package com.dabi.habitv.framework.plugin.api.provider;
 
+import java.util.Map;
 import java.util.Set;
 
 import com.dabi.habitv.framework.plugin.api.PluginBase;
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
 import com.dabi.habitv.framework.plugin.api.dto.DownloaderDTO;
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
+import com.dabi.habitv.framework.plugin.api.dto.ProxyDTO;
+import com.dabi.habitv.framework.plugin.api.dto.ProxyDTO.ProtocolEnum;
 import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.framework.plugin.exception.NoSuchDownloaderException;
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
@@ -50,5 +53,11 @@ public interface PluginProviderInterface extends PluginBase {
 	 */
 	void download(final String downloadOuput, final DownloaderDTO downloaders, final CmdProgressionListener cmdProgressionListener, final EpisodeDTO episode)
 			throws DownloadFailedException, NoSuchDownloaderException;
+
+	/**
+	 * set the proxy list to use by protocol
+	 * @param protocol2proxy proxy list
+	 */
+	void setProxy(Map<ProtocolEnum, ProxyDTO> protocol2proxy);
 
 }

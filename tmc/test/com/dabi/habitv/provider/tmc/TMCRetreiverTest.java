@@ -14,8 +14,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.dabi.habitv.provider.tmc.TMCRetreiver;
-
 public class TMCRetreiverTest {
 
 	@BeforeClass
@@ -36,7 +34,7 @@ public class TMCRetreiverTest {
 
 	@Test
 	public final void testBuildToken() throws IOException {
-		assertEquals("d2fcec2208324ba9bdc73e0143c24e66/511960cf", TMCRetreiver.buildToken("8249273", "1360617679", "web"));
+		assertEquals("d2fcec2208324ba9bdc73e0143c24e66/511960cf", TMCPluginManager.buildToken("8249273", "1360617679", "web"));
 		final URL url = new URL(
 				"http://www.wat.tv/get/web/9919167?token=f53ae02a07a1a468de31db84d2f12b3a/514dd0ac&domain=videos.tmc.tv&domain2=null&refererURL=%2Fwalker-texas-ranger%2Fsaison-4%2Fwalker-texas-ranger-saison-4-episode-11-le-meilleur-ami-de-l-homme-7886945-848.html&revision=4.1.151&synd=0&helios=1&context=swftmc&pub=1&country=FR&sitepage=tmc.tv%2Fvideos-tmc%2Fcatchup%2Fwalker-texas-ranger%2Fsaison-4%2Fint%2F20130322&lieu=tmc&playerContext=CONTEXT_TMC&getURL=1&version=WIN%2011,6,602,180");
 		final URLConnection hc = url.openConnection();

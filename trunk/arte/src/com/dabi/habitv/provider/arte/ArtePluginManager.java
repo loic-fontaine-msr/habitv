@@ -1,21 +1,34 @@
 package com.dabi.habitv.provider.arte;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.api.downloader.PluginDownloaderInterface;
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
 import com.dabi.habitv.framework.plugin.api.dto.DownloaderDTO;
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
-import com.dabi.habitv.framework.plugin.api.provider.PluginProviderInterface;
+import com.dabi.habitv.framework.plugin.api.provider.BasePluginProvider;
 import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.framework.plugin.exception.NoSuchDownloaderException;
+import com.dabi.habitv.framework.plugin.exception.TechnicalException;
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
 import com.dabi.habitv.framework.plugin.utils.RetrieverUtils;
+import com.sun.syndication.feed.synd.SyndEntry;
+import com.sun.syndication.feed.synd.SyndFeed;
+import com.sun.syndication.io.FeedException;
+import com.sun.syndication.io.SyndFeedInput;
+import com.sun.syndication.io.XmlReader;
 
-public class ArtePluginManager implements PluginProviderInterface { // NO_UCD
+public class ArtePluginManager extends BasePluginProvider { // NO_UCD
 
 	@Override
 	public String getName() {
@@ -23,19 +36,13 @@ public class ArtePluginManager implements PluginProviderInterface { // NO_UCD
 	}
 
 	@Override
-	public void setClassLoader(final ClassLoader classLoader) {
-
-	}
-
-	@Override
 	public Set<EpisodeDTO> findEpisode(final CategoryDTO category) {
-		return ArteRetreiver.findEpisodeByCategory(category,
-				RetrieverUtils.getInputStreamFromUrl(ArteConf.RSS_CATEGORY_URL.replace(ArteConf.ID_EMISSION_TOKEN, category.getId())));
+		return findEpisodeByCategory(category, getInputStreamFromUrl(ArteConf.RSS_CATEGORY_URL.replace(ArteConf.ID_EMISSION_TOKEN, category.getId())));
 	}
 
 	@Override
 	public Set<CategoryDTO> findCategory() {
-		return ArteRetreiver.findCategories(RetrieverUtils.getUrlContent(ArteConf.RSS_PAGE, ArteConf.ENCODING));
+		return findCategories(RetrieverUtils.getUrlContent(ArteConf.RSS_PAGE, ArteConf.ENCODING, getHttpProxy()));
 	}
 
 	@Override
@@ -47,8 +54,110 @@ public class ArtePluginManager implements PluginProviderInterface { // NO_UCD
 		final Map<String, String> parameters = new HashMap<>(2);
 		parameters.put(FrameworkConf.PARAMETER_BIN_PATH, downloaders.getBinPath(downloaderName));
 		parameters.put(FrameworkConf.CMD_PROCESSOR, downloaders.getCmdProcessor());
+		parameters.put(FrameworkConf.PARAMETER_ARGS, ArteConf.RTMPDUMP_CMD);
 
-		pluginDownloader.download(ArteRetreiver.buildDownloadLink(episode.getUrl()), downloadOuput, parameters, cmdProgressionListener, downloaders.getProtocol2proxy());
+		pluginDownloader.download(buildDownloadLink(episode.getUrl()), downloadOuput, parameters, cmdProgressionListener, getProtocol2proxy());
 	}
 
+	private static final String SEP = "/";
+
+	private static final Pattern REF_PATTERN = Pattern.compile("<video lang=\"fr\" ref=\"([^\\\"]*)\"\\s/>");
+
+	private static final Pattern QUALITY_PATTERN = Pattern.compile("<url quality=\"(\\w+)\">([^\\<]*)</url>");
+
+	private static final Pattern LINK_TITLE_PATTERN = Pattern.compile("<a href=\"([^\\,]*),view,rss.xml\" class=\"rss\">([^\\<]*)</a>");
+
+	private Set<EpisodeDTO> findEpisodeByCategory(final CategoryDTO category, final InputStream inputStream) {
+		final Set<EpisodeDTO> episodeList;
+		try {
+			final SyndFeedInput input = new SyndFeedInput();
+			final SyndFeed feed = input.build(new XmlReader(inputStream, true, ArteConf.ENCODING));
+			episodeList = convertFeedToEpisodeList(feed, category);
+		} catch (IllegalArgumentException | FeedException | IOException e) {
+			throw new TechnicalException(e);
+		}
+		return episodeList;
+	}
+
+	private Set<EpisodeDTO> convertFeedToEpisodeList(final SyndFeed feed, final CategoryDTO category) {
+		final Set<EpisodeDTO> episodeList = new HashSet<EpisodeDTO>();
+		final List<?> entries = feed.getEntries();
+		for (final Object object : entries) {
+			final SyndEntry entry = (SyndEntry) object;
+			episodeList.add(new EpisodeDTO(category, entry.getTitle() + " " + entry.getPublishedDate(), entry.getLink()));
+		}
+		return episodeList;
+	}
+
+	private Set<CategoryDTO> findCategories(final String urlContent) {
+		final Set<CategoryDTO> categoryDTOs = new HashSet<>();
+		final Matcher matcher = LINK_TITLE_PATTERN.matcher(urlContent);
+		String categoryName;
+		String identifier;
+		while (matcher.find()) {
+			identifier = findShowIdentifier(matcher.group(1));
+			categoryName = matcher.group(2);
+			categoryDTOs.add(new CategoryDTO(ArteConf.NAME, categoryName, identifier, ArteConf.EXTENSION));
+		}
+		return categoryDTOs;
+	}
+
+	private static String findShowIdentifier(final String url) {
+		final String[] subUrl = url.split(SEP);
+		if (subUrl.length > 2) {
+			return subUrl[subUrl.length - 2] + SEP + subUrl[subUrl.length - 1];
+		}
+		throw new TechnicalException("can't find show identifier");
+	}
+
+	private String buildDownloadLink(final String url) throws DownloadFailedException {
+		final String episodeId = findEpisodeIdentifier(url);
+		final String xmlInfo = getUrlContent(ArteConf.XML_INFO_URL.replace(ArteConf.ID_EPISODE_TOKEN, episodeId), ArteConf.ENCODING);
+		Matcher matcher = REF_PATTERN.matcher(xmlInfo);
+		final String xmlVideoInfoUrl;
+		if (matcher.find()) {
+			xmlVideoInfoUrl = matcher.group(matcher.groupCount());
+		} else {
+			throw new DownloadFailedException("can't find xml video info url");
+		}
+		final String xmlVideoInfo = getUrlContent(xmlVideoInfoUrl, ArteConf.ENCODING);
+		matcher = QUALITY_PATTERN.matcher(xmlVideoInfo);
+		final Map<String, String> qualityToVideoUrl = new HashMap<>();
+		String videoUrl;
+		String quality;
+		while (matcher.find()) {
+			quality = matcher.group(1);
+			videoUrl = matcher.group(2);
+			qualityToVideoUrl.put(quality, videoUrl);
+		}
+		return findBestQuality(qualityToVideoUrl);
+	}
+
+	private String getUrlContent(final String url, final String encoding) {
+		return RetrieverUtils.getUrlContent(url, encoding, getHttpProxy());
+	}
+
+	private static String findBestQuality(final Map<String, String> qualityToVideoUrl) throws DownloadFailedException {
+		String videoUrl = qualityToVideoUrl.get("hd");
+		if (videoUrl == null) {
+			videoUrl = qualityToVideoUrl.get("sd");
+			if (videoUrl == null) {
+				videoUrl = qualityToVideoUrl.get("link");
+				if (videoUrl == null && qualityToVideoUrl.size() > 0) {
+					videoUrl = (new ArrayList<Map.Entry<String, String>>(qualityToVideoUrl.entrySet())).get(0).getValue();
+				} else {
+					throw new DownloadFailedException("no link found");
+				}
+			}
+		}
+		return videoUrl;
+	}
+
+	private static String findEpisodeIdentifier(final String url) throws DownloadFailedException {
+		final String[] subUrl = url.split(SEP);
+		if (subUrl.length > 1) {
+			return subUrl[subUrl.length - 1].replace(".html", "");
+		}
+		throw new DownloadFailedException("Episode identifier not found");
+	}
 }

@@ -9,6 +9,6 @@ public final class Main {
 	public static void main(final String[] args) {
 		final String site = FrameworkConf.UPDATE_URL;
 		final UpdateManager updateManager = new UpdateManager(site, System.getProperty("user.dir"));
-		updateManager.process(RetrieverUtils.getUrlContent(site + "/toupdate.txt").split("\\n"));
+		updateManager.process(RetrieverUtils.getUrlContent(site + "/toupdate.txt", null).split("\\n"));
 	}
 }

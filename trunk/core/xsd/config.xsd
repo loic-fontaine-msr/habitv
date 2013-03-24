@@ -81,9 +81,16 @@
 
 	<complexType name="Proxy">
 		<sequence>
-			<element name="protocol" type="string"></element>		
+			<element name="protocol" type="string"></element>
 			<element name="host" type="string"></element>
 			<element name="port" type="int"></element>
+			<element name="pluginSupport" type="tns:pluginSupport" maxOccurs="1" minOccurs="0"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="pluginSupport">
+		<sequence>
+			<element name="plugin" type="string" maxOccurs="unbounded" minOccurs="1"></element>
 		</sequence>
 	</complexType>
 </schema>

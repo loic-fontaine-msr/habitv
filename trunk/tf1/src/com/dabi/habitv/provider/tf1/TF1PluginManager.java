@@ -4,27 +4,38 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.api.downloader.PluginDownloaderInterface;
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
 import com.dabi.habitv.framework.plugin.api.dto.DownloaderDTO;
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
-import com.dabi.habitv.framework.plugin.api.provider.PluginProviderInterface;
+import com.dabi.habitv.framework.plugin.api.provider.BasePluginProvider;
 import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.framework.plugin.exception.ExecutorFailedException;
 import com.dabi.habitv.framework.plugin.exception.NoSuchDownloaderException;
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
 import com.dabi.habitv.framework.plugin.utils.CmdExecutor;
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
-import com.dabi.habitv.framework.plugin.utils.RetrieverUtils;
 
-public class TF1PluginManager implements PluginProviderInterface {
+public class TF1PluginManager extends BasePluginProvider {
 
 	@Override
 	public String getName() {
@@ -32,18 +43,47 @@ public class TF1PluginManager implements PluginProviderInterface {
 	}
 
 	@Override
-	public void setClassLoader(final ClassLoader classLoader) {
-
-	}
-
-	@Override
 	public Set<EpisodeDTO> findEpisode(final CategoryDTO category) {
-		return TF1Retreiver.findEpisode(category);
+		final Set<EpisodeDTO> episodes = new HashSet<>();
+
+		final Document doc = Jsoup.parse(getUrlContent(TF1Conf.HOME_URL + "/" + category.getId()));
+
+		final Elements select = doc.select(".teaser");
+		for (final Element element : select) {
+			try {
+				final Element divInfoIntegrale = element.child(1);
+				if (("description".equals(divInfoIntegrale.attr("class")) || "infosTeaser".equals(divInfoIntegrale.attr("class")) || "infosIntegrale"
+						.equals(divInfoIntegrale.attr("class"))) && divInfoIntegrale.children().size() > 1) {
+					final Element child = divInfoIntegrale.child(1);
+					if (!child.children().isEmpty()) {
+						final String title = child.child(0).text();
+						final String url = child.child(0).attr("href");
+						episodes.add(new EpisodeDTO(category, title, url));
+					}
+				}
+			} catch (final IndexOutOfBoundsException e) {
+				getLog().error(element, e);
+				throw new TechnicalException(e);
+			}
+		}
+		return episodes;
 	}
 
 	@Override
 	public Set<CategoryDTO> findCategory() {
-		return TF1Retreiver.findCategory();
+		final Set<CategoryDTO> categories = new HashSet<>();
+
+		final Document doc = Jsoup.parse(getUrlContent(TF1Conf.HOME_URL));
+
+		final Elements select = doc.select(".teaser");
+		for (final Element element : select) {
+			final String attr = element.child(0).child(0).child(0).attr("onmousedown");
+			if (attr.contains("|")) {
+				final String key = attr.split("\\|")[3];
+				categories.add(new CategoryDTO(TF1Conf.NAME, key, key, TF1Conf.EXTENSION));
+			}
+		}
+		return categories;
 	}
 
 	private String getDownloader(final String url) {
@@ -59,7 +99,7 @@ public class TF1PluginManager implements PluginProviderInterface {
 	@Override
 	public void download(final String downloadOuput, final DownloaderDTO downloaders, final CmdProgressionListener cmdProgressionListener,
 			final EpisodeDTO episode) throws DownloadFailedException, NoSuchDownloaderException {
-		final VideoStruct videoStruct = TF1Retreiver.findFinalUrl(episode);
+		final VideoStruct videoStruct = findFinalUrl(episode);
 
 		if (videoStruct.getMediaIdList().isEmpty()) {
 			throw new DownloadFailedException("no link");
@@ -69,9 +109,9 @@ public class TF1PluginManager implements PluginProviderInterface {
 
 		String videoUrl;
 		try {
-			videoUrl = RetrieverUtils.getUrlContent(TF1Retreiver.buildUrlVideoInfo(firstMediaID, "webhd"));
+			videoUrl = getUrlContent(buildUrlVideoInfo(firstMediaID, "webhd"));
 		} catch (final Exception e) {
-			videoUrl = RetrieverUtils.getUrlContent(TF1Retreiver.buildUrlVideoInfo(firstMediaID, "web"));
+			videoUrl = getUrlContent(buildUrlVideoInfo(firstMediaID, "web"));
 		}
 		final String downloaderName = getDownloader(videoUrl);
 		final PluginDownloaderInterface pluginDownloader = downloaders.getDownloader(downloaderName);
@@ -84,10 +124,10 @@ public class TF1PluginManager implements PluginProviderInterface {
 			videoUrl = videoUrl.replace(",rtmpte", "");
 			videoUrl = videoUrl.substring(0, videoUrl.lastIndexOf("?"));
 			parameters.put(FrameworkConf.PARAMETER_ARGS, TF1Conf.DUMP_CMD);
-			pluginDownloader.download(videoUrl, downloadOuput, parameters, cmdProgressionListener, downloaders.getProtocol2proxy());
+			pluginDownloader.download(videoUrl, downloadOuput, parameters, cmdProgressionListener, getProtocol2proxy());
 		} else {
 			if (videoStruct.getMediaIdList().size() == 1) {
-				pluginDownloader.download(videoUrl, downloadOuput, parameters, cmdProgressionListener, downloaders.getProtocol2proxy());
+				pluginDownloader.download(videoUrl, downloadOuput, parameters, cmdProgressionListener, getProtocol2proxy());
 			} else {
 				final String assemblerBinPath = downloaders.getBinPath(TF1Conf.ASSEMBLER);
 				if (assemblerBinPath == null) {
@@ -118,10 +158,10 @@ public class TF1PluginManager implements PluginProviderInterface {
 
 				final byte[] buffer = new byte[1024]; // Adjust if you want
 				int bytesRead;
-				final InputStream input = RetrieverUtils.getInputStreamFromUrl(RetrieverUtils.getUrlContent(TF1Retreiver.buildUrlVideoInfo(mediaId, "web")));
+				final InputStream input = getInputStreamFromUrl(getUrlContent(buildUrlVideoInfo(mediaId, "web")));
 				while ((bytesRead = input.read(buffer)) != -1) {
 					fOutputStream.write(buffer, 0, bytesRead);
-				}//TODO dl avec curl et gérer la progression
+				}// TODO dl avec curl et gérer la progression
 
 				// fOutputStream.write(RetrieverUtils.getUrlContentBytes(RetrieverUtils.getUrlContent(TF1Retreiver.buildUrlVideoInfo(mediaId,
 				// "web"))));
@@ -174,4 +214,100 @@ public class TF1PluginManager implements PluginProviderInterface {
 		}
 	}
 
+	private static final Pattern MEDIAID_PATTERN = Pattern.compile("mediaId : (\\d*),");
+
+	private static final Pattern VIDEO_ID_PATTERN = Pattern.compile("\"id\"\\s*:\\s*(\\d+)");
+
+	private static final Pattern FILES_PATTERN = Pattern.compile(".*\"files\"\\s*:\\s*\\[(.*)\\].*");
+
+	static String buildToken(final String id, final String timestamp, final String contextRoot) {
+		// my $hexdate = sprintf("%x",time());
+		// fill up triling zeroes
+		// final String dateS = String.format("%x", timestamp);
+		final String dateS = Long.toHexString(Long.valueOf(timestamp)).toLowerCase();
+		final StringBuilder dateSC = new StringBuilder(dateS);
+		for (int i = 0; i < (dateS.length() - 8); i++) {
+			dateSC.append("0");
+		}
+		// $hexdate .= "0" x (length($hexdate) - 8);
+		final String key = "9b673b13fa4682ed14c3cfa5af5310274b514c4133e9b3a81e6e3aba00912564";
+		byte[] hash;
+		try {
+			hash = MessageDigest.getInstance("MD5").digest((key + "/" + contextRoot + "/" + id + dateSC.toString()).getBytes());
+		} catch (final NoSuchAlgorithmException e) {
+			throw new TechnicalException(e);
+		}
+		final StringBuilder hashString = new StringBuilder();
+		for (int i = 0; i < hash.length; i++) {
+			final String hex = Integer.toHexString(hash[i]);
+			if (hex.length() == 1) {
+				hashString.append('0');
+				hashString.append(hex.charAt(hex.length() - 1));
+			} else {
+				hashString.append(hex.substring(hex.length() - 2));
+			}
+		}
+		return hashString.toString() + "/" + dateS;
+	}
+
+	public VideoStruct findFinalUrl(final EpisodeDTO episode) {
+		final String content = getUrlContent(TF1Conf.HOME_URL + episode.getUrl());
+		final String mainMediaId = findMediaId(content);
+		final String videoInfoContent = getUrlContent(TF1Conf.VIDEO_INFO + mainMediaId);
+		final boolean hd = videoInfoContent.contains("\"hasHD\":true");
+		final Collection<String> mediaIdList = findMediaIdList(videoInfoContent);
+		return new VideoStruct(hd, mediaIdList);
+	}
+
+	private static Collection<String> findMediaIdList(final String content) {
+		// find fragment "files"
+		Matcher matcher = FILES_PATTERN.matcher(content);
+		final boolean hasMatched = matcher.find();
+		String files = null;
+		final Set<String> fragIdList = new HashSet<>();
+		if (hasMatched) {
+			files = matcher.group(matcher.groupCount());
+			matcher = VIDEO_ID_PATTERN.matcher(files);
+			while (matcher.find()) {
+				fragIdList.add(matcher.group().split(":")[1]);
+			}
+		} else {
+			throw new TechnicalException("can't find mediaId");
+		}
+
+		// find all files
+		final List<String> mediaIdList = new ArrayList<>();
+		matcher = VIDEO_ID_PATTERN.matcher(content);
+		while (matcher.find()) {
+			mediaIdList.add(matcher.group().split(":")[1]);
+		}
+
+		if (fragIdList.isEmpty()) {
+			return mediaIdList;
+		}
+
+		return fragIdList;
+	}
+
+	public String buildUrlVideoInfo(final String mediaId, final String contextRoot) {
+		return TF1Conf.WAT_HOME + "/get/" + contextRoot + "/" + mediaId + "?token=" + buildToken(mediaId, findTimeStamp(), contextRoot)
+				+ "&country=FR&getURL=1&version=WIN 11,5,502,146";
+	}
+
+	private String findTimeStamp() {
+		final String content = getUrlContent(TF1Conf.WAT_HOME + "/servertime");
+		return content.split("\\|")[0];
+	}
+
+	private static String findMediaId(final String content) {
+		final Matcher matcher = MEDIAID_PATTERN.matcher(content);
+		final boolean hasMatched = matcher.find();
+		String ret = null;
+		if (hasMatched) {
+			ret = matcher.group(matcher.groupCount());
+		} else {
+			throw new TechnicalException("can't find mediaId");
+		}
+		return ret;
+	}
 }

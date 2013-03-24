@@ -2,6 +2,7 @@ package com.dabi.habitv.provider.pluzz.jpluzz;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.Proxy;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -33,24 +34,26 @@ public class JsonArchiveParser {
 	private final Map<String, CategoryDTO> catId2LeafCat;
 	private final Map<String, Collection<EpisodeDTO>> catName2Episode;
 	private final String zipUrl;
+	private final Proxy proxy;
 
 	/**
 	 * @param zipUrl
 	 *            zipped jsons files
 	 */
-	public JsonArchiveParser(final String zipUrl) {
+	public JsonArchiveParser(final String zipUrl, final Proxy proxy) {
 		super();
 		catName2RootCat = new HashMap<String, CategoryDTO>();
 		catId2LeafCat = new HashMap<String, CategoryDTO>();
 		catName2Episode = new HashMap<String, Collection<EpisodeDTO>>();
 		this.zipUrl = zipUrl;
+		this.proxy = proxy;
 	}
 
 	/**
 	 * @return the categories and episode of the archive
 	 */
 	public Archive load() {
-		final ZipInputStream zin = new ZipInputStream(RetrieverUtils.getInputStreamFromUrl(zipUrl));
+		final ZipInputStream zin = new ZipInputStream(RetrieverUtils.getInputStreamFromUrl(zipUrl, proxy));
 		ZipEntry zipEntry;
 		try {
 			zipEntry = zin.getNextEntry();

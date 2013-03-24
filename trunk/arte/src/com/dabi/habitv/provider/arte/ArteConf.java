@@ -19,4 +19,6 @@ interface ArteConf {
 	String XML_INFO_URL = "http://videos.arte.tv/fr/do_delegate/videos/" + ID_EPISODE_TOKEN + ",view,asPlayerXml.xml";
 
 	String ENCODING = "UTF-8";
+
+	String RTMPDUMP_CMD = "-r \"#VIDEO_URL#\" -c 1935 -m 10 -w a8db5990d6ac5d4da6a23417206636053a8884a16db3b82e1ab3661a18d627f7 -x 966504 -o \"#FILE_DEST#\"";
 }
