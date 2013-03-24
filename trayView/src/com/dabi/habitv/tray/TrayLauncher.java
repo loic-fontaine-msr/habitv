@@ -18,13 +18,12 @@ public final class TrayLauncher {
 
 	public static void main(final String[] args) {
 		UpdateUpdater.update();
-		new Thread(){
+		new Thread() {
 
 			@Override
 			public void run() {
-				RetrieverUtils.getUrlContent("http://dabiboo.free.fr/cpt.php");
+				RetrieverUtils.getUrlContent("http://dabiboo.free.fr/cpt.php", null);
 			}
-
 
 		}.start();
 		try {

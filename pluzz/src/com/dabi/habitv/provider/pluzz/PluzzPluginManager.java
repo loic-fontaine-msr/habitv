@@ -7,7 +7,7 @@ import java.util.Set;
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
 import com.dabi.habitv.framework.plugin.api.dto.DownloaderDTO;
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
-import com.dabi.habitv.framework.plugin.api.provider.PluginProviderInterface;
+import com.dabi.habitv.framework.plugin.api.provider.BasePluginProvider;
 import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.framework.plugin.exception.NoSuchDownloaderException;
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
@@ -16,22 +16,17 @@ import com.dabi.habitv.provider.pluzz.jpluzz.Archive;
 import com.dabi.habitv.provider.pluzz.jpluzz.JsonArchiveParser;
 import com.dabi.habitv.provider.pluzz.jpluzz.PluzzDLM3U8;
 
-public class PluzzPluginManager implements PluginProviderInterface {
+public class PluzzPluginManager extends BasePluginProvider {
 
 	private Archive cachedArchive;
 
 	private long cachedTimeMs;
 
-	private final JsonArchiveParser jsonArchiveParser = new JsonArchiveParser(PluzzConf.ZIP_URL);
+	private JsonArchiveParser jsonArchiveParser;
 
 	@Override
 	public String getName() {
 		return PluzzConf.NAME;
-	}
-
-	@Override
-	public void setClassLoader(final ClassLoader classLoader) {
-
 	}
 
 	@Override
@@ -49,10 +44,17 @@ public class PluzzPluginManager implements PluginProviderInterface {
 		return episodeList;
 	}
 
+	public JsonArchiveParser getJsonArchiveParser() {
+		if (jsonArchiveParser == null) {
+			jsonArchiveParser = new JsonArchiveParser(PluzzConf.ZIP_URL, getHttpProxy());
+		}
+		return jsonArchiveParser;
+	}
+
 	private Archive getCachedArchive() {
 		final long now = System.currentTimeMillis();
 		if (cachedArchive == null || (now - cachedTimeMs) > PluzzConf.MAX_CACHE_ARCHIVE_TIME_MS) {
-			cachedArchive = jsonArchiveParser.load();
+			cachedArchive = getJsonArchiveParser().load();
 			cachedTimeMs = now;
 		}
 		return cachedArchive;
@@ -70,7 +72,7 @@ public class PluzzPluginManager implements PluginProviderInterface {
 		if (assemblerBinPath == null) {
 			throw new TechnicalException(PluzzConf.ASSEMBLER + " downloader can't be found, add it the config.xml");
 		}
-		final PluzzDLM3U8 dl = new PluzzDLM3U8(cmdProgressionListener, downloadOuput, PluzzConf.CORRECT_VIDEO_CMD_MP4, assemblerBinPath);
+		final PluzzDLM3U8 dl = new PluzzDLM3U8(cmdProgressionListener, downloadOuput, PluzzConf.CORRECT_VIDEO_CMD_MP4, assemblerBinPath, getHttpProxy());
 		dl.dl(episode.getUrl());
 	}
 

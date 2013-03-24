@@ -8,6 +8,7 @@ import static org.junit.Assert.fail;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Map;
 import java.util.Set;
 
 import org.junit.After;
@@ -24,6 +25,8 @@ import com.dabi.habitv.core.publisher.Subscriber;
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
 import com.dabi.habitv.framework.plugin.api.dto.DownloaderDTO;
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
+import com.dabi.habitv.framework.plugin.api.dto.ProxyDTO;
+import com.dabi.habitv.framework.plugin.api.dto.ProxyDTO.ProtocolEnum;
 import com.dabi.habitv.framework.plugin.api.provider.PluginProviderInterface;
 import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.framework.plugin.exception.ExecutorFailedException;
@@ -105,6 +108,11 @@ public class DownloadTaskTest {
 				}
 
 				cmdProgressionListener.listen("100");
+			}
+
+			@Override
+			public void setProxy(final Map<ProtocolEnum, ProxyDTO> protocol2proxy) {
+
 			}
 		};
 		final DownloaderDTO downloader = new DownloaderDTO(null, null, null, "#EPISODE_NAME#_#EPISODE_NAME_CUT#_#CHANNEL_NAME#_#TVSHOW_NAME#_#EXTENSION#",

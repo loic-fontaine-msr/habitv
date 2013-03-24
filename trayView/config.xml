@@ -2,7 +2,7 @@
 <tns:config xmlns:tns="http://www.dabi.com/habitv/config/entities"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.dabi.com/habitv/config/entities config.xsd ">
-	<proxy>
+	<!-- <proxy>
 		<protocol>HTTP</protocol>
 		<host>127.0.0.1</host>
 		<port>6588</port>
@@ -11,7 +11,7 @@
 		<protocol>SOCKS</protocol>
 		<host>127.0.0.1</host>
 		<port>1080</port>
-	</proxy>	
+	</proxy>	 -->
 	<maxAttempts>1</maxAttempts>
 	<demonTime>1800</demonTime>
 	<fileNameCutSize>50</fileNameCutSize>

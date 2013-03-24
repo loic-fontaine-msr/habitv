@@ -1,26 +1,17 @@
 package com.dabi.habitv.framework.plugin.utils;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.net.Proxy;
 import java.net.URL;
 import java.net.URLConnection;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-
-import org.apache.commons.codec.binary.Base64InputStream;
 
 import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
@@ -30,10 +21,6 @@ import com.dabi.habitv.framework.plugin.exception.TechnicalException;
  * 
  */
 public final class RetrieverUtils {
-
-	private static final int BUFFER_SIZE = 16384;
-
-	// private static final int URL_BUFFER_SIZE = 256;
 
 	private static final String USER_AGENT = "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0)";
 
@@ -47,15 +34,17 @@ public final class RetrieverUtils {
 	 * 
 	 * @param url
 	 *            the URL
+	 * @param proxy
 	 * @param timeOut
 	 * @return the input stream
 	 */
-	public static InputStream getInputStreamFromUrl(final String url) {
-		return getInputStreamFromUrl(url, FrameworkConf.TIME_OUT_MS);
+	public static InputStream getInputStreamFromUrl(final String url, final Proxy proxy) {
+		return getInputStreamFromUrl(url, FrameworkConf.TIME_OUT_MS, proxy);
 	}
-	public static InputStream getInputStreamFromUrl(final String url, final Integer timeOut) {
+
+	public static InputStream getInputStreamFromUrl(final String url, final Integer timeOut, final Proxy proxy) {
 		try {
-			final URLConnection hc = (new URL(url)).openConnection();
+			final URLConnection hc = (new URL(url)).openConnection(proxy);
 			if (timeOut != null) {
 				hc.setConnectTimeout(timeOut);
 				hc.setReadTimeout(timeOut);
@@ -64,54 +53,6 @@ public final class RetrieverUtils {
 			return hc.getInputStream();
 		} catch (final IOException e) {
 			throw new TechnicalException(e);
-		}
-	}
-
-	/**
-	 * Create an inputStream from an URL with encryption throws runtime
-	 * technical exception if fail
-	 * 
-	 * @param url
-	 *            the url
-	 * @param encryption
-	 *            the encryption type @see Cipher#getInstance(String)
-	 * @param secretKey
-	 *            the secret key @see Cipher#init(int, java.security.Key)
-	 * @return the input stream
-	 */
-	public static InputStream getEncryptedInputStreamFromUrl(final String url, final String encryption, final String secretKey) {
-		InputStream input = null;
-		try {
-
-			final URLConnection hc = (new URL(url)).openConnection();
-			hc.setRequestProperty("User-Agent", USER_AGENT);
-			input = new Base64InputStream(hc.getInputStream());
-
-			int nRead;
-			final byte[] data = new byte[BUFFER_SIZE];
-			final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-			while ((nRead = input.read(data, 0, data.length)) != -1) {
-				buffer.write(data, 0, nRead);
-			}
-
-			buffer.flush();
-
-			final SecretKeySpec key = new SecretKeySpec(secretKey.getBytes("UTF-8"), encryption);
-
-			final Cipher cipher = Cipher.getInstance(encryption);
-			cipher.init(Cipher.DECRYPT_MODE, key);
-			final byte[] newPlainText = cipher.doFinal(buffer.toByteArray());
-			return new ByteArrayInputStream(newPlainText);
-		} catch (IOException | NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException e) {
-			throw new TechnicalException(e);
-		} finally {
-			try {
-				if (input != null) {
-					input.close();
-				}
-			} catch (final IOException e) {
-				throw new TechnicalException(e);
-			}
 		}
 	}
 
@@ -148,13 +89,13 @@ public final class RetrieverUtils {
 		return unmarshalInputStream(input, unmarshallerPackage, null);
 	}
 
-	public static String getUrlContent(final String url) {
-		return getUrlContent(url, null);
+	public static String getUrlContent(final String url, final Proxy proxy) {
+		return getUrlContent(url, null, proxy);
 	}
 
-	public static String getUrlContent(final String url, final String encoding) {
+	public static String getUrlContent(final String url, final String encoding, final Proxy proxy) {
 
-		final InputStream in = getInputStreamFromUrl(url);
+		final InputStream in = getInputStreamFromUrl(url, proxy);
 		final BufferedReader reader;
 		try {
 			if (encoding != null) {
@@ -180,10 +121,10 @@ public final class RetrieverUtils {
 
 	}
 
-	public static String getUrlContentRef(final String url, final String referer) {
+	public static String getUrlContentRef(final String url, final String referer, final Proxy proxy) {
 
 		try {
-			final URLConnection hc = (new URL(url)).openConnection();
+			final URLConnection hc = (new URL(url)).openConnection(proxy);
 			hc.setRequestProperty("User-Agent", USER_AGENT);
 			hc.setRequestProperty("referer", referer);
 			final InputStream in = hc.getInputStream();
@@ -203,8 +144,8 @@ public final class RetrieverUtils {
 
 	}
 
-	public static byte[] getUrlContentBytes(final String url) {
-		final InputStream in = getInputStreamFromUrl(url, null);
+	public static byte[] getUrlContentBytes(final String url, final Proxy proxy) {
+		final InputStream in = getInputStreamFromUrl(url, null, proxy);
 		final ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		int i;
 		try {

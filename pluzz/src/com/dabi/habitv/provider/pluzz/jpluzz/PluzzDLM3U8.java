@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.Proxy;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,22 +30,26 @@ public class PluzzDLM3U8 {
 
 	private final String assembler;
 
-	private FileOutputStream fOutputStream = null;;
+	private FileOutputStream fOutputStream = null;
 
-	public PluzzDLM3U8(final CmdProgressionListener progressionListener, final String downloadOuput, final String assemblerCmd, final String assembler) {
+	private final Proxy proxy;
+
+	public PluzzDLM3U8(final CmdProgressionListener progressionListener, final String downloadOuput, final String assemblerCmd, final String assembler,
+			final Proxy proxy) {
 		this.progressionListener = progressionListener;
 		this.downloadOuput = downloadOuput;
 		this.assemblerCmd = assemblerCmd;
 		this.assembler = assembler;
+		this.proxy = proxy;
 	}
 
 	public void dl(final String manifestURLRelative) throws DownloadFailedException {
 		String manifestUrl = PluzzConf.BASE_URL + manifestURLRelative;
 		final String fragmentBaseUrl = buildFragmentBaseUrl(manifestUrl);
-		String manifest = RetrieverUtils.getUrlContent(manifestUrl);
+		String manifest = RetrieverUtils.getUrlContent(manifestUrl, proxy);
 		if (!manifest.contains("EXT-X-TARGETDURATION")) {
 			manifestUrl = fragmentBaseUrl + findBestQuality(manifest);
-			manifest = RetrieverUtils.getUrlContent(manifestUrl);
+			manifest = RetrieverUtils.getUrlContent(manifestUrl, proxy);
 		}
 		final List<String> fragments = parseManifest(manifest);
 
@@ -114,7 +119,7 @@ public class PluzzDLM3U8 {
 	}
 
 	private void downloadFragment(final String fragmentUrl) throws FileNotFoundException, IOException {
-		final byte[] frag = RetrieverUtils.getUrlContentBytes(fragmentUrl);
+		final byte[] frag = RetrieverUtils.getUrlContentBytes(fragmentUrl, proxy);
 		fOutputStream.write(frag);
 	}
 

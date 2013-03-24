@@ -20,6 +20,7 @@ import com.dabi.habitv.framework.plugin.api.dto.DownloaderDTO;
 import com.dabi.habitv.framework.plugin.api.dto.ExportDTO;
 import com.dabi.habitv.framework.plugin.api.dto.ExporterDTO;
 import com.dabi.habitv.framework.plugin.api.dto.ProxyDTO;
+import com.dabi.habitv.framework.plugin.api.dto.ProxyDTO.ProtocolEnum;
 import com.dabi.habitv.framework.plugin.api.exporter.PluginExporterInterface;
 import com.dabi.habitv.framework.plugin.api.provider.PluginProviderInterface;
 
@@ -35,7 +36,7 @@ public final class CoreManager {
 
 	private final Map<String, Integer> buildTaskName2PoolSizeMap;
 
-	private final Map<ProxyDTO.ProtocolEnum, ProxyDTO> protocol2proxy;
+	private Map<String, Map<ProxyDTO.ProtocolEnum, ProxyDTO>> plugin2protocol2proxy;
 
 	public CoreManager(final Config config) {
 		this.config = config;
@@ -43,20 +44,53 @@ public final class CoreManager {
 		providerList = pluginProviderFactory.getAllPlugin();
 		buildTaskName2PoolSizeMap = buildTaskName2PoolSizeMap(config.getTaskDefinition());
 		TokenReplacer.setCutSize(config.getFileNameCutSize());
+		setProxy(config);
+	}
 
-		final List<Proxy> configProxyList = config.getProxy();
-		if (configProxyList != null && configProxyList.size() > 0) {
-			protocol2proxy = new HashMap<ProxyDTO.ProtocolEnum, ProxyDTO>();
-			for (final Proxy proxy : configProxyList) {
-				protocol2proxy.put(ProxyDTO.ProtocolEnum.valueOf(proxy.getProtocol()), new ProxyDTO(proxy.getHost(), proxy.getPort()));
-			}
-			final ProxyDTO httpProxy = protocol2proxy.get(ProxyDTO.ProtocolEnum.HTTP);
+	private void setProxy(final Config config) {
+		plugin2protocol2proxy = new HashMap<>();
+		buildProxyMap(config);
+
+		// set the defaut http proxy
+		final Map<ProtocolEnum, ProxyDTO> defaultProxyMap = plugin2protocol2proxy.get(null);
+		if (defaultProxyMap != null) {
+			final ProxyDTO httpProxy = defaultProxyMap.get(ProxyDTO.ProtocolEnum.HTTP);
 			if (httpProxy != null) {
 				setHttpProxy(httpProxy);
 			}
-		} else {
-			protocol2proxy = null;
 		}
+
+		// set the proxy to each plugin provider
+		for (final PluginProviderInterface provider : providerList) {
+			provider.setProxy(plugin2protocol2proxy.get(provider.getName()));
+		}
+	}
+
+	private void buildProxyMap(final Config config) {
+		final List<Proxy> configProxyList = config.getProxy();
+
+		if (configProxyList != null && configProxyList.size() > 0) {
+			for (final Proxy proxy : configProxyList) {
+				if (proxy.getPluginSupport() != null) {
+					for (final String plugin : proxy.getPluginSupport().getPlugin()) {
+						setProxyByPluginName(proxy, plugin);
+					}
+				} else {
+					// default proxy
+					setProxyByPluginName(proxy, null);
+				}
+			}
+		}
+	}
+
+	private void setProxyByPluginName(final Proxy proxy, final String plugin) {
+		Map<ProxyDTO.ProtocolEnum, ProxyDTO> protocol2Proxy;
+		protocol2Proxy = plugin2protocol2proxy.get(plugin);
+		if (protocol2Proxy == null) {
+			protocol2Proxy = new HashMap<>();
+			plugin2protocol2proxy.put(plugin, protocol2Proxy);
+		}
+		protocol2Proxy.put(ProxyDTO.ProtocolEnum.valueOf(proxy.getProtocol()), new ProxyDTO(proxy.getHost(), proxy.getPort()));
 	}
 
 	private void setHttpProxy(final ProxyDTO httpProxy) {
@@ -125,7 +159,7 @@ public final class CoreManager {
 		final Map<String, String> downloaderName2BinPath = buildDownloadersBinPath(config.getDownloader());
 		// DL DTO
 		final DownloaderDTO downloader = new DownloaderDTO(config.getCmdProcessor(), downloaderName2downloader, downloaderName2BinPath,
-				config.getDownloadOuput(), config.getIndexDir(), protocol2proxy);
+				config.getDownloadOuput(), config.getIndexDir());
 		// exporters factory
 		final PluginFactory<PluginExporterInterface> pluginExporterFactory = new PluginFactory<>(PluginExporterInterface.class, config.getExporterPluginDir());
 		// map of exporters by name

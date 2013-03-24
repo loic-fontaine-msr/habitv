@@ -4,7 +4,7 @@
 
 	<groupId>com.dabi.habitv</groupId>
 	<artifactId>builder</artifactId>
-	<version>3.3.0</version>
+	<version>3.7.0</version>
 	<packaging>pom</packaging>
 
 	<name>Builder habiTv</name>
@@ -20,7 +20,6 @@
 		<module>../canalPlus</module>
 		<module>../m6w9</module>
 		<module>../tf1</module>
-		<module>../tvSubtitles</module>
 		<module>../cmdDownloader</module>
 		<module>../pluzz</module>
 		<module>../d8</module>
@@ -38,6 +37,8 @@
 		<module>../lequipe</module>
 		<module>../beinsport</module>
 		<module>../arte</module>
+		<module>../tmc</module>
+		<module>../nrj12</module>
 	</modules>
 
 	<build>

@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.junit.After;
@@ -20,6 +21,8 @@ import com.dabi.habitv.core.publisher.Subscriber;
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
 import com.dabi.habitv.framework.plugin.api.dto.DownloaderDTO;
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
+import com.dabi.habitv.framework.plugin.api.dto.ProxyDTO;
+import com.dabi.habitv.framework.plugin.api.dto.ProxyDTO.ProtocolEnum;
 import com.dabi.habitv.framework.plugin.api.provider.PluginProviderInterface;
 import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.framework.plugin.exception.NoSuchDownloaderException;
@@ -79,6 +82,12 @@ public class SearchCategoryTaskTest {
 			@Override
 			public void download(final String downloadOuput, final DownloaderDTO downloaders, final CmdProgressionListener cmdProgressionListener,
 					final EpisodeDTO episode) throws DownloadFailedException, NoSuchDownloaderException {
+
+			}
+
+			@Override
+			public void setProxy(final Map<ProtocolEnum, ProxyDTO> protocol2proxy) {
+				// TODO Auto-generated method stub
 
 			}
 		};

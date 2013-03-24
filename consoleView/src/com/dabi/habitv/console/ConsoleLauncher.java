@@ -21,13 +21,12 @@ public final class ConsoleLauncher { // NO_UCD (unused code)
 
 	public static void main(final String[] args) throws InterruptedException {
 		UpdateUpdater.update();
-		new Thread(){
+		new Thread() {
 
 			@Override
 			public void run() {
-				RetrieverUtils.getUrlContent("http://dabiboo.free.fr/cpt.php");
+				RetrieverUtils.getUrlContent("http://dabiboo.free.fr/cpt.php", null);
 			}
-
 
 		}.start();
 		try {

@@ -27,6 +27,8 @@ import com.dabi.habitv.framework.plugin.api.dto.DownloaderDTO;
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
 import com.dabi.habitv.framework.plugin.api.dto.ExportDTO;
 import com.dabi.habitv.framework.plugin.api.dto.ExporterDTO;
+import com.dabi.habitv.framework.plugin.api.dto.ProxyDTO;
+import com.dabi.habitv.framework.plugin.api.dto.ProxyDTO.ProtocolEnum;
 import com.dabi.habitv.framework.plugin.api.exporter.PluginExporterInterface;
 import com.dabi.habitv.framework.plugin.api.provider.PluginProviderInterface;
 import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
@@ -89,6 +91,11 @@ public class RetreiveTaskTest {
 			@Override
 			public void download(final String downloadOuput, final DownloaderDTO downloaders, final CmdProgressionListener cmdProgressionListener,
 					final EpisodeDTO episode) throws DownloadFailedException, NoSuchDownloaderException {
+
+			}
+
+			@Override
+			public void setProxy(final Map<ProtocolEnum, ProxyDTO> protocol2proxy) {
 
 			}
 		};
