@@ -127,20 +127,29 @@ class PluginsLoader<P extends PluginBase> {
 			// fichier d'informations du jar )
 			if (tmp.length() > CLASS_EXTENSION_SIZE && tmp.substring(tmp.length() - CLASS_EXTENSION_SIZE).compareTo(CLASS_EXTENSION) == 0) {
 				tmpClass = getClass(tmp.substring(0, tmp.length() - CLASS_EXTENSION_SIZE).replaceAll("/", "."), loader);
-				for (int i = 0; i < tmpClass.getInterfaces().length; i++) {
-
+				final List<Class<?>> interfaces = getInterfaces(tmpClass);
+				for (final Class<?> interfaceClass : interfaces) {
 					// Une classe ne doit pas appartenir à deux catégories
 					// de plugins différents.
 					// Si tel est le cas on ne la place que dans la
 					// catégorie de la première interface correct
 					// trouvée
-					if (tmpClass.getInterfaces()[i].getName().equals(this.pluginInterface.getName())) {
+					if (interfaceClass.getName().equals(this.pluginInterface.getName())) {
 						this.classPluginProviders.add(new Plugin(tmpClass, loader));
 					}
 				}
 
 			}
 		}
+	}
+
+	private List<Class<?>> getInterfaces(final Class<P> tmpClass) {
+		final List<Class<?>> interfaces = new LinkedList<>();
+		interfaces.addAll(Arrays.asList(tmpClass.getInterfaces()));
+		if (tmpClass.getGenericSuperclass() != null) {
+			interfaces.addAll(Arrays.asList((tmpClass.getSuperclass().getInterfaces())));
+		}
+		return interfaces;
 	}
 
 	private Class<P> getClass(final String tmp, final URLClassLoader loader) {

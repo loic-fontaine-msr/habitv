@@ -16,7 +16,6 @@ import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
-import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -110,23 +109,18 @@ public class D17PluginManager extends BasePluginProvider { // NO_UCD
 		pluginDownloader.download(videoUrl, downloadOuput, parameters, listener, getProtocol2proxy());
 	}
 
-	private static Collection<CategoryDTO> findSubCategories(final String catUrl) {
+	private Collection<CategoryDTO> findSubCategories(final String catUrl) {
 		final Set<CategoryDTO> categories = new HashSet<>();
 
-		try {
-			final Connection con = Jsoup.connect(D17Conf.HOME_URL + catUrl);
-			final Elements select = con.get().select(".block-videos");
-			for (final Element divElement : select) {
-				final String url = divElement.attr("id");
-				final String name = divElement.child(0).child(0).child(1).text();
-				final CategoryDTO categoryDTO = new CategoryDTO(D17Conf.NAME, name, url, D17Conf.EXTENSION);
-				categories.add(categoryDTO);
+		final org.jsoup.nodes.Document doc = Jsoup.parse(getUrlContent(D17Conf.HOME_URL + catUrl));
+		final Elements select = doc.select(".block-videos");
+		for (final Element divElement : select) {
+			final String url = divElement.attr("id");
+			final String name = divElement.child(0).child(0).child(1).text();
+			final CategoryDTO categoryDTO = new CategoryDTO(D17Conf.NAME, name, url, D17Conf.EXTENSION);
+			categories.add(categoryDTO);
 
-			}
-		} catch (final IOException e) {
-			throw new TechnicalException(e);
 		}
-
 		return categories;
 	}
 

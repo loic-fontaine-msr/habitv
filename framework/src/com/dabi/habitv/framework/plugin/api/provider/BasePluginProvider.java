@@ -40,7 +40,12 @@ public abstract class BasePluginProvider implements PluginProviderInterface {
 	}
 
 	protected Proxy getHttpProxy() {
-		return protocol2proxy.get(ProtocolEnum.HTTP).getProxy();
+		if (protocol2proxy != null) {
+			final ProxyDTO proxyDTO = protocol2proxy.get(ProtocolEnum.HTTP);
+			return (proxyDTO == null) ? null : proxyDTO.getProxy();
+		} else {
+			return null;
+		}
 	}
 
 	protected InputStream getInputStreamFromUrl(final String url) {
@@ -58,6 +63,5 @@ public abstract class BasePluginProvider implements PluginProviderInterface {
 	public Logger getLog() {
 		return logguer;
 	}
-
 
 }

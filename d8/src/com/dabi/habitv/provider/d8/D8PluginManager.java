@@ -18,7 +18,6 @@ import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
-import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -168,24 +167,18 @@ public class D8PluginManager extends BasePluginProvider { // NO_UCD
 
 	private Collection<CategoryDTO> findSubCategories(final String catUrl) {
 		final Set<CategoryDTO> categories = new HashSet<>();
-
-		try {
-			final Connection con = Jsoup.connect(D8Conf.HOME_URL + catUrl);
-			final Elements select = con.get().select(".tp-grid").get(0).children();
-			for (final Element divElement : select) {
-				for (final Element subDivElement : divElement.children()) {
-					final Element aElement = subDivElement.child(0);
-					final String url = aElement.attr("href");
-					final String name = aElement.child(1).text();
-					final CategoryDTO categoryDTO = new CategoryDTO(D8Conf.NAME, name, url, D8Conf.EXTENSION);
-					categories.add(categoryDTO);
-				}
-
+		final org.jsoup.nodes.Document doc = Jsoup.parse(getUrlContent(D8Conf.HOME_URL + catUrl));
+		final Elements select = doc.select(".tp-grid").get(0).children();
+		for (final Element divElement : select) {
+			for (final Element subDivElement : divElement.children()) {
+				final Element aElement = subDivElement.child(0);
+				final String url = aElement.attr("href");
+				final String name = aElement.child(1).text();
+				final CategoryDTO categoryDTO = new CategoryDTO(D8Conf.NAME, name, url, D8Conf.EXTENSION);
+				categories.add(categoryDTO);
 			}
-		} catch (final IOException e) {
-			throw new TechnicalException(e);
-		}
 
+		}
 		return categories;
 	}
 
