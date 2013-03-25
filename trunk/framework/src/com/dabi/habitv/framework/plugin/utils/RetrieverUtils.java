@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
 import java.net.Proxy;
 import java.net.URL;
 import java.net.URLConnection;
@@ -44,7 +45,7 @@ public final class RetrieverUtils {
 
 	public static InputStream getInputStreamFromUrl(final String url, final Integer timeOut, final Proxy proxy) {
 		try {
-			final URLConnection hc = (new URL(url)).openConnection(proxy);
+			final URLConnection hc = openConnection(url, proxy);
 			if (timeOut != null) {
 				hc.setConnectTimeout(timeOut);
 				hc.setReadTimeout(timeOut);
@@ -53,6 +54,14 @@ public final class RetrieverUtils {
 			return hc.getInputStream();
 		} catch (final IOException e) {
 			throw new TechnicalException(e);
+		}
+	}
+
+	private static URLConnection openConnection(final String url, final Proxy proxy) throws IOException, MalformedURLException {
+		if (proxy == null) {
+			return (new URL(url)).openConnection();
+		} else {
+			return (new URL(url)).openConnection(proxy);
 		}
 	}
 
@@ -118,29 +127,6 @@ public final class RetrieverUtils {
 		}
 
 		return sb.toString();
-
-	}
-
-	public static String getUrlContentRef(final String url, final String referer, final Proxy proxy) {
-
-		try {
-			final URLConnection hc = (new URL(url)).openConnection(proxy);
-			hc.setRequestProperty("User-Agent", USER_AGENT);
-			hc.setRequestProperty("referer", referer);
-			final InputStream in = hc.getInputStream();
-
-			final BufferedReader reader;
-			reader = new BufferedReader(new InputStreamReader(in));
-			final StringBuffer sb = new StringBuffer();
-
-			String readLine;
-			while ((readLine = reader.readLine()) != null) {
-				sb.append(readLine);
-			}
-			return sb.toString();
-		} catch (final IOException e) {
-			throw new TechnicalException(e);
-		}
 
 	}
 
