@@ -14,8 +14,10 @@ public interface NRJ12Conf {
 
 	String RTMPDUMP_PREFIX = "rtmp";
 
-	String DUMP_CMD="-r \"#VIDEO_URL#\" -c 1935 -m 10 -w a502adc490f7e313b42045ac24449ca3c6420e485c1f4fddc924678fa5f41ba9 -x 351945 -o \"#FILE_DEST#\"";
+	String DUMP_CMD = "-r \"#VIDEO_URL#\" -c 1935 -m 10 -w a502adc490f7e313b42045ac24449ca3c6420e485c1f4fddc924678fa5f41ba9 -x 351945 -o \"#FILE_DEST#\"";
 
 	String EXTENSION = "mp4";
+
+	String ENCODING = "UTF-8";
 
 }

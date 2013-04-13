@@ -33,10 +33,13 @@ public class CurlPluginManager implements PluginDownloaderInterface {
 		cmd = cmd.replaceFirst(FrameworkConf.DOWNLOAD_INPUT, downloadInput);
 		cmd = cmd.replaceFirst(FrameworkConf.DOWNLOAD_DESTINATION, downloadDestination);
 
-		final ProxyDTO httpProxy = proxies.get(ProxyDTO.ProtocolEnum.HTTP);
-		if (httpProxy != null) {
-			cmd += "--proxy " + httpProxy.getHost() + ":" + httpProxy.getPort();
+		if (proxies != null) {
+			final ProxyDTO httpProxy = proxies.get(ProxyDTO.ProtocolEnum.HTTP);
+			if (httpProxy != null) {
+				cmd += "--proxy " + httpProxy.getHost() + ":" + httpProxy.getPort();
+			}
 		}
+
 		try {
 			(new CurlCmdExecutor(parameters.get(FrameworkConf.CMD_PROCESSOR), cmd, listener)).execute();
 		} catch (final ExecutorFailedException e) {

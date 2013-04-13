@@ -2,25 +2,6 @@
 <tns:config xmlns:tns="http://www.dabi.com/habitv/config/entities"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.dabi.com/habitv/config/entities config.xsd ">
-	<!-- <proxy>
-		<protocol>HTTP</protocol>
-		<host>127.0.0.1</host>
-		<port>8080</port>
-		<pluginSupport>
-			<plugin>lequipe</plugin>
-			<plugin>m6w9</plugin>
-		</pluginSupport>
-	</proxy>
-	<proxy>
-		<protocol>SOCKS</protocol>
-		<host>127.0.0.1</host>
-		<port>1080</port>
-		<pluginSupport>
-			<plugin>lequipe</plugin>
-			<plugin>m6w9</plugin>
-		</pluginSupport>		
-	</proxy>	 -->
-	<maxAttempts>1</maxAttempts>
 	<demonTime>1800</demonTime>
 	<fileNameCutSize>50</fileNameCutSize>
 	<workingDir>../builder/pub</workingDir>
@@ -47,11 +28,7 @@
 	<downloader>
 		<name>ffmpeg</name>
 		<binPath>..\ffmpegExporter\exe\ffmpeg.exe</binPath>
-	</downloader>
-	<downloader>
-		<name>youtube</name>
-		<binPath>..\youtubeDownloader\exe\youtube-dl.exe</binPath>
-	</downloader>
+	</downloader>	
 	<exporter>
 		<condition>
 			<reference>#EXTENSION#</reference>

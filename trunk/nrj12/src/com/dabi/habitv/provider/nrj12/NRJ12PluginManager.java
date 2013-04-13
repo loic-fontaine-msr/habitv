@@ -35,7 +35,7 @@ public class NRJ12PluginManager extends BasePluginProvider {
 		final Set<EpisodeDTO> episodes = new HashSet<>();
 		final String main_url = NRJ12Conf.HOME_URL + "/replay-4203/collectionvideo/";
 		// System.out.println("category_url=" + category_url);
-		final org.jsoup.nodes.Document doc = Jsoup.parse(getUrlContent(main_url));
+		final org.jsoup.nodes.Document doc = Jsoup.parse(getUrlContent(main_url, NRJ12Conf.ENCODING));
 		final String name = category.getName();
 		// System.out.println("name='" + name + "'");
 		int i = 0;
@@ -81,7 +81,7 @@ public class NRJ12PluginManager extends BasePluginProvider {
 
 		final String url = NRJ12Conf.HOME_URL + "/replay-4203/collectionvideo/";
 		// System.out.println("url=" + url);
-		final Document doc = Jsoup.parse(getUrlContent(url));
+		final Document doc = Jsoup.parse(getUrlContent(url), NRJ12Conf.ENCODING);
 		// To get the main categories ("Divertissments", "Infos / Magazines",
 		// etc.):
 		// final Elements select = doc.select(".replay");

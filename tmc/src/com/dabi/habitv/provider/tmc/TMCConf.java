@@ -25,4 +25,6 @@ public interface TMCConf {
 	String CORRECT_VIDEO_CMD = "%s -isync -i %s -c copy %s";
 
 	String ASSEMBLER = "ffmpeg";
+
+	String ENCODING = "UTF-8";
 }

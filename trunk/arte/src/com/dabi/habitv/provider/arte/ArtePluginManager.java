@@ -133,10 +133,6 @@ public class ArtePluginManager extends BasePluginProvider { // NO_UCD
 		return findBestQuality(qualityToVideoUrl);
 	}
 
-	private String getUrlContent(final String url, final String encoding) {
-		return RetrieverUtils.getUrlContent(url, encoding, getHttpProxy());
-	}
-
 	private static String findBestQuality(final Map<String, String> qualityToVideoUrl) throws DownloadFailedException {
 		String videoUrl = qualityToVideoUrl.get("hd");
 		if (videoUrl == null) {

@@ -42,7 +42,7 @@ public class TMCPluginManager extends BasePluginProvider {
 
 		final String category_url = "/" + category.getId() + "/";
 		// System.out.println("category_url=" + category_url);
-		Document doc = Jsoup.parse(getUrlContent(TMCConf.VIDEO_URL + category_url));
+		Document doc = Jsoup.parse(getUrlContent(TMCConf.VIDEO_URL + category_url, TMCConf.ENCODING));
 		final Elements select = doc.select(".accrocheTMC");
 		for (final Element element : select) {
 			// System.out.println("element=" + element.toString());
@@ -79,7 +79,7 @@ public class TMCPluginManager extends BasePluginProvider {
 		for (final String page : pages) {
 			final String url = TMCConf.HOME_URL + page;
 			// System.out.println("url=" + url);
-			final Document doc = Jsoup.parse(getUrlContent(url));
+			final Document doc = Jsoup.parse(getUrlContent(url, TMCConf.ENCODING));
 			final Elements select = doc.select(".prg");
 			for (final Element element : select) {
 				final Element anchor = element.child(0);

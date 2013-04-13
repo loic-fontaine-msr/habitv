@@ -38,9 +38,11 @@ public class RtmpDumpPluginManager implements PluginDownloaderInterface {
 		}
 		cmd = cmd.replaceFirst(FrameworkConf.DOWNLOAD_INPUT, downloadInput);
 		cmd = cmd.replaceFirst(FrameworkConf.DOWNLOAD_DESTINATION, downloadDestination);
-		final ProxyDTO sockProxy = proxies.get(ProxyDTO.ProtocolEnum.SOCKS);
-		if (sockProxy != null) {
-			cmd += "−−socks −S " + sockProxy.getHost() + ":" + sockProxy.getPort() + "";
+		if (proxies != null) {
+			final ProxyDTO sockProxy = proxies.get(ProxyDTO.ProtocolEnum.SOCKS);
+			if (sockProxy != null) {
+				cmd += "−−socks −S " + sockProxy.getHost() + ":" + sockProxy.getPort() + "";
+			}
 		}
 		try {
 			(new RtmpDumpCmdExecutor(parameters.get(FrameworkConf.CMD_PROCESSOR), cmd, listener)).execute();

@@ -56,6 +56,10 @@ public abstract class BasePluginProvider implements PluginProviderInterface {
 		return RetrieverUtils.getUrlContent(url, getHttpProxy());
 	}
 
+	protected String getUrlContent(final String url, final String encoding) {
+		return RetrieverUtils.getUrlContent(url, encoding, getHttpProxy());
+	}
+
 	protected Object unmarshalInputStream(final InputStream input, final String unmarshallerPackage) {
 		return RetrieverUtils.unmarshalInputStream(input, unmarshallerPackage, getClassLoader());
 	}
