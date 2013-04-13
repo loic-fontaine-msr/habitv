@@ -62,14 +62,18 @@ public final class CoreManager {
 
 		// set the proxy to each plugin provider
 		for (final PluginProviderInterface provider : providerList) {
-			provider.setProxy(plugin2protocol2proxy.get(provider.getName()));
+			Map<ProtocolEnum, ProxyDTO> pluginProxy = plugin2protocol2proxy.get(provider.getName());
+			if (pluginProxy==null){
+				pluginProxy = defaultProxyMap;
+			}
+			provider.setProxy(pluginProxy);
 		}
 	}
 
 	private void buildProxyMap(final Config config) {
 		final List<Proxy> configProxyList = config.getProxy();
 
-		if (configProxyList != null && configProxyList.size() > 0) {
+		if (configProxyList != null && !configProxyList.isEmpty()) {
 			for (final Proxy proxy : configProxyList) {
 				if (proxy.getPluginSupport() != null) {
 					for (final String plugin : proxy.getPluginSupport().getPlugin()) {

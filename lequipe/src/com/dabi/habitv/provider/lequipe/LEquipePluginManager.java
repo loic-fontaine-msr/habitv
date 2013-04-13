@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.net.Proxy;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
@@ -30,6 +31,7 @@ import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.framework.plugin.exception.NoSuchDownloaderException;
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
+import com.dabi.habitv.framework.plugin.utils.RetrieverUtils;
 import com.dabi.habitv.framework.plugin.utils.SoccerUtils;
 
 public class LEquipePluginManager extends BasePluginProvider {
@@ -143,7 +145,14 @@ public class LEquipePluginManager extends BasePluginProvider {
 
 	private String findDownloadlinkBySigAndPlayerKey(final String sig, final String playerKey, final String originalUrl) throws IOException {
 		final String url = "http://api.kewego.com/config/getStreamInit/";
-		final URLConnection hc = (new URL(url)).openConnection(getHttpProxy());
+		final Proxy httpProxy = getHttpProxy();
+		final URLConnection hc;
+		if (RetrieverUtils.useProxy(httpProxy)) {
+			hc = (new URL(url)).openConnection(httpProxy);
+		} else {
+			hc = (new URL(url)).openConnection();
+		}
+
 		hc.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:14.0) Gecko/20100101 Firefox/14.0.1");
 		hc.setRequestProperty("X-KDORIGIN", URLEncoder.encode(originalUrl, "UTF-8"));
 		String data = URLEncoder.encode("player_type", "UTF-8") + "=" + URLEncoder.encode("kp", "UTF-8");

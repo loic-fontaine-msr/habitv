@@ -38,9 +38,11 @@ public class Aria2PluginManager implements PluginDownloaderInterface { // NO_UCD
 		} else {
 			cmd += cmdParam;
 		}
-		final ProxyDTO httpProxy = proxies.get(ProxyDTO.ProtocolEnum.HTTP);
-		if (httpProxy != null) {
-			cmd += " --all-proxy='http://" + httpProxy.getHost() + ":" + httpProxy.getPort() + "'";
+		if (proxies != null) {
+			final ProxyDTO httpProxy = proxies.get(ProxyDTO.ProtocolEnum.HTTP);
+			if (httpProxy != null) {
+				cmd += " --all-proxy='http://" + httpProxy.getHost() + ":" + httpProxy.getPort() + "'";
+			}
 		}
 		cmd = cmd.replaceFirst(FrameworkConf.DOWNLOAD_INPUT, downloadInput);
 

@@ -58,11 +58,20 @@ public final class RetrieverUtils {
 	}
 
 	private static URLConnection openConnection(final String url, final Proxy proxy) throws IOException, MalformedURLException {
-		if (proxy == null) {
-			return (new URL(url)).openConnection();
-		} else {
+		if (useProxy(proxy)) {
 			return (new URL(url)).openConnection(proxy);
+		} else {
+			return (new URL(url)).openConnection();
 		}
+	}
+
+	public static boolean useProxy(final Proxy proxy) {
+		return proxy != null && !hasGlobalProxy();
+	}
+
+	private static boolean hasGlobalProxy() {
+		final String globaProxy = System.getProperty("http.proxyHost");
+		return globaProxy != null && !globaProxy.isEmpty();
 	}
 
 	/**
