@@ -54,7 +54,7 @@ public class BeinSportPluginManager extends BasePluginProvider { // NO_UCD
 	public Set<EpisodeDTO> findEpisode(final CategoryDTO category) {
 		switch (category.getId()) {
 		case BeinSportConf.VIDEOS_CATEGORY:
-			return findEpisodeByCategory(category, getInputStreamFromUrl((BeinSportConf.CATALOG_URL2)));
+			return findEpisodeByCategory(category, getInputStreamFromUrl((BeinSportConf.CATALOG_URL)));
 		case BeinSportConf.REPLAY_CATEGORY:
 			final Set<EpisodeDTO> episodeDTOs = new HashSet<>();
 			for (final CategoryDTO subCategory : findReplaycategories()) {

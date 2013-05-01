@@ -48,7 +48,12 @@ public class PluzzDLM3U8 {
 		final String fragmentBaseUrl = buildFragmentBaseUrl(manifestUrl);
 		String manifest = RetrieverUtils.getUrlContent(manifestUrl, proxy);
 		if (!manifest.contains("EXT-X-TARGETDURATION")) {
-			manifestUrl = fragmentBaseUrl + findBestQuality(manifest);
+			final String urlBestquality = findBestQuality(manifest);
+			if (!urlBestquality.startsWith("http://")) {
+				manifestUrl = fragmentBaseUrl + urlBestquality;
+			} else {
+				manifestUrl = urlBestquality;
+			}
 			manifest = RetrieverUtils.getUrlContent(manifestUrl, proxy);
 		}
 		final List<String> fragments = parseManifest(manifest);
@@ -63,9 +68,12 @@ public class PluzzDLM3U8 {
 		new File(tmpVideoFile).delete();
 		try {
 			fOutputStream = new FileOutputStream(tmpVideoFile);
-			for (final String fragment : fragments) {
+			for (String fragment : fragments) {
 				try {
-					downloadFragment(fragmentBaseUrl + fragment);
+					if (!fragment.startsWith("http://")) {
+						fragment = fragmentBaseUrl + fragment;
+					}
+					downloadFragment(fragment);
 					// Affichage de la progression
 					final int newP = handleProgression(nbFragMax, i, old);
 					if (newP != old) {
