@@ -2,6 +2,7 @@ package com.dabi.habitv.provider.arte;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -67,6 +68,8 @@ public class ArtePluginManager extends BasePluginProvider { // NO_UCD
 
 	private static final Pattern LINK_TITLE_PATTERN = Pattern.compile("<a href=\"([^\\,]*),view,rss.xml\" class=\"rss\">([^\\<]*)</a>");
 
+	private static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("yyyyMMdd");
+
 	private Set<EpisodeDTO> findEpisodeByCategory(final CategoryDTO category, final InputStream inputStream) {
 		final Set<EpisodeDTO> episodeList;
 		try {
@@ -82,11 +85,28 @@ public class ArtePluginManager extends BasePluginProvider { // NO_UCD
 	private Set<EpisodeDTO> convertFeedToEpisodeList(final SyndFeed feed, final CategoryDTO category) {
 		final Set<EpisodeDTO> episodeList = new HashSet<EpisodeDTO>();
 		final List<?> entries = feed.getEntries();
+		final boolean uniqueTitle = isTitleUnique(entries);
 		for (final Object object : entries) {
 			final SyndEntry entry = (SyndEntry) object;
-			episodeList.add(new EpisodeDTO(category, entry.getTitle() + " " + entry.getPublishedDate(), entry.getLink()));
+			episodeList.add(new EpisodeDTO(category, buildTitle(entry, uniqueTitle), entry.getLink()));
 		}
 		return episodeList;
+	}
+
+	private String buildTitle(final SyndEntry entry, final boolean uniqueTitle) {
+		return entry.getTitle() + ((uniqueTitle) ? "" : (" " + SIMPLE_DATE_FORMAT.format(entry.getPublishedDate())));
+	}
+
+	private boolean isTitleUnique(final List<?> entries) {
+		final Set<String> titles = new HashSet<>(entries.size());
+		for (final Object object : entries) {
+			final SyndEntry entry = (SyndEntry) object;
+			if (titles.contains(entry.getTitle())) {
+				return false;
+			}
+			titles.add(entry.getTitle());
+		}
+		return true;
 	}
 
 	private Set<CategoryDTO> findCategories(final String urlContent) {

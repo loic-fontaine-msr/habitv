@@ -41,7 +41,7 @@ public class RtmpDumpPluginManager implements PluginDownloaderInterface {
 		if (proxies != null) {
 			final ProxyDTO sockProxy = proxies.get(ProxyDTO.ProtocolEnum.SOCKS);
 			if (sockProxy != null) {
-				cmd += "−−socks −S " + sockProxy.getHost() + ":" + sockProxy.getPort() + "";
+				cmd += " --socks " + sockProxy.getHost() + ":" + sockProxy.getPort();
 			}
 		}
 		try {

@@ -49,35 +49,40 @@ public class D8PluginManager extends BasePluginProvider { // NO_UCD
 
 		final org.jsoup.nodes.Document doc = Jsoup.parse(getUrlContent(D8Conf.HOME_URL + category.getId()));
 
-		Elements select = doc.select(".list-programmes-emissions");
+		final Elements select = doc.select(".list-programmes-emissions");
 
 		if (!select.isEmpty()) {
 
 			final Elements emission = select.get(0).children();
 			for (final Element liElement : emission) {
-				final Element aLink = liElement.child(0);
-				final String title = aLink.child(1).child(0).text() + " - " + aLink.child(1).child(1).text();
-				final String attr = getAttrName(aLink);
-				final String url = getVidId(aLink, attr);
-				episodes.add(new EpisodeDTO(category, title, url));
-			}
-		} else {
-			final String domain = findMatch(doc.html(), DOMAIN_PATTERN);
-			select = doc.select("a");
-			for (final Element aLink : select) {
-				final String attr = getAttrName(aLink);
-				final String title = getTitle(aLink).trim();
-				String url = aLink.attr(attr);
-				if (url.contains("vid=")) {
-					url = getVidId(aLink, attr);
-					episodes.add(new EpisodeDTO(category, title, url));
-				} else if (url.contains("epi_id=")) {
-					final String epContent = getUrlContent(domain + url);
-					final String ret = findMatch(epContent, VID_PATTERN);
-					episodes.add(new EpisodeDTO(category, title, ret));
+				if (!liElement.childNodes().isEmpty()) {
+					final Element aLink = liElement.child(0);
+					if (aLink.childNodes().size() > 1 && aLink.child(1).childNodes().size() > 0) {
+						final String title = aLink.child(1).child(0).text() + " - " + aLink.child(1).child(1).text();
+						final String attr = getAttrName(aLink);
+						final String url = getVidId(aLink, attr);
+						episodes.add(new EpisodeDTO(category, title, url));
+					}
 				}
 			}
 		}
+		//		else {
+		//			final String domain = findMatch(doc.html(), DOMAIN_PATTERN);
+		//			select = doc.select("a");
+		//			for (final Element aLink : select) {
+		//				final String attr = getAttrName(aLink);
+		//				final String title = getTitle(aLink).trim();
+		//				String url = aLink.attr(attr);
+		//				if (url.contains("vid=")) {
+		//					url = getVidId(aLink, attr);
+		//					episodes.add(new EpisodeDTO(category, title, url));
+		//				} else if (url.contains("epi_id=")) {
+		//					final String epContent = getUrlContent(domain + url);
+		//					final String ret = findMatch(epContent, VID_PATTERN);
+		//					episodes.add(new EpisodeDTO(category, title, ret));
+		//				}
+		//			}
+		//		}
 		return episodes;
 	}
 

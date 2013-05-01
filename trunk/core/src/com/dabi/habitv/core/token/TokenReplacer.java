@@ -36,6 +36,15 @@ public final class TokenReplacer {
 		REF2REPLACER.put("#EPISODE_NAME#", episodeReplacer);
 		REF2REPLACER.put("#EPISODE#", episodeReplacer);
 
+		final Replacer episodeInitReplacer = new Replacer() {
+
+			@Override
+			public String replace(final EpisodeDTO episode, final List<String> params) {
+				return cut(episode.getName(), params);
+			}
+		};
+		REF2REPLACER.put("#EPISODE_INITIAL#", episodeInitReplacer);
+
 		// CHANNEL
 		final Replacer channelReplacer = new Replacer() {
 
