@@ -51,6 +51,7 @@ public class GrabConfigDAO {
 		for (final Entry<String, Set<CategoryDTO>> entry : channel2Categories.entrySet()) {
 			final Channel channel = new Channel();
 			channel.setName(entry.getKey());
+			channel.setStatus(StatusEnum.NEW.ordinal());
 			for (final CategoryDTO categoryDTO : entry.getValue()) {
 				try {
 					categoryDTO.check();
@@ -69,6 +70,7 @@ public class GrabConfigDAO {
 		category.setName(categoryDTO.getName());
 		category.setExtension(categoryDTO.getExtension());
 		category.setToDownload(false);
+		category.setStatus(StatusEnum.NEW.ordinal());
 		for (final String exclude : categoryDTO.getExclude()) {
 			category.getExclude().add(exclude);
 		}
@@ -104,11 +106,11 @@ public class GrabConfigDAO {
 		}
 	}
 
-	private static Set<CategoryDTO> buildCategoryListDTO(LoadModeEnum loadMode, final String channelName, final List<Category> categories) {
+	private static Set<CategoryDTO> buildCategoryListDTO(final LoadModeEnum loadMode, final String channelName, final List<Category> categories) {
 		final Set<CategoryDTO> categoryDTOs = new HashSet<>(categories.size());
 		CategoryDTO categoryDTO;
 		for (final Category category : categories) {
-			Set<CategoryDTO> subCategoriesDTO = buildCategoryListDTO(loadMode, channelName, category.getCategory());
+			final Set<CategoryDTO> subCategoriesDTO = buildCategoryListDTO(loadMode, channelName, category.getCategory());
 			if (category.getToDownload() == null || category.getToDownload() || !subCategoriesDTO.isEmpty() || loadMode.equals(LoadModeEnum.ALL)) {
 				categoryDTO = new CategoryDTO(channelName, category.getName(), category.getId(), category.getInclude(), category.getExclude(),
 						category.getExtension());
@@ -136,10 +138,10 @@ public class GrabConfigDAO {
 		return grabConfig;
 	}
 
-	private Map<String, Set<CategoryDTO>> buildCategoryDTO(final GrabConfig grabConfig, LoadModeEnum loadMode) {
+	private Map<String, Set<CategoryDTO>> buildCategoryDTO(final GrabConfig grabConfig, final LoadModeEnum loadMode) {
 		final Map<String, Set<CategoryDTO>> channel2Category = new HashMap<>();
 		for (final Channel channel : grabConfig.getChannel()) {
-			Set<CategoryDTO> buildCategoryListDTO = buildCategoryListDTO(loadMode, channel.getName(), channel.getCategory());
+			final Set<CategoryDTO> buildCategoryListDTO = buildCategoryListDTO(loadMode, channel.getName(), channel.getCategory());
 			if (!buildCategoryListDTO.isEmpty()) {
 				channel2Category.put(channel.getName(), buildCategoryListDTO);
 			}
@@ -151,7 +153,7 @@ public class GrabConfigDAO {
 		ALL, TO_DOWNLOAD_ONLY;
 	}
 
-	Map<String, Set<CategoryDTO>> load(LoadModeEnum loadMode) {
+	Map<String, Set<CategoryDTO>> load(final LoadModeEnum loadMode) {
 		return buildCategoryDTO(unmarshal(), loadMode);
 	}
 
@@ -163,36 +165,45 @@ public class GrabConfigDAO {
 		return (new File(grabConfigFile)).exists();
 	}
 
-	public void updateGrabConfig(Map<String, Set<CategoryDTO>> channel2Categories) {
-		HashMap<String, Set<CategoryDTO>> channel2CategoriesTemp = new HashMap<>(channel2Categories);
-		GrabConfig grabConfig = unmarshal();
-		for (Channel channel : grabConfig.getChannel()) {
-			Set<CategoryDTO> categoryChannel = channel2CategoriesTemp.get(channel.getName());
+	public void updateGrabConfig(final Map<String, Set<CategoryDTO>> channel2Categories) {
+		final HashMap<String, Set<CategoryDTO>> channel2CategoriesTemp = new HashMap<>(channel2Categories);
+		final GrabConfig grabConfig = unmarshal();
+		StatusEnum channelStatus;
+		for (final Channel channel : grabConfig.getChannel()) {
+			final Set<CategoryDTO> categoryChannel = channel2CategoriesTemp.get(channel.getName());
 			if (categoryChannel != null) {
 				updateCategory(channel.getCategory(), categoryChannel);
 				channel2CategoriesTemp.remove(channel.getName());
+				channelStatus = StatusEnum.EXIST;
+			} else {
+				channelStatus = StatusEnum.DELETED;
 			}
+			channel.setStatus(channelStatus.ordinal());
 		}
 		addChannels(channel2CategoriesTemp, grabConfig);
 		marshal(grabConfig);
 	}
 
-	private void updateCategory(List<Category> categoryList, Collection<CategoryDTO> categoryDTOList) {
-		Map<String, CategoryDTO> catNameToCat = new HashMap<>();
-		for (CategoryDTO categoryDTO : categoryDTOList) {
+	private void updateCategory(final List<Category> categoryList, final Collection<CategoryDTO> categoryDTOList) {
+		final Map<String, CategoryDTO> catNameToCat = new HashMap<>();
+		for (final CategoryDTO categoryDTO : categoryDTOList) {
 			catNameToCat.put(categoryDTO.getName(), categoryDTO);
 		}
-		for (Category category : categoryList) {
-			CategoryDTO associatedCatDTO = catNameToCat.get(category.getName());
+		StatusEnum statusEnum;
+		for (final Category category : categoryList) {
+			final CategoryDTO associatedCatDTO = catNameToCat.get(category.getName());
 			if (associatedCatDTO != null) {
 				catNameToCat.remove(category.getName());
 				if (!category.getCategory().isEmpty()) {
 					updateCategory(category.getCategory(), associatedCatDTO.getSubCategories());
 				}
+				statusEnum = StatusEnum.EXIST;
+			} else {
+				statusEnum = StatusEnum.DELETED;
 			}
-
+			category.setStatus(statusEnum.ordinal());
 		}
-		for (CategoryDTO categoryDTO : catNameToCat.values()) {
+		for (final CategoryDTO categoryDTO : catNameToCat.values()) {
 			categoryList.add(buildCategory(categoryDTO));
 		}
 	}

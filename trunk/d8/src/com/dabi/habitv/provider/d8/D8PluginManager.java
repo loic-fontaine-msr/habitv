@@ -6,8 +6,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -66,23 +64,23 @@ public class D8PluginManager extends BasePluginProvider { // NO_UCD
 				}
 			}
 		}
-		//		else {
-		//			final String domain = findMatch(doc.html(), DOMAIN_PATTERN);
-		//			select = doc.select("a");
-		//			for (final Element aLink : select) {
-		//				final String attr = getAttrName(aLink);
-		//				final String title = getTitle(aLink).trim();
-		//				String url = aLink.attr(attr);
-		//				if (url.contains("vid=")) {
-		//					url = getVidId(aLink, attr);
-		//					episodes.add(new EpisodeDTO(category, title, url));
-		//				} else if (url.contains("epi_id=")) {
-		//					final String epContent = getUrlContent(domain + url);
-		//					final String ret = findMatch(epContent, VID_PATTERN);
-		//					episodes.add(new EpisodeDTO(category, title, ret));
-		//				}
-		//			}
-		//		}
+		// else {
+		// final String domain = findMatch(doc.html(), DOMAIN_PATTERN);
+		// select = doc.select("a");
+		// for (final Element aLink : select) {
+		// final String attr = getAttrName(aLink);
+		// final String title = getTitle(aLink).trim();
+		// String url = aLink.attr(attr);
+		// if (url.contains("vid=")) {
+		// url = getVidId(aLink, attr);
+		// episodes.add(new EpisodeDTO(category, title, url));
+		// } else if (url.contains("epi_id=")) {
+		// final String epContent = getUrlContent(domain + url);
+		// final String ret = findMatch(epContent, VID_PATTERN);
+		// episodes.add(new EpisodeDTO(category, title, ret));
+		// }
+		// }
+		// }
 		return episodes;
 	}
 
@@ -130,34 +128,8 @@ public class D8PluginManager extends BasePluginProvider { // NO_UCD
 		pluginDownloader.download(videoUrl, downloadOuput, parameters, listener, getProtocol2proxy());
 	}
 
-	private static final Pattern VID_PATTERN = Pattern.compile(".*<canal:player.*videoId=\"(\\d+)\".*");
-	private static final Pattern DOMAIN_PATTERN = Pattern.compile("var sDocumentHttp = \'(.*)\';");
-
-	private static String findMatch(final String epContent, final Pattern pattern) {
-		final Matcher matcher = pattern.matcher(epContent);
-		final boolean hasMatched = matcher.find();
-		String ret = null;
-		if (hasMatched) {
-			ret = matcher.group(matcher.groupCount());
-		}
-		return ret;
-	}
-
 	private static String getVidId(final Element aLink, final String attr) {
 		return aLink.attr(attr).split("vid=")[1].split("&")[0];
-	}
-
-	private static String getTitle(final Element aLink) {
-		final Element lastE = aLink;
-		if (!lastE.children().isEmpty()) {
-			final StringBuilder title = new StringBuilder();
-			for (final Element child : lastE.children()) {
-				title.append(" " + getTitle(child));
-			}
-			return title.toString();
-		} else {
-			return aLink.text();
-		}
 	}
 
 	private static String getAttrName(final Element aLink) {
@@ -176,11 +148,13 @@ public class D8PluginManager extends BasePluginProvider { // NO_UCD
 		final Elements select = doc.select(".tp-grid").get(0).children();
 		for (final Element divElement : select) {
 			for (final Element subDivElement : divElement.children()) {
-				final Element aElement = subDivElement.child(0);
-				final String url = aElement.attr("href");
-				final String name = aElement.child(1).text();
-				final CategoryDTO categoryDTO = new CategoryDTO(D8Conf.NAME, name, url, D8Conf.EXTENSION);
-				categories.add(categoryDTO);
+				if (subDivElement.children().size() > 0) {
+					final Element aElement = subDivElement.child(0);
+					final String url = aElement.attr("href");
+					final String name = aElement.child(1).text();
+					final CategoryDTO categoryDTO = new CategoryDTO(D8Conf.NAME, name, url, D8Conf.EXTENSION);
+					categories.add(categoryDTO);
+				}
 			}
 
 		}

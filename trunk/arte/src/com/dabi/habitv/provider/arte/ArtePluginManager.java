@@ -176,4 +176,7 @@ public class ArtePluginManager extends BasePluginProvider { // NO_UCD
 		}
 		throw new DownloadFailedException("Episode identifier not found");
 	}
+
+	par recherche
+	http://videos.arte.tv/fr/do_search/videos/recherche?q=le+saint
 }

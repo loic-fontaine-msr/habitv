@@ -17,26 +17,32 @@
 			<element name="id" type="string"></element>
 			<element name="name" type="string"></element>
 			<element name="toDownload" type="boolean" maxOccurs="1"
-				minOccurs="0"></element>
+				minOccurs="0">
+			</element>
 			<element name="include" type="string" maxOccurs="unbounded"
 				minOccurs="0">
 			</element>
 			<element name="exclude" type="string" maxOccurs="unbounded"
 				minOccurs="0">
 			</element>
-			<element name="category" type="tns:category" maxOccurs="unbounded"
-				minOccurs="0">
+			<element name="category" type="tns:category"
+				maxOccurs="unbounded" minOccurs="0">
 			</element>
 			<element name="extension" type="string" maxOccurs="1"
-				minOccurs="1"></element>
+				minOccurs="1">
+			</element>
+			<element name="status" type="int" maxOccurs="1" minOccurs="0"></element>
 		</sequence>
 	</complexType>
 
 	<complexType name="channel">
 		<sequence>
 			<element name="name" type="string"></element>
-			<element name="category" type="tns:category" maxOccurs="unbounded"
-				minOccurs="1">
+			<element name="category" type="tns:category"
+				maxOccurs="unbounded" minOccurs="1">
+			</element>
+			<element name="status" type="int" maxOccurs="1"
+				minOccurs="0">
 			</element>
 		</sequence>
 	</complexType>

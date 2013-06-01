@@ -46,6 +46,7 @@ public final class ConsoleLauncher { // NO_UCD (unused code)
 			});
 
 			if (grabConfigDAO.exist()) {
+				grabConfigDAO.updateGrabConfig(coreManager.findCategory());
 				if (config.getDemonTime() == null) {
 					coreManager.retreiveEpisode(grabConfigDAO.load());
 				} else {

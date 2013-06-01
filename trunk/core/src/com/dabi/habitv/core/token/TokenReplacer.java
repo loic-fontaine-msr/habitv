@@ -43,7 +43,7 @@ public final class TokenReplacer {
 				return cut(episode.getName(), params);
 			}
 		};
-		REF2REPLACER.put("#EPISODE_INITIAL#", episodeInitReplacer);
+		REF2REPLACER.put("#EPISODE_UNTOUCHED#", episodeInitReplacer);
 
 		// CHANNEL
 		final Replacer channelReplacer = new Replacer() {
