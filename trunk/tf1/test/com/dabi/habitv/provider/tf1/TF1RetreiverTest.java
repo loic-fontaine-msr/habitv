@@ -1,7 +1,5 @@
 package com.dabi.habitv.provider.tf1;
 
-import static org.junit.Assert.assertEquals;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -34,9 +32,9 @@ public class TF1RetreiverTest {
 
 	@Test
 	public final void testBuildToken() throws IOException {
-		assertEquals("d2fcec2208324ba9bdc73e0143c24e66/511960cf", TF1PluginManager.buildToken("8249273", "1360617679", "web"));
+		//assertEquals("a7dcbaddec5fa76fc3b9c52c558ff4c1/51ec05b6", TF1PluginManager.buildToken("10676343", "1374423122", "web"));
 		final URL url = new URL(
-				"http://www.wat.tv/get/webhd/8639443?domain=videos.tf1.fr&version=WIN%2010,2,152,32&country=FR&getURL=1&token=e6f3c1df3a252d8f21da772cec1b3192/50167cb4");
+				"http://www.wat.tv/get/web/10676343?token=a7dcbaddec5fa76fc3b9c52c558ff4c1/51ec05b6&getURL=1");
 		final URLConnection hc = url.openConnection();
 		hc.setRequestProperty("User-Agent", "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0)");
 

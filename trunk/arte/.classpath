@@ -11,5 +11,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="/builder/lib/jdom-1.0.jar"/>
+	<classpathentry kind="lib" path="/builder/lib/jsoup-1.6.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

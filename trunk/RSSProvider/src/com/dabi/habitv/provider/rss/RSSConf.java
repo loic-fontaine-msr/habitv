@@ -10,6 +10,6 @@ public final class RSSConf {
 
 	public static final String DOWNLOADER = "aria2";
 
-	public static final String YOUTUBE_DOWNLOADER = "youtube";
+	public static final String DOWNLOADER_PARAM = "downloader";
 
 }

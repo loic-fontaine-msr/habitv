@@ -3,7 +3,9 @@ package com.dabi.habitv.framework.plugin.api.dto;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.dabi.habitv.framework.plugin.exception.InvalidCategoryException;
 import com.dabi.habitv.framework.plugin.utils.CheckUtils;
@@ -32,6 +34,8 @@ public class CategoryDTO implements Comparable<CategoryDTO>, Serializable {
 	private List<String> exclude;
 
 	private final String extension;
+
+	private final Map<String, String> parameters = new HashMap<>();
 
 	/**
 	 * Full Constructor
@@ -247,5 +251,13 @@ public class CategoryDTO implements Comparable<CategoryDTO>, Serializable {
 
 	private void setFatherCategory(final CategoryDTO fatherCategory) {
 		this.fatherCategory = fatherCategory;
+	}
+
+	public void addParameter(final String key, final String value) {
+		this.parameters.put(key, value);
+	}
+
+	public String getParameter(final String downloaderParam) {
+		return this.parameters.get(downloaderParam);
 	}
 }

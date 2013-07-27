@@ -63,7 +63,7 @@ public class TF1PluginManager extends BasePluginProvider {
 				}
 			} catch (final IndexOutOfBoundsException e) {
 				getLog().error(element, e);
-				throw new TechnicalException(e);
+				//throw new TechnicalException(e);
 			}
 		}
 		return episodes;
@@ -230,7 +230,7 @@ public class TF1PluginManager extends BasePluginProvider {
 			dateSC.append("0");
 		}
 		// $hexdate .= "0" x (length($hexdate) - 8);
-		final String key = "9b673b13fa4682ed14c3cfa5af5310274b514c4133e9b3a81e6e3aba00912564";
+		final String key = "9b673b13fa4682ed14c3cfa5af5310274b514c4133e9b3a81e6e3aba009l2564";
 		byte[] hash;
 		try {
 			hash = MessageDigest.getInstance("MD5").digest((key + "/" + contextRoot + "/" + id + dateSC.toString()).getBytes());

@@ -48,17 +48,17 @@ public class RSSPluginManager extends BasePluginProvider {
 		include.add("Add include pattern");
 		final List<String> exclude = new ArrayList<String>(1);
 		exclude.add("Add exclude pattern");
-		categoryList.add(new CategoryDTO(RSSConf.NAME, "Give RSS Label Here", "Give RSS Url Here", include, exclude, "Give files extension Here"));
+		final CategoryDTO categoryDTO = new CategoryDTO(RSSConf.NAME, "Set RSS Label Here", "Set RSS Url Here", include, exclude, "Set files extension Here");
+		categoryDTO.addParameter(RSSConf.DOWNLOADER_PARAM, "Set the downloader here  :aria2c, youtube, rtmpdump (default aria2c)");
+		categoryList.add(categoryDTO);
 		return categoryList;
 	}
 
 	@Override
 	public void download(final String downloadOuput, final DownloaderDTO downloaders, final CmdProgressionListener listener, final EpisodeDTO episode)
 			throws DownloadFailedException, NoSuchDownloaderException {
-		final String downloaderName;
-		if (episode.getUrl().contains("youtube")) {
-			downloaderName = RSSConf.YOUTUBE_DOWNLOADER;
-		} else {
+		String downloaderName = episode.getCategory().getParameter(RSSConf.DOWNLOADER_PARAM);
+		if (downloaderName == null) {
 			downloaderName = RSSConf.DOWNLOADER;
 		}
 		final PluginDownloaderInterface pluginDownloader = downloaders.getDownloader(downloaderName);

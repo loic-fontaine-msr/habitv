@@ -29,6 +29,7 @@ import com.dabi.habitv.framework.plugin.exception.TechnicalException;
 import com.dabi.habitv.grabconfig.entities.Category;
 import com.dabi.habitv.grabconfig.entities.Channel;
 import com.dabi.habitv.grabconfig.entities.GrabConfig;
+import com.dabi.habitv.grabconfig.entities.Parameter;
 import com.dabi.habitv.utils.FileUtils;
 
 public class GrabConfigDAO {
@@ -115,6 +116,11 @@ public class GrabConfigDAO {
 				categoryDTO = new CategoryDTO(channelName, category.getName(), category.getId(), category.getInclude(), category.getExclude(),
 						category.getExtension());
 				categoryDTO.addSubCategories(subCategoriesDTO);
+				if (category.getParameter() != null && !category.getParameter().isEmpty()) {
+					for (final Parameter parameter : category.getParameter()) {
+						categoryDTO.addParameter(parameter.getKey(), parameter.getValue());
+					}
+				}
 				categoryDTOs.add(categoryDTO);
 			}
 		}
