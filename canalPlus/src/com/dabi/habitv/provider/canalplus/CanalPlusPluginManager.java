@@ -133,6 +133,9 @@ public class CanalPlusPluginManager extends BasePluginProvider { // NO_UCD
 			if (originalCategory.getName().contains("FOOTBALL")) {
 				name = SoccerUtils.maskScore(name);
 			}
+			if (video.getINFOS().getTITRAGE().getSOUSTITRE()==null || video.getINFOS().getTITRAGE().getSOUSTITRE().isEmpty()){
+				name = video.getINFOS().getPUBLICATION().getDATE();
+			}
 
 			// il est possible que plusieurs épisode s'appelle du soustitre
 			// mais si on concatène avec titre c'est trop long

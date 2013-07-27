@@ -31,7 +31,10 @@
 			<element name="extension" type="string" maxOccurs="1"
 				minOccurs="1">
 			</element>
-			<element name="status" type="int" maxOccurs="1" minOccurs="0"></element>
+			<element name="status" type="int" maxOccurs="1"
+				minOccurs="0">
+			</element>
+			<element name="parameter" type="tns:parameter" maxOccurs="unbounded" minOccurs="0"></element>
 		</sequence>
 	</complexType>
 
@@ -44,6 +47,13 @@
 			<element name="status" type="int" maxOccurs="1"
 				minOccurs="0">
 			</element>
+		</sequence>
+	</complexType>
+
+	<complexType name="parameter">
+		<sequence>
+			<element name="key" type="string"></element>
+			<element name="value" type="string"></element>
 		</sequence>
 	</complexType>
 </schema>

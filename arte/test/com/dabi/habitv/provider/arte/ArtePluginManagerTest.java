@@ -65,6 +65,15 @@ public class ArtePluginManagerTest {
 	}
 
 	@Test
+	public final void testSearchEpisode() {
+		final Set<EpisodeDTO> episodeList = manager.findEpisode(new CategoryDTO("arte", "le saint", "search",  "mp4"));
+		for (final EpisodeDTO episode : episodeList) {
+			assertTrue(!episode.getName().isEmpty());
+			assertTrue(!episode.getUrl().isEmpty());
+		}
+	}
+
+	@Test
 	public final void testFindCategory() {
 		final Set<CategoryDTO> categories = manager.findCategory();
 		assertTrue(!categories.isEmpty());
@@ -79,7 +88,7 @@ public class ArtePluginManagerTest {
 			public void listen(final String progression) {
 				LOG.info(progression);
 			}
-		}, new EpisodeDTO(null, "test", "http://videos.arte.tv/fr/videos/360-geo--6950574.html"));
+		}, new EpisodeDTO(null, "test", "/fr/videos/le-saint--7532668.html"));
 	}
 
 	private DownloaderDTO buildDownloaders() {

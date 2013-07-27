@@ -12,6 +12,11 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
 import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.api.downloader.PluginDownloaderInterface;
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
@@ -31,6 +36,8 @@ import com.sun.syndication.io.XmlReader;
 
 public class ArtePluginManager extends BasePluginProvider { // NO_UCD
 
+	private static final Pattern VIDEO_ID_PATTERN = Pattern.compile(".*addToPlaylist \\{ajaxUrl\\:\\\'(.*)\\\'.*");
+
 	@Override
 	public String getName() {
 		return ArteConf.NAME;
@@ -38,7 +45,51 @@ public class ArtePluginManager extends BasePluginProvider { // NO_UCD
 
 	@Override
 	public Set<EpisodeDTO> findEpisode(final CategoryDTO category) {
-		return findEpisodeByCategory(category, getInputStreamFromUrl(ArteConf.RSS_CATEGORY_URL.replace(ArteConf.ID_EMISSION_TOKEN, category.getId())));
+		if ("search".equals(category.getId())) {
+			return searchEpisodeByKeyworkds(category);
+		} else {
+			return findEpisodeByCategory(category, getInputStreamFromUrl(ArteConf.RSS_CATEGORY_URL.replace(ArteConf.ID_EMISSION_TOKEN, category.getId())));
+		}
+	}
+
+	private Set<EpisodeDTO> searchEpisodeByKeyworkds(final CategoryDTO category) {
+		final String url = "http://videos.arte.tv/fr/do_search/videos/recherche?q=" + category.getName().replaceAll(" ", "+");
+		final Set<EpisodeDTO> episodes = new HashSet<>();
+
+		final Document doc = Jsoup.parse(getUrlContent(url));
+
+		final Elements select = doc.select(".video");
+		for (final Element element : select) {
+			try {
+				final Element h2 = element.child(1);
+				final Element aHref = h2.child(0);
+				final String attr = aHref.attr("href");
+				final String attrR =attr;
+				//				final String videoUrl = "http://videos.arte.tv" + attr;
+				//				final String videoContent = getUrlContent(videoUrl);
+				//				final Matcher matcher = VIDEO_ID_PATTERN.matcher(videoContent);
+				//				final boolean hasMatched = matcher.find();
+				//				String attrR = null;
+				//				if (hasMatched) {
+				//					attrR = matcher.group(matcher.groupCount());
+				//				} else {
+				//					throw new TechnicalException("can't find mediaId");
+				//				}
+				episodes.add(new EpisodeDTO(category, aHref.text() + "-" + getNbr(attr), attrR));
+			} catch (final IndexOutOfBoundsException e) {
+				getLog().error(element, e);
+				throw new TechnicalException(e);
+			}
+		}
+		return episodes;
+	}
+
+	private int getNbr(final String attr) {
+		int i = 0;
+		if (attr.contains("--") && attr.contains(".")) {
+			i = Integer.parseInt(attr.substring(attr.indexOf("--") + 2, attr.indexOf(".")));
+		}
+		return i;
 	}
 
 	@Override
@@ -132,7 +183,13 @@ public class ArtePluginManager extends BasePluginProvider { // NO_UCD
 
 	private String buildDownloadLink(final String url) throws DownloadFailedException {
 		final String episodeId = findEpisodeIdentifier(url);
-		final String xmlInfo = getUrlContent(ArteConf.XML_INFO_URL.replace(ArteConf.ID_EPISODE_TOKEN, episodeId), ArteConf.ENCODING);
+		String xmlInfo;
+		try {
+			xmlInfo = getUrlContent(ArteConf.XML_INFO_URL.replace(ArteConf.ID_EPISODE_TOKEN, episodeId), ArteConf.ENCODING);
+		} catch (final Exception e) {
+			getLog().error("", e);
+			xmlInfo = getUrlContent(ArteConf.XML_INFO_URL2.replace(ArteConf.ID_EPISODE_TOKEN, episodeId), ArteConf.ENCODING);
+		}
 		Matcher matcher = REF_PATTERN.matcher(xmlInfo);
 		final String xmlVideoInfoUrl;
 		if (matcher.find()) {
@@ -172,11 +229,13 @@ public class ArtePluginManager extends BasePluginProvider { // NO_UCD
 	private static String findEpisodeIdentifier(final String url) throws DownloadFailedException {
 		final String[] subUrl = url.split(SEP);
 		if (subUrl.length > 1) {
-			return subUrl[subUrl.length - 1].replace(".html", "");
+			final String sub = subUrl[subUrl.length - 1];
+			//			if (sub.contains("--")) {
+			//				sub = sub.substring(sub.indexOf("--") + 2, sub.length());
+			//			}
+			return sub.replace(".html", "");
 		}
 		throw new DownloadFailedException("Episode identifier not found");
 	}
 
-	par recherche
-	http://videos.arte.tv/fr/do_search/videos/recherche?q=le+saint
 }
