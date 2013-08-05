@@ -1,5 +1,6 @@
 package com.dabi.habitv.tray.model;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
@@ -32,7 +33,7 @@ public class ProgressionModel {
 
 	public ActionProgress getAction(final EpisodeDTO episode) {
 		ActionProgress ret = null;
-		for (final ActionProgress actionProgress : episodeName2ActionProgress) {
+		for (final ActionProgress actionProgress : getEpisodeName2ActionProgress()) {
 			if (actionProgress.getEpisode().equals(episode)) {
 				ret = actionProgress;
 			}
@@ -41,12 +42,12 @@ public class ProgressionModel {
 	}
 
 	public Collection<ActionProgress> getEpisodeName2ActionProgress() {
-		return episodeName2ActionProgress;
+		return new ArrayList<>(episodeName2ActionProgress);
 	}
 
 	public boolean isAllActionDone() {
 		boolean ret = true;
-		for (final ActionProgress actionProgress : episodeName2ActionProgress) {
+		for (final ActionProgress actionProgress : getEpisodeName2ActionProgress()) {
 			if (!isActionDone(actionProgress)) {
 				ret = false;
 				break;
@@ -60,7 +61,7 @@ public class ProgressionModel {
 		return state != null
 				&& (state.equals(EpisodeStateEnum.READY)
 						|| state.equals(EpisodeStateEnum.EXPORT_FAILED) || state
-							.equals(EpisodeStateEnum.DOWNLOAD_FAILED));
+						.equals(EpisodeStateEnum.DOWNLOAD_FAILED));
 	}
 
 	public void clear() {
