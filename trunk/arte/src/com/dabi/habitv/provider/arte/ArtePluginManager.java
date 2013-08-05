@@ -36,8 +36,6 @@ import com.sun.syndication.io.XmlReader;
 
 public class ArtePluginManager extends BasePluginProvider { // NO_UCD
 
-	private static final Pattern VIDEO_ID_PATTERN = Pattern.compile(".*addToPlaylist \\{ajaxUrl\\:\\\'(.*)\\\'.*");
-
 	@Override
 	public String getName() {
 		return ArteConf.NAME;
