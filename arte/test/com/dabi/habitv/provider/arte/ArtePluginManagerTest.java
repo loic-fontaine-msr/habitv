@@ -50,9 +50,15 @@ public class ArtePluginManagerTest {
 		manager.setClassLoader(null);
 		assertEquals(manager.getName(), ArteConf.NAME);
 	}
+	
+	@Test
+	public final void testFindCategory() {
+		final Set<CategoryDTO> categories = manager.findCategory();
+		assertTrue(!categories.isEmpty());
+	}
 
 	private void checkFindEpisode() {
-		final Set<EpisodeDTO> episodeList = manager.findEpisode(new CategoryDTO("arte", "Europe", "europe/index--3188648", "mp4"));
+		final Set<EpisodeDTO> episodeList = manager.findEpisode(new CategoryDTO("arte", "Les dernières vidéos ARTE +7", "videos/index--3188626", "mp4"));
 		for (final EpisodeDTO episode : episodeList) {
 			assertTrue(!episode.getName().isEmpty());
 			assertTrue(!episode.getUrl().isEmpty());
@@ -74,12 +80,6 @@ public class ArtePluginManagerTest {
 	}
 
 	@Test
-	public final void testFindCategory() {
-		final Set<CategoryDTO> categories = manager.findCategory();
-		assertTrue(!categories.isEmpty());
-	}
-
-	@Test
 	public void testDownload() throws DownloadFailedException, NoSuchDownloaderException {
 		final DownloaderDTO downloaders = buildDownloaders();
 		manager.download("./test.flv", downloaders, new CmdProgressionListener() {
@@ -88,7 +88,7 @@ public class ArtePluginManagerTest {
 			public void listen(final String progression) {
 				LOG.info(progression);
 			}
-		}, new EpisodeDTO(null, "test", "/fr/videos/le-saint--7532668.html"));
+		}, new EpisodeDTO(null, "Les montagnes du monde 20130806", "http://videos.arte.tv/fr/videos/les-montagnes-du-monde--7609508.html"));
 	}
 
 	private DownloaderDTO buildDownloaders() {
