@@ -7,7 +7,7 @@
 		<relativePath>../builder</relativePath>
 		<artifactId>builder</artifactId>
 		<groupId>com.dabi.habitv</groupId>
-		<version>LATEST</version>
+		<version>3.7.2</version>
 	</parent>
 	<artifactId>curlDownloader</artifactId>
 	<name>curlDownloader</name>
@@ -15,7 +15,7 @@
 		<dependency>
 			<groupId>com.dabi.habitv</groupId>
 			<artifactId>framework</artifactId>
-			<version>LATEST</version>
+			<version>3.7.2</version>
 		</dependency>
 	</dependencies>
 	<build>
@@ -56,5 +56,5 @@
 		</plugins>
 	</build>
 	<groupId>com.dabi.habitv</groupId>
-	<version>3.7.0</version>
+	<version>3.7.2</version>
 </project>

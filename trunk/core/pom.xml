@@ -7,7 +7,7 @@
 		<relativePath>../builder</relativePath>
 		<artifactId>builder</artifactId>
 		<groupId>com.dabi.habitv</groupId>
-		<version>LATEST</version>
+		<version>3.7.2</version>
 	</parent>
 	<artifactId>core</artifactId>
 	<name>core</name>
@@ -20,7 +20,7 @@
 		<dependency>
 			<groupId>com.dabi.habitv</groupId>
 			<artifactId>framework</artifactId>
-			<version>LATEST</version>
+			<version>3.7.2</version>
 			<scope>compile</scope>
 		</dependency>
 	</dependencies>
@@ -85,6 +85,6 @@
 			</plugin>
 		</plugins>
 	</build>
-	<version>3.7.1</version>
+	<version>3.7.2</version>
 	<groupId>com.dabi.habitv</groupId>
 </project>

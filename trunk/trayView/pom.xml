@@ -5,17 +5,17 @@
 		<relativePath>../builder</relativePath>
 		<groupId>com.dabi.habitv</groupId>
 		<artifactId>builder</artifactId>
-		<version>LATEST</version>
+		<version>3.7.2</version>
 	</parent>
 	<artifactId>trayView</artifactId>
 	<packaging>jar</packaging>
 	<name>trayView</name>
-	<version>3.7.1</version>
+	<version>3.7.2</version>
 	<dependencies>
 		<dependency>
 			<groupId>com.dabi.habitv</groupId>
 			<artifactId>core</artifactId>
-			<version>LATEST</version>
+			<version>3.7.2</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>

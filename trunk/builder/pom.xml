@@ -4,7 +4,7 @@
 
 	<groupId>com.dabi.habitv</groupId>
 	<artifactId>builder</artifactId>
-	<version>3.7.0</version>
+	<version>3.7.2</version>
 	<packaging>pom</packaging>
 
 	<name>Builder habiTv</name>
@@ -37,7 +37,7 @@
 		<module>../lequipe</module>
 		<module>../beinsport</module>
 		<module>../arte</module>
-		<module>../tmc</module>
+		<!--  <module>../tmc</module>-->
 		<module>../nrj12</module>
 	</modules>
 
