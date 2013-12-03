@@ -53,7 +53,7 @@ public class D17PluginManagerTest {
 
 	@Test
 	public final void testFindEpisode() {
-		final Set<EpisodeDTO> episodeList = manager.findEpisode(new CategoryDTO(null, null, "21038", null));
+		final Set<EpisodeDTO> episodeList = manager.findEpisode(new CategoryDTO(null, null, "/docs-mags/pid6273-star-story.html", null));
 		assertTrue(!episodeList.isEmpty());
 	}
 
@@ -72,7 +72,7 @@ public class D17PluginManagerTest {
 			public void listen(final String progression) {
 				LOG.info(progression);
 			}
-		}, new EpisodeDTO(null, "test", "787870"));
+		}, new EpisodeDTO(null, "test", "933914"));
 	}
 
 	private DownloaderDTO buildDownloaders() {
