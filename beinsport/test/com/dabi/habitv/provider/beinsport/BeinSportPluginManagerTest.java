@@ -22,6 +22,7 @@ import com.dabi.habitv.framework.plugin.api.dto.ProxyDTO;
 import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.framework.plugin.exception.NoSuchDownloaderException;
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
+import com.dabi.habitv.provider.beinsport.BeinSportConfCst.BeinSportConf;
 
 public class BeinSportPluginManagerTest {
 
@@ -53,12 +54,19 @@ public class BeinSportPluginManagerTest {
 
 	@Test
 	public final void testFindEpisode() {
-		Set<EpisodeDTO> episodeList = manager.findEpisode(new CategoryDTO(BeinSportConf.REPLAY_CATEGORY, BeinSportConf.REPLAY_CATEGORY,
-				BeinSportConf.REPLAY_CATEGORY, null));
+		final CategoryDTO category = new CategoryDTO(BeinSportConf.REPLAY_CATEGORY, BeinSportConf.REPLAY_CATEGORY,
+				BeinSportConf.REPLAY_CATEGORY, null);
+		category.addSubCategory(new CategoryDTO(BeinSportConf.NAME, "le-club", "/replay/category/3361/video/712597/title/lexpresso-3011", null));
+		final Set<EpisodeDTO> episodeList = manager.findEpisode(category);
 		assertTrue(!episodeList.isEmpty());
-		episodeList = manager.findEpisode(new CategoryDTO(BeinSportConf.VIDEOS_CATEGORY, BeinSportConf.VIDEOS_CATEGORY, BeinSportConf.VIDEOS_CATEGORY, null));
-		assertTrue(!episodeList.isEmpty());
-		episodeList = manager.findEpisode(new CategoryDTO(BeinSportConf.NAME, "le-club", "/replay/category/3363/name/le-club", null));
+	}
+
+	@Test
+	public final void testFindEpisodeVideo() {
+		final CategoryDTO category = new CategoryDTO(BeinSportConf.REPLAY_CATEGORY, BeinSportConf.REPLAY_CATEGORY,
+				BeinSportConf.REPLAY_CATEGORY, null);
+		category.addSubCategory(new CategoryDTO(BeinSportConf.NAME, "le-club", "/replay/category/3361/video/712597/title/lexpresso-3011", null));
+		final Set<EpisodeDTO> episodeList = manager.findEpisode(new CategoryDTO(BeinSportConf.VIDEOS_CATEGORY, BeinSportConf.VIDEOS_CATEGORY, BeinSportConf.VIDEOS_CATEGORY, null));
 		assertTrue(!episodeList.isEmpty());
 	}
 
@@ -78,15 +86,15 @@ public class BeinSportPluginManagerTest {
 			public void listen(final String progression) {
 				LOG.info(progression);
 			}
-		}, new EpisodeDTO(null, "test", "/replay/category/3361/video/423981/title/lexpresso-0102"));
+		}, new EpisodeDTO(null, "test", "/videos/article/19t6ydkord9qo1eeh23nlp7aq6/title/le-bayern-continue-sa-serie"));
 
-		manager.download("./test.flv", downloaders, new CmdProgressionListener() {
-
-			@Override
-			public void listen(final String progression) {
-				LOG.info(progression);
-			}
-		}, new EpisodeDTO(null, "test", "http://vod.beinsport.aka.oss1.performgroup.com/20120820/16r4s6i04and919yjn80zcv2od.mp4"));
+		//		manager.download("./test.flv", downloaders, new CmdProgressionListener() {
+		//
+		//			@Override
+		//			public void listen(final String progression) {
+		//				LOG.info(progression);
+		//			}
+		//		}, new EpisodeDTO(null, "test", "http://vod.beinsport.aka.oss1.performgroup.com/20120820/16r4s6i04and919yjn80zcv2od.mp4"));
 	}
 
 	private DownloaderDTO buildDownloaders() {
