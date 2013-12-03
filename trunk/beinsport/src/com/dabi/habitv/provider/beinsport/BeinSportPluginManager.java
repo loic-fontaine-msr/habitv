@@ -1,13 +1,10 @@
 package com.dabi.habitv.provider.beinsport;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -40,8 +37,8 @@ import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.framework.plugin.exception.NoSuchDownloaderException;
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
-import com.dabi.habitv.framework.plugin.utils.RetrieverUtils;
 import com.dabi.habitv.framework.plugin.utils.SoccerUtils;
+import com.dabi.habitv.provider.beinsport.BeinSportConfCst.BeinSportConf;
 
 public class BeinSportPluginManager extends BasePluginProvider { // NO_UCD
 
@@ -54,15 +51,15 @@ public class BeinSportPluginManager extends BasePluginProvider { // NO_UCD
 	public Set<EpisodeDTO> findEpisode(final CategoryDTO category) {
 		switch (category.getId()) {
 		case BeinSportConf.VIDEOS_CATEGORY:
-			return findEpisodeByCategory(category, getInputStreamFromUrl((BeinSportConf.CATALOG_URL)));
+			return findEpisodeByCategory(category, BeinSportConf.VIDEOS_URL);
 		case BeinSportConf.REPLAY_CATEGORY:
 			final Set<EpisodeDTO> episodeDTOs = new HashSet<>();
 			for (final CategoryDTO subCategory : findReplaycategories()) {
-				episodeDTOs.addAll(findEpisodeByCategory(subCategory, getInputStreamFromUrl(BeinSportConf.HOME_URL + subCategory.getId())));
+				episodeDTOs.addAll(findEpisodeByCategory(subCategory, BeinSportConf.HOME_URL + subCategory.getId()));
 			}
 			return episodeDTOs;
 		default:
-			return findEpisodeByCategory(category, getInputStreamFromUrl(BeinSportConf.HOME_URL + category.getId()));
+			return findEpisodeByCategory(category, BeinSportConf.HOME_URL + category.getId());
 		}
 	}
 
@@ -120,15 +117,26 @@ public class BeinSportPluginManager extends BasePluginProvider { // NO_UCD
 
 	private static final Pattern VIDEOID_PATTERN = Pattern.compile(".*videoId\\s+=\\s+\\\"(.*)\\\";.*");
 
-	private Set<EpisodeDTO> findEpisodeByCategory(final CategoryDTO category, final InputStream inputStream) {
-		final Data data = (Data) RetrieverUtils.unmarshalInputStream(inputStream, BeinSportConf.PACKAGE_NAME, getClassLoader());
-
-		final List<Video> videos = data.getResults().getResultList().getVideo();
+	private Set<EpisodeDTO> findEpisodeByCategory(final CategoryDTO category, final String url) {
 		final Set<EpisodeDTO> episodeList = new HashSet<>();
-		for (final Video video : videos) {
-			final List<File> fileList = video.getVideoFiles().getFile();
-			final String name = SoccerUtils.maskScore(video.getDescription());
-			episodeList.add(new EpisodeDTO(category, name, fileList.get(0).getValue()));
+
+		final org.jsoup.nodes.Document doc = Jsoup.parse(getUrlContent(url));
+
+		Elements divTabContainer = doc.select("#tabContainer");
+		if (divTabContainer.isEmpty()){
+			divTabContainer = doc.select("#newsIndex");
+		}
+
+		for (final Element article : divTabContainer.select("article")) {
+			Element aHref = article.child(0);
+			if (!"a".equals(aHref.tagName())){
+				aHref = article.child(0).child(0);
+			}
+			final Element h4 = article.child(1).child(0);
+			final String href = aHref.attr("href");
+			String name = h4.text();
+			name = SoccerUtils.maskScore(name);
+			episodeList.add(new EpisodeDTO(category, name, href));
 		}
 
 		return episodeList;
@@ -149,7 +157,7 @@ public class BeinSportPluginManager extends BasePluginProvider { // NO_UCD
 		return categories;
 	}
 
-	public String findFinalRtmpUrl(final String url) {
+	private String findFinalRtmpUrl(final String url) {
 		final String content = getUrlContent(BeinSportConf.HOME_URL + url);
 		final String clipId = findMediaId(content);
 		ArrayList<String> urlList;
@@ -173,8 +181,7 @@ public class BeinSportPluginManager extends BasePluginProvider { // NO_UCD
 		final DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
 		domFactory.setNamespaceAware(true);
 		final DocumentBuilder builder = domFactory.newDocumentBuilder();
-		final String content = getUrlContent(BeinSportConf.XML_INFO + clipId);
-		final Document doc = builder.parse(new ByteArrayInputStream(content.substring(content.indexOf("<?xml")).getBytes()));
+		final Document doc = builder.parse(getInputStreamFromUrl(BeinSportConf.XML_INFO + clipId));
 
 		final NodeList nodes = (NodeList) expr.evaluate(doc, XPathConstants.NODESET);
 		final ArrayList<String> urlList = new ArrayList<>();
