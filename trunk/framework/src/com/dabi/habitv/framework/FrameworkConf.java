@@ -20,5 +20,5 @@ public interface FrameworkConf {
 
 	String CMD_PROCESSOR = "CMD_PROCESSOR";
 
-	Integer TIME_OUT_MS = 15000;
+	Integer TIME_OUT_MS = 30000;
 }

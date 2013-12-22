@@ -86,15 +86,8 @@ public class BeinSportPluginManagerTest {
 			public void listen(final String progression) {
 				LOG.info(progression);
 			}
-		}, new EpisodeDTO(null, "test", "/videos/article/19t6ydkord9qo1eeh23nlp7aq6/title/le-bayern-continue-sa-serie"));
+		}, new EpisodeDTO(null, "test", "/news/title/liga--villarreal-1-2-fc-seville/article/edx5rwltyuqi1lyhfyi1katcx"));
 
-		//		manager.download("./test.flv", downloaders, new CmdProgressionListener() {
-		//
-		//			@Override
-		//			public void listen(final String progression) {
-		//				LOG.info(progression);
-		//			}
-		//		}, new EpisodeDTO(null, "test", "http://vod.beinsport.aka.oss1.performgroup.com/20120820/16r4s6i04and919yjn80zcv2od.mp4"));
 	}
 
 	private DownloaderDTO buildDownloaders() {

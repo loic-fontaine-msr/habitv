@@ -46,14 +46,16 @@ public class D17PluginManager extends BasePluginProvider { // NO_UCD
 		final Set<EpisodeDTO> episodes = new HashSet<>();
 		final Set<String> episodesNames = new HashSet<>();
 
-		final org.jsoup.nodes.Document doc = Jsoup.parse(getUrlContent(D17Conf.HOME_URL+ category.getId()));
+		final org.jsoup.nodes.Document doc = Jsoup
+				.parse(getUrlContent(D17Conf.HOME_URL + category.getId()));
 
-		final Elements select = doc.select(".MYlist").get(0).children();
-		for (final Element liElement : select) {
+		final Elements select = doc.select("a.loop-videos");
+		for (final Element aVideoElement : select) {
 			try {
-				final Element aLink = liElement.child(0);
-				final String title = aLink.child(1).text();
-				final String url = aLink.attr("href").split("vid=")[1]
+				final String maintitle = aVideoElement.select("h4").first().text();
+				final String subtitle = aVideoElement.select("p").first().text();
+				final String title = maintitle + " - " + subtitle;
+				final String url = aVideoElement.attr("href").split("vid=")[1]
 						.split("&")[0];
 				if (!episodesNames.contains(title)) {
 					episodes.add(new EpisodeDTO(category, title, url));
