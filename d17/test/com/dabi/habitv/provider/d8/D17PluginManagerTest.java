@@ -53,7 +53,7 @@ public class D17PluginManagerTest {
 
 	@Test
 	public final void testFindEpisode() {
-		final Set<EpisodeDTO> episodeList = manager.findEpisode(new CategoryDTO(null, null, "/docs-mags/pid6273-star-story.html", null));
+		final Set<EpisodeDTO> episodeList = manager.findEpisode(new CategoryDTO(null, null, "/pid6278-musique.html", null));
 		assertTrue(!episodeList.isEmpty());
 	}
 

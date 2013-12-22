@@ -18,8 +18,6 @@
 		<module>../core</module>
 		<module>../updater</module>
 		<module>../canalPlus</module>
-		<!-- <module>../m6w9</module>-->
-		<module>../tf1</module>
 		<module>../cmdDownloader</module>
 		<module>../pluzz</module>
 		<module>../d8</module>
