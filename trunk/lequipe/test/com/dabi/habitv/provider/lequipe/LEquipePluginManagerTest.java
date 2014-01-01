@@ -101,7 +101,7 @@ public class LEquipePluginManagerTest {
 			public void listen(final String progression) {
 				LOG.info(progression);
 			}
-		}, new EpisodeDTO(null, "test", "/video/football-ligue-1/sochaux-bastia-2-3/recentes/page/2/?sig=3d07e67c196s"));
+		}, new EpisodeDTO(null, "test", "/video/football/ligue-1/2013-2014/19e-journee/marseille-bordeaux/foot-l1-marseille-bordeaux-2-2/86f34508368s/"));
 	}
 
 	private DownloaderDTO buildDownloaders() {
