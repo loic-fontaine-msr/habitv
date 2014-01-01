@@ -16,6 +16,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -113,34 +114,59 @@ public class LEquipePluginManager extends BasePluginProvider {
 	public String findDownloadlink(final String url) {
 		final String originalUrl = LEquipeConf.VIDEO_HOME_URL + url;
 		final String htmlContent = getUrlContent(originalUrl);
-		Pattern pattern = Pattern.compile("<param name=\"flashVars\" value=\"language_code=fr&amp;playerKey=(.*)&amp[&amp]*;suffix=&amp;sig=(.*)\">");
-		Matcher matcher = pattern.matcher(htmlContent);
+		final Pattern pattern = Pattern.compile(".*<param name=\"flashVars\" value=\"([^\"]*)\".*");
+		final Matcher matcher = pattern.matcher(htmlContent);
 		// lancement de la recherche de toutes les occurrences
-		boolean hasMatched = matcher.find();
+		final boolean hasMatched = matcher.find();
 		// si recherche fructueuse
 		String sig = null;
 		String playerKey = null;
 		if (hasMatched) {
-			playerKey = matcher.group(1);
-			sig = matcher.group(2);
+			final String parameters = matcher.group(matcher.groupCount());
+			final Map<String, String> params = buildParamsMap(parameters);
+			sig = params.get("sig");
+			playerKey = params.get("playerKey");
 		} else {
-			pattern = Pattern.compile("\\{\\\'sig\\\'\\:\\\'(.*)\\\',\\\'playerkey\\\':\\\'(.*)\\\',\\\'vformat\\\'\\:\\\'");
-			matcher = pattern.matcher(htmlContent);
-			// lancement de la recherche de toutes les occurrences
-			hasMatched = matcher.find();
-			// si recherche fructueuse
-			if (hasMatched) {
-				playerKey = matcher.group(2);
-				sig = matcher.group(1);
-			} else {
-				throw new TechnicalException("sig and player key not found");
-			}
+			throw new TechnicalException("sig and player key not found");
 		}
 		try {
 			return findDownloadlinkBySigAndPlayerKey(sig, playerKey, originalUrl);
 		} catch (final IOException e) {
 			throw new TechnicalException(e);
 		}
+	}
+
+	// language_code=fr&playerKey=b905c4789fb0&configKey=29597e193d5d&suffix=&sig=86f34508368s&autostart=true"
+	private Map<String, String> buildParamsMap(final String parameters) {
+		StringBuilder paramNameBldr = new StringBuilder();
+		StringBuilder paramValueBldr = new StringBuilder();
+		String currentParam = null;
+		final Map<String, String> params = new HashMap<String, String>();
+		for (final char c : StringEscapeUtils.unescapeXml(parameters).toCharArray()) {
+			switch (c) {
+			case '=':
+				currentParam = paramNameBldr.toString();
+				paramNameBldr = new StringBuilder();
+				break;
+			case '&':
+			case '?':
+				params.put(currentParam, paramValueBldr.toString());
+				currentParam = null;
+				paramValueBldr = new StringBuilder();
+				break;
+			default:
+				if (currentParam == null) {
+					paramNameBldr.append(c);
+				} else {
+					paramValueBldr.append(c);
+				}
+				break;
+			}
+		}
+		if (currentParam != null) {
+			params.put(currentParam, paramValueBldr.toString());
+		}
+		return params;
 	}
 
 	private String findDownloadlinkBySigAndPlayerKey(final String sig, final String playerKey, final String originalUrl) throws IOException {
