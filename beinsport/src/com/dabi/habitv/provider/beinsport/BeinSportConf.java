@@ -16,6 +16,8 @@ class BeinSportConfCst {
 
 		String VIDEOS_URL = "http://www.beinsport.fr/videos/page/1/size/50";
 
+		String VIDEOS_URL_RSS = "http://beinsports.fr/videos.rss";
+
 		String REPLAY_CATEGORY = "replay";
 
 		String REPLAY_URL = "http://www.beinsport.fr/replay";
@@ -28,6 +30,7 @@ class BeinSportConfCst {
 	}
 
 	public final class BeinSportConf implements IBeinSportConf {
+
 		private BeinSportConf() {
 		}
 	}
