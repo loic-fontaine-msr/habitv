@@ -1,6 +1,7 @@
 package com.dabi.habitv.provider.rss;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -26,6 +27,8 @@ import com.sun.syndication.io.SyndFeedInput;
 import com.sun.syndication.io.XmlReader;
 
 public class RSSPluginManager extends BasePluginProvider {
+
+	private static final int MIN_TITLE_SIZE = 5;
 
 	@Override
 	public Set<EpisodeDTO> findEpisode(final CategoryDTO category) {
@@ -89,10 +92,13 @@ public class RSSPluginManager extends BasePluginProvider {
 					url = entry.getLink();
 				}
 
-				episodeList.add(new EpisodeDTO(category, entry.getTitle(), url));
+				String safeTtitle = entry.getTitle().replaceAll("[^\\x00-\\x7F]", "").trim();
+				if (safeTtitle.length() <= 5 && entry.getTitle().length() >= MIN_TITLE_SIZE) {
+					safeTtitle = entry.getAuthor() + "-" + (new SimpleDateFormat("yyyyMMddHHmmss").format(entry.getPublishedDate()));
+				}
+				episodeList.add(new EpisodeDTO(category, safeTtitle, url));
 			}
 		}
 		return episodeList;
 	}
-
 }
