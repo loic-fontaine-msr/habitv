@@ -50,7 +50,7 @@ public class ArtePluginManagerTest {
 		manager.setClassLoader(null);
 		assertEquals(manager.getName(), ArteConf.NAME);
 	}
-	
+
 	@Test
 	public final void testFindCategory() {
 		final Set<CategoryDTO> categories = manager.findCategory();
@@ -58,7 +58,8 @@ public class ArtePluginManagerTest {
 	}
 
 	private void checkFindEpisode() {
-		final Set<EpisodeDTO> episodeList = manager.findEpisode(new CategoryDTO("arte", "Les dernières vidéos ARTE +7", "videos/index--3188626", "mp4"));
+		final Set<EpisodeDTO> episodeList = manager.findEpisode(new CategoryDTO("arte", "Yourope", "yourope/index--3188732", "mp4"));
+		//final Set<EpisodeDTO> episodeList = manager.findEpisode(new CategoryDTO("arte", "Les derniï¿½res vidï¿½os ARTE +7", "videos/index--3188626", "mp4"));
 		for (final EpisodeDTO episode : episodeList) {
 			assertTrue(!episode.getName().isEmpty());
 			assertTrue(!episode.getUrl().isEmpty());
@@ -88,7 +89,7 @@ public class ArtePluginManagerTest {
 			public void listen(final String progression) {
 				LOG.info(progression);
 			}
-		}, new EpisodeDTO(null, "Les montagnes du monde 20130806", "http://videos.arte.tv/fr/videos/les-montagnes-du-monde--7609508.html"));
+		}, new EpisodeDTO(null, "Les montagnes du monde 20130806", "http://videos.arte.tv/fr/videos/france-verdun-et-si-l-allemagne-avait-besoin-d-une-piqure-de-rappel--7802930.html"));
 	}
 
 	private DownloaderDTO buildDownloaders() {
