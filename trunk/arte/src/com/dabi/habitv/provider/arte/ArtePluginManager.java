@@ -7,15 +7,25 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpression;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.api.downloader.PluginDownloaderInterface;
@@ -28,7 +38,6 @@ import com.dabi.habitv.framework.plugin.exception.NoSuchDownloaderException;
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
 import com.dabi.habitv.framework.plugin.utils.RetrieverUtils;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.io.FeedException;
@@ -47,15 +56,12 @@ public class ArtePluginManager extends BasePluginProvider { // NO_UCD
 		if ("search".equals(category.getId())) {
 			return searchEpisodeByKeyworkds(category);
 		} else {
-			return findEpisodeByCategory(category,
-					getInputStreamFromUrl(ArteConf.RSS_CATEGORY_URL.replace(
-							ArteConf.ID_EMISSION_TOKEN, category.getId())));
+			return findEpisodeByCategory(category, getInputStreamFromUrl(ArteConf.RSS_CATEGORY_URL.replace(ArteConf.ID_EMISSION_TOKEN, category.getId())));
 		}
 	}
 
 	private Set<EpisodeDTO> searchEpisodeByKeyworkds(final CategoryDTO category) {
-		final String url = "http://videos.arte.tv/fr/do_search/videos/recherche?q="
-				+ category.getName().replaceAll(" ", "+");
+		final String url = "http://videos.arte.tv/fr/do_search/videos/recherche?q=" + category.getName().replaceAll(" ", "+");
 		final Set<EpisodeDTO> episodes = new HashSet<>();
 
 		final Document doc = Jsoup.parse(getUrlContent(url));
@@ -78,8 +84,7 @@ public class ArtePluginManager extends BasePluginProvider { // NO_UCD
 				// } else {
 				// throw new TechnicalException("can't find mediaId");
 				// }
-				episodes.add(new EpisodeDTO(category, aHref.text() + "-"
-						+ getNbr(attr), attrR));
+				episodes.add(new EpisodeDTO(category, aHref.text() + "-" + getNbr(attr), attrR));
 			} catch (final IndexOutOfBoundsException e) {
 				getLog().error(element, e);
 				throw new TechnicalException(e);
@@ -91,25 +96,20 @@ public class ArtePluginManager extends BasePluginProvider { // NO_UCD
 	private int getNbr(final String attr) {
 		int i = 0;
 		if (attr.contains("--") && attr.contains(".")) {
-			i = Integer.parseInt(attr.substring(attr.indexOf("--") + 2,
-					attr.indexOf(".")));
+			i = Integer.parseInt(attr.substring(attr.indexOf("--") + 2, attr.indexOf(".")));
 		}
 		return i;
 	}
 
 	@Override
 	public Set<CategoryDTO> findCategory() {
-		return findCategories(RetrieverUtils.getUrlContent(ArteConf.RSS_PAGE,
-				ArteConf.ENCODING, getHttpProxy()));
+		return findCategories(RetrieverUtils.getUrlContent(ArteConf.RSS_PAGE, ArteConf.ENCODING, getHttpProxy()));
 	}
 
 	@Override
-	public void download(final String downloadOuput,
-			final DownloaderDTO downloaders,
-			final CmdProgressionListener cmdProgressionListener,
-			final EpisodeDTO episode) throws DownloadFailedException,
-			NoSuchDownloaderException {
-		String downloadLink = buildDownloadLink(episode.getUrl());
+	public void download(final String downloadOuput, final DownloaderDTO downloaders, final CmdProgressionListener cmdProgressionListener,
+			final EpisodeDTO episode) throws DownloadFailedException, NoSuchDownloaderException {
+		final String downloadLink = buildDownloadLink(episode.getUrl());
 		final String downloaderName;
 		final Map<String, String> parameters = new HashMap<>(2);
 		if (downloadLink.startsWith("rtmp")) {
@@ -118,36 +118,27 @@ public class ArtePluginManager extends BasePluginProvider { // NO_UCD
 		} else {
 			downloaderName = ArteConf.CURL;
 		}
-		final PluginDownloaderInterface pluginDownloader = downloaders
-				.getDownloader(downloaderName);
+		final PluginDownloaderInterface pluginDownloader = downloaders.getDownloader(downloaderName);
 
-		parameters.put(FrameworkConf.PARAMETER_BIN_PATH,
-				downloaders.getBinPath(downloaderName));
-		parameters.put(FrameworkConf.CMD_PROCESSOR,
-				downloaders.getCmdProcessor());
+		parameters.put(FrameworkConf.PARAMETER_BIN_PATH, downloaders.getBinPath(downloaderName));
+		parameters.put(FrameworkConf.CMD_PROCESSOR, downloaders.getCmdProcessor());
 
-		pluginDownloader.download(downloadLink, downloadOuput, parameters,
-				cmdProgressionListener, getProtocol2proxy());
+		pluginDownloader.download(downloadLink, downloadOuput, parameters, cmdProgressionListener, getProtocol2proxy());
 	}
 
 	private static final String SEP = "/";
 
-	private static final Pattern REF_PATTERN = Pattern
-			.compile(".*arte_vp_url=\"(.*)\"");
+	private static final Pattern VIDEO_REF_FILE_PATTERN = Pattern.compile(".*videorefFileUrl = \"(.*)\"");
 
-	private static final Pattern LINK_TITLE_PATTERN = Pattern
-			.compile("<a href=\"([^\\,]*),view,rss.xml\" class=\"rss\">([^\\<]*)</a>");
+	private static final Pattern LINK_TITLE_PATTERN = Pattern.compile("<a href=\"([^\\,]*),view,rss.xml\" class=\"rss\">([^\\<]*)</a>");
 
-	private static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat(
-			"yyyyMMdd");
+	private static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("yyyyMMdd");
 
-	private Set<EpisodeDTO> findEpisodeByCategory(final CategoryDTO category,
-			final InputStream inputStream) {
+	private Set<EpisodeDTO> findEpisodeByCategory(final CategoryDTO category, final InputStream inputStream) {
 		final Set<EpisodeDTO> episodeList;
 		try {
 			final SyndFeedInput input = new SyndFeedInput();
-			final SyndFeed feed = input.build(new XmlReader(inputStream, true,
-					ArteConf.ENCODING));
+			final SyndFeed feed = input.build(new XmlReader(inputStream, true, ArteConf.ENCODING));
 			episodeList = convertFeedToEpisodeList(feed, category);
 		} catch (IllegalArgumentException | FeedException | IOException e) {
 			throw new TechnicalException(e);
@@ -155,23 +146,19 @@ public class ArtePluginManager extends BasePluginProvider { // NO_UCD
 		return episodeList;
 	}
 
-	private Set<EpisodeDTO> convertFeedToEpisodeList(final SyndFeed feed,
-			final CategoryDTO category) {
+	private Set<EpisodeDTO> convertFeedToEpisodeList(final SyndFeed feed, final CategoryDTO category) {
 		final Set<EpisodeDTO> episodeList = new HashSet<EpisodeDTO>();
 		final List<?> entries = feed.getEntries();
 		final boolean uniqueTitle = isTitleUnique(entries);
 		for (final Object object : entries) {
 			final SyndEntry entry = (SyndEntry) object;
-			episodeList.add(new EpisodeDTO(category, buildTitle(entry,
-					uniqueTitle), entry.getLink()));
+			episodeList.add(new EpisodeDTO(category, buildTitle(entry, uniqueTitle), entry.getLink()));
 		}
 		return episodeList;
 	}
 
 	private String buildTitle(final SyndEntry entry, final boolean uniqueTitle) {
-		return entry.getTitle()
-				+ ((uniqueTitle) ? "" : (" " + SIMPLE_DATE_FORMAT.format(entry
-						.getPublishedDate())));
+		return entry.getTitle() + ((uniqueTitle) ? "" : (" " + SIMPLE_DATE_FORMAT.format(entry.getPublishedDate())));
 	}
 
 	private boolean isTitleUnique(final List<?> entries) {
@@ -194,8 +181,7 @@ public class ArtePluginManager extends BasePluginProvider { // NO_UCD
 		while (matcher.find()) {
 			identifier = findShowIdentifier(matcher.group(1));
 			categoryName = matcher.group(2);
-			categoryDTOs.add(new CategoryDTO(ArteConf.NAME, categoryName,
-					identifier, ArteConf.EXTENSION));
+			categoryDTOs.add(new CategoryDTO(ArteConf.NAME, categoryName, identifier, ArteConf.EXTENSION));
 		}
 		return categoryDTOs;
 	}
@@ -208,46 +194,65 @@ public class ArtePluginManager extends BasePluginProvider { // NO_UCD
 		throw new TechnicalException("can't find show identifier");
 	}
 
-	private static final ObjectMapper mapper = new ObjectMapper();
 
-	@SuppressWarnings("unchecked")
-	private String buildDownloadLink(final String url)
-			throws DownloadFailedException {
-		String htmlInfo = getUrlContent(url, ArteConf.ENCODING);
+	private String buildDownloadLink(final String url) throws DownloadFailedException {
+		final String htmlInfo = getUrlContent(url, ArteConf.ENCODING);
 
-		Matcher matcher = REF_PATTERN.matcher(htmlInfo);
-		final String jsonUrl;
+		final Matcher matcher = VIDEO_REF_FILE_PATTERN.matcher(htmlInfo);
+		final String videoRefFileUrl;
 		if (matcher.find()) {
-			jsonUrl = matcher.group(matcher.groupCount());
+			videoRefFileUrl = matcher.group(matcher.groupCount());
 		} else {
 			throw new DownloadFailedException("can't find json url");
 		}
+		final String strVideXmlUrl = findStrVideoXmlUrl(videoRefFileUrl);
+		return findVideoUrlFromStrVideoXml(strVideXmlUrl);
+	}
 
-		final InputStream in = getInputStreamFromUrl(jsonUrl);
-		Map<String, Object> userData;
+	private String findStrVideoXmlUrl(final String videoRefFileUrl) throws DownloadFailedException {
+		final XPathFactory factory = XPathFactory.newInstance();
+		final XPath xpath = factory.newXPath();
+		XPathExpression expr;
 		try {
-			userData = mapper.readValue(in, Map.class);
-		} catch (IOException e) {
+			expr = xpath.compile("//videoref/videos/video[@lang='fr']");
+
+			final DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
+			domFactory.setNamespaceAware(true);
+			final DocumentBuilder builder = domFactory.newDocumentBuilder();
+			final org.w3c.dom.Document doc = builder.parse(getInputStreamFromUrl(videoRefFileUrl));
+
+			final NodeList nodes = (NodeList) expr.evaluate(doc, XPathConstants.NODESET);
+			if (nodes.getLength() > 0) {
+				return nodes.item(0).getAttributes().getNamedItem("ref").getTextContent();
+			}
+		} catch (XPathExpressionException | ParserConfigurationException | SAXException | IOException e) {
 			throw new DownloadFailedException(e);
 		}
-		Map<String, Object> vsr = (Map<String, Object>) ((Map<String, Object>) userData
-				.get("videoJsonPlayer")).get("VSR");
-		Integer maxHeight = null;
-		String videoUrl = null;
-		for (Entry<String, Object> entry : vsr.entrySet()) {
-			Map<String, Object> value = (Map<String, Object>) entry.getValue();
-			int height = (Integer) value.get("height");
-			if (maxHeight == null || height > maxHeight) {
-				videoUrl = (String) value.get("url");
-				String streamer = (String) value.get("streamer");
-				if (streamer != null) {
-					videoUrl = streamer + "mp4:" + videoUrl;
-				}
-				maxHeight = height;
+
+		return null;
+	}
+
+	private String findVideoUrlFromStrVideoXml(final String strVideXmlUrl) throws DownloadFailedException {
+		final XPathFactory factory = XPathFactory.newInstance();
+		final XPath xpath = factory.newXPath();
+		XPathExpression expr;
+		try {
+			expr = xpath.compile("/video/urls/url[@quality='hd']");
+
+			final DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
+			domFactory.setNamespaceAware(true);
+			final DocumentBuilder builder = domFactory.newDocumentBuilder();
+			final org.w3c.dom.Document doc = builder.parse(getInputStreamFromUrl(strVideXmlUrl));
+
+			final NodeList nodes = (NodeList) expr.evaluate(doc, XPathConstants.NODESET);
+			if (nodes.getLength() > 0) {
+				return nodes.item(0).getFirstChild().getNodeValue();
 			}
+		} catch (XPathExpressionException | ParserConfigurationException | SAXException | IOException e) {
+			throw new DownloadFailedException(e);
 		}
 
-		return videoUrl;
+		return null;
 	}
 
 }
