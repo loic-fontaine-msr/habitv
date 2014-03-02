@@ -23,7 +23,7 @@ public class RSSPluginManagerTest {
 
 	@Test
 	public void testFindEpisode() {
-		final CategoryDTO category = new CategoryDTO("RSS", "Java Hub", "http://gdata.youtube.com/feeds/base/users/JavaTutorialHub/uploads", "flv");
+		final CategoryDTO category = new CategoryDTO("RSS", "Java Hub", "http://gdata.youtube.com/feeds/base/users/tariqramadanvideo/uploads?alt=rss&amp;v=2&amp;orderby=published&amp;client=ytapi-youtube-profile", "flv");
 		final Set<EpisodeDTO> episodes = manager.findEpisode(category);
 		assertTrue(!episodes.isEmpty());
 	}
