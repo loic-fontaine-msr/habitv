@@ -1,6 +1,6 @@
 analyseLocally=false
 eclipse.preferences.version=1
-projectArtifactId=ffmpegExporter
+projectArtifactId=curlDownloader
 projectBranch=
 projectGroupId=com.dabi.habitv
 serverUrl=http\://localhost\:9000
