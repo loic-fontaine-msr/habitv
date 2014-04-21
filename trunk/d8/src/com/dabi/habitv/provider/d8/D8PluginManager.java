@@ -33,6 +33,7 @@ import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.framework.plugin.exception.NoSuchDownloaderException;
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
+import com.dabi.habitv.framework.plugin.utils.M3U8Utils;
 
 public class D8PluginManager extends BasePluginProvider { // NO_UCD
 
@@ -47,19 +48,39 @@ public class D8PluginManager extends BasePluginProvider { // NO_UCD
 
 		final org.jsoup.nodes.Document doc = Jsoup.parse(getUrlContent(D8Conf.HOME_URL + category.getId()));
 
-		final Elements select = doc.select(".list-programmes-emissions");
+		Elements select = doc.select(".list-programmes-emissions");
 
 		if (!select.isEmpty()) {
 
 			final Elements emission = select.get(0).children();
 			for (final Element liElement : emission) {
-				if (!liElement.childNodes().isEmpty()) {
+				if (!liElement.children().isEmpty()) {
 					final Element aLink = liElement.child(0);
-					if (aLink.childNodes().size() > 1 && aLink.child(1).childNodes().size() > 0) {
+					if (aLink.children().size() > 1 && aLink.child(1).children().size() > 0) {
 						final String title = aLink.child(1).child(0).text() + " - " + aLink.child(1).child(1).text();
 						final String attr = getAttrName(aLink);
 						final String url = getVidId(aLink, attr);
 						episodes.add(new EpisodeDTO(category, title, url));
+					}
+				}
+			}
+		}
+
+		select = doc.select(".block-common ");
+		if (!select.isEmpty()) {
+
+			for (final Element block : select) {
+				if (block.children().size() > 1) {
+					final Elements emission = block.children().get(1).children();
+					for (final Element aLink : emission) {
+						if (aLink.children().size() > 1) {
+							final String title = aLink.child(1).text() + " - " + aLink.child(2).text();
+							final String attr = getAttrName(aLink);
+							final String url = getVidId(aLink, attr);
+							if (url != null) {
+								episodes.add(new EpisodeDTO(category, title, url));
+							}
+						}
 					}
 				}
 			}
@@ -108,6 +129,8 @@ public class D8PluginManager extends BasePluginProvider { // NO_UCD
 		String downloaderName;
 		if (url.startsWith(D8Conf.RTMPDUMP_PREFIX)) {
 			downloaderName = D8Conf.RTMDUMP;
+		} else if (url.contains("m3u8")) {
+			downloaderName = D8Conf.FFMPEG;
 		} else {
 			downloaderName = D8Conf.CURL;
 		}
@@ -124,12 +147,14 @@ public class D8PluginManager extends BasePluginProvider { // NO_UCD
 		final Map<String, String> parameters = new HashMap<>(2);
 		parameters.put(FrameworkConf.PARAMETER_BIN_PATH, downloaders.getBinPath(downloaderName));
 		parameters.put(FrameworkConf.CMD_PROCESSOR, downloaders.getCmdProcessor());
+		parameters.put(FrameworkConf.EXTENSION, episode.getCategory().getExtension());
 
 		pluginDownloader.download(videoUrl, downloadOuput, parameters, listener, getProtocol2proxy());
 	}
 
 	private static String getVidId(final Element aLink, final String attr) {
-		return aLink.attr(attr).split("vid=")[1].split("&")[0];
+		final String attrValue = aLink.attr(attr);
+		return attrValue.contains("vid=") ? attrValue.split("vid=")[1].split("&")[0] : null;
 	}
 
 	private static String getAttrName(final Element aLink) {
@@ -144,21 +169,27 @@ public class D8PluginManager extends BasePluginProvider { // NO_UCD
 
 	private Collection<CategoryDTO> findSubCategories(final String catUrl) {
 		final Set<CategoryDTO> categories = new HashSet<>();
-		final org.jsoup.nodes.Document doc = Jsoup.parse(getUrlContent(D8Conf.HOME_URL + catUrl));
-		final Elements select = doc.select(".tp-grid").get(0).children();
-		for (final Element divElement : select) {
-			for (final Element subDivElement : divElement.children()) {
-				if (subDivElement.children().size() > 0) {
-					final Element aElement = subDivElement.child(0);
-					final String url = aElement.attr("href");
-					final String name = aElement.child(1).text();
-					final CategoryDTO categoryDTO = new CategoryDTO(D8Conf.NAME, name, url, D8Conf.EXTENSION);
-					categories.add(categoryDTO);
+		final org.jsoup.nodes.Document doc = Jsoup.parse(getFullUrl(catUrl));
+		final Elements tpGrid = doc.select(".tp-grid");
+		if (!tpGrid.isEmpty()) {
+			final Elements select = tpGrid.get(0).children();
+			for (final Element divElement : select) {
+				for (final Element subDivElement : divElement.children()) {
+					if (subDivElement.children().size() > 0) {
+						final Element aElement = subDivElement.child(0);
+						final String url = aElement.attr("href");
+						final String name = aElement.child(1).text();
+						final CategoryDTO categoryDTO = new CategoryDTO(D8Conf.NAME, name, url, D8Conf.EXTENSION);
+						categories.add(categoryDTO);
+					}
 				}
 			}
-
 		}
 		return categories;
+	}
+
+	private String getFullUrl(final String catUrl) {
+		return catUrl.startsWith("http") ? catUrl : getUrlContent(D8Conf.HOME_URL + catUrl);
 	}
 
 	private String findVideoUrl(final String id) throws DownloadFailedException {
@@ -181,7 +212,12 @@ public class D8PluginManager extends BasePluginProvider { // NO_UCD
 					q2url.put(nodes.item(i).getLocalName(), nodes.item(i).getTextContent());
 				}
 
-				String videoUrl = q2url.get("HD");
+				String videoUrl = q2url.get("HLS");
+				if (videoUrl == null) {
+					videoUrl = q2url.get("HD");
+				} else {
+					videoUrl = M3U8Utils.keepBestQuality(videoUrl);
+				}
 				if (videoUrl == null) {
 					videoUrl = q2url.get("HAUT_DEBIT");
 				}

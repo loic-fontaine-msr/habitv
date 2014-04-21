@@ -15,6 +15,7 @@ import com.dabi.habitv.framework.plugin.api.provider.BasePluginProvider;
 import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.framework.plugin.exception.NoSuchDownloaderException;
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
+import com.dabi.habitv.framework.plugin.utils.M3U8Utils;
 import com.dabi.habitv.framework.plugin.utils.RetrieverUtils;
 import com.dabi.habitv.framework.plugin.utils.SoccerUtils;
 import com.dabi.habitv.provider.canalplus.initplayer.entities.INITPLAYER;
@@ -66,6 +67,8 @@ public class CanalPlusPluginManager extends BasePluginProvider { // NO_UCD
 		String downloaderName;
 		if (url.startsWith(CanalPlusConf.RTMPDUMP_PREFIX)) {
 			downloaderName = CanalPlusConf.RTMDUMP;
+		} else if (url.contains("m3u8")) {
+			downloaderName = CanalPlusConf.FFMPEG;
 		} else {
 			downloaderName = CanalPlusConf.CURL;
 		}
@@ -81,6 +84,7 @@ public class CanalPlusPluginManager extends BasePluginProvider { // NO_UCD
 		final Map<String, String> parameters = new HashMap<>(2);
 		parameters.put(FrameworkConf.PARAMETER_BIN_PATH, downloaders.getBinPath(downloaderName));
 		parameters.put(FrameworkConf.CMD_PROCESSOR, downloaders.getCmdProcessor());
+		parameters.put(FrameworkConf.EXTENSION, episode.getCategory().getExtension());
 
 		pluginDownloader.download(episode.getUrl(), downloadOuput, parameters, listener, getProtocol2proxy());
 	}
@@ -121,7 +125,12 @@ public class CanalPlusPluginManager extends BasePluginProvider { // NO_UCD
 	private static Set<EpisodeDTO> buildFromVideo(final CategoryDTO category, final VIDEOS videos, final CategoryDTO originalCategory) {
 		final Set<EpisodeDTO> episodes = new HashSet<>();
 		for (final VIDEO video : videos.getVIDEO()) {
-			String videoUrl = video.getMEDIA().getVIDEOS().getHD();
+			String videoUrl = video.getMEDIA().getVIDEOS().getHLS();
+			if (videoUrl == null || videoUrl.length() < 2) {
+				videoUrl = video.getMEDIA().getVIDEOS().getHD();
+			} else {
+				videoUrl = M3U8Utils.keepBestQuality(videoUrl);
+			}
 			if (videoUrl == null || videoUrl.length() < 2) {
 				videoUrl = video.getMEDIA().getVIDEOS().getHAUTDEBIT();
 			}
@@ -133,7 +142,7 @@ public class CanalPlusPluginManager extends BasePluginProvider { // NO_UCD
 			if (originalCategory.getName().contains("FOOTBALL")) {
 				name = SoccerUtils.maskScore(name);
 			}
-			if (video.getINFOS().getTITRAGE().getSOUSTITRE()==null || video.getINFOS().getTITRAGE().getSOUSTITRE().isEmpty()){
+			if (video.getINFOS().getTITRAGE().getSOUSTITRE() == null || video.getINFOS().getTITRAGE().getSOUSTITRE().isEmpty()) {
 				name = video.getINFOS().getPUBLICATION().getDATE();
 			}
 
@@ -143,4 +152,5 @@ public class CanalPlusPluginManager extends BasePluginProvider { // NO_UCD
 		}
 		return episodes;
 	}
+
 }

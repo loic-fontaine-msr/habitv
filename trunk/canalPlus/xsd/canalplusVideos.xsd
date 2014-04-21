@@ -8,6 +8,8 @@
           <xs:element ref="BAS_DEBIT"/>
           <xs:element ref="HAUT_DEBIT"/>
           <xs:element ref="HD"/>
+          <xs:element ref="HDS" />
+          <xs:element ref="HLS" />
         </xs:sequence>
         <xs:sequence minOccurs="0">
           <xs:element ref="SMOOTH_STREAMING"/>
@@ -173,4 +175,6 @@
     <xs:complexType/>
   </xs:element>
   <xs:element name="URL" type="xs:anyURI"/>
+  <xs:element name="HDS" type="xs:anyURI"/>
+  <xs:element name="HLS" type="xs:anyURI"/>
 </xs:schema>

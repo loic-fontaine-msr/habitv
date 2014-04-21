@@ -52,16 +52,10 @@ public class CanalPlusPluginManagerTest {
 
 	@Test
 	public final void testFindEpisode() {
-		final Set<EpisodeDTO> episodeList = manager.findEpisode(new CategoryDTO("channel", "50-mn-inside", "50-mn-inside", "mp4"));
+		final Set<EpisodeDTO> episodeList = manager.findEpisode(new CategoryDTO("canalplus", "FOOTBALL", "3", "mp4"));
 		assertTrue(!episodeList.isEmpty());
 	}
 
-	@Test
-	public final void testFindEpisodeExpert() {
-		final Set<EpisodeDTO> episodeList = manager.findEpisode(new CategoryDTO("les-experts-las-vegas", "les-experts-las-vegas", "les-experts-las-vegas",
-				"mp4"));
-		assertTrue(!episodeList.isEmpty());
-	}
 
 	@Test
 	public final void testFindCategory() {

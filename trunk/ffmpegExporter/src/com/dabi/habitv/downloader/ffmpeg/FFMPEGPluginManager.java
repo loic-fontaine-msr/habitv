@@ -29,7 +29,7 @@ public class FFMPEGPluginManager implements PluginDownloaderInterface {
 		if (downloaderBin == null) {
 			throw new IllegalArgumentException("bin path parameters must be defined");
 		}
-		String cmd = downloaderBin + FFMPEGConf.FFMPEG_CMD;
+		String cmd = downloaderBin + FFMPEGConf.FFMPEG_CMD_2;
 		cmd = cmd.replaceFirst(FrameworkConf.DOWNLOAD_INPUT, downloadInput);
 		cmd = cmd.replaceFirst(FrameworkConf.DOWNLOAD_DESTINATION, downloadDestination);
 		cmd = cmd.replaceFirst(FrameworkConf.EXTENSION, parameters.get(FrameworkConf.EXTENSION));

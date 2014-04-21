@@ -129,7 +129,6 @@ public class ExportTaskTest {
 			}
 		};
 		publisher.attach(subscriber);
-		;
 		final ExportDTO export = new ExportDTO("conditionReference", "conditionPattern", "name", "output", null,
 				"#EPISODE_NAME#/#EPISODE_NAME_CUT#/#CHANNEL_NAME#/#TVSHOW_NAME#/#EXTENSION#", null);
 		task = new ExportTask(episode, export, pluginExporter, publisher, 0);
