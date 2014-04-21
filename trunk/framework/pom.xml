@@ -9,11 +9,11 @@
 	<artifactId>framework</artifactId>
 	<packaging>jar</packaging>
 	<name>framework</name>
-	<version>3.7.4</version>
+	<version>3.7.5-SNAPSHOT</version>
 	
 	 <scm>
-        <connection>scm:svn:http://subversion.assembla.com/svn/habitv/tags/3.7.4</connection>
-        <developerConnection>scm:svn:http://subversion.assembla.com/svn/habitv/tags/3.7.4</developerConnection>
+        <connection>scm:svn:http://subversion.assembla.com/svn/habitv/trunk/framework</connection>
+        <developerConnection>scm:svn:http://subversion.assembla.com/svn/habitv/trunk/framework</developerConnection>
     </scm>
 	
 	<dependencies>
