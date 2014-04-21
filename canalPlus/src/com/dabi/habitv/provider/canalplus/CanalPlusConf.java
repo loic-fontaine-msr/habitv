@@ -24,4 +24,6 @@ interface CanalPlusConf {
 
 	String EXTENSION = "mp4";
 
+	String FFMPEG = "ffmpeg";
+
 }

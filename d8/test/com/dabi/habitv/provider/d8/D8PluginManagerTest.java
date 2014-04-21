@@ -53,7 +53,9 @@ public class D8PluginManagerTest {
 
 	@Test
 	public final void testFindEpisode() {
-		final Set<EpisodeDTO> episodeList = manager.findEpisode(new CategoryDTO(null, null, "/program/d8-le-jt", null));
+		Set<EpisodeDTO> episodeList = manager.findEpisode(new CategoryDTO(null, null,"/d8-divertissement/pid5204-d8-touche-pas-a-mon-poste.html" , null));
+		assertTrue(!episodeList.isEmpty());
+		episodeList = manager.findEpisode(new CategoryDTO(null, null, "/d8-info/pid5197-d8-le-jt.html" , null));
 		assertTrue(!episodeList.isEmpty());
 	}
 

@@ -30,7 +30,7 @@ public class PluzzPluginManager extends BasePluginProvider {
 	}
 
 	@Override
-	public Set<EpisodeDTO> findEpisode(final CategoryDTO category) {
+	public Set<EpisodeDTO> findEpisode(final CategoryDTO category ) {
 		final Set<EpisodeDTO> episodeList = new HashSet<>();
 		if (!category.getSubCategories().isEmpty()) {
 			for (final CategoryDTO subCat : category.getSubCategories()) {
@@ -39,7 +39,11 @@ public class PluzzPluginManager extends BasePluginProvider {
 		}
 		final Collection<EpisodeDTO> collection = getCachedArchive().getCatName2Episode().get(category.getId());
 		if (collection != null) {
-			episodeList.addAll(collection);
+			for (final EpisodeDTO episode : collection) {
+				final EpisodeDTO newEp = new EpisodeDTO(category, episode.getName(), episode.getUrl());
+				newEp.setNum(episode.getNum());
+				episodeList.add(newEp);
+			}
 		}
 		return episodeList;
 	}

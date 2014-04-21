@@ -1,4 +1,4 @@
-set BUILDER_DIR=D:\workspaces\habiTv2\builder
+set BUILDER_DIR=D:\workspaces\habiTv\builder
 set DEPLOY_DIR=C:\tools\habiTv
 
 del /Q %DEPLOY_DIR%\lib\*

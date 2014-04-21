@@ -23,4 +23,6 @@ interface D17Conf {
 	String HOME_URL = "http://www.d17.tv";
 
 	String VIDEO_INFO_URL = "http://service.canal-plus.com/video/rest/getVideosLiees/d17/";
+
+	String FFMPEG = "ffmpeg";
 }

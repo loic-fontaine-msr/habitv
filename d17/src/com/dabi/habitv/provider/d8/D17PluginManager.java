@@ -33,6 +33,7 @@ import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.framework.plugin.exception.NoSuchDownloaderException;
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
+import com.dabi.habitv.framework.plugin.utils.M3U8Utils;
 
 public class D17PluginManager extends BasePluginProvider { // NO_UCD
 
@@ -94,6 +95,8 @@ public class D17PluginManager extends BasePluginProvider { // NO_UCD
 		String downloaderName;
 		if (url.startsWith(D17Conf.RTMPDUMP_PREFIX)) {
 			downloaderName = D17Conf.RTMDUMP;
+		} else if (url.contains("m3u8")) {
+			downloaderName = D17Conf.FFMPEG;
 		} else {
 			downloaderName = D17Conf.CURL;
 		}
@@ -104,7 +107,7 @@ public class D17PluginManager extends BasePluginProvider { // NO_UCD
 	public void download(final String downloadOuput,
 			final DownloaderDTO downloaders,
 			final CmdProgressionListener listener, final EpisodeDTO episode)
-			throws DownloadFailedException, NoSuchDownloaderException {
+					throws DownloadFailedException, NoSuchDownloaderException {
 		final String videoUrl = findVideoUrl(episode.getUrl());
 		final String downloaderName = getDownloader(videoUrl);
 		final PluginDownloaderInterface pluginDownloader = downloaders
@@ -115,6 +118,7 @@ public class D17PluginManager extends BasePluginProvider { // NO_UCD
 				downloaders.getBinPath(downloaderName));
 		parameters.put(FrameworkConf.CMD_PROCESSOR,
 				downloaders.getCmdProcessor());
+		parameters.put(FrameworkConf.EXTENSION, episode.getCategory().getExtension());
 
 		pluginDownloader.download(videoUrl, downloadOuput, parameters,
 				listener, getProtocol2proxy());
@@ -127,7 +131,7 @@ public class D17PluginManager extends BasePluginProvider { // NO_UCD
 				.parse(getUrlContent(getLink(catUrl)));
 		final Elements select = doc.select(".block-videos");
 		for (final Element divElement : select) {
-			Element link = divElement.child(0).child(0).child(1);
+			final Element link = divElement.child(0).child(0).child(1);
 			final String url = link.child(0).attr("href");
 			final String name = link.text();
 			final CategoryDTO categoryDTO = new CategoryDTO(D17Conf.NAME, name,
@@ -168,7 +172,12 @@ public class D17PluginManager extends BasePluginProvider { // NO_UCD
 						.getTextContent());
 			}
 
-			String videoUrl = q2url.get("HD");
+			String videoUrl = q2url.get("HLS");
+			if (videoUrl == null) {
+				videoUrl = q2url.get("HD");
+			} else {
+				videoUrl = M3U8Utils.keepBestQuality(videoUrl);
+			}
 			if (videoUrl == null) {
 				videoUrl = q2url.get("HAUT_DEBIT");
 			}
