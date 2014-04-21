@@ -10,9 +10,15 @@
 			<arguments>
 			</arguments>
 		</buildCommand>
+		<buildCommand>
+			<name>com.instantiations.assist.eclipse.coverage.instrumentationBuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
 	</buildSpec>
 	<natures>
 		<nature>org.sonar.ide.eclipse.core.sonarNature</nature>
 		<nature>org.eclipse.jdt.core.javanature</nature>
+		<nature>com.instantiations.assist.eclipse.coverage.codeCoverageNature</nature>
 	</natures>
 </projectDescription>
