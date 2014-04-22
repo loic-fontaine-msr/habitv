@@ -139,4 +139,8 @@ public class TrayController implements CoreSubscriber {
 	public void clearExport() {
 		getModel().clearExport();
 	}
+
+	public void reloadPlugin() {
+		getModel().reloadPlugin();
+	}
 }
