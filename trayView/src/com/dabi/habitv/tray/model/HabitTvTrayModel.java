@@ -133,4 +133,8 @@ public class HabitTvTrayModel extends Observable {
 		coreManager.clearExport();
 	}
 
+	public void reloadPlugin() {
+		coreManager.reloadPlugin();
+	}
+
 }

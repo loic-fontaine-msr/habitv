@@ -9,7 +9,7 @@ import com.dabi.habitv.core.dao.GrabConfigDAO;
 import com.dabi.habitv.core.mgr.CoreManager;
 import com.dabi.habitv.framework.plugin.utils.ProcessingThread;
 import com.dabi.habitv.framework.plugin.utils.RetrieverUtils;
-import com.dabi.habitv.framework.updater.UpdateUpdater;
+import com.dabi.habitv.updater.UpdateUpdater;
 
 public final class ConsoleLauncher { // NO_UCD (unused code)
 

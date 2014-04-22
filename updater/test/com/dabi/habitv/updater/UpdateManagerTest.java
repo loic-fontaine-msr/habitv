@@ -6,7 +6,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.dabi.habitv.framework.updater.UpdateManager;
+import com.dabi.habitv.framework.FWKProperties;
+import com.dabi.habitv.framework.FrameworkConf;
 
 public class UpdateManagerTest {
 
@@ -28,9 +29,12 @@ public class UpdateManagerTest {
 
 	@Test
 	public final void testProcess() {
-		final String site = "http://dabiboo.fr/habitv";
-		final UpdateManager updateManager = new UpdateManager(site, System.getProperty("user.dir") + "/habitv");
-		updateManager.process();
+		final String site = "http://dabiboo.free.fr/repository";
+		String version = FWKProperties.getString(FrameworkConf.VERSION);
+		version = "4.0.1";
+		final UpdateManager updateManager = new UpdateManager(site, System.getProperty("user.dir") + "/habitv", FrameworkConf.GROUP_ID,
+				version, true);
+		updateManager.process("provider", "downloader", "exporter");
 	}
 
 }

@@ -3,10 +3,10 @@ package com.dabi.habitv.tray;
 import org.apache.log4j.Logger;
 
 import com.dabi.habitv.framework.plugin.utils.RetrieverUtils;
-import com.dabi.habitv.framework.updater.UpdateUpdater;
 import com.dabi.habitv.tray.controller.TrayController;
 import com.dabi.habitv.tray.model.HabitTvTrayModel;
 import com.dabi.habitv.tray.view.HabiTvTrayView;
+import com.dabi.habitv.updater.UpdateUpdater;
 
 public final class TrayLauncher {
 

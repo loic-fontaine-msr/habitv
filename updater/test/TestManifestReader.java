@@ -33,9 +33,9 @@ public class TestManifestReader {
 
 	@Test
 	public final void test() throws FileNotFoundException, IOException {
-		final JarInputStream jarStream = new JarInputStream(new FileInputStream("test/framework.jar"));
+		final JarInputStream jarStream = new JarInputStream(new FileInputStream("../builder/lib/httpmime-4.1.3.jar"));
 		final Manifest mf = jarStream.getManifest();
-		assertEquals("2.0", mf.getMainAttributes().get(Attributes.Name.IMPLEMENTATION_VERSION));
+		assertEquals("4.1.3", mf.getMainAttributes().get(Attributes.Name.IMPLEMENTATION_VERSION));
 	}
 
 }

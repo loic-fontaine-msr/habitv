@@ -32,7 +32,7 @@ public final class CoreManager {
 
 	private final Config config;
 
-	private final Collection<PluginProviderInterface> providerList;
+	private Collection<PluginProviderInterface> providerList;
 
 	private final Map<String, Integer> buildTaskName2PoolSizeMap;
 
@@ -63,7 +63,7 @@ public final class CoreManager {
 		// set the proxy to each plugin provider
 		for (final PluginProviderInterface provider : providerList) {
 			Map<ProtocolEnum, ProxyDTO> pluginProxy = plugin2protocol2proxy.get(provider.getName());
-			if (pluginProxy==null){
+			if (pluginProxy == null) {
 				pluginProxy = defaultProxyMap;
 			}
 			provider.setProxy(pluginProxy);
@@ -202,6 +202,12 @@ public final class CoreManager {
 
 	public void clearExport() {
 		episodeManager.clearExport();
+	}
+
+	public void reloadPlugin() {
+		final PluginFactory<PluginProviderInterface> pluginProviderFactory = new PluginFactory<>(PluginProviderInterface.class, config.getProviderPluginDir());
+		providerList = pluginProviderFactory.getAllPlugin();
+		episodeManager.setPluginProviderList(providerList);
 	}
 
 }

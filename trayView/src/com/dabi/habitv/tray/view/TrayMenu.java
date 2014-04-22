@@ -85,7 +85,7 @@ public final class TrayMenu extends PopupMenu {
 		redoExport.addActionListener(actionListener);
 		section.add(redoExport);
 
-		MenuItem clearExport = new MenuItem(Messages.getString("TrayMenu.5")); //$NON-NLS-1$
+		final MenuItem clearExport = new MenuItem(Messages.getString("TrayMenu.5")); //$NON-NLS-1$
 		actionListener = new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent actionEvent) {
@@ -126,6 +126,17 @@ public final class TrayMenu extends PopupMenu {
 			public void actionPerformed(final ActionEvent actionEvent) {
 				updateGrabConfig();
 			}
+		};
+		item.addActionListener(actionListener);
+		section.add(item);
+
+		item = new MenuItem(Messages.getString("TrayMenu.13")); //$NON-NLS-1$
+		actionListener = new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent actionEvent) {
+				controller.reloadPlugin();
+			}
+
 		};
 		item.addActionListener(actionListener);
 		section.add(item);
