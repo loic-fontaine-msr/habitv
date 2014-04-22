@@ -16,11 +16,15 @@ public interface FrameworkConf {
 
 	long HUNG_PROCESS_TIME = 180000L;
 
-	String UPDATE_URL = "http://dabiboo.free.fr/habitv";
+	String UPDATE_URL = "http://dabiboo.free.fr/repository";
 
 	String CMD_PROCESSOR = "CMD_PROCESSOR";
 
 	Integer TIME_OUT_MS = 30000;
 
 	String EXTENSION = "#EXTENSION#";
+
+	String GROUP_ID = "com.dabi.habitv";
+
+	String VERSION = "version";
 }
