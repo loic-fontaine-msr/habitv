@@ -4,10 +4,9 @@
 	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<relativePath>../builder</relativePath>
-		<artifactId>builder</artifactId>
 		<groupId>com.dabi.habitv</groupId>
-		<version>3.7.2</version>
+		<artifactId>parent</artifactId>
+		<version>4.0.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>arte</artifactId>
 	<name>arte</name>
@@ -15,49 +14,14 @@
 		<dependency>
 			<groupId>com.dabi.habitv</groupId>
 			<artifactId>framework</artifactId>
-			<version>3.7.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.jsoup</groupId>
 			<artifactId>jsoup</artifactId>
-			<version>1.6.3</version>
 		</dependency>		
 		<dependency>
 			<groupId>rome</groupId>
 			<artifactId>rome</artifactId>
-			<version>1.0</version>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-core</artifactId>
-			<version>2.0.6</version>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
-			<version>2.0.6</version>
-		</dependency>		
+		</dependency>	
 	</dependencies>
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<configuration>
-				<finalName>${project.name}</finalName>
-					<outputDirectory>../builder/pub/provider</outputDirectory>
-					<archive>
-						<manifest>
-							<addClasspath>true</addClasspath>
-							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-						</manifest>
-						<addMavenDescriptor>false</addMavenDescriptor>
-					</archive>						
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
-	<version>3.7.3</version>
-	<description></description>
-	<groupId>com.dabi.habitv</groupId>
 </project>

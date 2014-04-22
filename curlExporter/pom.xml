@@ -4,10 +4,9 @@
 	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<relativePath>../builder</relativePath>
-		<artifactId>builder</artifactId>
 		<groupId>com.dabi.habitv</groupId>
-		<version>3.7.2</version>
+		<artifactId>parent</artifactId>
+		<version>4.0.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>curlExporter</artifactId>
 	<name>curlExporter</name>
@@ -15,46 +14,6 @@
 		<dependency>
 			<groupId>com.dabi.habitv</groupId>
 			<artifactId>framework</artifactId>
-			<version>3.7.2</version>
 		</dependency>
 	</dependencies>
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<configuration>
-				<finalName>${project.name}</finalName>
-					<outputDirectory>../builder/pub/exporter</outputDirectory>
-					<archive>
-						<manifest>
-							<addClasspath>true</addClasspath>
-							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-						</manifest>
-						<addMavenDescriptor>false</addMavenDescriptor>
-					</archive>						
-				</configuration>
-			</plugin>
-			<plugin>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<executions>
-					<execution>
-						<phase>install</phase>
-						<configuration>
-							<tasks>
-								<copy todir="../builder/pub/bin">
-									<fileset dir="exe" />
-								</copy>
-							</tasks>
-						</configuration>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
-	<version>3.7.2</version>
-	<groupId>com.dabi.habitv</groupId>
 </project>
