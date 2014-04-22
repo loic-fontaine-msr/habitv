@@ -32,8 +32,8 @@ public class UpdateManagerTest {
 		final String site = "http://dabiboo.free.fr/repository";
 		String version = FWKProperties.getString(FrameworkConf.VERSION);
 		version = "4.0.1";
-		final UpdateManager updateManager = new UpdateManager(site, System.getProperty("user.dir") + "/habitv", FrameworkConf.GROUP_ID,
-				version, true);
+		final UpdateManager updateManager = new UpdateManager(site, System.getProperty("user.dir") + "target/habitv", FrameworkConf.GROUP_ID,
+				version, false);
 		updateManager.process("provider", "downloader", "exporter");
 	}
 
