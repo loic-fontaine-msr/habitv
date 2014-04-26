@@ -49,9 +49,6 @@ class PluginsLoader<P extends PluginBase> {
 	}
 
 	PluginsLoader(final Class<P> pluginInterface, final File[] files) {
-		if (files == null || files.length == 0) {
-			throw new IllegalArgumentException("files lists can't be empty");
-		}
 		this.files = Arrays.asList(files);
 		this.classPluginProviders = new LinkedList<>();
 		this.pluginInterface = pluginInterface;
@@ -76,10 +73,6 @@ class PluginsLoader<P extends PluginBase> {
 	}
 
 	private void initializeLoader() {
-		// On vérifie que la liste des plugins à charger à été initialisé
-		if (this.files == null || this.files.size() == 0) {
-			throw new TechnicalException("No files");
-		}
 
 		// Pour eviter le double chargement des plugins
 		if (this.classPluginProviders.size() != 0) {

@@ -18,4 +18,9 @@ public class FWKProperties {
 			return '!' + key + '!';
 		}
 	}
+	
+	public static String getVersion() {
+		final String version = System.getProperty("habitv.version");
+		return version == null ? getString(FrameworkConf.VERSION) : version;
+	}
 }

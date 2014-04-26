@@ -1,16 +1,19 @@
-tester en mode complet
-tester dl
-
+bug maj
 updatable plugin
+tester dl
+statut en libelle
 mutualiser entre plugin curl, ffmpeg
-autoriser snapshot en conf
+
+pas d'ordre dans config
 
 api fixe
 
 plugin tf1
 
 IHM sélection des catégories
+
 IHM suivi des téléchargements
+
 nouveau tray
 
 étudier captvty dl

@@ -37,7 +37,8 @@ public class Updater {
 
 	private final Publisher<UpdatePluginEvent> updatePublisher;
 
-	public Updater(final String currentDir, final String groupId, final String coreVersion, final boolean autoriseSnapshot,
+	public Updater(final String currentDir, final String groupId,
+			final String coreVersion, final boolean autoriseSnapshot,
 			final Publisher<UpdatePluginEvent> updatePublisher) {
 		this.currentDir = currentDir;
 		this.groupId = groupId;
@@ -46,7 +47,8 @@ public class Updater {
 		this.updatePublisher = updatePublisher;
 	}
 
-	public void update(final String folderToUpdate, final String... filesToUpdate) {
+	public void update(final String folderToUpdate,
+			final String... filesToUpdate) {
 
 		final String folderPath = currentDir + "/" + folderToUpdate;
 		final File currentFolder = new File(folderPath);
@@ -55,7 +57,8 @@ public class Updater {
 		} else {
 			final List<String> filesToUpdateList = Arrays.asList(filesToUpdate);
 			for (final File folderFile : currentFolder.listFiles()) {
-				if (!filesToUpdateList.contains(folderFile.getName().replace(".jar", ""))) {
+				if (!filesToUpdateList.contains(folderFile.getName().replace(
+						".jar", ""))) {
 					folderFile.delete();
 				}
 			}
@@ -63,7 +66,8 @@ public class Updater {
 
 		for (final String fileToUpdate : filesToUpdate) {
 			try {
-				updateFile(folderToUpdate, folderPath, currentFolder, fileToUpdate);
+				updateFile(folderToUpdate, folderPath, currentFolder,
+						fileToUpdate);
 			} catch (final Exception e) {
 				LOG.error("", e);
 			}
@@ -71,13 +75,24 @@ public class Updater {
 
 	}
 
-	private void updateFile(final String folderToUpdate, final String folderPath, final File currentFolder, final String fileToUpdate) {
-		updatePublisher.addNews(new UpdatePluginEvent(fileToUpdate, null, UpdatePluginStateEnum.CHECKING));
-		final ArtifactVersion artifactVersion = FindArtifactUtils.findLastVersionUrl(groupId, fileToUpdate, coreVersion, autoriseSnapshot);
-		final File currentFile = new File(folderPath + "/" + fileToUpdate + ".jar");
+	private void updateFile(final String folderToUpdate,
+			final String folderPath, final File currentFolder,
+			final String fileToUpdate) {
+		updatePublisher.addNews(new UpdatePluginEvent(fileToUpdate, null,
+				UpdatePluginStateEnum.CHECKING));
+		final ArtifactVersion artifactVersion = FindArtifactUtils
+				.findLastVersionUrl(groupId, fileToUpdate, coreVersion,
+						autoriseSnapshot);
+		if (artifactVersion == null) {
+			LOG.info("Nothing found for " + fileToUpdate);
+			return;
+		}
+		final File currentFile = new File(folderPath + "/" + fileToUpdate
+				+ ".jar");
 		if (currentFile.exists()) {
 			final String currentVersion = getCurrentVersion(currentFile);//
-			if (currentVersion == null || currentVersion.contains("-SNAPSHOT") || !currentVersion.equals(artifactVersion.getVersion())) {
+			if (currentVersion == null || currentVersion.contains("-SNAPSHOT")
+					|| !currentVersion.equals(artifactVersion.getVersion())) {
 				updateFile(artifactVersion, currentFile);
 			}
 		} else {
@@ -86,29 +101,43 @@ public class Updater {
 	}
 
 	private String getCurrentVersion(final File currentFile) {
-		try (JarInputStream jarStream = new JarInputStream(new FileInputStream(currentFile));) {
+		try (JarInputStream jarStream = new JarInputStream(new FileInputStream(
+				currentFile));) {
 			final Manifest mf = jarStream.getManifest();
-			return (String) mf.getMainAttributes().get(Attributes.Name.IMPLEMENTATION_VERSION);
+			return (String) mf.getMainAttributes().get(
+					Attributes.Name.IMPLEMENTATION_VERSION);
 		} catch (final IOException e) {
 			throw new TechnicalException(e);
 		}
 	}
 
-	private void updateFile(final ArtifactVersion artifactVersion, final File current) {
-		LOG.info("Update of plugin " + artifactVersion.getArtifactId() + " version " + artifactVersion.getVersion());
-		updatePublisher.addNews(new UpdatePluginEvent(artifactVersion.getArtifactId(), artifactVersion.getVersion(), UpdatePluginStateEnum.DOWNLOADING));
+	private void updateFile(final ArtifactVersion artifactVersion,
+			final File current) {
+		LOG.info("Update of plugin " + artifactVersion.getArtifactId()
+				+ " version " + artifactVersion.getVersion());
+		updatePublisher.addNews(new UpdatePluginEvent(artifactVersion
+				.getArtifactId(), artifactVersion.getVersion(),
+				UpdatePluginStateEnum.DOWNLOADING));
 		File newVersion;
 		try {
-			newVersion = new File(downloadFile(artifactVersion.getUrl(), current.getPath() + ".tmp"));
+			newVersion = new File(downloadFile(artifactVersion.getUrl(),
+					current.getPath() + ".tmp"));
 		} catch (final IOException e) {
-			LOG.error("Error while updating plugin " + artifactVersion.getArtifactId() + " version " + artifactVersion.getVersion());
-			updatePublisher.addNews(new UpdatePluginEvent(artifactVersion.getArtifactId(), artifactVersion.getVersion(), UpdatePluginStateEnum.ERROR));
+			LOG.error("Error while updating plugin "
+					+ artifactVersion.getArtifactId() + " version "
+					+ artifactVersion.getVersion());
+			updatePublisher.addNews(new UpdatePluginEvent(artifactVersion
+					.getArtifactId(), artifactVersion.getVersion(),
+					UpdatePluginStateEnum.ERROR));
 			throw new TechnicalException(e);
 		}
 		updateFile(current, newVersion);
 
-		LOG.info("Update of plugin " + artifactVersion.getArtifactId() + " version " + artifactVersion.getVersion() + " done");
-		updatePublisher.addNews(new UpdatePluginEvent(artifactVersion.getArtifactId(), artifactVersion.getVersion(), UpdatePluginStateEnum.DONE));
+		LOG.info("Update of plugin " + artifactVersion.getArtifactId()
+				+ " version " + artifactVersion.getVersion() + " done");
+		updatePublisher.addNews(new UpdatePluginEvent(artifactVersion
+				.getArtifactId(), artifactVersion.getVersion(),
+				UpdatePluginStateEnum.DONE));
 	}
 
 	private void updateFile(final File current, final File newVersion) {
@@ -134,7 +163,8 @@ public class Updater {
 	 * @return
 	 * @throws IOException
 	 */
-	private String downloadFile(final String filePath, final String destination) throws IOException {
+	private String downloadFile(final String filePath, final String destination)
+			throws IOException {
 		URLConnection connection = null;
 		InputStream is = null;
 		FileOutputStream destinationFile = null;
@@ -167,7 +197,8 @@ public class Updater {
 			// Tant que l'on n'est pas à la fin du fichier, on récupère des
 			// données
 			while (deplacement < length) {
-				currentBit = is.read(data, deplacement, data.length - deplacement);
+				currentBit = is.read(data, deplacement, data.length
+						- deplacement);
 				if (currentBit == -1) {
 					break;
 				}
@@ -176,7 +207,9 @@ public class Updater {
 
 			// Si on est pas arrivé à la fin du fichier, on lance une exception
 			if (deplacement != length) {
-				throw new IOException("Le fichier n'a pas été lu en entier (seulement " + deplacement + " sur " + length + ")");
+				throw new IOException(
+						"Le fichier n'a pas été lu en entier (seulement "
+								+ deplacement + " sur " + length + ")");
 			}
 
 			// On crée un stream sortant vers la destination

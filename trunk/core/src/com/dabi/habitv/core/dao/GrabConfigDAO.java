@@ -20,11 +20,8 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
-import org.apache.log4j.Logger;
-
 import com.dabi.habitv.core.config.HabitTvConf;
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
-import com.dabi.habitv.framework.plugin.exception.InvalidCategoryException;
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
 import com.dabi.habitv.grabconfig.entities.Category;
 import com.dabi.habitv.grabconfig.entities.Channel;
@@ -34,7 +31,6 @@ import com.dabi.habitv.utils.FileUtils;
 
 public class GrabConfigDAO {
 
-	private static final Logger LOGGER = Logger.getLogger(GrabConfigDAO.class);
 	private final String grabConfigFile;
 
 	public GrabConfigDAO(final String grabConfigFile) {
@@ -42,24 +38,25 @@ public class GrabConfigDAO {
 		this.grabConfigFile = grabConfigFile;
 	}
 
-	public void saveGrabConfig(final Map<String, Set<CategoryDTO>> channel2Categories) {
+	public void saveGrabConfig(
+			final Map<String, Set<CategoryDTO>> channel2Categories) {
 		final GrabConfig config = new GrabConfig();
 		addChannels(channel2Categories, config);
 		marshal(config);
 	}
 
-	private void addChannels(final Map<String, Set<CategoryDTO>> channel2Categories, final GrabConfig config) {
-		for (final Entry<String, Set<CategoryDTO>> entry : channel2Categories.entrySet()) {
+	private void addChannels(
+			final Map<String, Set<CategoryDTO>> channel2Categories,
+			final GrabConfig config) {
+		for (final Entry<String, Set<CategoryDTO>> entry : channel2Categories
+				.entrySet()) {
 			final Channel channel = new Channel();
 			channel.setName(entry.getKey());
 			channel.setStatus(StatusEnum.NEW.ordinal());
 			for (final CategoryDTO categoryDTO : entry.getValue()) {
-				try {
-					categoryDTO.check();
-				} catch (final InvalidCategoryException e) {
-					LOGGER.error("Invalid Category" + categoryDTO, e);
+				if (categoryDTO.check()) {
+					channel.getCategory().add(buildCategory(categoryDTO));
 				}
-				channel.getCategory().add(buildCategory(categoryDTO));
 			}
 			config.getChannel().add(channel);
 		}
@@ -71,7 +68,7 @@ public class GrabConfigDAO {
 		category.setName(categoryDTO.getName());
 		category.setExtension(categoryDTO.getExtension());
 		category.setToDownload(false);
-		category.setStatus(StatusEnum.NEW.ordinal());
+		category.setStatus(StatusEnum.NEW.name());
 		for (final String exclude : categoryDTO.getExclude()) {
 			category.getExclude().add(exclude);
 		}
@@ -88,10 +85,13 @@ public class GrabConfigDAO {
 		final JAXBContext jaxbContext;
 		FileOutputStream outputFile = null;
 		try {
-			jaxbContext = JAXBContext.newInstance(GrabConfig.class.getPackage().getName());
+			jaxbContext = JAXBContext.newInstance(GrabConfig.class.getPackage()
+					.getName());
 			final Marshaller marshaller = jaxbContext.createMarshaller();
-			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-			marshaller.setProperty(Marshaller.JAXB_ENCODING, HabitTvConf.ENCODING);
+			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT,
+					Boolean.TRUE);
+			marshaller.setProperty(Marshaller.JAXB_ENCODING,
+					HabitTvConf.ENCODING);
 			outputFile = new FileOutputStream(grabConfigFile);
 			marshaller.marshal(config, outputFile);
 		} catch (JAXBException | FileNotFoundException e) {
@@ -107,18 +107,26 @@ public class GrabConfigDAO {
 		}
 	}
 
-	private static Set<CategoryDTO> buildCategoryListDTO(final LoadModeEnum loadMode, final String channelName, final List<Category> categories) {
+	private static Set<CategoryDTO> buildCategoryListDTO(
+			final LoadModeEnum loadMode, final String channelName,
+			final List<Category> categories) {
 		final Set<CategoryDTO> categoryDTOs = new HashSet<>(categories.size());
 		CategoryDTO categoryDTO;
 		for (final Category category : categories) {
-			final Set<CategoryDTO> subCategoriesDTO = buildCategoryListDTO(loadMode, channelName, category.getCategory());
-			if (category.getToDownload() == null || category.getToDownload() || !subCategoriesDTO.isEmpty() || loadMode.equals(LoadModeEnum.ALL)) {
-				categoryDTO = new CategoryDTO(channelName, category.getName(), category.getId(), category.getInclude(), category.getExclude(),
-						category.getExtension());
+			final Set<CategoryDTO> subCategoriesDTO = buildCategoryListDTO(
+					loadMode, channelName, category.getCategory());
+			if (category.getToDownload() == null || category.getToDownload()
+					|| !subCategoriesDTO.isEmpty()
+					|| loadMode.equals(LoadModeEnum.ALL)) {
+				categoryDTO = new CategoryDTO(channelName, category.getName(),
+						category.getId(), category.getInclude(),
+						category.getExclude(), category.getExtension());
 				categoryDTO.addSubCategories(subCategoriesDTO);
-				if (category.getParameter() != null && !category.getParameter().isEmpty()) {
+				if (category.getParameter() != null
+						&& !category.getParameter().isEmpty()) {
 					for (final Parameter parameter : category.getParameter()) {
-						categoryDTO.addParameter(parameter.getKey(), parameter.getValue());
+						categoryDTO.addParameter(parameter.getKey(),
+								parameter.getValue());
 					}
 				}
 				categoryDTOs.add(categoryDTO);
@@ -130,10 +138,13 @@ public class GrabConfigDAO {
 	private GrabConfig unmarshal() {
 		GrabConfig grabConfig = null;
 		try {
-			final JAXBContext jaxbContext = JAXBContext.newInstance(GrabConfig.class.getPackage().getName());
+			final JAXBContext jaxbContext = JAXBContext
+					.newInstance(GrabConfig.class.getPackage().getName());
 			final Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 			FileUtils.setValidation(unmarshaller, HabitTvConf.GRAB_CONF_XSD);
-			grabConfig = ((GrabConfig) unmarshaller.unmarshal(new InputStreamReader(new FileInputStream(grabConfigFile), HabitTvConf.ENCODING)));
+			grabConfig = ((GrabConfig) unmarshaller
+					.unmarshal(new InputStreamReader(new FileInputStream(
+							grabConfigFile), HabitTvConf.ENCODING)));
 		} catch (final JAXBException e) {
 			throw new TechnicalException(e);
 		} catch (final UnsupportedEncodingException e) {
@@ -144,10 +155,12 @@ public class GrabConfigDAO {
 		return grabConfig;
 	}
 
-	private Map<String, Set<CategoryDTO>> buildCategoryDTO(final GrabConfig grabConfig, final LoadModeEnum loadMode) {
+	private Map<String, Set<CategoryDTO>> buildCategoryDTO(
+			final GrabConfig grabConfig, final LoadModeEnum loadMode) {
 		final Map<String, Set<CategoryDTO>> channel2Category = new HashMap<>();
 		for (final Channel channel : grabConfig.getChannel()) {
-			final Set<CategoryDTO> buildCategoryListDTO = buildCategoryListDTO(loadMode, channel.getName(), channel.getCategory());
+			final Set<CategoryDTO> buildCategoryListDTO = buildCategoryListDTO(
+					loadMode, channel.getName(), channel.getCategory());
 			if (!buildCategoryListDTO.isEmpty()) {
 				channel2Category.put(channel.getName(), buildCategoryListDTO);
 			}
@@ -171,12 +184,15 @@ public class GrabConfigDAO {
 		return (new File(grabConfigFile)).exists();
 	}
 
-	public void updateGrabConfig(final Map<String, Set<CategoryDTO>> channel2Categories) {
-		final HashMap<String, Set<CategoryDTO>> channel2CategoriesTemp = new HashMap<>(channel2Categories);
+	public void updateGrabConfig(
+			final Map<String, Set<CategoryDTO>> channel2Categories) {
+		final HashMap<String, Set<CategoryDTO>> channel2CategoriesTemp = new HashMap<>(
+				channel2Categories);
 		final GrabConfig grabConfig = unmarshal();
 		StatusEnum channelStatus;
 		for (final Channel channel : grabConfig.getChannel()) {
-			final Set<CategoryDTO> categoryChannel = channel2CategoriesTemp.get(channel.getName());
+			final Set<CategoryDTO> categoryChannel = channel2CategoriesTemp
+					.get(channel.getName());
 			if (categoryChannel != null) {
 				updateCategory(channel.getCategory(), categoryChannel);
 				channel2CategoriesTemp.remove(channel.getName());
@@ -190,24 +206,27 @@ public class GrabConfigDAO {
 		marshal(grabConfig);
 	}
 
-	private void updateCategory(final List<Category> categoryList, final Collection<CategoryDTO> categoryDTOList) {
+	private void updateCategory(final List<Category> categoryList,
+			final Collection<CategoryDTO> categoryDTOList) {
 		final Map<String, CategoryDTO> catNameToCat = new HashMap<>();
 		for (final CategoryDTO categoryDTO : categoryDTOList) {
 			catNameToCat.put(categoryDTO.getName(), categoryDTO);
 		}
 		StatusEnum statusEnum;
 		for (final Category category : categoryList) {
-			final CategoryDTO associatedCatDTO = catNameToCat.get(category.getName());
+			final CategoryDTO associatedCatDTO = catNameToCat.get(category
+					.getName());
 			if (associatedCatDTO != null) {
 				catNameToCat.remove(category.getName());
 				if (!category.getCategory().isEmpty()) {
-					updateCategory(category.getCategory(), associatedCatDTO.getSubCategories());
+					updateCategory(category.getCategory(),
+							associatedCatDTO.getSubCategories());
 				}
 				statusEnum = StatusEnum.EXIST;
 			} else {
 				statusEnum = StatusEnum.DELETED;
 			}
-			category.setStatus(statusEnum.ordinal());
+			category.setStatus(statusEnum.name());
 		}
 		for (final CategoryDTO categoryDTO : catNameToCat.values()) {
 			categoryList.add(buildCategory(categoryDTO));

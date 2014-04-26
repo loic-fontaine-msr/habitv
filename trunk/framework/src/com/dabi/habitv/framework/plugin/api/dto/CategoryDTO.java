@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.dabi.habitv.framework.plugin.exception.InvalidCategoryException;
 import com.dabi.habitv.framework.plugin.utils.CheckUtils;
 
 /**
@@ -55,8 +54,9 @@ public class CategoryDTO implements Comparable<CategoryDTO>, Serializable {
 	 * @param extension
 	 *            the extension of the files in this category
 	 */
-	public CategoryDTO(final String channel, final String name, final String identifier, final List<String> include, final List<String> exclude,
-			final String extension) {
+	public CategoryDTO(final String channel, final String name,
+			final String identifier, final List<String> include,
+			final List<String> exclude, final String extension) {
 		super();
 		this.channel = channel;
 		this.name = name;
@@ -78,7 +78,8 @@ public class CategoryDTO implements Comparable<CategoryDTO>, Serializable {
 	 * @param extension
 	 *            the extension of the files in this category
 	 */
-	public CategoryDTO(final String channel, final String name, final String identifier, final String extension) {
+	public CategoryDTO(final String channel, final String name,
+			final String identifier, final String extension) {
 		super();
 		this.channel = channel;
 		this.name = name;
@@ -209,16 +210,11 @@ public class CategoryDTO implements Comparable<CategoryDTO>, Serializable {
 
 	/**
 	 * Check the category
+	 * @return 
 	 * 
-	 * @throws InvalidCategoryException
 	 */
-	public void check() throws InvalidCategoryException {
-		if (!CheckUtils.checkMinSize(identifier)) {
-			throw new InvalidCategoryException(identifier, InvalidCategoryException.CauseField.IDENTIFIER);
-		}
-		if (!CheckUtils.checkMinSize(name)) {
-			throw new InvalidCategoryException(name, InvalidCategoryException.CauseField.NAME);
-		}
+	public boolean check() {
+		return CheckUtils.checkMinSize(identifier) && CheckUtils.checkMinSize(name);
 	}
 
 	/**
