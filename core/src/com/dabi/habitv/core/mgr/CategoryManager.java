@@ -17,6 +17,7 @@ import com.dabi.habitv.core.task.SearchCategoryResult;
 import com.dabi.habitv.core.task.SearchCategoryTask;
 import com.dabi.habitv.core.task.TaskMgr;
 import com.dabi.habitv.core.task.TaskMgrListener;
+import com.dabi.habitv.core.task.TaskTypeEnum;
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
 import com.dabi.habitv.framework.plugin.api.provider.PluginProviderInterface;
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
@@ -32,7 +33,8 @@ public class CategoryManager extends AbstractManager {
 	CategoryManager(final Collection<PluginProviderInterface> pluginProviderList, final Map<String, Integer> taskName2PoolSize) {
 		super(pluginProviderList);
 		// task mgrs
-		searchCategoryMgr = new TaskMgr<SearchCategoryTask, SearchCategoryResult>(taskName2PoolSize.get("category"), buildCategoryTaskMgrListener(), null);
+		searchCategoryMgr = new TaskMgr<SearchCategoryTask, SearchCategoryResult>(TaskTypeEnum.category.getPoolSize(taskName2PoolSize),
+				buildCategoryTaskMgrListener(), null);
 		// publisher
 		searchCategoryPublisher = new Publisher<>();
 	}

@@ -88,7 +88,7 @@ public class GrabConfigDAO {
 		final JAXBContext jaxbContext;
 		FileOutputStream outputFile = null;
 		try {
-			jaxbContext = JAXBContext.newInstance(HabitTvConf.GRAB_CONF_PACKAGE_NAME);
+			jaxbContext = JAXBContext.newInstance(GrabConfig.class.getPackage().getName());
 			final Marshaller marshaller = jaxbContext.createMarshaller();
 			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
 			marshaller.setProperty(Marshaller.JAXB_ENCODING, HabitTvConf.ENCODING);
@@ -130,7 +130,7 @@ public class GrabConfigDAO {
 	private GrabConfig unmarshal() {
 		GrabConfig grabConfig = null;
 		try {
-			final JAXBContext jaxbContext = JAXBContext.newInstance(HabitTvConf.GRAB_CONF_PACKAGE_NAME);
+			final JAXBContext jaxbContext = JAXBContext.newInstance(GrabConfig.class.getPackage().getName());
 			final Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 			FileUtils.setValidation(unmarshaller, HabitTvConf.GRAB_CONF_XSD);
 			grabConfig = ((GrabConfig) unmarshaller.unmarshal(new InputStreamReader(new FileInputStream(grabConfigFile), HabitTvConf.ENCODING)));

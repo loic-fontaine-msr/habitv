@@ -4,9 +4,9 @@ import java.util.Observable;
 
 import org.apache.log4j.Logger;
 
-import com.dabi.habitv.config.entities.Config;
-import com.dabi.habitv.core.config.ConfigAccess;
 import com.dabi.habitv.core.config.HabitTvConf;
+import com.dabi.habitv.core.config.UserConfig;
+import com.dabi.habitv.core.config.XMLUserConfig;
 import com.dabi.habitv.core.dao.GrabConfigDAO;
 import com.dabi.habitv.core.event.SearchEvent;
 import com.dabi.habitv.core.event.SearchStateEnum;
@@ -20,7 +20,7 @@ public class HabitTvTrayModel extends Observable {
 
 	private final CoreManager coreManager;
 
-	private final Config config = ConfigAccess.initConfig();
+	private final UserConfig userConfig = XMLUserConfig.initConfig();
 
 	private final ProgressionModel progressionModel;
 
@@ -31,15 +31,16 @@ public class HabitTvTrayModel extends Observable {
 	public HabitTvTrayModel() {
 		super();
 		grabConfigDAO = new GrabConfigDAO(HabitTvConf.GRABCONFIG_XML_FILE);
-		coreManager = new CoreManager(config);
+		coreManager = new CoreManager(userConfig);
 		progressionModel = new ProgressionModel();
 	}
 
 	public void attach(final CoreSubscriber coreSubscriber) {
 		final SubscriberAdapter subscriberAdapter = new SubscriberAdapter(coreSubscriber);
-		coreManager.getCategoryManager().getSearchCategoryPublisher().attach(subscriberAdapter.getSearchCategorySubscriber());
-		coreManager.getEpisodeManager().getRetreivePublisher().attach(subscriberAdapter.getRetreiveSubscriber());
-		coreManager.getEpisodeManager().getSearchPublisher().attach(subscriberAdapter.getSearchSubscriber());
+		coreManager.getCategoryManager().getSearchCategoryPublisher().attach(subscriberAdapter.buildSearchCategorySubscriber());
+		coreManager.getEpisodeManager().getRetreivePublisher().attach(subscriberAdapter.buildRetreiveSubscriber());
+		coreManager.getEpisodeManager().getSearchPublisher().attach(subscriberAdapter.buildSearchSubscriber());
+		coreManager.getUpdateManager().getUpdatePublisher().attach(subscriberAdapter.buildUpdateSubscriber());
 	}
 
 	public ProgressionModel getProgressionModel() {
@@ -53,11 +54,7 @@ public class HabitTvTrayModel extends Observable {
 			public void run() {
 				boolean interrupted = false;
 				final long confDemonTime;
-				if (config.getDemonTime() == null) {
-					confDemonTime = HabitTvConf.DEFAULT_DEMON_TIME_SEC;
-				} else {
-					confDemonTime = config.getDemonTime();
-				}
+				confDemonTime = userConfig.getDemonTime();
 				final long demonTime = confDemonTime * 1000L;
 				boolean still = true;
 				// demon mode
@@ -113,8 +110,8 @@ public class HabitTvTrayModel extends Observable {
 		progressionModel.clear();
 	}
 
-	public Config getConfig() {
-		return config;
+	public UserConfig getUserConfig() {
+		return userConfig;
 	}
 
 	public void updateGrabConfig() {
@@ -133,8 +130,8 @@ public class HabitTvTrayModel extends Observable {
 		coreManager.clearExport();
 	}
 
-	public void reloadPlugin() {
-		coreManager.reloadPlugin();
+	public void update() {
+		coreManager.update();
 	}
 
 }

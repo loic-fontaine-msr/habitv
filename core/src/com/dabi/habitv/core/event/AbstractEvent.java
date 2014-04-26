@@ -4,6 +4,10 @@ public abstract class AbstractEvent {
 
 	private Throwable exception;
 
+	AbstractEvent() {
+		super();
+	}
+
 	AbstractEvent(final Throwable exception) {
 		super();
 		this.exception = exception;

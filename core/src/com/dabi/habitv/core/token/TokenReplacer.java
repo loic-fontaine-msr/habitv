@@ -14,7 +14,6 @@ import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 
-import com.dabi.habitv.core.config.HabitTvConf;
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
 import com.dabi.habitv.utils.FileUtils;
 
@@ -117,12 +116,7 @@ public final class TokenReplacer {
 	}
 
 	public static void setCutSize(final Integer cutSize) {
-		final int size;
-		if (cutSize == null) {
-			size = HabitTvConf.DEFAULT_CUT_SIZE;
-		} else {
-			size = cutSize;
-		}
+
 		for (final Entry<String, Replacer> ref2Replacer : new ArrayList<>(REF2REPLACER.entrySet())) {
 			String key = ref2Replacer.getKey();
 			// remove last #
@@ -132,7 +126,7 @@ public final class TokenReplacer {
 				@Override
 				public String replace(final EpisodeDTO episode, final List<String> params) {
 					final String replaced = ref2Replacer.getValue().replace(episode, params);
-					return cut(size, replaced);
+					return cut(cutSize, replaced);
 				}
 
 			});

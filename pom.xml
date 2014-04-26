@@ -21,14 +21,13 @@
 	<distributionManagement>
 		<repository>
 			<id>ftp-repository</id>
-			<url>ftp://ftpperso.free.fr/repository</url>
+			<url>ftp://dabiboo.free.fr/repository</url>
 		</repository>
   </distributionManagement>	
 	
 	<modules>
 		<module>framework</module>	
 		<module>core</module>
-		<module>updater</module>
 		<module>consoleView</module>
 		<module>trayView</module>
 		
@@ -159,6 +158,7 @@
             <index>true</index>
             <manifest>
               <addClasspath>true</addClasspath>
+			  <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
             </manifest>
             <manifestEntries>
               <version>${project.version}</version>

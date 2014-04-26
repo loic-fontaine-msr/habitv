@@ -61,12 +61,10 @@ public final class EpisodeManager extends AbstractManager implements TaskAdder {
 		super(pluginProviderList);
 
 		// task mgrs
-		retreiveMgr = new TaskMgr<RetrieveTask, Object>(taskName2PoolSize.get(TaskTypeEnum.retreive.toString()), buildRetreiveTaskMgrListener(),
-				taskName2PoolSize);
-		downloadMgr = new TaskMgr<DownloadTask, Object>(taskName2PoolSize.get(TaskTypeEnum.download.toString()), buildDownloadTaskMgrListener(),
-				taskName2PoolSize);
-		exportMgr = new TaskMgr<ExportTask, Object>(taskName2PoolSize.get(TaskTypeEnum.export.toString()), buildExportTaskMgrListener(), taskName2PoolSize);
-		searchMgr = new TaskMgr<SearchTask, Object>(taskName2PoolSize.get(TaskTypeEnum.search.toString()), buildSearchTaskMgrListener(), taskName2PoolSize);
+		retreiveMgr = new TaskMgr<RetrieveTask, Object>(TaskTypeEnum.retreive.getPoolSize(taskName2PoolSize), buildRetreiveTaskMgrListener(), taskName2PoolSize);
+		downloadMgr = new TaskMgr<DownloadTask, Object>(TaskTypeEnum.download.getPoolSize(taskName2PoolSize), buildDownloadTaskMgrListener(), taskName2PoolSize);
+		exportMgr = new TaskMgr<ExportTask, Object>(TaskTypeEnum.export.getPoolSize(taskName2PoolSize), buildExportTaskMgrListener(), taskName2PoolSize);
+		searchMgr = new TaskMgr<SearchTask, Object>(TaskTypeEnum.search.getPoolSize(taskName2PoolSize), buildSearchTaskMgrListener(), taskName2PoolSize);
 		// publisher
 		retreivePublisher = new Publisher<>();
 		searchPublisher = new Publisher<>();
@@ -162,7 +160,7 @@ public final class EpisodeManager extends AbstractManager implements TaskAdder {
 			final Integer attempts = (attemptsM == null) ? 0 : attemptsM;
 			if (tooManyAttempts(attempts)) {
 				state = TaskState.TO_MANY_FAILED;
-				//reinit counter
+				// reinit counter
 				downloadAttempts.remove(retreiveTask.getEpisode());
 			} else {
 

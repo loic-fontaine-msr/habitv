@@ -1,37 +1,28 @@
 package com.dabi.habitv.provider.beinsport;
 
-class BeinSportConfCst {
+interface BeinSportConf {
 
-	private interface IBeinSportConf {
+	String NAME = "beinsport";
 
-		String NAME = "beinsport";
+	String EXTENSION = "mp4";
 
-		String EXTENSION = "mp4";
+	String CURL = "curl";
 
-		String CURL = "curl";
+	String RTMDUMP = "rtmpdump";
 
-		String RTMDUMP = "rtmpdump";
+	String VIDEOS_CATEGORY = "video";
 
-		String VIDEOS_CATEGORY = "video";
+	String VIDEOS_URL = "http://www.beinsport.fr/videos/page/1/size/50";
 
-		String VIDEOS_URL = "http://www.beinsport.fr/videos/page/1/size/50";
+	String VIDEOS_URL_RSS = "http://beinsports.fr/videos.rss";
 
-		String VIDEOS_URL_RSS = "http://beinsports.fr/videos.rss";
+	String REPLAY_CATEGORY = "replay";
 
-		String REPLAY_CATEGORY = "replay";
+	String REPLAY_URL = "http://www.beinsport.fr/replay";
 
-		String REPLAY_URL = "http://www.beinsport.fr/replay";
+	String HOME_URL = "http://www.beinsport.fr/";
 
-		String HOME_URL = "http://www.beinsport.fr/";
+	String RTMPDUMP_CMD2 = "-r \"#PROTOCOL#//#HOST#/#CONTEXT_ROOT#\" -a \"#CONTEXT_ROOT#\" -f \"WIN 11,3,300,265\" -W \"http://www.beinsport.fr/ptvFlash/unifiedplayer/adaptive_vod/UnifiedPlayer.swf\" -y \"mp4:#VIDEO_URL#\" -o \"#FILE_DEST#\"";
 
-		String RTMPDUMP_CMD2 = "-r \"#PROTOCOL#//#HOST#/#CONTEXT_ROOT#\" -a \"#CONTEXT_ROOT#\" -f \"WIN 11,3,300,265\" -W \"http://www.beinsport.fr/ptvFlash/unifiedplayer/adaptive_vod/UnifiedPlayer.swf\" -y \"mp4:#VIDEO_URL#\" -o \"#FILE_DEST#\"";
-
-		String XML_INFO = "http://www.beinsport.fr/vodConfig.xml/videoId/";
-	}
-
-	public final class BeinSportConf implements IBeinSportConf {
-
-		private BeinSportConf() {
-		}
-	}
+	String XML_INFO = "http://www.beinsport.fr/vodConfig.xml/videoId/";
 }

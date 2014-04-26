@@ -39,7 +39,6 @@ import com.dabi.habitv.framework.plugin.exception.NoSuchDownloaderException;
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
 import com.dabi.habitv.framework.plugin.utils.SoccerUtils;
-import com.dabi.habitv.provider.beinsport.BeinSportConfCst.BeinSportConf;
 import com.sun.syndication.feed.synd.SyndEnclosure;
 import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.feed.synd.SyndFeed;

@@ -3,6 +3,7 @@ package com.dabi.habitv.utils;
 import java.io.InputStream;
 import java.text.Normalizer;
 
+import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
@@ -34,6 +35,16 @@ public final class FileUtils {
 	}
 
 	public static void setValidation(final Unmarshaller unmarshaller, final String xsdFile) {
+		final Schema schema = buildSchema(xsdFile);
+		unmarshaller.setSchema(schema);
+	}
+
+	public static void setValidation(final Marshaller unmarshaller, final String xsdFile) {
+		final Schema schema = buildSchema(xsdFile);
+		unmarshaller.setSchema(schema);
+	}
+
+	private static Schema buildSchema(final String xsdFile) {
 		final SchemaFactory schemaFactory = SchemaFactory.newInstance(javax.xml.XMLConstants.W3C_XML_SCHEMA_NS_URI);
 		final Schema schema;
 		try {
@@ -41,7 +52,7 @@ public final class FileUtils {
 		} catch (final SAXException e) {
 			throw new TechnicalException(e);
 		}
-		unmarshaller.setSchema(schema);
+		return schema;
 	}
 
 	private static InputStream getInputFileInClasspath(final String file) {

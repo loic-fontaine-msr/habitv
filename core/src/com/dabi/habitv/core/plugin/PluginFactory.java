@@ -11,12 +11,12 @@ import com.dabi.habitv.framework.plugin.api.PluginBase;
 public final class PluginFactory<P extends PluginBase> {
 
 	private final Map<String, P> pluginName2Plugin = new HashMap<>();
+	private final Class<P> pluginInterface;
+	private final String pluginDir;
 
 	public PluginFactory(final Class<P> pluginInterface, final String pluginDir) {
-		final List<P> pluginProviderInterList = new PluginsLoader<>(pluginInterface, new File(pluginDir).listFiles()).loadAllProviderPlugins();
-		for (final P plugin : pluginProviderInterList) {
-			pluginName2Plugin.put(plugin.getName(), plugin);
-		}
+		this.pluginInterface = pluginInterface;
+		this.pluginDir = pluginDir;
 	}
 
 	public Collection<P> getAllPlugin() {
@@ -25,5 +25,13 @@ public final class PluginFactory<P extends PluginBase> {
 
 	public Map<String, P> getAllPluginMap() {
 		return pluginName2Plugin;
+	}
+
+	public void loadPlugins() {
+		pluginName2Plugin.clear();
+		final List<P> pluginProviderInterList = new PluginsLoader<>(pluginInterface, new File(pluginDir).listFiles()).loadAllProviderPlugins();
+		for (final P plugin : pluginProviderInterList) {
+			pluginName2Plugin.put(plugin.getName(), plugin);
+		}
 	}
 }
