@@ -1,3 +1,4 @@
+package com.dabi.habitv.core.updater;
 import static org.junit.Assert.assertEquals;
 
 import java.io.FileInputStream;
@@ -33,7 +34,7 @@ public class TestManifestReader {
 
 	@Test
 	public final void test() throws FileNotFoundException, IOException {
-		final JarInputStream jarStream = new JarInputStream(new FileInputStream("../builder/lib/httpmime-4.1.3.jar"));
+		final JarInputStream jarStream = new JarInputStream(new FileInputStream("D:/workspaces/habitvR/habitv/provider/arte.jar"));
 		final Manifest mf = jarStream.getManifest();
 		assertEquals("4.1.3", mf.getMainAttributes().get(Attributes.Name.IMPLEMENTATION_VERSION));
 	}

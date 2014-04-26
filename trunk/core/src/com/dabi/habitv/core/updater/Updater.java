@@ -1,4 +1,4 @@
-package com.dabi.habitv.updater;
+package com.dabi.habitv.core.updater;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.List;
 import java.util.jar.Attributes;
@@ -16,8 +17,11 @@ import java.util.jar.Manifest;
 
 import org.apache.log4j.Logger;
 
+import com.dabi.habitv.core.event.UpdatePluginEvent;
+import com.dabi.habitv.core.event.UpdatePluginStateEnum;
+import com.dabi.habitv.core.publisher.Publisher;
+import com.dabi.habitv.core.updater.FindArtifactUtils.ArtifactVersion;
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
-import com.dabi.habitv.updater.FindArtifactUtils.ArtifactVersion;
 
 public class Updater {
 
@@ -31,21 +35,21 @@ public class Updater {
 
 	private final boolean autoriseSnapshot;
 
-	public Updater(final String currentDir, final String groupId, final String coreVersion, final boolean autoriseSnapshot) {
+	private final Publisher<UpdatePluginEvent> updatePublisher;
+
+	public Updater(final String currentDir, final String groupId, final String coreVersion, final boolean autoriseSnapshot,
+			final Publisher<UpdatePluginEvent> updatePublisher) {
 		this.currentDir = currentDir;
 		this.groupId = groupId;
 		this.coreVersion = coreVersion;
 		this.autoriseSnapshot = autoriseSnapshot;
+		this.updatePublisher = updatePublisher;
 	}
 
 	public void update(final String folderToUpdate, final String... filesToUpdate) {
 
 		final String folderPath = currentDir + "/" + folderToUpdate;
 		final File currentFolder = new File(folderPath);
-		final File tempDir = new File(currentDir + "/tmp");
-		if (!tempDir.exists()) {
-			tempDir.mkdir();
-		}
 		if (!currentFolder.exists()) {
 			currentFolder.mkdir();
 		} else {
@@ -59,7 +63,7 @@ public class Updater {
 
 		for (final String fileToUpdate : filesToUpdate) {
 			try {
-				updateFile(folderToUpdate, folderPath, currentFolder, tempDir, fileToUpdate);
+				updateFile(folderToUpdate, folderPath, currentFolder, fileToUpdate);
 			} catch (final Exception e) {
 				LOG.error("", e);
 			}
@@ -67,50 +71,61 @@ public class Updater {
 
 	}
 
-	private void updateFile(final String folderToUpdate, final String folderPath, final File currentFolder, final File tempDir, final String fileToUpdate) {
+	private void updateFile(final String folderToUpdate, final String folderPath, final File currentFolder, final String fileToUpdate) {
+		updatePublisher.addNews(new UpdatePluginEvent(fileToUpdate, null, UpdatePluginStateEnum.CHECKING));
 		final ArtifactVersion artifactVersion = FindArtifactUtils.findLastVersionUrl(groupId, fileToUpdate, coreVersion, autoriseSnapshot);
 		final File currentFile = new File(folderPath + "/" + fileToUpdate + ".jar");
 		if (currentFile.exists()) {
-			final String currentVersion = getCurrentVersion(currentFile);
-			if (currentVersion == null || currentVersion.equals(artifactVersion.getVersion())) {
-				updateFile(artifactVersion.getUrl(), currentFile, tempDir);
+			final String currentVersion = getCurrentVersion(currentFile);//
+			if (currentVersion == null || currentVersion.contains("-SNAPSHOT") || !currentVersion.equals(artifactVersion.getVersion())) {
+				updateFile(artifactVersion, currentFile);
 			}
 		} else {
-			updateFile(artifactVersion.getUrl(), currentFile, tempDir);
+			updateFile(artifactVersion, currentFile);
 		}
 	}
 
 	private String getCurrentVersion(final File currentFile) {
-		JarInputStream jarStream;
-		try {
-			jarStream = new JarInputStream(new FileInputStream(currentFile));
+		try (JarInputStream jarStream = new JarInputStream(new FileInputStream(currentFile));) {
+			final Manifest mf = jarStream.getManifest();
+			return (String) mf.getMainAttributes().get(Attributes.Name.IMPLEMENTATION_VERSION);
 		} catch (final IOException e) {
 			throw new TechnicalException(e);
 		}
-		final Manifest mf = jarStream.getManifest();
-
-		return (String) mf.getMainAttributes().get(Attributes.Name.IMPLEMENTATION_VERSION);
 	}
 
-	private void updateFile(final String url, final File current, final File tempDir) {
+	private void updateFile(final ArtifactVersion artifactVersion, final File current) {
+		LOG.info("Update of plugin " + artifactVersion.getArtifactId() + " version " + artifactVersion.getVersion());
+		updatePublisher.addNews(new UpdatePluginEvent(artifactVersion.getArtifactId(), artifactVersion.getVersion(), UpdatePluginStateEnum.DOWNLOADING));
 		File newVersion;
 		try {
-			newVersion = new File(downloadFile(url, tempDir.getAbsolutePath() + "\\" + current.getName()));
+			newVersion = new File(downloadFile(artifactVersion.getUrl(), current.getPath() + ".tmp"));
 		} catch (final IOException e) {
+			LOG.error("Error while updating plugin " + artifactVersion.getArtifactId() + " version " + artifactVersion.getVersion());
+			updatePublisher.addNews(new UpdatePluginEvent(artifactVersion.getArtifactId(), artifactVersion.getVersion(), UpdatePluginStateEnum.ERROR));
 			throw new TechnicalException(e);
 		}
 		updateFile(current, newVersion);
+
+		LOG.info("Update of plugin " + artifactVersion.getArtifactId() + " version " + artifactVersion.getVersion() + " done");
+		updatePublisher.addNews(new UpdatePluginEvent(artifactVersion.getArtifactId(), artifactVersion.getVersion(), UpdatePluginStateEnum.DONE));
 	}
 
 	private void updateFile(final File current, final File newVersion) {
 		if (newVersion.exists()) {
-			current.delete();
+			if (current.exists()) {
+				try {
+					Files.delete(current.toPath());
+				} catch (final IOException e) {
+					throw new TechnicalException(e);
+				}
+			}
 			newVersion.renameTo(current);
 		}
 	}
 
 	/**
-	 * Cette méthode télécharge une fichier sur internet et le stocke en local
+	 * Cette méthode télécharge un fichier sur internet et le stocke en local
 	 * 
 	 * @param filePath
 	 *            , chemin du fichier à télécharger
@@ -123,7 +138,6 @@ public class Updater {
 		URLConnection connection = null;
 		InputStream is = null;
 		FileOutputStream destinationFile = null;
-		LOG.info("download file " + filePath + " to " + destination);
 		try {
 			// On crée l'URL
 			final URL url = new URL(filePath);
@@ -184,4 +198,5 @@ public class Updater {
 		}
 		return destination;
 	}
+
 }

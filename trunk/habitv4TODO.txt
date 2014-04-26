@@ -1,0 +1,16 @@
+tester en mode complet
+tester dl
+
+updatable plugin
+mutualiser entre plugin curl, ffmpeg
+autoriser snapshot en conf
+
+api fixe
+
+plugin tf1
+
+IHM sélection des catégories
+IHM suivi des téléchargements
+nouveau tray
+
+étudier captvty dl

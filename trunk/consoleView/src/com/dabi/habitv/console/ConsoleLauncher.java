@@ -2,14 +2,13 @@ package com.dabi.habitv.console;
 
 import org.apache.log4j.Logger;
 
-import com.dabi.habitv.config.entities.Config;
-import com.dabi.habitv.core.config.ConfigAccess;
 import com.dabi.habitv.core.config.HabitTvConf;
+import com.dabi.habitv.core.config.UserConfig;
+import com.dabi.habitv.core.config.XMLUserConfig;
 import com.dabi.habitv.core.dao.GrabConfigDAO;
 import com.dabi.habitv.core.mgr.CoreManager;
 import com.dabi.habitv.framework.plugin.utils.ProcessingThread;
 import com.dabi.habitv.framework.plugin.utils.RetrieverUtils;
-import com.dabi.habitv.updater.UpdateUpdater;
 
 public final class ConsoleLauncher { // NO_UCD (unused code)
 
@@ -20,7 +19,6 @@ public final class ConsoleLauncher { // NO_UCD (unused code)
 	}
 
 	public static void main(final String[] args) throws InterruptedException {
-		UpdateUpdater.update();
 		new Thread() {
 
 			@Override
@@ -29,10 +27,15 @@ public final class ConsoleLauncher { // NO_UCD (unused code)
 			}
 
 		}.start();
+
 		try {
-			final Config config = ConfigAccess.initConfig();
+			final UserConfig config = XMLUserConfig.initConfig();
+
 			final GrabConfigDAO grabConfigDAO = new GrabConfigDAO(HabitTvConf.GRABCONFIG_XML_FILE);
 			final CoreManager coreManager = new CoreManager(config);
+			if (config.updateOnStartup()) {
+				coreManager.update();
+			}
 
 			Runtime.getRuntime().addShutdownHook(new Thread() {
 
@@ -66,4 +69,5 @@ public final class ConsoleLauncher { // NO_UCD (unused code)
 			System.exit(1);
 		}
 	}
+
 }

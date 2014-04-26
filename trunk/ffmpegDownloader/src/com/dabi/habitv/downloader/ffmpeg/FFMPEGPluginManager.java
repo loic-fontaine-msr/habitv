@@ -8,6 +8,7 @@ import com.dabi.habitv.framework.plugin.api.dto.ProxyDTO;
 import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.framework.plugin.exception.ExecutorFailedException;
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
+import com.dabi.habitv.framework.plugin.utils.OSUtils;
 
 public class FFMPEGPluginManager implements PluginDownloaderInterface {
 
@@ -25,9 +26,13 @@ public class FFMPEGPluginManager implements PluginDownloaderInterface {
 	public void download(final String downloadInput, final String downloadDestination, final Map<String, String> parameters,
 			final CmdProgressionListener listener, final Map<ProxyDTO.ProtocolEnum, ProxyDTO> proxies) throws DownloadFailedException {
 
-		final String downloaderBin = parameters.get(FrameworkConf.PARAMETER_BIN_PATH);
+		String downloaderBin = parameters.get(FrameworkConf.PARAMETER_BIN_PATH);
 		if (downloaderBin == null) {
-			throw new IllegalArgumentException("bin path parameters must be defined");
+			if (OSUtils.isWindows()){
+				downloaderBin = FFMPEGConf.DEFAULT_WINDOWS_BIN_PATH;
+			} else {
+				downloaderBin = FFMPEGConf.DEFAULT_LINUX_BIN_PATH;
+			}
 		}
 		String cmd = downloaderBin + FFMPEGConf.FFMPEG_CMD_2;
 		cmd = cmd.replaceFirst(FrameworkConf.DOWNLOAD_INPUT, downloadInput);

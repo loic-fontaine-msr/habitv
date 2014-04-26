@@ -1,4 +1,4 @@
-package com.dabi.habitv.updater;
+package com.dabi.habitv.core.updater;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -15,6 +15,7 @@ public class FindArtifactUtils {
 	private static List<String> EXCLUDE = Arrays.asList("Parent Directory", "Name", "Last modified", "Size", "Description");
 
 	public static class ArtifactVersion {
+		private String artifactId;
 		private final String url;
 		private final String version;
 
@@ -31,6 +32,14 @@ public class FindArtifactUtils {
 			return version;
 		}
 
+		public String getArtifactId() {
+			return artifactId;
+		}
+
+		public void setArtifactId(final String artifactId) {
+			this.artifactId = artifactId;
+		}
+
 		@Override
 		public String toString() {
 			return "ArtifactVersion [url=" + url + ", version=" + version + "]";
@@ -45,7 +54,9 @@ public class FindArtifactUtils {
 		final String groupIdUrl = groupId.replace(".", "/");
 		final String artifactURL = repo + "/" + groupIdUrl + "/" + artifactId;
 
-		return findLastVersionUrl(artifactURL, versionMaj, autoriseSnapshot);
+		final ArtifactVersion lastVersion = findLastVersionUrl(artifactURL, versionMaj, autoriseSnapshot);
+		lastVersion.setArtifactId(artifactId);
+		return lastVersion;
 	}
 
 	private static ArtifactVersion findLastVersionUrl(final String artifactURL, final String versionMaj, final boolean autoriseSnapshot) {
@@ -53,12 +64,18 @@ public class FindArtifactUtils {
 		final String version = findLastVersion(versionMaj, items, autoriseSnapshot);
 		final String artifactVersionUrl = artifactURL + "/" + version;
 		items = findItems(Type.FILE, artifactVersionUrl);
+		final List<String> jarFiles = new LinkedList<>();
 		for (final String file : items) {
 			if (file.endsWith(".jar")) {
-				return new ArtifactVersion(artifactVersionUrl + "/" + file, version);
+				jarFiles.add(file);
 			}
 		}
-		return null;
+		if (jarFiles.isEmpty()) {
+			return null;
+		} else {
+			Collections.sort(jarFiles);
+			return new ArtifactVersion(artifactVersionUrl + "/" + jarFiles.get(jarFiles.size() - 1), version);
+		}
 	}
 
 	private enum Type {

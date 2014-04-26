@@ -11,4 +11,8 @@ interface Aria2Conf {
 	String DIR_DEST = "#DEST_DIR#";
 
 	long MAX_HUNG_TIME = 360000L;
+
+	String DEFAULT_WINDOWS_BIN_PATH = "bin\\aria2c.exe";
+
+	String DEFAULT_LINUX_BIN_PATH = "aria2";
 }

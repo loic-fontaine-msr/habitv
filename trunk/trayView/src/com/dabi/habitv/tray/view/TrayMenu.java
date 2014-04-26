@@ -9,8 +9,8 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
-import com.dabi.habitv.config.entities.Config;
-import com.dabi.habitv.core.config.ConfigAccess;
+import com.dabi.habitv.core.config.UserConfig;
+import com.dabi.habitv.core.config.XMLUserConfig;
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
 import com.dabi.habitv.tray.controller.TrayController;
 
@@ -134,7 +134,7 @@ public final class TrayMenu extends PopupMenu {
 		actionListener = new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent actionEvent) {
-				controller.reloadPlugin();
+				controller.update();
 			}
 
 		};
@@ -171,7 +171,7 @@ public final class TrayMenu extends PopupMenu {
 	}
 
 	public void openIndexFolder() {
-		final Config config = controller.getModel().getConfig();
+		final UserConfig config = controller.getModel().getUserConfig();
 		open(config.getIndexDir());
 	}
 
@@ -193,16 +193,16 @@ public final class TrayMenu extends PopupMenu {
 	}
 
 	public void openDownloaderFolder() {
-		final Config config = controller.getModel().getConfig();
+		final UserConfig config = controller.getModel().getUserConfig();
 		open(config.getDownloadOuput().substring(0, config.getDownloadOuput().indexOf("#"))); //$NON-NLS-1$
 	}
 
 	public void openConfig() {
-		open(ConfigAccess.CONF_FILE);
+		open(XMLUserConfig.CONF_FILE);
 	}
 
 	public void openGrabConfig() {
-		open(ConfigAccess.GRAB_CONF_FILE);
+		open(XMLUserConfig.GRAB_CONF_FILE);
 	}
 
 	private void updateGrabConfig() {

@@ -19,7 +19,7 @@ public class ExecutorFailedException extends Exception {
 		this.fullOuput = fullOuput;
 		this.cmd = cmd;
 		this.lastLine = lastLine;
-		LOG.error("cmd was" + cmd);
+		LOG.error("Cmd was " + cmd);
 		LOG.error(fullOuput);
 	}
 

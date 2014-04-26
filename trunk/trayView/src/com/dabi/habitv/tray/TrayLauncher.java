@@ -6,7 +6,6 @@ import com.dabi.habitv.framework.plugin.utils.RetrieverUtils;
 import com.dabi.habitv.tray.controller.TrayController;
 import com.dabi.habitv.tray.model.HabitTvTrayModel;
 import com.dabi.habitv.tray.view.HabiTvTrayView;
-import com.dabi.habitv.updater.UpdateUpdater;
 
 public final class TrayLauncher {
 
@@ -17,7 +16,6 @@ public final class TrayLauncher {
 	}
 
 	public static void main(final String[] args) {
-		UpdateUpdater.update();
 		new Thread() {
 
 			@Override
@@ -30,6 +28,7 @@ public final class TrayLauncher {
 			final HabitTvTrayModel model = new HabitTvTrayModel();
 			final TrayController controller = new TrayController(model);
 			final HabiTvTrayView view = new HabiTvTrayView(controller);
+			controller.update();
 			model.attach(view);
 			model.attach(controller);
 			controller.startDownloadCheckDemon();
