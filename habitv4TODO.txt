@@ -1,8 +1,7 @@
-bug maj
 updatable plugin
 tester dl
-statut en libelle
 mutualiser entre plugin curl, ffmpeg
+log aucun plugin
 
 pas d'ordre dans config
 

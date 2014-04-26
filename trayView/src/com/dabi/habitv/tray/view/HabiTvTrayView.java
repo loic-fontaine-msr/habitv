@@ -32,6 +32,8 @@ public final class HabiTvTrayView implements CoreSubscriber {
 
 	private boolean checkInProgress = false;
 
+	private boolean updateInProgress = false;
+
 	public HabiTvTrayView(final TrayController controller) {
 		this.controller = controller;
 		fixImage = getImage("fixe.gif"); //$NON-NLS-1$
@@ -154,7 +156,7 @@ public final class HabiTvTrayView implements CoreSubscriber {
 	}
 
 	private void changeAnimation() {
-		if (retreiveInProgress || checkInProgress) {
+		if (retreiveInProgress || checkInProgress || updateInProgress) {
 			trayIcon.setImage(animatedImage);
 		} else {
 			trayIcon.setImage(fixImage);
@@ -238,6 +240,7 @@ public final class HabiTvTrayView implements CoreSubscriber {
 	public void update(final UpdatePluginEvent event) {
 		switch (event.getState()) {
 		case STARTING_ALL:
+			updateInProgress = true;
 			changeAnimation();
 			break;
 		case CHECKING:
@@ -247,6 +250,7 @@ public final class HabiTvTrayView implements CoreSubscriber {
 		case ERROR:
 			break;
 		case DONE:
+			updateInProgress = false;
 			trayIcon.displayMessage(
 					Messages.getString("HabiTvTrayView.maj"), Messages.getString("HabiTvTrayView.majpluginfini", event.getPlugin(), event.getVersion()), TrayIcon.MessageType.INFO); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			break;

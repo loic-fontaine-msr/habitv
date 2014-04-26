@@ -30,7 +30,7 @@ public final class CoreManager {
 
 	private final Map<String, Integer> taskName2PoolSizeMap;
 
-	private final PluginFactory<PluginProviderInterface> pluginProviderFactory;
+	private PluginFactory<PluginProviderInterface> pluginProviderFactory;
 
 	private final UpdateManager updateManager;
 
@@ -43,6 +43,7 @@ public final class CoreManager {
 		taskName2PoolSizeMap = config.getTaskDefinition();
 		TokenReplacer.setCutSize(config.getFileNameCutSize());
 		setProxy(config);
+		reloadPlugin();
 		updateManager = new UpdateManager(config.autoriseSnapshot());
 	}
 
@@ -139,6 +140,7 @@ public final class CoreManager {
 	}
 
 	private void reloadPlugin() {
+		pluginProviderFactory = new PluginFactory<>(PluginProviderInterface.class, config.getProviderPluginDir());
 		pluginProviderFactory.loadPlugins();
 		getEpisodeManager().setPluginProviderList(pluginProviderFactory.getAllPlugin());
 		getCategoryManager().setPluginProviderList(pluginProviderFactory.getAllPlugin());

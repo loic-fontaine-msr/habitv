@@ -7,6 +7,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
@@ -48,8 +49,9 @@ class PluginsLoader<P extends PluginBase> {
 
 	}
 
+	@SuppressWarnings("unchecked")
 	PluginsLoader(final Class<P> pluginInterface, final File[] files) {
-		this.files = Arrays.asList(files);
+		this.files = (List<File>) (files == null ? Collections.emptyList() : Arrays.asList(files));
 		this.classPluginProviders = new LinkedList<>();
 		this.pluginInterface = pluginInterface;
 	}
@@ -91,9 +93,6 @@ class PluginsLoader<P extends PluginBase> {
 	}
 
 	private void findAllPlugins(final File file) {
-
-		// Pour charger le .jar en memoire
-		URLClassLoader loader;
 		// Pour la comparaison de chaines
 		String tmp = "";
 		// Pour le contenu de l'archive jar
@@ -104,35 +103,43 @@ class PluginsLoader<P extends PluginBase> {
 		final URL url = getFileUrl(file);
 		// On créer un nouveau URLClassLoader pour charger le jar qui se
 		// trouve ne dehors du CLASSPATH
-		loader = new URLClassLoader(new URL[] { url });
+		try (URLClassLoader loader = new URLClassLoader(new URL[] { url })) {
+			// On charge le jar en mémoire
+			try (final JarFile jar = new JarFile(file.getAbsolutePath());) {
 
-		// On charge le jar en mémoire
-		final JarFile jar = loadJar(file);
+				// On récupére le contenu du jar
+				enumeration = jar.entries();
 
-		// On récupére le contenu du jar
-		enumeration = jar.entries();
+				while (enumeration.hasMoreElements()) {
 
-		while (enumeration.hasMoreElements()) {
+					final JarEntry nextElement = enumeration.nextElement();
+					tmp = nextElement.toString();
 
-			tmp = enumeration.nextElement().toString();
+					// On vérifie que le fichier courant est un .class (et pas
+					// un
+					// fichier d'informations du jar )
+					if (tmp.length() > CLASS_EXTENSION_SIZE && tmp.substring(tmp.length() - CLASS_EXTENSION_SIZE).compareTo(CLASS_EXTENSION) == 0) {
+						tmpClass = getClass(tmp.substring(0, tmp.length() - CLASS_EXTENSION_SIZE).replaceAll("/", "."), loader);
+						final List<Class<?>> interfaces = getInterfaces(tmpClass);
+						for (final Class<?> interfaceClass : interfaces) {
+							// Une classe ne doit pas appartenir à deux
+							// catégories
+							// de plugins différents.
+							// Si tel est le cas on ne la place que dans la
+							// catégorie de la première interface correct
+							// trouvée
+							if (interfaceClass.getName().equals(this.pluginInterface.getName())) {
+								this.classPluginProviders.add(new Plugin(tmpClass, loader));
+							}
+						}
 
-			// On vérifie que le fichier courant est un .class (et pas un
-			// fichier d'informations du jar )
-			if (tmp.length() > CLASS_EXTENSION_SIZE && tmp.substring(tmp.length() - CLASS_EXTENSION_SIZE).compareTo(CLASS_EXTENSION) == 0) {
-				tmpClass = getClass(tmp.substring(0, tmp.length() - CLASS_EXTENSION_SIZE).replaceAll("/", "."), loader);
-				final List<Class<?>> interfaces = getInterfaces(tmpClass);
-				for (final Class<?> interfaceClass : interfaces) {
-					// Une classe ne doit pas appartenir à deux catégories
-					// de plugins différents.
-					// Si tel est le cas on ne la place que dans la
-					// catégorie de la première interface correct
-					// trouvée
-					if (interfaceClass.getName().equals(this.pluginInterface.getName())) {
-						this.classPluginProviders.add(new Plugin(tmpClass, loader));
 					}
 				}
-
+			} catch (final IOException e) {
+				throw new TechnicalException(e);
 			}
+		} catch (final IOException e) {
+			throw new TechnicalException(e);
 		}
 	}
 
@@ -155,16 +162,6 @@ class PluginsLoader<P extends PluginBase> {
 			throw new TechnicalException(e);
 		}
 		return tmpClass;
-	}
-
-	private static JarFile loadJar(final File file) {
-		JarFile jar;
-		try {
-			jar = new JarFile(file.getAbsolutePath());
-		} catch (final IOException e) {
-			throw new TechnicalException(e);
-		}
-		return jar;
 	}
 
 	private static URL getFileUrl(final File file) {
