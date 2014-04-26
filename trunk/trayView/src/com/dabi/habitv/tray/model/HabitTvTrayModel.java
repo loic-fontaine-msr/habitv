@@ -33,6 +33,9 @@ public class HabitTvTrayModel extends Observable {
 		grabConfigDAO = new GrabConfigDAO(HabitTvConf.GRABCONFIG_XML_FILE);
 		coreManager = new CoreManager(userConfig);
 		progressionModel = new ProgressionModel();
+		if (userConfig.updateOnStartup()) {
+			coreManager.update();
+		}
 	}
 
 	public void attach(final CoreSubscriber coreSubscriber) {

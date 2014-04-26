@@ -53,6 +53,9 @@ public class ArtePluginManager extends BasePluginProvider { // NO_UCD
 
 	@Override
 	public Set<EpisodeDTO> findEpisode(final CategoryDTO category) {
+		if (true){
+			throw new NullPointerException();
+		}
 		if ("search".equals(category.getId())) {
 			return searchEpisodeByKeyworkds(category);
 		} else {

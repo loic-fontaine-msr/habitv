@@ -28,7 +28,6 @@ public final class TrayLauncher {
 			final HabitTvTrayModel model = new HabitTvTrayModel();
 			final TrayController controller = new TrayController(model);
 			final HabiTvTrayView view = new HabiTvTrayView(controller);
-			controller.update();
 			model.attach(view);
 			model.attach(controller);
 			controller.startDownloadCheckDemon();
