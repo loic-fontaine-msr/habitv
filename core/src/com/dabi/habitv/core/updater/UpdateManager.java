@@ -34,16 +34,11 @@ public class UpdateManager {
 	}
 
 	public UpdateManager(final boolean autoriseSnapshot) {
-		this(FrameworkConf.UPDATE_URL, System.getProperty("user.dir"), FrameworkConf.GROUP_ID, getVersion(), true);
-	}
-
-	private static String getVersion() {
-		final String version = System.getProperty("habitv.version");
-		return version == null ? FWKProperties.getString(FrameworkConf.VERSION) : version;
+		this(FrameworkConf.UPDATE_URL, System.getProperty("user.dir"), FrameworkConf.GROUP_ID, FWKProperties.getVersion(), autoriseSnapshot);
 	}
 
 	public void process() {
-		LOG.info("Check plugin updates.");
+		LOG.info("Checking plugin updates...");
 		updatePublisher.addNews(new UpdatePluginEvent(UpdatePluginStateEnum.STARTING_ALL));
 		process("provider", "downloader", "exporter");
 		updatePublisher.addNews(new UpdatePluginEvent(UpdatePluginStateEnum.ALL_DONE));

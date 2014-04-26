@@ -131,6 +131,18 @@
 	</dependencyManagement>
 	
 	<build>
+		<resources>
+			<resource>
+				<directory>img</directory>
+			</resource>
+			<resource>
+				<directory>src</directory>
+				<includes>
+					<include>**/*properties</include>
+				</includes>
+				<filtering>true</filtering>
+			</resource>			
+		</resources>	
 		<extensions>
 		<!-- Enabling the use of FTP -->
 			<extension>

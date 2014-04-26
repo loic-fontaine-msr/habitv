@@ -4,10 +4,13 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
+
 import com.dabi.habitv.core.config.UserConfig;
 import com.dabi.habitv.core.plugin.PluginFactory;
 import com.dabi.habitv.core.token.TokenReplacer;
 import com.dabi.habitv.core.updater.UpdateManager;
+import com.dabi.habitv.framework.FWKProperties;
 import com.dabi.habitv.framework.plugin.api.downloader.PluginDownloaderInterface;
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
 import com.dabi.habitv.framework.plugin.api.dto.DownloaderDTO;
@@ -31,8 +34,10 @@ public final class CoreManager {
 
 	private final UpdateManager updateManager;
 
+	private static final Logger LOG = Logger.getLogger(CoreManager.class);
 
 	public CoreManager(final UserConfig config) {
+		LOG.info("habitv version " + FWKProperties.getVersion());
 		this.config = config;
 		pluginProviderFactory = new PluginFactory<>(PluginProviderInterface.class, config.getProviderPluginDir());
 		taskName2PoolSizeMap = config.getTaskDefinition();
