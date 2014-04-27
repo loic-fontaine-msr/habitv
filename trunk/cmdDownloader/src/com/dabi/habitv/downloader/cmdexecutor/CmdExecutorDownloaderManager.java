@@ -20,11 +20,6 @@ public final class CmdExecutorDownloaderManager implements PluginDownloaderInter
 	}
 
 	@Override
-	public void setClassLoader(final ClassLoader classLoader) {
-		// no need
-	}
-
-	@Override
 	public void download(final String downloadInput, final String downloadDestination, final Map<String, String> parameters,
 			final CmdProgressionListener listener, final Map<ProxyDTO.ProtocolEnum, ProxyDTO> proxies) throws DownloadFailedException {
 		final String cmd = parameters.get("cmd");

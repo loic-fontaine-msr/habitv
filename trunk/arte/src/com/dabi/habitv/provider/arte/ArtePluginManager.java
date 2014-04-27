@@ -53,9 +53,6 @@ public class ArtePluginManager extends BasePluginProvider { // NO_UCD
 
 	@Override
 	public Set<EpisodeDTO> findEpisode(final CategoryDTO category) {
-		if (true){
-			throw new NullPointerException();
-		}
 		if ("search".equals(category.getId())) {
 			return searchEpisodeByKeyworkds(category);
 		} else {
@@ -196,7 +193,6 @@ public class ArtePluginManager extends BasePluginProvider { // NO_UCD
 		}
 		throw new TechnicalException("can't find show identifier");
 	}
-
 
 	private String buildDownloadLink(final String url) throws DownloadFailedException {
 		final String htmlInfo = getUrlContent(url, ArteConf.ENCODING);

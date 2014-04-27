@@ -80,11 +80,6 @@ public class CanalPlusPluginManagerTest {
 		final PluginDownloaderInterface downloader = new PluginDownloaderInterface() {
 
 			@Override
-			public void setClassLoader(final ClassLoader classLoader) {
-
-			}
-
-			@Override
 			public String getName() {
 				return "aria2";
 			}
@@ -113,11 +108,6 @@ public class CanalPlusPluginManagerTest {
 	public final void testDownloadExpert() throws DownloadFailedException, NoSuchDownloaderException {
 		final Map<String, PluginDownloaderInterface> downloaderName2downloader = new HashMap<>();
 		final PluginDownloaderInterface downloader = new PluginDownloaderInterface() {
-
-			@Override
-			public void setClassLoader(final ClassLoader classLoader) {
-
-			}
 
 			@Override
 			public String getName() {

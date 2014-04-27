@@ -11,7 +11,7 @@ import com.dabi.habitv.framework.plugin.api.downloader.PluginDownloaderInterface
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
 import com.dabi.habitv.framework.plugin.api.dto.DownloaderDTO;
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
-import com.dabi.habitv.framework.plugin.api.provider.BasePluginProvider;
+import com.dabi.habitv.framework.plugin.api.provider.BasePluginProviderClassloader;
 import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.framework.plugin.exception.NoSuchDownloaderException;
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
@@ -26,7 +26,7 @@ import com.dabi.habitv.provider.canalplus.mea.entities.MEAS;
 import com.dabi.habitv.provider.canalplus.video.entities.VIDEO;
 import com.dabi.habitv.provider.canalplus.video.entities.VIDEOS;
 
-public class CanalPlusPluginManager extends BasePluginProvider { // NO_UCD
+public class CanalPlusPluginManager extends BasePluginProviderClassloader { // NO_UCD
 
 	@Override
 	public Set<EpisodeDTO> findEpisode(final CategoryDTO category) {

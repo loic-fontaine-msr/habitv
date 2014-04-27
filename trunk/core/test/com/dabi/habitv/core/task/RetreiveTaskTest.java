@@ -70,10 +70,6 @@ public class RetreiveTaskTest {
 		final PluginProviderInterface provider = new PluginProviderInterface() {
 
 			@Override
-			public void setClassLoader(final ClassLoader classLoader) {
-			}
-
-			@Override
 			public String getName() {
 				return "provider";
 			}
@@ -134,11 +130,6 @@ public class RetreiveTaskTest {
 
 		final Map<String, PluginExporterInterface> exporterName2exporter = new HashMap<>();
 		final PluginExporterInterface pluginExporter = new PluginExporterInterface() {
-
-			@Override
-			public void setClassLoader(final ClassLoader classLoader) {
-
-			}
 
 			@Override
 			public String getName() {
