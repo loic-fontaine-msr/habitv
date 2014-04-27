@@ -1,11 +1,12 @@
 package com.dabi.habitv.framework.plugin.api.update;
 
-public class BaseUpdatablePlugin implements UpdatablePluginInterface {
+import com.dabi.habitv.framework.plugin.utils.update.ZipExeUpdater;
+
+public abstract class BaseUpdatablePlugin implements UpdatablePluginInterface {
 
 	@Override
 	public void update() {
-		// TODO Auto-generated method stub
-
+		new ZipExeUpdater(this, currentDir, groupId, autoriseSnapshot, updatePublisher).update("bin", getFilesToUpdate());
 	}
 
 }

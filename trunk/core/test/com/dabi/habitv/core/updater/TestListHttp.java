@@ -5,6 +5,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.dabi.habitv.framework.plugin.utils.update.FindArtifactUtils;
+
 public class TestListHttp {
 
 	@BeforeClass

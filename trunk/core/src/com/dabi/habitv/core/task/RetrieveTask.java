@@ -8,7 +8,6 @@ import com.dabi.habitv.core.dao.DownloadedDAO;
 import com.dabi.habitv.core.dao.EpisodeExportState;
 import com.dabi.habitv.core.event.EpisodeStateEnum;
 import com.dabi.habitv.core.event.RetreiveEvent;
-import com.dabi.habitv.core.publisher.Publisher;
 import com.dabi.habitv.core.token.TokenReplacer;
 import com.dabi.habitv.framework.plugin.api.dto.DownloaderDTO;
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
@@ -18,6 +17,7 @@ import com.dabi.habitv.framework.plugin.api.exporter.PluginExporterInterface;
 import com.dabi.habitv.framework.plugin.api.provider.PluginProviderInterface;
 import com.dabi.habitv.framework.plugin.exception.InvalidEpisodeException;
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
+import com.dabi.habitv.framework.pub.Publisher;
 
 public class RetrieveTask extends AbstractEpisodeTask {
 

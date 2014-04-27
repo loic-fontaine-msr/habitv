@@ -12,7 +12,6 @@ import com.dabi.habitv.core.dao.ExportDAO;
 import com.dabi.habitv.core.event.RetreiveEvent;
 import com.dabi.habitv.core.event.SearchEvent;
 import com.dabi.habitv.core.event.SearchStateEnum;
-import com.dabi.habitv.core.publisher.Publisher;
 import com.dabi.habitv.core.task.DownloadTask;
 import com.dabi.habitv.core.task.ExportTask;
 import com.dabi.habitv.core.task.RetrieveTask;
@@ -29,6 +28,7 @@ import com.dabi.habitv.framework.plugin.api.dto.DownloaderDTO;
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
 import com.dabi.habitv.framework.plugin.api.dto.ExporterDTO;
 import com.dabi.habitv.framework.plugin.api.provider.PluginProviderInterface;
+import com.dabi.habitv.framework.pub.Publisher;
 
 public final class EpisodeManager extends AbstractManager implements TaskAdder {
 

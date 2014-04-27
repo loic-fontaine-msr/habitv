@@ -4,7 +4,7 @@ import com.dabi.habitv.core.event.RetreiveEvent;
 import com.dabi.habitv.core.event.SearchCategoryEvent;
 import com.dabi.habitv.core.event.SearchEvent;
 import com.dabi.habitv.core.event.UpdatePluginEvent;
-import com.dabi.habitv.core.publisher.Subscriber;
+import com.dabi.habitv.framework.pub.Subscriber;
 
 public class SubscriberAdapter {
 
