@@ -1,5 +1,7 @@
 package com.dabi.habitv.core.event;
 
+import com.dabi.habitv.framework.pub.AbstractEvent;
+
 public final class SearchEvent extends AbstractEvent {
 	private final String channel;
 

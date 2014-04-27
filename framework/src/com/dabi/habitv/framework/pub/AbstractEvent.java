@@ -1,14 +1,14 @@
-package com.dabi.habitv.core.event;
+package com.dabi.habitv.framework.pub;
 
 public abstract class AbstractEvent {
 
 	private Throwable exception;
 
-	AbstractEvent() {
+	public AbstractEvent() {
 		super();
 	}
 
-	AbstractEvent(final Throwable exception) {
+	public AbstractEvent(final Throwable exception) {
 		super();
 		this.exception = exception;
 	}

@@ -1,9 +1,7 @@
-package com.dabi.habitv.core.publisher;
+package com.dabi.habitv.framework.pub;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.dabi.habitv.core.event.AbstractEvent;
 
 public class Publisher<E extends AbstractEvent> {
 

@@ -4,10 +4,11 @@ import org.apache.log4j.Logger;
 
 import com.dabi.habitv.core.event.UpdatePluginEvent;
 import com.dabi.habitv.core.event.UpdatePluginStateEnum;
-import com.dabi.habitv.core.publisher.Publisher;
 import com.dabi.habitv.framework.FWKProperties;
 import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.utils.RetrieverUtils;
+import com.dabi.habitv.framework.plugin.utils.update.Updater;
+import com.dabi.habitv.framework.pub.Publisher;
 
 public class UpdateManager {
 
@@ -46,7 +47,7 @@ public class UpdateManager {
 	}
 
 	private void process(final String... toUpdateTab) {
-		final Updater updater = new Updater(currentDir, groupId, coreVersion, autoriseSnapshot, updatePublisher);
+		final Updater updater = new JarUpdater(currentDir, groupId, coreVersion, autoriseSnapshot, updatePublisher);
 		for (final String folderToUpdate : toUpdateTab) {
 			try {
 				updater.update(folderToUpdate, RetrieverUtils.getUrlContent(site + "/" + folderToUpdate + ".txt", null).split("\\r\\n"));

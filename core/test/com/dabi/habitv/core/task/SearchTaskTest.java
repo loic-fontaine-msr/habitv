@@ -22,8 +22,6 @@ import com.dabi.habitv.core.dao.DownloadedDAO;
 import com.dabi.habitv.core.event.RetreiveEvent;
 import com.dabi.habitv.core.event.SearchEvent;
 import com.dabi.habitv.core.event.SearchStateEnum;
-import com.dabi.habitv.core.publisher.Publisher;
-import com.dabi.habitv.core.publisher.Subscriber;
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
 import com.dabi.habitv.framework.plugin.api.dto.DownloaderDTO;
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
@@ -38,6 +36,8 @@ import com.dabi.habitv.framework.plugin.exception.ExportFailedException;
 import com.dabi.habitv.framework.plugin.exception.NoSuchDownloaderException;
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
+import com.dabi.habitv.framework.pub.Publisher;
+import com.dabi.habitv.framework.pub.Subscriber;
 
 public class SearchTaskTest {
 
