@@ -88,6 +88,6 @@ public class ZipExeUpdater extends Updater {
 
 	@Override
 	protected boolean deleteFiles() {
-		return false;
+		d		return false;
 	}
 }
