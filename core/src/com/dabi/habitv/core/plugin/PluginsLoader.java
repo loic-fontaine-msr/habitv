@@ -15,6 +15,8 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 import com.dabi.habitv.framework.plugin.api.PluginBase;
+import com.dabi.habitv.framework.plugin.api.PluginClassLoader;
+import com.dabi.habitv.framework.plugin.api.update.UpdatablePluginInterface;
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
 
 class PluginsLoader<P extends PluginBase> {
@@ -64,7 +66,12 @@ class PluginsLoader<P extends PluginBase> {
 		for (final Plugin plugin : this.classPluginProviders) {
 			try {
 				final P pluginProviderInterface = plugin.getClassPluginProvider().newInstance();
-				pluginProviderInterface.setClassLoader(plugin.getClassLoaders());
+				if (UpdatablePluginInterface.class.isInstance(pluginProviderInterface)) {
+					((UpdatablePluginInterface) pluginProviderInterface).update();
+				}
+				if (PluginClassLoader.class.isInstance(pluginProviderInterface)) {
+					((PluginClassLoader) pluginProviderInterface).setClassLoader(plugin.getClassLoaders());
+				}
 				tmpPlugins.add(pluginProviderInterface);
 			} catch (InstantiationException | IllegalAccessException e) {
 				throw new TechnicalException(e);

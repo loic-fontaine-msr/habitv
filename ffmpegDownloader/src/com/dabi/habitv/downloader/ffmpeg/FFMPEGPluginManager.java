@@ -5,21 +5,17 @@ import java.util.Map;
 import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.api.downloader.PluginDownloaderInterface;
 import com.dabi.habitv.framework.plugin.api.dto.ProxyDTO;
+import com.dabi.habitv.framework.plugin.api.update.UpdatablePluginInterface;
 import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.framework.plugin.exception.ExecutorFailedException;
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
 import com.dabi.habitv.framework.plugin.utils.OSUtils;
 
-public class FFMPEGPluginManager implements PluginDownloaderInterface {
+public class FFMPEGPluginManager implements PluginDownloaderInterface, UpdatablePluginInterface {
 
 	@Override
 	public String getName() {
 		return FFMPEGConf.NAME;
-	}
-
-	@Override
-	public void setClassLoader(final ClassLoader classLoader) {
-		// no need
 	}
 
 	@Override
@@ -28,7 +24,7 @@ public class FFMPEGPluginManager implements PluginDownloaderInterface {
 
 		String downloaderBin = parameters.get(FrameworkConf.PARAMETER_BIN_PATH);
 		if (downloaderBin == null) {
-			if (OSUtils.isWindows()){
+			if (OSUtils.isWindows()) {
 				downloaderBin = FFMPEGConf.DEFAULT_WINDOWS_BIN_PATH;
 			} else {
 				downloaderBin = FFMPEGConf.DEFAULT_LINUX_BIN_PATH;
@@ -44,6 +40,11 @@ public class FFMPEGPluginManager implements PluginDownloaderInterface {
 		} catch (final ExecutorFailedException e) {
 			throw new DownloadFailedException(e);
 		}
+	}
+
+	@Override
+	public void update() {
+		//FIXME update
 	}
 
 }

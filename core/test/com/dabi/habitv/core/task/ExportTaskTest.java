@@ -52,10 +52,6 @@ public class ExportTaskTest {
 		final PluginExporterInterface pluginExporter = new PluginExporterInterface() {
 
 			@Override
-			public void setClassLoader(final ClassLoader classLoader) {
-			}
-
-			@Override
 			public String getName() {
 				return "exporter";
 			}

@@ -17,22 +17,14 @@ public abstract class BasePluginProvider implements PluginProviderInterface {
 
 	private final Logger logguer = Logger.getLogger(this.getClass().getName());
 
-	private ClassLoader classLoader;
 
 	private Map<ProtocolEnum, ProxyDTO> protocol2proxy;
 
-	@Override
-	public final void setClassLoader(final ClassLoader classLoader) {
-		this.classLoader = classLoader;
-	}
+
 
 	@Override
 	public final void setProxy(final Map<ProtocolEnum, ProxyDTO> protocol2proxy) {
 		this.protocol2proxy = protocol2proxy;
-	}
-
-	protected ClassLoader getClassLoader() {
-		return classLoader;
 	}
 
 	protected Map<ProtocolEnum, ProxyDTO> getProtocol2proxy() {
@@ -58,10 +50,6 @@ public abstract class BasePluginProvider implements PluginProviderInterface {
 
 	protected String getUrlContent(final String url, final String encoding) {
 		return RetrieverUtils.getUrlContent(url, encoding, getHttpProxy());
-	}
-
-	protected Object unmarshalInputStream(final InputStream input, final String unmarshallerPackage) {
-		return RetrieverUtils.unmarshalInputStream(input, unmarshallerPackage, getClassLoader());
 	}
 
 	public Logger getLog() {

@@ -5,23 +5,19 @@ import java.util.Map;
 import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.api.downloader.PluginDownloaderInterface;
 import com.dabi.habitv.framework.plugin.api.dto.ProxyDTO;
+import com.dabi.habitv.framework.plugin.api.update.UpdatablePluginInterface;
 import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.framework.plugin.exception.ExecutorFailedException;
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
 import com.dabi.habitv.framework.plugin.utils.OSUtils;
 
-public class Aria2PluginManager implements PluginDownloaderInterface { // NO_UCD
+public class Aria2PluginManager implements PluginDownloaderInterface,UpdatablePluginInterface { // NO_UCD
 	// (unused
 	// code)
 
 	@Override
 	public String getName() {
 		return Aria2Conf.NAME;
-	}
-
-	@Override
-	public void setClassLoader(final ClassLoader classLoader) {
-		// no need
 	}
 
 	@Override
@@ -62,6 +58,11 @@ public class Aria2PluginManager implements PluginDownloaderInterface { // NO_UCD
 		} catch (final ExecutorFailedException e) {
 			throw new DownloadFailedException(e);
 		}
+	}
+
+	@Override
+	public void update() {
+		// FIXME update
 	}
 
 }

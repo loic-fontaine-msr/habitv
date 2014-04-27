@@ -56,10 +56,6 @@ public class SearchCategoryTaskTest {
 		final PluginProviderInterface provider = new PluginProviderInterface() {
 
 			@Override
-			public void setClassLoader(final ClassLoader classLoader) {
-			}
-
-			@Override
 			public String getName() {
 				return "provider";
 			}
