@@ -1,17 +1,19 @@
 package com.dabi.habitv.downloader.ffmpeg;
 
+import java.util.Arrays;
 import java.util.Map;
 
 import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.api.downloader.PluginDownloaderInterface;
 import com.dabi.habitv.framework.plugin.api.dto.ProxyDTO;
+import com.dabi.habitv.framework.plugin.api.update.BaseUpdatablePlugin;
 import com.dabi.habitv.framework.plugin.api.update.UpdatablePluginInterface;
 import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.framework.plugin.exception.ExecutorFailedException;
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
 import com.dabi.habitv.framework.plugin.utils.OSUtils;
 
-public class FFMPEGPluginManager implements PluginDownloaderInterface, UpdatablePluginInterface {
+public class FFMPEGPluginManager extends BaseUpdatablePlugin implements PluginDownloaderInterface {
 
 	@Override
 	public String getName() {
@@ -43,8 +45,14 @@ public class FFMPEGPluginManager implements PluginDownloaderInterface, Updatable
 	}
 
 	@Override
-	public void update() {
-		//FIXME update
+	public String getCurrentVersion() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected String getFilesToUpdate() {
+		return Arrays.asList("");
 	}
 
 }

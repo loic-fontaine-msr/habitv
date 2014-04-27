@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -18,6 +19,8 @@ import com.dabi.habitv.framework.plugin.api.PluginBase;
 import com.dabi.habitv.framework.plugin.api.PluginClassLoader;
 import com.dabi.habitv.framework.plugin.api.update.UpdatablePluginInterface;
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
+import com.dabi.habitv.framework.plugin.utils.update.UpdatablePluginEvent;
+import com.dabi.habitv.framework.pub.Publisher;
 
 class PluginsLoader<P extends PluginBase> {
 
@@ -31,11 +34,16 @@ class PluginsLoader<P extends PluginBase> {
 
 	private final Class<P> pluginInterface;
 
+	private final Map<String, String> parameters;
+
+	private final Publisher<UpdatablePluginEvent> updatePublisher;
+
 	private class Plugin {
 		private final Class<P> classPluginProvider;
 		private final ClassLoader classLoaders;
 
-		public Plugin(final Class<P> classPluginProvider, final ClassLoader classLoaders) {
+		public Plugin(final Class<P> classPluginProvider,
+				final ClassLoader classLoaders) {
 			super();
 			this.classPluginProvider = classPluginProvider;
 			this.classLoaders = classLoaders;
@@ -52,25 +60,35 @@ class PluginsLoader<P extends PluginBase> {
 	}
 
 	@SuppressWarnings("unchecked")
-	PluginsLoader(final Class<P> pluginInterface, final File[] files) {
-		this.files = (List<File>) (files == null ? Collections.emptyList() : Arrays.asList(files));
+	PluginsLoader(final Class<P> pluginInterface, final File[] files,
+			Map<String, String> parameters,
+			Publisher<UpdatablePluginEvent> updatePublisher) {
+		this.files = (List<File>) (files == null ? Collections.emptyList()
+				: Arrays.asList(files));
 		this.classPluginProviders = new LinkedList<>();
 		this.pluginInterface = pluginInterface;
+		this.parameters = parameters;
+		this.updatePublisher = updatePublisher;
 	}
 
 	List<P> loadAllProviderPlugins() {
 
 		this.initializeLoader();
 
-		final List<P> tmpPlugins = new ArrayList<>(this.classPluginProviders.size());
+		final List<P> tmpPlugins = new ArrayList<>(
+				this.classPluginProviders.size());
 		for (final Plugin plugin : this.classPluginProviders) {
 			try {
-				final P pluginProviderInterface = plugin.getClassPluginProvider().newInstance();
-				if (UpdatablePluginInterface.class.isInstance(pluginProviderInterface)) {
-					((UpdatablePluginInterface) pluginProviderInterface).update();
+				final P pluginProviderInterface = plugin
+						.getClassPluginProvider().newInstance();
+				if (UpdatablePluginInterface.class
+						.isInstance(pluginProviderInterface)) {
+					((UpdatablePluginInterface) pluginProviderInterface)
+							.update(updatePublisher, parameters);
 				}
 				if (PluginClassLoader.class.isInstance(pluginProviderInterface)) {
-					((PluginClassLoader) pluginProviderInterface).setClassLoader(plugin.getClassLoaders());
+					((PluginClassLoader) pluginProviderInterface)
+							.setClassLoader(plugin.getClassLoaders());
 				}
 				tmpPlugins.add(pluginProviderInterface);
 			} catch (InstantiationException | IllegalAccessException e) {
@@ -125,8 +143,14 @@ class PluginsLoader<P extends PluginBase> {
 					// On vérifie que le fichier courant est un .class (et pas
 					// un
 					// fichier d'informations du jar )
-					if (tmp.length() > CLASS_EXTENSION_SIZE && tmp.substring(tmp.length() - CLASS_EXTENSION_SIZE).compareTo(CLASS_EXTENSION) == 0) {
-						tmpClass = getClass(tmp.substring(0, tmp.length() - CLASS_EXTENSION_SIZE).replaceAll("/", "."), loader);
+					if (tmp.length() > CLASS_EXTENSION_SIZE
+							&& tmp.substring(
+									tmp.length() - CLASS_EXTENSION_SIZE)
+									.compareTo(CLASS_EXTENSION) == 0) {
+						tmpClass = getClass(
+								tmp.substring(0,
+										tmp.length() - CLASS_EXTENSION_SIZE)
+										.replaceAll("/", "."), loader);
 						final List<Class<?>> interfaces = getInterfaces(tmpClass);
 						for (final Class<?> interfaceClass : interfaces) {
 							// Une classe ne doit pas appartenir à deux
@@ -135,8 +159,10 @@ class PluginsLoader<P extends PluginBase> {
 							// Si tel est le cas on ne la place que dans la
 							// catégorie de la première interface correct
 							// trouvée
-							if (interfaceClass.getName().equals(this.pluginInterface.getName())) {
-								this.classPluginProviders.add(new Plugin(tmpClass, loader));
+							if (interfaceClass.getName().equals(
+									this.pluginInterface.getName())) {
+								this.classPluginProviders.add(new Plugin(
+										tmpClass, loader));
 							}
 						}
 
@@ -154,7 +180,8 @@ class PluginsLoader<P extends PluginBase> {
 		final List<Class<?>> interfaces = new LinkedList<>();
 		interfaces.addAll(Arrays.asList(tmpClass.getInterfaces()));
 		if (tmpClass.getGenericSuperclass() != null) {
-			interfaces.addAll(Arrays.asList((tmpClass.getSuperclass().getInterfaces())));
+			interfaces.addAll(Arrays.asList((tmpClass.getSuperclass()
+					.getInterfaces())));
 		}
 		return interfaces;
 	}
@@ -163,7 +190,8 @@ class PluginsLoader<P extends PluginBase> {
 		Class<P> tmpClass;
 		try {
 			@SuppressWarnings("unchecked")
-			final Class<P> forName = (Class<P>) Class.forName(tmp, true, loader);
+			final Class<P> forName = (Class<P>) Class
+					.forName(tmp, true, loader);
 			tmpClass = forName;
 		} catch (final ClassNotFoundException e) {
 			throw new TechnicalException(e);

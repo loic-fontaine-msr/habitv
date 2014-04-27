@@ -5,6 +5,9 @@ public class OSUtils {
 
 	public static boolean isWindows() {
 		return (OS.indexOf("win") >= 0);
-
+	}
+	
+	public static String getCurrentDir(){
+		return System.getProperty("user.dir");
 	}
 }
