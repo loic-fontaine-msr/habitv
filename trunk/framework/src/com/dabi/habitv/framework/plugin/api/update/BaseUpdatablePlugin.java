@@ -2,6 +2,7 @@ package com.dabi.habitv.framework.plugin.api.update;
 
 import java.util.Map;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.exception.ExecutorFailedException;
@@ -23,22 +24,26 @@ public abstract class BaseUpdatablePlugin implements UpdatablePluginInterface {
 				.update("bin", getFilesToUpdate()); // FIXME updateFOlder ?
 	}
 
-	private String getBinParam(final Map<String, String> parameters) {
+	protected String getBinParam(final Map<String, String> parameters) {
 		String binParam = parameters.get(FrameworkConf.PARAMETER_BIN_PATH);
 		if (binParam == null) {
 			if (OSUtils.isWindows()) {
-				binParam = RtmpDumpConf.DEFAULT_WINDOWS_BIN_PATH;
+				binParam = getWindowsDefaultBuildPath();
 			} else {
-				binParam = RtmpDumpConf.DEFAULT_LINUX_BIN_PATH;
+				binParam = getLinuxDefaultBuildPath();
 			}
 		}
 		return binParam;
 	}
 
+	protected abstract String getLinuxDefaultBuildPath();
+
+	protected abstract String getWindowsDefaultBuildPath();
+
 	@Override
 	public String getCurrentVersion(final Map<String, String> parameters) {
-		final Matcher matcher = getVersionPattern();
-				.matcher(callGetVersionCmd(parameters));
+		final Matcher matcher = getVersionPattern().matcher(
+				callGetVersionCmd(parameters));
 		final boolean hasMatched = matcher.find();
 		String ret = null;
 		if (hasMatched) {
@@ -47,12 +52,12 @@ public abstract class BaseUpdatablePlugin implements UpdatablePluginInterface {
 		return ret;
 	}
 
-	protected abstract Matcher getVersionPattern();
+	protected abstract Pattern getVersionPattern();
 
 	private String callGetVersionCmd(Map<String, String> parameters) {
 		CmdExecutor cmdExecutor = new CmdExecutor(
 				parameters.get(FrameworkConf.CMD_PROCESSOR),
-				getBinParam(parameters) + " -h", 1000,
+				getBinParam(parameters) + getVersionParam(), 1000,
 				EmptyProgressionListener.INSTANCE) {
 			public boolean isSuccess(final String fullOutput) {
 				return true;
@@ -66,6 +71,8 @@ public abstract class BaseUpdatablePlugin implements UpdatablePluginInterface {
 		}
 		return cmdExecutor.getFullOutput();
 	}
+
+	protected abstract String getVersionParam();
 
 	protected String[] getFilesToUpdate() {
 		return new String[] { getName() };
