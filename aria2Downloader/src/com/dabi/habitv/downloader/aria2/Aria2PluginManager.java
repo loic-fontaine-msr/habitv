@@ -1,21 +1,21 @@
 package com.dabi.habitv.downloader.aria2;
 
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.api.downloader.PluginDownloaderInterface;
 import com.dabi.habitv.framework.plugin.api.dto.ProxyDTO;
 import com.dabi.habitv.framework.plugin.api.update.BaseUpdatablePlugin;
-import com.dabi.habitv.framework.plugin.api.update.UpdatablePluginInterface;
 import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.framework.plugin.exception.ExecutorFailedException;
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
-import com.dabi.habitv.framework.plugin.utils.OSUtils;
-import com.dabi.habitv.framework.plugin.utils.update.UpdatablePluginEvent;
-import com.dabi.habitv.framework.pub.Publisher;
 
 public class Aria2PluginManager extends BaseUpdatablePlugin implements
 		PluginDownloaderInterface {
+
+	private static final Pattern VERSION_PATTERN = Pattern
+			.compile("aria2 version ([0-9A-Za-z.-]*).*");
 
 	@Override
 	public String getName() {
@@ -30,14 +30,7 @@ public class Aria2PluginManager extends BaseUpdatablePlugin implements
 			final Map<ProxyDTO.ProtocolEnum, ProxyDTO> proxies)
 			throws DownloadFailedException {
 
-		String binParam = parameters.get(FrameworkConf.PARAMETER_BIN_PATH);
-		if (binParam == null) {
-			if (OSUtils.isWindows()) {
-				binParam = Aria2Conf.DEFAULT_WINDOWS_BIN_PATH;
-			} else {
-				binParam = Aria2Conf.DEFAULT_LINUX_BIN_PATH;
-			}
-		}
+		String binParam = getBinParam(parameters);
 		String cmd = binParam + " ";
 		final String cmdParam = parameters.get(FrameworkConf.PARAMETER_ARGS);
 		if (cmdParam == null) {
@@ -68,5 +61,29 @@ public class Aria2PluginManager extends BaseUpdatablePlugin implements
 			throw new DownloadFailedException(e);
 		}
 	}
+
+	@Override
+	protected String getLinuxDefaultBuildPath() {
+		return Aria2Conf.DEFAULT_LINUX_BIN_PATH;
+	}
+
+	@Override
+	protected String getWindowsDefaultBuildPath() {
+		return Aria2Conf.DEFAULT_WINDOWS_BIN_PATH;
+	}
+
+	@Override
+	protected Pattern getVersionPattern() {
+		return VERSION_PATTERN;
+	}
+
+	@Override
+	protected String[] getFilesToUpdate() {
+		return new String[]{"aria2c"};
+	}
+	
+	protected String getVersionParam() {
+		return " -v";
+	}	
 
 }

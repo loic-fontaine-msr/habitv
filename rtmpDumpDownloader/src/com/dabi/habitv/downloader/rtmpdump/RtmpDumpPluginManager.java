@@ -1,7 +1,6 @@
 package com.dabi.habitv.downloader.rtmpdump;
 
 import java.util.Map;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.dabi.habitv.framework.FrameworkConf;
@@ -10,17 +9,13 @@ import com.dabi.habitv.framework.plugin.api.dto.ProxyDTO;
 import com.dabi.habitv.framework.plugin.api.update.BaseUpdatablePlugin;
 import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.framework.plugin.exception.ExecutorFailedException;
-import com.dabi.habitv.framework.plugin.exception.TechnicalException;
-import com.dabi.habitv.framework.plugin.utils.CmdExecutor;
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
-import com.dabi.habitv.framework.plugin.utils.EmptyProgressionListener;
-import com.dabi.habitv.framework.plugin.utils.OSUtils;
 
 public class RtmpDumpPluginManager extends BaseUpdatablePlugin implements
 		PluginDownloaderInterface {
 
 	private static final Pattern VERSION_PATTERN = Pattern
-			.compile("RTMPDump ([0-57A-Za-z.-]*) .*");
+			.compile("RTMPDump ([0-9A-Za-z.-]*) .*");
 
 	@Override
 	public String getName() {
@@ -60,6 +55,23 @@ public class RtmpDumpPluginManager extends BaseUpdatablePlugin implements
 		} catch (final ExecutorFailedException e) {
 			throw new DownloadFailedException(e);
 		}
+	}
+
+	protected String getLinuxDefaultBuildPath() {
+		return RtmpDumpConf.DEFAULT_LINUX_BIN_PATH;
+	}
+
+	protected String getWindowsDefaultBuildPath() {
+		return RtmpDumpConf.DEFAULT_WINDOWS_BIN_PATH;
+	}
+
+	@Override
+	protected Pattern getVersionPattern() {
+		return VERSION_PATTERN;
+	}
+	
+	protected String getVersionParam() {
+		return " -h";
 	}
 
 }

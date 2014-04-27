@@ -3,6 +3,7 @@ package com.dabi.habitv.exporter.ffmpeg;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.dabi.habitv.downloader.ffmpeg.FFMPEGCmdExecutor;
 import com.dabi.habitv.framework.plugin.exception.ExecutorFailedException;
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
 
