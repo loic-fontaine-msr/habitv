@@ -23,6 +23,8 @@ public class CmdExecutor {
 	private final CmdProgressionListener listener;
 
 	private String lastOutputLine = null;
+	
+	private String fullOutput = null;
 
 	private final String cmdProcessor;
 
@@ -83,6 +85,7 @@ public class CmdExecutor {
 		if (process.exitValue() != 0 || (getLastOutputLine() != null && !isSuccess(fullOutput.toString()))) {
 			throw new ExecutorFailedException(cmd, fullOutput.toString(), lastOutputLine, null);
 		}
+		this.fullOutput = fullOutput.toString();
 	}
 
 	private Thread buildKillerThread(final StringBuffer fullOutput, final Process process) {
@@ -198,4 +201,8 @@ public class CmdExecutor {
 		return null;
 	}
 
+	public String getFullOutput() {
+		return fullOutput;
+	}
+	
 }

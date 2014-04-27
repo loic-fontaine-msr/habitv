@@ -6,6 +6,7 @@ import com.dabi.habitv.core.event.UpdatePluginEvent;
 import com.dabi.habitv.core.event.UpdatePluginStateEnum;
 import com.dabi.habitv.framework.FWKProperties;
 import com.dabi.habitv.framework.FrameworkConf;
+import com.dabi.habitv.framework.plugin.utils.OSUtils;
 import com.dabi.habitv.framework.plugin.utils.RetrieverUtils;
 import com.dabi.habitv.framework.plugin.utils.update.Updater;
 import com.dabi.habitv.framework.pub.Publisher;
@@ -35,7 +36,7 @@ public class UpdateManager {
 	}
 
 	public UpdateManager(final boolean autoriseSnapshot) {
-		this(FrameworkConf.UPDATE_URL, System.getProperty("user.dir"), FrameworkConf.GROUP_ID, FWKProperties.getVersion(), autoriseSnapshot);
+		this(FrameworkConf.UPDATE_URL, OSUtils.getCurrentDir(), FrameworkConf.GROUP_ID, FWKProperties.getVersion(), autoriseSnapshot);
 	}
 
 	public void process() {

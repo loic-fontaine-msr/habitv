@@ -5,15 +5,17 @@ import java.util.Map;
 import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.api.downloader.PluginDownloaderInterface;
 import com.dabi.habitv.framework.plugin.api.dto.ProxyDTO;
+import com.dabi.habitv.framework.plugin.api.update.BaseUpdatablePlugin;
 import com.dabi.habitv.framework.plugin.api.update.UpdatablePluginInterface;
 import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.framework.plugin.exception.ExecutorFailedException;
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
 import com.dabi.habitv.framework.plugin.utils.OSUtils;
+import com.dabi.habitv.framework.plugin.utils.update.UpdatablePluginEvent;
+import com.dabi.habitv.framework.pub.Publisher;
 
-public class Aria2PluginManager implements PluginDownloaderInterface,UpdatablePluginInterface { // NO_UCD
-	// (unused
-	// code)
+public class Aria2PluginManager extends BaseUpdatablePlugin implements
+		PluginDownloaderInterface {
 
 	@Override
 	public String getName() {
@@ -21,12 +23,16 @@ public class Aria2PluginManager implements PluginDownloaderInterface,UpdatablePl
 	}
 
 	@Override
-	public void download(final String downloadInput, final String downloadDestination, final Map<String, String> parameters,
-			final CmdProgressionListener listener, final Map<ProxyDTO.ProtocolEnum, ProxyDTO> proxies) throws DownloadFailedException {
+	public void download(final String downloadInput,
+			final String downloadDestination,
+			final Map<String, String> parameters,
+			final CmdProgressionListener listener,
+			final Map<ProxyDTO.ProtocolEnum, ProxyDTO> proxies)
+			throws DownloadFailedException {
 
 		String binParam = parameters.get(FrameworkConf.PARAMETER_BIN_PATH);
 		if (binParam == null) {
-			if (OSUtils.isWindows()){
+			if (OSUtils.isWindows()) {
 				binParam = Aria2Conf.DEFAULT_WINDOWS_BIN_PATH;
 			} else {
 				binParam = Aria2Conf.DEFAULT_LINUX_BIN_PATH;
@@ -42,27 +48,25 @@ public class Aria2PluginManager implements PluginDownloaderInterface,UpdatablePl
 		if (proxies != null) {
 			final ProxyDTO httpProxy = proxies.get(ProxyDTO.ProtocolEnum.HTTP);
 			if (httpProxy != null) {
-				cmd += " --all-proxy='http://" + httpProxy.getHost() + ":" + httpProxy.getPort() + "'";
+				cmd += " --all-proxy='http://" + httpProxy.getHost() + ":"
+						+ httpProxy.getPort() + "'";
 			}
 		}
 		cmd = cmd.replaceFirst(FrameworkConf.DOWNLOAD_INPUT, downloadInput);
 
 		final int lastSlashIndex = downloadDestination.lastIndexOf('/');
-		final String fileName = downloadDestination.substring(lastSlashIndex + 1, downloadDestination.length());
+		final String fileName = downloadDestination.substring(
+				lastSlashIndex + 1, downloadDestination.length());
 		final String dirDest = downloadDestination.substring(0, lastSlashIndex);
 
 		cmd = cmd.replaceFirst(Aria2Conf.FILE_NAME, fileName);
 		cmd = cmd.replaceFirst(Aria2Conf.DIR_DEST, dirDest);
 		try {
-			(new Aria2CmdExecutor(parameters.get(FrameworkConf.CMD_PROCESSOR), cmd, listener)).execute();
+			(new Aria2CmdExecutor(parameters.get(FrameworkConf.CMD_PROCESSOR),
+					cmd, listener)).execute();
 		} catch (final ExecutorFailedException e) {
 			throw new DownloadFailedException(e);
 		}
-	}
-
-	@Override
-	public void update() {
-		// FIXME update
 	}
 
 }

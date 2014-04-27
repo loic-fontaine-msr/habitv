@@ -48,12 +48,12 @@ public class FindArtifactUtils {
 
 	}
 
-	public static ArtifactVersion findLastVersionUrl(final String groupId, final String artifactId, final String coreVersion, final boolean autoriseSnapshot) {
+	public static ArtifactVersion findLastVersionUrl(final String groupId, final String artifactId, final String coreVersion, final boolean autoriseSnapshot, String extension) {
 		final String versionMaj = getVersionMaj(coreVersion);
 		final String groupIdUrl = groupId.replace(".", "/");
 		final String artifactURL = FrameworkConf.UPDATE_URL + "/" + groupIdUrl + "/" + artifactId;
 
-		final ArtifactVersion lastVersion = findLastVersionUrl(artifactURL, versionMaj, autoriseSnapshot);
+		final ArtifactVersion lastVersion = findLastVersionUrl(artifactURL, versionMaj, autoriseSnapshot, extension);
 		if (lastVersion == null) {
 			return null;
 		}
@@ -72,7 +72,7 @@ public class FindArtifactUtils {
 		return versionMaj;
 	}
 
-	private static ArtifactVersion findLastVersionUrl(final String artifactURL, final String versionMaj, final boolean autoriseSnapshot) {
+	private static ArtifactVersion findLastVersionUrl(final String artifactURL, final String versionMaj, final boolean autoriseSnapshot, final String extension) {
 		List<String> items = findItems(Type.DIR, artifactURL + "/");
 		final String version = findLastVersion(versionMaj, items, autoriseSnapshot);
 		if (version == null) {
@@ -82,7 +82,7 @@ public class FindArtifactUtils {
 		items = findItems(Type.FILE, artifactVersionUrl);
 		final List<String> jarFiles = new LinkedList<>();
 		for (final String file : items) {
-			if (file.endsWith(".jar")) {
+			if (file.endsWith("."+extension)) {
 				jarFiles.add(file);
 			}
 		}
@@ -108,8 +108,9 @@ public class FindArtifactUtils {
 
 			for (final Element aElement : select) {
 				final String hRef = aElement.attr("href");
+				final String text = aElement.text();
 				final boolean isDirectory = isDirectory(hRef);
-				if (!EXCLUDE.contains(hRef) && (type == Type.ALL || (type == Type.DIR && isDirectory) || (type == Type.FILE && !isDirectory))) {
+				if (!EXCLUDE.contains(text) && (type == Type.ALL || (type == Type.DIR && isDirectory) || (type == Type.FILE && !isDirectory))) {
 					items.add(hRef.replace("/", ""));
 				}
 			}
@@ -121,7 +122,7 @@ public class FindArtifactUtils {
 		Collections.sort(items);
 		for (int i = items.size() - 1; i >= 0; i--) {
 			final String version = items.get(i);
-			if ((versionRef == null || version.startsWith(versionRef)) && (autoriseSnapshot || !version.contains("SNAPSHOT"))) {
+			if (versionRef == null || version.startsWith(versionRef) || (autoriseSnapshot && version.contains("SNAPSHOT"))) {
 				return version;
 			}
 		}

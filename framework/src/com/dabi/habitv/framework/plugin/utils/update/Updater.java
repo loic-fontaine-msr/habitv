@@ -28,14 +28,16 @@ public abstract class Updater {
 
 	private final boolean autoriseSnapshot;
 
-	public Updater(final String currentDir, final String groupId, final String coreVersion, final boolean autoriseSnapshot) {
+	public Updater(final String currentDir, final String groupId,
+			final String coreVersion, final boolean autoriseSnapshot) {
 		this.currentDir = currentDir;
 		this.groupId = groupId;
 		this.coreVersion = coreVersion;
 		this.autoriseSnapshot = autoriseSnapshot;
 	}
 
-	public void update(final String folderToUpdate, final String... filesToUpdate) {
+	public void update(final String folderToUpdate,
+			final String... filesToUpdate) {
 
 		final String folderPath = currentDir + "/" + folderToUpdate;
 		final File currentFolder = new File(folderPath);
@@ -43,9 +45,11 @@ public abstract class Updater {
 			currentFolder.mkdir();
 		} else {
 			if (deleteFiles()) {
-				final List<String> filesToUpdateList = Arrays.asList(filesToUpdate);
+				final List<String> filesToUpdateList = Arrays
+						.asList(filesToUpdate);
 				for (final File folderFile : currentFolder.listFiles()) {
-					if (!filesToUpdateList.contains(folderFile.getName().replace("." + getLocalExtension(), ""))) {
+					if (!filesToUpdateList.contains(folderFile.getName()
+							.replace("." + getLocalExtension(), ""))) {
 						folderFile.delete();
 					}
 				}
@@ -54,7 +58,8 @@ public abstract class Updater {
 
 		for (final String fileToUpdate : filesToUpdate) {
 			try {
-				updateFile(folderToUpdate, folderPath, currentFolder, fileToUpdate);
+				updateFile(folderToUpdate, folderPath, currentFolder,
+						fileToUpdate);
 			} catch (final Exception e) {
 				LOG.error("", e);
 			}
@@ -64,21 +69,29 @@ public abstract class Updater {
 
 	protected abstract boolean deleteFiles();
 
-	private void updateFile(final String folderToUpdate, final String folderPath, final File currentFolder, final String fileToUpdate) {
+	private void updateFile(final String folderToUpdate,
+			final String folderPath, final File currentFolder,
+			final String fileToUpdate) {
 		onChecking(fileToUpdate);
-		final ArtifactVersion artifactNewVersion = FindArtifactUtils.findLastVersionUrl(groupId, fileToUpdate, coreVersion, autoriseSnapshot);
+		final ArtifactVersion artifactNewVersion = FindArtifactUtils
+				.findLastVersionUrl(groupId, fileToUpdate, coreVersion,
+						autoriseSnapshot, getServerExtension());
 		if (artifactNewVersion == null) {
 			LOG.info("Nothing found for " + fileToUpdate);
 			return;
 		}
-		final File currentFile = new File(folderPath + "/" + fileToUpdate + "." + getServerExtension());
+		final File currentFile = new File(folderPath + "/" + fileToUpdate + "."
+				+ getLocalExtension());
 		if (currentFile.exists()) {
 			final String currentVersion = getCurrentVersion(currentFile);//
-			if (currentVersion == null || currentVersion.contains("-SNAPSHOT") || !currentVersion.equals(artifactNewVersion.getVersion())) {
-				updateFile(artifactNewVersion, currentFile);
+			if (currentVersion == null
+					|| currentVersion.contains("-SNAPSHOT")
+					|| currentVersion
+							.compareTo(artifactNewVersion.getVersion()) < 0) {
+				updateFile(folderToUpdate, artifactNewVersion, currentFile);
 			}
 		} else {
-			updateFile(artifactNewVersion, currentFile);
+			updateFile(folderToUpdate, artifactNewVersion, currentFile);
 		}
 	}
 
@@ -90,31 +103,38 @@ public abstract class Updater {
 
 	protected abstract String getServerExtension();
 
-	private void updateFile(final ArtifactVersion artifactNewVersion, final File current) {
+	private void updateFile(String folderToUpdate,
+			final ArtifactVersion artifactNewVersion, final File current) {
 		if (performUpdate(current, artifactNewVersion)) {
 			onUpdate(current, artifactNewVersion);
 			File newVersion;
 			try {
-				newVersion = new File(downloadFile(artifactNewVersion.getUrl(), current.getPath() + ".tmp"));
+				newVersion = new File(downloadFile(artifactNewVersion.getUrl(),
+						current.getPath() + ".tmp"));
 			} catch (final IOException e) {
 				onUpdateError(current, artifactNewVersion);
 				throw new TechnicalException(e);
 			}
-			updateFile(current, newVersion);
+			updateFile(folderToUpdate, current, newVersion);
 
 			onUpdateDone(current, artifactNewVersion);
 		}
 	}
 
-	protected abstract void onUpdateError(File current, ArtifactVersion artifactNewVersion);
+	protected abstract void onUpdateError(File current,
+			ArtifactVersion artifactNewVersion);
 
-	protected abstract void onUpdateDone(File current, ArtifactVersion artifactNewVersion);
+	protected abstract void onUpdateDone(File current,
+			ArtifactVersion artifactNewVersion);
 
-	protected abstract void onUpdate(File current, ArtifactVersion artifactNewVersion);
+	protected abstract void onUpdate(File current,
+			ArtifactVersion artifactNewVersion);
 
-	protected abstract boolean performUpdate(File current, ArtifactVersion artifactNewVersion);
+	protected abstract boolean performUpdate(File current,
+			ArtifactVersion artifactNewVersion);
 
-	protected void updateFile(final File current, final File newVersion) {
+	protected void updateFile(final String folderToUpdate, final File current,
+			final File newVersion) {
 		if (newVersion.exists()) {
 			if (current.exists()) {
 				try {
@@ -137,7 +157,8 @@ public abstract class Updater {
 	 * @return
 	 * @throws IOException
 	 */
-	private String downloadFile(final String filePath, final String destination) throws IOException {
+	private String downloadFile(final String filePath, final String destination)
+			throws IOException {
 		URLConnection connection = null;
 		InputStream is = null;
 		FileOutputStream destinationFile = null;
@@ -170,7 +191,8 @@ public abstract class Updater {
 			// Tant que l'on n'est pas à la fin du fichier, on récupère des
 			// données
 			while (deplacement < length) {
-				currentBit = is.read(data, deplacement, data.length - deplacement);
+				currentBit = is.read(data, deplacement, data.length
+						- deplacement);
 				if (currentBit == -1) {
 					break;
 				}
@@ -179,7 +201,9 @@ public abstract class Updater {
 
 			// Si on est pas arrivé à la fin du fichier, on lance une exception
 			if (deplacement != length) {
-				throw new IOException("Le fichier n'a pas été lu en entier (seulement " + deplacement + " sur " + length + ")");
+				throw new IOException(
+						"Le fichier n'a pas été lu en entier (seulement "
+								+ deplacement + " sur " + length + ")");
 			}
 
 			// On crée un stream sortant vers la destination
