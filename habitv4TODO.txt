@@ -1,5 +1,7 @@
-updatable plugin
+
 tester dl
+tester linux
+arbo plugin
 mutualiser entre plugin curl, ffmpeg
 log aucun plugin
 

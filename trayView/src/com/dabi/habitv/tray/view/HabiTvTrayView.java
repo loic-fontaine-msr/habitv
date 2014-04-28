@@ -14,6 +14,8 @@ import com.dabi.habitv.core.event.SearchCategoryEvent;
 import com.dabi.habitv.core.event.SearchEvent;
 import com.dabi.habitv.core.event.UpdatePluginEvent;
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
+import com.dabi.habitv.framework.plugin.utils.update.UpdatablePluginEvent;
+import com.dabi.habitv.framework.plugin.utils.update.UpdatablePluginEvent.UpdatablePluginStateEnum;
 import com.dabi.habitv.tray.controller.TrayController;
 import com.dabi.habitv.tray.model.ActionProgress;
 import com.dabi.habitv.tray.subscriber.CoreSubscriber;
@@ -256,6 +258,31 @@ public final class HabiTvTrayView implements CoreSubscriber {
 			break;
 		case ALL_DONE:
 			changeAnimation();
+			break;
+		default:
+			break;
+		}
+	}
+
+	@Override
+	public void update(final UpdatablePluginEvent event) {
+		final UpdatablePluginStateEnum state = event.getState();
+		switch (state) {
+		case CHECKING:
+
+			break;
+		case DOWNLOADING:
+			trayIcon.displayMessage(
+					Messages.getString("HabiTvTrayView.maj"), Messages.getString("HabiTvTrayView.automajplugin", event.getPlugin(), event.getVersion()), TrayIcon.MessageType.INFO); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+
+			break;
+		case ERROR:
+
+			break;
+		case DONE:
+			trayIcon.displayMessage(
+					Messages.getString("HabiTvTrayView.maj"), Messages.getString("HabiTvTrayView.automajpluginfini", event.getPlugin(), event.getVersion()), TrayIcon.MessageType.INFO); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+
 			break;
 		default:
 			break;

@@ -1,4 +1,5 @@
 package com.dabi.habitv.core.updater;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -32,7 +33,7 @@ public class TestListHttp {
 		final String coreVersion = "3.7.3";
 		final boolean autoriseSnapshot = false;
 
-		System.out.println(FindArtifactUtils.findLastVersionUrl(groupId, artifactId, coreVersion, autoriseSnapshot));
+		System.out.println(FindArtifactUtils.findLastVersionUrl(groupId, artifactId, coreVersion, autoriseSnapshot, ".jar"));
 	}
 
 }

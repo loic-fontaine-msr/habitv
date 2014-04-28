@@ -4,6 +4,7 @@ import com.dabi.habitv.core.event.RetreiveEvent;
 import com.dabi.habitv.core.event.SearchCategoryEvent;
 import com.dabi.habitv.core.event.SearchEvent;
 import com.dabi.habitv.core.event.UpdatePluginEvent;
+import com.dabi.habitv.framework.plugin.utils.update.UpdatablePluginEvent;
 import com.dabi.habitv.framework.pub.Subscriber;
 
 public class SubscriberAdapter {
@@ -51,6 +52,15 @@ public class SubscriberAdapter {
 
 	}
 
+	class UpdatablePluginSubscriber implements Subscriber<UpdatablePluginEvent> {
+
+		@Override
+		public void update(final UpdatablePluginEvent event) {
+			coreSubscriber.update(event);
+		}
+
+	}
+
 	public Subscriber<SearchEvent> buildSearchSubscriber() {
 		return new SearchSubscriber();
 	}
@@ -65,5 +75,9 @@ public class SubscriberAdapter {
 
 	public Subscriber<UpdatePluginEvent> buildUpdateSubscriber() {
 		return new UpdateSubscriber();
+	}
+
+	public Subscriber<UpdatablePluginEvent> buildUpdatablePluginSubscriber() {
+		return new UpdatablePluginSubscriber();
 	}
 }
