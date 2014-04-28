@@ -16,7 +16,7 @@ public class FFMPEGPluginManager extends BaseUpdatablePlugin implements PluginDo
 	private static final Pattern VERSION_PATTERN = Pattern
 			.compile("ffmpeg version ([\\-0-9A-Za-z.-]*).*");
 
-	
+
 	@Override
 	public String getName() {
 		return FFMPEGConf.NAME;
@@ -26,7 +26,7 @@ public class FFMPEGPluginManager extends BaseUpdatablePlugin implements PluginDo
 	public void download(final String downloadInput, final String downloadDestination, final Map<String, String> parameters,
 			final CmdProgressionListener listener, final Map<ProxyDTO.ProtocolEnum, ProxyDTO> proxies) throws DownloadFailedException {
 
-		String downloaderBin = getBinParam(parameters);
+		final String downloaderBin = getBinParam(parameters);
 		String cmd = downloaderBin + FFMPEGConf.FFMPEG_CMD_2;
 		cmd = cmd.replaceFirst(FrameworkConf.DOWNLOAD_INPUT, downloadInput);
 		cmd = cmd.replaceFirst(FrameworkConf.DOWNLOAD_DESTINATION, downloadDestination);
@@ -53,9 +53,10 @@ public class FFMPEGPluginManager extends BaseUpdatablePlugin implements PluginDo
 	protected Pattern getVersionPattern() {
 		return VERSION_PATTERN;
 	}
-	
+
+	@Override
 	protected String getVersionParam() {
 		return " -version";
-	}	
+	}
 
 }
