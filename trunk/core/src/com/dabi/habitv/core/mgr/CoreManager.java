@@ -19,6 +19,8 @@ import com.dabi.habitv.framework.plugin.api.dto.ProxyDTO;
 import com.dabi.habitv.framework.plugin.api.dto.ProxyDTO.ProtocolEnum;
 import com.dabi.habitv.framework.plugin.api.exporter.PluginExporterInterface;
 import com.dabi.habitv.framework.plugin.api.provider.PluginProviderInterface;
+import com.dabi.habitv.framework.plugin.utils.update.UpdatablePluginEvent;
+import com.dabi.habitv.framework.pub.Publisher;
 
 public final class CoreManager {
 
@@ -35,6 +37,10 @@ public final class CoreManager {
 	private final UpdateManager updateManager;
 
 	private static final Logger LOG = Logger.getLogger(CoreManager.class);
+
+	private DownloaderDTO downloader;
+
+	private final Publisher<UpdatablePluginEvent> updatePublisher = new Publisher<>();
 
 	public CoreManager(final UserConfig config) {
 		LOG.info("habitv version " + FWKProperties.getVersion());
@@ -89,16 +95,6 @@ public final class CoreManager {
 	}
 
 	private void initEpisodeManager(final Collection<PluginProviderInterface> pluginProviderList, final Map<String, Integer> taskName2PoolSize) {
-		// downloaders factory
-		final PluginFactory<PluginDownloaderInterface> pluginDownloaderFactory = new PluginFactory<>(PluginDownloaderInterface.class,
-				config.getDownloaderPluginDir());
-		// map of downloaders by name
-		final Map<String, PluginDownloaderInterface> downloaderName2downloader = pluginDownloaderFactory.getAllPluginMap();
-		// downloaders bin path
-		final Map<String, String> downloaderName2BinPath = config.getDownloader();
-		// DL DTO
-		final DownloaderDTO downloader = new DownloaderDTO(config.getCmdProcessor(), downloaderName2downloader, downloaderName2BinPath,
-				config.getDownloadOuput(), config.getIndexDir());
 		// exporters factory
 		final PluginFactory<PluginExporterInterface> pluginExporterFactory = new PluginFactory<>(PluginExporterInterface.class, config.getExporterPluginDir());
 		// map of exporters by name
@@ -107,7 +103,22 @@ public final class CoreManager {
 		final ExporterDTO exporter = new ExporterDTO(exporterName2exporter, config.getExporter());
 
 		// manager
-		episodeManager = new EpisodeManager(downloader, exporter, pluginProviderList, taskName2PoolSize, config.getMaxAttempts());
+		episodeManager = new EpisodeManager(getDownloaderDTO(), exporter, pluginProviderList, taskName2PoolSize, config.getMaxAttempts());
+	}
+
+	private DownloaderDTO getDownloaderDTO() {
+		if (downloader == null) {
+			// downloaders factory
+			final PluginFactory<PluginDownloaderInterface> pluginDownloaderFactory = new PluginFactory<>(PluginDownloaderInterface.class,
+					config.getDownloaderPluginDir());
+			// map of downloaders by name
+			final Map<String, PluginDownloaderInterface> downloaderName2downloader = pluginDownloaderFactory.getAllPluginMap();
+			// downloaders bin path
+			final Map<String, String> downloaderName2BinPath = config.getDownloader();
+			downloader = new DownloaderDTO(config.getCmdProcessor(), downloaderName2downloader, downloaderName2BinPath, config.getDownloadOuput(),
+					config.getIndexDir());
+		}
+		return downloader;
 	}
 
 	public void retreiveEpisode(final Map<String, Set<CategoryDTO>> categoriesToGrab) {
@@ -141,7 +152,8 @@ public final class CoreManager {
 
 	private void reloadPlugin() {
 		pluginProviderFactory = new PluginFactory<>(PluginProviderInterface.class, config.getProviderPluginDir());
-		pluginProviderFactory.loadPlugins();
+
+		pluginProviderFactory.loadPlugins(getDownloaderDTO(), updatePublisher );
 		getEpisodeManager().setPluginProviderList(pluginProviderFactory.getAllPlugin());
 		getCategoryManager().setPluginProviderList(pluginProviderFactory.getAllPlugin());
 	}
@@ -153,6 +165,10 @@ public final class CoreManager {
 
 	public UpdateManager getUpdateManager() {
 		return updateManager;
+	}
+
+	public Publisher<UpdatablePluginEvent> getPluginUpdatePublisher() {
+		return updatePublisher;
 	}
 
 }
