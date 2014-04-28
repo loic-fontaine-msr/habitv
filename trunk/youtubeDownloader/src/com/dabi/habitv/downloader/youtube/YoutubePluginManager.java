@@ -1,17 +1,19 @@
 package com.dabi.habitv.downloader.youtube;
 
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.api.downloader.PluginDownloaderInterface;
 import com.dabi.habitv.framework.plugin.api.dto.ProxyDTO;
-import com.dabi.habitv.framework.plugin.api.update.UpdatablePluginInterface;
+import com.dabi.habitv.framework.plugin.api.update.BaseUpdatablePlugin;
 import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.framework.plugin.exception.ExecutorFailedException;
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
-import com.dabi.habitv.framework.plugin.utils.OSUtils;
 
-public class YoutubePluginManager implements PluginDownloaderInterface, UpdatablePluginInterface {
+public class YoutubePluginManager extends BaseUpdatablePlugin implements PluginDownloaderInterface {
+
+	private static final Pattern VERSION_PATTERN = Pattern.compile("([\\-0-9A-Za-z.-]*)");
 
 	@Override
 	public String getName() {
@@ -21,14 +23,7 @@ public class YoutubePluginManager implements PluginDownloaderInterface, Updatabl
 	@Override
 	public void download(final String downloadInput, final String downloadDestination, final Map<String, String> parameters,
 			final CmdProgressionListener listener, final Map<ProxyDTO.ProtocolEnum, ProxyDTO> proxies) throws DownloadFailedException {
-		String binParam = parameters.get(FrameworkConf.PARAMETER_BIN_PATH);
-		if (binParam == null) {
-			if (OSUtils.isWindows()) {
-				binParam = YoutubeConf.DEFAULT_WINDOWS_BIN_PATH;
-			} else {
-				binParam = YoutubeConf.DEFAULT_LINUX_BIN_PATH;
-			}
-		}
+		final String binParam = getBinParam(parameters);
 		String cmd = binParam + " ";
 		final String cmdParam = parameters.get(FrameworkConf.PARAMETER_ARGS);
 		if (cmdParam == null) {
@@ -52,8 +47,28 @@ public class YoutubePluginManager implements PluginDownloaderInterface, Updatabl
 	}
 
 	@Override
-	public void update() {
-		//FIXME update
+	protected String getLinuxDefaultBuildPath() {
+		return YoutubeConf.DEFAULT_LINUX_BIN_PATH;
+	}
+
+	@Override
+	protected String getWindowsDefaultBuildPath() {
+		return YoutubeConf.DEFAULT_WINDOWS_BIN_PATH;
+	}
+
+	@Override
+	protected Pattern getVersionPattern() {
+		return VERSION_PATTERN;
+	}
+
+	@Override
+	protected String getVersionParam() {
+		return " --version";
+	}
+
+	@Override
+	protected String[] getFilesToUpdate() {
+		return new String[] { "youtube-dl" };
 	}
 
 }
