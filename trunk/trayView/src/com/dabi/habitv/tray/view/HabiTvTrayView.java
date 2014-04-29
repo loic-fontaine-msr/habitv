@@ -185,7 +185,7 @@ public final class HabiTvTrayView implements CoreSubscriber {
 		case EXPORT_FAILED:
 			trayIcon.displayMessage(
 					Messages.getString("HabiTvTrayView.22"), Messages.getString("HabiTvTrayView.23") + event.getEpisode().getCategory() + " " + event.getEpisode().getName() + " " //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-					+ event.getException().getMessage(), TrayIcon.MessageType.WARNING);
+							+ event.getException().getMessage(), TrayIcon.MessageType.WARNING);
 			break;
 		case EXPORTING:
 
@@ -265,8 +265,8 @@ public final class HabiTvTrayView implements CoreSubscriber {
 	}
 
 	@Override
-	public void update(final UpdatablePluginEvent event) {
-		final UpdatablePluginStateEnum state = event.getState();
+	public void update(UpdatablePluginEvent event) {
+		UpdatablePluginStateEnum state = event.getState();
 		switch (state) {
 		case CHECKING:
 

@@ -108,17 +108,21 @@ public final class CoreManager {
 
 	private DownloaderDTO getDownloaderDTO() {
 		if (downloader == null) {
-			// downloaders factory
-			final PluginFactory<PluginDownloaderInterface> pluginDownloaderFactory = new PluginFactory<>(PluginDownloaderInterface.class,
-					config.getDownloaderPluginDir());
-			// map of downloaders by name
-			final Map<String, PluginDownloaderInterface> downloaderName2downloader = pluginDownloaderFactory.getAllPluginMap();
-			// downloaders bin path
-			final Map<String, String> downloaderName2BinPath = config.getDownloader();
-			downloader = new DownloaderDTO(config.getCmdProcessor(), downloaderName2downloader, downloaderName2BinPath, config.getDownloadOuput(),
-					config.getIndexDir());
+			initDownloader();
 		}
 		return downloader;
+	}
+
+	private void initDownloader() {
+		// downloaders factory
+		final PluginFactory<PluginDownloaderInterface> pluginDownloaderFactory = new PluginFactory<>(PluginDownloaderInterface.class,
+				config.getDownloaderPluginDir());
+		// map of downloaders by name
+		final Map<String, PluginDownloaderInterface> downloaderName2downloader = pluginDownloaderFactory.getAllPluginMap();
+		// downloaders bin path
+		final Map<String, String> downloaderName2BinPath = config.getDownloader();
+		downloader = new DownloaderDTO(config.getCmdProcessor(), downloaderName2downloader, downloaderName2BinPath, config.getDownloadOuput(),
+				config.getIndexDir());
 	}
 
 	public void retreiveEpisode(final Map<String, Set<CategoryDTO>> categoriesToGrab) {
@@ -161,6 +165,7 @@ public final class CoreManager {
 	public void update() {
 		updateManager.process();
 		reloadPlugin();
+		initDownloader();
 	}
 
 	public UpdateManager getUpdateManager() {

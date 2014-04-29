@@ -151,8 +151,8 @@ public class TrayController implements CoreSubscriber {
 	}
 
 	@Override
-	public void update(final UpdatablePluginEvent event) {
-
+	public void update(UpdatablePluginEvent event) {
+		
 	}
 
 
