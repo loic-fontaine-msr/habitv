@@ -16,10 +16,12 @@ public final class PluginFactory<P extends PluginBase> {
 	private final Map<String, P> pluginName2Plugin = new HashMap<>();
 	private final Class<P> pluginInterface;
 	private final String pluginDir;
+	private boolean updatePlugin;
 
-	public PluginFactory(final Class<P> pluginInterface, final String pluginDir) {
+	public PluginFactory(final Class<P> pluginInterface, final String pluginDir, boolean updatePlugin) {
 		this.pluginInterface = pluginInterface;
 		this.pluginDir = pluginDir;
+		this.updatePlugin = updatePlugin;
 	}
 
 	public Collection<P> getAllPlugin() {
@@ -33,7 +35,7 @@ public final class PluginFactory<P extends PluginBase> {
 	public void loadPlugins(final DownloaderDTO downloaderDTO, final Publisher<UpdatablePluginEvent> updatePublisher) {
 		pluginName2Plugin.clear();
 		final List<P> pluginProviderInterList = new PluginsLoader<>(pluginInterface, new File(pluginDir).listFiles(), downloaderDTO, updatePublisher)
-				.loadAllProviderPlugins();
+				.loadAllProviderPlugins(updatePlugin);
 		for (final P plugin : pluginProviderInterList) {
 			pluginName2Plugin.put(plugin.getName(), plugin);
 		}

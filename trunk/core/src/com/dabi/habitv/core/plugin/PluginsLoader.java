@@ -70,7 +70,7 @@ class PluginsLoader<P extends PluginBase> {
 		this.updatePublisher = updatePublisher;
 	}
 
-	List<P> loadAllProviderPlugins() {
+	List<P> loadAllProviderPlugins(boolean updatePlugin) {
 
 		this.initializeLoader();
 
@@ -78,7 +78,8 @@ class PluginsLoader<P extends PluginBase> {
 		for (final Plugin plugin : this.classPluginProviders) {
 			try {
 				final P pluginProviderInterface = plugin.getClassPluginProvider().newInstance();
-				if (UpdatablePluginInterface.class.isInstance(pluginProviderInterface)) {
+				
+				if (updatePlugin && UpdatablePluginInterface.class.isInstance(pluginProviderInterface)) {
 					((UpdatablePluginInterface) pluginProviderInterface).update(updatePublisher, getParameters(pluginProviderInterface.getName()));
 				}
 				if (PluginClassLoader.class.isInstance(pluginProviderInterface)) {
