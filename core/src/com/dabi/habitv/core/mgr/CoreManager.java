@@ -45,12 +45,13 @@ public final class CoreManager {
 	public CoreManager(final UserConfig config) {
 		LOG.info("habitv version " + FWKProperties.getVersion());
 		this.config = config;
-		pluginProviderFactory = new PluginFactory<>(PluginProviderInterface.class, config.getProviderPluginDir());
+		pluginProviderFactory = new PluginFactory<>(PluginProviderInterface.class, config.getProviderPluginDir(), config.updateOnStartup());
 		taskName2PoolSizeMap = config.getTaskDefinition();
 		TokenReplacer.setCutSize(config.getFileNameCutSize());
 		setProxy(config);
-		reloadPlugin();
+		loadPlugin(config.updateOnStartup());
 		updateManager = new UpdateManager(config.autoriseSnapshot());
+		initDownloader(config.updateOnStartup());
 	}
 
 	private void setProxy(final UserConfig config) {
@@ -96,7 +97,7 @@ public final class CoreManager {
 
 	private void initEpisodeManager(final Collection<PluginProviderInterface> pluginProviderList, final Map<String, Integer> taskName2PoolSize) {
 		// exporters factory
-		final PluginFactory<PluginExporterInterface> pluginExporterFactory = new PluginFactory<>(PluginExporterInterface.class, config.getExporterPluginDir());
+		final PluginFactory<PluginExporterInterface> pluginExporterFactory = new PluginFactory<>(PluginExporterInterface.class, config.getExporterPluginDir(), false);
 		// map of exporters by name
 		final Map<String, PluginExporterInterface> exporterName2exporter = pluginExporterFactory.getAllPluginMap();
 		// export DTO
@@ -107,16 +108,13 @@ public final class CoreManager {
 	}
 
 	private DownloaderDTO getDownloaderDTO() {
-		if (downloader == null) {
-			initDownloader();
-		}
 		return downloader;
 	}
 
-	private void initDownloader() {
+	private void initDownloader(boolean updatePlugin) {
 		// downloaders factory
 		final PluginFactory<PluginDownloaderInterface> pluginDownloaderFactory = new PluginFactory<>(PluginDownloaderInterface.class,
-				config.getDownloaderPluginDir());
+				config.getDownloaderPluginDir(), updatePlugin);
 		// map of downloaders by name
 		final Map<String, PluginDownloaderInterface> downloaderName2downloader = pluginDownloaderFactory.getAllPluginMap();
 		// downloaders bin path
@@ -154,8 +152,8 @@ public final class CoreManager {
 		episodeManager.clearExport();
 	}
 
-	private void reloadPlugin() {
-		pluginProviderFactory = new PluginFactory<>(PluginProviderInterface.class, config.getProviderPluginDir());
+	private void loadPlugin(boolean updatePlugin) {
+		pluginProviderFactory = new PluginFactory<>(PluginProviderInterface.class, config.getProviderPluginDir(), updatePlugin);
 
 		pluginProviderFactory.loadPlugins(getDownloaderDTO(), updatePublisher );
 		getEpisodeManager().setPluginProviderList(pluginProviderFactory.getAllPlugin());
@@ -164,8 +162,8 @@ public final class CoreManager {
 
 	public void update() {
 		updateManager.process();
-		reloadPlugin();
-		initDownloader();
+		loadPlugin(true);
+		initDownloader(true);
 	}
 
 	public UpdateManager getUpdateManager() {
