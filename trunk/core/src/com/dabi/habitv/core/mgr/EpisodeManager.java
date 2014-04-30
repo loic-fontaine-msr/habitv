@@ -1,6 +1,5 @@
 package com.dabi.habitv.core.mgr;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -24,10 +23,11 @@ import com.dabi.habitv.core.task.TaskMgrListener;
 import com.dabi.habitv.core.task.TaskState;
 import com.dabi.habitv.core.task.TaskTypeEnum;
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
-import com.dabi.habitv.framework.plugin.api.dto.DownloaderDTO;
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
-import com.dabi.habitv.framework.plugin.api.dto.ExporterDTO;
 import com.dabi.habitv.framework.plugin.api.provider.PluginProviderInterface;
+import com.dabi.habitv.framework.plugin.holder.DownloaderPluginHolder;
+import com.dabi.habitv.framework.plugin.holder.ExporterPluginHolder;
+import com.dabi.habitv.framework.plugin.holder.ProviderPluginHolder;
 import com.dabi.habitv.framework.pub.Publisher;
 
 public final class EpisodeManager extends AbstractManager implements TaskAdder {
@@ -40,9 +40,9 @@ public final class EpisodeManager extends AbstractManager implements TaskAdder {
 
 	private final TaskMgr<SearchTask, Object> searchMgr;
 
-	private final DownloaderDTO downloader;
+	private final DownloaderPluginHolder downloader;
 
-	private final ExporterDTO exporter;
+	private final ExporterPluginHolder exporter;
 
 	private final Publisher<RetreiveEvent> retreivePublisher;
 
@@ -56,9 +56,9 @@ public final class EpisodeManager extends AbstractManager implements TaskAdder {
 
 	private final Integer maxAttempts;
 
-	EpisodeManager(final DownloaderDTO downloader, final ExporterDTO exporter, final Collection<PluginProviderInterface> pluginProviderList,
+	EpisodeManager(final DownloaderPluginHolder downloader, final ExporterPluginHolder exporter, final ProviderPluginHolder providerPluginHolder,
 			final Map<String, Integer> taskName2PoolSize, final Integer maxAttempts) {
-		super(pluginProviderList);
+		super(providerPluginHolder);
 
 		// task mgrs
 		retreiveMgr = new TaskMgr<RetrieveTask, Object>(TaskTypeEnum.retreive.getPoolSize(taskName2PoolSize), buildRetreiveTaskMgrListener(), taskName2PoolSize);
@@ -74,7 +74,7 @@ public final class EpisodeManager extends AbstractManager implements TaskAdder {
 	}
 
 	void retreiveEpisode(final Map<String, Set<CategoryDTO>> channel2Categories) {
-		for (final PluginProviderInterface provider : getPluginProviderList()) {
+		for (final PluginProviderInterface provider : getProviderPluginHolder().getPlugins()) {
 			final Set<CategoryDTO> categories = channel2Categories.get(provider.getName());
 			if (categories != null && !categories.isEmpty()) {
 				searchMgr.addTask(new SearchTask(provider, categories, this, searchPublisher, retreivePublisher, downloader, exporter));
@@ -233,20 +233,11 @@ public final class EpisodeManager extends AbstractManager implements TaskAdder {
 		for (final EpisodeExportState episodeExportState : exportDAO.loadExportStep()) {
 			final String channel = episodeExportState.getEpisode().getCategory().getChannel();
 			final DownloadedDAO dlDAO = new DownloadedDAO(channel, episodeExportState.getEpisode().getCategory().getName(), downloader.getIndexDir());
-			final RetrieveTask retreiveTask = new RetrieveTask(episodeExportState.getEpisode(), retreivePublisher, this, exporter, getProviderByName(channel),
-					downloader, dlDAO);
+			final RetrieveTask retreiveTask = new RetrieveTask(episodeExportState.getEpisode(), retreivePublisher, this, exporter, getProviderPluginHolder()
+					.getPlugin(channel), downloader, dlDAO);
 			retreiveTask.setEpisodeExportState(episodeExportState);
 			addRetreiveTask(retreiveTask);
 		}
-	}
-
-	private PluginProviderInterface getProviderByName(final String channel) {
-		for (final PluginProviderInterface provider : getPluginProviderList()) {
-			if (provider.getName().equals(channel)) {
-				return provider;
-			}
-		}
-		return null;
 	}
 
 	public boolean hasExportToResume() {

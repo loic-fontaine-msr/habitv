@@ -6,12 +6,11 @@ import com.dabi.habitv.core.dao.DownloadedDAO;
 import com.dabi.habitv.core.event.EpisodeStateEnum;
 import com.dabi.habitv.core.event.RetreiveEvent;
 import com.dabi.habitv.core.token.TokenReplacer;
-import com.dabi.habitv.framework.plugin.api.dto.DownloaderDTO;
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
 import com.dabi.habitv.framework.plugin.api.provider.PluginProviderInterface;
 import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
-import com.dabi.habitv.framework.plugin.exception.NoSuchDownloaderException;
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
+import com.dabi.habitv.framework.plugin.holder.DownloaderPluginHolder;
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
 import com.dabi.habitv.framework.pub.Publisher;
 
@@ -19,13 +18,13 @@ public class DownloadTask extends AbstractEpisodeTask {
 
 	private final PluginProviderInterface provider;
 
-	private final DownloaderDTO downloader;
+	private final DownloaderPluginHolder downloader;
 
 	private final Publisher<RetreiveEvent> publisher;
 
 	private final DownloadedDAO downloadedDAO;
 
-	public DownloadTask(final EpisodeDTO episode, final PluginProviderInterface provider, final DownloaderDTO downloader,
+	public DownloadTask(final EpisodeDTO episode, final PluginProviderInterface provider, final DownloaderPluginHolder downloader,
 			final Publisher<RetreiveEvent> publisher, final DownloadedDAO downloadedDAO) {
 		super(episode);
 		this.provider = provider;
@@ -59,7 +58,7 @@ public class DownloadTask extends AbstractEpisodeTask {
 	}
 
 	@Override
-	protected Object doCall() throws DownloadFailedException, NoSuchDownloaderException {
+	protected Object doCall() throws DownloadFailedException {
 		final String outputFilename = TokenReplacer.replaceAll(downloader.getDownloadOutput(), getEpisode());
 		final String outputTmpFileName;
 		if (!outputFilename.contains(".torrent")) {
@@ -86,7 +85,7 @@ public class DownloadTask extends AbstractEpisodeTask {
 			}
 		}, getEpisode());
 		final File file = new File(outputTmpFileName);
-		if (file.exists() && !file.renameTo(new File(outputFilename))){
+		if (file.exists() && !file.renameTo(new File(outputFilename))) {
 			throw new TechnicalException("can't rename");
 		}
 		return null;

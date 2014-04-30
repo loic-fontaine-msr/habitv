@@ -17,11 +17,10 @@ import org.junit.Test;
 
 import com.dabi.habitv.framework.plugin.api.downloader.PluginDownloaderInterface;
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
-import com.dabi.habitv.framework.plugin.api.dto.DownloaderDTO;
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
 import com.dabi.habitv.framework.plugin.api.dto.ProxyDTO;
 import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
-import com.dabi.habitv.framework.plugin.exception.NoSuchDownloaderException;
+import com.dabi.habitv.framework.plugin.holder.DownloaderPluginHolder;
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
 
 public class CanalPlusPluginManagerTest {
@@ -75,7 +74,7 @@ public class CanalPlusPluginManagerTest {
 	}
 
 	@Test
-	public final void testDownload() throws DownloadFailedException, NoSuchDownloaderException {
+	public final void testDownload() throws DownloadFailedException {
 		final Map<String, PluginDownloaderInterface> downloaderName2downloader = new HashMap<>();
 		final PluginDownloaderInterface downloader = new PluginDownloaderInterface() {
 
@@ -93,7 +92,7 @@ public class CanalPlusPluginManagerTest {
 		downloaderName2downloader.put("curl", downloader);
 		final Map<String, String> downloaderName2BinPath = new HashMap<>();
 		downloaderName2BinPath.put("curl", "bin");
-		final DownloaderDTO downloaders = new DownloaderDTO(null, downloaderName2downloader, downloaderName2BinPath, null, null);
+		final DownloaderPluginHolder downloaders = new DownloaderPluginHolder(null, downloaderName2downloader, downloaderName2BinPath, null, null);
 		final EpisodeDTO episode = new EpisodeDTO(new CategoryDTO("50-mn-inside", "50-mn-inside", "50-mn-inside", "50-mn-inside"),
 				"Emission du 20 juillet 2013", "/50-mn-inside/emission-du-20-juillet-2013-8136376.html");
 		manager.download("downloadOuput", downloaders, new CmdProgressionListener() {
@@ -105,7 +104,7 @@ public class CanalPlusPluginManagerTest {
 	}
 
 	@Test
-	public final void testDownloadExpert() throws DownloadFailedException, NoSuchDownloaderException {
+	public final void testDownloadExpert() throws DownloadFailedException {
 		final Map<String, PluginDownloaderInterface> downloaderName2downloader = new HashMap<>();
 		final PluginDownloaderInterface downloader = new PluginDownloaderInterface() {
 
@@ -123,7 +122,7 @@ public class CanalPlusPluginManagerTest {
 		downloaderName2downloader.put("curl", downloader);
 		final Map<String, String> downloaderName2BinPath = new HashMap<>();
 		downloaderName2BinPath.put("curl", "bin");
-		final DownloaderDTO downloaders = new DownloaderDTO(null, downloaderName2downloader, downloaderName2BinPath, null, null);
+		final DownloaderPluginHolder downloaders = new DownloaderPluginHolder(null, downloaderName2downloader, downloaderName2BinPath, null, null);
 		final EpisodeDTO episode = new EpisodeDTO(new CategoryDTO("expert", "expert", "expert", "expert"), "expert",
 				"/les-experts-las-vegas/episode-01-saison-11-tic-tac-7035188.html");
 		manager.download("downloadOuput", downloaders, new CmdProgressionListener() {

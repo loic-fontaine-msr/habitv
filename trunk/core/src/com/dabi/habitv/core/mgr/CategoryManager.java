@@ -1,7 +1,6 @@
 package com.dabi.habitv.core.mgr;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +19,7 @@ import com.dabi.habitv.core.task.TaskTypeEnum;
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
 import com.dabi.habitv.framework.plugin.api.provider.PluginProviderInterface;
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
+import com.dabi.habitv.framework.plugin.holder.ProviderPluginHolder;
 import com.dabi.habitv.framework.pub.Publisher;
 
 public class CategoryManager extends AbstractManager {
@@ -30,8 +30,8 @@ public class CategoryManager extends AbstractManager {
 
 	private static final Logger LOG = Logger.getLogger(CategoryManager.class);
 
-	CategoryManager(final Collection<PluginProviderInterface> pluginProviderList, final Map<String, Integer> taskName2PoolSize) {
-		super(pluginProviderList);
+	CategoryManager(final ProviderPluginHolder providerPluginHolder, final Map<String, Integer> taskName2PoolSize) {
+		super(providerPluginHolder);
 		// task mgrs
 		searchCategoryMgr = new TaskMgr<SearchCategoryTask, SearchCategoryResult>(TaskTypeEnum.category.getPoolSize(taskName2PoolSize),
 				buildCategoryTaskMgrListener(), null);
@@ -44,7 +44,7 @@ public class CategoryManager extends AbstractManager {
 		final List<SearchCategoryTask> taskList = new ArrayList<>();
 		// search is parallelized, the final result will be build with the
 		// future result
-		for (final PluginProviderInterface provider : getPluginProviderList()) {
+		for (final PluginProviderInterface provider : getProviderPluginHolder().getPlugins()) {
 			final SearchCategoryTask searchCategoryTask = new SearchCategoryTask(provider.getName(), provider, searchCategoryPublisher);
 			searchCategoryMgr.addTask(searchCategoryTask);
 			taskList.add(searchCategoryTask);

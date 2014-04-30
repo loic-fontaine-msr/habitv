@@ -21,14 +21,13 @@ import com.dabi.habitv.core.dao.DownloadedDAO;
 import com.dabi.habitv.core.event.EpisodeStateEnum;
 import com.dabi.habitv.core.event.RetreiveEvent;
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
-import com.dabi.habitv.framework.plugin.api.dto.DownloaderDTO;
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
 import com.dabi.habitv.framework.plugin.api.dto.ProxyDTO;
 import com.dabi.habitv.framework.plugin.api.dto.ProxyDTO.ProtocolEnum;
 import com.dabi.habitv.framework.plugin.api.provider.PluginProviderInterface;
 import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.framework.plugin.exception.ExecutorFailedException;
-import com.dabi.habitv.framework.plugin.exception.NoSuchDownloaderException;
+import com.dabi.habitv.framework.plugin.holder.DownloaderPluginHolder;
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
 import com.dabi.habitv.framework.pub.Publisher;
 import com.dabi.habitv.framework.pub.Subscriber;
@@ -78,8 +77,8 @@ public class DownloadTaskTest {
 			}
 
 			@Override
-			public void download(final String downloadOuput, final DownloaderDTO downloaders, final CmdProgressionListener cmdProgressionListener,
-					final EpisodeDTO episode) throws DownloadFailedException, NoSuchDownloaderException {
+			public void download(final String downloadOuput, final DownloaderPluginHolder downloaders, final CmdProgressionListener cmdProgressionListener,
+					final EpisodeDTO episode) throws DownloadFailedException {
 				assertEquals("episode1234567890123456789012345678901234567890123456789_episode123456789012345678901234567890123_channel_category_extension",
 						downloadOuput);
 
@@ -111,7 +110,7 @@ public class DownloadTaskTest {
 
 			}
 		};
-		final DownloaderDTO downloader = new DownloaderDTO(null, null, null, "#EPISODE_NAME#_#EPISODE_NAME_CUT#_#CHANNEL_NAME#_#TVSHOW_NAME#_#EXTENSION#",
+		final DownloaderPluginHolder downloader = new DownloaderPluginHolder(null, null, null, "#EPISODE_NAME#_#EPISODE_NAME_CUT#_#CHANNEL_NAME#_#TVSHOW_NAME#_#EXTENSION#",
 				"indexDir");
 		final Publisher<RetreiveEvent> publisher = new Publisher<>();
 		final Subscriber<RetreiveEvent> subscriber = new Subscriber<RetreiveEvent>() {

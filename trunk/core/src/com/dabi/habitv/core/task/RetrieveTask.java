@@ -9,14 +9,14 @@ import com.dabi.habitv.core.dao.EpisodeExportState;
 import com.dabi.habitv.core.event.EpisodeStateEnum;
 import com.dabi.habitv.core.event.RetreiveEvent;
 import com.dabi.habitv.core.token.TokenReplacer;
-import com.dabi.habitv.framework.plugin.api.dto.DownloaderDTO;
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
 import com.dabi.habitv.framework.plugin.api.dto.ExportDTO;
-import com.dabi.habitv.framework.plugin.api.dto.ExporterDTO;
 import com.dabi.habitv.framework.plugin.api.exporter.PluginExporterInterface;
 import com.dabi.habitv.framework.plugin.api.provider.PluginProviderInterface;
 import com.dabi.habitv.framework.plugin.exception.InvalidEpisodeException;
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
+import com.dabi.habitv.framework.plugin.holder.DownloaderPluginHolder;
+import com.dabi.habitv.framework.plugin.holder.ExporterPluginHolder;
 import com.dabi.habitv.framework.pub.Publisher;
 
 public class RetrieveTask extends AbstractEpisodeTask {
@@ -25,18 +25,18 @@ public class RetrieveTask extends AbstractEpisodeTask {
 
 	private final TaskAdder taskAdder;
 
-	private final ExporterDTO exporter;
+	private final ExporterPluginHolder exporter;
 
 	private final PluginProviderInterface provider;
 
-	private final DownloaderDTO downloader;
+	private final DownloaderPluginHolder downloader;
 
 	private final DownloadedDAO downloadDAO;
 
 	private EpisodeExportState episodeExportState;
 
-	public RetrieveTask(final EpisodeDTO episode, final Publisher<RetreiveEvent> publisher, final TaskAdder taskAdder, final ExporterDTO exporter,
-			final PluginProviderInterface provider, final DownloaderDTO downloader, final DownloadedDAO downloadDAO) {
+	public RetrieveTask(final EpisodeDTO episode, final Publisher<RetreiveEvent> publisher, final TaskAdder taskAdder, final ExporterPluginHolder exporter,
+			final PluginProviderInterface provider, final DownloaderPluginHolder downloader, final DownloadedDAO downloadDAO) {
 		super(episode);
 		retreivePublisher = publisher;
 		this.taskAdder = taskAdder;
@@ -87,7 +87,7 @@ public class RetrieveTask extends AbstractEpisodeTask {
 		int i = 0;
 		for (final ExportDTO export : exporterList) {
 			if (validCondition(export, getEpisode()) && episodeExportResume(i)) {
-				final PluginExporterInterface pluginexporter = exporter.getExporter(export.getName(), HabitTvConf.DEFAULT_EXPORTER);
+				final PluginExporterInterface pluginexporter = exporter.getPlugin(export.getName(), HabitTvConf.DEFAULT_EXPORTER);
 				final ExportTask exportTask = new ExportTask(getEpisode(), export, pluginexporter, retreivePublisher, i);
 				taskAdder.addExportTask(exportTask, export.getName());
 				// wait for the current exportTask before running an other

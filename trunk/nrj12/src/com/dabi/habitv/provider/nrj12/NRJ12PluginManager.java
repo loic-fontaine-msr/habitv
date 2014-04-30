@@ -15,12 +15,12 @@ import org.jsoup.select.Elements;
 import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.api.downloader.PluginDownloaderInterface;
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
-import com.dabi.habitv.framework.plugin.api.dto.DownloaderDTO;
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
 import com.dabi.habitv.framework.plugin.api.provider.BasePluginProvider;
 import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
-import com.dabi.habitv.framework.plugin.exception.NoSuchDownloaderException;
+
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
+import com.dabi.habitv.framework.plugin.holder.DownloaderPluginHolder;
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
 
 public class NRJ12PluginManager extends BasePluginProvider {
@@ -118,14 +118,14 @@ public class NRJ12PluginManager extends BasePluginProvider {
 	}
 
 	@Override
-	public void download(final String downloadOuput, final DownloaderDTO downloaders, final CmdProgressionListener cmdProgressionListener,
-			final EpisodeDTO episode) throws DownloadFailedException, NoSuchDownloaderException {
+	public void download(final String downloadOuput, final DownloaderPluginHolder downloaders, final CmdProgressionListener cmdProgressionListener,
+			final EpisodeDTO episode) throws DownloadFailedException {
 		final String mediaId = findFinalUrl(episode);
 
 		final String videoUrl = buildUrlVideoInfo(mediaId);
 
 		final String downloaderName = getDownloader(videoUrl);
-		final PluginDownloaderInterface pluginDownloader = downloaders.getDownloader(downloaderName);
+		final PluginDownloaderInterface pluginDownloader = downloaders.getPlugin(downloaderName);
 
 		final Map<String, String> parameters = new HashMap<>(2);
 		parameters.put(FrameworkConf.PARAMETER_BIN_PATH, downloaders.getBinPath(downloaderName));

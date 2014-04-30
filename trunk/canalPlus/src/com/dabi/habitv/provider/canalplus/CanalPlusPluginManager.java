@@ -9,11 +9,10 @@ import java.util.Set;
 import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.api.downloader.PluginDownloaderInterface;
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
-import com.dabi.habitv.framework.plugin.api.dto.DownloaderDTO;
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
 import com.dabi.habitv.framework.plugin.api.provider.BasePluginProviderClassloader;
 import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
-import com.dabi.habitv.framework.plugin.exception.NoSuchDownloaderException;
+import com.dabi.habitv.framework.plugin.holder.DownloaderPluginHolder;
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
 import com.dabi.habitv.framework.plugin.utils.M3U8Utils;
 import com.dabi.habitv.framework.plugin.utils.RetrieverUtils;
@@ -76,10 +75,10 @@ public class CanalPlusPluginManager extends BasePluginProviderClassloader { // N
 	}
 
 	@Override
-	public void download(final String downloadOuput, final DownloaderDTO downloaders, final CmdProgressionListener listener, final EpisodeDTO episode)
-			throws DownloadFailedException, NoSuchDownloaderException {
+	public void download(final String downloadOuput, final DownloaderPluginHolder downloaders, final CmdProgressionListener listener, final EpisodeDTO episode)
+			throws DownloadFailedException {
 		final String downloaderName = getDownloader(episode.getUrl());
-		final PluginDownloaderInterface pluginDownloader = downloaders.getDownloader(downloaderName);
+		final PluginDownloaderInterface pluginDownloader = downloaders.getPlugin(downloaderName);
 
 		final Map<String, String> parameters = new HashMap<>(2);
 		parameters.put(FrameworkConf.PARAMETER_BIN_PATH, downloaders.getBinPath(downloaderName));

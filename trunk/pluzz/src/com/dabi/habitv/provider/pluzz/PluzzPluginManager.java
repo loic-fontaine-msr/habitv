@@ -5,12 +5,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
-import com.dabi.habitv.framework.plugin.api.dto.DownloaderDTO;
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
 import com.dabi.habitv.framework.plugin.api.provider.BasePluginProvider;
 import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
-import com.dabi.habitv.framework.plugin.exception.NoSuchDownloaderException;
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
+import com.dabi.habitv.framework.plugin.holder.DownloaderPluginHolder;
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
 import com.dabi.habitv.provider.pluzz.jpluzz.Archive;
 import com.dabi.habitv.provider.pluzz.jpluzz.JsonArchiveParser;
@@ -30,7 +29,7 @@ public class PluzzPluginManager extends BasePluginProvider {
 	}
 
 	@Override
-	public Set<EpisodeDTO> findEpisode(final CategoryDTO category ) {
+	public Set<EpisodeDTO> findEpisode(final CategoryDTO category) {
 		final Set<EpisodeDTO> episodeList = new HashSet<>();
 		if (!category.getSubCategories().isEmpty()) {
 			for (final CategoryDTO subCat : category.getSubCategories()) {
@@ -70,8 +69,8 @@ public class PluzzPluginManager extends BasePluginProvider {
 	}
 
 	@Override
-	public void download(final String downloadOuput, final DownloaderDTO downloaders, final CmdProgressionListener cmdProgressionListener,
-			final EpisodeDTO episode) throws DownloadFailedException, NoSuchDownloaderException {
+	public void download(final String downloadOuput, final DownloaderPluginHolder downloaders, final CmdProgressionListener cmdProgressionListener,
+			final EpisodeDTO episode) throws DownloadFailedException {
 		final String assemblerBinPath = downloaders.getBinPath(PluzzConf.ASSEMBLER);
 		if (assemblerBinPath == null) {
 			throw new TechnicalException(PluzzConf.ASSEMBLER + " downloader can't be found, add it the config.xml");

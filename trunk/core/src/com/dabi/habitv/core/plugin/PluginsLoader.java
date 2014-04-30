@@ -9,21 +9,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.api.PluginBase;
 import com.dabi.habitv.framework.plugin.api.PluginClassLoader;
-import com.dabi.habitv.framework.plugin.api.dto.DownloaderDTO;
-import com.dabi.habitv.framework.plugin.api.update.UpdatablePluginInterface;
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
-import com.dabi.habitv.framework.plugin.utils.update.UpdatablePluginEvent;
-import com.dabi.habitv.framework.pub.Publisher;
 
 class PluginsLoader<P extends PluginBase> {
 
@@ -33,13 +26,9 @@ class PluginsLoader<P extends PluginBase> {
 
 	private final List<File> files;
 
-	private final List<Plugin> classPluginProviders;
+	private final List<Plugin> classPlugins;
 
 	private final Class<P> pluginInterface;
-
-	private final Publisher<UpdatablePluginEvent> updatePublisher;
-
-	private final DownloaderDTO downloader;
 
 	private class Plugin {
 		private final Class<P> classPluginProvider;
@@ -62,26 +51,20 @@ class PluginsLoader<P extends PluginBase> {
 	}
 
 	@SuppressWarnings("unchecked")
-	PluginsLoader(final Class<P> pluginInterface, final File[] files, final DownloaderDTO downloaderDTO, final Publisher<UpdatablePluginEvent> updatePublisher) {
+	PluginsLoader(final Class<P> pluginInterface, final File[] files) {
 		this.files = (List<File>) (files == null ? Collections.emptyList() : Arrays.asList(files));
-		this.classPluginProviders = new LinkedList<>();
+		this.classPlugins = new LinkedList<>();
 		this.pluginInterface = pluginInterface;
-		this.downloader = downloaderDTO;
-		this.updatePublisher = updatePublisher;
 	}
 
-	List<P> loadAllProviderPlugins(boolean updatePlugin) {
+	List<P> loadAllPlugins() {
 
 		this.initializeLoader();
 
-		final List<P> tmpPlugins = new ArrayList<>(this.classPluginProviders.size());
-		for (final Plugin plugin : this.classPluginProviders) {
+		final List<P> tmpPlugins = new ArrayList<>(this.classPlugins.size());
+		for (final Plugin plugin : this.classPlugins) {
 			try {
 				final P pluginProviderInterface = plugin.getClassPluginProvider().newInstance();
-				
-				if (updatePlugin && UpdatablePluginInterface.class.isInstance(pluginProviderInterface)) {
-					((UpdatablePluginInterface) pluginProviderInterface).update(updatePublisher, getParameters(pluginProviderInterface.getName()));
-				}
 				if (PluginClassLoader.class.isInstance(pluginProviderInterface)) {
 					((PluginClassLoader) pluginProviderInterface).setClassLoader(plugin.getClassLoaders());
 				}
@@ -94,17 +77,10 @@ class PluginsLoader<P extends PluginBase> {
 		return tmpPlugins;
 	}
 
-	private Map<String, String> getParameters(final String downloaderName) {
-		final Map<String, String> parameters = new HashMap<>(2);
-		parameters.put(FrameworkConf.PARAMETER_BIN_PATH, downloader.getBinPath(downloaderName));
-		parameters.put(FrameworkConf.CMD_PROCESSOR, downloader.getCmdProcessor());
-		return parameters;
-	}
-
 	private void initializeLoader() {
 
 		// Pour eviter le double chargement des plugins
-		if (this.classPluginProviders.size() != 0) {
+		if (this.classPlugins.size() != 0) {
 			return;
 		}
 
@@ -156,7 +132,7 @@ class PluginsLoader<P extends PluginBase> {
 							// catégorie de la première interface correct
 							// trouvée
 							if (interfaceClass.getName().equals(this.pluginInterface.getName())) {
-								this.classPluginProviders.add(new Plugin(tmpClass, loader));
+								this.classPlugins.add(new Plugin(tmpClass, loader));
 							}
 						}
 
@@ -172,11 +148,15 @@ class PluginsLoader<P extends PluginBase> {
 
 	private List<Class<?>> getInterfaces(final Class<P> tmpClass) {
 		final List<Class<?>> interfaces = new LinkedList<>();
+		addInterfaces(tmpClass, interfaces);
+		return interfaces;
+	}
+
+	private void addInterfaces(final Class<?> tmpClass, final List<Class<?>> interfaces) {
 		interfaces.addAll(Arrays.asList(tmpClass.getInterfaces()));
 		if (tmpClass.getGenericSuperclass() != null) {
-			interfaces.addAll(Arrays.asList((tmpClass.getSuperclass().getInterfaces())));
+			addInterfaces(tmpClass.getSuperclass(), interfaces);
 		}
-		return interfaces;
 	}
 
 	private Class<P> getClass(final String tmp, final URLClassLoader loader) {

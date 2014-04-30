@@ -30,12 +30,11 @@ import org.xml.sax.SAXException;
 import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.api.downloader.PluginDownloaderInterface;
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
-import com.dabi.habitv.framework.plugin.api.dto.DownloaderDTO;
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
 import com.dabi.habitv.framework.plugin.api.provider.BasePluginProvider;
 import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
-import com.dabi.habitv.framework.plugin.exception.NoSuchDownloaderException;
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
+import com.dabi.habitv.framework.plugin.holder.DownloaderPluginHolder;
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
 import com.dabi.habitv.framework.plugin.utils.RetrieverUtils;
 import com.sun.syndication.feed.synd.SyndEntry;
@@ -107,8 +106,8 @@ public class ArtePluginManager extends BasePluginProvider { // NO_UCD
 	}
 
 	@Override
-	public void download(final String downloadOuput, final DownloaderDTO downloaders, final CmdProgressionListener cmdProgressionListener,
-			final EpisodeDTO episode) throws DownloadFailedException, NoSuchDownloaderException {
+	public void download(final String downloadOuput, final DownloaderPluginHolder downloaders, final CmdProgressionListener cmdProgressionListener,
+			final EpisodeDTO episode) throws DownloadFailedException {
 		final String downloadLink = buildDownloadLink(episode.getUrl());
 		final String downloaderName;
 		final Map<String, String> parameters = new HashMap<>(2);
@@ -118,7 +117,7 @@ public class ArtePluginManager extends BasePluginProvider { // NO_UCD
 		} else {
 			downloaderName = ArteConf.CURL;
 		}
-		final PluginDownloaderInterface pluginDownloader = downloaders.getDownloader(downloaderName);
+		final PluginDownloaderInterface pluginDownloader = downloaders.getPlugin(downloaderName);
 
 		parameters.put(FrameworkConf.PARAMETER_BIN_PATH, downloaders.getBinPath(downloaderName));
 		parameters.put(FrameworkConf.CMD_PROCESSOR, downloaders.getCmdProcessor());
