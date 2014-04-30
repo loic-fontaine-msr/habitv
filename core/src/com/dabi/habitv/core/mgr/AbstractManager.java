@@ -1,24 +1,18 @@
 package com.dabi.habitv.core.mgr;
 
-import java.util.Collection;
-
-import com.dabi.habitv.framework.plugin.api.provider.PluginProviderInterface;
+import com.dabi.habitv.framework.plugin.holder.ProviderPluginHolder;
 
 abstract class AbstractManager {
 
-	private Collection<PluginProviderInterface> pluginProviderList;
+	private final ProviderPluginHolder providerPluginHolder;
 
-	AbstractManager(final Collection<PluginProviderInterface> pluginProviderList) {
+	AbstractManager(final ProviderPluginHolder providerPluginHolder) {
 		// plugin provider
-		this.pluginProviderList = pluginProviderList;
+		this.providerPluginHolder = providerPluginHolder;
 	}
 
-	public Collection<PluginProviderInterface> getPluginProviderList() {
-		return pluginProviderList;
-	}
-
-	public void setPluginProviderList(final Collection<PluginProviderInterface> pluginProviderList) {
-		this.pluginProviderList = pluginProviderList;
+	public ProviderPluginHolder getProviderPluginHolder() {
+		return providerPluginHolder;
 	}
 
 }

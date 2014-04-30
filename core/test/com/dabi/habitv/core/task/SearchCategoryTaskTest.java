@@ -17,14 +17,13 @@ import org.junit.Test;
 import com.dabi.habitv.core.event.SearchCategoryEvent;
 import com.dabi.habitv.core.event.SearchCategoryStateEnum;
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
-import com.dabi.habitv.framework.plugin.api.dto.DownloaderDTO;
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
 import com.dabi.habitv.framework.plugin.api.dto.ProxyDTO;
 import com.dabi.habitv.framework.plugin.api.dto.ProxyDTO.ProtocolEnum;
 import com.dabi.habitv.framework.plugin.api.provider.PluginProviderInterface;
 import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
-import com.dabi.habitv.framework.plugin.exception.NoSuchDownloaderException;
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
+import com.dabi.habitv.framework.plugin.holder.DownloaderPluginHolder;
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
 import com.dabi.habitv.framework.pub.Publisher;
 import com.dabi.habitv.framework.pub.Subscriber;
@@ -76,8 +75,8 @@ public class SearchCategoryTaskTest {
 			}
 
 			@Override
-			public void download(final String downloadOuput, final DownloaderDTO downloaders, final CmdProgressionListener cmdProgressionListener,
-					final EpisodeDTO episode) throws DownloadFailedException, NoSuchDownloaderException {
+			public void download(final String downloadOuput, final DownloaderPluginHolder downloaders, final CmdProgressionListener cmdProgressionListener,
+					final EpisodeDTO episode) throws DownloadFailedException {
 
 			}
 

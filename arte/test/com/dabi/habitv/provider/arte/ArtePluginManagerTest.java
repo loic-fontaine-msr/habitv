@@ -20,7 +20,7 @@ import com.dabi.habitv.framework.plugin.api.dto.DownloaderDTO;
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
 import com.dabi.habitv.framework.plugin.api.dto.ProxyDTO;
 import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
-import com.dabi.habitv.framework.plugin.exception.NoSuchDownloaderException;
+
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
 
 public class ArtePluginManagerTest {
@@ -81,7 +81,7 @@ public class ArtePluginManagerTest {
 	}
 
 	@Test
-	public void testDownload() throws DownloadFailedException, NoSuchDownloaderException {
+	public void testDownload() throws DownloadFailedException {
 		final DownloaderDTO downloaders = buildDownloaders();
 		manager.download("./test.flv", downloaders, new CmdProgressionListener() {
 

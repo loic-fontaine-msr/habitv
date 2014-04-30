@@ -21,18 +21,17 @@ import com.dabi.habitv.core.dao.DownloadedDAO;
 import com.dabi.habitv.core.event.EpisodeStateEnum;
 import com.dabi.habitv.core.event.RetreiveEvent;
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
-import com.dabi.habitv.framework.plugin.api.dto.DownloaderDTO;
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
 import com.dabi.habitv.framework.plugin.api.dto.ExportDTO;
-import com.dabi.habitv.framework.plugin.api.dto.ExporterDTO;
 import com.dabi.habitv.framework.plugin.api.dto.ProxyDTO;
 import com.dabi.habitv.framework.plugin.api.dto.ProxyDTO.ProtocolEnum;
 import com.dabi.habitv.framework.plugin.api.exporter.PluginExporterInterface;
 import com.dabi.habitv.framework.plugin.api.provider.PluginProviderInterface;
 import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.framework.plugin.exception.ExportFailedException;
-import com.dabi.habitv.framework.plugin.exception.NoSuchDownloaderException;
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
+import com.dabi.habitv.framework.plugin.holder.DownloaderPluginHolder;
+import com.dabi.habitv.framework.plugin.holder.ExporterPluginHolder;
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
 import com.dabi.habitv.framework.pub.Publisher;
 import com.dabi.habitv.framework.pub.Subscriber;
@@ -85,8 +84,8 @@ public class RetreiveTaskTest {
 			}
 
 			@Override
-			public void download(final String downloadOuput, final DownloaderDTO downloaders, final CmdProgressionListener cmdProgressionListener,
-					final EpisodeDTO episode) throws DownloadFailedException, NoSuchDownloaderException {
+			public void download(final String downloadOuput, final DownloaderPluginHolder downloaders, final CmdProgressionListener cmdProgressionListener,
+					final EpisodeDTO episode) throws DownloadFailedException {
 
 			}
 
@@ -96,7 +95,7 @@ public class RetreiveTaskTest {
 			}
 		};
 
-		final DownloaderDTO downloader = new DownloaderDTO(null, null, null,
+		final DownloaderPluginHolder downloader = new DownloaderPluginHolder(null, null, null,
 				"episode1234567890123456789012345678901234567890123456789/episode123456789012345678901234567890123/channel/category/extension", "indexDir");
 		final Publisher<RetreiveEvent> publisher = new Publisher<>();
 		final Subscriber<RetreiveEvent> subscriber = new Subscriber<RetreiveEvent>() {
@@ -150,7 +149,7 @@ public class RetreiveTaskTest {
 		exporterList.add(export1);
 		final ExportDTO export2 = new ExportDTO("#EPISODE_NAME#", "episode2", "export2", "export2Out", null, "cmd 2", null);
 		exporterList.add(export2);
-		final ExporterDTO exporter = new ExporterDTO(exporterName2exporter, exporterList);
+		final ExporterPluginHolder exporter = new ExporterPluginHolder(exporterName2exporter, exporterList);
 		final TaskAdder taskAdder = new TaskAdder() {
 
 			private int i = 0;

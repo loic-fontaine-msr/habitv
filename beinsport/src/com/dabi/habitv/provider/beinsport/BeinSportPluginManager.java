@@ -30,13 +30,12 @@ import org.xml.sax.SAXException;
 import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.api.downloader.PluginDownloaderInterface;
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
-import com.dabi.habitv.framework.plugin.api.dto.DownloaderDTO;
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
 import com.dabi.habitv.framework.plugin.api.dto.ProxyDTO;
 import com.dabi.habitv.framework.plugin.api.provider.BasePluginProvider;
 import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
-import com.dabi.habitv.framework.plugin.exception.NoSuchDownloaderException;
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
+import com.dabi.habitv.framework.plugin.holder.DownloaderPluginHolder;
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
 import com.dabi.habitv.framework.plugin.utils.SoccerUtils;
 import com.sun.syndication.feed.synd.SyndEnclosure;
@@ -114,8 +113,8 @@ public class BeinSportPluginManager extends BasePluginProvider { // NO_UCD
 	}
 
 	@Override
-	public void download(final String downloadOuput, final DownloaderDTO downloaders, final CmdProgressionListener cmdProgressionListener,
-			final EpisodeDTO episode) throws DownloadFailedException, NoSuchDownloaderException {
+	public void download(final String downloadOuput, final DownloaderPluginHolder downloaders, final CmdProgressionListener cmdProgressionListener,
+			final EpisodeDTO episode) throws DownloadFailedException {
 		if (episode.getUrl().endsWith(".mp4")) {
 			curlDownload(downloadOuput, downloaders, cmdProgressionListener, episode, getProtocol2proxy());
 		} else {
@@ -123,10 +122,10 @@ public class BeinSportPluginManager extends BasePluginProvider { // NO_UCD
 		}
 	}
 
-	private void rtmpDumpDownload(final String downloadOuput, final DownloaderDTO downloaders, final CmdProgressionListener listener, final EpisodeDTO episode,
-			final Map<ProxyDTO.ProtocolEnum, ProxyDTO> proxies) throws DownloadFailedException, NoSuchDownloaderException {
+	private void rtmpDumpDownload(final String downloadOuput, final DownloaderPluginHolder downloaders, final CmdProgressionListener listener,
+			final EpisodeDTO episode, final Map<ProxyDTO.ProtocolEnum, ProxyDTO> proxies) throws DownloadFailedException {
 		final String downloaderName = BeinSportConf.RTMDUMP;
-		final PluginDownloaderInterface pluginDownloader = downloaders.getDownloader(downloaderName);
+		final PluginDownloaderInterface pluginDownloader = downloaders.getPlugin(downloaderName);
 		final Map<String, String> parameters = new HashMap<>(2);
 		parameters.put(FrameworkConf.PARAMETER_BIN_PATH, downloaders.getBinPath(downloaderName));
 
@@ -142,10 +141,10 @@ public class BeinSportPluginManager extends BasePluginProvider { // NO_UCD
 		pluginDownloader.download(relativeUrl, downloadOuput, parameters, listener, proxies);
 	}
 
-	private void curlDownload(final String downloadOuput, final DownloaderDTO downloaders, final CmdProgressionListener cmdProgressionListener,
-			final EpisodeDTO episode, final Map<ProxyDTO.ProtocolEnum, ProxyDTO> map) throws NoSuchDownloaderException, DownloadFailedException {
+	private void curlDownload(final String downloadOuput, final DownloaderPluginHolder downloaders, final CmdProgressionListener cmdProgressionListener,
+			final EpisodeDTO episode, final Map<ProxyDTO.ProtocolEnum, ProxyDTO> map) throws DownloadFailedException {
 		final String downloaderName = BeinSportConf.CURL;
-		final PluginDownloaderInterface pluginDownloader = downloaders.getDownloader(downloaderName);
+		final PluginDownloaderInterface pluginDownloader = downloaders.getPlugin(downloaderName);
 
 		final Map<String, String> parameters = new HashMap<>(2);
 		parameters.put(FrameworkConf.PARAMETER_BIN_PATH, downloaders.getBinPath(downloaderName));

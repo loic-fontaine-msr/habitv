@@ -43,8 +43,8 @@ public class HabitTvTrayModel extends Observable {
 		coreManager.getCategoryManager().getSearchCategoryPublisher().attach(subscriberAdapter.buildSearchCategorySubscriber());
 		coreManager.getEpisodeManager().getRetreivePublisher().attach(subscriberAdapter.buildRetreiveSubscriber());
 		coreManager.getEpisodeManager().getSearchPublisher().attach(subscriberAdapter.buildSearchSubscriber());
-		coreManager.getUpdateManager().getUpdatePublisher().attach(subscriberAdapter.buildUpdateSubscriber());
-		coreManager.getPluginUpdatePublisher().attach(subscriberAdapter.buildUpdatablePluginSubscriber());
+		coreManager.getPluginManager().getUpdatePluginPublisher().attach(subscriberAdapter.buildUpdateSubscriber());
+		coreManager.getPluginManager().getUpdatablePluginPublisher().attach(subscriberAdapter.buildUpdatablePluginSubscriber());
 	}
 
 	public ProgressionModel getProgressionModel() {

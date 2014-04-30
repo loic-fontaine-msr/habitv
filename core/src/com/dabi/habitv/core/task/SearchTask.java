@@ -9,10 +9,10 @@ import com.dabi.habitv.core.event.RetreiveEvent;
 import com.dabi.habitv.core.event.SearchEvent;
 import com.dabi.habitv.core.event.SearchStateEnum;
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
-import com.dabi.habitv.framework.plugin.api.dto.DownloaderDTO;
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
-import com.dabi.habitv.framework.plugin.api.dto.ExporterDTO;
 import com.dabi.habitv.framework.plugin.api.provider.PluginProviderInterface;
+import com.dabi.habitv.framework.plugin.holder.DownloaderPluginHolder;
+import com.dabi.habitv.framework.plugin.holder.ExporterPluginHolder;
 import com.dabi.habitv.framework.pub.Publisher;
 import com.dabi.habitv.utils.FilterUtils;
 
@@ -28,13 +28,13 @@ public class SearchTask extends AbstractTask<Object> {
 
 	private final Publisher<RetreiveEvent> retreivePublisher;
 
-	private final DownloaderDTO downloader;
+	private final DownloaderPluginHolder downloader;
 
-	private final ExporterDTO exporter;
+	private final ExporterPluginHolder exporter;
 
 	public SearchTask(final PluginProviderInterface provider, final Set<CategoryDTO> categoryDTOs, final TaskAdder taskAdder,
-			final Publisher<SearchEvent> searchPublisher, final Publisher<RetreiveEvent> retreivePublisher, final DownloaderDTO downloader,
-			final ExporterDTO exporter) {
+			final Publisher<SearchEvent> searchPublisher, final Publisher<RetreiveEvent> retreivePublisher, final DownloaderPluginHolder downloader,
+			final ExporterPluginHolder exporter) {
 		this.provider = provider;
 		this.categoryDTOs = categoryDTOs;
 		this.taskAdder = taskAdder;

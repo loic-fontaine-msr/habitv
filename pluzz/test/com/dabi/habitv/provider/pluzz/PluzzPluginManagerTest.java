@@ -19,7 +19,7 @@ import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
 import com.dabi.habitv.framework.plugin.api.dto.DownloaderDTO;
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
 import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
-import com.dabi.habitv.framework.plugin.exception.NoSuchDownloaderException;
+
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
 
 public class PluzzPluginManagerTest {
@@ -72,7 +72,7 @@ public class PluzzPluginManagerTest {
 	}
 
 	@Test
-	public void testDownload() throws DownloadFailedException, NoSuchDownloaderException {
+	public void testDownload() throws DownloadFailedException {
 		final Map<String, String> downloaderName2BinPath = new HashMap<String, String>();
 		downloaderName2BinPath.put(PluzzConf.ASSEMBLER, "ffmpeg");
 		final DownloaderDTO downloaders = new DownloaderDTO(null, null, downloaderName2BinPath, null, null);

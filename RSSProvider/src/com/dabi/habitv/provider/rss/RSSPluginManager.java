@@ -12,12 +12,12 @@ import java.util.Set;
 import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.api.downloader.PluginDownloaderInterface;
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
-import com.dabi.habitv.framework.plugin.api.dto.DownloaderDTO;
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
 import com.dabi.habitv.framework.plugin.api.provider.BasePluginProvider;
 import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
-import com.dabi.habitv.framework.plugin.exception.NoSuchDownloaderException;
+
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
+import com.dabi.habitv.framework.plugin.holder.DownloaderPluginHolder;
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
 import com.sun.syndication.feed.synd.SyndEnclosure;
 import com.sun.syndication.feed.synd.SyndEntry;
@@ -58,13 +58,13 @@ public class RSSPluginManager extends BasePluginProvider {
 	}
 
 	@Override
-	public void download(final String downloadOuput, final DownloaderDTO downloaders, final CmdProgressionListener listener, final EpisodeDTO episode)
-			throws DownloadFailedException, NoSuchDownloaderException {
+	public void download(final String downloadOuput, final DownloaderPluginHolder downloaders, final CmdProgressionListener listener, final EpisodeDTO episode)
+			throws DownloadFailedException {
 		String downloaderName = episode.getCategory().getParameter(RSSConf.DOWNLOADER_PARAM);
 		if (downloaderName == null) {
 			downloaderName = RSSConf.DOWNLOADER;
 		}
-		final PluginDownloaderInterface pluginDownloader = downloaders.getDownloader(downloaderName);
+		final PluginDownloaderInterface pluginDownloader = downloaders.getPlugin(downloaderName);
 
 		final Map<String, String> parameters = new HashMap<>(2);
 		parameters.put(FrameworkConf.PARAMETER_BIN_PATH, downloaders.getBinPath(downloaderName));

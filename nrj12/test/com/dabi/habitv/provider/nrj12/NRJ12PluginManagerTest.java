@@ -21,7 +21,7 @@ import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
 import com.dabi.habitv.framework.plugin.api.dto.ProxyDTO;
 import com.dabi.habitv.framework.plugin.api.dto.ProxyDTO.ProtocolEnum;
 import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
-import com.dabi.habitv.framework.plugin.exception.NoSuchDownloaderException;
+
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
 
 public class NRJ12PluginManagerTest {
@@ -102,7 +102,7 @@ public class NRJ12PluginManagerTest {
 	}
 
 	@Test
-	public final void testDownload() throws DownloadFailedException, NoSuchDownloaderException {
+	public final void testDownload() throws DownloadFailedException {
 		final Map<String, PluginDownloaderInterface> downloaderName2downloader = new HashMap<>();
 		final PluginDownloaderInterface downloader = new PluginDownloaderInterface() {
 

@@ -1,13 +1,11 @@
-package com.dabi.habitv.framework.plugin.api.dto;
+package com.dabi.habitv.framework.plugin.holder;
 
 import java.util.Map;
 
 import com.dabi.habitv.framework.plugin.api.downloader.PluginDownloaderInterface;
-import com.dabi.habitv.framework.plugin.exception.NoSuchDownloaderException;
+import com.dabi.habitv.framework.plugin.api.dto.AbstractPluginHolder;
 
-public final class DownloaderDTO {
-
-	private final Map<String, PluginDownloaderInterface> downloaderName2downloader;
+public final class DownloaderPluginHolder extends AbstractPluginHolder<PluginDownloaderInterface> {
 
 	private final Map<String, String> downloaderName2BinPath;
 
@@ -17,22 +15,13 @@ public final class DownloaderDTO {
 
 	private final String cmdProcessor;
 
-	public DownloaderDTO(final String cmdProcessor, final Map<String, PluginDownloaderInterface> downloaderName2downloader,
+	public DownloaderPluginHolder(final String cmdProcessor, final Map<String, PluginDownloaderInterface> downloaderName2downloader,
 			final Map<String, String> downloaderName2BinPath, final String downloadOutputDir, final String indexDir) {
-		super();
+		super(downloaderName2downloader);
 		this.cmdProcessor = cmdProcessor;
-		this.downloaderName2downloader = downloaderName2downloader;
 		this.downloaderName2BinPath = downloaderName2BinPath;
 		this.downloadOutput = downloadOutputDir;
 		this.indexDir = indexDir;
-	}
-
-	public PluginDownloaderInterface getDownloader(final String downloaderName) throws NoSuchDownloaderException {
-		final PluginDownloaderInterface downloader = downloaderName2downloader.get(downloaderName);
-		if (downloader == null) {
-			throw new NoSuchDownloaderException(downloaderName);
-		}
-		return downloader;
 	}
 
 	public String getBinPath(final String downloaderName) {
