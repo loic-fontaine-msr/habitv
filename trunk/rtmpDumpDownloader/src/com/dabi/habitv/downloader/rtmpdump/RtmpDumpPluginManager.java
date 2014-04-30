@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import com.dabi.habitv.framework.FrameworkConf;
-import com.dabi.habitv.framework.plugin.api.downloader.PluginDownloaderInterface;
+import com.dabi.habitv.framework.plugin.api.PluginDownloaderInterface;
 import com.dabi.habitv.framework.plugin.api.dto.ProxyDTO;
 import com.dabi.habitv.framework.plugin.api.update.BaseUpdatablePlugin;
 import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;

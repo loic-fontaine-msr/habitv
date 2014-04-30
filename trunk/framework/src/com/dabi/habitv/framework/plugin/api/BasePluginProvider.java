@@ -1,4 +1,4 @@
-package com.dabi.habitv.framework.plugin.api.provider;
+package com.dabi.habitv.framework.plugin.api;
 
 import java.io.InputStream;
 import java.net.Proxy;

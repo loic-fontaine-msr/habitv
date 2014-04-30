@@ -3,9 +3,8 @@ package com.dabi.habitv.framework.plugin.holder;
 import java.util.List;
 import java.util.Map;
 
-import com.dabi.habitv.framework.plugin.api.dto.AbstractPluginHolder;
+import com.dabi.habitv.framework.plugin.api.PluginExporterInterface;
 import com.dabi.habitv.framework.plugin.api.dto.ExportDTO;
-import com.dabi.habitv.framework.plugin.api.exporter.PluginExporterInterface;
 
 public final class ExporterPluginHolder extends AbstractPluginHolder<PluginExporterInterface> {
 	private final List<ExportDTO> exporterList;

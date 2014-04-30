@@ -6,6 +6,8 @@ log aucun plugin
 
 simplifier appel aux downloaders, context ?
 
+csvProvider
+
 pas d'ordre dans config
 
 api fixe

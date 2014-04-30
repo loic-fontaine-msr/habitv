@@ -2,8 +2,7 @@ package com.dabi.habitv.framework.plugin.holder;
 
 import java.util.Map;
 
-import com.dabi.habitv.framework.plugin.api.downloader.PluginDownloaderInterface;
-import com.dabi.habitv.framework.plugin.api.dto.AbstractPluginHolder;
+import com.dabi.habitv.framework.plugin.api.PluginDownloaderInterface;
 
 public final class DownloaderPluginHolder extends AbstractPluginHolder<PluginDownloaderInterface> {
 
