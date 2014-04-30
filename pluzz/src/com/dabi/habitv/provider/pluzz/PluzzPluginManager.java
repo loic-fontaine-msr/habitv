@@ -1,19 +1,22 @@
 package com.dabi.habitv.provider.pluzz;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
+import com.dabi.habitv.framework.FrameworkConf;
+import com.dabi.habitv.framework.plugin.api.downloader.PluginDownloaderInterface;
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
 import com.dabi.habitv.framework.plugin.api.provider.BasePluginProvider;
 import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
-import com.dabi.habitv.framework.plugin.exception.TechnicalException;
 import com.dabi.habitv.framework.plugin.holder.DownloaderPluginHolder;
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
+import com.dabi.habitv.framework.plugin.utils.M3U8Utils;
 import com.dabi.habitv.provider.pluzz.jpluzz.Archive;
 import com.dabi.habitv.provider.pluzz.jpluzz.JsonArchiveParser;
-import com.dabi.habitv.provider.pluzz.jpluzz.PluzzDLM3U8;
 
 public class PluzzPluginManager extends BasePluginProvider {
 
@@ -71,12 +74,16 @@ public class PluzzPluginManager extends BasePluginProvider {
 	@Override
 	public void download(final String downloadOuput, final DownloaderPluginHolder downloaders, final CmdProgressionListener cmdProgressionListener,
 			final EpisodeDTO episode) throws DownloadFailedException {
-		final String assemblerBinPath = downloaders.getBinPath(PluzzConf.ASSEMBLER);
-		if (assemblerBinPath == null) {
-			throw new TechnicalException(PluzzConf.ASSEMBLER + " downloader can't be found, add it the config.xml");
-		}
-		final PluzzDLM3U8 dl = new PluzzDLM3U8(cmdProgressionListener, downloadOuput, PluzzConf.CORRECT_VIDEO_CMD_MP4, assemblerBinPath, getHttpProxy());
-		dl.dl(episode.getUrl());
+		final String manifestUrl = M3U8Utils.keepBestQuality(PluzzConf.BASE_URL + episode.getUrl());
+
+		final PluginDownloaderInterface pluginDownloader = downloaders.getPlugin(PluzzConf.FFMPEG);
+
+		final Map<String, String> parameters = new HashMap<>(2);
+		parameters.put(FrameworkConf.PARAMETER_BIN_PATH, downloaders.getBinPath(PluzzConf.FFMPEG));
+		parameters.put(FrameworkConf.CMD_PROCESSOR, downloaders.getCmdProcessor());
+		parameters.put(FrameworkConf.EXTENSION, PluzzConf.EXT);
+
+		pluginDownloader.download(manifestUrl, downloadOuput, parameters, cmdProgressionListener, getProtocol2proxy());
 	}
 
 }

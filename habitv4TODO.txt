@@ -4,6 +4,8 @@ tester linux
 arbo plugin
 log aucun plugin
 
+simplifier appel aux downloaders, context ?
+
 pas d'ordre dans config
 
 api fixe
