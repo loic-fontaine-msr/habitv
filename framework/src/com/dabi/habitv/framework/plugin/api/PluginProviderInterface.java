@@ -1,9 +1,8 @@
-package com.dabi.habitv.framework.plugin.api.provider;
+package com.dabi.habitv.framework.plugin.api;
 
 import java.util.Map;
 import java.util.Set;
 
-import com.dabi.habitv.framework.plugin.api.PluginBase;
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
 import com.dabi.habitv.framework.plugin.api.dto.ProxyDTO;

@@ -2,8 +2,7 @@ package com.dabi.habitv.framework.plugin.holder;
 
 import java.util.Map;
 
-import com.dabi.habitv.framework.plugin.api.dto.AbstractPluginHolder;
-import com.dabi.habitv.framework.plugin.api.provider.PluginProviderInterface;
+import com.dabi.habitv.framework.plugin.api.PluginProviderInterface;
 
 public final class ProviderPluginHolder extends AbstractPluginHolder<PluginProviderInterface> {
 

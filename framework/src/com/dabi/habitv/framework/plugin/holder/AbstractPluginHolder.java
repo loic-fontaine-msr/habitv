@@ -1,4 +1,4 @@
-package com.dabi.habitv.framework.plugin.api.dto;
+package com.dabi.habitv.framework.plugin.holder;
 
 import java.util.Collection;
 import java.util.Map;

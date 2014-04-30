@@ -24,10 +24,10 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import com.dabi.habitv.framework.FrameworkConf;
-import com.dabi.habitv.framework.plugin.api.downloader.PluginDownloaderInterface;
+import com.dabi.habitv.framework.plugin.api.BasePluginProvider;
+import com.dabi.habitv.framework.plugin.api.PluginDownloaderInterface;
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
-import com.dabi.habitv.framework.plugin.api.provider.BasePluginProvider;
 import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
 import com.dabi.habitv.framework.plugin.holder.DownloaderPluginHolder;

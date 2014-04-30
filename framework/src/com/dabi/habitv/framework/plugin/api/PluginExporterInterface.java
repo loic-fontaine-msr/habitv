@@ -1,6 +1,5 @@
-package com.dabi.habitv.framework.plugin.api.exporter;
+package com.dabi.habitv.framework.plugin.api;
 
-import com.dabi.habitv.framework.plugin.api.PluginBase;
 import com.dabi.habitv.framework.plugin.exception.ExportFailedException;
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
 

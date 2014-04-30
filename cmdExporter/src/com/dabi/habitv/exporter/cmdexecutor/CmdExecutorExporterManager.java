@@ -1,6 +1,6 @@
 package com.dabi.habitv.exporter.cmdexecutor;
 
-import com.dabi.habitv.framework.plugin.api.exporter.PluginExporterInterface;
+import com.dabi.habitv.framework.plugin.api.PluginExporterInterface;
 import com.dabi.habitv.framework.plugin.exception.ExecutorFailedException;
 import com.dabi.habitv.framework.plugin.exception.ExportFailedException;
 import com.dabi.habitv.framework.plugin.utils.CmdExecutor;

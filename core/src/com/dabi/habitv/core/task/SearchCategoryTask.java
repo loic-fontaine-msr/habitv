@@ -2,7 +2,7 @@ package com.dabi.habitv.core.task;
 
 import com.dabi.habitv.core.event.SearchCategoryEvent;
 import com.dabi.habitv.core.event.SearchCategoryStateEnum;
-import com.dabi.habitv.framework.plugin.api.provider.PluginProviderInterface;
+import com.dabi.habitv.framework.plugin.api.PluginProviderInterface;
 import com.dabi.habitv.framework.pub.Publisher;
 
 public final class SearchCategoryTask extends AbstractTask<SearchCategoryResult> {

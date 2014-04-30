@@ -1,8 +1,7 @@
-package com.dabi.habitv.framework.plugin.api.provider;
+package com.dabi.habitv.framework.plugin.api;
 
 import java.io.InputStream;
 
-import com.dabi.habitv.framework.plugin.api.PluginClassLoader;
 import com.dabi.habitv.framework.plugin.utils.RetrieverUtils;
 
 public abstract class BasePluginProviderClassloader extends BasePluginProvider implements PluginClassLoader {

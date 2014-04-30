@@ -1,8 +1,7 @@
-package com.dabi.habitv.framework.plugin.api.downloader;
+package com.dabi.habitv.framework.plugin.api;
 
 import java.util.Map;
 
-import com.dabi.habitv.framework.plugin.api.PluginBase;
 import com.dabi.habitv.framework.plugin.api.dto.ProxyDTO;
 import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
