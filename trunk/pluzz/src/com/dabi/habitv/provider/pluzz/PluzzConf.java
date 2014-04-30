@@ -12,7 +12,8 @@ public interface PluzzConf {
 
 	long MAX_CACHE_ARCHIVE_TIME_MS = 60000L;
 
-	String ASSEMBLER = "ffmpeg";
+	String FFMPEG = "ffmpeg";
 
 	String BASE_URL = "http://medias2.francetv.fr/catchup-mobile";
+
 }
