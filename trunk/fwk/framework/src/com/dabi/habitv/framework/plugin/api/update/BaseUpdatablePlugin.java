@@ -1,31 +1,31 @@
 package com.dabi.habitv.framework.plugin.api.update;
 
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.dabi.habitv.api.plugin.api.UpdatablePluginInterface;
+import com.dabi.habitv.api.plugin.exception.ExecutorFailedException;
+import com.dabi.habitv.api.plugin.exception.TechnicalException;
+import com.dabi.habitv.api.plugin.holder.DownloaderPluginHolder;
+import com.dabi.habitv.api.plugin.pub.Publisher;
+import com.dabi.habitv.api.plugin.pub.UpdatablePluginEvent;
 import com.dabi.habitv.framework.FrameworkConf;
-import com.dabi.habitv.framework.plugin.exception.ExecutorFailedException;
-import com.dabi.habitv.framework.plugin.exception.TechnicalException;
 import com.dabi.habitv.framework.plugin.utils.CmdExecutor;
 import com.dabi.habitv.framework.plugin.utils.EmptyProgressionListener;
 import com.dabi.habitv.framework.plugin.utils.OSUtils;
-import com.dabi.habitv.framework.plugin.utils.update.UpdatablePluginEvent;
 import com.dabi.habitv.framework.plugin.utils.update.ZipExeUpdater;
-import com.dabi.habitv.framework.pub.Publisher;
 
 public abstract class BaseUpdatablePlugin implements UpdatablePluginInterface {
 
 	@Override
-	public final void update(Publisher<UpdatablePluginEvent> updatePublisher,
-			Map<String, String> parameters) {
-		new ZipExeUpdater(this, OSUtils.getCurrentDir(),
-				FrameworkConf.GROUP_ID, false, updatePublisher, parameters)
-				.update("bin", getFilesToUpdate()); // FIXME updateFOlder ?
+	public final void update(final Publisher<UpdatablePluginEvent> updatePublisher, final DownloaderPluginHolder downloaders) {
+		new ZipExeUpdater(this, OSUtils.getCurrentDir(), FrameworkConf.GROUP_ID, false, updatePublisher, downloaders).update("bin", getFilesToUpdate()); // FIXME
+		// updateFOlder
+		// ?
 	}
 
-	protected String getBinParam(final Map<String, String> parameters) {
-		String binParam = parameters.get(FrameworkConf.PARAMETER_BIN_PATH);
+	protected String getBinParam(final DownloaderPluginHolder downloaders) {
+		String binParam = downloaders.getBinPath(getName());
 		if (binParam == null) {
 			if (OSUtils.isWindows()) {
 				binParam = getWindowsDefaultBuildPath();
@@ -41,9 +41,8 @@ public abstract class BaseUpdatablePlugin implements UpdatablePluginInterface {
 	protected abstract String getWindowsDefaultBuildPath();
 
 	@Override
-	public String getCurrentVersion(final Map<String, String> parameters) {
-		final Matcher matcher = getVersionPattern().matcher(
-				callGetVersionCmd(parameters));
+	public String getCurrentVersion(final DownloaderPluginHolder downloaders) {
+		final Matcher matcher = getVersionPattern().matcher(callGetVersionCmd(downloaders));
 		final boolean hasMatched = matcher.find();
 		String ret = null;
 		if (hasMatched) {
@@ -54,11 +53,10 @@ public abstract class BaseUpdatablePlugin implements UpdatablePluginInterface {
 
 	protected abstract Pattern getVersionPattern();
 
-	private String callGetVersionCmd(Map<String, String> parameters) {
-		CmdExecutor cmdExecutor = new CmdExecutor(
-				parameters.get(FrameworkConf.CMD_PROCESSOR),
-				getBinParam(parameters) + getVersionParam(), 1000,
+	private String callGetVersionCmd(final DownloaderPluginHolder downloaders) {
+		final CmdExecutor cmdExecutor = new CmdExecutor(downloaders.getCmdProcessor(), getBinParam(downloaders) + getVersionParam(), 1000,
 				EmptyProgressionListener.INSTANCE) {
+			@Override
 			public boolean isSuccess(final String fullOutput) {
 				return true;
 			}
@@ -66,7 +64,7 @@ public abstract class BaseUpdatablePlugin implements UpdatablePluginInterface {
 		};
 		try {
 			cmdExecutor.execute();
-		} catch (ExecutorFailedException e) {
+		} catch (final ExecutorFailedException e) {
 			throw new TechnicalException(e);
 		}
 		return cmdExecutor.getFullOutput();

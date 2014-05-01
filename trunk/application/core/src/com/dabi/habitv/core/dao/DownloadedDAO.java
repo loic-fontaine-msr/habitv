@@ -14,8 +14,8 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 
+import com.dabi.habitv.api.plugin.exception.TechnicalException;
 import com.dabi.habitv.core.config.HabitTvConf;
-import com.dabi.habitv.framework.plugin.exception.TechnicalException;
 import com.dabi.habitv.utils.FileUtils;
 
 public class DownloadedDAO {

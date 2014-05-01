@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.dabi.habitv.framework.plugin.api.PluginBaseInterface;
+import com.dabi.habitv.api.plugin.api.PluginBaseInterface;
 
 public final class PluginFactory<P extends PluginBaseInterface> {
 

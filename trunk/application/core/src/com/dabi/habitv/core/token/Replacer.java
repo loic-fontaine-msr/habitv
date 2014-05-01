@@ -2,7 +2,7 @@ package com.dabi.habitv.core.token;
 
 import java.util.List;
 
-import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
+import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
 
 abstract class Replacer {
 

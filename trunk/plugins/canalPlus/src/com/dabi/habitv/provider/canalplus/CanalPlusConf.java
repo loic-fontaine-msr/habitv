@@ -16,14 +16,4 @@ interface CanalPlusConf {
 
 	String INITPLAYER_PACKAGE_NAME = "com.dabi.habitv.provider.canalplus.initplayer.entities";
 
-	String RTMDUMP = "rtmpdump";
-
-	String RTMPDUMP_PREFIX = "rtmp:";
-
-	String CURL = "curl";
-
-	String EXTENSION = "mp4";
-
-	String FFMPEG = "ffmpeg";
-
 }

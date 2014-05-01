@@ -8,7 +8,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Collection;
 
-import com.dabi.habitv.framework.plugin.exception.TechnicalException;
+import com.dabi.habitv.api.plugin.exception.TechnicalException;
 
 public class ExportDAO {
 	public synchronized void addExportStep(EpisodeExportState episodeExportState) {

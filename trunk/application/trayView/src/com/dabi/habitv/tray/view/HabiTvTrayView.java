@@ -9,13 +9,13 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Collection;
 
+import com.dabi.habitv.api.plugin.exception.TechnicalException;
+import com.dabi.habitv.api.plugin.pub.UpdatablePluginEvent;
+import com.dabi.habitv.api.plugin.pub.UpdatablePluginEvent.UpdatablePluginStateEnum;
 import com.dabi.habitv.core.event.RetreiveEvent;
 import com.dabi.habitv.core.event.SearchCategoryEvent;
 import com.dabi.habitv.core.event.SearchEvent;
 import com.dabi.habitv.core.event.UpdatePluginEvent;
-import com.dabi.habitv.framework.plugin.exception.TechnicalException;
-import com.dabi.habitv.framework.plugin.utils.update.UpdatablePluginEvent;
-import com.dabi.habitv.framework.plugin.utils.update.UpdatablePluginEvent.UpdatablePluginStateEnum;
 import com.dabi.habitv.tray.controller.TrayController;
 import com.dabi.habitv.tray.model.ActionProgress;
 import com.dabi.habitv.tray.subscriber.CoreSubscriber;

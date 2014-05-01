@@ -10,8 +10,6 @@ public interface FrameworkConf {
 
 	String PARAMETER_ARGS = "ARGUMENTS";
 
-	int MIN_SIZE = 0;
-
 	long TIME_BETWEEN_LOG = 2000L;
 
 	long HUNG_PROCESS_TIME = 180000L;
@@ -27,4 +25,19 @@ public interface FrameworkConf {
 	String GROUP_ID = "com.dabi.habitv";
 
 	String VERSION = "version";
+
+	String RTMDUMP = "rtmpdump";
+
+	String RTMPDUMP_PREFIX = "rtmp:";
+
+	String CURL = "curl";
+
+	String MP4 = "mp4";
+
+	String FFMPEG = "ffmpeg";
+
+	String M3U8 = "m3u8";
+
+	String DOWNLOADER_PARAM = "downloader";
+
 }

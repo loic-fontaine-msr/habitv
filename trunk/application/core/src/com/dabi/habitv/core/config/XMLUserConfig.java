@@ -15,16 +15,16 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
+import com.dabi.habitv.api.plugin.dto.ExportDTO;
+import com.dabi.habitv.api.plugin.dto.ProxyDTO;
+import com.dabi.habitv.api.plugin.dto.ProxyDTO.ProtocolEnum;
+import com.dabi.habitv.api.plugin.exception.TechnicalException;
 import com.dabi.habitv.config.entities.Config;
 import com.dabi.habitv.config.entities.Downloader;
 import com.dabi.habitv.config.entities.Exporter;
 import com.dabi.habitv.config.entities.ObjectFactory;
 import com.dabi.habitv.config.entities.Proxy;
 import com.dabi.habitv.config.entities.TaskDefinition;
-import com.dabi.habitv.framework.plugin.api.dto.ExportDTO;
-import com.dabi.habitv.framework.plugin.api.dto.ProxyDTO;
-import com.dabi.habitv.framework.plugin.api.dto.ProxyDTO.ProtocolEnum;
-import com.dabi.habitv.framework.plugin.exception.TechnicalException;
 import com.dabi.habitv.framework.plugin.utils.OSUtils;
 import com.dabi.habitv.utils.FileUtils;
 

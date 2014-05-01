@@ -6,19 +6,19 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import com.dabi.habitv.api.plugin.api.CmdProgressionListener;
+import com.dabi.habitv.api.plugin.api.PluginDownloaderInterface;
+import com.dabi.habitv.api.plugin.dto.CategoryDTO;
+import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
+import com.dabi.habitv.api.plugin.exception.DownloadFailedException;
+import com.dabi.habitv.api.plugin.holder.DownloaderPluginHolder;
 import com.dabi.habitv.framework.FrameworkConf;
-import com.dabi.habitv.framework.plugin.api.BasePluginWithProxyProvider;
-import com.dabi.habitv.framework.plugin.api.PluginDownloaderInterface;
-import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
-import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
-import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
-import com.dabi.habitv.framework.plugin.holder.DownloaderPluginHolder;
-import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
+import com.dabi.habitv.framework.plugin.api.BasePluginWithProxy;
 import com.dabi.habitv.framework.plugin.utils.M3U8Utils;
 import com.dabi.habitv.provider.pluzz.jpluzz.Archive;
 import com.dabi.habitv.provider.pluzz.jpluzz.JsonArchiveParser;
 
-public class PluzzPluginManager extends BasePluginWithProxyProvider {
+public class PluzzPluginManager extends BasePluginWithProxy {
 
 	private Archive cachedArchive;
 
@@ -42,7 +42,7 @@ public class PluzzPluginManager extends BasePluginWithProxyProvider {
 		final Collection<EpisodeDTO> collection = getCachedArchive().getCatName2Episode().get(category.getId());
 		if (collection != null) {
 			for (final EpisodeDTO episode : collection) {
-				final EpisodeDTO newEp = new EpisodeDTO(category, episode.getName(), episode.getUrl());
+				final EpisodeDTO newEp = new EpisodeDTO(category, episode.getName(), episode.getId());
 				newEp.setNum(episode.getNum());
 				episodeList.add(newEp);
 			}
@@ -74,7 +74,7 @@ public class PluzzPluginManager extends BasePluginWithProxyProvider {
 	@Override
 	public void download(final String downloadOuput, final DownloaderPluginHolder downloaders, final CmdProgressionListener cmdProgressionListener,
 			final EpisodeDTO episode) throws DownloadFailedException {
-		final String manifestUrl = M3U8Utils.keepBestQuality(PluzzConf.BASE_URL + episode.getUrl());
+		final String manifestUrl = M3U8Utils.keepBestQuality(PluzzConf.BASE_URL + episode.getId());
 
 		final PluginDownloaderInterface pluginDownloader = downloaders.getPlugin(PluzzConf.FFMPEG);
 

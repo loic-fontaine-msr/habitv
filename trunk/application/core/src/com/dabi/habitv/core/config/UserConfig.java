@@ -3,9 +3,9 @@ package com.dabi.habitv.core.config;
 import java.util.List;
 import java.util.Map;
 
-import com.dabi.habitv.framework.plugin.api.dto.ExportDTO;
-import com.dabi.habitv.framework.plugin.api.dto.ProxyDTO;
-import com.dabi.habitv.framework.plugin.api.dto.ProxyDTO.ProtocolEnum;
+import com.dabi.habitv.api.plugin.dto.ExportDTO;
+import com.dabi.habitv.api.plugin.dto.ProxyDTO;
+import com.dabi.habitv.api.plugin.dto.ProxyDTO.ProtocolEnum;
 
 
 public interface UserConfig {

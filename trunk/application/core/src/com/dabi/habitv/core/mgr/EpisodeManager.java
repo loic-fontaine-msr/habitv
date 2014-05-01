@@ -5,6 +5,13 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import com.dabi.habitv.api.plugin.api.PluginProviderInterface;
+import com.dabi.habitv.api.plugin.dto.CategoryDTO;
+import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
+import com.dabi.habitv.api.plugin.holder.DownloaderPluginHolder;
+import com.dabi.habitv.api.plugin.holder.ExporterPluginHolder;
+import com.dabi.habitv.api.plugin.holder.ProviderPluginHolder;
+import com.dabi.habitv.api.plugin.pub.Publisher;
 import com.dabi.habitv.core.dao.DownloadedDAO;
 import com.dabi.habitv.core.dao.EpisodeExportState;
 import com.dabi.habitv.core.dao.ExportDAO;
@@ -22,13 +29,6 @@ import com.dabi.habitv.core.task.TaskMgr;
 import com.dabi.habitv.core.task.TaskMgrListener;
 import com.dabi.habitv.core.task.TaskState;
 import com.dabi.habitv.core.task.TaskTypeEnum;
-import com.dabi.habitv.framework.plugin.api.PluginProviderInterface;
-import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
-import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
-import com.dabi.habitv.framework.plugin.holder.DownloaderPluginHolder;
-import com.dabi.habitv.framework.plugin.holder.ExporterPluginHolder;
-import com.dabi.habitv.framework.plugin.holder.ProviderPluginHolder;
-import com.dabi.habitv.framework.pub.Publisher;
 
 public final class EpisodeManager extends AbstractManager implements TaskAdder {
 

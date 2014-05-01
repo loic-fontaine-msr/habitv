@@ -9,7 +9,7 @@ import javax.xml.validation.SchemaFactory;
 
 import org.xml.sax.SAXException;
 
-import com.dabi.habitv.framework.plugin.exception.TechnicalException;
+import com.dabi.habitv.api.plugin.exception.TechnicalException;
 
 public final class FileUtils {
 

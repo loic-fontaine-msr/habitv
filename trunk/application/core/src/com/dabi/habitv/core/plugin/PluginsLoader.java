@@ -14,9 +14,9 @@ import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-import com.dabi.habitv.framework.plugin.api.PluginBaseInterface;
-import com.dabi.habitv.framework.plugin.api.PluginClassLoaderInterface;
-import com.dabi.habitv.framework.plugin.exception.TechnicalException;
+import com.dabi.habitv.api.plugin.api.PluginBaseInterface;
+import com.dabi.habitv.api.plugin.api.PluginClassLoaderInterface;
+import com.dabi.habitv.api.plugin.exception.TechnicalException;
 
 class PluginsLoader<P extends PluginBaseInterface> {
 

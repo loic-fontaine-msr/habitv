@@ -14,8 +14,8 @@ import java.net.URLConnection;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
+import com.dabi.habitv.api.plugin.exception.TechnicalException;
 import com.dabi.habitv.framework.FrameworkConf;
-import com.dabi.habitv.framework.plugin.exception.TechnicalException;
 
 /**
  * utils function to retrieve remote data

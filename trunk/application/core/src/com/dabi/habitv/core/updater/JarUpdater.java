@@ -9,12 +9,12 @@ import java.util.jar.Manifest;
 
 import org.apache.log4j.Logger;
 
+import com.dabi.habitv.api.plugin.exception.TechnicalException;
+import com.dabi.habitv.api.plugin.pub.Publisher;
 import com.dabi.habitv.core.event.UpdatePluginEvent;
 import com.dabi.habitv.core.event.UpdatePluginStateEnum;
-import com.dabi.habitv.framework.plugin.exception.TechnicalException;
 import com.dabi.habitv.framework.plugin.utils.update.FindArtifactUtils.ArtifactVersion;
 import com.dabi.habitv.framework.plugin.utils.update.Updater;
-import com.dabi.habitv.framework.pub.Publisher;
 
 public class JarUpdater extends Updater {
 

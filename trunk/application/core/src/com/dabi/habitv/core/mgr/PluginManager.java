@@ -3,23 +3,23 @@ package com.dabi.habitv.core.mgr;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.dabi.habitv.api.plugin.api.PluginBaseInterface;
+import com.dabi.habitv.api.plugin.api.PluginDownloaderInterface;
+import com.dabi.habitv.api.plugin.api.PluginExporterInterface;
+import com.dabi.habitv.api.plugin.api.PluginProviderInterface;
+import com.dabi.habitv.api.plugin.api.UpdatablePluginInterface;
+import com.dabi.habitv.api.plugin.dto.ProxyDTO;
+import com.dabi.habitv.api.plugin.dto.ProxyDTO.ProtocolEnum;
+import com.dabi.habitv.api.plugin.holder.DownloaderPluginHolder;
+import com.dabi.habitv.api.plugin.holder.ExporterPluginHolder;
+import com.dabi.habitv.api.plugin.holder.ProviderPluginHolder;
+import com.dabi.habitv.api.plugin.pub.Publisher;
+import com.dabi.habitv.api.plugin.pub.UpdatablePluginEvent;
 import com.dabi.habitv.core.config.UserConfig;
 import com.dabi.habitv.core.event.UpdatePluginEvent;
 import com.dabi.habitv.core.plugin.PluginFactory;
 import com.dabi.habitv.core.updater.UpdateManager;
 import com.dabi.habitv.framework.FrameworkConf;
-import com.dabi.habitv.framework.plugin.api.PluginBaseInterface;
-import com.dabi.habitv.framework.plugin.api.PluginDownloaderInterface;
-import com.dabi.habitv.framework.plugin.api.PluginExporterInterface;
-import com.dabi.habitv.framework.plugin.api.PluginProviderInterface;
-import com.dabi.habitv.framework.plugin.api.dto.ProxyDTO;
-import com.dabi.habitv.framework.plugin.api.dto.ProxyDTO.ProtocolEnum;
-import com.dabi.habitv.framework.plugin.api.update.UpdatablePluginInterface;
-import com.dabi.habitv.framework.plugin.holder.DownloaderPluginHolder;
-import com.dabi.habitv.framework.plugin.holder.ExporterPluginHolder;
-import com.dabi.habitv.framework.plugin.holder.ProviderPluginHolder;
-import com.dabi.habitv.framework.plugin.utils.update.UpdatablePluginEvent;
-import com.dabi.habitv.framework.pub.Publisher;
 
 public class PluginManager {
 

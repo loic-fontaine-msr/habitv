@@ -27,15 +27,15 @@ import org.jsoup.select.Elements;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import com.dabi.habitv.api.plugin.api.CmdProgressionListener;
+import com.dabi.habitv.api.plugin.api.PluginDownloaderInterface;
+import com.dabi.habitv.api.plugin.dto.CategoryDTO;
+import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
+import com.dabi.habitv.api.plugin.exception.DownloadFailedException;
+import com.dabi.habitv.api.plugin.exception.TechnicalException;
+import com.dabi.habitv.api.plugin.holder.DownloaderPluginHolder;
 import com.dabi.habitv.framework.FrameworkConf;
-import com.dabi.habitv.framework.plugin.api.BasePluginWithProxyProvider;
-import com.dabi.habitv.framework.plugin.api.PluginDownloaderInterface;
-import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
-import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
-import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
-import com.dabi.habitv.framework.plugin.exception.TechnicalException;
-import com.dabi.habitv.framework.plugin.holder.DownloaderPluginHolder;
-import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
+import com.dabi.habitv.framework.plugin.api.BasePluginWithProxy;
 import com.dabi.habitv.framework.plugin.utils.RetrieverUtils;
 import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.feed.synd.SyndFeed;
@@ -43,7 +43,7 @@ import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.SyndFeedInput;
 import com.sun.syndication.io.XmlReader;
 
-public class ArtePluginManager extends BasePluginWithProxyProvider { // NO_UCD
+public class ArtePluginManager extends BasePluginWithProxy { // NO_UCD
 
 	@Override
 	public String getName() {
@@ -108,7 +108,7 @@ public class ArtePluginManager extends BasePluginWithProxyProvider { // NO_UCD
 	@Override
 	public void download(final String downloadOuput, final DownloaderPluginHolder downloaders, final CmdProgressionListener cmdProgressionListener,
 			final EpisodeDTO episode) throws DownloadFailedException {
-		final String downloadLink = buildDownloadLink(episode.getUrl());
+		final String downloadLink = buildDownloadLink(episode.getId());
 		final String downloaderName;
 		final Map<String, String> parameters = new HashMap<>(2);
 		if (downloadLink.startsWith("rtmp")) {

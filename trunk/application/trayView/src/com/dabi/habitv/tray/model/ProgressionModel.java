@@ -7,8 +7,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
 import com.dabi.habitv.core.event.EpisodeStateEnum;
-import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
 
 public class ProgressionModel {
 

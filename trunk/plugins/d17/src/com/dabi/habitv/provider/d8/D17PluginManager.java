@@ -23,18 +23,18 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import com.dabi.habitv.api.plugin.api.CmdProgressionListener;
+import com.dabi.habitv.api.plugin.api.PluginDownloaderInterface;
+import com.dabi.habitv.api.plugin.dto.CategoryDTO;
+import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
+import com.dabi.habitv.api.plugin.exception.DownloadFailedException;
+import com.dabi.habitv.api.plugin.exception.TechnicalException;
+import com.dabi.habitv.api.plugin.holder.DownloaderPluginHolder;
 import com.dabi.habitv.framework.FrameworkConf;
-import com.dabi.habitv.framework.plugin.api.BasePluginWithProxyProvider;
-import com.dabi.habitv.framework.plugin.api.PluginDownloaderInterface;
-import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
-import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
-import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
-import com.dabi.habitv.framework.plugin.exception.TechnicalException;
-import com.dabi.habitv.framework.plugin.holder.DownloaderPluginHolder;
-import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
+import com.dabi.habitv.framework.plugin.api.BasePluginWithProxy;
 import com.dabi.habitv.framework.plugin.utils.M3U8Utils;
 
-public class D17PluginManager extends BasePluginWithProxyProvider { // NO_UCD
+public class D17PluginManager extends BasePluginWithProxy { // NO_UCD
 
 	@Override
 	public String getName() {
@@ -107,7 +107,7 @@ public class D17PluginManager extends BasePluginWithProxyProvider { // NO_UCD
 			final DownloaderPluginHolder downloaders,
 			final CmdProgressionListener listener, final EpisodeDTO episode)
 					throws DownloadFailedException {
-		final String videoUrl = findVideoUrl(episode.getUrl());
+		final String videoUrl = findVideoUrl(episode.getId());
 		final String downloaderName = getDownloader(videoUrl);
 		final PluginDownloaderInterface pluginDownloader = downloaders
 				.getPlugin(downloaderName);

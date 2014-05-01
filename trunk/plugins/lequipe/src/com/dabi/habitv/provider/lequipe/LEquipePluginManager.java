@@ -22,19 +22,19 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import com.dabi.habitv.api.plugin.api.CmdProgressionListener;
+import com.dabi.habitv.api.plugin.api.PluginDownloaderInterface;
+import com.dabi.habitv.api.plugin.dto.CategoryDTO;
+import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
+import com.dabi.habitv.api.plugin.exception.DownloadFailedException;
+import com.dabi.habitv.api.plugin.exception.TechnicalException;
+import com.dabi.habitv.api.plugin.holder.DownloaderPluginHolder;
 import com.dabi.habitv.framework.FrameworkConf;
-import com.dabi.habitv.framework.plugin.api.BasePluginWithProxyProvider;
-import com.dabi.habitv.framework.plugin.api.PluginDownloaderInterface;
-import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
-import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
-import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
-import com.dabi.habitv.framework.plugin.exception.TechnicalException;
-import com.dabi.habitv.framework.plugin.holder.DownloaderPluginHolder;
-import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
+import com.dabi.habitv.framework.plugin.api.BasePluginWithProxy;
 import com.dabi.habitv.framework.plugin.utils.RetrieverUtils;
 import com.dabi.habitv.framework.plugin.utils.SoccerUtils;
 
-public class LEquipePluginManager extends BasePluginWithProxyProvider {
+public class LEquipePluginManager extends BasePluginWithProxy {
 
 	@Override
 	public String getName() {
@@ -84,7 +84,7 @@ public class LEquipePluginManager extends BasePluginWithProxyProvider {
 		parameters.put(FrameworkConf.PARAMETER_BIN_PATH, downloaders.getBinPath(downloaderName));
 		parameters.put(FrameworkConf.CMD_PROCESSOR, downloaders.getCmdProcessor());
 
-		pluginDownloader.download(findDownloadlink(episode.getUrl()), downloadOuput, parameters, cmdProgressionListener, getProtocol2proxy());
+		pluginDownloader.download(findDownloadlink(episode.getId()), downloadOuput, parameters, cmdProgressionListener, getProtocol2proxy());
 	}
 
 	private void findEpisodeByUrl(final CategoryDTO category, final Set<EpisodeDTO> episodeList, final String pageUrl) {

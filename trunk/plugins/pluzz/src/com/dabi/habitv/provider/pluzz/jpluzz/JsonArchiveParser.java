@@ -13,9 +13,9 @@ import java.util.zip.ZipInputStream;
 
 import org.apache.log4j.Logger;
 
-import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
-import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
-import com.dabi.habitv.framework.plugin.exception.TechnicalException;
+import com.dabi.habitv.api.plugin.dto.CategoryDTO;
+import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
+import com.dabi.habitv.api.plugin.exception.TechnicalException;
 import com.dabi.habitv.framework.plugin.utils.RetrieverUtils;
 import com.dabi.habitv.provider.pluzz.PluzzConf;
 import com.fasterxml.jackson.core.JsonParseException;

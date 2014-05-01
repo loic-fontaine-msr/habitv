@@ -1,5 +1,7 @@
 package com.dabi.habitv.framework.plugin.exception;
 
+import com.dabi.habitv.api.plugin.exception.ExecutorFailedException;
+
 public class HungProcessException extends ExecutorFailedException {
 
 	private static final long serialVersionUID = 1L;

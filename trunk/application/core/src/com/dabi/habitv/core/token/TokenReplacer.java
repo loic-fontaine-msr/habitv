@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 
-import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
+import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
 import com.dabi.habitv.utils.FileUtils;
 
 public final class TokenReplacer {
