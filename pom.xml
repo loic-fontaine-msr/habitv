@@ -11,6 +11,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<habitv-api.version>4.0-SNAPSHOT</habitv-api.version>
 	</properties>
 
 	 <scm>
@@ -26,7 +27,7 @@
   </distributionManagement>	
 	
 	<modules>
-		<module>framework</module>	
+		<module>framework</module>
 		<module>core</module>
 		<module>consoleView</module>
 		<module>trayView</module>
@@ -55,6 +56,11 @@
 
 	<dependencyManagement>
 	<dependencies>
+		<dependency>
+			<groupId>com.dabi.habitv</groupId>
+			<artifactId>api</artifactId>
+			<version>${habitv-api.version}</version>
+		</dependency>		
 		<dependency>
 			<groupId>com.dabi.habitv</groupId>
 			<artifactId>framework</artifactId>
