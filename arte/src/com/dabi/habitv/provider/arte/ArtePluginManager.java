@@ -28,7 +28,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import com.dabi.habitv.framework.FrameworkConf;
-import com.dabi.habitv.framework.plugin.api.BasePluginProvider;
+import com.dabi.habitv.framework.plugin.api.BasePluginWithProxyProvider;
 import com.dabi.habitv.framework.plugin.api.PluginDownloaderInterface;
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
@@ -43,7 +43,7 @@ import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.SyndFeedInput;
 import com.sun.syndication.io.XmlReader;
 
-public class ArtePluginManager extends BasePluginProvider { // NO_UCD
+public class ArtePluginManager extends BasePluginWithProxyProvider { // NO_UCD
 
 	@Override
 	public String getName() {

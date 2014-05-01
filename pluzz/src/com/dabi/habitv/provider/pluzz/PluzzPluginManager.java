@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.dabi.habitv.framework.FrameworkConf;
-import com.dabi.habitv.framework.plugin.api.BasePluginProvider;
+import com.dabi.habitv.framework.plugin.api.BasePluginWithProxyProvider;
 import com.dabi.habitv.framework.plugin.api.PluginDownloaderInterface;
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
@@ -18,7 +18,7 @@ import com.dabi.habitv.framework.plugin.utils.M3U8Utils;
 import com.dabi.habitv.provider.pluzz.jpluzz.Archive;
 import com.dabi.habitv.provider.pluzz.jpluzz.JsonArchiveParser;
 
-public class PluzzPluginManager extends BasePluginProvider {
+public class PluzzPluginManager extends BasePluginWithProxyProvider {
 
 	private Archive cachedArchive;
 

@@ -8,7 +8,7 @@ import com.dabi.habitv.core.event.UpdatePluginEvent;
 import com.dabi.habitv.core.plugin.PluginFactory;
 import com.dabi.habitv.core.updater.UpdateManager;
 import com.dabi.habitv.framework.FrameworkConf;
-import com.dabi.habitv.framework.plugin.api.PluginBase;
+import com.dabi.habitv.framework.plugin.api.PluginBaseInterface;
 import com.dabi.habitv.framework.plugin.api.PluginDownloaderInterface;
 import com.dabi.habitv.framework.plugin.api.PluginExporterInterface;
 import com.dabi.habitv.framework.plugin.api.PluginProviderInterface;
@@ -76,7 +76,7 @@ public class PluginManager {
 		}
 	}
 
-	private void updateUpdatablePlugin(final PluginBase plugin) {
+	private void updateUpdatablePlugin(final PluginBaseInterface plugin) {
 		if (UpdatablePluginInterface.class.isInstance(plugin)) {
 			((UpdatablePluginInterface) plugin).update(updatablePluginPublisher, getParameters(plugin.getName()));
 		}
