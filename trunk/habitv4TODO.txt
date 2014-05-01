@@ -1,18 +1,43 @@
 
-tester dl
-tester linux
+simplifier appel aux downloaders, context ?
+simplifier les interfaces 1 interface Downloader
+classifier downloader/exporter
+mutualiser conf plugin
+
 arbo plugin
+
+tester linux
 log aucun plugin
 
-simplifier appel aux downloaders, context ?
-
 csvProvider
+    <channel>
+        <name>file</name>
+        <category>
+            <id>file relative or full path</id>
+            <name>Set file Label Here</name>
+            <toDownload>false</toDownload>
+            <include>Add include pattern</include>
+            <exclude>Add exclude pattern</exclude>
+            <extension>Set files extension Here</extension>
+            <status>EXIST</status>
+        </category>
+        <status>1</status>
+    </channel>
+http get header.title
+            <parameter>
+                <key>downloader</key>
+                <value>youtube</value>
+            </parameter>
+
+lien de téléchargement fixe PHP
 
 pas d'ordre dans config
 
 api fixe
 
 plugin tf1
+
+français/anglais
 
 IHM sélection des catégories
 

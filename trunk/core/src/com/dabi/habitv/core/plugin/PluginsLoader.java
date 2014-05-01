@@ -14,11 +14,11 @@ import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-import com.dabi.habitv.framework.plugin.api.PluginBase;
-import com.dabi.habitv.framework.plugin.api.PluginClassLoader;
+import com.dabi.habitv.framework.plugin.api.PluginBaseInterface;
+import com.dabi.habitv.framework.plugin.api.PluginClassLoaderInterface;
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
 
-class PluginsLoader<P extends PluginBase> {
+class PluginsLoader<P extends PluginBaseInterface> {
 
 	private static final String CLASS_EXTENSION = ".class";
 
@@ -65,8 +65,8 @@ class PluginsLoader<P extends PluginBase> {
 		for (final Plugin plugin : this.classPlugins) {
 			try {
 				final P pluginProviderInterface = plugin.getClassPluginProvider().newInstance();
-				if (PluginClassLoader.class.isInstance(pluginProviderInterface)) {
-					((PluginClassLoader) pluginProviderInterface).setClassLoader(plugin.getClassLoaders());
+				if (PluginClassLoaderInterface.class.isInstance(pluginProviderInterface)) {
+					((PluginClassLoaderInterface) pluginProviderInterface).setClassLoader(plugin.getClassLoaders());
 				}
 				tmpPlugins.add(pluginProviderInterface);
 			} catch (InstantiationException | IllegalAccessException e) {

@@ -3,10 +3,10 @@ package com.dabi.habitv.framework.plugin.holder;
 import java.util.Collection;
 import java.util.Map;
 
-import com.dabi.habitv.framework.plugin.api.PluginBase;
+import com.dabi.habitv.framework.plugin.api.PluginBaseInterface;
 import com.dabi.habitv.framework.plugin.exception.TechnicalException;
 
-public class AbstractPluginHolder<E extends PluginBase> {
+public class AbstractPluginHolder<E extends PluginBaseInterface> {
 
 	protected Map<String, E> pluginName2Plugin;
 

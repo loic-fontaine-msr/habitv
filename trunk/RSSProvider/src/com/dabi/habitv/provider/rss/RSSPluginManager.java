@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.dabi.habitv.framework.FrameworkConf;
-import com.dabi.habitv.framework.plugin.api.BasePluginProvider;
+import com.dabi.habitv.framework.plugin.api.BasePluginWithProxyProvider;
 import com.dabi.habitv.framework.plugin.api.PluginDownloaderInterface;
 import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
 import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
@@ -26,7 +26,7 @@ import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.SyndFeedInput;
 import com.sun.syndication.io.XmlReader;
 
-public class RSSPluginManager extends BasePluginProvider {
+public class RSSPluginManager extends BasePluginWithProxyProvider {
 
 	private static final int MIN_TITLE_SIZE = 5;
 

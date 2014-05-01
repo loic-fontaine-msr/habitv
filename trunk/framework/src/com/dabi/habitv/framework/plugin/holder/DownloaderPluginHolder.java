@@ -3,6 +3,7 @@ package com.dabi.habitv.framework.plugin.holder;
 import java.util.Map;
 
 import com.dabi.habitv.framework.plugin.api.PluginDownloaderInterface;
+import com.dabi.habitv.framework.plugin.api.dto.ProxyDTO;
 
 public final class DownloaderPluginHolder extends AbstractPluginHolder<PluginDownloaderInterface> {
 
@@ -13,6 +14,8 @@ public final class DownloaderPluginHolder extends AbstractPluginHolder<PluginDow
 	private final String indexDir;
 
 	private final String cmdProcessor;
+
+	private Map<ProxyDTO.ProtocolEnum, ProxyDTO> protocol2Proxies;
 
 	public DownloaderPluginHolder(final String cmdProcessor, final Map<String, PluginDownloaderInterface> downloaderName2downloader,
 			final Map<String, String> downloaderName2BinPath, final String downloadOutputDir, final String indexDir) {

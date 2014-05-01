@@ -1,6 +1,6 @@
 package com.dabi.habitv.framework.plugin.api;
 
-public abstract interface PluginBase {
+public abstract interface PluginBaseInterface {
 
 	String getName();
 

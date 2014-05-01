@@ -27,6 +27,18 @@ import com.dabi.habitv.provider.canalplus.video.entities.VIDEOS;
 
 public class CanalPlusPluginManager extends BasePluginProviderClassloader { // NO_UCD
 
+	private ClassLoader classLoader;
+
+	@Override
+	public final void setClassLoader(final ClassLoader classLoader) {
+		this.classLoader = classLoader;
+	}
+
+	@Override
+	protected ClassLoader getClassLoader() {
+		return classLoader;
+	}
+
 	@Override
 	public Set<EpisodeDTO> findEpisode(final CategoryDTO category) {
 		final Set<EpisodeDTO> episodes;

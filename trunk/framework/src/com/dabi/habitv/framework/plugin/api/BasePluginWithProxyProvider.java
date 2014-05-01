@@ -13,17 +13,14 @@ import com.dabi.habitv.framework.plugin.utils.RetrieverUtils;
 /**
  * Generics basics for provider
  */
-public abstract class BasePluginProvider implements PluginProviderInterface {
+public abstract class BasePluginWithProxyProvider implements PluginWithProxyInterface {
 
 	private final Logger logguer = Logger.getLogger(this.getClass().getName());
 
-
 	private Map<ProtocolEnum, ProxyDTO> protocol2proxy;
 
-
-
 	@Override
-	public final void setProxy(final Map<ProtocolEnum, ProxyDTO> protocol2proxy) {
+	public final void setProxies(final Map<ProtocolEnum, ProxyDTO> protocol2proxy) {
 		this.protocol2proxy = protocol2proxy;
 	}
 
