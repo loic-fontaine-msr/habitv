@@ -2,33 +2,35 @@ package com.dabi.habitv.core.task;
 
 import java.io.File;
 
+import com.dabi.habitv.api.plugin.api.CmdProgressionListener;
+import com.dabi.habitv.api.plugin.api.PluginDownloaderInterface;
+import com.dabi.habitv.api.plugin.dto.CategoryDTO;
+import com.dabi.habitv.api.plugin.dto.DownloadParamDTO;
+import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
+import com.dabi.habitv.api.plugin.exception.DownloadFailedException;
+import com.dabi.habitv.api.plugin.exception.TechnicalException;
+import com.dabi.habitv.api.plugin.holder.DownloaderPluginHolder;
+import com.dabi.habitv.api.plugin.pub.Publisher;
 import com.dabi.habitv.core.dao.DownloadedDAO;
 import com.dabi.habitv.core.event.EpisodeStateEnum;
 import com.dabi.habitv.core.event.RetreiveEvent;
 import com.dabi.habitv.core.token.TokenReplacer;
-import com.dabi.habitv.framework.plugin.api.PluginProviderInterface;
-import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
-import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
-import com.dabi.habitv.framework.plugin.exception.TechnicalException;
-import com.dabi.habitv.framework.plugin.holder.DownloaderPluginHolder;
-import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
-import com.dabi.habitv.framework.pub.Publisher;
 
 public class DownloadTask extends AbstractEpisodeTask {
 
-	private final PluginProviderInterface provider;
+	private final PluginDownloaderInterface downloader;
 
-	private final DownloaderPluginHolder downloader;
+	private final DownloaderPluginHolder downloaders;
 
 	private final Publisher<RetreiveEvent> publisher;
 
 	private final DownloadedDAO downloadedDAO;
 
-	public DownloadTask(final EpisodeDTO episode, final PluginProviderInterface provider, final DownloaderPluginHolder downloader,
+	public DownloadTask(final EpisodeDTO episode, final PluginDownloaderInterface downloader, final DownloaderPluginHolder downloaders,
 			final Publisher<RetreiveEvent> publisher, final DownloadedDAO downloadedDAO) {
 		super(episode);
-		this.provider = provider;
 		this.downloader = downloader;
+		this.downloaders = downloaders;
 		this.publisher = publisher;
 		this.downloadedDAO = downloadedDAO;
 	}
@@ -59,7 +61,7 @@ public class DownloadTask extends AbstractEpisodeTask {
 
 	@Override
 	protected Object doCall() throws DownloadFailedException {
-		final String outputFilename = TokenReplacer.replaceAll(downloader.getDownloadOutput(), getEpisode());
+		final String outputFilename = TokenReplacer.replaceAll(downloaders.getDownloadOutput(), getEpisode());
 		final String outputTmpFileName;
 		if (!outputFilename.contains(".torrent")) {
 			outputTmpFileName = outputFilename + ".tmp";
@@ -78,12 +80,12 @@ public class DownloadTask extends AbstractEpisodeTask {
 				throw new TechnicalException("can't delete file " + outputFile.getAbsolutePath());
 			}
 		}
-		provider.download(outputTmpFileName, downloader, new CmdProgressionListener() {
+		downloader.download(buildDownloadParam(outputTmpFileName), downloaders, new CmdProgressionListener() {
 			@Override
 			public void listen(final String progression) {
 				publisher.addNews(new RetreiveEvent(getEpisode(), EpisodeStateEnum.DOWNLOADING, progression));
 			}
-		}, getEpisode());
+		});
 		final File file = new File(outputTmpFileName);
 		if (file.exists() && !file.renameTo(new File(outputFilename))) {
 			throw new TechnicalException("can't rename");
@@ -91,9 +93,16 @@ public class DownloadTask extends AbstractEpisodeTask {
 		return null;
 	}
 
+	private DownloadParamDTO buildDownloadParam(final String outputTmpFileName) {
+		final CategoryDTO category = getEpisode().getCategory();
+		final DownloadParamDTO downloadParam = new DownloadParamDTO(getEpisode().getId(), outputTmpFileName, category.getExtension());
+		downloadParam.getParams().putAll(category.getParameters());
+		return downloadParam;
+	}
+
 	@Override
 	public int hashCode() {
-		return getEpisode().hashCode() + downloader.hashCode();
+		return getEpisode().hashCode() + downloaders.hashCode();
 	}
 
 	@Override
@@ -113,7 +122,7 @@ public class DownloadTask extends AbstractEpisodeTask {
 
 	@Override
 	public String toString() {
-		return "DL" + getEpisode() + " " + provider.getName() + " " + downloader.getDownloadOutput();
+		return "DL" + getEpisode() + " " + downloader.getName() + " " + downloaders.getDownloadOutput();
 	}
 
 }

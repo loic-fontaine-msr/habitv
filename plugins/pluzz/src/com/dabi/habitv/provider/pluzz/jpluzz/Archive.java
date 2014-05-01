@@ -3,8 +3,8 @@ package com.dabi.habitv.provider.pluzz.jpluzz;
 import java.util.Collection;
 import java.util.Map;
 
-import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
-import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
+import com.dabi.habitv.api.plugin.dto.CategoryDTO;
+import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
 
 public class Archive {
 	

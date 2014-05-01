@@ -1,6 +1,6 @@
 package com.dabi.habitv.core.mgr;
 
-import com.dabi.habitv.framework.plugin.holder.ProviderPluginHolder;
+import com.dabi.habitv.api.plugin.holder.ProviderPluginHolder;
 
 abstract class AbstractManager {
 

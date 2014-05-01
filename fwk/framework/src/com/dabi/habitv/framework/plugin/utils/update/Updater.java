@@ -13,7 +13,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.dabi.habitv.framework.plugin.exception.TechnicalException;
+import com.dabi.habitv.api.plugin.exception.TechnicalException;
 import com.dabi.habitv.framework.plugin.utils.update.FindArtifactUtils.ArtifactVersion;
 
 public abstract class Updater {

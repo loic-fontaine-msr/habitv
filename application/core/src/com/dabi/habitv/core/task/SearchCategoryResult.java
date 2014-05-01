@@ -2,7 +2,7 @@ package com.dabi.habitv.core.task;
 
 import java.util.Set;
 
-import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
+import com.dabi.habitv.api.plugin.dto.CategoryDTO;
 
 public class SearchCategoryResult {
 

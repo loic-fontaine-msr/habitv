@@ -9,9 +9,9 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
+import com.dabi.habitv.api.plugin.exception.TechnicalException;
 import com.dabi.habitv.core.config.UserConfig;
 import com.dabi.habitv.core.config.XMLUserConfig;
-import com.dabi.habitv.framework.plugin.exception.TechnicalException;
 import com.dabi.habitv.tray.controller.TrayController;
 
 public final class TrayMenu extends PopupMenu {

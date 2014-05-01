@@ -2,7 +2,7 @@ package com.dabi.habitv.core.dao;
 
 import java.io.Serializable;
 
-import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
+import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
 
 public class EpisodeExportState implements Serializable {
 

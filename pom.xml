@@ -11,6 +11,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<habitv-api.version>4.0-SNAPSHOT</habitv-api.version>
 	</properties>
 
 	 <scm>
@@ -25,36 +26,20 @@
 		</repository>
   </distributionManagement>	
 	
+	
 	<modules>
 		<module>fwk</module>	
-		<module>core</module>
-		<module>consoleView</module>
-		<module>trayView</module>
-		
-		<module>habiTv</module>
-		
-		<module>canalPlus</module>
-		<module>cmdDownloader</module>
-		<module>pluzz</module>
-		<module>d8</module>
-		<module>d17</module>
-		<module>aria2Downloader</module>
-		<module>curlDownloader</module>
-		<module>youtubeDownloader</module>
-		<module>cmdExporter</module>
-		<module>ffmpegExporter</module>
-		<module>ffmpegDownloader</module>
-		<module>curlExporter</module>
-		<module>rtmpDumpDownloader</module>
-		<module>RSSProvider</module>
-		<module>lequipe</module>
-		<module>beinsport</module>
-		<module>arte</module>
-		<module>nrj12</module>
+		<module>plugins</module>
+		<module>application</module>
 	</modules>
 
 	<dependencyManagement>
 	<dependencies>
+		<dependency>
+			<groupId>com.dabi.habitv</groupId>
+			<artifactId>api</artifactId>
+			<version>${habitv-api.version}</version>
+		</dependency>	
 		<dependency>
 			<groupId>com.dabi.habitv</groupId>
 			<artifactId>framework</artifactId>
@@ -156,6 +141,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
 				<configuration>
 					<source>1.7</source>
 					<target>1.7</target>

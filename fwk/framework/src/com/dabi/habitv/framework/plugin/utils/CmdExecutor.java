@@ -7,10 +7,11 @@ import java.io.InputStreamReader;
 
 import org.apache.log4j.Logger;
 
+import com.dabi.habitv.api.plugin.api.CmdProgressionListener;
+import com.dabi.habitv.api.plugin.exception.ExecutorFailedException;
+import com.dabi.habitv.api.plugin.exception.TechnicalException;
 import com.dabi.habitv.framework.FrameworkConf;
-import com.dabi.habitv.framework.plugin.exception.ExecutorFailedException;
 import com.dabi.habitv.framework.plugin.exception.HungProcessException;
-import com.dabi.habitv.framework.plugin.exception.TechnicalException;
 
 public class CmdExecutor {
 

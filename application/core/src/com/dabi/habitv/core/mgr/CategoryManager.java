@@ -8,6 +8,11 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 
+import com.dabi.habitv.api.plugin.api.PluginProviderInterface;
+import com.dabi.habitv.api.plugin.dto.CategoryDTO;
+import com.dabi.habitv.api.plugin.exception.TechnicalException;
+import com.dabi.habitv.api.plugin.holder.ProviderPluginHolder;
+import com.dabi.habitv.api.plugin.pub.Publisher;
 import com.dabi.habitv.core.config.HabitTvConf;
 import com.dabi.habitv.core.event.SearchCategoryEvent;
 import com.dabi.habitv.core.event.SearchCategoryStateEnum;
@@ -16,11 +21,6 @@ import com.dabi.habitv.core.task.SearchCategoryTask;
 import com.dabi.habitv.core.task.TaskMgr;
 import com.dabi.habitv.core.task.TaskMgrListener;
 import com.dabi.habitv.core.task.TaskTypeEnum;
-import com.dabi.habitv.framework.plugin.api.PluginProviderInterface;
-import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
-import com.dabi.habitv.framework.plugin.exception.TechnicalException;
-import com.dabi.habitv.framework.plugin.holder.ProviderPluginHolder;
-import com.dabi.habitv.framework.pub.Publisher;
 
 public class CategoryManager extends AbstractManager {
 

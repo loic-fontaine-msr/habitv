@@ -1,6 +1,6 @@
 package com.dabi.habitv.core.task;
 
-import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
+import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
 
 abstract class AbstractEpisodeTask extends AbstractTask<Object> {
 

@@ -3,21 +3,21 @@ package com.dabi.habitv.core.task;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import com.dabi.habitv.api.plugin.api.PluginExporterInterface;
+import com.dabi.habitv.api.plugin.api.PluginProviderInterface;
+import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
+import com.dabi.habitv.api.plugin.dto.ExportDTO;
+import com.dabi.habitv.api.plugin.exception.InvalidEpisodeException;
+import com.dabi.habitv.api.plugin.exception.TechnicalException;
+import com.dabi.habitv.api.plugin.holder.DownloaderPluginHolder;
+import com.dabi.habitv.api.plugin.holder.ExporterPluginHolder;
+import com.dabi.habitv.api.plugin.pub.Publisher;
 import com.dabi.habitv.core.config.HabitTvConf;
 import com.dabi.habitv.core.dao.DownloadedDAO;
 import com.dabi.habitv.core.dao.EpisodeExportState;
 import com.dabi.habitv.core.event.EpisodeStateEnum;
 import com.dabi.habitv.core.event.RetreiveEvent;
 import com.dabi.habitv.core.token.TokenReplacer;
-import com.dabi.habitv.framework.plugin.api.PluginExporterInterface;
-import com.dabi.habitv.framework.plugin.api.PluginProviderInterface;
-import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
-import com.dabi.habitv.framework.plugin.api.dto.ExportDTO;
-import com.dabi.habitv.framework.plugin.exception.InvalidEpisodeException;
-import com.dabi.habitv.framework.plugin.exception.TechnicalException;
-import com.dabi.habitv.framework.plugin.holder.DownloaderPluginHolder;
-import com.dabi.habitv.framework.plugin.holder.ExporterPluginHolder;
-import com.dabi.habitv.framework.pub.Publisher;
 
 public class RetrieveTask extends AbstractEpisodeTask {
 

@@ -1,7 +1,7 @@
 package com.dabi.habitv.tray.model;
 
+import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
 import com.dabi.habitv.core.event.EpisodeStateEnum;
-import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
 
 public class ActionProgress implements Comparable<ActionProgress> {
 	private EpisodeStateEnum state;

@@ -5,12 +5,12 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 
+import com.dabi.habitv.api.plugin.dto.CategoryDTO;
+import com.dabi.habitv.api.plugin.dto.ProxyDTO;
+import com.dabi.habitv.api.plugin.dto.ProxyDTO.ProtocolEnum;
 import com.dabi.habitv.core.config.UserConfig;
 import com.dabi.habitv.core.token.TokenReplacer;
 import com.dabi.habitv.framework.FWKProperties;
-import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
-import com.dabi.habitv.framework.plugin.api.dto.ProxyDTO;
-import com.dabi.habitv.framework.plugin.api.dto.ProxyDTO.ProtocolEnum;
 
 public final class CoreManager {
 

@@ -12,18 +12,18 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import com.dabi.habitv.api.plugin.api.CmdProgressionListener;
+import com.dabi.habitv.api.plugin.api.PluginDownloaderInterface;
+import com.dabi.habitv.api.plugin.dto.CategoryDTO;
+import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
+import com.dabi.habitv.api.plugin.exception.DownloadFailedException;
+import com.dabi.habitv.api.plugin.exception.TechnicalException;
+import com.dabi.habitv.api.plugin.holder.DownloaderPluginHolder;
 import com.dabi.habitv.framework.FrameworkConf;
-import com.dabi.habitv.framework.plugin.api.BasePluginWithProxyProvider;
-import com.dabi.habitv.framework.plugin.api.PluginDownloaderInterface;
-import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
-import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
-import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
+import com.dabi.habitv.framework.plugin.api.BasePluginWithProxy;
 
-import com.dabi.habitv.framework.plugin.exception.TechnicalException;
-import com.dabi.habitv.framework.plugin.holder.DownloaderPluginHolder;
-import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
 
-public class NRJ12PluginManager extends BasePluginWithProxyProvider {
+public class NRJ12PluginManager extends BasePluginWithProxy {
 
 	@Override
 	public String getName() {
@@ -137,7 +137,7 @@ public class NRJ12PluginManager extends BasePluginWithProxyProvider {
 	private static final Pattern MEDIAID_PATTERN = Pattern.compile("/(\\d*)-minipicto");
 
 	public String findFinalUrl(final EpisodeDTO episode) {
-		final String url = NRJ12Conf.HOME_URL + episode.getUrl();
+		final String url = NRJ12Conf.HOME_URL + episode.getId();
 		final String content = getUrlContent(url);
 		final String mediaId = findMediaId(content);
 		return mediaId;

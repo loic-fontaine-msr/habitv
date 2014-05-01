@@ -6,7 +6,7 @@ import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
 
-import com.dabi.habitv.framework.plugin.exception.TechnicalException;
+import com.dabi.habitv.api.plugin.exception.TechnicalException;
 
 abstract class AbstractTask<R> implements Callable<R> {
 

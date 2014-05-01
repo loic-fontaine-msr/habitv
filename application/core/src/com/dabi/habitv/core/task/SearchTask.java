@@ -3,17 +3,17 @@ package com.dabi.habitv.core.task;
 import java.util.Collection;
 import java.util.Set;
 
+import com.dabi.habitv.api.plugin.api.PluginProviderInterface;
+import com.dabi.habitv.api.plugin.dto.CategoryDTO;
+import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
+import com.dabi.habitv.api.plugin.holder.DownloaderPluginHolder;
+import com.dabi.habitv.api.plugin.holder.ExporterPluginHolder;
+import com.dabi.habitv.api.plugin.pub.Publisher;
 import com.dabi.habitv.core.dao.DlErrorDAO;
 import com.dabi.habitv.core.dao.DownloadedDAO;
 import com.dabi.habitv.core.event.RetreiveEvent;
 import com.dabi.habitv.core.event.SearchEvent;
 import com.dabi.habitv.core.event.SearchStateEnum;
-import com.dabi.habitv.framework.plugin.api.PluginProviderInterface;
-import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
-import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
-import com.dabi.habitv.framework.plugin.holder.DownloaderPluginHolder;
-import com.dabi.habitv.framework.plugin.holder.ExporterPluginHolder;
-import com.dabi.habitv.framework.pub.Publisher;
 import com.dabi.habitv.utils.FilterUtils;
 
 public class SearchTask extends AbstractTask<Object> {

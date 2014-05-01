@@ -7,7 +7,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import com.dabi.habitv.framework.plugin.exception.TechnicalException;
+import com.dabi.habitv.api.plugin.exception.TechnicalException;
 
 public class TaskMgr<T extends AbstractTask<R>, R> {
 

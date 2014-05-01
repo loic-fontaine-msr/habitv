@@ -1,7 +1,7 @@
 package com.dabi.habitv.core.event;
 
-import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
-import com.dabi.habitv.framework.pub.AbstractEvent;
+import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
+import com.dabi.habitv.api.plugin.pub.AbstractEvent;
 
 public final class RetreiveEvent extends AbstractEvent {
 	private final EpisodeDTO episode;
