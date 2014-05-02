@@ -11,15 +11,15 @@ import java.util.Collection;
 import com.dabi.habitv.api.plugin.exception.TechnicalException;
 
 public class ExportDAO {
-	public synchronized void addExportStep(EpisodeExportState episodeExportState) {
-		EpisodeExportIndexRoot root = loadEpisodeExportIndexRoot();
+	public synchronized void addExportStep(final EpisodeExportState episodeExportState) {
+		final EpisodeExportIndexRoot root = loadEpisodeExportIndexRoot();
 		if (!root.getEpisodeExportStates().contains(episodeExportState)) {
 			root.addEpisodeExportStates(episodeExportState);
 			saveExportIndex(root);
 		}
 	}
 
-	private void saveExportIndex(EpisodeExportIndexRoot root) {
+	private void saveExportIndex(final EpisodeExportIndexRoot root) {
 		FileOutputStream fichier = null;
 		ObjectOutputStream oos = null;
 		try {
@@ -27,20 +27,20 @@ public class ExportDAO {
 			oos = new ObjectOutputStream(fichier);
 			oos.writeObject(root);
 			oos.flush();
-		} catch (java.io.IOException e) {
+		} catch (final java.io.IOException e) {
 			throw new TechnicalException(e);
 		} finally {
 			if (fichier != null) {
 				try {
 					fichier.close();
-				} catch (IOException e) {
+				} catch (final IOException e) {
 					throw new TechnicalException(e);
 				}
 			}
 			if (oos != null) {
 				try {
 					oos.close();
-				} catch (IOException e) {
+				} catch (final IOException e) {
 					throw new TechnicalException(e);
 				}
 			}
@@ -66,14 +66,14 @@ public class ExportDAO {
 				if (ois != null) {
 					try {
 						ois.close();
-					} catch (IOException e) {
+					} catch (final IOException e) {
 						throw new TechnicalException(e);
 					}
 				}
 				if (fichier != null) {
 					try {
 						fichier.close();
-					} catch (IOException e) {
+					} catch (final IOException e) {
 						throw new TechnicalException(e);
 					}
 				}
@@ -92,13 +92,15 @@ public class ExportDAO {
 
 	public void init() {
 		final File index = new File(getExportIndexFileName());
-		if (!index.delete()) {
-			throw new TechnicalException("can't delete");
+		if (index.exists()) {
+			if (!index.delete()) {
+				throw new TechnicalException("can't delete");
+			}
 		}
 	}
 
-	public synchronized void removeExportStep(EpisodeExportState episodeExportState) {
-		EpisodeExportIndexRoot root = loadEpisodeExportIndexRoot();
+	public synchronized void removeExportStep(final EpisodeExportState episodeExportState) {
+		final EpisodeExportIndexRoot root = loadEpisodeExportIndexRoot();
 		root.removeEpisodeExportStates(episodeExportState);
 		saveExportIndex(root);
 	}

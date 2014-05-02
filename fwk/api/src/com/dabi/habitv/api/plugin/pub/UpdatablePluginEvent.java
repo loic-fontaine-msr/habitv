@@ -32,4 +32,10 @@ public final class UpdatablePluginEvent extends AbstractEvent {
 		return state;
 	}
 
+	@Override
+	public String toString() {
+		return "UpdatablePluginEvent [plugin=" + plugin + ", version=" + version + ", state=" + state + ", getException()=" + getException() + "]";
+	}
+
+
 }

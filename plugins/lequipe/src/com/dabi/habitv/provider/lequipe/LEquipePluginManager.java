@@ -23,8 +23,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import com.dabi.habitv.api.plugin.api.CmdProgressionListener;
-import com.dabi.habitv.api.plugin.api.PluginDownloaderInterface;
-import com.dabi.habitv.api.plugin.api.PluginProviderInterface;
+import com.dabi.habitv.api.plugin.api.PluginProviderDownloaderInterface;
 import com.dabi.habitv.api.plugin.dto.CategoryDTO;
 import com.dabi.habitv.api.plugin.dto.DownloadParamDTO;
 import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
@@ -36,7 +35,7 @@ import com.dabi.habitv.framework.plugin.utils.DownloadUtils;
 import com.dabi.habitv.framework.plugin.utils.RetrieverUtils;
 import com.dabi.habitv.framework.plugin.utils.SoccerUtils;
 
-public class LEquipePluginManager extends BasePluginWithProxy implements PluginDownloaderInterface, PluginProviderInterface {
+public class LEquipePluginManager extends BasePluginWithProxy implements PluginProviderDownloaderInterface {
 
 	@Override
 	public String getName() {

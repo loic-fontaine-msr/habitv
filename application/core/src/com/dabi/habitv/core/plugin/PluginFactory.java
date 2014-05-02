@@ -7,25 +7,28 @@ import java.util.Map;
 
 import com.dabi.habitv.api.plugin.api.PluginBaseInterface;
 
-public final class PluginFactory<P extends PluginBaseInterface> {
+public final class PluginFactory {
 
-	private final Map<String, P> pluginName2Plugin = new HashMap<>();
-	private final Class<P> pluginInterface;
 	private final String pluginDir;
+	private List<? extends PluginBaseInterface> plugins;
 
-	public PluginFactory(final Class<P> pluginInterface, final String pluginDir) {
-		this.pluginInterface = pluginInterface;
+	public PluginFactory(final String pluginDir) {
 		this.pluginDir = pluginDir;
+		init();
 	}
 
+	public void init() {
+		plugins = new PluginsLoader(new File(pluginDir).listFiles()).loadAllPlugins();
+	}
 
-	public Map<String, P> loadPlugins() {
-		pluginName2Plugin.clear();
-		final List<P> pluginProviderInterList = new PluginsLoader<>(pluginInterface, new File(pluginDir).listFiles()).loadAllPlugins();
-		for (final P plugin : pluginProviderInterList) {
-			pluginName2Plugin.put(plugin.getName(), plugin);
+	public <P extends PluginBaseInterface> Map<String, P> loadPlugins(final Class<P> pluginClass) {
+		final Map<String, P> pluginName2plugins = new HashMap<>();
+		for (final PluginBaseInterface plugin : plugins) {
+			if (pluginClass.isInstance(plugin)) {
+				pluginName2plugins.put(plugin.getName(), pluginClass.cast(plugin));
+			}
 		}
-		return pluginName2Plugin;
+		return pluginName2plugins;
 	}
 
 }

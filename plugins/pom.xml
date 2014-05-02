@@ -20,9 +20,7 @@
 		<module>aria2</module>
 		<module>curl</module>
 		<module>youtube</module>
-		<module>cmdExporter</module>
 		<module>ffmpeg</module>
-		<module>curlExporter</module>
 		<module>rtmpDump</module>
 		<module>RSS</module>
 		<module>lequipe</module>

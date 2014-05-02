@@ -26,7 +26,6 @@ import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
 import com.dabi.habitv.api.plugin.dto.ExportDTO;
 import com.dabi.habitv.api.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.api.plugin.exception.ExportFailedException;
-import com.dabi.habitv.api.plugin.exception.TechnicalException;
 import com.dabi.habitv.api.plugin.holder.DownloaderPluginHolder;
 import com.dabi.habitv.api.plugin.holder.ExporterPluginHolder;
 import com.dabi.habitv.api.plugin.pub.Publisher;
@@ -190,7 +189,7 @@ public class RetreiveTaskTest {
 		assertTrue(retreived);
 	}
 
-	@Test(expected = TechnicalException.class)
+	@Test(expected = TaskFailedException.class)
 	public final void testRetreiveTaskFailed() {
 		init(true);
 		task.addedTo("retreive", null);

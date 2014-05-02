@@ -18,7 +18,6 @@ import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
 import com.dabi.habitv.api.plugin.dto.ExportDTO;
 import com.dabi.habitv.api.plugin.exception.ExecutorFailedException;
 import com.dabi.habitv.api.plugin.exception.ExportFailedException;
-import com.dabi.habitv.api.plugin.exception.TechnicalException;
 import com.dabi.habitv.api.plugin.pub.Publisher;
 import com.dabi.habitv.api.plugin.pub.Subscriber;
 import com.dabi.habitv.core.event.EpisodeStateEnum;
@@ -58,7 +57,7 @@ public class ExportTaskTest {
 
 			@Override
 			public void export(final String cmdProcessor, final String cmd, final CmdProgressionListener cmdProgressionListener) throws ExportFailedException {
-				assertEquals("episode1234567890123456789012345678901234567890123456789/episode123456789012345678901234567890123/channel/category/extension",
+				assertEquals("episode1234567890123/channel/category/extension",
 						cmd);
 
 				cmdProgressionListener.listen("0");
@@ -99,7 +98,7 @@ public class ExportTaskTest {
 					assertEquals(new RetreiveEvent(episode, EpisodeStateEnum.TO_EXPORT), event);
 					break;
 				case 1:
-					assertEquals(new RetreiveEvent(episode, EpisodeStateEnum.EXPORTING, "name", null), event);
+					assertEquals(new RetreiveEvent(episode, EpisodeStateEnum.EXPORTING, "output", null), event);
 					break;
 				case 2:
 					assertEquals(new RetreiveEvent(episode, EpisodeStateEnum.EXPORTING, "0"), event);
@@ -109,7 +108,7 @@ public class ExportTaskTest {
 					break;
 				case 4:
 					if (toFail) {
-						assertEquals(new RetreiveEvent(episode, EpisodeStateEnum.EXPORT_FAILED, exportFailedException, "name"), event);
+						assertEquals(new RetreiveEvent(episode, EpisodeStateEnum.EXPORT_FAILED, exportFailedException, "output"), event);
 					} else {
 						assertEquals(new RetreiveEvent(episode, EpisodeStateEnum.EXPORTING, "100"), event);
 					}
@@ -126,7 +125,7 @@ public class ExportTaskTest {
 		};
 		publisher.attach(subscriber);
 		final ExportDTO export = new ExportDTO("conditionReference", "conditionPattern", "name", "output", null,
-				"#EPISODE_NAME#/#EPISODE_NAME_CUT#/#CHANNEL_NAME#/#TVSHOW_NAME#/#EXTENSION#", null);
+				"#EPISODE_NAME§20#/#CHANNEL_NAME#/#TVSHOW_NAME#/#EXTENSION#", null);
 		task = new ExportTask(episode, export, pluginExporter, publisher, 0);
 		assertTrue(task.equals(task));
 		assertEquals(task.hashCode(), task.hashCode());
@@ -139,7 +138,7 @@ public class ExportTaskTest {
 		task.call();
 	}
 
-	@Test(expected = TechnicalException.class)
+	@Test(expected = TaskFailedException.class)
 	public final void testExportTaskFailed() {
 		init(true);
 		task.addedTo("export", null);

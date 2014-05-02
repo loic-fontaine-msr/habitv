@@ -16,10 +16,12 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
-import com.dabi.habitv.framework.plugin.exception.TechnicalException;
+import com.dabi.habitv.api.plugin.exception.TechnicalException;
 
+@Ignore
 public class TestInitStream {
 
 	private static final Pattern PLALYER_APPPATTERN = Pattern.compile("<playerAppToken>(.*)</playerAppToken>");

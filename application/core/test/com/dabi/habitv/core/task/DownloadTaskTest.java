@@ -77,7 +77,7 @@ public class DownloadTaskTest {
 			@Override
 			public void download(final DownloadParamDTO downloadParam, final DownloaderPluginHolder downloaders, final CmdProgressionListener listener)
 					throws DownloadFailedException {
-				assertEquals("episode1234567890123456789012345678901234567890123456789_episode123456789012345678901234567890123_channel_category_extension",
+				assertEquals("episode1234567890123_channel_category_extension.tmp",
 						downloadParam.getDownloadOutput());
 
 				listener.listen("0");
@@ -104,7 +104,7 @@ public class DownloadTaskTest {
 			}
 		};
 		final DownloaderPluginHolder downloader = new DownloaderPluginHolder(null, null, null,
-				"#EPISODE_NAME#_#EPISODE_NAME_CUT#_#CHANNEL_NAME#_#TVSHOW_NAME#_#EXTENSION#", "indexDir");
+				"#EPISODE_NAME§20#_#CHANNEL_NAME#_#TVSHOW_NAME#_#EXTENSION#", "indexDir");
 		final Publisher<RetreiveEvent> publisher = new Publisher<>();
 		final Subscriber<RetreiveEvent> subscriber = new Subscriber<RetreiveEvent>() {
 
@@ -171,7 +171,7 @@ public class DownloadTaskTest {
 
 	@Test
 	public final void testDownloadRemovePreviousFile() throws IOException {
-		final String filename = "episode1234567890123456789012345678901234567890123456789_episode123456789012345678901234567890123_channel_category_extension";
+		final String filename = "episode1234567890123_channel_category_extension";
 		final FileWriter fileWriter = new FileWriter(filename);
 		fileWriter.write("test");
 		fileWriter.close();

@@ -27,11 +27,7 @@ public class PluginManager {
 
 	private final Publisher<UpdatablePluginEvent> updatablePluginPublisher = new Publisher<>();
 
-	private final PluginFactory<PluginProviderInterface> pluginProviderFactory;
-
-	private final PluginFactory<PluginDownloaderInterface> pluginDownloaderFactory;
-
-	private final PluginFactory<PluginExporterInterface> pluginExporterFactory;
+	private final PluginFactory pluginFactory;
 
 	private final DownloaderPluginHolder downloadersHolder;
 
@@ -41,21 +37,12 @@ public class PluginManager {
 
 	public PluginManager(final UserConfig config) {
 		updateManager = new UpdateManager(config.autoriseSnapshot());
+		pluginFactory = new PluginFactory(config.getPluginDir());
 
-		// downloader
-		pluginDownloaderFactory = new PluginFactory<>(PluginDownloaderInterface.class, config.getDownloaderPluginDir());
-		downloadersHolder = new DownloaderPluginHolder(config.getCmdProcessor(), pluginDownloaderFactory.loadPlugins(), config.getDownloader(),
-				config.getDownloadOuput(), config.getIndexDir());
-
-		// provider
-		pluginProviderFactory = new PluginFactory<>(PluginProviderInterface.class, config.getProviderPluginDir());
-		providersHolder = new ProviderPluginHolder(pluginProviderFactory.loadPlugins());
-
-		// exporter
-		pluginExporterFactory = new PluginFactory<>(PluginExporterInterface.class, config.getExporterPluginDir());
-		// export DTO
-		exportersHolder = new ExporterPluginHolder(pluginExporterFactory.loadPlugins(), config.getExporter());
-
+		downloadersHolder = new DownloaderPluginHolder(config.getCmdProcessor(), pluginFactory.loadPlugins(PluginDownloaderInterface.class),
+				config.getDownloader(), config.getDownloadOuput(), config.getIndexDir());
+		providersHolder = new ProviderPluginHolder(pluginFactory.loadPlugins(PluginProviderInterface.class));
+		exportersHolder = new ExporterPluginHolder(pluginFactory.loadPlugins(PluginExporterInterface.class), config.getExporter());
 	}
 
 	public void update() {
@@ -83,9 +70,10 @@ public class PluginManager {
 	}
 
 	private void loadPlugins() {
-		providersHolder.setPlugins(pluginProviderFactory.loadPlugins());
-		downloadersHolder.setPlugins(pluginDownloaderFactory.loadPlugins());
-		exportersHolder.setPlugins(pluginExporterFactory.loadPlugins());
+		pluginFactory.init();
+		providersHolder.setPlugins(pluginFactory.loadPlugins(PluginProviderInterface.class));
+		downloadersHolder.setPlugins(pluginFactory.loadPlugins(PluginDownloaderInterface.class));
+		exportersHolder.setPlugins(pluginFactory.loadPlugins(PluginExporterInterface.class));
 	}
 
 	public void setProxy(final Map<ProtocolEnum, ProxyDTO> defaultProxyMap, final Map<String, Map<ProtocolEnum, ProxyDTO>> plugin2protocol2proxy) {
