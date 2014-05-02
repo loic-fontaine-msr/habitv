@@ -61,7 +61,7 @@ abstract class AbstractTask<R> implements Callable<R> {
 
 	public R getResult() {
 		try {
-			return future.get();
+			return future == null ? null : future.get();
 		} catch (InterruptedException | ExecutionException e) {
 			throw new TechnicalException(e);
 		}

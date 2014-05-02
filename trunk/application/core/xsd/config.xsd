@@ -19,11 +19,7 @@
 					minOccurs="0" />
 				<element name="indexDir" type="string" maxOccurs="1"
 					minOccurs="0" />
-				<element name="providerPluginDir" type="string" maxOccurs="1"
-					minOccurs="0" />
-				<element name="downloaderPluginDir" type="string" maxOccurs="1"
-					minOccurs="0" />
-				<element name="exporterPluginDir" type="string" maxOccurs="1"
+				<element name="pluginDir" type="string" maxOccurs="1"
 					minOccurs="0" />
 				<element name="downloadOuput" type="string" maxOccurs="1"
 					minOccurs="0">

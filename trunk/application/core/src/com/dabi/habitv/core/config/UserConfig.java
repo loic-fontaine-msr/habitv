@@ -10,7 +10,7 @@ import com.dabi.habitv.api.plugin.dto.ProxyDTO.ProtocolEnum;
 
 public interface UserConfig {
 
-	String getProviderPluginDir();
+	String getPluginDir();
 
 	Map<String, Integer> getTaskDefinition();
 
@@ -19,8 +19,6 @@ public interface UserConfig {
 	Map<String, Map<ProtocolEnum, ProxyDTO>> getProxy();
 
 	String getCmdProcessor();
-
-	String getDownloaderPluginDir();
 
 	Map<String, String> getDownloader();
 
@@ -31,8 +29,6 @@ public interface UserConfig {
 	List<ExportDTO> getExporter();
 
 	Integer getMaxAttempts();
-
-	String getExporterPluginDir();
 
 	Integer getDemonTime();
 

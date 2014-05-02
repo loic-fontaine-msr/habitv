@@ -26,7 +26,7 @@ public class DownloadUtils {
 
 	private static String findDownloaderByUrl(final String url) {
 		String downloaderName;
-		if (isRTMPDownloadable(url)) {
+		if (isRTMPDownloadable(url)) { //FIXME youtube pattern
 			downloaderName = FrameworkConf.RTMDUMP;
 		} else if (isFFMPEGDownloadable(url)) {
 			downloaderName = FrameworkConf.FFMPEG;

@@ -112,14 +112,23 @@
 				</exclusion>
 			</exclusions>			
 		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.11</version>
+		</dependency>		
 	</dependencies>	
 	</dependencyManagement>
 	
 	<build>
+		<testSourceDirectory>${project.basedir}/test</testSourceDirectory>
 		<resources>
 			<resource>
 				<directory>img</directory>
 			</resource>
+			<resource>
+				<directory>generated</directory>
+			</resource>			
 			<resource>
 				<directory>src</directory>
 				<includes>

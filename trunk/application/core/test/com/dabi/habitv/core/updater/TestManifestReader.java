@@ -16,6 +16,8 @@ import org.junit.Test;
 
 public class TestManifestReader {
 
+	private static final String VERSION = "4.0.0-SNAPSHOT";
+
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 	}
@@ -34,9 +36,9 @@ public class TestManifestReader {
 
 	@Test
 	public final void test() throws FileNotFoundException, IOException {
-		final JarInputStream jarStream = new JarInputStream(new FileInputStream("D:/workspaces/habitvR/habitv/provider/arte.jar"));
+		final JarInputStream jarStream = new JarInputStream(new FileInputStream("target/core-"+VERSION+".jar"));
 		final Manifest mf = jarStream.getManifest();
-		assertEquals("4.1.3", mf.getMainAttributes().get(Attributes.Name.IMPLEMENTATION_VERSION));
+		assertEquals(VERSION, mf.getMainAttributes().get(Attributes.Name.IMPLEMENTATION_VERSION));
 	}
 
 }

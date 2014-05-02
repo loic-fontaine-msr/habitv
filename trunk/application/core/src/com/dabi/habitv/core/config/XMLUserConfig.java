@@ -30,15 +30,11 @@ import com.dabi.habitv.utils.FileUtils;
 
 public class XMLUserConfig implements UserConfig {
 
-	private static final String DEFAULT_DOWNLOADER_DIR = "downloader";
-
-	private static final String DEFAULT_PROVIDER_DIR = "provider";
+	private static final String DEFAULT_PLUGIN_DIR = "plugins";
 
 	private static final int DEFAULT_DEMON_TIME_SEC = 1800;
 
 	private static final int DEFAULT_CUT_SIZE = 40;
-
-	private static final String DEFAUT_EXPORTER_DIR = "exporter";
 
 	private static final String DEFAULT_DL_OUTPUT = "./downloads/#TVSHOW_NAME#-#EPISODE_NAME_CUT#.#EXTENSION#";
 
@@ -100,8 +96,8 @@ public class XMLUserConfig implements UserConfig {
 	}
 
 	@Override
-	public String getProviderPluginDir() {
-		return config.getProviderPluginDir() == null ? DEFAULT_PROVIDER_DIR : config.getProviderPluginDir();
+	public String getPluginDir() {
+		return config.getPluginDir() == null ? DEFAULT_PLUGIN_DIR : config.getPluginDir();
 	}
 
 	@Override
@@ -164,11 +160,6 @@ public class XMLUserConfig implements UserConfig {
 	}
 
 	@Override
-	public String getDownloaderPluginDir() {
-		return config.getDownloaderPluginDir() == null ? DEFAULT_DOWNLOADER_DIR : config.getDownloaderPluginDir();
-	}
-
-	@Override
 	public Map<String, String> getDownloader() {
 		return buildDownloadersBinPath(config.getDownloader());
 	}
@@ -220,11 +211,6 @@ public class XMLUserConfig implements UserConfig {
 	@Override
 	public Integer getMaxAttempts() {
 		return config.getMaxAttempts();
-	}
-
-	@Override
-	public String getExporterPluginDir() {
-		return config.getExporterPluginDir() == null ? DEFAUT_EXPORTER_DIR : config.getExporterPluginDir();
 	}
 
 	@Override

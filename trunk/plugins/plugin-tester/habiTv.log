@@ -1,0 +1,26 @@
+aria2
+ Update of file aria2c version 1.16.4
+ UpdatablePluginEvent [plugin=aria2c, version=1.16.4, state=DOWNLOADING, getException()=null]
+ Update of file aria2c version 1.16.4 done
+ UpdatablePluginEvent [plugin=aria2c, version=1.16.4, state=DONE, getException()=null]
+ ffmpeg
+ Update of file ffmpeg version N-62728-g6956b04
+ UpdatablePluginEvent [plugin=ffmpeg, version=N-62728-g6956b04, state=DOWNLOADING, getException()=null]
+ Update of file ffmpeg version N-62728-g6956b04 done
+ UpdatablePluginEvent [plugin=ffmpeg, version=N-62728-g6956b04, state=DONE, getException()=null]
+ curl
+ Update of file curl version 7.25.0
+ UpdatablePluginEvent [plugin=curl, version=7.25.0, state=DOWNLOADING, getException()=null]
+ Update of file curl version 7.25.0 done
+ UpdatablePluginEvent [plugin=curl, version=7.25.0, state=DONE, getException()=null]
+ rtmpdump
+ Update of file rtmpdump version v2.5
+ UpdatablePluginEvent [plugin=rtmpdump, version=v2.5, state=DOWNLOADING, getException()=null]
+ Update of file rtmpdump version v2.5 done
+ UpdatablePluginEvent [plugin=rtmpdump, version=v2.5, state=DONE, getException()=null]
+ youtube
+ Update of file youtube-dl version 2014.04.21.6
+ UpdatablePluginEvent [plugin=youtube-dl, version=2014.04.21.6, state=DOWNLOADING, getException()=null]
+ Update of file youtube-dl version 2014.04.21.6 done
+ UpdatablePluginEvent [plugin=youtube-dl, version=2014.04.21.6, state=DONE, getException()=null]
+ 

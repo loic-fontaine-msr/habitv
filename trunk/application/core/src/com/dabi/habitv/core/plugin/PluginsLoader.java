@@ -18,7 +18,7 @@ import com.dabi.habitv.api.plugin.api.PluginBaseInterface;
 import com.dabi.habitv.api.plugin.api.PluginClassLoaderInterface;
 import com.dabi.habitv.api.plugin.exception.TechnicalException;
 
-class PluginsLoader<P extends PluginBaseInterface> {
+class PluginsLoader {
 
 	private static final String CLASS_EXTENSION = ".class";
 
@@ -28,19 +28,17 @@ class PluginsLoader<P extends PluginBaseInterface> {
 
 	private final List<Plugin> classPlugins;
 
-	private final Class<P> pluginInterface;
-
 	private class Plugin {
-		private final Class<P> classPluginProvider;
+		private final Class<PluginBaseInterface> classPluginProvider;
 		private final ClassLoader classLoaders;
 
-		public Plugin(final Class<P> classPluginProvider, final ClassLoader classLoaders) {
+		public Plugin(final Class<PluginBaseInterface> classPluginProvider, final ClassLoader classLoaders) {
 			super();
 			this.classPluginProvider = classPluginProvider;
 			this.classLoaders = classLoaders;
 		}
 
-		public Class<P> getClassPluginProvider() {
+		public Class<PluginBaseInterface> getClassPluginProvider() {
 			return classPluginProvider;
 		}
 
@@ -51,20 +49,19 @@ class PluginsLoader<P extends PluginBaseInterface> {
 	}
 
 	@SuppressWarnings("unchecked")
-	PluginsLoader(final Class<P> pluginInterface, final File[] files) {
+	PluginsLoader(final File[] files) {
 		this.files = (List<File>) (files == null ? Collections.emptyList() : Arrays.asList(files));
 		this.classPlugins = new LinkedList<>();
-		this.pluginInterface = pluginInterface;
 	}
 
-	List<P> loadAllPlugins() {
+	List<PluginBaseInterface> loadAllPlugins() {
 
 		this.initializeLoader();
 
-		final List<P> tmpPlugins = new ArrayList<>(this.classPlugins.size());
+		final List<PluginBaseInterface> tmpPlugins = new ArrayList<>(this.classPlugins.size());
 		for (final Plugin plugin : this.classPlugins) {
 			try {
-				final P pluginProviderInterface = plugin.getClassPluginProvider().newInstance();
+				final PluginBaseInterface pluginProviderInterface = plugin.getClassPluginProvider().newInstance();
 				if (PluginClassLoaderInterface.class.isInstance(pluginProviderInterface)) {
 					((PluginClassLoaderInterface) pluginProviderInterface).setClassLoader(plugin.getClassLoaders());
 				}
@@ -101,7 +98,7 @@ class PluginsLoader<P extends PluginBaseInterface> {
 		// Pour le contenu de l'archive jar
 		Enumeration<JarEntry> enumeration;
 		// Pour déterminer quels sont les interfaces implémentées
-		Class<P> tmpClass = null;
+		Class<PluginBaseInterface> tmpClass = null;
 
 		final URL url = getFileUrl(file);
 		// On créer un nouveau URLClassLoader pour charger le jar qui se
@@ -131,7 +128,7 @@ class PluginsLoader<P extends PluginBaseInterface> {
 							// Si tel est le cas on ne la place que dans la
 							// catégorie de la première interface correct
 							// trouvée
-							if (interfaceClass.getName().equals(this.pluginInterface.getName())) {
+							if (interfaceClass.getName().equals(PluginBaseInterface.class.getName())) {
 								this.classPlugins.add(new Plugin(tmpClass, loader));
 							}
 						}
@@ -146,7 +143,7 @@ class PluginsLoader<P extends PluginBaseInterface> {
 		}
 	}
 
-	private List<Class<?>> getInterfaces(final Class<P> tmpClass) {
+	private List<Class<?>> getInterfaces(final Class<PluginBaseInterface> tmpClass) {
 		final List<Class<?>> interfaces = new LinkedList<>();
 		addInterfaces(tmpClass, interfaces);
 		return interfaces;
@@ -159,11 +156,11 @@ class PluginsLoader<P extends PluginBaseInterface> {
 		}
 	}
 
-	private Class<P> getClass(final String tmp, final URLClassLoader loader) {
-		Class<P> tmpClass;
+	private Class<PluginBaseInterface> getClass(final String tmp, final URLClassLoader loader) {
+		Class<PluginBaseInterface> tmpClass;
 		try {
 			@SuppressWarnings("unchecked")
-			final Class<P> forName = (Class<P>) Class.forName(tmp, true, loader);
+			final Class<PluginBaseInterface> forName = (Class<PluginBaseInterface>) Class.forName(tmp, true, loader);
 			tmpClass = forName;
 		} catch (final ClassNotFoundException e) {
 			throw new TechnicalException(e);

@@ -5,8 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.dabi.habitv.api.plugin.api.CmdProgressionListener;
-import com.dabi.habitv.api.plugin.api.PluginDownloaderInterface;
-import com.dabi.habitv.api.plugin.api.PluginProviderInterface;
+import com.dabi.habitv.api.plugin.api.PluginProviderDownloaderInterface;
 import com.dabi.habitv.api.plugin.dto.CategoryDTO;
 import com.dabi.habitv.api.plugin.dto.DownloadParamDTO;
 import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
@@ -18,7 +17,7 @@ import com.dabi.habitv.framework.plugin.utils.M3U8Utils;
 import com.dabi.habitv.provider.pluzz.jpluzz.Archive;
 import com.dabi.habitv.provider.pluzz.jpluzz.JsonArchiveParser;
 
-public class PluzzPluginManager extends BasePluginWithProxy implements PluginDownloaderInterface, PluginProviderInterface {
+public class PluzzPluginManager extends BasePluginWithProxy implements PluginProviderDownloaderInterface {
 
 	private Archive cachedArchive;
 

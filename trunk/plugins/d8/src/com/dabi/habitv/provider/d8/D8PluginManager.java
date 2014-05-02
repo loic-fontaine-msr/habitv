@@ -24,8 +24,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import com.dabi.habitv.api.plugin.api.CmdProgressionListener;
-import com.dabi.habitv.api.plugin.api.PluginDownloaderInterface;
-import com.dabi.habitv.api.plugin.api.PluginProviderInterface;
+import com.dabi.habitv.api.plugin.api.PluginProviderDownloaderInterface;
 import com.dabi.habitv.api.plugin.dto.CategoryDTO;
 import com.dabi.habitv.api.plugin.dto.DownloadParamDTO;
 import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
@@ -36,7 +35,7 @@ import com.dabi.habitv.framework.plugin.api.BasePluginWithProxy;
 import com.dabi.habitv.framework.plugin.utils.DownloadUtils;
 import com.dabi.habitv.framework.plugin.utils.M3U8Utils;
 
-public class D8PluginManager extends BasePluginWithProxy implements PluginProviderInterface, PluginDownloaderInterface { // NO_UCD
+public class D8PluginManager extends BasePluginWithProxy implements PluginProviderDownloaderInterface { // NO_UCD
 
 	@Override
 	public String getName() {

@@ -260,7 +260,7 @@ public class SearchTaskTest {
 		assertTrue(done);
 	}
 
-	@Test(expected = TechnicalException.class)
+	@Test(expected = TaskFailedException.class)
 	public final void testSearchCategoryTaskFailed() {
 		init(true);
 		task.addedTo("retreive", null);

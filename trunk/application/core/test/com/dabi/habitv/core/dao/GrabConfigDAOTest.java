@@ -65,9 +65,10 @@ public class GrabConfigDAOTest {
 		channel2Categories = buildChannelMap(false, true);
 		dao.updateGrabConfig(channel2Categories);
 		final Map<String, Set<CategoryDTO>> channel2CategoriesTotest = dao.load(LoadModeEnum.ALL);
-		assertEquals(channel2CategoriesTotest.get("channel1").toArray(new CategoryDTO[0])[0].getExclude().toArray(new String[0])[0], "exc1");
-		assertEquals(channel2CategoriesTotest.get("channel1").toArray(new CategoryDTO[0])[0].getInclude().toArray(new String[0])[0], "inc1");
-		assertTrue(channel2CategoriesTotest.get("channel1").toArray(new CategoryDTO[0])[0].getSubCategories().get(0).getName().equals("sub2"));
+		final CategoryDTO category = channel2CategoriesTotest.get("channel1").iterator().next();
+		assertEquals(category.getExclude().iterator().next(), "exc1");
+		assertEquals(category.getInclude().iterator().next(), "inc1");
+		assertTrue(category.getSubCategories().get(0).getName().equals("sub"));
 	}
 
 	private Map<String, Set<CategoryDTO>> buildChannelMap(final boolean inc, final boolean sup) {
@@ -80,9 +81,9 @@ public class GrabConfigDAOTest {
 			excludeList = Arrays.asList(new String[] { "exc1", "exc2" });
 		}
 		CategoryDTO category = new CategoryDTO("channel1", "cat1", "cat1I", includeList, excludeList, "ext");
+		category.addSubCategory(new CategoryDTO("sub", "sub", "sub", "sub"));
 		categories.add(category);
 		category = new CategoryDTO("channel1", "cat2", "cat2I", includeList, excludeList, "ext2");
-		category.addSubCategory(new CategoryDTO("sub", "sub", "sub", "sub"));
 		if (sup) {
 			category.addSubCategory(new CategoryDTO("sub2", "sub2", "sub2", "sub2"));
 		}
