@@ -3,10 +3,8 @@ package com.dabi.habitv.provider.beinsport;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -29,14 +27,16 @@ import org.xml.sax.SAXException;
 
 import com.dabi.habitv.api.plugin.api.CmdProgressionListener;
 import com.dabi.habitv.api.plugin.api.PluginDownloaderInterface;
+import com.dabi.habitv.api.plugin.api.PluginProviderInterface;
 import com.dabi.habitv.api.plugin.dto.CategoryDTO;
+import com.dabi.habitv.api.plugin.dto.DownloadParamDTO;
 import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
-import com.dabi.habitv.api.plugin.dto.ProxyDTO;
 import com.dabi.habitv.api.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.api.plugin.exception.TechnicalException;
 import com.dabi.habitv.api.plugin.holder.DownloaderPluginHolder;
 import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.api.BasePluginWithProxy;
+import com.dabi.habitv.framework.plugin.utils.DownloadUtils;
 import com.dabi.habitv.framework.plugin.utils.SoccerUtils;
 import com.sun.syndication.feed.synd.SyndEnclosure;
 import com.sun.syndication.feed.synd.SyndEntry;
@@ -45,7 +45,7 @@ import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.SyndFeedInput;
 import com.sun.syndication.io.XmlReader;
 
-public class BeinSportPluginManager extends BasePluginWithProxy { // NO_UCD
+public class BeinSportPluginManager extends BasePluginWithProxy implements PluginProviderInterface, PluginDownloaderInterface { // NO_UCD
 
 	@Override
 	public String getName() {
@@ -113,44 +113,21 @@ public class BeinSportPluginManager extends BasePluginWithProxy { // NO_UCD
 	}
 
 	@Override
-	public void download(final String downloadOuput, final DownloaderPluginHolder downloaders, final CmdProgressionListener cmdProgressionListener,
-			final EpisodeDTO episode) throws DownloadFailedException {
-		if (episode.getId().endsWith(".mp4")) {
-			curlDownload(downloadOuput, downloaders, cmdProgressionListener, episode, getProtocol2proxy());
+	public void download(final DownloadParamDTO downloadParam, final DownloaderPluginHolder downloaders, final CmdProgressionListener listener)
+			throws DownloadFailedException {
+		if (downloadParam.getDownloadInput().endsWith(FrameworkConf.MP4)) {
+			DownloadUtils.download(downloadParam, downloaders, listener);
 		} else {
-			rtmpDumpDownload(downloadOuput, downloaders, cmdProgressionListener, episode, getProtocol2proxy());
+			final String finalVideoUrl = findFinalRtmpUrl(downloadParam.getDownloadInput());
+			final String[] tab = finalVideoUrl.split("/");
+			final String contextRoot = tab[3];
+			final String rtmpdumpCmd = BeinSportConf.RTMPDUMP_CMD2.replace("#PROTOCOL#", tab[0]).replace("#HOST#", tab[2])
+					.replaceAll("#CONTEXT_ROOT#", contextRoot);
+			final String relativeUrl = finalVideoUrl.substring(finalVideoUrl.indexOf("/" + contextRoot + "/") + 1);
+
+			downloadParam.addParam(FrameworkConf.PARAMETER_ARGS, rtmpdumpCmd);
+			DownloadUtils.download(DownloadParamDTO.buildDownloadParam(downloadParam, relativeUrl), downloaders, listener, FrameworkConf.RTMDUMP);
 		}
-	}
-
-	private void rtmpDumpDownload(final String downloadOuput, final DownloaderPluginHolder downloaders, final CmdProgressionListener listener,
-			final EpisodeDTO episode, final Map<ProxyDTO.ProtocolEnum, ProxyDTO> proxies) throws DownloadFailedException {
-		final String downloaderName = BeinSportConf.RTMDUMP;
-		final PluginDownloaderInterface pluginDownloader = downloaders.getPlugin(downloaderName);
-		final Map<String, String> parameters = new HashMap<>(2);
-		parameters.put(FrameworkConf.PARAMETER_BIN_PATH, downloaders.getBinPath(downloaderName));
-
-		final String finalVideoUrl = findFinalRtmpUrl(episode.getId());
-		final String[] tab = finalVideoUrl.split("/");
-		final String contextRoot = tab[3];
-		final String rtmpdumpCmd = BeinSportConf.RTMPDUMP_CMD2.replace("#PROTOCOL#", tab[0]).replace("#HOST#", tab[2])
-				.replaceAll("#CONTEXT_ROOT#", contextRoot);
-		final String relativeUrl = finalVideoUrl.substring(finalVideoUrl.indexOf("/" + contextRoot + "/") + 1);
-
-		parameters.put(FrameworkConf.PARAMETER_ARGS, rtmpdumpCmd);
-		parameters.put(FrameworkConf.CMD_PROCESSOR, downloaders.getCmdProcessor());
-		pluginDownloader.download(relativeUrl, downloadOuput, parameters, listener, proxies);
-	}
-
-	private void curlDownload(final String downloadOuput, final DownloaderPluginHolder downloaders, final CmdProgressionListener cmdProgressionListener,
-			final EpisodeDTO episode, final Map<ProxyDTO.ProtocolEnum, ProxyDTO> map) throws DownloadFailedException {
-		final String downloaderName = BeinSportConf.CURL;
-		final PluginDownloaderInterface pluginDownloader = downloaders.getPlugin(downloaderName);
-
-		final Map<String, String> parameters = new HashMap<>(2);
-		parameters.put(FrameworkConf.PARAMETER_BIN_PATH, downloaders.getBinPath(downloaderName));
-		parameters.put(FrameworkConf.CMD_PROCESSOR, downloaders.getCmdProcessor());
-
-		pluginDownloader.download(episode.getId(), downloadOuput, parameters, cmdProgressionListener, map);
 	}
 
 	private static final Pattern VIDEOID_PATTERN = Pattern.compile(".*videoId\\s+=\\s+\\\"(.*)\\\";.*");
@@ -239,4 +216,5 @@ public class BeinSportPluginManager extends BasePluginWithProxy { // NO_UCD
 		}
 		return ret;
 	}
+
 }

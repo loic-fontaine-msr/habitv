@@ -1,8 +1,6 @@
 package com.dabi.habitv.provider.nrj12;
 
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -14,16 +12,17 @@ import org.jsoup.select.Elements;
 
 import com.dabi.habitv.api.plugin.api.CmdProgressionListener;
 import com.dabi.habitv.api.plugin.api.PluginDownloaderInterface;
+import com.dabi.habitv.api.plugin.api.PluginProviderInterface;
 import com.dabi.habitv.api.plugin.dto.CategoryDTO;
+import com.dabi.habitv.api.plugin.dto.DownloadParamDTO;
 import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
 import com.dabi.habitv.api.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.api.plugin.exception.TechnicalException;
 import com.dabi.habitv.api.plugin.holder.DownloaderPluginHolder;
-import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.api.BasePluginWithProxy;
+import com.dabi.habitv.framework.plugin.utils.DownloadUtils;
 
-
-public class NRJ12PluginManager extends BasePluginWithProxy {
+public class NRJ12PluginManager extends BasePluginWithProxy implements PluginDownloaderInterface, PluginProviderInterface {
 
 	@Override
 	public String getName() {
@@ -107,37 +106,18 @@ public class NRJ12PluginManager extends BasePluginWithProxy {
 		return categories;
 	}
 
-	private String getDownloader(final String url) {
-		String downloaderName;
-		if (url.startsWith(NRJ12Conf.RTMPDUMP_PREFIX)) {
-			downloaderName = NRJ12Conf.RTMDUMP;
-		} else {
-			downloaderName = NRJ12Conf.CURL;
-		}
-		return downloaderName;
-	}
-
 	@Override
-	public void download(final String downloadOuput, final DownloaderPluginHolder downloaders, final CmdProgressionListener cmdProgressionListener,
-			final EpisodeDTO episode) throws DownloadFailedException {
-		final String mediaId = findFinalUrl(episode);
+	public void download(final DownloadParamDTO downloadParam, final DownloaderPluginHolder downloaders, final CmdProgressionListener listener)
+			throws DownloadFailedException {
+		final String videoUrl = findFinalUrl(downloadParam.getDownloadInput());
+		DownloadUtils.download(DownloadParamDTO.buildDownloadParam(downloadParam, videoUrl), downloaders, listener);
 
-		final String videoUrl = buildUrlVideoInfo(mediaId);
-
-		final String downloaderName = getDownloader(videoUrl);
-		final PluginDownloaderInterface pluginDownloader = downloaders.getPlugin(downloaderName);
-
-		final Map<String, String> parameters = new HashMap<>(2);
-		parameters.put(FrameworkConf.PARAMETER_BIN_PATH, downloaders.getBinPath(downloaderName));
-		parameters.put(FrameworkConf.CMD_PROCESSOR, downloaders.getCmdProcessor());
-
-		pluginDownloader.download(videoUrl, downloadOuput, parameters, cmdProgressionListener, getProtocol2proxy());
 	}
 
 	private static final Pattern MEDIAID_PATTERN = Pattern.compile("/(\\d*)-minipicto");
 
-	public String findFinalUrl(final EpisodeDTO episode) {
-		final String url = NRJ12Conf.HOME_URL + episode.getId();
+	public String findFinalUrl(final String downloadInput) {
+		final String url = NRJ12Conf.HOME_URL + downloadInput;
 		final String content = getUrlContent(url);
 		final String mediaId = findMediaId(content);
 		return mediaId;

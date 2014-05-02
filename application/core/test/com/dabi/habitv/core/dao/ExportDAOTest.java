@@ -10,8 +10,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
-import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
+import com.dabi.habitv.api.plugin.dto.CategoryDTO;
+import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
 
 public class ExportDAOTest {
 
@@ -34,23 +34,23 @@ public class ExportDAOTest {
 	}
 
 
-//	@Test
-//	public final void testA() {
-//		Collection<EpisodeExportState> exportStep = dao.loadExportStep();
-//		assertTrue(exportStep.isEmpty());
-//	}
-	
+	//	@Test
+	//	public final void testA() {
+	//		Collection<EpisodeExportState> exportStep = dao.loadExportStep();
+	//		assertTrue(exportStep.isEmpty());
+	//	}
+
 	@Test
 	public final void testSaveAndLoadExportStep() {
-		CategoryDTO category = new CategoryDTO("channel", "name", "id", "ext");
-		EpisodeDTO episode1 = new EpisodeDTO(category, "episode1", "url1");
-		EpisodeDTO episode2 = new EpisodeDTO(category, "episode2", "url2");
+		final CategoryDTO category = new CategoryDTO("channel", "name", "id", "ext");
+		final EpisodeDTO episode1 = new EpisodeDTO(category, "episode1", "url1");
+		final EpisodeDTO episode2 = new EpisodeDTO(category, "episode2", "url2");
 		dao.init();
-		EpisodeExportState episodeExportState1 = new EpisodeExportState(episode1, 3);
+		final EpisodeExportState episodeExportState1 = new EpisodeExportState(episode1, 3);
 		dao.addExportStep(episodeExportState1);
-		EpisodeExportState episodeExportState2 = new EpisodeExportState(episode2, 5);
+		final EpisodeExportState episodeExportState2 = new EpisodeExportState(episode2, 5);
 		dao.addExportStep(episodeExportState2);
-		Collection<EpisodeExportState> exportStep = dao.loadExportStep();
+		final Collection<EpisodeExportState> exportStep = dao.loadExportStep();
 		assertTrue(exportStep.contains(episodeExportState1));
 		assertTrue(exportStep.contains(episodeExportState2));
 	}

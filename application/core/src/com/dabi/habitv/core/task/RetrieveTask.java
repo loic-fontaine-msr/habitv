@@ -29,21 +29,21 @@ public class RetrieveTask extends AbstractEpisodeTask {
 
 	private final PluginProviderInterface provider;
 
-	private final DownloaderPluginHolder downloader;
+	private final DownloaderPluginHolder downloaders;
 
 	private final DownloadedDAO downloadDAO;
 
 	private EpisodeExportState episodeExportState;
 
 	public RetrieveTask(final EpisodeDTO episode, final Publisher<RetreiveEvent> publisher, final TaskAdder taskAdder, final ExporterPluginHolder exporter,
-			final PluginProviderInterface provider, final DownloaderPluginHolder downloader, final DownloadedDAO downloadDAO) {
+			final PluginProviderInterface provider, final DownloaderPluginHolder downloaders, final DownloadedDAO downloadDAO) {
 		super(episode);
 		retreivePublisher = publisher;
 		this.taskAdder = taskAdder;
 		this.exporter = exporter;
 		this.provider = provider;
 		this.downloadDAO = downloadDAO;
-		this.downloader = downloader;
+		this.downloaders = downloaders;
 		episodeExportState = null;
 	}
 
@@ -118,7 +118,7 @@ public class RetrieveTask extends AbstractEpisodeTask {
 	}
 
 	private void download() {
-		final DownloadTask downloadTask = new DownloadTask(getEpisode(), provider, downloader, retreivePublisher, downloadDAO);
+		final DownloadTask downloadTask = new DownloadTask(getEpisode(), provider, downloaders, retreivePublisher, downloadDAO);
 		taskAdder.addDownloadTask(downloadTask, getEpisode().getCategory().getChannel());
 		downloadTask.waitEndOfTreatment();
 	}

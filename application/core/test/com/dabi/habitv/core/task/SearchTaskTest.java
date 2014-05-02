@@ -18,25 +18,24 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.dabi.habitv.api.plugin.api.CmdProgressionListener;
+import com.dabi.habitv.api.plugin.api.PluginExporterInterface;
+import com.dabi.habitv.api.plugin.api.PluginProviderDownloaderInterface;
+import com.dabi.habitv.api.plugin.dto.CategoryDTO;
+import com.dabi.habitv.api.plugin.dto.DownloadParamDTO;
+import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
+import com.dabi.habitv.api.plugin.dto.ExportDTO;
+import com.dabi.habitv.api.plugin.exception.DownloadFailedException;
+import com.dabi.habitv.api.plugin.exception.ExportFailedException;
+import com.dabi.habitv.api.plugin.exception.TechnicalException;
+import com.dabi.habitv.api.plugin.holder.DownloaderPluginHolder;
+import com.dabi.habitv.api.plugin.holder.ExporterPluginHolder;
+import com.dabi.habitv.api.plugin.pub.Publisher;
+import com.dabi.habitv.api.plugin.pub.Subscriber;
 import com.dabi.habitv.core.dao.DownloadedDAO;
 import com.dabi.habitv.core.event.RetreiveEvent;
 import com.dabi.habitv.core.event.SearchEvent;
 import com.dabi.habitv.core.event.SearchStateEnum;
-import com.dabi.habitv.framework.plugin.api.PluginExporterInterface;
-import com.dabi.habitv.framework.plugin.api.PluginProviderInterface;
-import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
-import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
-import com.dabi.habitv.framework.plugin.api.dto.ExportDTO;
-import com.dabi.habitv.framework.plugin.api.dto.ProxyDTO;
-import com.dabi.habitv.framework.plugin.api.dto.ProxyDTO.ProtocolEnum;
-import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
-import com.dabi.habitv.framework.plugin.exception.ExportFailedException;
-import com.dabi.habitv.framework.plugin.exception.TechnicalException;
-import com.dabi.habitv.framework.plugin.holder.DownloaderPluginHolder;
-import com.dabi.habitv.framework.plugin.holder.ExporterPluginHolder;
-import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
-import com.dabi.habitv.framework.pub.Publisher;
-import com.dabi.habitv.framework.pub.Subscriber;
 
 public class SearchTaskTest {
 
@@ -80,7 +79,7 @@ public class SearchTaskTest {
 		final EpisodeDTO episodeDl = new EpisodeDTO(category2, "episodeDl", url);
 		final EpisodeDTO episodeExcluded = new EpisodeDTO(category2, "episodeExcluded", url);
 		final EpisodeDTO episode3 = new EpisodeDTO(category3, "episode3", url);
-		final PluginProviderInterface provider = new PluginProviderInterface() {
+		final PluginProviderDownloaderInterface provider = new PluginProviderDownloaderInterface() {
 
 			@Override
 			public String getName() {
@@ -114,14 +113,8 @@ public class SearchTaskTest {
 			}
 
 			@Override
-			public void download(final String downloadOuput, final DownloaderPluginHolder downloaders, final CmdProgressionListener cmdProgressionListener,
-					final EpisodeDTO episode) throws DownloadFailedException {
-
-			}
-
-			@Override
-			public void setProxy(final Map<ProtocolEnum, ProxyDTO> protocol2proxy) {
-
+			public void download(final DownloadParamDTO downloadParam, final DownloaderPluginHolder downloaders, final CmdProgressionListener listener)
+					throws DownloadFailedException {
 			}
 		};
 

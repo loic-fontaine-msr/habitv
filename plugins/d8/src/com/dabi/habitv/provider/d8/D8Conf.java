@@ -1,16 +1,12 @@
 package com.dabi.habitv.provider.d8;
 
+import com.dabi.habitv.framework.FrameworkConf;
+
 interface D8Conf {
 
 	String NAME = "d8";
 
-	String EXTENSION = "mp4";
-
-	String RTMDUMP = "rtmpdump";
-
-	String RTMPDUMP_PREFIX = "rtmp:";
-
-	String CURL = "curl";
+	String EXTENSION = FrameworkConf.MP4;
 
 	int ROOT_CATEGORY_SIZE = 7;
 
@@ -18,5 +14,4 @@ interface D8Conf {
 
 	String VIDEO_INFO_URL = "http://service.canal-plus.com/video/rest/getVideosLiees/d8/";
 
-	String FFMPEG = "ffmpeg";
 }

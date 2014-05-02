@@ -8,7 +8,6 @@ import static org.junit.Assert.fail;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Map;
 import java.util.Set;
 
 import org.junit.After;
@@ -17,20 +16,19 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.dabi.habitv.api.plugin.api.CmdProgressionListener;
+import com.dabi.habitv.api.plugin.api.PluginProviderDownloaderInterface;
+import com.dabi.habitv.api.plugin.dto.CategoryDTO;
+import com.dabi.habitv.api.plugin.dto.DownloadParamDTO;
+import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
+import com.dabi.habitv.api.plugin.exception.DownloadFailedException;
+import com.dabi.habitv.api.plugin.exception.ExecutorFailedException;
+import com.dabi.habitv.api.plugin.holder.DownloaderPluginHolder;
+import com.dabi.habitv.api.plugin.pub.Publisher;
+import com.dabi.habitv.api.plugin.pub.Subscriber;
 import com.dabi.habitv.core.dao.DownloadedDAO;
 import com.dabi.habitv.core.event.EpisodeStateEnum;
 import com.dabi.habitv.core.event.RetreiveEvent;
-import com.dabi.habitv.framework.plugin.api.PluginProviderInterface;
-import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
-import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
-import com.dabi.habitv.framework.plugin.api.dto.ProxyDTO;
-import com.dabi.habitv.framework.plugin.api.dto.ProxyDTO.ProtocolEnum;
-import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
-import com.dabi.habitv.framework.plugin.exception.ExecutorFailedException;
-import com.dabi.habitv.framework.plugin.holder.DownloaderPluginHolder;
-import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
-import com.dabi.habitv.framework.pub.Publisher;
-import com.dabi.habitv.framework.pub.Subscriber;
 
 public class DownloadTaskTest {
 
@@ -59,7 +57,7 @@ public class DownloadTaskTest {
 		final EpisodeDTO episode = new EpisodeDTO(category, "episode1234567890123456789012345678901234567890123456789", "videoUrl");
 		final ExecutorFailedException executorFailedException = new ExecutorFailedException("cmd", "fullOuput", "lastline", null);
 		final DownloadFailedException downloadFailedException = new DownloadFailedException(executorFailedException);
-		final PluginProviderInterface provider = new PluginProviderInterface() {
+		final PluginProviderDownloaderInterface provider = new PluginProviderDownloaderInterface() {
 
 			@Override
 			public String getName() {
@@ -77,12 +75,12 @@ public class DownloadTaskTest {
 			}
 
 			@Override
-			public void download(final String downloadOuput, final DownloaderPluginHolder downloaders, final CmdProgressionListener cmdProgressionListener,
-					final EpisodeDTO episode) throws DownloadFailedException {
+			public void download(final DownloadParamDTO downloadParam, final DownloaderPluginHolder downloaders, final CmdProgressionListener listener)
+					throws DownloadFailedException {
 				assertEquals("episode1234567890123456789012345678901234567890123456789_episode123456789012345678901234567890123_channel_category_extension",
-						downloadOuput);
+						downloadParam.getDownloadOutput());
 
-				cmdProgressionListener.listen("0");
+				listener.listen("0");
 
 				try {
 					Thread.sleep(10);
@@ -90,7 +88,7 @@ public class DownloadTaskTest {
 					fail(e.getMessage());
 				}
 
-				cmdProgressionListener.listen("50");
+				listener.listen("50");
 
 				if (toFail) {
 					throw downloadFailedException;
@@ -102,16 +100,11 @@ public class DownloadTaskTest {
 					fail(e.getMessage());
 				}
 
-				cmdProgressionListener.listen("100");
-			}
-
-			@Override
-			public void setProxy(final Map<ProtocolEnum, ProxyDTO> protocol2proxy) {
-
+				listener.listen("100");
 			}
 		};
-		final DownloaderPluginHolder downloader = new DownloaderPluginHolder(null, null, null, "#EPISODE_NAME#_#EPISODE_NAME_CUT#_#CHANNEL_NAME#_#TVSHOW_NAME#_#EXTENSION#",
-				"indexDir");
+		final DownloaderPluginHolder downloader = new DownloaderPluginHolder(null, null, null,
+				"#EPISODE_NAME#_#EPISODE_NAME_CUT#_#CHANNEL_NAME#_#TVSHOW_NAME#_#EXTENSION#", "indexDir");
 		final Publisher<RetreiveEvent> publisher = new Publisher<>();
 		final Subscriber<RetreiveEvent> subscriber = new Subscriber<RetreiveEvent>() {
 

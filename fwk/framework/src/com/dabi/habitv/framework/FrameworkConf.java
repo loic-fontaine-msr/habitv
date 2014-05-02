@@ -40,4 +40,6 @@ public interface FrameworkConf {
 
 	String DOWNLOADER_PARAM = "downloader";
 
+	String UTF8 = "UTF-8";
+
 }

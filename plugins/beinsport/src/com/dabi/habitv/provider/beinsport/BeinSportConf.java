@@ -1,14 +1,12 @@
 package com.dabi.habitv.provider.beinsport;
 
+import com.dabi.habitv.framework.FrameworkConf;
+
 interface BeinSportConf {
 
 	String NAME = "beinsport";
 
-	String EXTENSION = "mp4";
-
-	String CURL = "curl";
-
-	String RTMDUMP = "rtmpdump";
+	String EXTENSION = FrameworkConf.MP4;
 
 	String VIDEOS_CATEGORY = "video";
 

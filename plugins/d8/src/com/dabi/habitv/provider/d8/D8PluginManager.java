@@ -25,17 +25,18 @@ import org.xml.sax.SAXException;
 
 import com.dabi.habitv.api.plugin.api.CmdProgressionListener;
 import com.dabi.habitv.api.plugin.api.PluginDownloaderInterface;
+import com.dabi.habitv.api.plugin.api.PluginProviderInterface;
 import com.dabi.habitv.api.plugin.dto.CategoryDTO;
+import com.dabi.habitv.api.plugin.dto.DownloadParamDTO;
 import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
 import com.dabi.habitv.api.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.api.plugin.exception.TechnicalException;
 import com.dabi.habitv.api.plugin.holder.DownloaderPluginHolder;
-import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.api.BasePluginWithProxy;
-
+import com.dabi.habitv.framework.plugin.utils.DownloadUtils;
 import com.dabi.habitv.framework.plugin.utils.M3U8Utils;
 
-public class D8PluginManager extends BasePluginWithProxy { // NO_UCD
+public class D8PluginManager extends BasePluginWithProxy implements PluginProviderInterface, PluginDownloaderInterface { // NO_UCD
 
 	@Override
 	public String getName() {
@@ -85,23 +86,6 @@ public class D8PluginManager extends BasePluginWithProxy { // NO_UCD
 				}
 			}
 		}
-		// else {
-		// final String domain = findMatch(doc.html(), DOMAIN_PATTERN);
-		// select = doc.select("a");
-		// for (final Element aLink : select) {
-		// final String attr = getAttrName(aLink);
-		// final String title = getTitle(aLink).trim();
-		// String url = aLink.attr(attr);
-		// if (url.contains("vid=")) {
-		// url = getVidId(aLink, attr);
-		// episodes.add(new EpisodeDTO(category, title, url));
-		// } else if (url.contains("epi_id=")) {
-		// final String epContent = getUrlContent(domain + url);
-		// final String ret = findMatch(epContent, VID_PATTERN);
-		// episodes.add(new EpisodeDTO(category, title, ret));
-		// }
-		// }
-		// }
 		return episodes;
 	}
 
@@ -125,31 +109,11 @@ public class D8PluginManager extends BasePluginWithProxy { // NO_UCD
 		return categories;
 	}
 
-	private String getDownloader(final String url) {
-		String downloaderName;
-		if (url.startsWith(D8Conf.RTMPDUMP_PREFIX)) {
-			downloaderName = D8Conf.RTMDUMP;
-		} else if (url.contains("m3u8")) {
-			downloaderName = D8Conf.FFMPEG;
-		} else {
-			downloaderName = D8Conf.CURL;
-		}
-		return downloaderName;
-	}
-
 	@Override
-	public void download(final String downloadOuput, final DownloaderPluginHolder downloaders, final CmdProgressionListener listener, final EpisodeDTO episode)
+	public void download(final DownloadParamDTO downloadParam, final DownloaderPluginHolder downloaders, final CmdProgressionListener listener)
 			throws DownloadFailedException {
-		final String videoUrl = findVideoUrl(episode.getId());
-		final String downloaderName = getDownloader(videoUrl);
-		final PluginDownloaderInterface pluginDownloader = downloaders.getPlugin(downloaderName);
-
-		final Map<String, String> parameters = new HashMap<>(2);
-		parameters.put(FrameworkConf.PARAMETER_BIN_PATH, downloaders.getBinPath(downloaderName));
-		parameters.put(FrameworkConf.CMD_PROCESSOR, downloaders.getCmdProcessor());
-		parameters.put(FrameworkConf.EXTENSION, episode.getCategory().getExtension());
-
-		pluginDownloader.download(videoUrl, downloadOuput, parameters, listener, getProtocol2proxy());
+		final String videoUrl = findVideoUrl(downloadParam.getDownloadInput());
+		DownloadUtils.download(DownloadParamDTO.buildDownloadParam(downloadParam, videoUrl), downloaders, listener);
 	}
 
 	private static String getVidId(final Element aLink, final String attr) {
@@ -231,4 +195,5 @@ public class D8PluginManager extends BasePluginWithProxy { // NO_UCD
 		}
 		return null;
 	}
+
 }
