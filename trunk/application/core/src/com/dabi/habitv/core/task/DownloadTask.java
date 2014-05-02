@@ -4,6 +4,7 @@ import java.io.File;
 
 import com.dabi.habitv.api.plugin.api.CmdProgressionListener;
 import com.dabi.habitv.api.plugin.api.PluginDownloaderInterface;
+import com.dabi.habitv.api.plugin.api.PluginProviderInterface;
 import com.dabi.habitv.api.plugin.dto.CategoryDTO;
 import com.dabi.habitv.api.plugin.dto.DownloadParamDTO;
 import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
@@ -15,10 +16,11 @@ import com.dabi.habitv.core.dao.DownloadedDAO;
 import com.dabi.habitv.core.event.EpisodeStateEnum;
 import com.dabi.habitv.core.event.RetreiveEvent;
 import com.dabi.habitv.core.token.TokenReplacer;
+import com.dabi.habitv.framework.plugin.utils.DownloadUtils;
 
 public class DownloadTask extends AbstractEpisodeTask {
 
-	private final PluginDownloaderInterface downloader;
+	private final PluginProviderInterface provider;
 
 	private final DownloaderPluginHolder downloaders;
 
@@ -26,10 +28,10 @@ public class DownloadTask extends AbstractEpisodeTask {
 
 	private final DownloadedDAO downloadedDAO;
 
-	public DownloadTask(final EpisodeDTO episode, final PluginDownloaderInterface downloader, final DownloaderPluginHolder downloaders,
+	public DownloadTask(final EpisodeDTO episode, final PluginProviderInterface provider, final DownloaderPluginHolder downloaders,
 			final Publisher<RetreiveEvent> publisher, final DownloadedDAO downloadedDAO) {
 		super(episode);
-		this.downloader = downloader;
+		this.provider = provider;
 		this.downloaders = downloaders;
 		this.publisher = publisher;
 		this.downloadedDAO = downloadedDAO;
@@ -80,17 +82,34 @@ public class DownloadTask extends AbstractEpisodeTask {
 				throw new TechnicalException("can't delete file " + outputFile.getAbsolutePath());
 			}
 		}
-		downloader.download(buildDownloadParam(outputTmpFileName), downloaders, new CmdProgressionListener() {
-			@Override
-			public void listen(final String progression) {
-				publisher.addNews(new RetreiveEvent(getEpisode(), EpisodeStateEnum.DOWNLOADING, progression));
-			}
-		});
+		download(outputTmpFileName);
 		final File file = new File(outputTmpFileName);
 		if (file.exists() && !file.renameTo(new File(outputFilename))) {
 			throw new TechnicalException("can't rename");
 		}
 		return null;
+	}
+
+	private void download(final String outputTmpFileName) throws DownloadFailedException {
+		final DownloadParamDTO downloadParam = buildDownloadParam(outputTmpFileName);
+		final CmdProgressionListener listener = buildProgressionListener();
+
+		if (PluginDownloaderInterface.class.isInstance(provider)) {
+			final PluginDownloaderInterface downloader = (PluginDownloaderInterface) provider;
+			downloader.download(downloadParam, downloaders, listener);
+		} else {
+			DownloadUtils.download(downloadParam, downloaders, listener);
+		}
+	}
+
+	private CmdProgressionListener buildProgressionListener() {
+		final CmdProgressionListener cmdProgressionListener = new CmdProgressionListener() {
+			@Override
+			public void listen(final String progression) {
+				publisher.addNews(new RetreiveEvent(getEpisode(), EpisodeStateEnum.DOWNLOADING, progression));
+			}
+		};
+		return cmdProgressionListener;
 	}
 
 	private DownloadParamDTO buildDownloadParam(final String outputTmpFileName) {
@@ -122,7 +141,7 @@ public class DownloadTask extends AbstractEpisodeTask {
 
 	@Override
 	public String toString() {
-		return "DL" + getEpisode() + " " + downloader.getName() + " " + downloaders.getDownloadOutput();
+		return "DL" + getEpisode() + " " + provider.getName() + " " + downloaders.getDownloadOutput();
 	}
 
 }

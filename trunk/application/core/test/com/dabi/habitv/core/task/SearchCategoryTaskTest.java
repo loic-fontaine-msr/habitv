@@ -5,7 +5,6 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 import org.junit.After;
@@ -14,19 +13,18 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.dabi.habitv.api.plugin.api.CmdProgressionListener;
+import com.dabi.habitv.api.plugin.api.PluginProviderDownloaderInterface;
+import com.dabi.habitv.api.plugin.dto.CategoryDTO;
+import com.dabi.habitv.api.plugin.dto.DownloadParamDTO;
+import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
+import com.dabi.habitv.api.plugin.exception.DownloadFailedException;
+import com.dabi.habitv.api.plugin.exception.TechnicalException;
+import com.dabi.habitv.api.plugin.holder.DownloaderPluginHolder;
+import com.dabi.habitv.api.plugin.pub.Publisher;
+import com.dabi.habitv.api.plugin.pub.Subscriber;
 import com.dabi.habitv.core.event.SearchCategoryEvent;
 import com.dabi.habitv.core.event.SearchCategoryStateEnum;
-import com.dabi.habitv.framework.plugin.api.PluginProviderInterface;
-import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
-import com.dabi.habitv.framework.plugin.api.dto.EpisodeDTO;
-import com.dabi.habitv.framework.plugin.api.dto.ProxyDTO;
-import com.dabi.habitv.framework.plugin.api.dto.ProxyDTO.ProtocolEnum;
-import com.dabi.habitv.framework.plugin.exception.DownloadFailedException;
-import com.dabi.habitv.framework.plugin.exception.TechnicalException;
-import com.dabi.habitv.framework.plugin.holder.DownloaderPluginHolder;
-import com.dabi.habitv.framework.plugin.utils.CmdProgressionListener;
-import com.dabi.habitv.framework.pub.Publisher;
-import com.dabi.habitv.framework.pub.Subscriber;
 
 public class SearchCategoryTaskTest {
 
@@ -52,7 +50,7 @@ public class SearchCategoryTaskTest {
 	}
 
 	public void init(final boolean toFail) {
-		final PluginProviderInterface provider = new PluginProviderInterface() {
+		final PluginProviderDownloaderInterface provider = new PluginProviderDownloaderInterface() {
 
 			@Override
 			public String getName() {
@@ -75,14 +73,8 @@ public class SearchCategoryTaskTest {
 			}
 
 			@Override
-			public void download(final String downloadOuput, final DownloaderPluginHolder downloaders, final CmdProgressionListener cmdProgressionListener,
-					final EpisodeDTO episode) throws DownloadFailedException {
-
-			}
-
-			@Override
-			public void setProxy(final Map<ProtocolEnum, ProxyDTO> protocol2proxy) {
-				// TODO Auto-generated method stub
+			public void download(final DownloadParamDTO downloadParam, final DownloaderPluginHolder downloaders, final CmdProgressionListener listener)
+					throws DownloadFailedException {
 
 			}
 		};

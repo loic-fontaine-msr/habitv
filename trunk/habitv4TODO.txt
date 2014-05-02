@@ -1,4 +1,6 @@
 
+trier les constantes : faire des enums	
+set test dir
 1 dossier plugins
 simplifier appel aux downloaders, context ?
 simplifier les interfaces 1 interface Downloader

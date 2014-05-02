@@ -1,16 +1,12 @@
 package com.dabi.habitv.provider.d8;
 
+import com.dabi.habitv.framework.FrameworkConf;
+
 interface D17Conf {
 
 	String NAME = "d17";
 
-	String EXTENSION = "mp4";
-
-	String RTMDUMP = "rtmpdump";
-
-	String RTMPDUMP_PREFIX = "rtmp:";
-
-	String CURL = "curl";
+	String EXTENSION = FrameworkConf.MP4;
 
 	String CATALOG_URL = "http://www.d17.tv/index.php/api/applicationv2/flux/replays/theme/%s";
 
@@ -24,5 +20,4 @@ interface D17Conf {
 
 	String VIDEO_INFO_URL = "http://service.canal-plus.com/video/rest/getVideosLiees/d17/";
 
-	String FFMPEG = "ffmpeg";
 }

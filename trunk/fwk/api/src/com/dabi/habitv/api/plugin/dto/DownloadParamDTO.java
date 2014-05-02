@@ -42,4 +42,10 @@ public class DownloadParamDTO {
 	public Map<String, String> getParams() {
 		return params;
 	}
+
+	public static DownloadParamDTO buildDownloadParam(final DownloadParamDTO downloadParam, final String downloadInput) {
+		final DownloadParamDTO downloadParamDTO = new DownloadParamDTO(downloadInput, downloadParam.getDownloadOutput(), downloadParam.getExtension());
+		downloadParamDTO.getParams().putAll(downloadParam.getParams());
+		return downloadParamDTO;
+	}
 }

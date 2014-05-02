@@ -5,7 +5,7 @@ import com.dabi.habitv.api.plugin.api.PluginExporterInterface;
 import com.dabi.habitv.api.plugin.exception.ExecutorFailedException;
 import com.dabi.habitv.api.plugin.exception.ExportFailedException;
 
-public class CurlPluginManager implements PluginExporterInterface {
+public class CurlPluginExporterManager implements PluginExporterInterface {
 
 	@Override
 	public String getName() {

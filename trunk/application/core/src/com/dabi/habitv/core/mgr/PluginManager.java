@@ -1,12 +1,13 @@
 package com.dabi.habitv.core.mgr;
 
-import java.util.HashMap;
+import java.util.Collection;
 import java.util.Map;
 
 import com.dabi.habitv.api.plugin.api.PluginBaseInterface;
 import com.dabi.habitv.api.plugin.api.PluginDownloaderInterface;
 import com.dabi.habitv.api.plugin.api.PluginExporterInterface;
 import com.dabi.habitv.api.plugin.api.PluginProviderInterface;
+import com.dabi.habitv.api.plugin.api.PluginWithProxyInterface;
 import com.dabi.habitv.api.plugin.api.UpdatablePluginInterface;
 import com.dabi.habitv.api.plugin.dto.ProxyDTO;
 import com.dabi.habitv.api.plugin.dto.ProxyDTO.ProtocolEnum;
@@ -19,7 +20,6 @@ import com.dabi.habitv.core.config.UserConfig;
 import com.dabi.habitv.core.event.UpdatePluginEvent;
 import com.dabi.habitv.core.plugin.PluginFactory;
 import com.dabi.habitv.core.updater.UpdateManager;
-import com.dabi.habitv.framework.FrameworkConf;
 
 public class PluginManager {
 
@@ -78,7 +78,7 @@ public class PluginManager {
 
 	private void updateUpdatablePlugin(final PluginBaseInterface plugin) {
 		if (UpdatablePluginInterface.class.isInstance(plugin)) {
-			((UpdatablePluginInterface) plugin).update(updatablePluginPublisher, getParameters(plugin.getName()));
+			((UpdatablePluginInterface) plugin).update(updatablePluginPublisher, downloadersHolder);
 		}
 	}
 
@@ -88,21 +88,22 @@ public class PluginManager {
 		exportersHolder.setPlugins(pluginExporterFactory.loadPlugins());
 	}
 
-	private Map<String, String> getParameters(final String downloaderName) {
-		final Map<String, String> parameters = new HashMap<>(2);
-		parameters.put(FrameworkConf.PARAMETER_BIN_PATH, downloadersHolder.getBinPath(downloaderName));
-		parameters.put(FrameworkConf.CMD_PROCESSOR, downloadersHolder.getCmdProcessor());
-		return parameters;
+	public void setProxy(final Map<ProtocolEnum, ProxyDTO> defaultProxyMap, final Map<String, Map<ProtocolEnum, ProxyDTO>> plugin2protocol2proxy) {
+		setProxy(defaultProxyMap, plugin2protocol2proxy, providersHolder.getPlugins());
 	}
 
-	public void setProxy(final Map<ProtocolEnum, ProxyDTO> defaultProxyMap, final Map<String, Map<ProtocolEnum, ProxyDTO>> plugin2protocol2proxy) {
-		// set the proxy to each plugin provider
-		for (final PluginProviderInterface provider : providersHolder.getPlugins()) {
-			Map<ProtocolEnum, ProxyDTO> pluginProxy = plugin2protocol2proxy.get(provider.getName());
-			if (pluginProxy == null) {
-				pluginProxy = defaultProxyMap;
+	private void setProxy(final Map<ProtocolEnum, ProxyDTO> defaultProxyMap, final Map<String, Map<ProtocolEnum, ProxyDTO>> plugin2protocol2proxy,
+			final Collection<? extends PluginBaseInterface> plugins) {
+		// set the proxy to each plugin
+		for (final PluginBaseInterface plugin : plugins) {
+			if (PluginWithProxyInterface.class.isInstance(plugin)) {
+				final PluginWithProxyInterface pluginWithProxy = (PluginWithProxyInterface) plugin;
+				Map<ProtocolEnum, ProxyDTO> proxies = plugin2protocol2proxy.get(plugin.getName());
+				if (proxies == null) {
+					proxies = defaultProxyMap;
+				}
+				pluginWithProxy.setProxies(proxies);
 			}
-			provider.setProxy(pluginProxy);
 		}
 	}
 

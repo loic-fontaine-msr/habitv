@@ -3,10 +3,8 @@ package com.dabi.habitv.provider.arte;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -29,13 +27,16 @@ import org.xml.sax.SAXException;
 
 import com.dabi.habitv.api.plugin.api.CmdProgressionListener;
 import com.dabi.habitv.api.plugin.api.PluginDownloaderInterface;
+import com.dabi.habitv.api.plugin.api.PluginProviderInterface;
 import com.dabi.habitv.api.plugin.dto.CategoryDTO;
+import com.dabi.habitv.api.plugin.dto.DownloadParamDTO;
 import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
 import com.dabi.habitv.api.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.api.plugin.exception.TechnicalException;
 import com.dabi.habitv.api.plugin.holder.DownloaderPluginHolder;
 import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.api.BasePluginWithProxy;
+import com.dabi.habitv.framework.plugin.utils.DownloadUtils;
 import com.dabi.habitv.framework.plugin.utils.RetrieverUtils;
 import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.feed.synd.SyndFeed;
@@ -43,7 +44,7 @@ import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.SyndFeedInput;
 import com.sun.syndication.io.XmlReader;
 
-public class ArtePluginManager extends BasePluginWithProxy { // NO_UCD
+public class ArtePluginManager extends BasePluginWithProxy implements PluginProviderInterface, PluginDownloaderInterface { // NO_UCD
 
 	@Override
 	public String getName() {
@@ -102,27 +103,14 @@ public class ArtePluginManager extends BasePluginWithProxy { // NO_UCD
 
 	@Override
 	public Set<CategoryDTO> findCategory() {
-		return findCategories(RetrieverUtils.getUrlContent(ArteConf.RSS_PAGE, ArteConf.ENCODING, getHttpProxy()));
+		return findCategories(RetrieverUtils.getUrlContent(ArteConf.RSS_PAGE, FrameworkConf.UTF8, getHttpProxy()));
 	}
 
 	@Override
-	public void download(final String downloadOuput, final DownloaderPluginHolder downloaders, final CmdProgressionListener cmdProgressionListener,
-			final EpisodeDTO episode) throws DownloadFailedException {
-		final String downloadLink = buildDownloadLink(episode.getId());
-		final String downloaderName;
-		final Map<String, String> parameters = new HashMap<>(2);
-		if (downloadLink.startsWith("rtmp")) {
-			downloaderName = ArteConf.RTMPDUMP;
-			parameters.put(FrameworkConf.PARAMETER_ARGS, ArteConf.RTMPDUMP_CMD);
-		} else {
-			downloaderName = ArteConf.CURL;
-		}
-		final PluginDownloaderInterface pluginDownloader = downloaders.getPlugin(downloaderName);
-
-		parameters.put(FrameworkConf.PARAMETER_BIN_PATH, downloaders.getBinPath(downloaderName));
-		parameters.put(FrameworkConf.CMD_PROCESSOR, downloaders.getCmdProcessor());
-
-		pluginDownloader.download(downloadLink, downloadOuput, parameters, cmdProgressionListener, getProtocol2proxy());
+	public void download(final DownloadParamDTO downloadParam, final DownloaderPluginHolder downloaders, final CmdProgressionListener listener)
+			throws DownloadFailedException {
+		final String downloadLink = buildDownloadLink(downloadParam.getDownloadInput());
+		DownloadUtils.download(DownloadParamDTO.buildDownloadParam(downloadParam, downloadLink), downloaders, listener);
 	}
 
 	private static final String SEP = "/";
@@ -137,7 +125,7 @@ public class ArtePluginManager extends BasePluginWithProxy { // NO_UCD
 		final Set<EpisodeDTO> episodeList;
 		try {
 			final SyndFeedInput input = new SyndFeedInput();
-			final SyndFeed feed = input.build(new XmlReader(inputStream, true, ArteConf.ENCODING));
+			final SyndFeed feed = input.build(new XmlReader(inputStream, true, FrameworkConf.UTF8));
 			episodeList = convertFeedToEpisodeList(feed, category);
 		} catch (IllegalArgumentException | FeedException | IOException e) {
 			throw new TechnicalException(e);
@@ -180,7 +168,7 @@ public class ArtePluginManager extends BasePluginWithProxy { // NO_UCD
 		while (matcher.find()) {
 			identifier = findShowIdentifier(matcher.group(1));
 			categoryName = matcher.group(2);
-			categoryDTOs.add(new CategoryDTO(ArteConf.NAME, categoryName, identifier, ArteConf.EXTENSION));
+			categoryDTOs.add(new CategoryDTO(ArteConf.NAME, categoryName, identifier, FrameworkConf.UTF8));
 		}
 		return categoryDTOs;
 	}
@@ -194,7 +182,7 @@ public class ArtePluginManager extends BasePluginWithProxy { // NO_UCD
 	}
 
 	private String buildDownloadLink(final String url) throws DownloadFailedException {
-		final String htmlInfo = getUrlContent(url, ArteConf.ENCODING);
+		final String htmlInfo = getUrlContent(url, FrameworkConf.UTF8);
 
 		final Matcher matcher = VIDEO_REF_FILE_PATTERN.matcher(htmlInfo);
 		final String videoRefFileUrl;

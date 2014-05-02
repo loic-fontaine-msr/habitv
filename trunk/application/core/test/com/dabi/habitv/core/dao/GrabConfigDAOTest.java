@@ -18,8 +18,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.dabi.habitv.api.plugin.dto.CategoryDTO;
 import com.dabi.habitv.core.dao.GrabConfigDAO.LoadModeEnum;
-import com.dabi.habitv.framework.plugin.api.dto.CategoryDTO;
 
 public class GrabConfigDAOTest {
 
@@ -70,7 +70,7 @@ public class GrabConfigDAOTest {
 		assertTrue(channel2CategoriesTotest.get("channel1").toArray(new CategoryDTO[0])[0].getSubCategories().get(0).getName().equals("sub2"));
 	}
 
-	private Map<String, Set<CategoryDTO>> buildChannelMap(boolean inc, boolean sup) {
+	private Map<String, Set<CategoryDTO>> buildChannelMap(final boolean inc, final boolean sup) {
 		final Map<String, Set<CategoryDTO>> channel2Categories = new HashMap<>();
 		Set<CategoryDTO> categories = new HashSet<>();
 		List<String> includeList = null;

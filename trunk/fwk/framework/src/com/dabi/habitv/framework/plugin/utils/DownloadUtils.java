@@ -15,19 +15,32 @@ public class DownloadUtils {
 		if (downloaderName == null) {
 			downloaderName = findDownloaderByUrl(downloadParam.getDownloadInput());
 		}
+		download(downloadParam, downloaders, listener, downloaderName);
+	}
+
+	public static void download(final DownloadParamDTO downloadParam, final DownloaderPluginHolder downloaders, final CmdProgressionListener listener,
+			final String downloaderName) throws DownloadFailedException {
 		final PluginDownloaderInterface pluginDownloader = downloaders.getPlugin(downloaderName);
 		pluginDownloader.download(downloadParam, downloaders, listener);
 	}
 
 	private static String findDownloaderByUrl(final String url) {
 		String downloaderName;
-		if (url.startsWith(FrameworkConf.RTMPDUMP_PREFIX)) {
+		if (isRTMPDownloadable(url)) {
 			downloaderName = FrameworkConf.RTMDUMP;
-		} else if (url.contains(FrameworkConf.M3U8)) {
+		} else if (isFFMPEGDownloadable(url)) {
 			downloaderName = FrameworkConf.FFMPEG;
 		} else {
 			downloaderName = FrameworkConf.CURL;
 		}
 		return downloaderName;
+	}
+
+	public static boolean isFFMPEGDownloadable(final String url) {
+		return url.contains(FrameworkConf.M3U8);
+	}
+
+	public static boolean isRTMPDownloadable(final String url) {
+		return url.startsWith(FrameworkConf.RTMPDUMP_PREFIX);
 	}
 }
