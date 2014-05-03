@@ -6,6 +6,14 @@
 	<element name="grabConfig">
 		<complexType>
 			<sequence>
+				<element name="channels" maxOccurs="1" minOccurs="0">
+					<complexType>
+						<sequence>
+							<element name="channel" type="tns:channelType" maxOccurs="unbounded"
+								minOccurs="0"></element>
+						</sequence>
+					</complexType>
+				</element>
 				<element name="channel" type="tns:channel" maxOccurs="unbounded"
 					minOccurs="0"></element>
 			</sequence>
@@ -25,27 +33,83 @@
 			<element name="exclude" type="string" maxOccurs="unbounded"
 				minOccurs="0">
 			</element>
-			<element name="category" type="tns:category"
-				maxOccurs="unbounded" minOccurs="0">
+			<element name="category" type="tns:category" maxOccurs="unbounded"
+				minOccurs="0">
 			</element>
 			<element name="extension" type="string" maxOccurs="1"
 				minOccurs="1">
 			</element>
-			<element name="status" type="string" maxOccurs="1"
-				minOccurs="0">
+			<element name="status" type="string" maxOccurs="1" minOccurs="0">
 			</element>
-			<element name="parameter" type="tns:parameter" maxOccurs="unbounded" minOccurs="0"></element>
+			<element name="parameter" type="tns:parameter" maxOccurs="unbounded"
+				minOccurs="0"></element>
 		</sequence>
+	</complexType>
+
+	<complexType name="categoryType">
+		<all>
+			<element name="id" type="string" />
+			<element name="name" type="string" />
+			<element name="download" type="boolean" />
+			<element name="includes">
+				<complexType>
+					<sequence>
+						<element name="include" type="string" maxOccurs="unbounded"
+							minOccurs="0" />
+					</sequence>
+				</complexType>
+			</element>
+			<element name="excludes">
+				<complexType>
+					<sequence>
+						<element name="exclude" type="string" maxOccurs="unbounded"
+							minOccurs="0" />
+					</sequence>
+				</complexType>
+			</element>
+			<element name="subcategories">
+				<complexType>
+					<sequence>
+						<element name="category" type="tns:categoryType"
+							minOccurs="0" maxOccurs="unbounded" />
+					</sequence>
+				</complexType>
+			</element>
+			<element name="extension" type="string" maxOccurs="1"
+				minOccurs="1" />
+			<element name="status" type="string" />
+			<element name="configuration">
+				<complexType>
+					<sequence>
+						<any minOccurs="0" maxOccurs="unbounded" namespace="##any" processContents="lax" />
+					</sequence>
+				</complexType>
+			</element>
+		</all>
+	</complexType>
+
+	<complexType name="channelType">
+		<all>
+			<element name="name" type="string" />
+			<element name="categories">
+				<complexType>
+					<sequence>
+						<element name="category" type="tns:categoryType"
+							minOccurs="0" maxOccurs="unbounded" />
+					</sequence>
+				</complexType>
+			</element>
+			<element name="status" type="int" />
+		</all>
 	</complexType>
 
 	<complexType name="channel">
 		<sequence>
 			<element name="name" type="string"></element>
-			<element name="category" type="tns:category"
-				maxOccurs="unbounded" minOccurs="1">
+			<element name="category" type="tns:category" maxOccurs="unbounded"
+				minOccurs="1">
 			</element>
-			<element name="status" type="int" maxOccurs="1"
-				minOccurs="0">
+			<element name="status" type="int" maxOccurs="1" minOccurs="0">
 			</element>
 		</sequence>
 	</complexType>
