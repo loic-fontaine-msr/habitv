@@ -5,12 +5,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import com.dabi.habitv.api.plugin.api.PluginBaseInterface;
 
 public final class PluginFactory {
 
 	private final String pluginDir;
 	private List<? extends PluginBaseInterface> plugins;
+
+	private static final Logger LOG = Logger.getLogger(PluginFactory.class);
 
 	public PluginFactory(final String pluginDir) {
 		this.pluginDir = pluginDir;
@@ -27,6 +31,9 @@ public final class PluginFactory {
 			if (pluginClass.isInstance(plugin)) {
 				pluginName2plugins.put(plugin.getName(), pluginClass.cast(plugin));
 			}
+		}
+		if (pluginName2plugins.isEmpty()) {
+			LOG.info("Aucun plugin " + pluginClass.getSimpleName());
 		}
 		return pluginName2plugins;
 	}

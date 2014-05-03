@@ -36,11 +36,11 @@ public class PluginManager {
 	private final ProviderPluginHolder providersHolder;
 
 	public PluginManager(final UserConfig config) {
-		updateManager = new UpdateManager(config.autoriseSnapshot());
+		updateManager = new UpdateManager(config.getPluginDir(), config.autoriseSnapshot());
 		pluginFactory = new PluginFactory(config.getPluginDir());
 
 		downloadersHolder = new DownloaderPluginHolder(config.getCmdProcessor(), pluginFactory.loadPlugins(PluginDownloaderInterface.class),
-				config.getDownloader(), config.getDownloadOuput(), config.getIndexDir(), config.getBinDir());
+				config.getDownloader(), config.getDownloadOuput(), config.getIndexDir(), config.getBinDir(), config.getPluginDir());
 		providersHolder = new ProviderPluginHolder(pluginFactory.loadPlugins(PluginProviderInterface.class));
 		exportersHolder = new ExporterPluginHolder(pluginFactory.loadPlugins(PluginExporterInterface.class), config.getExporter());
 	}

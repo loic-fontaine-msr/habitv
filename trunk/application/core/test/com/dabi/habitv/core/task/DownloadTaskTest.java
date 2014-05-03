@@ -109,7 +109,7 @@ public class DownloadTaskTest {
 			}
 		};
 		final DownloaderPluginHolder downloader = new DownloaderPluginHolder(null, null, null,
-				"#EPISODE_NAME§20#_#CHANNEL_NAME#_#TVSHOW_NAME#_#EXTENSION#", "indexDir","bin");
+				"#EPISODE_NAME§20#_#CHANNEL_NAME#_#TVSHOW_NAME#_#EXTENSION#", "indexDir","bin","plugins");
 		final Publisher<RetreiveEvent> publisher = new Publisher<>();
 		final Subscriber<RetreiveEvent> subscriber = new Subscriber<RetreiveEvent>() {
 

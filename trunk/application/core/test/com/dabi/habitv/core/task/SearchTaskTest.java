@@ -125,7 +125,7 @@ public class SearchTaskTest {
 
 		final DownloaderPluginHolder downloader = new DownloaderPluginHolder(null, null, null,
 				"episode1234567890123456789012345678901234567890123456789/episode123456789012345678901234567890123/channel/category/extension", "indexDir",
-				"bin");
+				"bin", "plugins");
 		final Publisher<SearchEvent> searchPublisher = new Publisher<>();
 		final Subscriber<SearchEvent> subscriber = new Subscriber<SearchEvent>() {
 

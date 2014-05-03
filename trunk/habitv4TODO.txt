@@ -1,14 +1,9 @@
 
-downloader pattern
 trier les constantes : faire des enums	
 1 dossier plugins
-tester de plugin
 tester torrent
 
-arbo plugin
-
 tester linux
-log aucun plugin
 
 csvProvider
     <channel>

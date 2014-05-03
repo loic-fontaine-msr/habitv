@@ -16,14 +16,17 @@ public final class DownloaderPluginHolder extends AbstractPluginHolder<PluginDow
 
 	private final String binDir;
 
+	private final String pluginDir;
+
 	public DownloaderPluginHolder(final String cmdProcessor, final Map<String, PluginDownloaderInterface> downloaderName2downloader,
-			final Map<String, String> downloaderName2BinPath, final String downloadOutputDir, final String indexDir, final String binDir) {
+			final Map<String, String> downloaderName2BinPath, final String downloadOutputDir, final String indexDir, final String binDir, final String pluginDir) {
 		super(downloaderName2downloader);
 		this.cmdProcessor = cmdProcessor;
 		this.downloaderName2BinPath = downloaderName2BinPath;
 		this.downloadOutput = downloadOutputDir;
 		this.indexDir = indexDir;
 		this.binDir = binDir;
+		this.pluginDir = pluginDir;
 	}
 
 	public String getBinPath(final String downloaderName) {
@@ -44,6 +47,10 @@ public final class DownloaderPluginHolder extends AbstractPluginHolder<PluginDow
 
 	public String getBinDir() {
 		return binDir;
+	}
+
+	public String getPluginDir() {
+		return pluginDir;
 	}
 
 }

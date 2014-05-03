@@ -34,7 +34,7 @@ public class PluginUpdateTester implements Subscriber<UpdatablePluginEvent> {
 
 	@Before
 	public void setUp() throws Exception {
-		downloaders = new DownloaderPluginHolder("", null, null, "downloadOutputDir", "indexDir", "bin");
+		downloaders = new DownloaderPluginHolder("", null, null, "downloads", "index", "bin", "plugins");
 		publisher = new Publisher<>();
 		publisher.attach(this);
 	}
