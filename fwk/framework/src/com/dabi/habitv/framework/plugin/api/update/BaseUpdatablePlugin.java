@@ -19,7 +19,7 @@ public abstract class BaseUpdatablePlugin implements UpdatablePluginInterface {
 
 	@Override
 	public final void update(final Publisher<UpdatablePluginEvent> updatePublisher, final DownloaderPluginHolder downloaders) {
-		new ZipExeUpdater(this, downloaders.getPluginDir(), FrameworkConf.GROUP_ID, false, updatePublisher, downloaders).update(getFilesToUpdate());
+		new ZipExeUpdater(this, downloaders.getBinDir(), FrameworkConf.GROUP_ID, false, updatePublisher, downloaders).update(getFilesToUpdate());
 	}
 
 	protected String getBinParam(final DownloaderPluginHolder downloaders) {
