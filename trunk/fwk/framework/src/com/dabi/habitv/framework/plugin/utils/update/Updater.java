@@ -1,12 +1,11 @@
 package com.dabi.habitv.framework.plugin.utils.update;
 
-import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
-import java.net.URLConnection;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
 import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.List;
@@ -128,8 +127,8 @@ public abstract class Updater {
 	}
 
 	/**
-	 * FIXME implémenter un vrai téléchargeur
-	 * Cette méthode télécharge un fichier sur internet et le stocke en local
+	 * FIXME implémenter un vrai téléchargeur Cette méthode télécharge un
+	 * fichier sur internet et le stocke en local
 	 * 
 	 * @param filePath
 	 *            , chemin du fichier à télécharger
@@ -139,68 +138,13 @@ public abstract class Updater {
 	 * @throws IOException
 	 */
 	private String downloadFile(final String filePath, final String destination) throws IOException {
-		URLConnection connection = null;
-		InputStream is = null;
-		FileOutputStream destinationFile = null;
-		try {
-			// On crée l'URL
-			final URL url = new URL(filePath);
-
-			// On crée une connection vers cet URL
-			connection = url.openConnection();
-
-			// On récupère la taille du fichier
-			final int length = connection.getContentLength();
-
-			// Si le fichier est inexistant, on lance une exception
-			if (length == -1) {
-				throw new IOException("Fichier vide");
-			}
-
-			// On récupère le stream du fichier
-			is = new BufferedInputStream(connection.getInputStream());
-
-			// On prépare le tableau de bits pour les données du fichier
-			final byte[] data = new byte[length];
-
-			// On déclare les variables pour se retrouver dans la lecture du
-			// fichier
-			int currentBit = 0;
-			int deplacement = 0;
-
-			// Tant que l'on n'est pas à la fin du fichier, on récupère des
-			// données
-			while (deplacement < length) {
-				currentBit = is.read(data, deplacement, data.length - deplacement);
-				if (currentBit == -1) {
-					break;
-				}
-				deplacement += currentBit;
-			}
-
-			// Si on est pas arrivé à la fin du fichier, on lance une exception
-			if (deplacement != length) {
-				throw new IOException("Le fichier n'a pas été lu en entier (seulement " + deplacement + " sur " + length + ")");
-			}
-
-			// On crée un stream sortant vers la destination
-			destinationFile = new FileOutputStream(destination);
-
-			// On écrit les données du fichier dans ce stream
-			destinationFile.write(data);
-
-			// On vide le tampon et on ferme le stream
-			destinationFile.flush();
-
-		} finally {
-			if (is != null) {
-				is.close();
-			}
-			if (destinationFile != null) {
-				destinationFile.close();
+		final URL website = new URL(filePath);
+		try (final ReadableByteChannel rbc = Channels.newChannel(website.openStream());) {
+			try (FileOutputStream fos = new FileOutputStream(destination);) {
+				fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+				return destination;
 			}
 		}
-		return destination;
 	}
 
 	public String getFolderToUpdate() {

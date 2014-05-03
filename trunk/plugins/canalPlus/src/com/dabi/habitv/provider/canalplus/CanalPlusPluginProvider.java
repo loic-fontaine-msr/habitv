@@ -81,7 +81,7 @@ public class CanalPlusPluginProvider extends BasePluginWithProxy implements Plug
 	private Collection<CategoryDTO> getCategoryById(final String identifier) {
 		final Set<CategoryDTO> categories = new HashSet<>();
 
-		final MEAS meas = (MEAS) RetrieverUtils.unmarshalInputStream(getInputStreamFromUrl(CanalPlusConf.MEA_URL + identifier), CanalPlusConf.MEA_PACKAGE_NAME);
+		final MEAS meas = (MEAS) RetrieverUtils.unmarshalInputStream(getInputStreamFromUrl(CanalPlusConf.MEA_URL + identifier), CanalPlusConf.MEA_PACKAGE_NAME, getClassLoader());
 		for (final MEA mea : meas.getMEA()) {
 			categories.add(new CategoryDTO(CanalPlusConf.NAME, mea.getRUBRIQUAGE().getRUBRIQUE(), String.valueOf(mea.getID()), getExtension()));
 		}
@@ -92,7 +92,7 @@ public class CanalPlusPluginProvider extends BasePluginWithProxy implements Plug
 	private Collection<CategoryDTO> getEpisodeCategoryById(final String identifier) {
 		final Set<CategoryDTO> categories = new HashSet<>();
 
-		final MEAS meas = (MEAS) RetrieverUtils.unmarshalInputStream(getInputStreamFromUrl(CanalPlusConf.MEA_URL + identifier), CanalPlusConf.MEA_PACKAGE_NAME);
+		final MEAS meas = (MEAS) RetrieverUtils.unmarshalInputStream(getInputStreamFromUrl(CanalPlusConf.MEA_URL + identifier), CanalPlusConf.MEA_PACKAGE_NAME, getClassLoader());
 		for (final MEA mea : meas.getMEA()) {
 			categories.add(new CategoryDTO(CanalPlusConf.NAME, mea.getINFOS().getTITRAGE().getSOUSTITRE(), String.valueOf(mea.getID()), getExtension()));
 		}
@@ -102,7 +102,7 @@ public class CanalPlusPluginProvider extends BasePluginWithProxy implements Plug
 
 	private Set<EpisodeDTO> findEpisodeBySubCategory(final CategoryDTO category, final CategoryDTO originalcategory) {
 		final VIDEOS videos = (VIDEOS) RetrieverUtils.unmarshalInputStream(getInputStreamFromUrl(CanalPlusConf.VIDEO_URL + category.getId()),
-				CanalPlusConf.VIDEO_PACKAGE_NAME);
+				CanalPlusConf.VIDEO_PACKAGE_NAME, getClassLoader());
 		return buildFromVideo(category, videos, originalcategory);
 	}
 

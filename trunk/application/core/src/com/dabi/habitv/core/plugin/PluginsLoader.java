@@ -20,6 +20,8 @@ import com.dabi.habitv.api.plugin.exception.TechnicalException;
 
 class PluginsLoader {
 
+	private static final String JAR_EXTENSION = ".jar";
+
 	private static final String CLASS_EXTENSION = ".class";
 
 	private static final int CLASS_EXTENSION_SIZE = CLASS_EXTENSION.length();
@@ -27,26 +29,6 @@ class PluginsLoader {
 	private final List<File> files;
 
 	private final List<Plugin> classPlugins;
-
-	private class Plugin {
-		private final Class<PluginBaseInterface> classPluginProvider;
-		private final ClassLoader classLoaders;
-
-		public Plugin(final Class<PluginBaseInterface> classPluginProvider, final ClassLoader classLoaders) {
-			super();
-			this.classPluginProvider = classPluginProvider;
-			this.classLoaders = classLoaders;
-		}
-
-		public Class<PluginBaseInterface> getClassPluginProvider() {
-			return classPluginProvider;
-		}
-
-		public ClassLoader getClassLoaders() {
-			return classLoaders;
-		}
-
-	}
 
 	@SuppressWarnings("unchecked")
 	PluginsLoader(final File[] files) {
@@ -93,53 +75,56 @@ class PluginsLoader {
 	}
 
 	private void findAllPlugins(final File file) {
-		// Pour la comparaison de chaines
-		String tmp = "";
-		// Pour le contenu de l'archive jar
-		Enumeration<JarEntry> enumeration;
-		// Pour déterminer quels sont les interfaces implémentées
-		Class<PluginBaseInterface> tmpClass = null;
+		if (file.getName().endsWith(JAR_EXTENSION)) {
+			// Pour la comparaison de chaines
+			String tmp = "";
+			// Pour le contenu de l'archive jar
+			Enumeration<JarEntry> enumeration;
+			// Pour déterminer quels sont les interfaces implémentées
+			Class<PluginBaseInterface> tmpClass = null;
 
-		final URL url = getFileUrl(file);
-		// On créer un nouveau URLClassLoader pour charger le jar qui se
-		// trouve ne dehors du CLASSPATH
-		try (URLClassLoader loader = new URLClassLoader(new URL[] { url })) {
-			// On charge le jar en mémoire
-			try (final JarFile jar = new JarFile(file.getAbsolutePath());) {
+			final URL url = getFileUrl(file);
+			// On créer un nouveau URLClassLoader pour charger le jar qui se
+			// trouve ne dehors du CLASSPATH
+			try (URLClassLoader loader = new URLClassLoader(new URL[] { url })) {
+				// On charge le jar en mémoire
+				try (final JarFile jar = new JarFile(file.getAbsolutePath());) {
 
-				// On récupére le contenu du jar
-				enumeration = jar.entries();
+					// On récupére le contenu du jar
+					enumeration = jar.entries();
 
-				while (enumeration.hasMoreElements()) {
+					while (enumeration.hasMoreElements()) {
 
-					final JarEntry nextElement = enumeration.nextElement();
-					tmp = nextElement.toString();
+						final JarEntry nextElement = enumeration.nextElement();
+						tmp = nextElement.toString();
 
-					// On vérifie que le fichier courant est un .class (et pas
-					// un
-					// fichier d'informations du jar )
-					if (tmp.length() > CLASS_EXTENSION_SIZE && tmp.substring(tmp.length() - CLASS_EXTENSION_SIZE).compareTo(CLASS_EXTENSION) == 0) {
-						tmpClass = getClass(tmp.substring(0, tmp.length() - CLASS_EXTENSION_SIZE).replaceAll("/", "."), loader);
-						final List<Class<?>> interfaces = getInterfaces(tmpClass);
-						for (final Class<?> interfaceClass : interfaces) {
-							// Une classe ne doit pas appartenir à deux
-							// catégories
-							// de plugins différents.
-							// Si tel est le cas on ne la place que dans la
-							// catégorie de la première interface correct
-							// trouvée
-							if (interfaceClass.getName().equals(PluginBaseInterface.class.getName())) {
-								this.classPlugins.add(new Plugin(tmpClass, loader));
+						// On vérifie que le fichier courant est un .class (et
+						// pas
+						// un
+						// fichier d'informations du jar )
+						if (tmp.length() > CLASS_EXTENSION_SIZE && tmp.substring(tmp.length() - CLASS_EXTENSION_SIZE).compareTo(CLASS_EXTENSION) == 0) {
+							tmpClass = getClass(tmp.substring(0, tmp.length() - CLASS_EXTENSION_SIZE).replaceAll("/", "."), loader);
+							final List<Class<?>> interfaces = getInterfaces(tmpClass);
+							for (final Class<?> interfaceClass : interfaces) {
+								// Une classe ne doit pas appartenir à deux
+								// catégories
+								// de plugins différents.
+								// Si tel est le cas on ne la place que dans la
+								// catégorie de la première interface correct
+								// trouvée
+								if (PluginBaseInterface.class.isAssignableFrom(interfaceClass)) {
+									this.classPlugins.add(new Plugin(tmpClass, loader));
+								}
 							}
-						}
 
+						}
 					}
+				} catch (final IOException e) {
+					throw new TechnicalException(e);
 				}
 			} catch (final IOException e) {
 				throw new TechnicalException(e);
 			}
-		} catch (final IOException e) {
-			throw new TechnicalException(e);
 		}
 	}
 

@@ -17,6 +17,8 @@ import com.dabi.habitv.framework.plugin.api.update.BaseUpdatablePlugin;
 
 public class RtmpDumpPluginDownloader extends BaseUpdatablePlugin implements PluginDownloaderInterface, PluginWithProxyInterface {
 
+	private static final String RTMPDUMP_PREFIX = "rtmp:";
+
 	private static final Pattern VERSION_PATTERN = Pattern.compile("RTMPDump ([0-9A-Za-z.-]*) .*");
 	private Map<ProtocolEnum, ProxyDTO> protocol2proxy;
 
@@ -69,7 +71,7 @@ public class RtmpDumpPluginDownloader extends BaseUpdatablePlugin implements Plu
 
 	@Override
 	public DownloadableState canDownload(final String downloadInput) {
-		return downloadInput.startsWith(FrameworkConf.RTMPDUMP_PREFIX) ? DownloadableState.SPECIFIC : DownloadableState.IMPOSSIBLE;
+		return downloadInput.startsWith(RTMPDUMP_PREFIX) ? DownloadableState.SPECIFIC : DownloadableState.IMPOSSIBLE;
 	}
 
 }

@@ -22,8 +22,12 @@
 	<distributionManagement>
 		<repository>
 			<id>ftp-repository</id>
-			<url>ftp://dabiboo.free.fr/repository</url>
+			<url>ftp://ftpperso.free.fr/repository</url>
 		</repository>
+		<!--<repository>
+			<id>ftp-repository</id>
+			<url>ftp://dabiboo.free.fr/repository</url>
+		</repository>-->		
   </distributionManagement>	
 	
 	

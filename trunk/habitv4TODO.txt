@@ -1,6 +1,3 @@
-
-trier les constantes : faire des enums	
-1 dossier plugins
 tester torrent
 
 tester linux
