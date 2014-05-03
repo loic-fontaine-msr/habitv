@@ -91,7 +91,10 @@ public class LEquipePluginManager extends BasePluginWithProxy implements PluginP
 			for (final Element aResult : elementsByClass.get(0).children()) {
 				final String hRef = aResult.attr("href");
 				final String name = aResult.getElementsByClass("title").text();
-				episodeList.add(new EpisodeDTO(category, SoccerUtils.maskScore(name), hRef));
+				final String nameWithoutScore = SoccerUtils.maskScore(name);
+				if (checkName(nameWithoutScore)) {
+					episodeList.add(new EpisodeDTO(category, nameWithoutScore, hRef));
+				}
 			}
 		} else {
 			final Elements divResults = elementsByClass.get(0).child(0).children();
@@ -100,10 +103,17 @@ public class LEquipePluginManager extends BasePluginWithProxy implements PluginP
 					final Element aResult = divResult.child(0);
 					final String hRef = aResult.attr("href");
 					final String name = aResult.child(2).text();
-					episodeList.add(new EpisodeDTO(category, SoccerUtils.maskScore(name), hRef));
+					final String nameWithoutScore = SoccerUtils.maskScore(name);
+					if (checkName(nameWithoutScore)) {
+						episodeList.add(new EpisodeDTO(category, nameWithoutScore, hRef));
+					}
 				}
 			}
 		}
+	}
+
+	private boolean checkName(final String nameWithoutScore) {
+		return nameWithoutScore != null && !nameWithoutScore.isEmpty();
 	}
 
 	public String findDownloadlink(final String url) {

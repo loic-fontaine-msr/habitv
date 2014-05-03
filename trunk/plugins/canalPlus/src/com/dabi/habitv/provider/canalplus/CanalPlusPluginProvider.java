@@ -132,9 +132,15 @@ public class CanalPlusPluginProvider extends BasePluginWithProxy implements Plug
 
 			// il est possible que plusieurs épisode s'appelle du soustitre
 			// mais si on concatène avec titre c'est trop long
-			episodes.add(new EpisodeDTO(originalCategory, name, videoUrl));
+			if (checkName(name)) {
+				episodes.add(new EpisodeDTO(originalCategory, name, videoUrl));
+			}
 		}
 		return episodes;
+	}
+
+	private static boolean checkName(final String name) {
+		return name != null && name.isEmpty();
 	}
 
 }

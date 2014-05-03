@@ -31,6 +31,7 @@ import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
 import com.dabi.habitv.api.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.api.plugin.exception.TechnicalException;
 import com.dabi.habitv.api.plugin.holder.DownloaderPluginHolder;
+import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.api.BasePluginWithProxy;
 import com.dabi.habitv.framework.plugin.utils.DownloadUtils;
 import com.dabi.habitv.framework.plugin.utils.M3U8Utils;
@@ -47,7 +48,8 @@ public class D17PluginManager extends BasePluginWithProxy implements PluginProvi
 		final Set<EpisodeDTO> episodes = new HashSet<>();
 		final Set<String> episodesNames = new HashSet<>();
 
-		final org.jsoup.nodes.Document doc = Jsoup.parse(getUrlContent(D17Conf.HOME_URL + category.getId()));
+		final String categoryId = category.getId();
+		final org.jsoup.nodes.Document doc = Jsoup.parse(getUrlContent(categoryUrl(categoryId)));
 
 		final Elements select = doc.select("a.loop-videos");
 		for (final Element aVideoElement : select) {
@@ -66,6 +68,10 @@ public class D17PluginManager extends BasePluginWithProxy implements PluginProvi
 		}
 
 		return episodes;
+	}
+
+	private String categoryUrl(final String categoryId) {
+		return categoryId.startsWith(FrameworkConf.HTTP_PREFIX) ? categoryId : D17Conf.HOME_URL + categoryId;
 	}
 
 	@Override
@@ -114,7 +120,7 @@ public class D17PluginManager extends BasePluginWithProxy implements PluginProvi
 		if (catUrl.startsWith("http")) {
 			return catUrl;
 		} else {
-			return D17Conf.HOME_URL + catUrl;
+			return categoryUrl(catUrl);
 		}
 	}
 
