@@ -48,4 +48,11 @@ public class DownloadParamDTO {
 		downloadParamDTO.getParams().putAll(downloadParam.getParams());
 		return downloadParamDTO;
 	}
+
+	@Override
+	public String toString() {
+		return "DownloadParamDTO [downloadInput=" + downloadInput + ", downloadOutput=" + downloadOutput + ", extension=" + extension + ", params=" + params
+				+ "]";
+	}
+
 }

@@ -114,6 +114,7 @@ public class NRJ12PluginManager extends BasePluginWithProxy implements PluginPro
 	}
 
 	private static final Pattern MEDIAID_PATTERN = Pattern.compile("/(\\d*)-minipicto");
+	private static final Pattern MEDIAID2_PATTERN = Pattern.compile("\\?mediaId=(\\d*)&");
 
 	public String findFinalUrl(final String downloadInput) {
 		final String url = NRJ12Conf.HOME_URL + downloadInput;
@@ -136,13 +137,21 @@ public class NRJ12PluginManager extends BasePluginWithProxy implements PluginPro
 	}
 
 	private static String findMediaId(final String content) {
-		final Matcher matcher = MEDIAID_PATTERN.matcher(content);
-		final boolean hasMatched = matcher.find();
+		Matcher matcher = MEDIAID_PATTERN.matcher(content);
+		boolean hasMatched = matcher.find();
 		String ret = null;
 		if (hasMatched) {
 			ret = matcher.group(matcher.groupCount());
 		} else {
-			throw new TechnicalException("can't find mediaId");
+			matcher = MEDIAID2_PATTERN.matcher(content);
+			hasMatched = matcher.find();
+			ret = null;
+			if (hasMatched) {
+				ret = matcher.group(matcher.groupCount());
+			} else {
+				throw new TechnicalException("can't find mediaId");
+			}
+			return ret;
 		}
 		return ret;
 	}
