@@ -116,10 +116,16 @@ public class SearchTaskTest {
 			public void download(final DownloadParamDTO downloadParam, final DownloaderPluginHolder downloaders, final CmdProgressionListener listener)
 					throws DownloadFailedException {
 			}
+
+			@Override
+			public DownloadableState canDownload(final String downloadInput) {
+				return DownloadableState.IMPOSSIBLE;
+			}
 		};
 
 		final DownloaderPluginHolder downloader = new DownloaderPluginHolder(null, null, null,
-				"episode1234567890123456789012345678901234567890123456789/episode123456789012345678901234567890123/channel/category/extension", "indexDir");
+				"episode1234567890123456789012345678901234567890123456789/episode123456789012345678901234567890123/channel/category/extension", "indexDir",
+				"bin");
 		final Publisher<SearchEvent> searchPublisher = new Publisher<>();
 		final Subscriber<SearchEvent> subscriber = new Subscriber<SearchEvent>() {
 

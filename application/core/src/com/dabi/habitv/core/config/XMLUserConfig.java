@@ -40,6 +40,8 @@ public class XMLUserConfig implements UserConfig {
 
 	private static final String DEFAULT_INDEX_DIR = "index";
 
+	private static final String DEFAULT_BIN_DIR = "bin";
+
 	private final Config config;
 
 	private XMLUserConfig(final Config config) {
@@ -52,6 +54,7 @@ public class XMLUserConfig implements UserConfig {
 	public static final String CONF_FILE = "config.xml";
 
 	private static final String CONF_XSD = "config.xsd";
+
 
 	public static UserConfig initConfig() {
 		Config config;
@@ -230,6 +233,11 @@ public class XMLUserConfig implements UserConfig {
 	@Override
 	public boolean autoriseSnapshot() {
 		return config.getAutoriseSnapshot() == null ? false : config.getAutoriseSnapshot();
+	}
+
+	@Override
+	public String getBinDir() {
+		return config.getBinDir() == null ? DEFAULT_BIN_DIR : config.getBinDir();
 	}
 
 }

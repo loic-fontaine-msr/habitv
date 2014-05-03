@@ -154,4 +154,9 @@ public class D17PluginManager extends BasePluginWithProxy implements PluginProvi
 		}
 	}
 
+	@Override
+	public DownloadableState canDownload(final String downloadInput) {
+		return DownloadableState.IMPOSSIBLE;
+	}
+
 }

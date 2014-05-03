@@ -146,4 +146,9 @@ public class NRJ12PluginManager extends BasePluginWithProxy implements PluginPro
 		}
 		return ret;
 	}
+
+	@Override
+	public DownloadableState canDownload(final String downloadInput) {
+		return DownloadableState.IMPOSSIBLE;
+	}
 }

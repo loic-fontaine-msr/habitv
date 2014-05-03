@@ -1,12 +1,14 @@
 package com.dabi.habitv.exporter.ffmpeg;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.dabi.habitv.api.plugin.api.CmdProgressionListener;
 import com.dabi.habitv.api.plugin.exception.ExecutorFailedException;
 import com.dabi.habitv.plugin.ffmpeg.FFMPEGCmdExecutor;
 
+@Ignore
 public class TestFfmpegCmdExecutor {
 
 	private class FakeProgressionListener implements CmdProgressionListener {

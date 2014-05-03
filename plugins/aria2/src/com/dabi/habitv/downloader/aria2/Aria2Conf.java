@@ -12,7 +12,6 @@ interface Aria2Conf {
 
 	long MAX_HUNG_TIME = 360000L;
 
-	String DEFAULT_WINDOWS_BIN_PATH = "bin\\aria2c.exe";
+	String DEFAULT_WINDOWS_EXE = "aria2c.exe";
 
-	String DEFAULT_LINUX_BIN_PATH = "aria2";
 }

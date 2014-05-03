@@ -36,4 +36,6 @@ public interface UserConfig {
 
 	boolean autoriseSnapshot();
 
+	String getBinDir();
+
 }

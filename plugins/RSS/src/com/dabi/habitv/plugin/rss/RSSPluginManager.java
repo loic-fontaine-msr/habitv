@@ -7,18 +7,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.dabi.habitv.api.plugin.api.CmdProgressionListener;
-import com.dabi.habitv.api.plugin.api.PluginDownloaderInterface;
 import com.dabi.habitv.api.plugin.api.PluginProviderInterface;
 import com.dabi.habitv.api.plugin.dto.CategoryDTO;
-import com.dabi.habitv.api.plugin.dto.DownloadParamDTO;
 import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
-import com.dabi.habitv.api.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.api.plugin.exception.TechnicalException;
-import com.dabi.habitv.api.plugin.holder.DownloaderPluginHolder;
 import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.api.BasePluginWithProxy;
-import com.dabi.habitv.framework.plugin.utils.DownloadUtils;
 import com.sun.syndication.feed.synd.SyndEnclosure;
 import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.feed.synd.SyndFeed;
@@ -26,7 +20,7 @@ import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.SyndFeedInput;
 import com.sun.syndication.io.XmlReader;
 
-public class RSSPluginManager extends BasePluginWithProxy implements PluginProviderInterface, PluginDownloaderInterface {
+public class RSSPluginManager extends BasePluginWithProxy implements PluginProviderInterface {
 
 	private static final int MIN_TITLE_SIZE = 5;
 
@@ -54,12 +48,6 @@ public class RSSPluginManager extends BasePluginWithProxy implements PluginProvi
 		categoryDTO.addParameter(FrameworkConf.DOWNLOADER_PARAM, "Set the downloader here  :aria2, youtube, rtmpdump (default aria2)");
 		categoryList.add(categoryDTO);
 		return categoryList;
-	}
-
-	@Override
-	public void download(final DownloadParamDTO downloadParam, final DownloaderPluginHolder downloaders, final CmdProgressionListener listener)
-			throws DownloadFailedException {
-		DownloadUtils.download(downloadParam, downloaders, listener);
 	}
 
 	@Override

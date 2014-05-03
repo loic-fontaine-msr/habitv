@@ -240,4 +240,9 @@ public class ArtePluginManager extends BasePluginWithProxy implements PluginProv
 		return null;
 	}
 
+	@Override
+	public DownloadableState canDownload(final String downloadInput) {
+		return DownloadableState.IMPOSSIBLE;
+	}
+
 }

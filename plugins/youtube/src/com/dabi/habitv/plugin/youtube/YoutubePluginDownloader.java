@@ -33,8 +33,9 @@ public class YoutubePluginDownloader extends BaseUpdatablePlugin implements Plug
 		}
 		cmd = cmd.replaceFirst(FrameworkConf.DOWNLOAD_INPUT, downloadParam.getDownloadInput());
 		cmd = cmd.replaceFirst(FrameworkConf.DOWNLOAD_DESTINATION, downloadParam.getDownloadOutput());
+
 		// if (proxyDTO!=null){
-		// TODO youtube-dl supports downloading videos through a proxy, by
+		// youtube-dl supports downloading videos through a proxy, by
 		// setting the http_proxy environment variable to the proxy URL, as in
 		// http://proxy_machine_name:port/.
 		// }
@@ -52,8 +53,8 @@ public class YoutubePluginDownloader extends BaseUpdatablePlugin implements Plug
 	}
 
 	@Override
-	protected String getWindowsDefaultBuildPath() {
-		return YoutubeConf.DEFAULT_WINDOWS_BIN_PATH;
+	protected String getWindowsDefaultExe() {
+		return YoutubeConf.DEFAULT_WINDOWS_EXE;
 	}
 
 	@Override
@@ -69,6 +70,15 @@ public class YoutubePluginDownloader extends BaseUpdatablePlugin implements Plug
 	@Override
 	protected String[] getFilesToUpdate() {
 		return new String[] { "youtube-dl" };
+	}
+
+	@Override
+	public DownloadableState canDownload(final String downloadInput) {
+		if (downloadInput.contains(".youtube.") || downloadInput.contains(".dailymotion.")) {
+			return DownloadableState.SPECIFIC;
+		} else {
+			return DownloadableState.IMPOSSIBLE;
+		}
 	}
 
 }

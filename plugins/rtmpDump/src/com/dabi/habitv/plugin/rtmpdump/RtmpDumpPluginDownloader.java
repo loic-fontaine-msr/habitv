@@ -15,7 +15,7 @@ import com.dabi.habitv.api.plugin.holder.DownloaderPluginHolder;
 import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.api.update.BaseUpdatablePlugin;
 
-public class RtmpDumpDPluginDownloader extends BaseUpdatablePlugin implements PluginDownloaderInterface, PluginWithProxyInterface {
+public class RtmpDumpPluginDownloader extends BaseUpdatablePlugin implements PluginDownloaderInterface, PluginWithProxyInterface {
 
 	private static final Pattern VERSION_PATTERN = Pattern.compile("RTMPDump ([0-9A-Za-z.-]*) .*");
 	private Map<ProtocolEnum, ProxyDTO> protocol2proxy;
@@ -53,16 +53,6 @@ public class RtmpDumpDPluginDownloader extends BaseUpdatablePlugin implements Pl
 	}
 
 	@Override
-	protected String getLinuxDefaultBuildPath() {
-		return RtmpDumpConf.DEFAULT_LINUX_BIN_PATH;
-	}
-
-	@Override
-	protected String getWindowsDefaultBuildPath() {
-		return RtmpDumpConf.DEFAULT_WINDOWS_BIN_PATH;
-	}
-
-	@Override
 	protected Pattern getVersionPattern() {
 		return VERSION_PATTERN;
 	}
@@ -75,6 +65,11 @@ public class RtmpDumpDPluginDownloader extends BaseUpdatablePlugin implements Pl
 	@Override
 	public void setProxies(final Map<ProtocolEnum, ProxyDTO> protocol2proxy) {
 		this.protocol2proxy = protocol2proxy;
+	}
+
+	@Override
+	public DownloadableState canDownload(final String downloadInput) {
+		return downloadInput.startsWith(FrameworkConf.RTMPDUMP_PREFIX) ? DownloadableState.SPECIFIC : DownloadableState.IMPOSSIBLE;
 	}
 
 }

@@ -38,16 +38,6 @@ public class FFMPEGPluginDownloader extends BaseUpdatablePlugin implements Plugi
 	}
 
 	@Override
-	protected String getLinuxDefaultBuildPath() {
-		return FFMPEGConf.DEFAULT_LINUX_BIN_PATH;
-	}
-
-	@Override
-	protected String getWindowsDefaultBuildPath() {
-		return FFMPEGConf.DEFAULT_WINDOWS_BIN_PATH;
-	}
-
-	@Override
 	protected Pattern getVersionPattern() {
 		return VERSION_PATTERN;
 	}
@@ -55,6 +45,11 @@ public class FFMPEGPluginDownloader extends BaseUpdatablePlugin implements Plugi
 	@Override
 	protected String getVersionParam() {
 		return " -version";
+	}
+
+	@Override
+	public DownloadableState canDownload(final String downloadInput) {
+		return downloadInput.endsWith(FrameworkConf.M3U8) ? DownloadableState.SPECIFIC : DownloadableState.IMPOSSIBLE;
 	}
 
 }

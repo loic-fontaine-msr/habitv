@@ -41,4 +41,9 @@ public final class CmdPluginDownloaderManager implements PluginDownloaderInterfa
 		}
 	}
 
+	@Override
+	public DownloadableState canDownload(final String downloadInput) {
+		return DownloadableState.IMPOSSIBLE;
+	}
+
 }

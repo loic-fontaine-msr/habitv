@@ -3,6 +3,7 @@ downloader pattern
 trier les constantes : faire des enums	
 1 dossier plugins
 tester de plugin
+tester torrent
 
 arbo plugin
 
@@ -32,6 +33,13 @@ http get header.title
 lien de téléchargement fixe PHP
 
 pas d'ordre dans config
+convertisseur de fichier
+
+repasser sur tous les plugins pour gérer le dl par url web
+
+francetvinfo
+
+clubic
 
 api fixe
 

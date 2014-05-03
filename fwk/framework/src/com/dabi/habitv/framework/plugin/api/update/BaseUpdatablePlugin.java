@@ -19,16 +19,15 @@ public abstract class BaseUpdatablePlugin implements UpdatablePluginInterface {
 
 	@Override
 	public final void update(final Publisher<UpdatablePluginEvent> updatePublisher, final DownloaderPluginHolder downloaders) {
-		new ZipExeUpdater(this, OSUtils.getCurrentDir(), FrameworkConf.GROUP_ID, false, updatePublisher, downloaders).update("bin", getFilesToUpdate()); // FIXME
-		// updateFOlder
-		// ?
+		new ZipExeUpdater(this, OSUtils.getCurrentDir(), FrameworkConf.GROUP_ID, false, updatePublisher, downloaders).update(downloaders.getBinDir(),
+				getFilesToUpdate());
 	}
 
 	protected String getBinParam(final DownloaderPluginHolder downloaders) {
 		String binParam = downloaders.getBinPath(getName());
 		if (binParam == null) {
 			if (OSUtils.isWindows()) {
-				binParam = getWindowsDefaultBuildPath();
+				binParam = downloaders.getBinDir() + "\\" + getWindowsDefaultExe();
 			} else {
 				binParam = getLinuxDefaultBuildPath();
 			}
@@ -36,9 +35,13 @@ public abstract class BaseUpdatablePlugin implements UpdatablePluginInterface {
 		return binParam;
 	}
 
-	protected abstract String getLinuxDefaultBuildPath();
+	protected String getLinuxDefaultBuildPath() {
+		return getName();
+	}
 
-	protected abstract String getWindowsDefaultBuildPath();
+	protected String getWindowsDefaultExe() {
+		return getName() + ".exe";
+	}
 
 	@Override
 	public String getCurrentVersion(final DownloaderPluginHolder downloaders) {

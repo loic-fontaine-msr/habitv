@@ -49,28 +49,24 @@ public class CurlPluginDownloader extends BaseUpdatablePlugin implements PluginD
 	}
 
 	@Override
-	protected String getLinuxDefaultBuildPath() {
-		return CurlConf.DEFAULT_LINUX_BIN_PATH;
-	}
-
-	@Override
-	protected String getWindowsDefaultBuildPath() {
-		return CurlConf.DEFAULT_WINDOWS_BIN_PATH;
-	}
-
-	@Override
 	protected Pattern getVersionPattern() {
 		return VERSION_PATTERN;
 	}
 
 	@Override
 	protected String getVersionParam() {
-		return " -version";
+		return " --version";
 	}
 
 	@Override
 	public void setProxies(final Map<ProtocolEnum, ProxyDTO> protocol2proxy) {
 		this.protocol2proxy = protocol2proxy;
+	}
+
+	@Override
+	public DownloadableState canDownload(final String downloadInput) {
+		return downloadInput.startsWith(FrameworkConf.HTTP_PREFIX) || downloadInput.startsWith(FrameworkConf.FTP_PREFIX) ? DownloadableState.POSSIBLE
+				: DownloadableState.IMPOSSIBLE;
 	}
 
 }

@@ -15,8 +15,4 @@ public final class CurlConf {
 
 	public static final long MAX_HUNG_TIME = 100000L;
 
-	public static final String DEFAULT_WINDOWS_BIN_PATH = "bin\\curl.exe";
-
-	public static final String DEFAULT_LINUX_BIN_PATH = "curl";
-
 }

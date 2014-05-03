@@ -77,6 +77,11 @@ public class SearchCategoryTaskTest {
 					throws DownloadFailedException {
 
 			}
+
+			@Override
+			public DownloadableState canDownload(final String downloadInput) {
+				return DownloadableState.IMPOSSIBLE;
+			}
 		};
 
 		final Publisher<SearchCategoryEvent> publisher = new Publisher<>();

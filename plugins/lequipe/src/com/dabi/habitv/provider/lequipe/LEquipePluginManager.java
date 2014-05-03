@@ -226,4 +226,9 @@ public class LEquipePluginManager extends BasePluginWithProxy implements PluginP
 		return categoryDTOs;
 	}
 
+	@Override
+	public DownloadableState canDownload(final String downloadInput) {
+		return DownloadableState.IMPOSSIBLE;
+	}
+
 }
