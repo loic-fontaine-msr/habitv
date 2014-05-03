@@ -26,7 +26,7 @@ public class UpdateManagerTest {
 
 	@Test
 	public final void testProcess() {
-		final UpdateManager updateManager = new UpdateManager(true);
+		final UpdateManager updateManager = new UpdateManager("plugins",true);
 		updateManager.process();
 	}
 

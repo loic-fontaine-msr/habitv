@@ -60,9 +60,9 @@ public class ZipExeUpdater extends Updater {
 	}
 
 	@Override
-	protected void updateFile(final String folderToUpdate, final File current, final File newVersion) {
+	protected void updateFile(final File current, final File newVersion) {
 		if (newVersion.exists()) {
-			ZipUtils.unZipIt(newVersion, folderToUpdate);
+			ZipUtils.unZipIt(newVersion, getFolderToUpdate());
 			try {
 				Files.delete(newVersion.toPath());
 			} catch (final IOException e) {

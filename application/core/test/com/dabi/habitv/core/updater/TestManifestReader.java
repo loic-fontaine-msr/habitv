@@ -1,8 +1,8 @@
 package com.dabi.habitv.core.updater;
+
 import static org.junit.Assert.assertEquals;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.jar.Attributes;
 import java.util.jar.JarInputStream;
@@ -35,10 +35,14 @@ public class TestManifestReader {
 	}
 
 	@Test
-	public final void test() throws FileNotFoundException, IOException {
-		final JarInputStream jarStream = new JarInputStream(new FileInputStream("target/core-"+VERSION+".jar"));
-		final Manifest mf = jarStream.getManifest();
-		assertEquals(VERSION, mf.getMainAttributes().get(Attributes.Name.IMPLEMENTATION_VERSION));
+	public final void test() {
+		JarInputStream jarStream;
+		try {
+			jarStream = new JarInputStream(new FileInputStream("target/core-" + VERSION + ".jar"));
+			final Manifest mf = jarStream.getManifest();
+			assertEquals(VERSION, mf.getMainAttributes().get(Attributes.Name.IMPLEMENTATION_VERSION));
+		} catch (final IOException e) {
+			e.printStackTrace();
+		}
 	}
-
 }
