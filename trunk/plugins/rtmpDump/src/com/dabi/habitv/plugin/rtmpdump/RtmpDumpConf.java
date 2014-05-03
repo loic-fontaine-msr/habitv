@@ -14,8 +14,4 @@ public final class RtmpDumpConf {
 
 	public static final long HUNG_PROCESS_TIME = 30000L;
 
-	public static final String DEFAULT_WINDOWS_BIN_PATH = "bin\\rtmpdump.exe";
-
-	static final String DEFAULT_LINUX_BIN_PATH = "rtmpdump";
-
 }

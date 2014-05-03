@@ -195,4 +195,9 @@ public class D8PluginManager extends BasePluginWithProxy implements PluginProvid
 		return null;
 	}
 
+	@Override
+	public DownloadableState canDownload(final String downloadInput) {
+		return DownloadableState.IMPOSSIBLE;
+	}
+
 }

@@ -86,10 +86,16 @@ public class RetreiveTaskTest {
 					throws DownloadFailedException {
 
 			}
+
+			@Override
+			public DownloadableState canDownload(final String downloadInput) {
+				return DownloadableState.IMPOSSIBLE;
+			}
 		};
 
 		final DownloaderPluginHolder downloader = new DownloaderPluginHolder(null, null, null,
-				"episode1234567890123456789012345678901234567890123456789/episode123456789012345678901234567890123/channel/category/extension", "indexDir");
+				"episode1234567890123456789012345678901234567890123456789/episode123456789012345678901234567890123/channel/category/extension", "indexDir",
+				"bin");
 		final Publisher<RetreiveEvent> publisher = new Publisher<>();
 		final Subscriber<RetreiveEvent> subscriber = new Subscriber<RetreiveEvent>() {
 

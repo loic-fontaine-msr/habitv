@@ -78,4 +78,9 @@ public class PluzzPluginManager extends BasePluginWithProxy implements PluginPro
 
 	}
 
+	@Override
+	public DownloadableState canDownload(final String downloadInput) {
+		return DownloadableState.IMPOSSIBLE;
+	}
+
 }

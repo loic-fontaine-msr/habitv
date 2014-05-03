@@ -64,13 +64,7 @@ public class DownloadTask extends AbstractEpisodeTask {
 	@Override
 	protected Object doCall() throws DownloadFailedException {
 		final String outputFilename = TokenReplacer.replaceAll(downloaders.getDownloadOutput(), getEpisode());
-		final String outputTmpFileName;
-		if (!outputFilename.contains(".torrent")) {//FIXME garder ?
-			outputTmpFileName = outputFilename + ".tmp";
-		} else {
-			outputTmpFileName = outputFilename;
-		}
-		//
+		final String outputTmpFileName = outputFilename + ".tmp";
 		// delete to prevent resuming since most of the download can't resume
 		final File outputFile = new File(outputFilename);
 		// create download dir if doesn't exist

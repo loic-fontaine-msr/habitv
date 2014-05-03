@@ -59,13 +59,8 @@ public class Aria2PluginDownloader extends BaseUpdatablePlugin implements Plugin
 	}
 
 	@Override
-	protected String getLinuxDefaultBuildPath() {
-		return Aria2Conf.DEFAULT_LINUX_BIN_PATH;
-	}
-
-	@Override
-	protected String getWindowsDefaultBuildPath() {
-		return Aria2Conf.DEFAULT_WINDOWS_BIN_PATH;
+	protected String getWindowsDefaultExe() {
+		return Aria2Conf.DEFAULT_WINDOWS_EXE;
 	}
 
 	@Override
@@ -86,6 +81,11 @@ public class Aria2PluginDownloader extends BaseUpdatablePlugin implements Plugin
 	@Override
 	public void setProxies(final Map<ProtocolEnum, ProxyDTO> protocol2proxy) {
 		this.protocol2proxy = protocol2proxy;
+	}
+
+	@Override
+	public DownloadableState canDownload(final String downloadInput) {
+		return downloadInput.endsWith("torrent") ? DownloadableState.SPECIFIC : DownloadableState.IMPOSSIBLE;
 	}
 
 }

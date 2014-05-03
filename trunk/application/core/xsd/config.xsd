@@ -21,6 +21,8 @@
 					minOccurs="0" />
 				<element name="pluginDir" type="string" maxOccurs="1"
 					minOccurs="0" />
+				<element name="binDir" type="string" maxOccurs="1"
+					minOccurs="0" />					
 				<element name="downloadOuput" type="string" maxOccurs="1"
 					minOccurs="0">
 				</element>

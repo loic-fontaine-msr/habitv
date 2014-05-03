@@ -40,7 +40,7 @@ public class PluginManager {
 		pluginFactory = new PluginFactory(config.getPluginDir());
 
 		downloadersHolder = new DownloaderPluginHolder(config.getCmdProcessor(), pluginFactory.loadPlugins(PluginDownloaderInterface.class),
-				config.getDownloader(), config.getDownloadOuput(), config.getIndexDir());
+				config.getDownloader(), config.getDownloadOuput(), config.getIndexDir(), config.getBinDir());
 		providersHolder = new ProviderPluginHolder(pluginFactory.loadPlugins(PluginProviderInterface.class));
 		exportersHolder = new ExporterPluginHolder(pluginFactory.loadPlugins(PluginExporterInterface.class), config.getExporter());
 	}

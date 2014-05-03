@@ -216,4 +216,9 @@ public class BeinSportPluginManager extends BasePluginWithProxy implements Plugi
 		return ret;
 	}
 
+	@Override
+	public DownloadableState canDownload(final String downloadInput) {
+		return DownloadableState.IMPOSSIBLE;
+	}
+
 }

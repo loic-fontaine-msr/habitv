@@ -42,4 +42,10 @@ public interface FrameworkConf {
 
 	String UTF8 = "UTF-8";
 
+	String DEFAULT_DOWNLOADER = "curl";
+
+	String HTTP_PREFIX = "http://";
+
+	String FTP_PREFIX = "ftp://";
+
 }

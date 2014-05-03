@@ -102,9 +102,14 @@ public class DownloadTaskTest {
 
 				listener.listen("100");
 			}
+
+			@Override
+			public DownloadableState canDownload(final String downloadInput) {
+				return DownloadableState.IMPOSSIBLE;
+			}
 		};
 		final DownloaderPluginHolder downloader = new DownloaderPluginHolder(null, null, null,
-				"#EPISODE_NAME§20#_#CHANNEL_NAME#_#TVSHOW_NAME#_#EXTENSION#", "indexDir");
+				"#EPISODE_NAME§20#_#CHANNEL_NAME#_#TVSHOW_NAME#_#EXTENSION#", "indexDir","bin");
 		final Publisher<RetreiveEvent> publisher = new Publisher<>();
 		final Subscriber<RetreiveEvent> subscriber = new Subscriber<RetreiveEvent>() {
 
