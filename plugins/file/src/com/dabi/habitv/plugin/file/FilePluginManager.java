@@ -40,7 +40,7 @@ public class FilePluginManager extends BasePluginWithProxy implements
 			if (category.getParameter(FileConf.DELETE_LOADED_EP) == null
 					|| Boolean.parseBoolean(category
 							.getParameter(FileConf.DELETE_LOADED_EP))) {
-				emptyFile(file);
+				file.renameTo(new File(category.getId() + ".done"));
 			}
 		} else {
 			emptyFile(file);
