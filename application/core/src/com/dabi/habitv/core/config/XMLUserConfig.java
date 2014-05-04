@@ -6,13 +6,16 @@ import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.PropertyException;
 import javax.xml.bind.Unmarshaller;
 
 import com.dabi.habitv.api.plugin.dto.ExportDTO;
@@ -22,13 +25,30 @@ import com.dabi.habitv.api.plugin.exception.TechnicalException;
 import com.dabi.habitv.config.entities.Config;
 import com.dabi.habitv.config.entities.Downloader;
 import com.dabi.habitv.config.entities.Exporter;
-import com.dabi.habitv.config.entities.ObjectFactory;
 import com.dabi.habitv.config.entities.Proxy;
 import com.dabi.habitv.config.entities.TaskDefinition;
+import com.dabi.habitv.configuration.entities.ConditionType;
+import com.dabi.habitv.configuration.entities.Configuration;
+import com.dabi.habitv.configuration.entities.Configuration.DirConfig;
+import com.dabi.habitv.configuration.entities.Configuration.DownloadConfig;
+import com.dabi.habitv.configuration.entities.Configuration.DownloadConfig.Downloaders;
+import com.dabi.habitv.configuration.entities.Configuration.ExportConfig;
+import com.dabi.habitv.configuration.entities.Configuration.ExportConfig.Exporters;
+import com.dabi.habitv.configuration.entities.Configuration.OsConfig;
+import com.dabi.habitv.configuration.entities.Configuration.Proxies;
+import com.dabi.habitv.configuration.entities.Configuration.UpdateConfig;
+import com.dabi.habitv.configuration.entities.Exporter.Subexporters;
+import com.dabi.habitv.configuration.entities.ObjectFactory;
+import com.dabi.habitv.configuration.entities.PluginSupport;
 import com.dabi.habitv.framework.plugin.utils.OSUtils;
 import com.dabi.habitv.utils.FileUtils;
+import com.dabi.habitv.utils.XMLUtils;
 
 public class XMLUserConfig implements UserConfig {
+
+	private static final int DEFAULT_MAX_ATTEMPTS = 5;
+
+	private static final int DEFAULT_CHECK_TIME = 1800;
 
 	private static final String DEFAULT_PLUGIN_DIR = "plugins";
 
@@ -42,65 +62,256 @@ public class XMLUserConfig implements UserConfig {
 
 	private static final String DEFAULT_BIN_DIR = "bin";
 
-	private final Config config;
+	private final Configuration config;
 
-	private XMLUserConfig(final Config config) {
+	private XMLUserConfig(final Configuration config) {
 		super();
 		this.config = config;
 	}
 
 	public static final String GRAB_CONF_FILE = "grabconfig.xml";
 
-	public static final String CONF_FILE = "config.xml";
+	static final String OLD_CONF_FILE = "config.xml";
 
-	private static final String CONF_XSD = "config.xsd";
+	private static final String OLD_CONF_XSD = "config.xsd";
 
+	static final String CONF_FILE = "configuration.xml";
+
+	public static final String CONF_XSD = "configuration.xsd";
+
+	private static final boolean DEFAULT_UPDATE_ON_STARTUP = true;
+
+	private static final Boolean DEFAULT_AUTORISE_SNAPSHOT = false;
 
 	public static UserConfig initConfig() {
-		Config config;
-		final JAXBContext jaxbContext;
+		Configuration config;
 		try {
+			final File oldConfFile = new File(OLD_CONF_FILE);
 			final File confFile = new File(CONF_FILE);
-			if (!confFile.exists()) {
-				config = buildConfigFile(confFile);
+			if (oldConfFile.exists()) {
+				Config oldConfig = readOldConfig(oldConfFile);
+				oldConfFile.delete();
+				config = convertOldConfig(oldConfig);
+				saveConfig(confFile, config);
 			} else {
-				jaxbContext = JAXBContext.newInstance(Config.class.getPackage().getName());
-				final Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-				FileUtils.setValidation(unmarshaller, CONF_XSD);
-				config = (Config) unmarshaller.unmarshal(new InputStreamReader(new FileInputStream(confFile), HabitTvConf.ENCODING));
+				if (!confFile.exists()) {
+					config = buildConfigFile(confFile);
+					saveConfig(confFile, config);
+				} else {
+					config = readConfig(oldConfFile);
+				}
 			}
-		} catch (JAXBException | UnsupportedEncodingException | FileNotFoundException e) {
+
+		} catch (JAXBException | UnsupportedEncodingException
+				| FileNotFoundException e) {
 			throw new TechnicalException(e);
 		}
 		return new XMLUserConfig(config);
 	}
 
-	private static Config buildConfigFile(final File file) throws JAXBException {
-		final Config config = buildDefaultConfig();
-		if (!OSUtils.isWindows()) {
-			config.setCmdProcessor("/bin/bash -c #CMD#");
+	private static Configuration convertOldConfig(Config oldConfig) {
+		final Configuration config = buildDefaultConfig();
+
+		buildConfigDirFromOldConfig(oldConfig, config);
+		buildDownloadConfig(oldConfig, config);
+		buildExportConfig(oldConfig, config);
+		buildOsConfig(oldConfig, config);
+		buildProxies(oldConfig, config);
+		buildTaskDefinition(oldConfig, config);
+		buildUpdateConfig(oldConfig, config);
+
+		return config;
+	}
+
+	private static void buildUpdateConfig(Config oldConfig,
+			final Configuration config) {
+		UpdateConfig updateConfig = new UpdateConfig();
+		updateConfig.setAutoriseSnapshot(DEFAULT_AUTORISE_SNAPSHOT);
+		updateConfig.setUpdateOnStartup(DEFAULT_UPDATE_ON_STARTUP);
+		config.setUpdateConfig(updateConfig);
+	}
+
+	private static void buildTaskDefinition(Config oldConfig,
+			final Configuration config) {
+		com.dabi.habitv.configuration.entities.Configuration.TaskDefinition taskDefinition = new com.dabi.habitv.configuration.entities.Configuration.TaskDefinition();
+		for (TaskDefinition oldTaskDefinition : oldConfig.getTaskDefinition()) {
+			taskDefinition.getAny().add(
+					XMLUtils.buildAnyElement(oldTaskDefinition.getTaskName(),
+							oldTaskDefinition.getSize() + ""));
+		}
+		config.setTaskDefinition(taskDefinition);
+	}
+
+	private static void buildProxies(Config oldConfig,
+			final Configuration config) {
+		Proxies proxies = new Proxies();
+		for (Proxy oldProxy : oldConfig.getProxy()) {
+			proxies.getProxy().add(buildProxy(oldProxy));
+		}
+		config.setProxies(proxies);
+	}
+
+	private static com.dabi.habitv.configuration.entities.Proxy buildProxy(
+			Proxy oldProxy) {
+		com.dabi.habitv.configuration.entities.Proxy proxy = new com.dabi.habitv.configuration.entities.Proxy();
+
+		proxy.setHost(oldProxy.getHost());
+		PluginSupport pluginSupport = new PluginSupport();
+		for (String oldProxyPlugin : oldProxy.getPluginSupport().getPlugin()) {
+			pluginSupport.getPlugin().add(oldProxyPlugin);
+		}
+		proxy.setPluginSupport(pluginSupport);
+		proxy.setPort(oldProxy.getPort());
+		proxy.setProtocol(oldProxy.getProtocol());
+
+		return proxy;
+	}
+
+	private static void buildOsConfig(Config oldConfig,
+			final Configuration config) {
+		OsConfig osConfig = new OsConfig();
+		osConfig.setCmdProcessor(oldConfig.getCmdProcessor());
+		config.setOsConfig(osConfig);
+	}
+
+	private static void buildExportConfig(Config oldConfig,
+			final Configuration config) {
+		ExportConfig exportConfig = new ExportConfig();
+		Exporters exporters = new Exporters();
+		for (Exporter oldExporter : oldConfig.getExporter()) {
+			exporters.getExporter().add(buildExporter(oldExporter));
+		}
+		exportConfig.setExporters(exporters);
+		config.setExportConfig(exportConfig);
+	}
+
+	private static com.dabi.habitv.configuration.entities.Exporter buildExporter(
+			Exporter oldExporter) {
+		com.dabi.habitv.configuration.entities.Exporter exporter = new com.dabi.habitv.configuration.entities.Exporter();
+		exporter.setCommand(oldExporter.getCmd());
+		ConditionType conditionType = new ConditionType();
+		conditionType.setPattern(oldExporter.getCondition().getPattern());
+		conditionType.setReference(oldExporter.getCondition().getReference());
+		exporter.setCondition(conditionType);
+		exporter.setId(oldExporter.getName());
+		exporter.setLabel(oldExporter.getOutput());
+		Subexporters subexporters = new Subexporters();
+		for (Exporter oldSubExporter : oldExporter.getExporter()) {
+			subexporters.getExporter().add(buildExporter(oldSubExporter));
+		}
+		exporter.setSubexporters(subexporters);
+		return exporter;
+	}
+
+	private static void buildDownloadConfig(Config oldConfig,
+			final Configuration config) {
+		DownloadConfig downloadConfig = new DownloadConfig();
+		downloadConfig
+				.setDemonCheckTime(oldConfig.getDemonTime() == null ? DEFAULT_DEMON_TIME_SEC
+						: oldConfig.getDemonTime());
+		downloadConfig
+				.setDownloadOuput(oldConfig.getDownloadOuput() == null ? DEFAULT_DL_OUTPUT
+						: oldConfig.getDownloadOuput());
+		downloadConfig
+				.setFileNameCutSize(oldConfig.getFileNameCutSize() == null ? DEFAULT_CUT_SIZE
+						: oldConfig.getFileNameCutSize());
+		downloadConfig.setMaxAttempts(oldConfig.getMaxAttempts());
+
+		Downloaders downloaders = new Downloaders();
+		for (Downloader oldDownloader : oldConfig.getDownloader()) {
+			downloaders.getAny().add(
+					XMLUtils.buildAnyElement(oldDownloader.getName(),
+							oldDownloader.getBinPath()));
 		}
 
-		final JAXBContext jaxbContext = JAXBContext.newInstance(Config.class.getPackage().getName());
+		downloadConfig.setDownloaders(downloaders);
+		config.setDownloadConfig(downloadConfig);
+	}
+
+	private static void buildConfigDirFromOldConfig(Config oldConfig,
+			final Configuration config) {
+		DirConfig dirConfig = new DirConfig();
+		dirConfig.setBinDir(DEFAULT_BIN_DIR);
+		dirConfig
+				.setIndexDir(oldConfig.getIndexDir() == null ? DEFAULT_INDEX_DIR
+						: oldConfig.getIndexDir());
+		dirConfig.setPluginDir(DEFAULT_PLUGIN_DIR);
+		config.setDirConfig(dirConfig);
+	}
+
+	@SuppressWarnings("unchecked")
+	private static Config readOldConfig(final File confFile)
+			throws JAXBException, UnsupportedEncodingException,
+			FileNotFoundException {
+		Config config;
+		final JAXBContext jaxbContext;
+		jaxbContext = JAXBContext.newInstance(Config.class.getPackage()
+				.getName());
+		final Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+		FileUtils.setValidation(unmarshaller, OLD_CONF_XSD);
+		config = ((JAXBElement<Config>) unmarshaller
+				.unmarshal(new InputStreamReader(new FileInputStream(confFile),
+						HabitTvConf.ENCODING))).getValue();
+		return config;
+	}
+
+	private static Configuration readConfig(final File confFile)
+			throws JAXBException, UnsupportedEncodingException,
+			FileNotFoundException {
+		Configuration config;
+		final JAXBContext jaxbContext;
+		jaxbContext = JAXBContext.newInstance(Config.class.getPackage()
+				.getName());
+		final Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+		FileUtils.setValidation(unmarshaller, CONF_XSD);
+		config = (Configuration) unmarshaller.unmarshal(new InputStreamReader(
+				new FileInputStream(confFile), HabitTvConf.ENCODING));
+		return config;
+	}
+
+	private static Configuration buildConfigFile(final File file)
+			throws JAXBException {
+		final Configuration config = buildDefaultConfig();
+		if (!OSUtils.isWindows()) {
+			OsConfig osConfig = new OsConfig();
+			osConfig.setCmdProcessor("/bin/bash -c #CMD#");
+			config.setOsConfig(osConfig);
+		}
+
+		return config;
+	}
+
+	private static void saveConfig(final File file, final Configuration config)
+			throws JAXBException, PropertyException {
+		final JAXBContext jaxbContext = JAXBContext
+				.newInstance(Configuration.class.getPackage().getName());
 		final Marshaller marshaller = jaxbContext.createMarshaller();
 		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
 		FileUtils.setValidation(marshaller, CONF_XSD);
 		marshaller.marshal(config, file);
-		return config;
 	}
 
-	private static Config buildDefaultConfig() {
-		final Config config = (new ObjectFactory()).createConfig();
-		config.setDemonTime(1800);
-		config.setDownloadOuput(DEFAULT_DL_OUTPUT);
-		config.setUpdateOnStartup(true);
-		config.setMaxAttempts(5);
+	private static Configuration buildDefaultConfig() {
+		final Configuration config = (new ObjectFactory())
+				.createConfiguration();
+
+		DownloadConfig downloadConfig = new DownloadConfig();
+		config.setDownloadConfig(downloadConfig);
+		downloadConfig.setDemonCheckTime(DEFAULT_CHECK_TIME);
+		downloadConfig.setDownloadOuput(DEFAULT_DL_OUTPUT);
+		downloadConfig.setMaxAttempts(DEFAULT_MAX_ATTEMPTS);
+
+		UpdateConfig updateConfig = new UpdateConfig();
+		updateConfig.setAutoriseSnapshot(DEFAULT_UPDATE_ON_STARTUP);
+		config.setUpdateConfig(updateConfig);
 		return config;
 	}
 
 	@Override
 	public String getPluginDir() {
-		return config.getPluginDir() == null ? DEFAULT_PLUGIN_DIR : config.getPluginDir();
+		return config.getDirConfig() == null
+				|| config.getDirConfig().getPluginDir() == null ? DEFAULT_PLUGIN_DIR
+				: config.getDirConfig().getPluginDir();
 	}
 
 	@Override
@@ -108,35 +319,42 @@ public class XMLUserConfig implements UserConfig {
 		return buildTaskName2PoolSizeMap(config.getTaskDefinition());
 	}
 
-	private Map<String, Integer> buildTaskName2PoolSizeMap(final List<TaskDefinition> taskList) {
+	private Map<String, Integer> buildTaskName2PoolSizeMap(
+			final com.dabi.habitv.configuration.entities.Configuration.TaskDefinition taskDefinition) {
 		final Map<String, Integer> taskName2PoolSizeMap = new HashMap<>();
-		for (final TaskDefinition taskDefinition : taskList) {
-			taskName2PoolSizeMap.put(taskDefinition.getTaskName(), taskDefinition.getSize());
+		for (final Object taskDef : taskDefinition.getAny()) {
+			taskName2PoolSizeMap.put(XMLUtils.getTagName(taskDef),
+					Integer.parseInt(XMLUtils.getTagValue(taskDef)));
 		}
 		return taskName2PoolSizeMap;
 	}
 
 	@Override
 	public Integer getFileNameCutSize() {
-		if (config.getFileNameCutSize() == null) {
+		if (config.getDownloadConfig() == null
+				|| config.getDownloadConfig().getFileNameCutSize() == null) {
 			return DEFAULT_CUT_SIZE;
 		} else {
-			return config.getFileNameCutSize();
+			return config.getDownloadConfig().getFileNameCutSize();
 		}
 	}
 
 	@Override
 	public Map<String, Map<ProtocolEnum, ProxyDTO>> getProxy() {
-		return buildProxyMap(config.getProxy());
+		return buildProxyMap(config.getProxies());
 	}
 
-	private Map<String, Map<ProtocolEnum, ProxyDTO>> buildProxyMap(final List<Proxy> configProxyList) {
+	private Map<String, Map<ProtocolEnum, ProxyDTO>> buildProxyMap(
+			final Proxies proxies) {
 		final Map<String, Map<ProxyDTO.ProtocolEnum, ProxyDTO>> plugin2protocol2proxy = new HashMap<>();
-		if (configProxyList != null && !configProxyList.isEmpty()) {
-			for (final Proxy proxy : configProxyList) {
+		if (proxies != null && !proxies.getProxy().isEmpty()) {
+			for (final com.dabi.habitv.configuration.entities.Proxy proxy : proxies
+					.getProxy()) {
 				if (proxy.getPluginSupport() != null) {
-					for (final String plugin : proxy.getPluginSupport().getPlugin()) {
-						setProxyByPluginName(proxy, plugin, plugin2protocol2proxy);
+					for (final String plugin : proxy.getPluginSupport()
+							.getPlugin()) {
+						setProxyByPluginName(proxy, plugin,
+								plugin2protocol2proxy);
 					}
 				} else {
 					// default proxy
@@ -147,55 +365,79 @@ public class XMLUserConfig implements UserConfig {
 		return plugin2protocol2proxy;
 	}
 
-	private void setProxyByPluginName(final Proxy proxy, final String plugin, final Map<String, Map<ProtocolEnum, ProxyDTO>> plugin2protocol2proxy) {
+	private void setProxyByPluginName(
+			final com.dabi.habitv.configuration.entities.Proxy proxy,
+			final String plugin,
+			final Map<String, Map<ProtocolEnum, ProxyDTO>> plugin2protocol2proxy) {
 		Map<ProxyDTO.ProtocolEnum, ProxyDTO> protocol2Proxy;
 		protocol2Proxy = plugin2protocol2proxy.get(plugin);
 		if (protocol2Proxy == null) {
 			protocol2Proxy = new HashMap<>();
 			plugin2protocol2proxy.put(plugin, protocol2Proxy);
 		}
-		protocol2Proxy.put(ProxyDTO.ProtocolEnum.valueOf(proxy.getProtocol()), new ProxyDTO(proxy.getHost(), proxy.getPort()));
+		protocol2Proxy.put(ProxyDTO.ProtocolEnum.valueOf(proxy.getProtocol()),
+				new ProxyDTO(proxy.getHost(), proxy.getPort()));
 	}
 
 	@Override
 	public String getCmdProcessor() {
-		return config.getCmdProcessor();
+		return config.getOsConfig() == null ? null : config.getOsConfig()
+				.getCmdProcessor();
 	}
 
 	@Override
 	public Map<String, String> getDownloader() {
-		return buildDownloadersBinPath(config.getDownloader());
+		return buildDownloadersBinPath(config.getDownloadConfig()
+				.getDownloaders());
 	}
 
-	private Map<String, String> buildDownloadersBinPath(final List<Downloader> downloaders) {
-		final Map<String, String> downloaderName2BinPath = new HashMap<>(downloaders.size());
-		for (final Downloader downloader : downloaders) {
-			downloaderName2BinPath.put(downloader.getName(), downloader.getBinPath());
+	private Map<String, String> buildDownloadersBinPath(
+			final Downloaders downloaders) {
+		final Map<String, String> downloaderName2BinPath = new HashMap<>();
+		if (downloaders != null) {
+			for (final Object downloader : downloaders.getAny()) {
+				downloaderName2BinPath.put(XMLUtils.getTagName(downloader),
+						XMLUtils.getTagValue(downloader));
+			}
 		}
 		return downloaderName2BinPath;
 	}
 
 	@Override
 	public String getIndexDir() {
-		return config.getIndexDir() == null ? DEFAULT_INDEX_DIR : config.getIndexDir();
+		return config.getDirConfig() == null
+				|| config.getDirConfig().getIndexDir() == null ? DEFAULT_INDEX_DIR
+				: config.getDirConfig().getIndexDir();
 	}
 
 	@Override
 	public String getDownloadOuput() {
-		return config.getDownloadOuput() == null ? DEFAULT_DL_OUTPUT : config.getDownloadOuput();
+		return config.getDownloadConfig() == null
+				|| config.getDownloadConfig().getDownloadOuput() == null ? DEFAULT_DL_OUTPUT
+				: config.getDownloadConfig().getDownloadOuput();
 	}
 
 	@Override
 	public List<ExportDTO> getExporter() {
-		return buildExporterListDTO(config.getExporter());
+		return buildExporterListDTO(config.getExportConfig());
 	}
 
-	private List<ExportDTO> buildExporterListDTO(final List<Exporter> exporterList) {
-		final List<ExportDTO> exportDTOList = new ArrayList<>(exporterList.size());
+	private List<ExportDTO> buildExporterListDTO(final ExportConfig exportConfig) {
+		if (exportConfig != null && exportConfig.getExporters() != null) {
+			return buildExporterListDTO(exportConfig.getExporters()
+					.getExporter());
+		} else {
+			return Collections.emptyList();
+		}
+	}
+
+	private List<ExportDTO> buildExporterListDTO(
+			final List<com.dabi.habitv.configuration.entities.Exporter> exporters) {
+		final List<ExportDTO> exportDTOList = new ArrayList<>();
 		ExportDTO exportDTO;
 		String reference;
 		String pattern;
-		for (final Exporter exporter : exporterList) {
+		for (final com.dabi.habitv.configuration.entities.Exporter exporter : exporters) {
 
 			if (exporter.getCondition() != null) {
 				reference = exporter.getCondition().getReference();
@@ -204,8 +446,10 @@ public class XMLUserConfig implements UserConfig {
 				reference = null;
 				pattern = null;
 			}
-			exportDTO = new ExportDTO(reference, pattern, exporter.getName(), exporter.getOutput(), config.getCmdProcessor(), exporter.getCmd(),
-					buildExporterListDTO(exporter.getExporter()));
+			exportDTO = new ExportDTO(reference, pattern, exporter.getId(),
+					exporter.getLabel(), getCmdProcessor(),
+					exporter.getCommand(), buildExporterListDTO(exporter
+							.getSubexporters().getExporter()));
 			exportDTOList.add(exportDTO);
 		}
 		return exportDTOList;
@@ -213,31 +457,39 @@ public class XMLUserConfig implements UserConfig {
 
 	@Override
 	public Integer getMaxAttempts() {
-		return config.getMaxAttempts();
+		return config.getDownloadConfig() == null ? null : config
+				.getDownloadConfig().getMaxAttempts();
 	}
 
 	@Override
 	public Integer getDemonTime() {
-		if (config.getDemonTime() == null) {
+		if (config.getDownloadConfig() == null
+				|| config.getDownloadConfig().getDemonCheckTime() == null) {
 			return DEFAULT_DEMON_TIME_SEC;
 		} else {
-			return config.getDemonTime();
+			return config.getDownloadConfig().getDemonCheckTime();
 		}
 	}
 
 	@Override
 	public boolean updateOnStartup() {
-		return config.getUpdateOnStartup() == null ? true : config.getUpdateOnStartup();
+		return config.getUpdateConfig() == null
+				|| config.getUpdateConfig().getUpdateOnStartup() == null ? true
+				: config.getUpdateConfig().getUpdateOnStartup();
 	}
 
 	@Override
 	public boolean autoriseSnapshot() {
-		return config.getAutoriseSnapshot() == null ? false : config.getAutoriseSnapshot();
+		return config.getUpdateConfig() == null
+				|| config.getUpdateConfig().getAutoriseSnapshot() == null ? false
+				: config.getUpdateConfig().getAutoriseSnapshot();
 	}
 
 	@Override
 	public String getBinDir() {
-		return config.getBinDir() == null ? DEFAULT_BIN_DIR : config.getBinDir();
+		return config.getDirConfig() == null
+				|| config.getDirConfig().getBinDir() == null ? DEFAULT_BIN_DIR
+				: config.getDirConfig().getBinDir();
 	}
 
 }

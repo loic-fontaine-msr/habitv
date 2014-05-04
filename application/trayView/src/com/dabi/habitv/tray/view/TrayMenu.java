@@ -198,7 +198,7 @@ public final class TrayMenu extends PopupMenu {
 	}
 
 	public void openConfig() {
-		open(XMLUserConfig.CONF_FILE);
+		open(XMLUserConfig.OLD_CONF_FILE);
 	}
 
 	public void openGrabConfig() {
