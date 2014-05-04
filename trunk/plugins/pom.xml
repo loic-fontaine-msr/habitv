@@ -27,5 +27,6 @@
 		<module>beinsport</module>
 		<module>arte</module>
 		<module>nrj12</module>
+		<module>file</module>		
 	</modules>
 </project>

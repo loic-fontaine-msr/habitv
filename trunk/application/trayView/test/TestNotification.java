@@ -47,6 +47,8 @@ public class TestNotification {
 		constraints.fill = GridBagConstraints.NONE;
 		constraints.anchor = GridBagConstraints.NORTH;
 		final JButton cloesButton = new JButton(new AbstractAction("x") {
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public void actionPerformed(final ActionEvent e) {
 				frame.dispose();

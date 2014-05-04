@@ -75,7 +75,7 @@ public class XMLUserConfig implements UserConfig {
 
 	private static final String OLD_CONF_XSD = "config.xsd";
 
-	static final String CONF_FILE = "configuration.xml";
+	public static final String CONF_FILE = "configuration.xml";
 
 	public static final String CONF_XSD = "configuration.xsd";
 

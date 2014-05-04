@@ -30,7 +30,7 @@ import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
 import com.dabi.habitv.api.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.api.plugin.holder.DownloaderPluginHolder;
 import com.dabi.habitv.framework.FrameworkConf;
-import com.dabi.habitv.framework.plugin.utils.FileUtils;
+import com.dabi.habitv.plugin.file.FilePluginManager;
 import com.dabi.habitv.plugin.rss.RSSPluginManager;
 import com.dabi.habitv.provider.arte.ArtePluginManager;
 import com.dabi.habitv.provider.beinsport.BeinSportPluginManager;
@@ -129,6 +129,20 @@ public class PluginProviderDownloaderTester {
 		testPluginProvider(plugin, true);
 	}
 
+	@Test
+	public final void testProviderFile() throws InstantiationException, IllegalAccessException, DownloadFailedException {
+		final FilePluginManager plugin = new FilePluginManager() {
+
+			@Override
+			public Set<CategoryDTO> findCategory() {
+				checkCategories(super.findCategory());
+				return new HashSet<>(Arrays.asList(new CategoryDTO("file", "testFile", "testFile.txt",
+						FrameworkConf.MP4)));
+			}
+		};
+		testPluginProvider(plugin, true);
+	}
+	
 	private void testPluginProvider(final Class<? extends PluginProviderInterface> prDlPluginClass, final boolean episodeOnlyOnLeaf)
 			throws InstantiationException, IllegalAccessException, DownloadFailedException {
 		final PluginProviderInterface plugin = prDlPluginClass.newInstance();
@@ -198,7 +212,7 @@ public class PluginProviderDownloaderTester {
 	}
 
 	private DownloadParamDTO buildDownloadersHolder(final EpisodeDTO episode) {
-		return new DownloadParamDTO(episode.getId(), FileUtils.sanitizeFilename(episode.getName()), episode.getCategory().getExtension());
+		return new DownloadParamDTO(episode.getId(), episode.getName(), episode.getCategory().getExtension());
 	}
 
 	private int getRandomIndex(final Collection<?> collection) {
