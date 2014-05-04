@@ -2,7 +2,6 @@ package com.dabi.habitv.plugin.rss;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -20,7 +19,8 @@ import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.SyndFeedInput;
 import com.sun.syndication.io.XmlReader;
 
-public class RSSPluginManager extends BasePluginWithProxy implements PluginProviderInterface {
+public class RSSPluginManager extends BasePluginWithProxy implements
+		PluginProviderInterface {
 
 	private static final int MIN_TITLE_SIZE = 5;
 
@@ -29,7 +29,8 @@ public class RSSPluginManager extends BasePluginWithProxy implements PluginProvi
 		final Set<EpisodeDTO> episodeList;
 		try {
 			final SyndFeedInput input = new SyndFeedInput();
-			final SyndFeed feed = input.build(new XmlReader(getInputStreamFromUrl(category.getId())));
+			final SyndFeed feed = input.build(new XmlReader(
+					getInputStreamFromUrl(category.getId())));
 			episodeList = convertFeedToEpisodeList(feed, category);
 		} catch (IllegalArgumentException | FeedException | IOException e) {
 			throw new TechnicalException(e);
@@ -40,12 +41,12 @@ public class RSSPluginManager extends BasePluginWithProxy implements PluginProvi
 	@Override
 	public Set<CategoryDTO> findCategory() {
 		final Set<CategoryDTO> categoryList = new HashSet<>();
-		final List<String> include = new ArrayList<String>(1);
-		include.add("Add include pattern");
-		final List<String> exclude = new ArrayList<String>(1);
-		exclude.add("Add exclude pattern");
-		final CategoryDTO categoryDTO = new CategoryDTO(RSSConf.NAME, "Set RSS Label Here", "Set RSS Url Here", include, exclude, "Set files extension Here");
-		categoryDTO.addParameter(FrameworkConf.DOWNLOADER_PARAM, "Set the downloader here  :aria2, youtube, rtmpdump (default aria2)");
+		final CategoryDTO categoryDTO = new CategoryDTO(RSSConf.NAME,
+				"Set RSS Label Here", "Set RSS Url Here", null, null,
+				"Set files extension Here");
+		categoryDTO
+				.addParameter(FrameworkConf.DOWNLOADER_PARAM,
+						"Set the downloader here  :aria2, youtube, rtmpdump (default aria2)");
 		categoryList.add(categoryDTO);
 		return categoryList;
 	}
@@ -55,7 +56,8 @@ public class RSSPluginManager extends BasePluginWithProxy implements PluginProvi
 		return RSSConf.NAME;
 	}
 
-	private static Set<EpisodeDTO> convertFeedToEpisodeList(final SyndFeed feed, final CategoryDTO category) {
+	private static Set<EpisodeDTO> convertFeedToEpisodeList(
+			final SyndFeed feed, final CategoryDTO category) {
 		final Set<EpisodeDTO> episodeList = new HashSet<EpisodeDTO>();
 		final List<?> entries = feed.getEntries();
 		if (!entries.isEmpty()) {
@@ -69,9 +71,14 @@ public class RSSPluginManager extends BasePluginWithProxy implements PluginProvi
 					url = entry.getLink();
 				}
 
-				String safeTtitle = entry.getTitle().replaceAll("[^\\x00-\\x7F]", "").trim();
-				if (safeTtitle.length() <= 5 && entry.getTitle().length() >= MIN_TITLE_SIZE) {
-					safeTtitle = entry.getAuthor() + "-" + (new SimpleDateFormat("yyyyMMddHHmmss").format(entry.getPublishedDate()));
+				String safeTtitle = entry.getTitle()
+						.replaceAll("[^\\x00-\\x7F]", "").trim();
+				if (safeTtitle.length() <= 5
+						&& entry.getTitle().length() >= MIN_TITLE_SIZE) {
+					safeTtitle = entry.getAuthor()
+							+ "-"
+							+ (new SimpleDateFormat("yyyyMMddHHmmss")
+									.format(entry.getPublishedDate()));
 				}
 				episodeList.add(new EpisodeDTO(category, safeTtitle, url));
 			}

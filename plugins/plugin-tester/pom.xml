@@ -102,6 +102,11 @@
 		</dependency>
 		<dependency>
 			<groupId>com.dabi.habitv</groupId>
+			<artifactId>file</artifactId>
+			<version>${project.version}</version>
+		</dependency>		
+		<dependency>
+			<groupId>com.dabi.habitv</groupId>
 			<artifactId>rtmpDump</artifactId>
 			<version>${project.version}</version>
 		</dependency>
