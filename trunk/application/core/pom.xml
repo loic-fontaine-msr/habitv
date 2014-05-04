@@ -59,6 +59,20 @@
 						</configuration>
 					</execution>
 					<execution>
+						<id>configuration</id>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<generatePackage>com.dabi.habitv.configuration.entities</generatePackage>
+							<schemaDirectory>xsd</schemaDirectory>
+							<generateDirectory>generated</generateDirectory>
+							<includeSchemas>
+								<includeSchema>configuration.xsd</includeSchema>
+							</includeSchemas>
+						</configuration>
+					</execution>					
+					<execution>
 						<id>grabconfig</id>
 						<goals>
 							<goal>generate</goal>
