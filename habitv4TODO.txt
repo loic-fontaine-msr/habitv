@@ -21,17 +21,8 @@ http get header.title
                 <key>downloader</key>
                 <value>youtube</value>
             </parameter>
-
-"(org.w3c.dom.Node)	
-
-			grabConfig.getChannels().getChannel().get(0).getCategories().getCategory().get(0).getConfiguration().getAny().get(0)			
-((org.w3c.dom.Node) grabConfig.getChannels().getChannel().get(0).getCategories().getCategory().get(0).getConfiguration().getAny().get(0)).getLocalName()			
-((org.w3c.dom.Node) grabConfig.getChannels().getChannel().get(0).getCategories().getCategory().get(0).getConfiguration().getAny().get(0)).getTextContent()
 			
 lien de téléchargement fixe PHP
-
-pas d'ordre dans config
-convertisseur de fichier
 
 repasser sur tous les plugins pour gérer le dl par url web
 
