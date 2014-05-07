@@ -12,7 +12,8 @@ public class DownloadParamDTO {
 
 	private final Map<String, String> params = new HashMap<>();
 
-	public DownloadParamDTO(final String downloadInput, final String downloadOutput, final String extension) {
+	public DownloadParamDTO(final String downloadInput,
+			final String downloadOutput, final String extension) {
 		super();
 		this.downloadInput = downloadInput;
 		this.downloadOutput = downloadOutput;
@@ -43,16 +44,19 @@ public class DownloadParamDTO {
 		return params;
 	}
 
-	public static DownloadParamDTO buildDownloadParam(final DownloadParamDTO downloadParam, final String downloadInput) {
-		final DownloadParamDTO downloadParamDTO = new DownloadParamDTO(downloadInput, downloadParam.getDownloadOutput(), downloadParam.getExtension());
+	public static DownloadParamDTO buildDownloadParam(
+			final DownloadParamDTO downloadParam, final String downloadInput) {
+		final DownloadParamDTO downloadParamDTO = new DownloadParamDTO(
+				downloadInput, downloadParam.getDownloadOutput(),
+				downloadParam.getExtension());
 		downloadParamDTO.getParams().putAll(downloadParam.getParams());
 		return downloadParamDTO;
 	}
 
 	@Override
 	public String toString() {
-		return "DownloadParamDTO [downloadInput=" + downloadInput + ", downloadOutput=" + downloadOutput + ", extension=" + extension + ", params=" + params
-				+ "]";
+		return "DownloadParamDTO [downloadInput=" + downloadInput
+				+ ", downloadOutput=" + downloadOutput + ", extension="
+				+ extension + ", params=" + params + "]";
 	}
-
 }
