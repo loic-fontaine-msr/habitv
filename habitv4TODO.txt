@@ -1,24 +1,27 @@
-tester torrent
-
 tester linux
-			
-lien de téléchargement fixe PHP
 
-repasser sur tous les plugins pour gérer le dl par url web
+repasser sur tous les plugins pour gérer le dl par url web, téléchargement manuel
+préférence vue en conf
 
 francetvinfo
 
 clubic
 
-api fixe
+correction arte rs 500 -> search
 
 plugin tf1
 
+test automatisation des dl
+
 français/anglais
+
+tester torrent
 
 IHM sélection des catégories
 
 IHM suivi des téléchargements
+
+doc
 
 nouveau tray
 

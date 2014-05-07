@@ -127,7 +127,7 @@ public abstract class Updater {
 	}
 
 	/**
-	 * FIXME implémenter un vrai téléchargeur Cette méthode télécharge un
+	 * Cette méthode télécharge un
 	 * fichier sur internet et le stocke en local
 	 * 
 	 * @param filePath
