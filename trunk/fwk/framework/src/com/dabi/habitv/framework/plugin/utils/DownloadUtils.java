@@ -13,27 +13,46 @@ import com.dabi.habitv.framework.FrameworkConf;
 
 public class DownloadUtils {
 
-	public static void download(final DownloadParamDTO downloadParam, final DownloaderPluginHolder downloaders, final CmdProgressionListener listener)
+	public static void download(final DownloadParamDTO downloadParam,
+			final DownloaderPluginHolder downloaders,
+			final CmdProgressionListener listener)
 			throws DownloadFailedException {
-		final String downloaderName = downloadParam.getParam(FrameworkConf.DOWNLOADER_PARAM);
-		if (downloaderName == null) {
-			final PluginDownloaderInterface downloader = findDownloaderByUrl(downloaders, downloadParam.getDownloadInput());
-			downloader.download(downloadParam, downloaders, listener);
-		} else {
-			download(downloadParam, downloaders, listener, downloaderName);
-		}
+		final PluginDownloaderInterface downloader = getDownloader(
+				downloadParam, downloaders);
+		downloader.download(downloadParam, downloaders, listener);
 	}
 
-	public static void download(final DownloadParamDTO downloadParam, final DownloaderPluginHolder downloaders, final CmdProgressionListener listener,
-			final String downloaderName) throws DownloadFailedException {
-		final PluginDownloaderInterface pluginDownloader = downloaders.getPlugin(downloaderName);
+	public static PluginDownloaderInterface getDownloader(
+			final DownloadParamDTO downloadParam,
+			final DownloaderPluginHolder downloaders) {
+		final String downloaderName = downloadParam
+				.getParam(FrameworkConf.DOWNLOADER_PARAM);
+		final PluginDownloaderInterface downloader;
+		if (downloaderName == null) {
+			downloader = findDownloaderByUrl(downloaders,
+					downloadParam.getDownloadInput());
+		} else {
+			downloader = downloaders.getPlugin(downloaderName);
+		}
+		return downloader;
+	}
+
+	public static void download(final DownloadParamDTO downloadParam,
+			final DownloaderPluginHolder downloaders,
+			final CmdProgressionListener listener, final String downloaderName)
+			throws DownloadFailedException {
+		final PluginDownloaderInterface pluginDownloader = downloaders
+				.getPlugin(downloaderName);
 		pluginDownloader.download(downloadParam, downloaders, listener);
 	}
 
-	private static PluginDownloaderInterface findDownloaderByUrl(final DownloaderPluginHolder downloaders, final String url) {
+	private static PluginDownloaderInterface findDownloaderByUrl(
+			final DownloaderPluginHolder downloaders, final String url) {
 		final List<PluginDownloaderInterface> possibleDownloaders = new LinkedList<>();
-		for (final PluginDownloaderInterface downloader : downloaders.getPlugins()) {
-			final DownloadableState downloadableState = downloader.canDownload(url);
+		for (final PluginDownloaderInterface downloader : downloaders
+				.getPlugins()) {
+			final DownloadableState downloadableState = downloader
+					.canDownload(url);
 			switch (downloadableState) {
 			case SPECIFIC:
 				return downloader;

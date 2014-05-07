@@ -5,6 +5,7 @@ import java.util.regex.Pattern;
 
 import com.dabi.habitv.api.plugin.api.CmdProgressionListener;
 import com.dabi.habitv.api.plugin.api.PluginDownloaderInterface;
+import com.dabi.habitv.api.plugin.api.PluginDownloaderInterface.DownloadableState;
 import com.dabi.habitv.api.plugin.api.PluginWithProxyInterface;
 import com.dabi.habitv.api.plugin.dto.DownloadParamDTO;
 import com.dabi.habitv.api.plugin.dto.ProxyDTO;
@@ -15,9 +16,11 @@ import com.dabi.habitv.api.plugin.holder.DownloaderPluginHolder;
 import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.api.update.BaseUpdatablePlugin;
 
-public class CurlPluginDownloader extends BaseUpdatablePlugin implements PluginDownloaderInterface, PluginWithProxyInterface {
+public class CurlPluginDownloader extends BaseUpdatablePlugin implements
+		PluginWithProxyInterface, PluginDownloaderInterface {
 
-	private static final Pattern VERSION_PATTERN = Pattern.compile("curl ([\\-0-9A-Za-z.-]*).*");
+	private static final Pattern VERSION_PATTERN = Pattern
+			.compile("curl ([\\-0-9A-Za-z.-]*).*");
 
 	private Map<ProtocolEnum, ProxyDTO> protocol2proxy;
 
@@ -27,22 +30,29 @@ public class CurlPluginDownloader extends BaseUpdatablePlugin implements PluginD
 	}
 
 	@Override
-	public void download(final DownloadParamDTO downloadParam, final DownloaderPluginHolder downloaders, final CmdProgressionListener listener)
+	public void download(final DownloadParamDTO downloadParam,
+			final DownloaderPluginHolder downloaders,
+			final CmdProgressionListener listener)
 			throws DownloadFailedException {
 		final String downloaderBin = getBinParam(downloaders);
 		String cmd = downloaderBin + CurlConf.CURL_CMD;
-		cmd = cmd.replaceFirst(FrameworkConf.DOWNLOAD_INPUT, downloadParam.getDownloadInput());
-		cmd = cmd.replaceFirst(FrameworkConf.DOWNLOAD_DESTINATION, downloadParam.getDownloadOutput());
+		cmd = cmd.replaceFirst(FrameworkConf.DOWNLOAD_INPUT,
+				downloadParam.getDownloadInput());
+		cmd = cmd.replaceFirst(FrameworkConf.DOWNLOAD_DESTINATION,
+				downloadParam.getDownloadOutput());
 
 		if (protocol2proxy != null) {
-			final ProxyDTO httpProxy = protocol2proxy.get(ProxyDTO.ProtocolEnum.HTTP);
+			final ProxyDTO httpProxy = protocol2proxy
+					.get(ProxyDTO.ProtocolEnum.HTTP);
 			if (httpProxy != null) {
-				cmd += "--proxy " + httpProxy.getHost() + ":" + httpProxy.getPort();
+				cmd += "--proxy " + httpProxy.getHost() + ":"
+						+ httpProxy.getPort();
 			}
 		}
 
 		try {
-			(new CurlCmdExecutor(downloaders.getCmdProcessor(), cmd, listener)).execute();
+			(new CurlCmdExecutor(downloaders.getCmdProcessor(), cmd, listener))
+					.execute();
 		} catch (final ExecutorFailedException e) {
 			throw new DownloadFailedException(e);
 		}
@@ -65,8 +75,16 @@ public class CurlPluginDownloader extends BaseUpdatablePlugin implements PluginD
 
 	@Override
 	public DownloadableState canDownload(final String downloadInput) {
-		return downloadInput.startsWith(FrameworkConf.HTTP_PREFIX) || downloadInput.startsWith(FrameworkConf.FTP_PREFIX) ? DownloadableState.POSSIBLE
+		return downloadInput.startsWith(FrameworkConf.HTTP_PREFIX)
+				|| downloadInput.startsWith(FrameworkConf.FTP_PREFIX) ? DownloadableState.POSSIBLE
 				: DownloadableState.IMPOSSIBLE;
+	}
+
+	@Override
+	public void resume(DownloadParamDTO downloadParam,
+			DownloaderPluginHolder downloaders, CmdProgressionListener listener)
+			throws DownloadFailedException {
+		download(downloadParam, downloaders, listener);
 	}
 
 }

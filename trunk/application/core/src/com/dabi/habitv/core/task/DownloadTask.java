@@ -28,8 +28,11 @@ public class DownloadTask extends AbstractEpisodeTask {
 
 	private final DownloadedDAO downloadedDAO;
 
-	public DownloadTask(final EpisodeDTO episode, final PluginProviderInterface provider, final DownloaderPluginHolder downloaders,
-			final Publisher<RetreiveEvent> publisher, final DownloadedDAO downloadedDAO) {
+	public DownloadTask(final EpisodeDTO episode,
+			final PluginProviderInterface provider,
+			final DownloaderPluginHolder downloaders,
+			final Publisher<RetreiveEvent> publisher,
+			final DownloadedDAO downloadedDAO) {
 		super(episode);
 		this.provider = provider;
 		this.downloaders = downloaders;
@@ -45,35 +48,41 @@ public class DownloadTask extends AbstractEpisodeTask {
 	@Override
 	protected void failed(final Throwable e) {
 		LOG.error("Download failed for " + getEpisode(), e);
-		publisher.addNews(new RetreiveEvent(getEpisode(), EpisodeStateEnum.DOWNLOAD_FAILED, e, "download"));
+		publisher.addNews(new RetreiveEvent(getEpisode(),
+				EpisodeStateEnum.DOWNLOAD_FAILED, e, "download"));
 	}
 
 	@Override
 	protected void ended() {
 		LOG.info("Download of " + getEpisode() + " done");
 		downloadedDAO.addDownloadedFiles(getEpisode().getName());
-		publisher.addNews(new RetreiveEvent(getEpisode(), EpisodeStateEnum.DOWNLOADED));
+		publisher.addNews(new RetreiveEvent(getEpisode(),
+				EpisodeStateEnum.DOWNLOADED));
 	}
 
 	@Override
 	protected void started() {
 		LOG.info("Download of " + getEpisode() + " is starting");
-		publisher.addNews(new RetreiveEvent(getEpisode(), EpisodeStateEnum.DOWNLOADING));
+		publisher.addNews(new RetreiveEvent(getEpisode(),
+				EpisodeStateEnum.DOWNLOADING));
 	}
 
 	@Override
 	protected Object doCall() throws DownloadFailedException {
-		final String outputFilename = TokenReplacer.replaceAll(downloaders.getDownloadOutput(), getEpisode());
+		final String outputFilename = TokenReplacer.replaceAll(
+				downloaders.getDownloadOutput(), getEpisode());
 		final String outputTmpFileName = outputFilename + ".tmp";
 		// delete to prevent resuming since most of the download can't resume
 		final File outputFile = new File(outputFilename);
 		// create download dir if doesn't exist
-		if (outputFile.getParentFile() != null && !outputFile.getParentFile().exists()) {
+		if (outputFile.getParentFile() != null
+				&& !outputFile.getParentFile().exists()) {
 			outputFile.getParentFile().mkdir();
 		}
 		if (outputFile.exists()) {
 			if (!outputFile.delete()) {
-				throw new TechnicalException("can't delete file " + outputFile.getAbsolutePath());
+				throw new TechnicalException("can't delete file "
+						+ outputFile.getAbsolutePath());
 			}
 		}
 		download(outputTmpFileName);
@@ -84,23 +93,27 @@ public class DownloadTask extends AbstractEpisodeTask {
 		return null;
 	}
 
-	private void download(final String outputTmpFileName) throws DownloadFailedException {
+	private void download(final String outputTmpFileName)
+			throws DownloadFailedException {
 		final DownloadParamDTO downloadParam = buildDownloadParam(outputTmpFileName);
 		final CmdProgressionListener listener = buildProgressionListener();
 
+		final PluginDownloaderInterface downloader;
 		if (PluginDownloaderInterface.class.isInstance(provider)) {
-			final PluginDownloaderInterface downloader = (PluginDownloaderInterface) provider;
-			downloader.download(downloadParam, downloaders, listener);
+			downloader = (PluginDownloaderInterface) provider;
 		} else {
-			DownloadUtils.download(downloadParam, downloaders, listener);
+			downloader = DownloadUtils
+					.getDownloader(downloadParam, downloaders);
 		}
+		downloader.download(downloadParam, downloaders, listener);
 	}
 
 	private CmdProgressionListener buildProgressionListener() {
 		final CmdProgressionListener cmdProgressionListener = new CmdProgressionListener() {
 			@Override
 			public void listen(final String progression) {
-				publisher.addNews(new RetreiveEvent(getEpisode(), EpisodeStateEnum.DOWNLOADING, progression));
+				publisher.addNews(new RetreiveEvent(getEpisode(),
+						EpisodeStateEnum.DOWNLOADING, progression));
 			}
 		};
 		return cmdProgressionListener;
@@ -108,7 +121,9 @@ public class DownloadTask extends AbstractEpisodeTask {
 
 	private DownloadParamDTO buildDownloadParam(final String outputTmpFileName) {
 		final CategoryDTO category = getEpisode().getCategory();
-		final DownloadParamDTO downloadParam = new DownloadParamDTO(getEpisode().getId(), outputTmpFileName, category.getExtension());
+		final DownloadParamDTO downloadParam = new DownloadParamDTO(
+				getEpisode().getId(), outputTmpFileName,
+				category.getExtension());
 		downloadParam.getParams().putAll(category.getParameters());
 		return downloadParam;
 	}
@@ -135,7 +150,8 @@ public class DownloadTask extends AbstractEpisodeTask {
 
 	@Override
 	public String toString() {
-		return "DL" + getEpisode() + " " + provider.getName() + " " + downloaders.getDownloadOutput();
+		return "DL" + getEpisode() + " " + provider.getName() + " "
+				+ downloaders.getDownloadOutput();
 	}
 
 }
