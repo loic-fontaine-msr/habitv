@@ -58,7 +58,7 @@ public class HabitTvTrayModel extends Observable {
 			public void run() {
 				boolean interrupted = false;
 				final long confDemonTime;
-				confDemonTime = userConfig.getDemonTime();
+				confDemonTime = userConfig.getDemonCheckTime();
 				final long demonTime = confDemonTime * 1000L;
 				boolean still = true;
 				// demon mode

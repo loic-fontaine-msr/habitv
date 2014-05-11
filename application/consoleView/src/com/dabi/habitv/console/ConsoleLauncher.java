@@ -50,10 +50,10 @@ public final class ConsoleLauncher { // NO_UCD (unused code)
 
 			if (grabConfigDAO.exist()) {
 				grabConfigDAO.updateGrabConfig(coreManager.findCategory());
-				if (config.getDemonTime() == null) {
+				if (config.getDemonCheckTime() == null) {
 					coreManager.retreiveEpisode(grabConfigDAO.load());
 				} else {
-					final long demonTime = config.getDemonTime() * 1000L;
+					final long demonTime = config.getDemonCheckTime() * 1000L;
 					// demon mode
 					while (true) {
 						coreManager.retreiveEpisode(grabConfigDAO.load());

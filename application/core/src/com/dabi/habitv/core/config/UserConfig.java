@@ -30,7 +30,7 @@ public interface UserConfig {
 
 	Integer getMaxAttempts();
 
-	Integer getDemonTime();
+	Integer getDemonCheckTime();
 
 	boolean updateOnStartup();
 

@@ -80,11 +80,4 @@ public class CurlPluginDownloader extends BaseUpdatablePlugin implements
 				: DownloadableState.IMPOSSIBLE;
 	}
 
-	@Override
-	public void resume(DownloadParamDTO downloadParam,
-			DownloaderPluginHolder downloaders, CmdProgressionListener listener)
-			throws DownloadFailedException {
-		download(downloadParam, downloaders, listener);
-	}
-
 }

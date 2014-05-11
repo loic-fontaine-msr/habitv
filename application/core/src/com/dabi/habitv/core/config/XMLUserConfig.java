@@ -52,8 +52,6 @@ public class XMLUserConfig implements UserConfig {
 
 	private static final String DEFAULT_PLUGIN_DIR = "plugins";
 
-	private static final int DEFAULT_DEMON_TIME_SEC = 1800;
-
 	private static final int DEFAULT_CUT_SIZE = 40;
 
 	private static final String DEFAULT_DL_OUTPUT = "./downloads/#TVSHOW_NAME#-#EPISODE_NAME_CUT#.#EXTENSION#";
@@ -207,7 +205,7 @@ public class XMLUserConfig implements UserConfig {
 			final Configuration config) {
 		DownloadConfig downloadConfig = new DownloadConfig();
 		downloadConfig
-				.setDemonCheckTime(oldConfig.getDemonTime() == null ? DEFAULT_DEMON_TIME_SEC
+				.setDemonCheckTime(oldConfig.getDemonTime() == null ? DEFAULT_CHECK_TIME
 						: oldConfig.getDemonTime());
 		downloadConfig
 				.setDownloadOuput(oldConfig.getDownloadOuput() == null ? DEFAULT_DL_OUTPUT
@@ -462,10 +460,10 @@ public class XMLUserConfig implements UserConfig {
 	}
 
 	@Override
-	public Integer getDemonTime() {
+	public Integer getDemonCheckTime() {
 		if (config.getDownloadConfig() == null
 				|| config.getDownloadConfig().getDemonCheckTime() == null) {
-			return DEFAULT_DEMON_TIME_SEC;
+			return DEFAULT_CHECK_TIME;
 		} else {
 			return config.getDownloadConfig().getDemonCheckTime();
 		}

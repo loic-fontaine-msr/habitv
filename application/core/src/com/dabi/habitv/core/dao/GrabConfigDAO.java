@@ -110,7 +110,7 @@ public class GrabConfigDAO {
 		return category;
 	}
 
-	private void marshal(final GrabConfig config) {
+	public void marshal(final GrabConfig config) {
 		final JAXBContext jaxbContext;
 		FileOutputStream outputFile = null;
 		try {
@@ -188,7 +188,7 @@ public class GrabConfigDAO {
 		}
 	}
 
-	private GrabConfig unmarshal() {
+	public GrabConfig unmarshal() {
 		GrabConfig grabConfig = null;
 		try {
 			final JAXBContext jaxbContext = JAXBContext
