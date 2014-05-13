@@ -3,20 +3,16 @@ IHM gérer l'ajout, TEMPLATE ?
 IHM suivi des téléchargements
 IHM configuration de base
 
-grabconfig parameter any
-
-update on check
-
 tester linux
 
 repasser sur tous les plugins pour gérer le dl par url web, téléchargement manuel
 préférence vue en conf
 
+téléchargement unitaire CLI
+
 francetvinfo
 
 clubic
-
-correction arte rs 500 -> search
 
 plugin tf1, tmc
 

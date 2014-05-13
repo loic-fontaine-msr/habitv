@@ -68,6 +68,7 @@ public class HabitTvTrayModel extends Observable {
 					} else {
 						try {
 							if (grabConfigDAO.exist()) {
+								coreManager.update();								
 								coreManager.retreiveEpisode(grabConfigDAO.load());
 							} else {
 								grabConfigDAO.saveGrabConfig(coreManager.findCategory());
@@ -100,6 +101,7 @@ public class HabitTvTrayModel extends Observable {
 		(new Thread() {
 			@Override
 			public void run() {
+				coreManager.update();
 				coreManager.retreiveEpisode(grabConfigDAO.load());
 			}
 
