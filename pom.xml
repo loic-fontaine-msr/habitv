@@ -137,6 +137,7 @@
 				<directory>src</directory>
 				<includes>
 					<include>**/*properties</include>
+					<include>**/*fxml</include>
 				</includes>
 				<filtering>true</filtering>
 			</resource>			
