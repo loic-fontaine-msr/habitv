@@ -15,4 +15,6 @@ interface ArteConf {
 
 	String RTMPDUMP_CMD = "-r \"#VIDEO_URL#\" -c 1935 -m 10 -o \"#FILE_DEST#\"";
 
+	String ARTE_PREFIX_URL = "http://videos.arte.tv/";
+
 }

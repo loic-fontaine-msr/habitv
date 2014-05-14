@@ -65,7 +65,9 @@ public class ArtePluginManager extends BasePluginWithProxy implements
 								.replace(ArteConf.ID_EMISSION_TOKEN,
 										category.getId())));
 			} catch (Exception e) {
-				LOG.error("Erreur findEpisodeByCategory utilisation de la recherche", e);
+				LOG.error(
+						"Erreur findEpisodeByCategory utilisation de la recherche",
+						e);
 				return searchEpisodeByKeyworkds(category);
 			}
 		}
@@ -284,7 +286,8 @@ public class ArtePluginManager extends BasePluginWithProxy implements
 
 	@Override
 	public DownloadableState canDownload(final String downloadInput) {
-		return DownloadableState.IMPOSSIBLE;
+		return downloadInput.startsWith(ArteConf.ARTE_PREFIX_URL) ? DownloadableState.SPECIFIC
+				: DownloadableState.IMPOSSIBLE;
 	}
 
 }
