@@ -42,7 +42,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.dabi.habitv</groupId>
-			<artifactId>canalplus</artifactId>
+			<artifactId>canalPlus</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
