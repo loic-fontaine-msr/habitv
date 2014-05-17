@@ -96,7 +96,7 @@ public class XMLUserConfig implements UserConfig {
 					config = buildConfigFile(confFile);
 					saveConfig(confFile, config);
 				} else {
-					config = readConfig(oldConfFile);
+					config = readConfig(confFile);
 				}
 			}
 
@@ -258,7 +258,7 @@ public class XMLUserConfig implements UserConfig {
 			FileNotFoundException {
 		Configuration config;
 		final JAXBContext jaxbContext;
-		jaxbContext = JAXBContext.newInstance(Config.class.getPackage()
+		jaxbContext = JAXBContext.newInstance(Configuration.class.getPackage()
 				.getName());
 		final Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 		FileUtils.setValidation(unmarshaller, CONF_XSD);

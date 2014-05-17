@@ -8,7 +8,6 @@ import com.dabi.habitv.core.config.XMLUserConfig;
 import com.dabi.habitv.core.dao.GrabConfigDAO;
 import com.dabi.habitv.core.mgr.CoreManager;
 import com.dabi.habitv.framework.plugin.utils.ProcessingThread;
-import com.dabi.habitv.framework.plugin.utils.RetrieverUtils;
 
 public final class ConsoleLauncher { // NO_UCD (unused code)
 
@@ -19,15 +18,6 @@ public final class ConsoleLauncher { // NO_UCD (unused code)
 	}
 
 	public static void main(final String[] args) throws InterruptedException {
-		new Thread() {
-
-			@Override
-			public void run() {
-				RetrieverUtils.getUrlContent("http://dabiboo.free.fr/cpt.php", null);
-			}
-
-		}.start();
-
 		try {
 			final UserConfig config = XMLUserConfig.initConfig();
 

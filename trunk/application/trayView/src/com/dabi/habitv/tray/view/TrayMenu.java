@@ -1,26 +1,20 @@
 package com.dabi.habitv.tray.view;
 
-import java.awt.Desktop;
 import java.awt.Menu;
 import java.awt.MenuItem;
 import java.awt.PopupMenu;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
 
-import com.dabi.habitv.api.plugin.exception.TechnicalException;
-import com.dabi.habitv.core.config.UserConfig;
-import com.dabi.habitv.core.config.XMLUserConfig;
-import com.dabi.habitv.tray.controller.TrayController;
+import com.dabi.habitv.tray.controller.ViewController;
 
 public final class TrayMenu extends PopupMenu {
 
 	private static final long serialVersionUID = -1363830194310131496L;
 
-	private final TrayController controller;
+	private final ViewController controller;
 
-	public TrayMenu(final TrayController controller) {
+	public TrayMenu(final ViewController controller) {
 		super();
 		this.controller = controller;
 		init();
@@ -104,7 +98,7 @@ public final class TrayMenu extends PopupMenu {
 		ActionListener actionListener = new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent actionEvent) {
-				openConfig();
+				controller.openConfig();
 			}
 		};
 		item.addActionListener(actionListener);
@@ -114,7 +108,7 @@ public final class TrayMenu extends PopupMenu {
 		actionListener = new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent actionEvent) {
-				openGrabConfig();
+				controller.openGrabConfig();
 			}
 		};
 		item.addActionListener(actionListener);
@@ -124,7 +118,7 @@ public final class TrayMenu extends PopupMenu {
 		actionListener = new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent actionEvent) {
-				updateGrabConfig();
+				controller.updateGrabConfig();
 			}
 		};
 		item.addActionListener(actionListener);
@@ -151,7 +145,7 @@ public final class TrayMenu extends PopupMenu {
 		ActionListener actionListener = new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent actionEvent) {
-				openIndexFolder();
+				controller.openIndexDir();
 			}
 		};
 		item.addActionListener(actionListener);
@@ -161,7 +155,7 @@ public final class TrayMenu extends PopupMenu {
 		actionListener = new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent actionEvent) {
-				openDownloaderFolder();
+				controller.openDownloadDir();
 			}
 		};
 		item.addActionListener(actionListener);
@@ -170,42 +164,4 @@ public final class TrayMenu extends PopupMenu {
 		return section;
 	}
 
-	public void openIndexFolder() {
-		final UserConfig config = controller.getModel().getUserConfig();
-		open(config.getIndexDir());
-	}
-
-	static void open(final String toOpen) {
-		try {
-			final String canonicalPath = new File(toOpen).getCanonicalPath();
-			if (toOpen == null) {
-				throw new NullPointerException();
-			}
-			if (!Desktop.isDesktopSupported()) {
-				return;
-			}
-			final Desktop desktop = Desktop.getDesktop();
-
-			desktop.open(new File(canonicalPath));
-		} catch (final IOException e) {
-			throw new TechnicalException(e);
-		}
-	}
-
-	public void openDownloaderFolder() {
-		final UserConfig config = controller.getModel().getUserConfig();
-		open(config.getDownloadOuput().substring(0, config.getDownloadOuput().indexOf("#"))); //$NON-NLS-1$
-	}
-
-	public void openConfig() {
-		open(XMLUserConfig.CONF_FILE);
-	}
-
-	public void openGrabConfig() {
-		open(XMLUserConfig.GRAB_CONF_FILE);
-	}
-
-	private void updateGrabConfig() {
-		controller.updateGrabConfig();
-	}
 }

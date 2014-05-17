@@ -1,6 +1,8 @@
 package com.dabi.habitv.core.task;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 
 import com.dabi.habitv.api.plugin.api.CmdProgressionListener;
 import com.dabi.habitv.api.plugin.api.PluginDownloaderInterface;
@@ -87,8 +89,10 @@ public class DownloadTask extends AbstractEpisodeTask {
 		}
 		download(outputTmpFileName);
 		final File file = new File(outputTmpFileName);
-		if (file.exists() && !file.renameTo(new File(outputFilename))) {
-			throw new TechnicalException("can't rename");
+		try {
+			Files.move(file.toPath(), new File(outputFilename).toPath());
+		} catch (IOException e) {
+			throw new TechnicalException(e);
 		}
 		return null;
 	}

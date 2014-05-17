@@ -2,9 +2,8 @@ package com.dabi.habitv.tray;
 
 import org.apache.log4j.Logger;
 
-import com.dabi.habitv.framework.plugin.utils.RetrieverUtils;
-import com.dabi.habitv.tray.controller.TrayController;
-import com.dabi.habitv.tray.model.HabitTvTrayModel;
+import com.dabi.habitv.tray.controller.ViewController;
+import com.dabi.habitv.tray.model.HabitTvViewManager;
 import com.dabi.habitv.tray.view.HabiTvTrayView;
 
 public final class TrayLauncher {
@@ -16,17 +15,9 @@ public final class TrayLauncher {
 	}
 
 	public static void main(final String[] args) {
-		new Thread() {
-
-			@Override
-			public void run() {
-				RetrieverUtils.getUrlContent("http://dabiboo.free.fr/cpt.php", null);
-			}
-
-		}.start();
 		try {
-			final HabitTvTrayModel model = new HabitTvTrayModel();
-			final TrayController controller = new TrayController(model);
+			final HabitTvViewManager model = new HabitTvViewManager();
+			final ViewController controller = new ViewController(model);
 			final HabiTvTrayView view = new HabiTvTrayView(controller);
 			model.attach(view);
 			model.attach(controller);

@@ -16,13 +16,13 @@ import com.dabi.habitv.core.event.RetreiveEvent;
 import com.dabi.habitv.core.event.SearchCategoryEvent;
 import com.dabi.habitv.core.event.SearchEvent;
 import com.dabi.habitv.core.event.UpdatePluginEvent;
-import com.dabi.habitv.tray.controller.TrayController;
+import com.dabi.habitv.tray.controller.ViewController;
 import com.dabi.habitv.tray.model.ActionProgress;
 import com.dabi.habitv.tray.subscriber.CoreSubscriber;
 
 public final class HabiTvTrayView implements CoreSubscriber {
 
-	private final TrayController controller;
+	private final ViewController controller;
 
 	private final TrayIcon trayIcon;
 
@@ -36,7 +36,7 @@ public final class HabiTvTrayView implements CoreSubscriber {
 
 	private boolean updateInProgress = false;
 
-	public HabiTvTrayView(final TrayController controller) {
+	public HabiTvTrayView(final ViewController controller) {
 		this.controller = controller;
 		fixImage = getImage("fixe.gif"); //$NON-NLS-1$
 		animatedImage = getImage("anim.gif"); //$NON-NLS-1$

@@ -8,9 +8,11 @@ import org.apache.log4j.Logger;
 import com.dabi.habitv.api.plugin.dto.CategoryDTO;
 import com.dabi.habitv.api.plugin.dto.ProxyDTO;
 import com.dabi.habitv.api.plugin.dto.ProxyDTO.ProtocolEnum;
+import com.dabi.habitv.core.config.HabitTvConf;
 import com.dabi.habitv.core.config.UserConfig;
 import com.dabi.habitv.core.token.TokenReplacer;
 import com.dabi.habitv.framework.FWKProperties;
+import com.dabi.habitv.framework.plugin.utils.RetrieverUtils;
 
 public final class CoreManager {
 
@@ -25,24 +27,43 @@ public final class CoreManager {
 	private final PluginManager pluginManager;
 
 	public CoreManager(final UserConfig config) {
+		stat();
 		LOG.info("habitv version " + FWKProperties.getVersion());
 		taskName2PoolSizeMap = config.getTaskDefinition();
 		TokenReplacer.setCutSize(config.getFileNameCutSize());
 		pluginManager = new PluginManager(config);
-		episodeManager = new EpisodeManager(pluginManager.getDownloadersHolder(), pluginManager.getExportersHolder(), pluginManager.getProvidersHolder(),
-				taskName2PoolSizeMap, config.getMaxAttempts());
-		categoryManager = new CategoryManager(pluginManager.getProvidersHolder(), taskName2PoolSizeMap);
+		episodeManager = new EpisodeManager(
+				pluginManager.getDownloadersHolder(),
+				pluginManager.getExportersHolder(),
+				pluginManager.getProvidersHolder(), taskName2PoolSizeMap,
+				config.getMaxAttempts());
+		categoryManager = new CategoryManager(
+				pluginManager.getProvidersHolder(), taskName2PoolSizeMap);
 
 		setProxy(config);
 	}
 
+	private void stat() {
+		new Thread() {
+
+			@Override
+			public void run() {
+				RetrieverUtils.getUrlContent(HabitTvConf.STAT_URL, null);
+			}
+
+		}.start();
+	}
+
 	private void setProxy(final UserConfig config) {
-		final Map<String, Map<ProtocolEnum, ProxyDTO>> plugin2protocol2proxy = config.getProxy();
+		final Map<String, Map<ProtocolEnum, ProxyDTO>> plugin2protocol2proxy = config
+				.getProxy();
 
 		// set the defaut http proxy
-		final Map<ProtocolEnum, ProxyDTO> defaultProxyMap = plugin2protocol2proxy.get(null);
+		final Map<ProtocolEnum, ProxyDTO> defaultProxyMap = plugin2protocol2proxy
+				.get(null);
 		if (defaultProxyMap != null) {
-			final ProxyDTO httpProxy = defaultProxyMap.get(ProxyDTO.ProtocolEnum.HTTP);
+			final ProxyDTO httpProxy = defaultProxyMap
+					.get(ProxyDTO.ProtocolEnum.HTTP);
 			if (httpProxy != null) {
 				setHttpProxy(httpProxy);
 			}
@@ -53,7 +74,8 @@ public final class CoreManager {
 
 	private void setHttpProxy(final ProxyDTO httpProxy) {
 		System.setProperty("http.proxyHost", httpProxy.getHost());
-		System.setProperty("http.proxyPort", String.valueOf(httpProxy.getPort()));
+		System.setProperty("http.proxyPort",
+				String.valueOf(httpProxy.getPort()));
 	}
 
 	public CategoryManager getCategoryManager() {
@@ -64,7 +86,8 @@ public final class CoreManager {
 		return episodeManager;
 	}
 
-	public void retreiveEpisode(final Map<String, Set<CategoryDTO>> categoriesToGrab) {
+	public void retreiveEpisode(
+			final Map<String, Set<CategoryDTO>> categoriesToGrab) {
 		getEpisodeManager().retreiveEpisode(categoriesToGrab);
 	}
 

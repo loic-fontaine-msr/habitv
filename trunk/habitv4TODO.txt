@@ -1,7 +1,19 @@
 IHM sélection des catégories
 IHM gérer l'ajout, TEMPLATE ?
-IHM suivi des téléchargements
 IHM configuration de base
+
+progression sur la recherche
+
+tooltip
+
+info sur premier clic ?
+
+masque de patience	
+maj chargement ?	
+
+grabconfig parameter any
+
+update on check
 
 tester linux
 

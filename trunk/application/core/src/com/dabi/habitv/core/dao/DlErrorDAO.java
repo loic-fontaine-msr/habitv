@@ -15,6 +15,7 @@ import org.apache.log4j.Logger;
 
 import com.dabi.habitv.api.plugin.exception.TechnicalException;
 import com.dabi.habitv.core.config.HabitTvConf;
+import com.dabi.habitv.framework.FrameworkConf;
 
 public class DlErrorDAO {
 
@@ -25,7 +26,7 @@ public class DlErrorDAO {
 	}
 
 	private String getErrorFile() {
-		return "dlError.index";
+		return FrameworkConf.ERROR_FILE;
 	}
 
 	public Set<String> findDownloadedErrorFiles() {

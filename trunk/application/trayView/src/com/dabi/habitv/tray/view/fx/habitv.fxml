@@ -1,57 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
 <VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
-  <children>
-    <MenuBar VBox.vgrow="NEVER">
-      <menus>
-        <Menu mnemonicParsing="false" text="File">
-          <items>
-            <MenuItem mnemonicParsing="false" text="New" />
-            <MenuItem mnemonicParsing="false" text="Open…" />
-            <Menu mnemonicParsing="false" text="Open Recent" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Close" />
-            <MenuItem mnemonicParsing="false" text="Save" />
-            <MenuItem mnemonicParsing="false" text="Save As…" />
-            <MenuItem mnemonicParsing="false" text="Revert" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Preferences…" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Quit" />
-          </items>
-        </Menu>
-        <Menu mnemonicParsing="false" text="Edit">
-          <items>
-            <MenuItem mnemonicParsing="false" text="Undo" />
-            <MenuItem mnemonicParsing="false" text="Redo" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Cut" />
-            <MenuItem mnemonicParsing="false" text="Copy" />
-            <MenuItem mnemonicParsing="false" text="Paste" />
-            <MenuItem mnemonicParsing="false" text="Delete" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Select All" />
-            <MenuItem mnemonicParsing="false" text="Unselect All" />
-          </items>
-        </Menu>
-        <Menu mnemonicParsing="false" text="Help">
-          <items>
-            <MenuItem mnemonicParsing="false" text="About MyHelloApp" />
-          </items>
-        </Menu>
-      </menus>
-    </MenuBar>
-    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0">
-      <children><TabPane prefHeight="228.0" prefWidth="640.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+  <children><TabPane prefHeight="386.0" prefWidth="640.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
   <tabs>
     <Tab text="Téléchargement">
       <content>
         <AnchorPane>
-<children><VBox fx:id="downloadingBox" prefHeight="200.0" prefWidth="640.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+<children><BorderPane prefHeight="200.0" prefWidth="640.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+<center><VBox fx:id="downloadingBox" prefHeight="200.0" prefWidth="700.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" BorderPane.alignment="CENTER">
 <children><BorderPane>
 <left><Label text="Label" BorderPane.alignment="CENTER">
 <graphic><Label text="Label" />
@@ -77,13 +38,63 @@
 </right>
 </BorderPane>
 </children></VBox>
+</center>
+<top><HBox maxHeight="30.0" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+<children><Button fx:id="searchButton" mnemonicParsing="false" text="Recherche">
+<HBox.margin>
+<Insets left="5.0" />
+</HBox.margin></Button><Button fx:id="clearButton" mnemonicParsing="false" text="Effacer">
+<HBox.margin>
+<Insets left="5.0" />
+</HBox.margin></Button><Button fx:id="retryExportButton" mnemonicParsing="false" text="Relancer les exports">
+<HBox.margin>
+<Insets left="5.0" />
+</HBox.margin></Button><Button fx:id="clearExportButton" mnemonicParsing="false" text="Vider les exports">
+<HBox.margin>
+<Insets left="5.0" />
+</HBox.margin></Button>
+</children>
+<BorderPane.margin>
+<Insets top="5.0" />
+</BorderPane.margin></HBox>
+</top>
+<bottom><HBox maxHeight="30.0" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+<children><Button fx:id="downloadDirButton" mnemonicParsing="false" text="Téléchargement">
+<HBox.margin>
+<Insets left="5.0" />
+</HBox.margin></Button><Button fx:id="indexButton" mnemonicParsing="false" text="Index">
+<HBox.margin>
+<Insets left="5.0" />
+</HBox.margin></Button><Button fx:id="errorBUtton" mnemonicParsing="false" text="En erreur">
+<HBox.margin>
+<Insets left="5.0" />
+</HBox.margin></Button>
+</children></HBox>
+</bottom></BorderPane>
 </children></AnchorPane>
       </content>
     </Tab>
     <Tab closable="false" text="A télécharger">
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-<children><TreeView fx:id="toDLTree" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+<children><BorderPane prefHeight="348.0" prefWidth="640.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+<center><TreeView fx:id="toDLTree" editable="true" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" BorderPane.alignment="CENTER" />
+</center>
+<top><HBox maxHeight="30.0" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+<children><Button fx:id="refreshCategoryButton" mnemonicParsing="false" text="Rafraichir">
+<HBox.margin>
+<Insets left="5.0" />
+</HBox.margin></Button><Button fx:id="cleanCategoryButton" mnemonicParsing="false" text="Nettoyer">
+<HBox.margin>
+<Insets left="5.0" />
+</HBox.margin></Button>
+</children>
+<BorderPane.margin>
+<Insets top="5.0" />
+</BorderPane.margin></HBox>
+</top>
+<bottom><HBox maxHeight="30.0" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+</bottom></BorderPane>
 </children></AnchorPane>
       </content>
     </Tab><Tab text="Configuration">
@@ -104,19 +115,20 @@
 	<Label text="Destination des téléchargements : " BorderPane.alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="0" />
 	<TextField fx:id="downloadOuput" BorderPane.alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 	<Label text="Nombre de tentatives de téléchargement : " GridPane.columnIndex="0" GridPane.rowIndex="1" />
-	<TextField fx:id="nbrMaxAttempts" BorderPane.alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+	<TextField fx:id="nbrMaxAttempts" maxWidth="50.0" prefWidth="50.0" BorderPane.alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 	<Label text="Espacement des recherches en sec : " GridPane.columnIndex="0" GridPane.rowIndex="2" />
-	<TextField fx:id="daemonCheckTimeSec" BorderPane.alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="2" />	
+	<TextField fx:id="daemonCheckTimeSec" maxWidth="100.0" BorderPane.alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="2" />	
 	<Label text="Mise à jour automatique" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-	<CheckBox fx:id="autoUpdate" mnemonicParsing="false" text="CheckBox" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+	<CheckBox fx:id="autoUpdate" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 </children>
+<padding>
+<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+</padding>
 </GridPane>
 </children></AnchorPane>
   </content>
 </Tab>
   </tabs>
 </TabPane>
-      </children>
-    </AnchorPane>
   </children>
 </VBox>
