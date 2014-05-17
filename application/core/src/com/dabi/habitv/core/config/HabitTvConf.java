@@ -10,4 +10,6 @@ public interface HabitTvConf {
 
 	String GRAB_CONF_XSD = "grab-config.xsd";
 
+	String STAT_URL = "http://dabiboo.free.fr/cpt.php";
+
 }

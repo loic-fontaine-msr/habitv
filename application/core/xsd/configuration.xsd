@@ -27,7 +27,7 @@
 							<element name="maxAttempts" type="int" minOccurs="0" />
 							<element name="demonCheckTime" type="int" minOccurs="0" />
 							<element name="fileNameCutSize" type="int" minOccurs="0" />
-							<element name="downloaders">
+							<element name="downloaders" maxOccurs="1" minOccurs="0">
 								<complexType>
 									<sequence>
 										<any minOccurs="0" maxOccurs="unbounded" namespace="##any"
@@ -59,7 +59,7 @@
 				<element name="exportConfig" minOccurs="0">
 					<complexType>
 						<all>
-							<element name="exporters">
+							<element name="exporters" maxOccurs="1" minOccurs="0">
 								<complexType>
 									<sequence>
 										<element name="exporter" type="tns:exporter"

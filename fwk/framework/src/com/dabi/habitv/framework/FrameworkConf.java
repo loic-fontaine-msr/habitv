@@ -42,4 +42,6 @@ public interface FrameworkConf {
 
 	String FTP_PREFIX = "ftp://";
 
+	String ERROR_FILE = "dlError.index";
+
 }
