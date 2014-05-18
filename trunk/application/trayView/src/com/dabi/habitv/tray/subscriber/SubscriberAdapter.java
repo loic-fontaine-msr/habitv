@@ -1,18 +1,16 @@
 package com.dabi.habitv.tray.subscriber;
 
 import com.dabi.habitv.api.plugin.pub.Subscriber;
-import com.dabi.habitv.api.plugin.pub.UpdatablePluginEvent;
 import com.dabi.habitv.core.event.RetreiveEvent;
 import com.dabi.habitv.core.event.SearchCategoryEvent;
 import com.dabi.habitv.core.event.SearchEvent;
-import com.dabi.habitv.core.event.UpdatePluginEvent;
 
-public class SubscriberAdapter {
+public class SubscriberAdapter extends UpdateSubscriberAdapter {
 
 	private final CoreSubscriber coreSubscriber;
 
 	public SubscriberAdapter(final CoreSubscriber coreSubscriber) {
-		super();
+		super(coreSubscriber);
 		this.coreSubscriber = coreSubscriber;
 	}
 
@@ -43,24 +41,6 @@ public class SubscriberAdapter {
 
 	}
 
-	class UpdateSubscriber implements Subscriber<UpdatePluginEvent> {
-
-		@Override
-		public void update(final UpdatePluginEvent event) {
-			coreSubscriber.update(event);
-		}
-
-	}
-
-	class UpdatablePluginSubscriber implements Subscriber<UpdatablePluginEvent> {
-
-		@Override
-		public void update(final UpdatablePluginEvent event) {
-			coreSubscriber.update(event);
-		}
-
-	}
-
 	public Subscriber<SearchEvent> buildSearchSubscriber() {
 		return new SearchSubscriber();
 	}
@@ -73,11 +53,4 @@ public class SubscriberAdapter {
 		return new RetreiveSubscriber();
 	}
 
-	public Subscriber<UpdatePluginEvent> buildUpdateSubscriber() {
-		return new UpdateSubscriber();
-	}
-
-	public Subscriber<UpdatablePluginEvent> buildUpdatablePluginSubscriber() {
-		return new UpdatablePluginSubscriber();
-	}
 }

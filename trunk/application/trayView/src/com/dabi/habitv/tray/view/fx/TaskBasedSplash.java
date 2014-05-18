@@ -2,11 +2,8 @@ package com.dabi.habitv.tray.view.fx;
 
 import javafx.animation.FadeTransition;
 import javafx.application.Application;
-import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.concurrent.Worker;
 import javafx.event.ActionEvent;
@@ -15,7 +12,6 @@ import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
@@ -27,19 +23,23 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
-/** Example of displaying a splash page for a standalone JavaFX application */
 public class TaskBasedSplash extends Application {
 	private Pane splashLayout;
 	private ProgressBar loadProgress;
 	private Label progressText;
-	private Stage mainStage;
+	//private Stage mainStage;
 	private static final int SPLASH_WIDTH = 676;
 	private static final int SPLASH_HEIGHT = 227;
+	private UpdateController updateController;
 
 	public static void main(String[] args) throws Exception {
 		launch(args);
 	}
 
+	public TaskBasedSplash() {
+		updateController = new UpdateController(this);		
+	}
+	
 	@Override
 	public void init() {
 		ImageView splash = new ImageView(new Image(
@@ -57,52 +57,30 @@ public class TaskBasedSplash extends Application {
 
 	@Override
 	public void start(final Stage initStage) throws Exception {
-		final Task<ObservableList<String>> friendTask = new Task<ObservableList<String>>() {
-			@Override
-			protected ObservableList<String> call() throws InterruptedException {
-				ObservableList<String> foundFriends = FXCollections
-						.<String> observableArrayList();
-				ObservableList<String> availableFriends = FXCollections
-						.observableArrayList("Fili", "Kili", "Oin", "Gloin",
-								"Thorin", "Dwalin", "Balin", "Bifur", "Bofur",
-								"Bombur", "Dori", "Nori", "Ori");
-
-				updateMessage("Finding friends . . .");
-				for (int i = 0; i < availableFriends.size(); i++) {
-					Thread.sleep(400);
-					updateProgress(i + 1, availableFriends.size());
-					String nextFriend = availableFriends.get(i);
-					foundFriends.add(nextFriend);
-					updateMessage("Finding friends . . . found " + nextFriend);
-				}
-				Thread.sleep(400);
-				updateMessage("All friends found.");
-
-				return foundFriends;
-			}
-		};
-
-		showSplash(initStage, friendTask);
-		new Thread(friendTask).start();
-		showMainStage(friendTask.valueProperty());
+		updateController.run(initStage);
 	}
 
-	private void showMainStage(
-			ReadOnlyObjectProperty<ObservableList<String>> friends) {
-		mainStage = new Stage(StageStyle.DECORATED);
-		mainStage.setTitle("My Friends");
-		mainStage.setIconified(true);
-		mainStage
-				.getIcons()
-				.add(new Image(
-						"http://cdn1.iconfinder.com/data/icons/Copenhagen/PNG/32/people.png"));
-		final ListView<String> peopleView = new ListView<>();
-		peopleView.itemsProperty().bind(friends);
-		mainStage.setScene(new Scene(peopleView));
-		mainStage.show();
+//	private void showMainStage(
+//			ReadOnlyObjectProperty<ObservableList<String>> friends) {
+//		mainStage = new Stage(StageStyle.DECORATED);
+//		mainStage.setTitle("My Friends");
+//		mainStage.setIconified(true);
+//		mainStage
+//				.getIcons()
+//				.add(new Image(
+//						"http://cdn1.iconfinder.com/data/icons/Copenhagen/PNG/32/people.png"));
+//		final ListView<String> peopleView = new ListView<>();
+//		peopleView.itemsProperty().bind(friends);
+//		mainStage.setScene(new Scene(peopleView));
+//		mainStage.show();
+//	}
+
+	public interface InitHandler {
+		void onInitDone();
 	}
 
-	private void showSplash(final Stage initStage, Task<ObservableList<String>> task) {
+	public void showSplash(final Stage initStage,
+			Task<?> task, final InitHandler initHandler) {
 		progressText.textProperty().bind(task.messageProperty());
 		loadProgress.progressProperty().bind(task.progressProperty());
 		task.stateProperty().addListener(new ChangeListener<Worker.State>() {
@@ -113,7 +91,8 @@ public class TaskBasedSplash extends Application {
 				if (newState == Worker.State.SUCCEEDED) {
 					loadProgress.progressProperty().unbind();
 					loadProgress.setProgress(1);
-					mainStage.setIconified(false);
+					initHandler.onInitDone();
+					//mainStage.setIconified(false);
 					initStage.toFront();
 					FadeTransition fadeSplash = new FadeTransition(Duration
 							.seconds(1.2), splashLayout);

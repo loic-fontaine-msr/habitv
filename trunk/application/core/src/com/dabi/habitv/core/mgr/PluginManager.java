@@ -16,6 +16,7 @@ import com.dabi.habitv.api.plugin.holder.ExporterPluginHolder;
 import com.dabi.habitv.api.plugin.holder.ProviderPluginHolder;
 import com.dabi.habitv.api.plugin.pub.Publisher;
 import com.dabi.habitv.api.plugin.pub.UpdatablePluginEvent;
+import com.dabi.habitv.api.plugin.pub.UpdatablePluginEvent.UpdatablePluginStateEnum;
 import com.dabi.habitv.core.config.UserConfig;
 import com.dabi.habitv.core.event.UpdatePluginEvent;
 import com.dabi.habitv.core.plugin.PluginFactory;
@@ -36,13 +37,20 @@ public class PluginManager {
 	private final ProviderPluginHolder providersHolder;
 
 	public PluginManager(final UserConfig config) {
-		updateManager = new UpdateManager(config.getPluginDir(), config.autoriseSnapshot());
+		updateManager = new UpdateManager(config.getPluginDir(),
+				config.autoriseSnapshot());
 		pluginFactory = new PluginFactory(config.getPluginDir());
 
-		downloadersHolder = new DownloaderPluginHolder(config.getCmdProcessor(), pluginFactory.loadPlugins(PluginDownloaderInterface.class),
-				config.getDownloader(), config.getDownloadOuput(), config.getIndexDir(), config.getBinDir(), config.getPluginDir());
-		providersHolder = new ProviderPluginHolder(pluginFactory.loadPlugins(PluginProviderInterface.class));
-		exportersHolder = new ExporterPluginHolder(pluginFactory.loadPlugins(PluginExporterInterface.class), config.getExporter());
+		downloadersHolder = new DownloaderPluginHolder(
+				config.getCmdProcessor(),
+				pluginFactory.loadPlugins(PluginDownloaderInterface.class),
+				config.getDownloader(), config.getDownloadOuput(),
+				config.getIndexDir(), config.getBinDir(), config.getPluginDir());
+		providersHolder = new ProviderPluginHolder(
+				pluginFactory.loadPlugins(PluginProviderInterface.class));
+		exportersHolder = new ExporterPluginHolder(
+				pluginFactory.loadPlugins(PluginExporterInterface.class),
+				config.getExporter());
 	}
 
 	public void update() {
@@ -52,41 +60,65 @@ public class PluginManager {
 	}
 
 	private void pluginAutoUpdate() {
-		for (final PluginDownloaderInterface downloader : downloadersHolder.getPlugins()) {
+		updatablePluginPublisher.addNews(new UpdatablePluginEvent(
+				UpdatablePluginStateEnum.STARTING_ALL, countPlugins()));
+
+		for (final PluginDownloaderInterface downloader : downloadersHolder
+				.getPlugins()) {
 			updateUpdatablePlugin(downloader);
 		}
-		for (final PluginExporterInterface exporter : exportersHolder.getPlugins()) {
+		for (final PluginExporterInterface exporter : exportersHolder
+				.getPlugins()) {
 			updateUpdatablePlugin(exporter);
 		}
-		for (final PluginProviderInterface provider : providersHolder.getPlugins()) {
+		for (final PluginProviderInterface provider : providersHolder
+				.getPlugins()) {
 			updateUpdatablePlugin(provider);
 		}
+
+		updatablePluginPublisher.addNews(new UpdatablePluginEvent(
+				UpdatablePluginStateEnum.ALL_DONE));
+	}
+
+	private String countPlugins() {
+		return String.valueOf(downloadersHolder.getPlugins().size()
+				+ exportersHolder.getPlugins().size()
+				+ providersHolder.getPlugins().size());
 	}
 
 	private void updateUpdatablePlugin(final PluginBaseInterface plugin) {
 		if (UpdatablePluginInterface.class.isInstance(plugin)) {
-			((UpdatablePluginInterface) plugin).update(updatablePluginPublisher, downloadersHolder);
+			((UpdatablePluginInterface) plugin).update(
+					updatablePluginPublisher, downloadersHolder);
 		}
 	}
 
 	private void loadPlugins() {
 		pluginFactory.init();
-		providersHolder.setPlugins(pluginFactory.loadPlugins(PluginProviderInterface.class));
-		downloadersHolder.setPlugins(pluginFactory.loadPlugins(PluginDownloaderInterface.class));
-		exportersHolder.setPlugins(pluginFactory.loadPlugins(PluginExporterInterface.class));
+		providersHolder.setPlugins(pluginFactory
+				.loadPlugins(PluginProviderInterface.class));
+		downloadersHolder.setPlugins(pluginFactory
+				.loadPlugins(PluginDownloaderInterface.class));
+		exportersHolder.setPlugins(pluginFactory
+				.loadPlugins(PluginExporterInterface.class));
 	}
 
-	public void setProxy(final Map<ProtocolEnum, ProxyDTO> defaultProxyMap, final Map<String, Map<ProtocolEnum, ProxyDTO>> plugin2protocol2proxy) {
-		setProxy(defaultProxyMap, plugin2protocol2proxy, providersHolder.getPlugins());
+	public void setProxy(final Map<ProtocolEnum, ProxyDTO> defaultProxyMap,
+			final Map<String, Map<ProtocolEnum, ProxyDTO>> plugin2protocol2proxy) {
+		setProxy(defaultProxyMap, plugin2protocol2proxy,
+				providersHolder.getPlugins());
 	}
 
-	private void setProxy(final Map<ProtocolEnum, ProxyDTO> defaultProxyMap, final Map<String, Map<ProtocolEnum, ProxyDTO>> plugin2protocol2proxy,
+	private void setProxy(
+			final Map<ProtocolEnum, ProxyDTO> defaultProxyMap,
+			final Map<String, Map<ProtocolEnum, ProxyDTO>> plugin2protocol2proxy,
 			final Collection<? extends PluginBaseInterface> plugins) {
 		// set the proxy to each plugin
 		for (final PluginBaseInterface plugin : plugins) {
 			if (PluginWithProxyInterface.class.isInstance(plugin)) {
 				final PluginWithProxyInterface pluginWithProxy = (PluginWithProxyInterface) plugin;
-				Map<ProtocolEnum, ProxyDTO> proxies = plugin2protocol2proxy.get(plugin.getName());
+				Map<ProtocolEnum, ProxyDTO> proxies = plugin2protocol2proxy
+						.get(plugin.getName());
 				if (proxies == null) {
 					proxies = defaultProxyMap;
 				}

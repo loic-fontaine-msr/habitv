@@ -26,7 +26,9 @@ public class UpdateManager {
 
 	private final String pluginFolder;
 
-	private UpdateManager(final String site, final String pluginFolder, final String groupId, final String coreVersion, final boolean autoriseSnapshot) {
+	private UpdateManager(final String site, final String pluginFolder,
+			final String groupId, final String coreVersion,
+			final boolean autoriseSnapshot) {
 		this.site = site;
 		this.pluginFolder = pluginFolder;
 		this.groupId = groupId;
@@ -35,16 +37,22 @@ public class UpdateManager {
 	}
 
 	public UpdateManager(final String pluginDir, final boolean autoriseSnapshot) {
-		this(FrameworkConf.UPDATE_URL, pluginDir, FrameworkConf.GROUP_ID, FWKProperties.getVersion(), autoriseSnapshot);
+		this(FrameworkConf.UPDATE_URL, pluginDir, FrameworkConf.GROUP_ID,
+				FWKProperties.getVersion(), autoriseSnapshot);
 	}
 
 	public void process() {
 		LOG.info("Checking plugin updates...");
-		updatePublisher.addNews(new UpdatePluginEvent(UpdatePluginStateEnum.STARTING_ALL));
-		final Updater updater = new JarUpdater(pluginFolder, groupId, coreVersion, autoriseSnapshot, updatePublisher);
-		updater.update(RetrieverUtils.getUrlContent(site + "/plugins.txt", null).split("\\r\\n"));
+		String[] toUpdate = RetrieverUtils.getUrlContent(site + "/plugins.txt",
+				null).split("\\r\\n");
+		updatePublisher.addNews(new UpdatePluginEvent(
+				UpdatePluginStateEnum.STARTING_ALL, toUpdate.length));
+		final Updater updater = new JarUpdater(pluginFolder, groupId,
+				coreVersion, autoriseSnapshot, updatePublisher);
+		updater.update(toUpdate);
 
-		updatePublisher.addNews(new UpdatePluginEvent(UpdatePluginStateEnum.ALL_DONE));
+		updatePublisher.addNews(new UpdatePluginEvent(
+				UpdatePluginStateEnum.ALL_DONE));
 		LOG.info("Update done");
 	}
 

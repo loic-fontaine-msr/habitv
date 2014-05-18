@@ -33,6 +33,8 @@ public class CategoryDTO implements Comparable<CategoryDTO>, Serializable {
 	private final String extension;
 
 	private final Map<String, String> parameters = new HashMap<>();
+	
+	private boolean selected;
 
 	/**
 	 * Full Constructor
@@ -262,4 +264,13 @@ public class CategoryDTO implements Comparable<CategoryDTO>, Serializable {
 	public Map<String, String> getParameters() {
 		return this.parameters;
 	}
+
+	public boolean isSelected() {
+		return selected;
+	}
+
+	public void setSelected(boolean selected) {
+		this.selected = selected;
+	}
+	
 }

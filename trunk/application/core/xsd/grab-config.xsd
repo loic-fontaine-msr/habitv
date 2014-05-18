@@ -109,7 +109,7 @@
 			<element name="category" type="tns:category" maxOccurs="unbounded"
 				minOccurs="1">
 			</element>
-			<element name="status" type="int" maxOccurs="1" minOccurs="0">
+			<element name="status" type="string" maxOccurs="1" minOccurs="0">
 			</element>
 		</sequence>
 	</complexType>

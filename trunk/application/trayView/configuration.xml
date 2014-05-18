@@ -9,9 +9,23 @@
         <fileNameCutSize>50</fileNameCutSize>
     </downloadConfig>
     <updateConfig>
-        <updateOnStartup>false</updateOnStartup>
-        <autoriseSnapshot>false</autoriseSnapshot>
+        <updateOnStartup>true</updateOnStartup>
+        <autoriseSnapshot>true</autoriseSnapshot>
     </updateConfig>
+    <!-- <exportConfig>
+        <exporters>
+            <exporter>
+                <condition>
+                    <reference>#EXTENSION#</reference>
+                    <pattern>mp4|flv</pattern>
+                </condition>
+                <id>move</id>
+                <label>moving</label>
+                <command>cmd /c move /Y downloads/#TVSHOW_NAME#-#EPISODE#.#EXTENSION# D:\divx\regular\avi\</command>
+                <subexporters/>
+            </exporter>
+        </exporters>
+    </exportConfig>-->
     <taskDefinition>
         <category>5</category>
         <export>2</export>

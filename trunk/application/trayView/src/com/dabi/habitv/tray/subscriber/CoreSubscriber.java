@@ -1,21 +1,15 @@
 package com.dabi.habitv.tray.subscriber;
 
-import com.dabi.habitv.api.plugin.pub.UpdatablePluginEvent;
 import com.dabi.habitv.core.event.RetreiveEvent;
 import com.dabi.habitv.core.event.SearchCategoryEvent;
 import com.dabi.habitv.core.event.SearchEvent;
-import com.dabi.habitv.core.event.UpdatePluginEvent;
 
-public interface CoreSubscriber {
+public interface CoreSubscriber extends UpdateSubscriber {
 
 	void update(SearchEvent event);
 
 	void update(RetreiveEvent event);
 
 	void update(SearchCategoryEvent event);
-
-	void update(UpdatePluginEvent event);
-
-	void update(UpdatablePluginEvent event);
 
 }

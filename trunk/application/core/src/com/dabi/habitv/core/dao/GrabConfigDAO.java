@@ -83,7 +83,7 @@ public class GrabConfigDAO {
 		category.setId(categoryDTO.getId());
 		category.setName(categoryDTO.getName());
 		category.setExtension(categoryDTO.getExtension());
-		category.setDownload(false);
+		category.setDownload(categoryDTO.isSelected());
 		category.setStatus(StatusEnum.NEW.name());
 		Excludes excludes = new Excludes();
 		category.setExcludes(excludes);
@@ -156,6 +156,8 @@ public class GrabConfigDAO {
 				categoryDTO = new CategoryDTO(channelName, category.getName(),
 						category.getId(), getInclude(category),
 						getExclude(category), category.getExtension());
+				categoryDTO.setSelected(category.getDownload() != null
+						&& category.getDownload());
 				categoryDTO.addSubCategories(subCategoriesDTO);
 				if (category.getConfiguration() != null
 						&& !category.getConfiguration().getAny().isEmpty()) {
@@ -302,11 +304,11 @@ public class GrabConfigDAO {
 		return channel2Category;
 	}
 
-	enum LoadModeEnum {
+	public enum LoadModeEnum {
 		ALL, TO_DOWNLOAD_ONLY;
 	}
 
-	Map<String, Set<CategoryDTO>> load(final LoadModeEnum loadMode) {
+	public Map<String, Set<CategoryDTO>> load(final LoadModeEnum loadMode) {
 		return buildCategoryDTO(unmarshal(), loadMode);
 	}
 
@@ -372,6 +374,33 @@ public class GrabConfigDAO {
 		}
 		for (final CategoryDTO categoryDTO : catNameToCat.values()) {
 			categoryList.add(buildCategory(categoryDTO));
+		}
+	}
+
+	public void clean() {
+		GrabConfig grabconfig = unmarshal();
+		Iterator<ChannelType> it = grabconfig.getChannels().getChannel()
+				.iterator();
+		while (it.hasNext()) {
+			ChannelType channel = it.next();
+			if (StatusEnum.DELETED.name().equals(channel.getStatus())) {
+				it.remove();
+			} else {
+				cleanCategories(channel.getCategories().getCategory());
+			}
+		}
+		marshal(grabconfig);
+	}
+
+	private void cleanCategories(List<CategoryType> categories) {
+		Iterator<CategoryType> it = categories.iterator();
+		while (it.hasNext()) {
+			CategoryType category = it.next();
+			if (StatusEnum.DELETED.name().equals(category.getStatus())) {
+				it.remove();
+			} else {
+				cleanCategories(category.getSubcategories().getCategory());
+			}
 		}
 	}
 }

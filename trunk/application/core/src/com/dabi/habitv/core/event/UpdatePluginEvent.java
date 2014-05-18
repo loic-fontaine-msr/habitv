@@ -11,7 +11,8 @@ public final class UpdatePluginEvent extends AbstractEvent {
 
 	private final String info;
 
-	public UpdatePluginEvent(final Throwable exception, final String plugin, final String version, final String info) {
+	public UpdatePluginEvent(final Throwable exception, final String plugin,
+			final String version, final String info) {
 		super(exception);
 		this.plugin = plugin;
 		this.version = version;
@@ -19,7 +20,8 @@ public final class UpdatePluginEvent extends AbstractEvent {
 		this.state = UpdatePluginStateEnum.ERROR;
 	}
 
-	public UpdatePluginEvent(final String plugin, final String version, final UpdatePluginStateEnum state) {
+	public UpdatePluginEvent(final String plugin, final String version,
+			final UpdatePluginStateEnum state) {
 		super();
 		this.plugin = plugin;
 		this.version = version;
@@ -33,6 +35,14 @@ public final class UpdatePluginEvent extends AbstractEvent {
 		this.version = null;
 		this.plugin = null;
 		this.info = null;
+	}
+
+	public UpdatePluginEvent(UpdatePluginStateEnum state, int length) {
+		super();
+		this.state = state;
+		this.version = null;
+		this.plugin = null;
+		this.info = String.valueOf(length);
 	}
 
 	public String getPlugin() {
