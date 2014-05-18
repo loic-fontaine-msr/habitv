@@ -8,7 +8,7 @@ public class DownloadFailedException extends Exception {
 	private static final long serialVersionUID = -7917171517194292179L;
 
 	public DownloadFailedException(final Exception exception) {
-		super(exception);
+		super(exception.getMessage(), exception);
 	}
 
 	public DownloadFailedException(final String message) {

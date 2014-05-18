@@ -81,9 +81,9 @@ public final class HabiTvTrayView implements CoreSubscriber {
 
 			@Override
 			public void mouseClicked(final MouseEvent mouseEvent) {
-				if (!controller.getModel().getProgressionModel().getEpisodeName2ActionProgress().isEmpty()) {
+				if (!controller.getManager().getProgressionModel().getEpisodeName2ActionProgress().isEmpty()) {
 					trayIcon.displayMessage(
-							Messages.getString("HabiTvTrayView.3"), progressionToText(controller.getModel().getProgressionModel().getEpisodeName2ActionProgress()), //$NON-NLS-1$
+							Messages.getString("HabiTvTrayView.3"), progressionToText(controller.getManager().getProgressionModel().getEpisodeName2ActionProgress()), //$NON-NLS-1$
 							TrayIcon.MessageType.INFO);
 				}
 			}

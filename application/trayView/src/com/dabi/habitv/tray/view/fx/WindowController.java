@@ -74,24 +74,24 @@ public class WindowController {
 	public WindowController() {
 	}
 
-	public void init() {
-		final HabitTvViewManager model = new HabitTvViewManager();
-		final ViewController controller = new ViewController(model);
+	public void init(final HabitTvViewManager manager) {
+		final ViewController controller = new ViewController(manager);
 		final HabiTvTrayView view = new HabiTvTrayView(controller);
-		model.attach(view);
-		model.attach(controller);
+		manager.attach(view);
+		manager.attach(controller);
 
-		DownloadController downloadController = new DownloadController(searchButton, clearButton, retryExportButton,
+		DownloadController downloadController = new DownloadController(
+				searchButton, clearButton, retryExportButton,
 				clearExportButton, downloadingBox, downloadDirButton,
 				indexButton, errorBUtton);
-		model.attachRetreiveSubscriber(downloadController);
-		downloadController.init(controller, model);
+		manager.attachRetreiveSubscriber(downloadController);
+		downloadController.init(controller, manager);
 
 		new ToDownloadController(refreshCategoryButton, cleanCategoryButton,
-				toDLTree).init(controller, model);
+				toDLTree).init(controller, manager);
 
 		new ConfigController(downloadOuput, nbrMaxAttempts, daemonCheckTimeSec,
-				autoUpdate).init(controller, model);
+				autoUpdate).init(controller, manager);
 
 		controller.startDownloadCheckDemon();
 	}

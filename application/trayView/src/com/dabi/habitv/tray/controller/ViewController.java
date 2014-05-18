@@ -3,7 +3,10 @@ package com.dabi.habitv.tray.controller;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
+import java.util.Set;
 
+import com.dabi.habitv.api.plugin.dto.CategoryDTO;
 import com.dabi.habitv.api.plugin.exception.TechnicalException;
 import com.dabi.habitv.api.plugin.pub.UpdatablePluginEvent;
 import com.dabi.habitv.core.config.UserConfig;
@@ -20,22 +23,22 @@ import com.dabi.habitv.tray.subscriber.CoreSubscriber;
 
 public class ViewController implements CoreSubscriber {
 
-	private final HabitTvViewManager habitvModel;
+	private final HabitTvViewManager habitvViewManager;
 
-	public ViewController(final HabitTvViewManager habitvModel) {
-		this.habitvModel = habitvModel;
+	public ViewController(final HabitTvViewManager habitvViewManager) {
+		this.habitvViewManager = habitvViewManager;
 	}
 
-	public final HabitTvViewManager getModel() {
-		return habitvModel;
+	public final HabitTvViewManager getManager() {
+		return habitvViewManager;
 	}
 
 	public void start() {
-		getModel().startDownloadCheck();
+		getManager().startDownloadCheck();
 	}
 
 	public void startDownloadCheckDemon() {
-		getModel().startDownloadCheckDemon();
+		getManager().startDownloadCheckDemon();
 	}
 
 	@Override
@@ -74,26 +77,26 @@ public class ViewController implements CoreSubscriber {
 
 			break;
 		case DOWNLOAD_FAILED:
-			getModel().getProgressionModel().updateActionProgress(
+			getManager().getProgressionModel().updateActionProgress(
 					event.getEpisode(), EpisodeStateEnum.DOWNLOAD_FAILED,
 					event.getException().getMessage(), "");
 			break;
 		case DOWNLOADED:
-			getModel().getProgressionModel().updateActionProgress(
+			getManager().getProgressionModel().updateActionProgress(
 					event.getEpisode(), EpisodeStateEnum.DOWNLOADED, "", "");
 			break;
 		case DOWNLOADING:
-			getModel().getProgressionModel().updateActionProgress(
+			getManager().getProgressionModel().updateActionProgress(
 					event.getEpisode(), EpisodeStateEnum.DOWNLOADING, "",
 					event.getProgress());
 			break;
 		case EXPORT_FAILED:
-			getModel().getProgressionModel().updateActionProgress(
+			getManager().getProgressionModel().updateActionProgress(
 					event.getEpisode(), EpisodeStateEnum.EXPORT_FAILED,
 					event.getOperation(), "");
 			break;
 		case EXPORTING:
-			getModel().getProgressionModel().updateActionProgress(
+			getManager().getProgressionModel().updateActionProgress(
 					event.getEpisode(), EpisodeStateEnum.EXPORTING,
 					event.getOperation(), event.getProgress());
 			break;
@@ -101,11 +104,11 @@ public class ViewController implements CoreSubscriber {
 
 			break;
 		case READY:
-			getModel().getProgressionModel().updateActionProgress(
+			getManager().getProgressionModel().updateActionProgress(
 					event.getEpisode(), EpisodeStateEnum.READY, "", "");
 			break;
 		case TO_DOWNLOAD:
-			getModel().getProgressionModel().updateActionProgress(
+			getManager().getProgressionModel().updateActionProgress(
 					event.getEpisode(), EpisodeStateEnum.TO_DOWNLOAD, "", "");
 			break;
 		case TO_EXPORT:
@@ -136,33 +139,37 @@ public class ViewController implements CoreSubscriber {
 	}
 
 	public void stop() {
-		getModel().forceEnd();
+		getManager().forceEnd();
 		ProcessingThread.killAllProcessing();
 		System.exit(0);
 	}
 
 	public void clear() {
-		getModel().clear();
+		getManager().clear();
 	}
 
 	public void updateGrabConfig() {
-		getModel().updateGrabConfig();
+		getManager().updateGrabConfig();
+	}
+
+	public Map<String, Set<CategoryDTO>> loadCategories() {
+		return getManager().loadCategories();
 	}
 
 	public void reDoExport() {
-		getModel().reDoExport();
+		getManager().reDoExport();
 	}
 
 	public boolean hasExportToResume() {
-		return getModel().hasExportToResume();
+		return getManager().hasExportToResume();
 	}
 
 	public void clearExport() {
-		getModel().clearExport();
+		getManager().clearExport();
 	}
 
 	public void update() {
-		getModel().update();
+		getManager().update();
 	}
 
 	@Override
@@ -179,7 +186,7 @@ public class ViewController implements CoreSubscriber {
 	}
 
 	public void openIndexDir() {
-		final UserConfig config = getModel().getUserConfig();
+		final UserConfig config = getManager().getUserConfig();
 		open(config.getIndexDir());
 	}
 
@@ -210,7 +217,7 @@ public class ViewController implements CoreSubscriber {
 	}
 
 	public void openDownloadDir() {
-		final UserConfig config = getModel().getUserConfig();
+		final UserConfig config = getManager().getUserConfig();
 		open(config.getDownloadOuput().substring(0,
 				config.getDownloadOuput().indexOf("#"))); //$NON-NLS-1$
 	}
@@ -221,6 +228,10 @@ public class ViewController implements CoreSubscriber {
 
 	public void openGrabConfig() {
 		open(XMLUserConfig.GRAB_CONF_FILE);
+	}
+
+	public void saveGrabconfig(Map<String, Set<CategoryDTO>> channels) {
+		getManager().saveGrabconfig(channels);
 	}
 
 }
