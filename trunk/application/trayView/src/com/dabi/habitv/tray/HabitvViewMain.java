@@ -1,14 +1,16 @@
-package com.dabi.habitv.tray.view.fx;
+package com.dabi.habitv.tray;
 
 import java.io.IOException;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import com.dabi.habitv.tray.controller.WindowController;
 import com.dabi.habitv.tray.model.HabitTvViewManager;
 
 public class HabitvViewMain extends Application {
@@ -30,6 +32,7 @@ public class HabitvViewMain extends Application {
 	}
 
 	public void run(Stage primaryStage) {
+		Platform.setImplicitExit(false);		
 		try {
 			primaryStage.getIcons().add(
 					new Image(ClassLoader.getSystemResource("fixe.gif")
@@ -44,7 +47,7 @@ public class HabitvViewMain extends Application {
 			Scene scene = new Scene(root);
 			primaryStage.setScene(scene);
 			primaryStage.show();
-			controller.init(manager);
+			controller.init(manager, primaryStage);
 		} catch (IOException exception) {
 			throw new RuntimeException(exception);
 		}

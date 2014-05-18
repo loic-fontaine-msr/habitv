@@ -6,6 +6,9 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
 
+import javafx.application.Platform;
+import javafx.stage.Stage;
+
 import com.dabi.habitv.api.plugin.dto.CategoryDTO;
 import com.dabi.habitv.api.plugin.exception.TechnicalException;
 import com.dabi.habitv.api.plugin.pub.UpdatablePluginEvent;
@@ -18,15 +21,19 @@ import com.dabi.habitv.core.event.SearchEvent;
 import com.dabi.habitv.core.event.UpdatePluginEvent;
 import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.utils.ProcessingThread;
+import com.dabi.habitv.tray.HabitvViewMain;
 import com.dabi.habitv.tray.model.HabitTvViewManager;
 import com.dabi.habitv.tray.subscriber.CoreSubscriber;
 
 public class ViewController implements CoreSubscriber {
 
 	private final HabitTvViewManager habitvViewManager;
+	private Stage primaryStage;
 
-	public ViewController(final HabitTvViewManager habitvViewManager) {
+	public ViewController(final HabitTvViewManager habitvViewManager,
+			Stage primaryStage) {
 		this.habitvViewManager = habitvViewManager;
+		this.primaryStage = primaryStage;
 	}
 
 	public final HabitTvViewManager getManager() {
@@ -234,4 +241,19 @@ public class ViewController implements CoreSubscriber {
 		getManager().saveGrabconfig(channels);
 	}
 
+	public UserConfig loadUserConfig() {
+		return getManager().getUserConfig();
+	}
+
+	public void saveConfig(UserConfig userConfig) {
+		getManager().saveConfig(userConfig);
+	}
+
+	public void openMainView() {
+		Platform.runLater(new Runnable() {
+			public void run() {
+				primaryStage.show();
+			}
+		});
+	}
 }

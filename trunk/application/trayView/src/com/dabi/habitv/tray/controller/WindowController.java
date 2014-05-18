@@ -1,14 +1,19 @@
-package com.dabi.habitv.tray.view.fx;
+package com.dabi.habitv.tray.controller;
+
+import java.io.IOException;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TreeView;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 import com.dabi.habitv.api.plugin.dto.CategoryDTO;
-import com.dabi.habitv.tray.controller.ViewController;
 import com.dabi.habitv.tray.model.HabitTvViewManager;
 import com.dabi.habitv.tray.view.HabiTvTrayView;
 
@@ -17,6 +22,8 @@ public class WindowController {
 	/*
 	 * DL
 	 */
+	@FXML
+	private Tab downloadTab;
 
 	@FXML
 	private Button searchButton;
@@ -47,6 +54,9 @@ public class WindowController {
 	 */
 
 	@FXML
+	private Tab toDownloadTab;
+	
+	@FXML
 	private Button refreshCategoryButton;
 
 	@FXML
@@ -59,6 +69,9 @@ public class WindowController {
 	 * CONFIG
 	 */
 
+	@FXML
+	private Tab configTab;
+	
 	@FXML
 	private TextField downloadOuput;
 
@@ -74,8 +87,15 @@ public class WindowController {
 	public WindowController() {
 	}
 
-	public void init(final HabitTvViewManager manager) {
-		final ViewController controller = new ViewController(manager);
+	public void init(final HabitTvViewManager manager, Stage primaryStage) throws IOException {
+		downloadTab.setGraphic(new ImageView(new Image((ClassLoader
+				.getSystemResource("dl.png").openStream()))));
+		toDownloadTab.setGraphic(new ImageView(new Image((ClassLoader
+				.getSystemResource("adl.png").openStream()))));
+		configTab.setGraphic(new ImageView(new Image((ClassLoader
+				.getSystemResource("config.png").openStream()))));		
+
+		final ViewController controller = new ViewController(manager, primaryStage);
 		final HabiTvTrayView view = new HabiTvTrayView(controller);
 		manager.attach(view);
 		manager.attach(controller);
@@ -95,5 +115,4 @@ public class WindowController {
 
 		controller.startDownloadCheckDemon();
 	}
-
 }

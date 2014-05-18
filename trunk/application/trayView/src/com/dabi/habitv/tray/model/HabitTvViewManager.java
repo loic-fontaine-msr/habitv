@@ -4,9 +4,12 @@ import java.util.Map;
 import java.util.Observable;
 import java.util.Set;
 
+import javax.xml.bind.JAXBException;
+
 import org.apache.log4j.Logger;
 
 import com.dabi.habitv.api.plugin.dto.CategoryDTO;
+import com.dabi.habitv.api.plugin.exception.TechnicalException;
 import com.dabi.habitv.api.plugin.pub.Subscriber;
 import com.dabi.habitv.core.config.HabitTvConf;
 import com.dabi.habitv.core.config.UserConfig;
@@ -190,6 +193,14 @@ public class HabitTvViewManager extends Observable {
 
 	public void saveGrabconfig(Map<String, Set<CategoryDTO>> channel2Categories) {
 		grabConfigDAO.saveGrabConfig(channel2Categories);
+	}
+
+	public void saveConfig(UserConfig userConfig) {
+		try {
+			XMLUserConfig.saveConfig(userConfig);
+		} catch (JAXBException e) {
+			throw new TechnicalException(e);
+		}
 	}
 
 }

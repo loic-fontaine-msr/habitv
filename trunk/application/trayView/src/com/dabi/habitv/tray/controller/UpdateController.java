@@ -1,4 +1,4 @@
-package com.dabi.habitv.tray.view.fx;
+package com.dabi.habitv.tray.controller;
 
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -12,9 +12,11 @@ import com.dabi.habitv.api.plugin.pub.UpdatablePluginEvent.UpdatablePluginStateE
 import com.dabi.habitv.core.config.UserConfig;
 import com.dabi.habitv.core.config.XMLUserConfig;
 import com.dabi.habitv.core.event.UpdatePluginEvent;
+import com.dabi.habitv.tray.HabitvViewMain;
+import com.dabi.habitv.tray.TaskBasedSplash;
+import com.dabi.habitv.tray.TaskBasedSplash.InitHandler;
 import com.dabi.habitv.tray.model.HabitTvViewManager;
 import com.dabi.habitv.tray.subscriber.UpdateSubscriber;
-import com.dabi.habitv.tray.view.fx.TaskBasedSplash.InitHandler;
 
 public class UpdateController {
 
@@ -101,9 +103,6 @@ public class UpdateController {
 			case ERROR:
 				break;
 			case DONE:
-				// updateMessage(Messages.getString(
-				// "HabiTvTrayView.automajpluginfini", event.getPlugin(),
-				// event.getVersion()));
 				updateCount++;
 				updateProgress(updateCount, updateSize);
 				break;

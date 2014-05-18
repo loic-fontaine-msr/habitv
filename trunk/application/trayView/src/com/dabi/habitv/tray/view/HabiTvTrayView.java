@@ -40,7 +40,8 @@ public final class HabiTvTrayView implements CoreSubscriber {
 		this.controller = controller;
 		fixImage = getImage("fixe.gif"); //$NON-NLS-1$
 		animatedImage = getImage("anim.gif"); //$NON-NLS-1$
-		trayIcon = new TrayIcon(fixImage, Messages.getString("HabiTvTrayView.2")); //$NON-NLS-1$
+		trayIcon = new TrayIcon(fixImage,
+				Messages.getString("HabiTvTrayView.2")); //$NON-NLS-1$
 		try {
 			init();
 		} catch (final AWTException e) {
@@ -49,7 +50,8 @@ public final class HabiTvTrayView implements CoreSubscriber {
 	}
 
 	private Image getImage(final String image) {
-		return Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource(image));
+		return Toolkit.getDefaultToolkit().getImage(
+				ClassLoader.getSystemResource(image));
 	}
 
 	public void init() throws AWTException {
@@ -81,18 +83,25 @@ public final class HabiTvTrayView implements CoreSubscriber {
 
 			@Override
 			public void mouseClicked(final MouseEvent mouseEvent) {
-				if (!controller.getManager().getProgressionModel().getEpisodeName2ActionProgress().isEmpty()) {
-					trayIcon.displayMessage(
-							Messages.getString("HabiTvTrayView.3"), progressionToText(controller.getManager().getProgressionModel().getEpisodeName2ActionProgress()), //$NON-NLS-1$
-							TrayIcon.MessageType.INFO);
-				}
+				// if (mouseEvent.getClickCount() == 2) {
+					controller.openMainView();
+//				} else {
+//					if (!controller.getManager().getProgressionModel()
+//							.getEpisodeName2ActionProgress().isEmpty()) {
+//						trayIcon.displayMessage(
+//								Messages.getString("HabiTvTrayView.3"), progressionToText(controller.getManager().getProgressionModel().getEpisodeName2ActionProgress()), //$NON-NLS-1$
+//								TrayIcon.MessageType.INFO);
+//					}
+//				}
 			}
 		};
 		trayIcon.addMouseListener(mouseListener);
+
 		tray.add(trayIcon);
 	}
 
-	private String progressionToText(final Collection<ActionProgress> episodeName2ActionProgress) {
+	private String progressionToText(
+			final Collection<ActionProgress> episodeName2ActionProgress) {
 		StringBuilder str = null;
 		for (final ActionProgress actionProgress : episodeName2ActionProgress) {
 			if (str == null) {
@@ -100,7 +109,8 @@ public final class HabiTvTrayView implements CoreSubscriber {
 			} else {
 				str.append("\n"); //$NON-NLS-1$
 			}
-			str.append(actionProgress.getEpisode().getCategory() + " " + actionProgress.getEpisode().getName() + " "); //$NON-NLS-1$ //$NON-NLS-2$
+			str.append(actionProgress.getEpisode().getCategory()
+					+ " " + actionProgress.getEpisode().getName() + " "); //$NON-NLS-1$ //$NON-NLS-2$
 			String progression = actionProgress.getProgress();
 			if (progression != null && progression.length() > 0) {
 				progression = progression + "%"; //$NON-NLS-1$
@@ -111,7 +121,8 @@ public final class HabiTvTrayView implements CoreSubscriber {
 			if (info == null) {
 				info = ""; //$NON-NLS-1$
 			}
-			str.append(Messages.getString("HabiTvTrayView." + actionProgress.getState().name().toLowerCase()) + " " + info + " " + progression); //$NON-NLS-1$ //$NON-NLS-2$
+			str.append(Messages
+					.getString("HabiTvTrayView." + actionProgress.getState().name().toLowerCase()) + " " + info + " " + progression); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		return str.toString();
 	}
@@ -136,7 +147,8 @@ public final class HabiTvTrayView implements CoreSubscriber {
 			changeAnimation();
 			break;
 		case RESUME_EXPORT:
-			trayIcon.displayMessage(Messages.getString("HabiTvTrayView.15"), Messages.getString("HabiTvTrayView.16"), TrayIcon.MessageType.INFO); //$NON-NLS-1$ //$NON-NLS-2$
+			trayIcon.displayMessage(
+					Messages.getString("HabiTvTrayView.15"), Messages.getString("HabiTvTrayView.16"), TrayIcon.MessageType.INFO); //$NON-NLS-1$ //$NON-NLS-2$
 			retreiveInProgress = true;
 			changeAnimation();
 			break;
@@ -185,7 +197,8 @@ public final class HabiTvTrayView implements CoreSubscriber {
 		case EXPORT_FAILED:
 			trayIcon.displayMessage(
 					Messages.getString("HabiTvTrayView.22"), Messages.getString("HabiTvTrayView.23") + event.getEpisode().getCategory() + " " + event.getEpisode().getName() + " " //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-							+ event.getException().getMessage(), TrayIcon.MessageType.WARNING);
+							+ event.getException().getMessage(),
+					TrayIcon.MessageType.WARNING);
 			break;
 		case EXPORTING:
 
