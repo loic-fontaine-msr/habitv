@@ -7953,7 +7953,7 @@
                         <category>
                             <id>cyclisme_f3</id>
                             <name>Cyclisme</name>
-                            <download>false</download>
+                            <download>true</download>
                             <includes/>
                             <excludes/>
                             <subcategories/>
@@ -7975,7 +7975,7 @@
                         <category>
                             <id>emission_speciale_pierra_menta_2013</id>
                             <name>Ski alpinisme</name>
-                            <download>false</download>
+                            <download>true</download>
                             <includes/>
                             <excludes/>
                             <subcategories/>
@@ -8096,7 +8096,7 @@
                         <category>
                             <id>tout_le_sport</id>
                             <name>Tout le sport</name>
-                            <download>false</download>
+                            <download>true</download>
                             <includes/>
                             <excludes/>
                             <subcategories/>
