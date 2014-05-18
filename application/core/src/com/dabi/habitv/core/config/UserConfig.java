@@ -7,7 +7,6 @@ import com.dabi.habitv.api.plugin.dto.ExportDTO;
 import com.dabi.habitv.api.plugin.dto.ProxyDTO;
 import com.dabi.habitv.api.plugin.dto.ProxyDTO.ProtocolEnum;
 
-
 public interface UserConfig {
 
 	String getPluginDir();
@@ -37,5 +36,13 @@ public interface UserConfig {
 	boolean autoriseSnapshot();
 
 	String getBinDir();
+
+	void setMaxAttempts(int parseInt);
+
+	void setUpdateOnStartup(boolean updateOnStartup);
+
+	void setDownloadOuput(String downloadOuput);
+
+	void setDemonCheckTime(int demonCheckTime);
 
 }

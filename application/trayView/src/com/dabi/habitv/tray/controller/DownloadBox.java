@@ -1,4 +1,4 @@
-package com.dabi.habitv.tray.view.fx;
+package com.dabi.habitv.tray.controller;
 
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -94,6 +94,7 @@ public class DownloadBox extends BorderPane {
 		Label label;
 		if (oldWidget == null || !(oldWidget instanceof Label)) {
 			label = new Label();
+			label.setMaxWidth(50);
 		} else {
 			label = (Label) oldWidget;
 		}

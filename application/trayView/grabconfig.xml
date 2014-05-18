@@ -12,17 +12,6 @@
                     <excludes/>
                     <subcategories>
                         <category>
-                            <id>682125</id>
-                            <name>BODY OF PROOF - SAISON 2</name>
-                            <download>false</download>
-                            <includes/>
-                            <excludes/>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                            <status>NEW</status>
-                            <configuration/>
-                        </category>
-                        <category>
                             <id>669978</id>
                             <name>MI_5_SAISON_9</name>
                             <download>false</download>
@@ -548,7 +537,7 @@
                         <category>
                             <id>839196</id>
                             <name>LE JT DE CANAL+</name>
-                            <download>true</download>
+                            <download>false</download>
                             <includes/>
                             <excludes/>
                             <subcategories/>

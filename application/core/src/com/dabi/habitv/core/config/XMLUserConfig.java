@@ -107,6 +107,11 @@ public class XMLUserConfig implements UserConfig {
 		return new XMLUserConfig(config);
 	}
 
+	public static void saveConfig(UserConfig userConfig) throws JAXBException,
+			PropertyException {
+		saveConfig(new File(CONF_FILE), ((XMLUserConfig) userConfig).config);
+	}
+
 	private static Configuration convertOldConfig(Config oldConfig) {
 		final Configuration config = buildDefaultConfig();
 
@@ -488,6 +493,48 @@ public class XMLUserConfig implements UserConfig {
 		return config.getDirConfig() == null
 				|| config.getDirConfig().getBinDir() == null ? DEFAULT_BIN_DIR
 				: config.getDirConfig().getBinDir();
+	}
+
+	@Override
+	public void setMaxAttempts(int maxAttemps) {
+		DownloadConfig downloadConfig = loadDownloadConfig();
+		downloadConfig.setMaxAttempts(maxAttemps);
+	}
+
+	private DownloadConfig loadDownloadConfig() {
+		DownloadConfig downloadConfig = config.getDownloadConfig();
+		if (downloadConfig == null) {
+			downloadConfig = new DownloadConfig();
+			config.setDownloadConfig(downloadConfig);
+		}
+		return downloadConfig;
+	}
+
+	private UpdateConfig loadUpdateConfig() {
+		UpdateConfig updateConfig = config.getUpdateConfig();
+		if (updateConfig == null) {
+			updateConfig = new UpdateConfig();
+			config.setUpdateConfig(updateConfig);
+		}
+		return updateConfig;
+	}
+
+	@Override
+	public void setUpdateOnStartup(boolean updateOnStartup) {
+		UpdateConfig updateConfig = loadUpdateConfig();
+		updateConfig.setUpdateOnStartup(updateOnStartup);
+	}
+
+	@Override
+	public void setDownloadOuput(String downloadOuput) {
+		DownloadConfig downloadConfig = loadDownloadConfig();
+		downloadConfig.setDownloadOuput(downloadOuput);
+	}
+
+	@Override
+	public void setDemonCheckTime(int demonCheckTime) {
+		DownloadConfig downloadConfig = loadDownloadConfig();
+		downloadConfig.setDemonCheckTime(demonCheckTime);
 	}
 
 }

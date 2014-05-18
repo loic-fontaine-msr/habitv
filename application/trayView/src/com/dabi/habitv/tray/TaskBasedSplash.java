@@ -1,4 +1,8 @@
-package com.dabi.habitv.tray.view.fx;
+package com.dabi.habitv.tray;
+
+import java.io.IOException;
+
+import com.dabi.habitv.tray.controller.UpdateController;
 
 import javafx.animation.FadeTransition;
 import javafx.application.Application;
@@ -27,7 +31,7 @@ public class TaskBasedSplash extends Application {
 	private Pane splashLayout;
 	private ProgressBar loadProgress;
 	private Label progressText;
-	//private Stage mainStage;
+	// private Stage mainStage;
 	private static final int SPLASH_WIDTH = 676;
 	private static final int SPLASH_HEIGHT = 227;
 	private UpdateController updateController;
@@ -37,13 +41,13 @@ public class TaskBasedSplash extends Application {
 	}
 
 	public TaskBasedSplash() {
-		updateController = new UpdateController(this);		
+		updateController = new UpdateController(this);
 	}
-	
+
 	@Override
-	public void init() {
-		ImageView splash = new ImageView(new Image(
-				"http://fxexperience.com/wp-content/uploads/2010/06/logo.png"));
+	public void init() throws IOException {
+		ImageView splash = new ImageView(new Image(ClassLoader
+				.getSystemResource("logo.png").openStream()));
 		loadProgress = new ProgressBar();
 		loadProgress.setPrefWidth(SPLASH_WIDTH - 20);
 		progressText = new Label("Will find friends for peanuts . . .");
@@ -60,27 +64,27 @@ public class TaskBasedSplash extends Application {
 		updateController.run(initStage);
 	}
 
-//	private void showMainStage(
-//			ReadOnlyObjectProperty<ObservableList<String>> friends) {
-//		mainStage = new Stage(StageStyle.DECORATED);
-//		mainStage.setTitle("My Friends");
-//		mainStage.setIconified(true);
-//		mainStage
-//				.getIcons()
-//				.add(new Image(
-//						"http://cdn1.iconfinder.com/data/icons/Copenhagen/PNG/32/people.png"));
-//		final ListView<String> peopleView = new ListView<>();
-//		peopleView.itemsProperty().bind(friends);
-//		mainStage.setScene(new Scene(peopleView));
-//		mainStage.show();
-//	}
+	// private void showMainStage(
+	// ReadOnlyObjectProperty<ObservableList<String>> friends) {
+	// mainStage = new Stage(StageStyle.DECORATED);
+	// mainStage.setTitle("My Friends");
+	// mainStage.setIconified(true);
+	// mainStage
+	// .getIcons()
+	// .add(new Image(
+	// "http://cdn1.iconfinder.com/data/icons/Copenhagen/PNG/32/people.png"));
+	// final ListView<String> peopleView = new ListView<>();
+	// peopleView.itemsProperty().bind(friends);
+	// mainStage.setScene(new Scene(peopleView));
+	// mainStage.show();
+	// }
 
 	public interface InitHandler {
 		void onInitDone();
 	}
 
-	public void showSplash(final Stage initStage,
-			Task<?> task, final InitHandler initHandler) {
+	public void showSplash(final Stage initStage, Task<?> task,
+			final InitHandler initHandler) {
 		progressText.textProperty().bind(task.messageProperty());
 		loadProgress.progressProperty().bind(task.progressProperty());
 		task.stateProperty().addListener(new ChangeListener<Worker.State>() {
@@ -92,7 +96,7 @@ public class TaskBasedSplash extends Application {
 					loadProgress.progressProperty().unbind();
 					loadProgress.setProgress(1);
 					initHandler.onInitDone();
-					//mainStage.setIconified(false);
+					// mainStage.setIconified(false);
 					initStage.toFront();
 					FadeTransition fadeSplash = new FadeTransition(Duration
 							.seconds(1.2), splashLayout);

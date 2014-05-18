@@ -1,4 +1,4 @@
-package com.dabi.habitv.tray.view.fx;
+package com.dabi.habitv.tray.controller;
 
 import java.util.HashMap;
 import java.util.HashSet;

@@ -21,36 +21,37 @@ public final class TrayMenu extends PopupMenu {
 	}
 
 	private void init() {
-		final MenuItem startItem = new MenuItem(Messages.getString("TrayMenu.0")); //$NON-NLS-1$
+		
+		MenuItem startItem = new MenuItem(Messages.getString("TrayMenu.1")); //$NON-NLS-1$
 		ActionListener actionListener = new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent actionEvent) {
-				startItem.setEnabled(false);
+				controller.openMainView();
+			}
+		};
+		startItem.addActionListener(actionListener);
+		this.add(startItem);		
+		
+		startItem = new MenuItem(Messages.getString("TrayMenu.0")); //$NON-NLS-1$
+		actionListener = new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent actionEvent) {
 				controller.start();
-				startItem.setEnabled(true);
 			}
 		};
 		startItem.addActionListener(actionListener);
 		this.add(startItem);
 
-		final Menu exportSection = buildExportMenuSection();
-		this.add(exportSection);
+//		final Menu exportSection = buildExportMenuSection();
+//		this.add(exportSection);
 
 		final Menu folderSection = buildFolderMenuSection();
 		this.add(folderSection);
 
-		final Menu configSection = buildConfigMenuSection();
-		this.add(configSection);
+//		final Menu configSection = buildConfigMenuSection();
+//		this.add(configSection);
 
-		MenuItem item = new MenuItem(Messages.getString("TrayMenu.1")); //$NON-NLS-1$
-		actionListener = new ActionListener() {
-			@Override
-			public void actionPerformed(final ActionEvent actionEvent) {
-				controller.clear();
-			}
-		};
-		item.addActionListener(actionListener);
-		this.add(item);
+		MenuItem item;
 
 		item = new MenuItem(Messages.getString("TrayMenu.2")); //$NON-NLS-1$
 		actionListener = new ActionListener() {

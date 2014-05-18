@@ -1,9 +1,8 @@
-package com.dabi.habitv.tray.view.fx;
+package com.dabi.habitv.tray.controller;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
-import com.dabi.habitv.tray.controller.ViewController;
 import com.dabi.habitv.tray.model.HabitTvViewManager;
 
 public abstract class BaseController {

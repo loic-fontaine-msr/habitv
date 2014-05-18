@@ -1,4 +1,4 @@
-package com.dabi.habitv.tray.view.fx;
+package com.dabi.habitv.tray.controller;
 
 import java.util.Collection;
 import java.util.Map;
@@ -53,6 +53,7 @@ public class ToDownloadController extends BaseController {
 			@Override
 			public void handle(ActionEvent event) {
 				getController().getManager().cleanCategories();
+				loadTree();				
 			}
 		});
 	}
