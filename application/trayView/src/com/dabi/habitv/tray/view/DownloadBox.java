@@ -1,10 +1,8 @@
-package com.dabi.habitv.tray.controller;
+package com.dabi.habitv.tray.view;
 
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
-import javafx.scene.control.Tooltip;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -61,16 +59,16 @@ public class DownloadBox extends BorderPane {
 		String progress = actionProgress.getProgress();
 		progressDouble = getProgressDouble(progress);
 
-		ProgressBar progressBar;
-		if (oldWidget == null || !(oldWidget instanceof ProgressBar)) {
-			progressBar = new ProgressBar();
+		ProgressIndicatorBar progressBar;
+		if (oldWidget == null || !(oldWidget instanceof ProgressIndicatorBar)) {
+			progressBar = new ProgressIndicatorBar();
 		} else {
-			progressBar = (ProgressBar) oldWidget;
+			progressBar = (ProgressIndicatorBar) oldWidget;
 		}
 		progressBar.setProgress(progressDouble);
-		if (progress != null) {
-			progressBar.setTooltip(new Tooltip(progress + "%"));
-		}
+//		if (progress != null) {
+//			progressBar.setTooltip(new Tooltip(progress + "%"));
+//		}
 		widget = progressBar;
 		return widget;
 	}

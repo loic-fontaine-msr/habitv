@@ -16,6 +16,7 @@ import javafx.scene.layout.VBox;
 import com.dabi.habitv.api.plugin.pub.Subscriber;
 import com.dabi.habitv.core.event.RetreiveEvent;
 import com.dabi.habitv.tray.model.ActionProgress;
+import com.dabi.habitv.tray.view.DownloadBox;
 
 public class DownloadController extends BaseController implements
 		Subscriber<RetreiveEvent> {

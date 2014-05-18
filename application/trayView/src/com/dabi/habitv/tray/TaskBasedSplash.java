@@ -55,7 +55,7 @@ public class TaskBasedSplash extends Application {
 		splashLayout.getChildren().addAll(splash, loadProgress, progressText);
 		progressText.setAlignment(Pos.CENTER);
 		splashLayout
-				.setStyle("-fx-padding: 5; -fx-background-color: cornsilk; -fx-border-width:5; -fx-border-color: linear-gradient(to bottom, chocolate, derive(chocolate, 50%));");
+				.setStyle("-fx-padding: 5; -fx-background-color: white; -fx-border-width:5; -fx-border-color: black;");
 		splashLayout.setEffect(new DropShadow());
 	}
 
