@@ -1,32 +1,30 @@
 IHM gérer l'ajout, TEMPLATE ?
-IHM configuration de base
-
-progression sur la recherche
-
-tooltip
-
-info sur premier clic ?
-
-masque de patience	
-maj chargement ?	
-
-grabconfig parameter any
-
-update on check
+IHM suppression
 
 tester linux
 
 repasser sur tous les plugins pour gérer le dl par url web, téléchargement manuel
-préférence vue en conf
 
 téléchargement unitaire CLI
+ - lister les catégories
+ - lister les épisodes
+ - update grabconfig
+ - clean grabconfig
+ - check, dl & stop
 
 masquer une catégorie
 
-menu contextuel
-supprimer
-supprimer et marqué comme téléchargé
-ouvrir l'index
+menu contextuel dl
+ - supprimer
+ - supprimer et marquer comme téléchargé
+ - ouvrir l'index
+ - relancer
+ 
+menu contextuel tree
+ - ouvrir l'index
+ - afficher les épisodes de la catégorie
+ 
+export afficher/masquer les boutons 
 
 francetvinfo
 
@@ -42,6 +40,6 @@ tester torrent
 
 doc
 
-nouveau tray
+notification linux
 
 étudier captvty dl

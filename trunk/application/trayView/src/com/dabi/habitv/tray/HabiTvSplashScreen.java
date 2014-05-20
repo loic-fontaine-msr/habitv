@@ -27,11 +27,10 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
-public class TaskBasedSplash extends Application {
+public class HabiTvSplashScreen extends Application {
 	private Pane splashLayout;
 	private ProgressBar loadProgress;
 	private Label progressText;
-	// private Stage mainStage;
 	private static final int SPLASH_WIDTH = 676;
 	private static final int SPLASH_HEIGHT = 227;
 	private UpdateController updateController;
@@ -40,7 +39,7 @@ public class TaskBasedSplash extends Application {
 		launch(args);
 	}
 
-	public TaskBasedSplash() {
+	public HabiTvSplashScreen() {
 		updateController = new UpdateController(this);
 	}
 

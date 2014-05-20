@@ -12,6 +12,17 @@
                     <excludes/>
                     <subcategories>
                         <category>
+                            <id>682125</id>
+                            <name>BODY OF PROOF - SAISON 2</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
                             <id>669978</id>
                             <name>MI_5_SAISON_9</name>
                             <download>false</download>
@@ -80,7 +91,7 @@
                         <category>
                             <id>700663</id>
                             <name>UNITED STATES OF TARA - SAISON 3</name>
-                            <download>false</download>
+                            <download>true</download>
                             <includes/>
                             <excludes/>
                             <subcategories/>
@@ -2283,6 +2294,17 @@
                             <configuration/>
                         </category>
                         <category>
+                            <id>1073523</id>
+                            <name>AUTRES_SPORTS</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
                             <id>837528</id>
                             <name>HANDBALL</name>
                             <download>false</download>
@@ -2998,6 +3020,17 @@
                             <configuration/>
                         </category>
                         <category>
+                            <id>/d8-divertissement/pid7246-d8-les-animaux-du-poste.html</id>
+                            <name>Les animaux du poste !</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
                             <id>/d8-divertissement/pid5204-d8-touche-pas-a-mon-poste.html</id>
                             <name>Touche pas � mon poste !</name>
                             <download>false</download>
@@ -3055,6 +3088,17 @@
                         <category>
                             <id>/d8-divertissement/pid5651-d8-la-selection.html</id>
                             <name>La S�lection</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
+                            <id>/d8-divertissement/pid7252-d8-du-schmilblick-aux-restos-du-coeur-la-folle-histoire-de-coluche.html</id>
+                            <name>Du Schmilblick aux restos du coeur, la folle histoire de Coluche</name>
                             <download>false</download>
                             <includes/>
                             <excludes/>
@@ -4060,6 +4104,17 @@
                     <configuration/>
                 </category>
                 <category>
+                    <id>LES SECRETS DE YOAKE</id>
+                    <name>LES SECRETS DE YOAKE</name>
+                    <download>false</download>
+                    <includes/>
+                    <excludes/>
+                    <subcategories/>
+                    <extension>mp4</extension>
+                    <status>NEW</status>
+                    <configuration/>
+                </category>
+                <category>
                     <id>LA MAISON DU BLUFF 3 - L'HEBDO</id>
                     <name>LA MAISON DU BLUFF 3 - L'HEBDO</name>
                     <download>false</download>
@@ -4285,6 +4340,17 @@
                         <category>
                             <id>le_sang_de_la_vigne</id>
                             <name>Le sang de la vigne</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
+                            <id>le_visiteur_du_futur</id>
+                            <name>Marathon «Le Visiteur du futur»</name>
                             <download>false</download>
                             <includes/>
                             <excludes/>
@@ -4536,6 +4602,17 @@
                             <configuration/>
                         </category>
                         <category>
+                            <id>les_enquetes_de_murdoch</id>
+                            <name>Les enquêtes de Murdoch</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
                             <id>archer</id>
                             <name>Archer</name>
                             <download>false</download>
@@ -4648,6 +4725,17 @@
                         <category>
                             <id>drumont_histoire_d_un_antisemite</id>
                             <name>Drumont, histoire d'un antisémite français</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
+                            <id>inspecteur_lewis</id>
+                            <name>Inspecteur Lewis</name>
                             <download>false</download>
                             <includes/>
                             <excludes/>
@@ -5562,6 +5650,17 @@
                         <category>
                             <id>pierre_lapin</id>
                             <name>Pierre Lapin</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
+                            <id>foot2rue_extreme</id>
+                            <name>Foot 2 rue extreme</name>
                             <download>false</download>
                             <includes/>
                             <excludes/>
@@ -6717,6 +6816,17 @@
                             <configuration/>
                         </category>
                         <category>
+                            <id>jt_wallis_et_futuna_francais</id>
+                            <name>Journal Wallis</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
                             <id>jt_local_19_20_quercy</id>
                             <name>JT Local 19-20 - Quercy</name>
                             <download>false</download>
@@ -7587,6 +7697,17 @@
                             <configuration/>
                         </category>
                         <category>
+                            <id>midi_en_guadeloupe</id>
+                            <name>Midi en Guadeloupe, la suite</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
                             <id>concours_eurovision_de_la_chanson</id>
                             <name>Concours Eurovision de la chanson</name>
                             <download>false</download>
@@ -7754,6 +7875,28 @@
                         <category>
                             <id>la_troupe_d_un_soir</id>
                             <name>La troupe d'un soir</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
+                            <id>music_explorer</id>
+                            <name>Music Explorer : les chasseurs de sons</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
+                            <id>les_annees_bonheur</id>
+                            <name>Les années bonheur</name>
                             <download>false</download>
                             <includes/>
                             <excludes/>
@@ -7953,7 +8096,7 @@
                         <category>
                             <id>cyclisme_f3</id>
                             <name>Cyclisme</name>
-                            <download>true</download>
+                            <download>false</download>
                             <includes/>
                             <excludes/>
                             <subcategories/>
@@ -7975,7 +8118,7 @@
                         <category>
                             <id>emission_speciale_pierra_menta_2013</id>
                             <name>Ski alpinisme</name>
-                            <download>true</download>
+                            <download>false</download>
                             <includes/>
                             <excludes/>
                             <subcategories/>
@@ -8096,7 +8239,7 @@
                         <category>
                             <id>tout_le_sport</id>
                             <name>Tout le sport</name>
-                            <download>true</download>
+                            <download>false</download>
                             <includes/>
                             <excludes/>
                             <subcategories/>
@@ -8327,6 +8470,17 @@
                             <configuration/>
                         </category>
                         <category>
+                            <id>o_bout_du_monde</id>
+                            <name>Ô bout du monde</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
                             <id>le_doc_du_dimanche</id>
                             <name>Quand la cuisine fait le trottoir</name>
                             <download>false</download>
@@ -8503,6 +8657,17 @@
                             <configuration/>
                         </category>
                         <category>
+                            <id>un_jour_au_zoo</id>
+                            <name>Un jour au zoo</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
                             <id>des_maisons_et_des_hotes</id>
                             <name>Des maisons et des hôtes</name>
                             <download>false</download>
@@ -8624,6 +8789,17 @@
                             <configuration/>
                         </category>
                         <category>
+                            <id>comment_reparer_un_helicoptere</id>
+                            <name>Comment réparer un hélicoptère ?</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
                             <id>2_minutes_pour_la_syrie_f2</id>
                             <name>2 minutes pour la Syrie</name>
                             <download>false</download>
@@ -8648,6 +8824,17 @@
                         <category>
                             <id>l_appel_de_l_ouest</id>
                             <name>L'appel de l'Ouest</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
+                            <id>equateur_la_route_d_un_monde</id>
+                            <name>Equateur, la route d'un monde nouveau</name>
                             <download>false</download>
                             <includes/>
                             <excludes/>
@@ -8692,6 +8879,17 @@
                         <category>
                             <id>cap_vert_l_archipel_creole</id>
                             <name>Cap-Vert, l'archipel créole</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
+                            <id>qui_a_tue_jaures</id>
+                            <name>Qui a tué Jaurès ?</name>
                             <download>false</download>
                             <includes/>
                             <excludes/>
@@ -8747,6 +8945,28 @@
                         <category>
                             <id>un_jour_un_destin</id>
                             <name>Un jour, une histoire</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
+                            <id>tous_en_seine</id>
+                            <name>Tous en Seine</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
+                            <id>a_la_decouverte_de_la_chine_sauvage</id>
+                            <name>A la découverte de la Chine sauvage</name>
                             <download>false</download>
                             <includes/>
                             <excludes/>
@@ -8877,8 +9097,30 @@
                             <configuration/>
                         </category>
                         <category>
+                            <id>documentaires_lorraine</id>
+                            <name>La dernière trace</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
                             <id>la_galerie_france_5</id>
                             <name>La galerie France 5</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
+                            <id>renzo_piano_le_chemin_kanak</id>
+                            <name>Renzo Piano, le chemin kanak</name>
                             <download>false</download>
                             <includes/>
                             <excludes/>
@@ -8956,6 +9198,28 @@
                         <category>
                             <id>la_case_du_siecle_f5</id>
                             <name>Les enfants otages de Bergen-Belsen</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
+                            <id>jeudi_soir_dimanche_matin</id>
+                            <name>Jeudi soir, dimanche matin</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
+                            <id>kanak</id>
+                            <name>Kanak</name>
                             <download>false</download>
                             <includes/>
                             <excludes/>
@@ -9064,6 +9328,17 @@
                             <configuration/>
                         </category>
                         <category>
+                            <id>fetes_et_alcool_le_peril_jeune</id>
+                            <name>Fêtes et alcool : le péril jeune</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
                             <id>doc_24_paris_ile_de_france</id>
                             <name>Profession : psychologue du crime</name>
                             <download>false</download>
@@ -9119,6 +9394,28 @@
                             <configuration/>
                         </category>
                         <category>
+                            <id>epargne_placements</id>
+                            <name>Epargne, placements, comment protéger son argent ?</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
+                            <id>pick_up_et_coup_de_chasse</id>
+                            <name>Pick-up et coup de chasse</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
                             <id>malouines_le_royaume_des_manchots</id>
                             <name>Malouines, le royaume des manchots</name>
                             <download>false</download>
@@ -9163,8 +9460,30 @@
                             <configuration/>
                         </category>
                         <category>
+                            <id>20_ans_a_manille</id>
+                            <name>Avoir 20 ans à Manille</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
                             <id>je_ne_devrais_pas_etre_en_vie</id>
                             <name>Je ne devrais pas être en vie</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
+                            <id>maori_fo</id>
+                            <name>Maori</name>
                             <download>false</download>
                             <includes/>
                             <excludes/>
@@ -9328,6 +9647,17 @@
                             <configuration/>
                         </category>
                         <category>
+                            <id>ouvrons_les_placards</id>
+                            <name>Ouvrons les placards</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
                             <id>mourir_pour_la_patrie</id>
                             <name>Mourir pour la patrie</name>
                             <download>false</download>
@@ -9428,8 +9758,129 @@
                             <configuration/>
                         </category>
                         <category>
+                            <id>orthodoxie</id>
+                            <name>Orthodoxie</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
                             <id>chretiens_orientaux</id>
                             <name>Chrétiens orientaux : foi, espérance et traditions</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
+                            <id>meteo_aquitaine</id>
+                            <name>Météo Aquitaine</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
+                            <id>le_jour_du_seigneur</id>
+                            <name>Le jour du Seigneur</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
+                            <id>meteo_franche_comte</id>
+                            <name>Météo Franche-Comté</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
+                            <id>meteo_limousin</id>
+                            <name>Météo Limousin</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
+                            <id>meteo_rhone_alpes</id>
+                            <name>Météo Rhône-Alpes</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
+                            <id>meteo_centre</id>
+                            <name>Météo Centre</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
+                            <id>meteo_champagne_ardenne</id>
+                            <name>Météo Champagne-Ardenne</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
+                            <id>meteo_corse</id>
+                            <name>Météo Corse</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
+                            <id>meteo_nord_pas_de_calais</id>
+                            <name>Météo Nord Pas-de-Calais Picardie</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
+                            <id>meteo_alsace</id>
+                            <name>Météo Alsace</name>
                             <download>false</download>
                             <includes/>
                             <excludes/>
@@ -9463,17 +9914,6 @@
                         <category>
                             <id>meteo_lorraine</id>
                             <name>Météo Lorraine</name>
-                            <download>false</download>
-                            <includes/>
-                            <excludes/>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                            <status>NEW</status>
-                            <configuration/>
-                        </category>
-                        <category>
-                            <id>meteo_aquitaine</id>
-                            <name>Météo Aquitaine</name>
                             <download>false</download>
                             <includes/>
                             <excludes/>
@@ -9527,28 +9967,6 @@
                             <configuration/>
                         </category>
                         <category>
-                            <id>le_jour_du_seigneur</id>
-                            <name>Le jour du Seigneur</name>
-                            <download>false</download>
-                            <includes/>
-                            <excludes/>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                            <status>NEW</status>
-                            <configuration/>
-                        </category>
-                        <category>
-                            <id>meteo_franche_comte</id>
-                            <name>Météo Franche-Comté</name>
-                            <download>false</download>
-                            <includes/>
-                            <excludes/>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                            <status>NEW</status>
-                            <configuration/>
-                        </category>
-                        <category>
                             <id>meteo_basse_normandie</id>
                             <name>Météo</name>
                             <download>false</download>
@@ -9562,28 +9980,6 @@
                         <category>
                             <id>meteo_nord_pas_de_calais</id>
                             <name>Météo locale</name>
-                            <download>false</download>
-                            <includes/>
-                            <excludes/>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                            <status>NEW</status>
-                            <configuration/>
-                        </category>
-                        <category>
-                            <id>meteo_limousin</id>
-                            <name>Météo Limousin</name>
-                            <download>false</download>
-                            <includes/>
-                            <excludes/>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                            <status>NEW</status>
-                            <configuration/>
-                        </category>
-                        <category>
-                            <id>meteo_rhone_alpes</id>
-                            <name>Météo Rhône-Alpes</name>
                             <download>false</download>
                             <includes/>
                             <excludes/>
@@ -9615,52 +10011,8 @@
                             <configuration/>
                         </category>
                         <category>
-                            <id>meteo_centre</id>
-                            <name>Météo Centre</name>
-                            <download>false</download>
-                            <includes/>
-                            <excludes/>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                            <status>NEW</status>
-                            <configuration/>
-                        </category>
-                        <category>
-                            <id>meteo_champagne_ardenne</id>
-                            <name>Météo Champagne-Ardenne</name>
-                            <download>false</download>
-                            <includes/>
-                            <excludes/>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                            <status>NEW</status>
-                            <configuration/>
-                        </category>
-                        <category>
                             <id>sagesses_bouddhistes</id>
                             <name>Sagesses bouddhistes</name>
-                            <download>false</download>
-                            <includes/>
-                            <excludes/>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                            <status>NEW</status>
-                            <configuration/>
-                        </category>
-                        <category>
-                            <id>meteo_nord_pas_de_calais</id>
-                            <name>Météo Nord Pas-de-Calais Picardie</name>
-                            <download>false</download>
-                            <includes/>
-                            <excludes/>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                            <status>NEW</status>
-                            <configuration/>
-                        </category>
-                        <category>
-                            <id>meteo_alsace</id>
-                            <name>Météo Alsace</name>
                             <download>false</download>
                             <includes/>
                             <excludes/>
@@ -9926,8 +10278,41 @@
                     <excludes/>
                     <subcategories>
                         <category>
+                            <id>don_giovanni_par_ruggero_raimondi</id>
+                            <name>Don Giovanni</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
                             <id>enquetes_de_region_rhone_alpes</id>
                             <name>Enquêtes de régions</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
+                            <id>alcaline_le_mag</id>
+                            <name>Alcaline le mag</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
+                            <id>signes_du_toro</id>
+                            <name>Signes du toro</name>
                             <download>false</download>
                             <includes/>
                             <excludes/>
@@ -10115,6 +10500,17 @@
                         <category>
                             <id>signe_moi_un_conte</id>
                             <name>Signe-moi un conte</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
+                            <id>abd_al_malik_rencontre_albert_camus</id>
+                            <name>Abd al Malik rencontre Albert Camus</name>
                             <download>false</download>
                             <includes/>
                             <excludes/>
@@ -10355,6 +10751,17 @@
                             <configuration/>
                         </category>
                         <category>
+                            <id>memo</id>
+                            <name>Mémô</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
                             <id>samedi_et_vous</id>
                             <name>Samedi et vous</name>
                             <download>false</download>
@@ -10467,6 +10874,17 @@
                         <category>
                             <id>plein_2_cine</id>
                             <name>Plein 2 ciné</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
+                            <id>ka_pale</id>
+                            <name>Ka Palé</name>
                             <download>false</download>
                             <includes/>
                             <excludes/>
@@ -10742,6 +11160,17 @@
                         <category>
                             <id>una_canzunetta</id>
                             <name>Una canzunetta</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
+                            <id>monte_le_son_le_live</id>
+                            <name>Monte le son, le live</name>
                             <download>false</download>
                             <includes/>
                             <excludes/>
@@ -11214,6 +11643,17 @@
                             <configuration/>
                         </category>
                         <category>
+                            <id>mag_oi</id>
+                            <name>Mag océan indien</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
                             <id>la_voix_est_libre_lorraine</id>
                             <name>La voix est libre</name>
                             <download>false</download>
@@ -11326,6 +11766,17 @@
                         <category>
                             <id>c_est_la_vie</id>
                             <name>C'est la vie</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
+                            <id>ara_ora</id>
+                            <name>Ara ora</name>
                             <download>false</download>
                             <includes/>
                             <excludes/>
@@ -11929,6 +12380,17 @@
                             <configuration/>
                         </category>
                         <category>
+                            <id>tout_peut_changer</id>
+                            <name>Tout peut changer</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
                             <id>toute_une_histoire</id>
                             <name>Toute une histoire</name>
                             <download>false</download>
@@ -12105,6 +12567,17 @@
                             <configuration/>
                         </category>
                         <category>
+                            <id>ecoutez_voir</id>
+                            <name>Ecoutez voir</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
                             <id>bali_breizh</id>
                             <name>Bali Breizh</name>
                             <download>false</download>
@@ -12215,6 +12688,17 @@
                             <configuration/>
                         </category>
                         <category>
+                            <id>mayotte_1ere_c_net</id>
+                            <name>Mayotte la 1ere c à vous</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
                             <id>faites_entrer_l_accuse</id>
                             <name>Faites entrer l'accusé</name>
                             <download>false</download>
@@ -12314,8 +12798,30 @@
                             <configuration/>
                         </category>
                         <category>
+                            <id>toute_nouvelle_tendance</id>
+                            <name>T.N.T.</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
                             <id>bondy_blog_cafe</id>
                             <name>Bondy blog café</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
+                            <id>demain_c_nous</id>
+                            <name>Demain c nous</name>
                             <download>false</download>
                             <includes/>
                             <excludes/>
@@ -12992,8 +13498,30 @@
                     <excludes/>
                     <subcategories>
                         <category>
-                            <id>/cat/rugby-top-14/</id>
-                            <name>Top 14</name>
+                            <id>search/?q=uja</id>
+                            <name>Un jour avec...</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
+                            <id>/cat/equipe-mag-this-is-bild/</id>
+                            <name>This is Bild</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
+                            <id>/cat/football-ligue-1/</id>
+                            <name>Ligue 1</name>
                             <download>false</download>
                             <includes/>
                             <excludes/>
@@ -13005,6 +13533,28 @@
                         <category>
                             <id>/search/?q=cali+rugby+club</id>
                             <name>Cali Rugby Club</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
+                            <id>/cat/rugby-top-14/</id>
+                            <name>Top 14</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
+                            <id>/search/?q=blog%20de%20roustan</id>
+                            <name>Le Blog de Roustan</name>
                             <download>false</download>
                             <includes/>
                             <excludes/>
@@ -13037,8 +13587,19 @@
                     <excludes/>
                     <subcategories>
                         <category>
-                            <id>/search/?q=blog%20de%20roustan</id>
-                            <name>Le Blog de Roustan</name>
+                            <id>search/?q=uja</id>
+                            <name>Un jour avec...</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
+                            <id>/cat/equipe-mag-this-is-bild/</id>
+                            <name>This is Bild</name>
                             <download>false</download>
                             <includes/>
                             <excludes/>
@@ -13072,6 +13633,28 @@
                         <category>
                             <id>/cat/football-ligue-des-champions</id>
                             <name>Ligue des champions</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
+                            <id>/search/?q=blog%20de%20roustan</id>
+                            <name>Le Blog de Roustan</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
+                            <id>/cat/rugby-top-14/</id>
+                            <name>Top 14</name>
                             <download>false</download>
                             <includes/>
                             <excludes/>
@@ -13115,8 +13698,8 @@
                             <configuration/>
                         </category>
                         <category>
-                            <id>/cat/equipe-mag-journal-jeux-videos/</id>
-                            <name>Journal des jeux vidéos</name>
+                            <id>search/?q=uja</id>
+                            <name>Un jour avec...</name>
                             <download>false</download>
                             <includes/>
                             <excludes/>
@@ -13128,6 +13711,50 @@
                         <category>
                             <id>/cat/equipe-mag-mag/</id>
                             <name>Mag</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
+                            <id>/cat/football-ligue-1/</id>
+                            <name>Ligue 1</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
+                            <id>/cat/equipe-mag-journal-jeux-videos/</id>
+                            <name>Journal des jeux vidéos</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
+                            <id>/cat/rugby-top-14/</id>
+                            <name>Top 14</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
+                            <id>/search/?q=blog%20de%20roustan</id>
+                            <name>Le Blog de Roustan</name>
                             <download>false</download>
                             <includes/>
                             <excludes/>
@@ -13148,6 +13775,50 @@
                     <includes/>
                     <excludes/>
                     <subcategories>
+                        <category>
+                            <id>search/?q=uja</id>
+                            <name>Un jour avec...</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
+                            <id>/cat/equipe-mag-this-is-bild/</id>
+                            <name>This is Bild</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
+                            <id>/cat/natation/</id>
+                            <name>Natation</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
+                            <id>/cat/football-ligue-1/</id>
+                            <name>Ligue 1</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
                         <category>
                             <id>/cat/athletisme/</id>
                             <name>Athlétisme</name>
@@ -13171,8 +13842,19 @@
                             <configuration/>
                         </category>
                         <category>
-                            <id>/cat/natation/</id>
-                            <name>Natation</name>
+                            <id>/cat/rugby-top-14/</id>
+                            <name>Top 14</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
+                            <id>/search/?q=blog%20de%20roustan</id>
+                            <name>Le Blog de Roustan</name>
                             <download>false</download>
                             <includes/>
                             <excludes/>
@@ -13193,6 +13875,50 @@
                     <includes/>
                     <excludes/>
                     <subcategories>
+                        <category>
+                            <id>search/?q=uja</id>
+                            <name>Un jour avec...</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
+                            <id>/cat/equipe-mag-this-is-bild/</id>
+                            <name>This is Bild</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
+                            <id>/videos/emission-sport-buzz</id>
+                            <name>Sport Buzz</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
+                            <id>/cat/football-ligue-1/</id>
+                            <name>Ligue 1</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
                         <category>
                             <id>/search/?q=blog%20de%20roustan</id>
                             <name>Le Blog de Roustan</name>
@@ -13216,19 +13942,8 @@
                             <configuration/>
                         </category>
                         <category>
-                            <id>search/?q=uja</id>
-                            <name>Un jour avec...</name>
-                            <download>false</download>
-                            <includes/>
-                            <excludes/>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                            <status>NEW</status>
-                            <configuration/>
-                        </category>
-                        <category>
-                            <id>/videos/emission-sport-buzz</id>
-                            <name>Sport Buzz</name>
+                            <id>/cat/rugby-top-14/</id>
+                            <name>Top 14</name>
                             <download>false</download>
                             <includes/>
                             <excludes/>
@@ -13261,8 +13976,19 @@
                     <excludes/>
                     <subcategories>
                         <category>
-                            <id>/cat/rallye/</id>
-                            <name>Rallye</name>
+                            <id>search/?q=uja</id>
+                            <name>Un jour avec...</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
+                            <id>/cat/equipe-mag-this-is-bild/</id>
+                            <name>This is Bild</name>
                             <download>false</download>
                             <includes/>
                             <excludes/>
@@ -13283,8 +14009,52 @@
                             <configuration/>
                         </category>
                         <category>
+                            <id>/cat/football-ligue-1/</id>
+                            <name>Ligue 1</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
+                            <id>/cat/rugby-top-14/</id>
+                            <name>Top 14</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
+                            <id>/search/?q=blog%20de%20roustan</id>
+                            <name>Le Blog de Roustan</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
                             <id>/cat/formule-1/</id>
                             <name>Formule 1</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
+                            <id>/cat/rallye/</id>
+                            <name>Rallye</name>
                             <download>false</download>
                             <includes/>
                             <excludes/>
@@ -13306,8 +14076,63 @@
                     <excludes/>
                     <subcategories>
                         <category>
+                            <id>search/?q=uja</id>
+                            <name>Un jour avec...</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
+                            <id>/cat/equipe-mag-this-is-bild/</id>
+                            <name>This is Bild</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
+                            <id>/cat/rugby-top-14/</id>
+                            <name>Top 14</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
+                            <id>/search/?q=blog%20de%20roustan</id>
+                            <name>Le Blog de Roustan</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
                             <id>/cat/golf/</id>
                             <name>Golf</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
+                            <id>/cat/football-ligue-1/</id>
+                            <name>Ligue 1</name>
                             <download>false</download>
                             <includes/>
                             <excludes/>
@@ -13329,8 +14154,52 @@
                     <excludes/>
                     <subcategories>
                         <category>
-                            <id>/cat/volley-ball/</id>
-                            <name>Volley-ball</name>
+                            <id>search/?q=uja</id>
+                            <name>Un jour avec...</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
+                            <id>/cat/equipe-mag-this-is-bild/</id>
+                            <name>This is Bild</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
+                            <id>/cat/football-ligue-1/</id>
+                            <name>Ligue 1</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
+                            <id>/cat/rugby-top-14/</id>
+                            <name>Top 14</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
+                            <id>/search/?q=blog%20de%20roustan</id>
+                            <name>Le Blog de Roustan</name>
                             <download>false</download>
                             <includes/>
                             <excludes/>
@@ -13361,6 +14230,17 @@
                             <status>NEW</status>
                             <configuration/>
                         </category>
+                        <category>
+                            <id>/cat/volley-ball/</id>
+                            <name>Volley-ball</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
                     </subcategories>
                     <extension>mp4</extension>
                     <status>NEW</status>
@@ -13373,6 +14253,61 @@
                     <includes/>
                     <excludes/>
                     <subcategories>
+                        <category>
+                            <id>search/?q=uja</id>
+                            <name>Un jour avec...</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
+                            <id>/cat/equipe-mag-this-is-bild/</id>
+                            <name>This is Bild</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
+                            <id>/cat/rugby-top-14/</id>
+                            <name>Top 14</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
+                            <id>/search/?q=blog%20de%20roustan</id>
+                            <name>Le Blog de Roustan</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
+                            <id>/cat/football-ligue-1/</id>
+                            <name>Ligue 1</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
                         <category>
                             <id>/cat/cyclisme-tour-de-france/</id>
                             <name>Tour de France</name>
@@ -16634,6 +17569,17 @@
                             <status>NEW</status>
                             <configuration/>
                         </category>
+                        <category>
+                            <id>/cinema/pid7256-tel-pere-telle-fille.html</id>
+                            <name>Tel p�re telle fille</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
                     </subcategories>
                     <extension>mp4</extension>
                     <status>NEW</status>
@@ -16861,6 +17807,17 @@
                         <category>
                             <id>21038</id>
                             <name>LES TOPS</name>
+                            <download>false</download>
+                            <includes/>
+                            <excludes/>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                            <status>NEW</status>
+                            <configuration/>
+                        </category>
+                        <category>
+                            <id>/musique/pid6279-concerts.html</id>
+                            <name>Concerts</name>
                             <download>false</download>
                             <includes/>
                             <excludes/>

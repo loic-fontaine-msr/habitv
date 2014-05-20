@@ -9,7 +9,7 @@
         <fileNameCutSize>50</fileNameCutSize>
     </downloadConfig>
     <updateConfig>
-        <updateOnStartup>true</updateOnStartup>
+        <updateOnStartup>false</updateOnStartup>
         <autoriseSnapshot>true</autoriseSnapshot>
     </updateConfig>
     <taskDefinition>

@@ -21,7 +21,6 @@ import com.dabi.habitv.core.event.SearchEvent;
 import com.dabi.habitv.core.event.UpdatePluginEvent;
 import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.utils.ProcessingThread;
-import com.dabi.habitv.tray.HabitvViewMain;
 import com.dabi.habitv.tray.model.HabitTvViewManager;
 import com.dabi.habitv.tray.subscriber.CoreSubscriber;
 

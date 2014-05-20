@@ -35,7 +35,8 @@ import com.dabi.habitv.framework.plugin.utils.DownloadUtils;
 import com.dabi.habitv.framework.plugin.utils.RetrieverUtils;
 import com.dabi.habitv.framework.plugin.utils.SoccerUtils;
 
-public class LEquipePluginManager extends BasePluginWithProxy implements PluginProviderDownloaderInterface {
+public class LEquipePluginManager extends BasePluginWithProxy implements
+		PluginProviderDownloaderInterface {
 
 	@Override
 	public String getName() {
@@ -45,7 +46,8 @@ public class LEquipePluginManager extends BasePluginWithProxy implements PluginP
 	@Override
 	public Set<EpisodeDTO> findEpisode(final CategoryDTO category) {
 		final Set<EpisodeDTO> episodeList = new HashSet<>();
-		final String baseUrl = LEquipeConf.VIDEO_HOME_URL + category.getId();
+		final String baseUrl = LEquipeConf.VIDEO_HOME_URL + "/"
+				+ category.getId();
 		findEpisodeByUrl(category, episodeList, baseUrl);
 		String pageUrl;
 		for (int i = 2; i <= LEquipeConf.MAX_PAGE; i++) {
@@ -59,14 +61,17 @@ public class LEquipePluginManager extends BasePluginWithProxy implements PluginP
 	@Override
 	public Set<CategoryDTO> findCategory() {
 		final Set<CategoryDTO> categoryDTOs = new HashSet<>();
-		final Document doc = Jsoup.parse(getUrlContent(LEquipeConf.VIDEO_HOME_URL));
+		final Document doc = Jsoup
+				.parse(getUrlContent(LEquipeConf.VIDEO_HOME_URL));
 
-		final Elements aOngletsSport = doc.select(".onglets_sports").get(0).children();
+		final Elements aOngletsSport = doc.select(".onglets_sports").get(0)
+				.children();
 		for (final Element aHref : aOngletsSport) {
 			final String href = aHref.attr("href");
 			if (href.length() > 1) {
 				final String content = aHref.text();
-				final CategoryDTO categoryDTO = new CategoryDTO(LEquipeConf.NAME, content, href, LEquipeConf.EXTENSION);
+				final CategoryDTO categoryDTO = new CategoryDTO(
+						LEquipeConf.NAME, content, href, LEquipeConf.EXTENSION);
 				categoryDTO.addSubCategories(findSubCategories(href));
 				categoryDTOs.add(categoryDTO);
 			}
@@ -76,14 +81,20 @@ public class LEquipePluginManager extends BasePluginWithProxy implements PluginP
 	}
 
 	@Override
-	public void download(final DownloadParamDTO downloadParam, final DownloaderPluginHolder downloaders, final CmdProgressionListener listener)
+	public void download(final DownloadParamDTO downloadParam,
+			final DownloaderPluginHolder downloaders,
+			final CmdProgressionListener listener)
 			throws DownloadFailedException {
-		final String videoUrl = findDownloadlink(downloadParam.getDownloadInput());
-		DownloadUtils.download(DownloadParamDTO.buildDownloadParam(downloadParam, videoUrl), downloaders, listener);
+		final String videoUrl = findDownloadlink(downloadParam
+				.getDownloadInput());
+		DownloadUtils.download(
+				DownloadParamDTO.buildDownloadParam(downloadParam, videoUrl),
+				downloaders, listener);
 
 	}
 
-	private void findEpisodeByUrl(final CategoryDTO category, final Set<EpisodeDTO> episodeList, final String pageUrl) {
+	private void findEpisodeByUrl(final CategoryDTO category,
+			final Set<EpisodeDTO> episodeList, final String pageUrl) {
 		final Document doc = Jsoup.parse(getUrlContent(pageUrl));
 		Elements elementsByClass = doc.getElementsByClass("content");
 		if (elementsByClass.isEmpty()) {
@@ -93,11 +104,13 @@ public class LEquipePluginManager extends BasePluginWithProxy implements PluginP
 				final String name = aResult.getElementsByClass("title").text();
 				final String nameWithoutScore = SoccerUtils.maskScore(name);
 				if (checkName(nameWithoutScore)) {
-					episodeList.add(new EpisodeDTO(category, nameWithoutScore, hRef));
+					episodeList.add(new EpisodeDTO(category, nameWithoutScore,
+							hRef));
 				}
 			}
 		} else {
-			final Elements divResults = elementsByClass.get(0).child(0).children();
+			final Elements divResults = elementsByClass.get(0).child(0)
+					.children();
 			for (final Element divResult : divResults) {
 				if (divResult.children().size() > 0) {
 					final Element aResult = divResult.child(0);
@@ -105,7 +118,8 @@ public class LEquipePluginManager extends BasePluginWithProxy implements PluginP
 					final String name = aResult.child(2).text();
 					final String nameWithoutScore = SoccerUtils.maskScore(name);
 					if (checkName(nameWithoutScore)) {
-						episodeList.add(new EpisodeDTO(category, nameWithoutScore, hRef));
+						episodeList.add(new EpisodeDTO(category,
+								nameWithoutScore, hRef));
 					}
 				}
 			}
@@ -119,7 +133,8 @@ public class LEquipePluginManager extends BasePluginWithProxy implements PluginP
 	public String findDownloadlink(final String url) {
 		final String originalUrl = LEquipeConf.VIDEO_HOME_URL + url;
 		final String htmlContent = getUrlContent(originalUrl);
-		final Pattern pattern = Pattern.compile(".*<param name=\"flashVars\" value=\"([^\"]*)\".*");
+		final Pattern pattern = Pattern
+				.compile(".*<param name=\"flashVars\" value=\"([^\"]*)\".*");
 		final Matcher matcher = pattern.matcher(htmlContent);
 		// lancement de la recherche de toutes les occurrences
 		final boolean hasMatched = matcher.find();
@@ -135,7 +150,8 @@ public class LEquipePluginManager extends BasePluginWithProxy implements PluginP
 			throw new TechnicalException("sig and player key not found");
 		}
 		try {
-			return findDownloadlinkBySigAndPlayerKey(sig, playerKey, originalUrl);
+			return findDownloadlinkBySigAndPlayerKey(sig, playerKey,
+					originalUrl);
 		} catch (final IOException e) {
 			throw new TechnicalException(e);
 		}
@@ -147,7 +163,8 @@ public class LEquipePluginManager extends BasePluginWithProxy implements PluginP
 		StringBuilder paramValueBldr = new StringBuilder();
 		String currentParam = null;
 		final Map<String, String> params = new HashMap<String, String>();
-		for (final char c : StringEscapeUtils.unescapeXml(parameters).toCharArray()) {
+		for (final char c : StringEscapeUtils.unescapeXml(parameters)
+				.toCharArray()) {
 			switch (c) {
 			case '=':
 				currentParam = paramNameBldr.toString();
@@ -174,7 +191,9 @@ public class LEquipePluginManager extends BasePluginWithProxy implements PluginP
 		return params;
 	}
 
-	private String findDownloadlinkBySigAndPlayerKey(final String sig, final String playerKey, final String originalUrl) throws IOException {
+	private String findDownloadlinkBySigAndPlayerKey(final String sig,
+			final String playerKey, final String originalUrl)
+			throws IOException {
 		final String url = "http://api.kewego.com/config/getStreamInit/";
 		final Proxy httpProxy = getHttpProxy();
 		final URLConnection hc;
@@ -184,19 +203,28 @@ public class LEquipePluginManager extends BasePluginWithProxy implements PluginP
 			hc = (new URL(url)).openConnection();
 		}
 
-		hc.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:14.0) Gecko/20100101 Firefox/14.0.1");
-		hc.setRequestProperty("X-KDORIGIN", URLEncoder.encode(originalUrl, "UTF-8"));
-		String data = URLEncoder.encode("player_type", "UTF-8") + "=" + URLEncoder.encode("kp", "UTF-8");
-		data += "&" + URLEncoder.encode("sig", "UTF-8") + "=" + URLEncoder.encode(sig, "UTF-8");
-		data += "&" + URLEncoder.encode("playerKey", "UTF-8") + "=" + URLEncoder.encode(playerKey, "UTF-8");
-		data += "&" + URLEncoder.encode("request_verbose", "UTF-8") + "=" + URLEncoder.encode("false", "UTF-8");
-		data += "&" + URLEncoder.encode("language_code", "UTF-8") + "=" + URLEncoder.encode("fr", "UTF-8");
+		hc.setRequestProperty("User-Agent",
+				"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:14.0) Gecko/20100101 Firefox/14.0.1");
+		hc.setRequestProperty("X-KDORIGIN",
+				URLEncoder.encode(originalUrl, "UTF-8"));
+		String data = URLEncoder.encode("player_type", "UTF-8") + "="
+				+ URLEncoder.encode("kp", "UTF-8");
+		data += "&" + URLEncoder.encode("sig", "UTF-8") + "="
+				+ URLEncoder.encode(sig, "UTF-8");
+		data += "&" + URLEncoder.encode("playerKey", "UTF-8") + "="
+				+ URLEncoder.encode(playerKey, "UTF-8");
+		data += "&" + URLEncoder.encode("request_verbose", "UTF-8") + "="
+				+ URLEncoder.encode("false", "UTF-8");
+		data += "&" + URLEncoder.encode("language_code", "UTF-8") + "="
+				+ URLEncoder.encode("fr", "UTF-8");
 		hc.setDoOutput(true);
-		final OutputStreamWriter wr = new OutputStreamWriter(hc.getOutputStream());
+		final OutputStreamWriter wr = new OutputStreamWriter(
+				hc.getOutputStream());
 		wr.write(data);
 		wr.flush();
 		// Get the response
-		final BufferedReader rd = new BufferedReader(new InputStreamReader(hc.getInputStream()));
+		final BufferedReader rd = new BufferedReader(new InputStreamReader(
+				hc.getInputStream()));
 		String line;
 		final StringBuilder builder = new StringBuilder();
 		while ((line = rd.readLine()) != null) {
@@ -205,7 +233,8 @@ public class LEquipePluginManager extends BasePluginWithProxy implements PluginP
 		wr.close();
 		rd.close();
 
-		final Pattern pattern = Pattern.compile("<playerAppToken>(.*)</playerAppToken>");
+		final Pattern pattern = Pattern
+				.compile("<playerAppToken>(.*)</playerAppToken>");
 		final Matcher matcher = pattern.matcher(builder.toString());
 		// lancement de la recherche de toutes les occurrences
 		final boolean hasMatched = matcher.find();
@@ -216,19 +245,22 @@ public class LEquipePluginManager extends BasePluginWithProxy implements PluginP
 		} else {
 			throw new TechnicalException("can't find token");
 		}
-		return "\"http://api.kewego.com/video/getStream/?appToken=" + token + "&sig=" + sig + "&format=high&v=2749\"";
+		return "\"http://api.kewego.com/video/getStream/?appToken=" + token
+				+ "&sig=" + sig + "&format=high&v=2749\"";
 	}
 
 	private Collection<CategoryDTO> findSubCategories(final String categoryHref) {
 		final Set<CategoryDTO> categoryDTOs = new HashSet<>();
-		final Document doc = Jsoup.parse(getUrlContent(LEquipeConf.VIDEO_HOME_URL + categoryHref));
+		final Document doc = Jsoup
+				.parse(getUrlContent(LEquipeConf.VIDEO_HOME_URL + categoryHref));
 
 		final Elements aOngletsSport = doc.select("#k_sous").get(0).children();
 		for (final Element aHref : aOngletsSport) {
 			final String href = aHref.attr("href");
 			if (href.length() > 1) {
 				final String content = aHref.text();
-				final CategoryDTO categoryDTO = new CategoryDTO(LEquipeConf.NAME, content, href, LEquipeConf.EXTENSION);
+				final CategoryDTO categoryDTO = new CategoryDTO(
+						LEquipeConf.NAME, content, href, LEquipeConf.EXTENSION);
 				categoryDTOs.add(categoryDTO);
 			}
 

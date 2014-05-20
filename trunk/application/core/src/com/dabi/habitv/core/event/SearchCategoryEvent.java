@@ -23,7 +23,7 @@ public final class SearchCategoryEvent extends AbstractEvent {
 		this.state = state;
 		this.info = info;
 	}
-
+	
 	public String getChannel() {
 		return channel;
 	}

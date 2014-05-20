@@ -10,13 +10,11 @@ import org.apache.log4j.Logger;
 
 import com.dabi.habitv.api.plugin.dto.CategoryDTO;
 import com.dabi.habitv.api.plugin.exception.TechnicalException;
-import com.dabi.habitv.api.plugin.pub.Subscriber;
 import com.dabi.habitv.core.config.HabitTvConf;
 import com.dabi.habitv.core.config.UserConfig;
 import com.dabi.habitv.core.config.XMLUserConfig;
 import com.dabi.habitv.core.dao.GrabConfigDAO;
 import com.dabi.habitv.core.dao.GrabConfigDAO.LoadModeEnum;
-import com.dabi.habitv.core.event.RetreiveEvent;
 import com.dabi.habitv.core.event.SearchEvent;
 import com.dabi.habitv.core.event.SearchStateEnum;
 import com.dabi.habitv.core.mgr.CoreManager;
@@ -74,12 +72,6 @@ public class HabitTvViewManager extends Observable {
 				.attach(subscriberAdapter.buildUpdateSubscriber());
 		coreManager.getPluginManager().getUpdatablePluginPublisher()
 				.attach(subscriberAdapter.buildUpdatablePluginSubscriber());
-	}
-
-	public void attachRetreiveSubscriber(
-			Subscriber<RetreiveEvent> retreiveSubscriber) {
-		coreManager.getEpisodeManager().getRetreivePublisher()
-				.attach(retreiveSubscriber);
 	}
 
 	public ProgressionModel getProgressionModel() {

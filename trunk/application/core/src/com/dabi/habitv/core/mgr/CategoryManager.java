@@ -1,6 +1,7 @@
 package com.dabi.habitv.core.mgr;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,10 +31,12 @@ public class CategoryManager extends AbstractManager {
 
 	private static final Logger LOG = Logger.getLogger(CategoryManager.class);
 
-	CategoryManager(final ProviderPluginHolder providerPluginHolder, final Map<String, Integer> taskName2PoolSize) {
+	CategoryManager(final ProviderPluginHolder providerPluginHolder,
+			final Map<String, Integer> taskName2PoolSize) {
 		super(providerPluginHolder);
 		// task mgrs
-		searchCategoryMgr = new TaskMgr<SearchCategoryTask, SearchCategoryResult>(TaskTypeEnum.category.getPoolSize(taskName2PoolSize),
+		searchCategoryMgr = new TaskMgr<SearchCategoryTask, SearchCategoryResult>(
+				TaskTypeEnum.category.getPoolSize(taskName2PoolSize),
 				buildCategoryTaskMgrListener(), null);
 		// publisher
 		searchCategoryPublisher = new Publisher<>();
@@ -44,8 +47,14 @@ public class CategoryManager extends AbstractManager {
 		final List<SearchCategoryTask> taskList = new ArrayList<>();
 		// search is parallelized, the final result will be build with the
 		// future result
-		for (final PluginProviderInterface provider : getProviderPluginHolder().getPlugins()) {
-			final SearchCategoryTask searchCategoryTask = new SearchCategoryTask(provider.getName(), provider, searchCategoryPublisher);
+		Collection<PluginProviderInterface> providerPlugins = getProviderPluginHolder()
+				.getPlugins();
+		searchCategoryPublisher.addNews(new SearchCategoryEvent(
+				SearchCategoryStateEnum.STARTING, String
+						.valueOf(providerPlugins.size())));
+		for (final PluginProviderInterface provider : providerPlugins) {
+			final SearchCategoryTask searchCategoryTask = new SearchCategoryTask(
+					provider.getName(), provider, searchCategoryPublisher);
 			searchCategoryMgr.addTask(searchCategoryTask);
 			taskList.add(searchCategoryTask);
 		}
@@ -53,12 +62,17 @@ public class CategoryManager extends AbstractManager {
 		for (final SearchCategoryTask searchTask : taskList) {
 			try {
 				searchCategoryResult = searchTask.getResult();
-				channel2Categories.put(searchCategoryResult.getChannel(), searchCategoryResult.getCategoryList());
+				channel2Categories.put(searchCategoryResult.getChannel(),
+						searchCategoryResult.getCategoryList());
 			} catch (final TechnicalException e) {
-				searchCategoryPublisher.addNews(new SearchCategoryEvent(SearchCategoryStateEnum.ERROR, HabitTvConf.GRABCONFIG_XML_FILE));
+				searchCategoryPublisher.addNews(new SearchCategoryEvent(
+						SearchCategoryStateEnum.ERROR,
+						HabitTvConf.GRABCONFIG_XML_FILE));
 				// throw new TechnicalException(e);
 				// if one plugin failed keep generating the grabconfig file
-				LOG.error("one plugin failed, keep generating the grabconfig file", e);
+				LOG.error(
+						"one plugin failed, keep generating the grabconfig file",
+						e);
 			}
 		}
 		return channel2Categories;
@@ -69,12 +83,16 @@ public class CategoryManager extends AbstractManager {
 
 			@Override
 			public void onFailed(final Throwable throwable) {
-				searchCategoryPublisher.addNews(new SearchCategoryEvent(SearchCategoryStateEnum.ERROR, HabitTvConf.GRABCONFIG_XML_FILE));
+				searchCategoryPublisher.addNews(new SearchCategoryEvent(
+						SearchCategoryStateEnum.ERROR,
+						HabitTvConf.GRABCONFIG_XML_FILE));
 			}
 
 			@Override
 			public void onAllTreatmentDone() {
-				searchCategoryPublisher.addNews(new SearchCategoryEvent(SearchCategoryStateEnum.DONE, HabitTvConf.GRABCONFIG_XML_FILE));
+				searchCategoryPublisher.addNews(new SearchCategoryEvent(
+						SearchCategoryStateEnum.DONE,
+						HabitTvConf.GRABCONFIG_XML_FILE));
 			}
 		};
 	}
