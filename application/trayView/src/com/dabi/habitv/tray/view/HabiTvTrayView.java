@@ -7,7 +7,6 @@ import java.awt.Toolkit;
 import java.awt.TrayIcon;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.Collection;
 
 import com.dabi.habitv.api.plugin.exception.TechnicalException;
 import com.dabi.habitv.api.plugin.pub.UpdatablePluginEvent;
@@ -17,7 +16,6 @@ import com.dabi.habitv.core.event.SearchCategoryEvent;
 import com.dabi.habitv.core.event.SearchEvent;
 import com.dabi.habitv.core.event.UpdatePluginEvent;
 import com.dabi.habitv.tray.controller.ViewController;
-import com.dabi.habitv.tray.model.ActionProgress;
 import com.dabi.habitv.tray.subscriber.CoreSubscriber;
 
 public final class HabiTvTrayView implements CoreSubscriber {
@@ -84,47 +82,20 @@ public final class HabiTvTrayView implements CoreSubscriber {
 			@Override
 			public void mouseClicked(final MouseEvent mouseEvent) {
 				// if (mouseEvent.getClickCount() == 2) {
-					controller.openMainView();
-//				} else {
-//					if (!controller.getManager().getProgressionModel()
-//							.getEpisodeName2ActionProgress().isEmpty()) {
-//						trayIcon.displayMessage(
-//								Messages.getString("HabiTvTrayView.3"), progressionToText(controller.getManager().getProgressionModel().getEpisodeName2ActionProgress()), //$NON-NLS-1$
-//								TrayIcon.MessageType.INFO);
-//					}
-//				}
+				controller.openMainView();
+				// } else {
+				// if (!controller.getManager().getProgressionModel()
+				// .getEpisodeName2ActionProgress().isEmpty()) {
+				// trayIcon.displayMessage(
+				//								Messages.getString("HabiTvTrayView.3"), progressionToText(controller.getManager().getProgressionModel().getEpisodeName2ActionProgress()), //$NON-NLS-1$
+				// TrayIcon.MessageType.INFO);
+				// }
+				// }
 			}
 		};
 		trayIcon.addMouseListener(mouseListener);
 
 		tray.add(trayIcon);
-	}
-
-	private String progressionToText(
-			final Collection<ActionProgress> episodeName2ActionProgress) {
-		StringBuilder str = null;
-		for (final ActionProgress actionProgress : episodeName2ActionProgress) {
-			if (str == null) {
-				str = new StringBuilder();
-			} else {
-				str.append("\n"); //$NON-NLS-1$
-			}
-			str.append(actionProgress.getEpisode().getCategory()
-					+ " " + actionProgress.getEpisode().getName() + " "); //$NON-NLS-1$ //$NON-NLS-2$
-			String progression = actionProgress.getProgress();
-			if (progression != null && progression.length() > 0) {
-				progression = progression + "%"; //$NON-NLS-1$
-			} else {
-				progression = ""; //$NON-NLS-1$
-			}
-			String info = actionProgress.getInfo();
-			if (info == null) {
-				info = ""; //$NON-NLS-1$
-			}
-			str.append(Messages
-					.getString("HabiTvTrayView." + actionProgress.getState().name().toLowerCase()) + " " + info + " " + progression); //$NON-NLS-1$ //$NON-NLS-2$
-		}
-		return str.toString();
 	}
 
 	@Override

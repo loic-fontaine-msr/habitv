@@ -11,15 +11,21 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
+import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.VBox;
 
-import com.dabi.habitv.api.plugin.pub.Subscriber;
+import com.dabi.habitv.api.plugin.pub.UpdatablePluginEvent;
 import com.dabi.habitv.core.event.RetreiveEvent;
+import com.dabi.habitv.core.event.SearchCategoryEvent;
+import com.dabi.habitv.core.event.SearchEvent;
+import com.dabi.habitv.core.event.UpdatePluginEvent;
 import com.dabi.habitv.tray.model.ActionProgress;
+import com.dabi.habitv.tray.subscriber.CoreSubscriber;
 import com.dabi.habitv.tray.view.DownloadBox;
 
 public class DownloadController extends BaseController implements
-		Subscriber<RetreiveEvent> {
+		CoreSubscriber {
 
 	private Button searchButton;
 
@@ -39,11 +45,14 @@ public class DownloadController extends BaseController implements
 
 	private Map<String, DownloadBox> epId2DLBox = new HashMap<>();
 
-	public DownloadController(Button searchButton, Button clearButton,
-			Button retryExportButton, Button clearExportButton,
-			VBox downloadingBox, Button downloadDirButton, Button indexButton,
-			Button errorBUtton) {
+	private ProgressIndicator mainProgress;
+
+	public DownloadController(ProgressIndicator mainProgress,
+			Button searchButton, Button clearButton, Button retryExportButton,
+			Button clearExportButton, VBox downloadingBox,
+			Button downloadDirButton, Button indexButton, Button errorBUtton) {
 		super();
+		this.mainProgress = mainProgress;
 		this.searchButton = searchButton;
 		this.clearButton = clearButton;
 		this.retryExportButton = retryExportButton;
@@ -56,10 +65,30 @@ public class DownloadController extends BaseController implements
 
 	public void init() {
 		downloadingBox.getChildren().clear();
+		addTooltip();
 		updateDownloadPanel();
 		addDownloadActions();
 		addExportActions();
 		addFilesAndFoldersActions();
+	}
+
+	private void addTooltip() {
+		this.searchButton.setTooltip(new Tooltip(
+				"Rechercher des épisodes à télécharger."));
+		this.clearButton.setTooltip(new Tooltip(
+				"Vider la liste des téléchargements terminés."));
+		this.retryExportButton.setTooltip(new Tooltip(
+				"Retenter les exports précédemment échoués."));
+		this.clearExportButton.setTooltip(new Tooltip(
+				"Vider les exports précédemment échoués."));
+		this.downloadDirButton.setTooltip(new Tooltip(
+				"Ouvrir le répertoire de téléchargement."));
+		this.indexButton
+				.setTooltip(new Tooltip(
+						"Ouvrir le répertoire contenant les index des épisodes marqués comme déjà téléchargés."));
+		this.errorBUtton
+				.setTooltip(new Tooltip(
+						"Ouvrir le fichier contenant les téléchargements notés en erreur qui ne seront pas retentés."));
 	}
 
 	private void addFilesAndFoldersActions() {
@@ -113,7 +142,14 @@ public class DownloadController extends BaseController implements
 
 			@Override
 			public void handle(ActionEvent event) {
-				getController().start();
+				new Thread(new Runnable() {
+
+					@Override
+					public void run() {
+						getController().start();
+					}
+
+				}).run();
 			}
 		});
 
@@ -168,5 +204,53 @@ public class DownloadController extends BaseController implements
 			}
 
 		});
+	}
+
+	@Override
+	public void update(UpdatePluginEvent event) {
+
+	}
+
+	@Override
+	public void update(UpdatablePluginEvent event) {
+
+	}
+
+	private int searchCount;
+
+	private int searchSize;
+
+	@Override
+	public void update(final SearchEvent event) {
+		Platform.runLater(new Runnable() {
+
+			@Override
+			public void run() {
+				switch (event.getState()) {
+				case STARTING:
+					searchButton.setDisable(true);
+					searchCount = 0;
+					searchSize = Integer.parseInt(event.getInfo());
+					mainProgress.setProgress((double) searchCount / searchSize);
+					break;
+				case DONE:
+					searchCount++;
+					mainProgress.setProgress( (double) searchCount / searchSize);
+					break;
+				case ALL_SEARCH_DONE:
+					searchButton.setDisable(false);
+					mainProgress.setProgress(1);
+					break;
+				default:
+					break;
+				}
+			}
+
+		});
+	}
+
+	@Override
+	public void update(SearchCategoryEvent event) {
+
 	}
 }

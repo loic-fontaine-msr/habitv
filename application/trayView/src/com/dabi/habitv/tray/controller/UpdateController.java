@@ -13,8 +13,8 @@ import com.dabi.habitv.core.config.UserConfig;
 import com.dabi.habitv.core.config.XMLUserConfig;
 import com.dabi.habitv.core.event.UpdatePluginEvent;
 import com.dabi.habitv.tray.HabitvViewMain;
-import com.dabi.habitv.tray.TaskBasedSplash;
-import com.dabi.habitv.tray.TaskBasedSplash.InitHandler;
+import com.dabi.habitv.tray.HabiTvSplashScreen;
+import com.dabi.habitv.tray.HabiTvSplashScreen.InitHandler;
 import com.dabi.habitv.tray.model.HabitTvViewManager;
 import com.dabi.habitv.tray.subscriber.UpdateSubscriber;
 
@@ -22,13 +22,13 @@ public class UpdateController {
 
 	private static final Logger LOG = Logger.getLogger(UpdateController.class);
 
-	private TaskBasedSplash taskBasedSplash;
+	private HabiTvSplashScreen taskBasedSplash;
 
 	private Stage mainStage;
 
 	private HabitvViewMain habitvViewMain;
 
-	public UpdateController(TaskBasedSplash taskBasedSplash) {
+	public UpdateController(HabiTvSplashScreen taskBasedSplash) {
 		this.taskBasedSplash = taskBasedSplash;
 		this.mainStage = new Stage(StageStyle.DECORATED);
 	}

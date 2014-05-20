@@ -65,79 +65,79 @@ public final class TrayMenu extends PopupMenu {
 
 	}
 
-	private Menu buildExportMenuSection() {
-		final Menu section = new Menu(Messages.getString("TrayMenu.3")); //$NON-NLS-1$
+//	private Menu buildExportMenuSection() {
+//		final Menu section = new Menu(Messages.getString("TrayMenu.3")); //$NON-NLS-1$
+//
+//		final MenuItem redoExport = new MenuItem(Messages.getString("TrayMenu.4")); //$NON-NLS-1$
+//		ActionListener actionListener = new ActionListener() {
+//			@Override
+//			public void actionPerformed(final ActionEvent actionEvent) {
+//				redoExport.setEnabled(false);
+//				controller.reDoExport();
+//				redoExport.setEnabled(true);
+//			}
+//		};
+//		redoExport.addActionListener(actionListener);
+//		section.add(redoExport);
+//
+//		final MenuItem clearExport = new MenuItem(Messages.getString("TrayMenu.5")); //$NON-NLS-1$
+//		actionListener = new ActionListener() {
+//			@Override
+//			public void actionPerformed(final ActionEvent actionEvent) {
+//				controller.clearExport();
+//			}
+//		};
+//		clearExport.addActionListener(actionListener);
+//		section.add(clearExport);
+//		return section;
+//	}
 
-		final MenuItem redoExport = new MenuItem(Messages.getString("TrayMenu.4")); //$NON-NLS-1$
-		ActionListener actionListener = new ActionListener() {
-			@Override
-			public void actionPerformed(final ActionEvent actionEvent) {
-				redoExport.setEnabled(false);
-				controller.reDoExport();
-				redoExport.setEnabled(true);
-			}
-		};
-		redoExport.addActionListener(actionListener);
-		section.add(redoExport);
-
-		final MenuItem clearExport = new MenuItem(Messages.getString("TrayMenu.5")); //$NON-NLS-1$
-		actionListener = new ActionListener() {
-			@Override
-			public void actionPerformed(final ActionEvent actionEvent) {
-				controller.clearExport();
-			}
-		};
-		clearExport.addActionListener(actionListener);
-		section.add(clearExport);
-		return section;
-	}
-
-	private Menu buildConfigMenuSection() {
-		final Menu section = new Menu(Messages.getString("TrayMenu.6")); //$NON-NLS-1$
-
-		MenuItem item = new MenuItem(Messages.getString("TrayMenu.7")); //$NON-NLS-1$
-		ActionListener actionListener = new ActionListener() {
-			@Override
-			public void actionPerformed(final ActionEvent actionEvent) {
-				controller.openConfig();
-			}
-		};
-		item.addActionListener(actionListener);
-		section.add(item);
-
-		item = new MenuItem(Messages.getString("TrayMenu.8")); //$NON-NLS-1$
-		actionListener = new ActionListener() {
-			@Override
-			public void actionPerformed(final ActionEvent actionEvent) {
-				controller.openGrabConfig();
-			}
-		};
-		item.addActionListener(actionListener);
-		section.add(item);
-
-		item = new MenuItem(Messages.getString("TrayMenu.9")); //$NON-NLS-1$
-		actionListener = new ActionListener() {
-			@Override
-			public void actionPerformed(final ActionEvent actionEvent) {
-				controller.updateGrabConfig();
-			}
-		};
-		item.addActionListener(actionListener);
-		section.add(item);
-
-		item = new MenuItem(Messages.getString("TrayMenu.13")); //$NON-NLS-1$
-		actionListener = new ActionListener() {
-			@Override
-			public void actionPerformed(final ActionEvent actionEvent) {
-				controller.update();
-			}
-
-		};
-		item.addActionListener(actionListener);
-		section.add(item);
-
-		return section;
-	}
+//	private Menu buildConfigMenuSection() {
+//		final Menu section = new Menu(Messages.getString("TrayMenu.6")); //$NON-NLS-1$
+//
+//		MenuItem item = new MenuItem(Messages.getString("TrayMenu.7")); //$NON-NLS-1$
+//		ActionListener actionListener = new ActionListener() {
+//			@Override
+//			public void actionPerformed(final ActionEvent actionEvent) {
+//				controller.openConfig();
+//			}
+//		};
+//		item.addActionListener(actionListener);
+//		section.add(item);
+//
+//		item = new MenuItem(Messages.getString("TrayMenu.8")); //$NON-NLS-1$
+//		actionListener = new ActionListener() {
+//			@Override
+//			public void actionPerformed(final ActionEvent actionEvent) {
+//				controller.openGrabConfig();
+//			}
+//		};
+//		item.addActionListener(actionListener);
+//		section.add(item);
+//
+//		item = new MenuItem(Messages.getString("TrayMenu.9")); //$NON-NLS-1$
+//		actionListener = new ActionListener() {
+//			@Override
+//			public void actionPerformed(final ActionEvent actionEvent) {
+//				controller.updateGrabConfig();
+//			}
+//		};
+//		item.addActionListener(actionListener);
+//		section.add(item);
+//
+//		item = new MenuItem(Messages.getString("TrayMenu.13")); //$NON-NLS-1$
+//		actionListener = new ActionListener() {
+//			@Override
+//			public void actionPerformed(final ActionEvent actionEvent) {
+//				controller.update();
+//			}
+//
+//		};
+//		item.addActionListener(actionListener);
+//		section.add(item);
+//
+//		return section;
+//	}
 
 	private Menu buildFolderMenuSection() {
 		final Menu section = new Menu(Messages.getString("TrayMenu.10")); //$NON-NLS-1$

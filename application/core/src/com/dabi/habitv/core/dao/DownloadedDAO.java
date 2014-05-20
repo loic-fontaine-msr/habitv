@@ -9,8 +9,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
 
@@ -55,7 +55,7 @@ public class DownloadedDAO {
 		BufferedReader lecteurAvecBuffer = null;
 		String ligne;
 
-		final Set<String> fileList = new HashSet<>();
+		final Set<String> fileList = new TreeSet<>();
 		try {
 
 			lecteurAvecBuffer = new BufferedReader(new InputStreamReader(new FileInputStream(getFileIndex()), HabitTvConf.ENCODING));

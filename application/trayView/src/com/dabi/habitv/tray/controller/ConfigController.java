@@ -5,6 +5,7 @@ import com.dabi.habitv.core.config.UserConfig;
 import javafx.event.EventHandler;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.input.KeyEvent;
 
 public class ConfigController extends BaseController {
@@ -29,6 +30,23 @@ public class ConfigController extends BaseController {
 	public void init() {
 		loadConfig();
 		addButtonActions();
+		addTooltips();
+	}
+
+	private void addTooltips() {
+		downloadOuput
+				.setTooltip(new Tooltip(
+						"Modèle de stockage des téléchargements, vous pouvez utiliser les tokens suivant : \n"
+								+ "#EPISODE# : nom de l'épisode\n"
+								+ "#CHANNEL# : nom du fournisseur\n"
+								+ "#CATEGORY# : nom de la catégorie\n"
+								+ "#EXTENSION# : extension du fichier\n"
+								+ "#NUM# : le numéro d'épisode pour le fournisseur\n"
+								+ "#DATE§yyyyMMdd# : la date de téléchargement de l'épisode, le paramètre après § peut être modifié suivant : Format de date"));
+		
+		nbrMaxAttempts.setTooltip(new Tooltip("Nombre de tentatives de téléchargement d'un épisode avant d'arrêter de retenter."));
+		daemonCheckTimeSec.setTooltip(new Tooltip("Période de temps entre 2 recherches automatiques de téléchargement."));
+		autoUpdate.setTooltip(new Tooltip("si coché habiTv se mettra à jour automatiquement."));
 	}
 
 	private void loadConfig() {
@@ -46,58 +64,64 @@ public class ConfigController extends BaseController {
 			@Override
 			public void handle(KeyEvent event) {
 				planTaskIfNot(new Runnable() {
-					
+
 					@Override
 					public void run() {
-						UserConfig userConfig = getController().loadUserConfig();
+						UserConfig userConfig = getController()
+								.loadUserConfig();
 						userConfig.setDownloadOuput(downloadOuput.getText());
 						getController().saveConfig(userConfig);
 					}
 				});
 			}
 		});
-		
+
 		nbrMaxAttempts.setOnKeyReleased(new EventHandler<KeyEvent>() {
 
 			@Override
 			public void handle(KeyEvent event) {
 				planTaskIfNot(new Runnable() {
-					
+
 					@Override
 					public void run() {
-						UserConfig userConfig = getController().loadUserConfig();
-						userConfig.setMaxAttempts(Integer.parseInt(nbrMaxAttempts.getText()));
+						UserConfig userConfig = getController()
+								.loadUserConfig();
+						userConfig.setMaxAttempts(Integer
+								.parseInt(nbrMaxAttempts.getText()));
 						getController().saveConfig(userConfig);
 					}
 				});
 			}
 		});
-		
+
 		daemonCheckTimeSec.setOnKeyReleased(new EventHandler<KeyEvent>() {
 
 			@Override
 			public void handle(KeyEvent event) {
 				planTaskIfNot(new Runnable() {
-					
+
 					@Override
 					public void run() {
-						UserConfig userConfig = getController().loadUserConfig();
-						userConfig.setDemonCheckTime(Integer.parseInt(daemonCheckTimeSec.getText()));
+						UserConfig userConfig = getController()
+								.loadUserConfig();
+						userConfig.setDemonCheckTime(Integer
+								.parseInt(daemonCheckTimeSec.getText()));
 						getController().saveConfig(userConfig);
 					}
 				});
 			}
 		});
-		
+
 		autoUpdate.setOnKeyReleased(new EventHandler<KeyEvent>() {
 
 			@Override
 			public void handle(KeyEvent event) {
 				planTaskIfNot(new Runnable() {
-					
+
 					@Override
 					public void run() {
-						UserConfig userConfig = getController().loadUserConfig();
+						UserConfig userConfig = getController()
+								.loadUserConfig();
 						userConfig.setUpdateOnStartup(autoUpdate.isSelected());
 						getController().saveConfig(userConfig);
 					}

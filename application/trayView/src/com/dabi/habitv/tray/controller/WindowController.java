@@ -5,12 +5,14 @@ import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TreeView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 
 import com.dabi.habitv.api.plugin.dto.CategoryDTO;
@@ -22,6 +24,10 @@ public class WindowController {
 	/*
 	 * DL
 	 */
+
+	@FXML
+	private ProgressIndicator mainProgress;
+
 	@FXML
 	private Tab downloadTab;
 
@@ -54,13 +60,19 @@ public class WindowController {
 	 */
 
 	@FXML
-	private Tab toDownloadTab;
+	private ProgressIndicator searchCategoryProgress;
 	
+	@FXML
+	private Tab toDownloadTab;
+
 	@FXML
 	private Button refreshCategoryButton;
 
 	@FXML
 	private Button cleanCategoryButton;
+
+	@FXML
+	private TextFlow indicationTextFlow;
 
 	@FXML
 	private TreeView<CategoryDTO> toDLTree;
@@ -71,7 +83,7 @@ public class WindowController {
 
 	@FXML
 	private Tab configTab;
-	
+
 	@FXML
 	private TextField downloadOuput;
 
@@ -87,28 +99,32 @@ public class WindowController {
 	public WindowController() {
 	}
 
-	public void init(final HabitTvViewManager manager, Stage primaryStage) throws IOException {
+	public void init(final HabitTvViewManager manager, Stage primaryStage)
+			throws IOException {
 		downloadTab.setGraphic(new ImageView(new Image((ClassLoader
 				.getSystemResource("dl.png").openStream()))));
 		toDownloadTab.setGraphic(new ImageView(new Image((ClassLoader
 				.getSystemResource("adl.png").openStream()))));
 		configTab.setGraphic(new ImageView(new Image((ClassLoader
-				.getSystemResource("config.png").openStream()))));		
+				.getSystemResource("config.png").openStream()))));
 
-		final ViewController controller = new ViewController(manager, primaryStage);
+		final ViewController controller = new ViewController(manager,
+				primaryStage);
 		final HabiTvTrayView view = new HabiTvTrayView(controller);
 		manager.attach(view);
 		manager.attach(controller);
 
 		DownloadController downloadController = new DownloadController(
-				searchButton, clearButton, retryExportButton,
+				mainProgress, searchButton, clearButton, retryExportButton,
 				clearExportButton, downloadingBox, downloadDirButton,
 				indexButton, errorBUtton);
-		manager.attachRetreiveSubscriber(downloadController);
+		manager.attach(downloadController);
 		downloadController.init(controller, manager);
 
-		new ToDownloadController(refreshCategoryButton, cleanCategoryButton,
-				toDLTree).init(controller, manager);
+		ToDownloadController toDlController = new ToDownloadController(searchCategoryProgress, refreshCategoryButton, cleanCategoryButton,
+				toDLTree, indicationTextFlow);
+		toDlController.init(controller, manager);
+		manager.attach(toDlController);
 
 		new ConfigController(downloadOuput, nbrMaxAttempts, daemonCheckTimeSec,
 				autoUpdate).init(controller, manager);
