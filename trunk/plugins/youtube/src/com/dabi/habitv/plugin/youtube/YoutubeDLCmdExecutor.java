@@ -3,16 +3,16 @@ package com.dabi.habitv.plugin.youtube;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.dabi.habitv.api.plugin.api.CmdProgressionListener;
 import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.utils.CmdExecutor;
 
 public class YoutubeDLCmdExecutor extends CmdExecutor {
 
-	private static final Pattern PROGRESS_PATTERN = Pattern.compile(".*\\s(\\d+.\\d+)%.*");
+	private static final Pattern PROGRESS_PATTERN = Pattern
+			.compile(".*\\s(\\d+.\\d+)%.*");
 
-	public YoutubeDLCmdExecutor(final String cmdProcessor, final String cmd, final CmdProgressionListener listener) {
-		super(cmdProcessor, cmd, YoutubeConf.MAX_HUNG_TIME, listener);
+	public YoutubeDLCmdExecutor(final String cmdProcessor, final String cmd) {
+		super(cmdProcessor, cmd, YoutubeConf.MAX_HUNG_TIME);
 	}
 
 	@Override

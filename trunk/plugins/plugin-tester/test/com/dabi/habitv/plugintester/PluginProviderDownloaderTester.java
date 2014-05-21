@@ -22,7 +22,6 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.dabi.habitv.api.plugin.api.CmdProgressionListener;
 import com.dabi.habitv.api.plugin.api.PluginDownloaderInterface;
 import com.dabi.habitv.api.plugin.api.PluginProviderInterface;
 import com.dabi.habitv.api.plugin.dto.CategoryDTO;
@@ -50,7 +49,6 @@ public class PluginProviderDownloaderTester {
 
 	private static final int MAX_ATTEMPTS = 10;
 	private DownloaderPluginHolder downloaders;
-	private CmdProgressionListener listener;
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -216,7 +214,7 @@ public class PluginProviderDownloaderTester {
 		if (PluginDownloaderInterface.class.isInstance(plugin)) {
 			final PluginDownloaderInterface pluginDownloader = (PluginDownloaderInterface) plugin;
 			pluginDownloader.download(buildDownloadersHolder(episode),
-					downloaders, listener);
+					downloaders);
 		}
 	}
 

@@ -15,7 +15,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.dabi.habitv.api.plugin.api.CmdProgressionListener;
 import com.dabi.habitv.api.plugin.api.PluginProviderDownloaderInterface;
 import com.dabi.habitv.api.plugin.dto.CategoryDTO;
 import com.dabi.habitv.api.plugin.dto.DownloadParamDTO;
@@ -24,6 +23,7 @@ import com.dabi.habitv.api.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.api.plugin.exception.ExecutorFailedException;
 import com.dabi.habitv.api.plugin.exception.TechnicalException;
 import com.dabi.habitv.api.plugin.holder.DownloaderPluginHolder;
+import com.dabi.habitv.api.plugin.holder.ProcessHolder;
 import com.dabi.habitv.api.plugin.pub.Publisher;
 import com.dabi.habitv.api.plugin.pub.Subscriber;
 import com.dabi.habitv.core.dao.DownloadedDAO;
@@ -52,18 +52,20 @@ public class DownloadTaskTest {
 	public void tearDown() throws Exception {
 	}
 
+
+	final ExecutorFailedException executorFailedException = new ExecutorFailedException(
+			"cmd", "fullOuput", "lastline", null);
+	final DownloadFailedException downloadFailedException = new DownloadFailedException(
+			executorFailedException);
+	
 	public void init(final boolean toFail) {
 		final CategoryDTO category = new CategoryDTO("channel", "category",
 				"identifier", "extension");
 		final EpisodeDTO episode = new EpisodeDTO(category,
 				"episode1234567890123456789012345678901234567890123456789",
 				"videoUrl");
-		final ExecutorFailedException executorFailedException = new ExecutorFailedException(
-				"cmd", "fullOuput", "lastline", null);
-		final DownloadFailedException downloadFailedException = new DownloadFailedException(
-				executorFailedException);
 		final PluginProviderDownloaderInterface provider = new PluginProviderDownloaderInterface() {
-
+			
 			@Override
 			public String getName() {
 				return "provider";
@@ -79,43 +81,51 @@ public class DownloadTaskTest {
 				return null;
 			}
 
+			MockProcessHolder processHolder = new MockProcessHolder() {
+				@Override
+				public void start() {
+					try (FileOutputStream fileOutputStream = new FileOutputStream(
+							downloadParam.getDownloadOutput())) {
+						fileOutputStream.write(1);
+					} catch (IOException e1) {
+						throw new TechnicalException(e1);
+					}
+
+					processHolder.setProgression("0");
+
+					try {
+						Thread.sleep(10);
+					} catch (final InterruptedException e) {
+						fail(e.getMessage());
+					}
+
+					processHolder.setProgression("50");
+
+					if (toFail) {
+						throw downloadFailedException;
+					}
+
+					try {
+						Thread.sleep(10);
+					} catch (final InterruptedException e) {
+						fail(e.getMessage());
+					}
+
+					processHolder.setProgression("100");
+				}
+			};
+			private DownloadParamDTO downloadParam;
+
 			@Override
-			public void download(final DownloadParamDTO downloadParam,
-					final DownloaderPluginHolder downloaders,
-					final CmdProgressionListener listener)
+			public ProcessHolder download(final DownloadParamDTO downloadParam,
+					final DownloaderPluginHolder downloadersr)
 					throws DownloadFailedException {
+				this.downloadParam = downloadParam;
 				assertEquals(
 						"episode1234567890123_channel_category_extension.tmp",
 						downloadParam.getDownloadOutput());
 
-				try (FileOutputStream fileOutputStream = new FileOutputStream(
-						downloadParam.getDownloadOutput())) {
-					fileOutputStream.write(1);
-				} catch (IOException e1) {
-					throw new TechnicalException(e1);
-				}
-
-				listener.listen("0");
-
-				try {
-					Thread.sleep(10);
-				} catch (final InterruptedException e) {
-					fail(e.getMessage());
-				}
-
-				listener.listen("50");
-
-				if (toFail) {
-					throw downloadFailedException;
-				}
-
-				try {
-					Thread.sleep(10);
-				} catch (final InterruptedException e) {
-					fail(e.getMessage());
-				}
-
-				listener.listen("100");
+				return processHolder;
 			}
 
 			@Override
@@ -137,27 +147,20 @@ public class DownloadTaskTest {
 				switch (i) {
 				case 0:
 					assertEquals(new RetreiveEvent(episode,
-							EpisodeStateEnum.DOWNLOADING), event);
+							EpisodeStateEnum.DOWNLOAD_STARTING), event);
 					break;
 				case 1:
-					assertEquals(new RetreiveEvent(episode,
-							EpisodeStateEnum.DOWNLOADING, "0"), event);
-					break;
-				case 2:
-					assertEquals(new RetreiveEvent(episode,
-							EpisodeStateEnum.DOWNLOADING, "50"), event);
-					break;
-				case 3:
 					if (toFail) {
 						assertEquals(new RetreiveEvent(episode,
 								EpisodeStateEnum.DOWNLOAD_FAILED,
 								downloadFailedException, "download"), event);
 					} else {
 						assertEquals(new RetreiveEvent(episode,
-								EpisodeStateEnum.DOWNLOADING, "100"), event);
+								EpisodeStateEnum.DOWNLOADED),
+								event);
 					}
 					break;
-				case 4:
+				case 2:
 					assertEquals(new RetreiveEvent(episode,
 							EpisodeStateEnum.DOWNLOADED), event);
 					break;

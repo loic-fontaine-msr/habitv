@@ -4,20 +4,21 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.dabi.habitv.api.plugin.api.CmdProgressionListener;
 import com.dabi.habitv.api.plugin.api.PluginProviderDownloaderInterface;
 import com.dabi.habitv.api.plugin.dto.CategoryDTO;
 import com.dabi.habitv.api.plugin.dto.DownloadParamDTO;
 import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
 import com.dabi.habitv.api.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.api.plugin.holder.DownloaderPluginHolder;
+import com.dabi.habitv.api.plugin.holder.ProcessHolder;
 import com.dabi.habitv.framework.plugin.api.BasePluginWithProxy;
 import com.dabi.habitv.framework.plugin.utils.DownloadUtils;
 import com.dabi.habitv.framework.plugin.utils.M3U8Utils;
 import com.dabi.habitv.provider.pluzz.jpluzz.Archive;
 import com.dabi.habitv.provider.pluzz.jpluzz.JsonArchiveParser;
 
-public class PluzzPluginManager extends BasePluginWithProxy implements PluginProviderDownloaderInterface {
+public class PluzzPluginManager extends BasePluginWithProxy implements
+		PluginProviderDownloaderInterface {
 
 	private Archive cachedArchive;
 
@@ -38,10 +39,12 @@ public class PluzzPluginManager extends BasePluginWithProxy implements PluginPro
 				episodeList.addAll(findEpisode(subCat));
 			}
 		}
-		final Collection<EpisodeDTO> collection = getCachedArchive().getCatName2Episode().get(category.getId());
+		final Collection<EpisodeDTO> collection = getCachedArchive()
+				.getCatName2Episode().get(category.getId());
 		if (collection != null) {
 			for (final EpisodeDTO episode : collection) {
-				final EpisodeDTO newEp = new EpisodeDTO(category, episode.getName(), episode.getId());
+				final EpisodeDTO newEp = new EpisodeDTO(category,
+						episode.getName(), episode.getId());
 				newEp.setNum(episode.getNum());
 				episodeList.add(newEp);
 			}
@@ -51,14 +54,16 @@ public class PluzzPluginManager extends BasePluginWithProxy implements PluginPro
 
 	public JsonArchiveParser getJsonArchiveParser() {
 		if (jsonArchiveParser == null) {
-			jsonArchiveParser = new JsonArchiveParser(PluzzConf.ZIP_URL, getHttpProxy());
+			jsonArchiveParser = new JsonArchiveParser(PluzzConf.ZIP_URL,
+					getHttpProxy());
 		}
 		return jsonArchiveParser;
 	}
 
 	private Archive getCachedArchive() {
 		final long now = System.currentTimeMillis();
-		if (cachedArchive == null || (now - cachedTimeMs) > PluzzConf.MAX_CACHE_ARCHIVE_TIME_MS) {
+		if (cachedArchive == null
+				|| (now - cachedTimeMs) > PluzzConf.MAX_CACHE_ARCHIVE_TIME_MS) {
 			cachedArchive = getJsonArchiveParser().load();
 			cachedTimeMs = now;
 		}
@@ -71,11 +76,14 @@ public class PluzzPluginManager extends BasePluginWithProxy implements PluginPro
 	}
 
 	@Override
-	public void download(final DownloadParamDTO downloadParam, final DownloaderPluginHolder downloaders, final CmdProgressionListener listener)
+	public ProcessHolder download(final DownloadParamDTO downloadParam,
+			final DownloaderPluginHolder downloaders)
 			throws DownloadFailedException {
-		final String videoUrl = M3U8Utils.keepBestQuality(PluzzConf.BASE_URL + downloadParam.getDownloadInput());
-		DownloadUtils.download(DownloadParamDTO.buildDownloadParam(downloadParam, videoUrl), downloaders, listener);
-
+		final String videoUrl = M3U8Utils.keepBestQuality(PluzzConf.BASE_URL
+				+ downloadParam.getDownloadInput());
+		return DownloadUtils.download(
+				DownloadParamDTO.buildDownloadParam(downloadParam, videoUrl),
+				downloaders);
 	}
 
 	@Override

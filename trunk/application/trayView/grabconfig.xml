@@ -91,7 +91,7 @@
                         <category>
                             <id>700663</id>
                             <name>UNITED STATES OF TARA - SAISON 3</name>
-                            <download>true</download>
+                            <download>false</download>
                             <includes/>
                             <excludes/>
                             <subcategories/>
@@ -8239,7 +8239,7 @@
                         <category>
                             <id>tout_le_sport</id>
                             <name>Tout le sport</name>
-                            <download>false</download>
+                            <download>true</download>
                             <includes/>
                             <excludes/>
                             <subcategories/>

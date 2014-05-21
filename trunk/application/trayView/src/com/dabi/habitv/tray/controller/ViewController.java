@@ -20,7 +20,7 @@ import com.dabi.habitv.core.event.SearchCategoryEvent;
 import com.dabi.habitv.core.event.SearchEvent;
 import com.dabi.habitv.core.event.UpdatePluginEvent;
 import com.dabi.habitv.framework.FrameworkConf;
-import com.dabi.habitv.framework.plugin.utils.ProcessingThread;
+import com.dabi.habitv.framework.plugin.utils.ProcessingThreads;
 import com.dabi.habitv.tray.model.HabitTvViewManager;
 import com.dabi.habitv.tray.subscriber.CoreSubscriber;
 
@@ -85,37 +85,37 @@ public class ViewController implements CoreSubscriber {
 		case DOWNLOAD_FAILED:
 			getManager().getProgressionModel().updateActionProgress(
 					event.getEpisode(), EpisodeStateEnum.DOWNLOAD_FAILED,
-					event.getException().getMessage(), "");
+					event.getException().getMessage(), null);
 			break;
 		case DOWNLOADED:
 			getManager().getProgressionModel().updateActionProgress(
-					event.getEpisode(), EpisodeStateEnum.DOWNLOADED, "", "");
+					event.getEpisode(), EpisodeStateEnum.DOWNLOADED, "", null);
 			break;
-		case DOWNLOADING:
+		case DOWNLOAD_STARTING:
 			getManager().getProgressionModel().updateActionProgress(
-					event.getEpisode(), EpisodeStateEnum.DOWNLOADING, "",
-					event.getProgress());
+					event.getEpisode(), EpisodeStateEnum.DOWNLOAD_STARTING, "",
+					event.getProcessHolder());
 			break;
 		case EXPORT_FAILED:
 			getManager().getProgressionModel().updateActionProgress(
 					event.getEpisode(), EpisodeStateEnum.EXPORT_FAILED,
-					event.getOperation(), "");
+					event.getOperation(), null);
 			break;
-		case EXPORTING:
+		case EXPORT_STARTING:
 			getManager().getProgressionModel().updateActionProgress(
-					event.getEpisode(), EpisodeStateEnum.EXPORTING,
-					event.getOperation(), event.getProgress());
+					event.getEpisode(), EpisodeStateEnum.EXPORT_STARTING,
+					event.getOperation(), event.getProcessHolder());
 			break;
 		case FAILED:
 
 			break;
 		case READY:
 			getManager().getProgressionModel().updateActionProgress(
-					event.getEpisode(), EpisodeStateEnum.READY, "", "");
+					event.getEpisode(), EpisodeStateEnum.READY, "", null);
 			break;
 		case TO_DOWNLOAD:
 			getManager().getProgressionModel().updateActionProgress(
-					event.getEpisode(), EpisodeStateEnum.TO_DOWNLOAD, "", "");
+					event.getEpisode(), EpisodeStateEnum.TO_DOWNLOAD, "", null);
 			break;
 		case TO_EXPORT:
 
@@ -146,7 +146,7 @@ public class ViewController implements CoreSubscriber {
 
 	public void stop() {
 		getManager().forceEnd();
-		ProcessingThread.killAllProcessing();
+		ProcessingThreads.killAllProcessing();
 		System.exit(0);
 	}
 

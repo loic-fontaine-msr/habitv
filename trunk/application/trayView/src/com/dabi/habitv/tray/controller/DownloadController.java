@@ -196,6 +196,7 @@ public class DownloadController extends BaseController implements
 
 	@Override
 	public void update(final RetreiveEvent event) {
+
 		Platform.runLater(new Runnable() {
 
 			@Override
@@ -235,7 +236,7 @@ public class DownloadController extends BaseController implements
 					break;
 				case DONE:
 					searchCount++;
-					mainProgress.setProgress( (double) searchCount / searchSize);
+					mainProgress.setProgress((double) searchCount / searchSize);
 					break;
 				case ALL_SEARCH_DONE:
 					searchButton.setDisable(false);

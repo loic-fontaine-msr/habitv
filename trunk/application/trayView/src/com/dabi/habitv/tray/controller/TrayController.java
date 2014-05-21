@@ -6,7 +6,7 @@ import com.dabi.habitv.core.event.RetreiveEvent;
 import com.dabi.habitv.core.event.SearchCategoryEvent;
 import com.dabi.habitv.core.event.SearchEvent;
 import com.dabi.habitv.core.event.UpdatePluginEvent;
-import com.dabi.habitv.framework.plugin.utils.ProcessingThread;
+import com.dabi.habitv.framework.plugin.utils.ProcessingThreads;
 import com.dabi.habitv.tray.model.HabitTvTrayModel;
 import com.dabi.habitv.tray.subscriber.CoreSubscriber;
 
@@ -66,28 +66,39 @@ public class TrayController implements CoreSubscriber {
 
 			break;
 		case DOWNLOAD_FAILED:
-			getModel().getProgressionModel().updateActionProgress(event.getEpisode(), EpisodeStateEnum.DOWNLOAD_FAILED, event.getException().getMessage(), "");
+			getModel().getProgressionModel().updateActionProgress(
+					event.getEpisode(), EpisodeStateEnum.DOWNLOAD_FAILED,
+					event.getException().getMessage(), null);
 			break;
 		case DOWNLOADED:
-			getModel().getProgressionModel().updateActionProgress(event.getEpisode(), EpisodeStateEnum.DOWNLOADED, "", "");
+			getModel().getProgressionModel().updateActionProgress(
+					event.getEpisode(), EpisodeStateEnum.DOWNLOADED, "", null);
 			break;
-		case DOWNLOADING:
-			getModel().getProgressionModel().updateActionProgress(event.getEpisode(), EpisodeStateEnum.DOWNLOADING, "", event.getProgress());
+		case DOWNLOAD_STARTING:
+			getModel().getProgressionModel().updateActionProgress(
+					event.getEpisode(), EpisodeStateEnum.DOWNLOAD_STARTING, "",
+					event.getProcessHolder());
 			break;
 		case EXPORT_FAILED:
-			getModel().getProgressionModel().updateActionProgress(event.getEpisode(), EpisodeStateEnum.EXPORT_FAILED, event.getOperation(), "");
+			getModel().getProgressionModel().updateActionProgress(
+					event.getEpisode(), EpisodeStateEnum.EXPORT_FAILED,
+					event.getOperation(), null);
 			break;
-		case EXPORTING:
-			getModel().getProgressionModel().updateActionProgress(event.getEpisode(), EpisodeStateEnum.EXPORTING, event.getOperation(), event.getProgress());
+		case EXPORT_STARTING:
+			getModel().getProgressionModel().updateActionProgress(
+					event.getEpisode(), EpisodeStateEnum.EXPORT_STARTING,
+					event.getOperation(), event.getProcessHolder());
 			break;
 		case FAILED:
 
 			break;
 		case READY:
-			getModel().getProgressionModel().updateActionProgress(event.getEpisode(), EpisodeStateEnum.READY, "", "");
+			getModel().getProgressionModel().updateActionProgress(
+					event.getEpisode(), EpisodeStateEnum.READY, "", null);
 			break;
 		case TO_DOWNLOAD:
-			getModel().getProgressionModel().updateActionProgress(event.getEpisode(), EpisodeStateEnum.TO_DOWNLOAD, "", "");
+			getModel().getProgressionModel().updateActionProgress(
+					event.getEpisode(), EpisodeStateEnum.TO_DOWNLOAD, "", null);
 			break;
 		case TO_EXPORT:
 
@@ -118,7 +129,7 @@ public class TrayController implements CoreSubscriber {
 
 	public void stop() {
 		getModel().forceEnd();
-		ProcessingThread.killAllProcessing();
+		ProcessingThreads.killAllProcessing();
 		System.exit(0);
 	}
 
@@ -152,8 +163,7 @@ public class TrayController implements CoreSubscriber {
 
 	@Override
 	public void update(UpdatablePluginEvent event) {
-		
-	}
 
+	}
 
 }

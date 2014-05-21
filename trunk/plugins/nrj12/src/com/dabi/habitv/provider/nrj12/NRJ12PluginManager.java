@@ -10,7 +10,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import com.dabi.habitv.api.plugin.api.CmdProgressionListener;
 import com.dabi.habitv.api.plugin.api.PluginProviderDownloaderInterface;
 import com.dabi.habitv.api.plugin.dto.CategoryDTO;
 import com.dabi.habitv.api.plugin.dto.DownloadParamDTO;
@@ -18,10 +17,12 @@ import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
 import com.dabi.habitv.api.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.api.plugin.exception.TechnicalException;
 import com.dabi.habitv.api.plugin.holder.DownloaderPluginHolder;
+import com.dabi.habitv.api.plugin.holder.ProcessHolder;
 import com.dabi.habitv.framework.plugin.api.BasePluginWithProxy;
 import com.dabi.habitv.framework.plugin.utils.DownloadUtils;
 
-public class NRJ12PluginManager extends BasePluginWithProxy implements PluginProviderDownloaderInterface {
+public class NRJ12PluginManager extends BasePluginWithProxy implements
+		PluginProviderDownloaderInterface {
 
 	@Override
 	public String getName() {
@@ -31,9 +32,11 @@ public class NRJ12PluginManager extends BasePluginWithProxy implements PluginPro
 	@Override
 	public Set<EpisodeDTO> findEpisode(final CategoryDTO category) {
 		final Set<EpisodeDTO> episodes = new HashSet<>();
-		final String main_url = NRJ12Conf.HOME_URL + "/replay-4203/collectionvideo/";
+		final String main_url = NRJ12Conf.HOME_URL
+				+ "/replay-4203/collectionvideo/";
 		// System.out.println("category_url=" + category_url);
-		final org.jsoup.nodes.Document doc = Jsoup.parse(getUrlContent(main_url, NRJ12Conf.ENCODING));
+		final org.jsoup.nodes.Document doc = Jsoup.parse(getUrlContent(
+				main_url, NRJ12Conf.ENCODING));
 		final String name = category.getName();
 		// System.out.println("name='" + name + "'");
 		int i = 0;
@@ -79,7 +82,8 @@ public class NRJ12PluginManager extends BasePluginWithProxy implements PluginPro
 
 		final String url = NRJ12Conf.HOME_URL + "/replay-4203/collectionvideo/";
 		// System.out.println("url=" + url);
-		final Document doc = Jsoup.parse(getUrlContent(url), NRJ12Conf.ENCODING);
+		final Document doc = Jsoup
+				.parse(getUrlContent(url), NRJ12Conf.ENCODING);
 		// To get the main categories ("Divertissments", "Infos / Magazines",
 		// etc.):
 		// final Elements select = doc.select(".replay");
@@ -96,25 +100,32 @@ public class NRJ12PluginManager extends BasePluginWithProxy implements PluginPro
 			final String identifier = anchor.attr("title");
 			if (identifier != "") {
 				// System.out.println("identifier=" + identifier.toString());
-				categories.add(new CategoryDTO(NRJ12Conf.NAME, identifier, identifier, NRJ12Conf.EXTENSION));
+				categories.add(new CategoryDTO(NRJ12Conf.NAME, identifier,
+						identifier, NRJ12Conf.EXTENSION));
 			}
 			i += 1;
 		}
 		// Used for other main categories (e.g. "Film/Téléfilm", etc.):
-		categories.add(new CategoryDTO(NRJ12Conf.NAME, "_other_", "_other_", NRJ12Conf.EXTENSION));
+		categories.add(new CategoryDTO(NRJ12Conf.NAME, "_other_", "_other_",
+				NRJ12Conf.EXTENSION));
 		return categories;
 	}
 
 	@Override
-	public void download(final DownloadParamDTO downloadParam, final DownloaderPluginHolder downloaders, final CmdProgressionListener listener)
+	public ProcessHolder download(final DownloadParamDTO downloadParam,
+			final DownloaderPluginHolder downloaders)
 			throws DownloadFailedException {
 		final String videoUrl = findFinalUrl(downloadParam.getDownloadInput());
-		DownloadUtils.download(DownloadParamDTO.buildDownloadParam(downloadParam, videoUrl), downloaders, listener);
+		return DownloadUtils.download(
+				DownloadParamDTO.buildDownloadParam(downloadParam, videoUrl),
+				downloaders);
 
 	}
 
-	private static final Pattern MEDIAID_PATTERN = Pattern.compile("/(\\d*)-minipicto");
-	private static final Pattern MEDIAID2_PATTERN = Pattern.compile("\\?mediaId=(\\d*)&");
+	private static final Pattern MEDIAID_PATTERN = Pattern
+			.compile("/(\\d*)-minipicto");
+	private static final Pattern MEDIAID2_PATTERN = Pattern
+			.compile("\\?mediaId=(\\d*)&");
 
 	public String findFinalUrl(final String downloadInput) {
 		final String url = NRJ12Conf.HOME_URL + downloadInput;
@@ -133,7 +144,8 @@ public class NRJ12PluginManager extends BasePluginWithProxy implements PluginPro
 		// - curl "http://r.nrj.fr/mogador/web/00148519_h264_12.mp4" -C - -L -g
 		// -A "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0)"
 		// -o "..."
-		return NRJ12Conf.REPLAY_URL + "/mogador/web/" + mediaId + "_h264_12.mp4";
+		return NRJ12Conf.REPLAY_URL + "/mogador/web/" + mediaId
+				+ "_h264_12.mp4";
 	}
 
 	private static String findMediaId(final String content) {

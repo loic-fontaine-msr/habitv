@@ -5,11 +5,11 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-public final class ProcessingThread {
+public final class ProcessingThreads {
 
 	private static boolean blocker;
 
-	private ProcessingThread() {
+	private ProcessingThreads() {
 
 	}
 

@@ -17,7 +17,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.dabi.habitv.api.plugin.api.CmdProgressionListener;
 import com.dabi.habitv.api.plugin.api.PluginExporterInterface;
 import com.dabi.habitv.api.plugin.api.PluginProviderDownloaderInterface;
 import com.dabi.habitv.api.plugin.dto.CategoryDTO;
@@ -28,6 +27,7 @@ import com.dabi.habitv.api.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.api.plugin.exception.ExportFailedException;
 import com.dabi.habitv.api.plugin.holder.DownloaderPluginHolder;
 import com.dabi.habitv.api.plugin.holder.ExporterPluginHolder;
+import com.dabi.habitv.api.plugin.holder.ProcessHolder;
 import com.dabi.habitv.api.plugin.pub.Publisher;
 import com.dabi.habitv.api.plugin.pub.Subscriber;
 import com.dabi.habitv.core.dao.DownloadedDAO;
@@ -82,9 +82,9 @@ public class RetreiveTaskTest {
 			}
 
 			@Override
-			public void download(final DownloadParamDTO downloadParam, final DownloaderPluginHolder downloaders, final CmdProgressionListener listener)
+			public ProcessHolder download(final DownloadParamDTO downloadParam, final DownloaderPluginHolder downloaders)
 					throws DownloadFailedException {
-
+				return ProcessHolder.EMPTY_PROCESS_HOLDER;
 			}
 
 			@Override
@@ -135,8 +135,8 @@ public class RetreiveTaskTest {
 			}
 
 			@Override
-			public void export(final String cmdProcessor, final String cmd, final CmdProgressionListener listener) throws ExportFailedException {
-
+			public ProcessHolder export(final String cmdProcessor, final String cmd) throws ExportFailedException {
+				return ProcessHolder.EMPTY_PROCESS_HOLDER;
 			}
 		};
 		exporterName2exporter.put("exporter", pluginExporter);

@@ -1,6 +1,7 @@
 package com.dabi.habitv.core.event;
 
 import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
+import com.dabi.habitv.api.plugin.holder.ProcessHolder;
 import com.dabi.habitv.api.plugin.pub.AbstractEvent;
 
 public final class RetreiveEvent extends AbstractEvent {
@@ -8,30 +9,40 @@ public final class RetreiveEvent extends AbstractEvent {
 
 	private final EpisodeStateEnum state;
 
-	private final String progress;
-
 	private String operation;
 
-	public RetreiveEvent(final EpisodeDTO episode, final EpisodeStateEnum state, final String progress) {
+	private ProcessHolder processHolder;
+
+	public RetreiveEvent(final EpisodeDTO episode, final EpisodeStateEnum state) {
 		super(null);
 		this.episode = episode;
 		this.state = state;
-		this.progress = progress;
 	}
 
-	public RetreiveEvent(final EpisodeDTO episode, final EpisodeStateEnum state) {
-		this(episode, state, (String) null);
-	}
-
-	public RetreiveEvent(final EpisodeDTO episode, final EpisodeStateEnum state, final Throwable exception, final String operation) {
+	public RetreiveEvent(final EpisodeDTO episode,
+			final EpisodeStateEnum state, final Throwable exception,
+			final String operation) {
 		this(episode, state);
 		setException(exception);
 		this.operation = operation;
 	}
 
-	public RetreiveEvent(final EpisodeDTO episode, final EpisodeStateEnum state, final String operation, final String progression) {
-		this(episode, state, progression);
+	public RetreiveEvent(final EpisodeDTO episode,
+			final EpisodeStateEnum state, final String operation) {
+		this(episode, state);
 		this.operation = operation;
+	}
+
+	public RetreiveEvent(EpisodeDTO episode, EpisodeStateEnum state,
+			ProcessHolder processHolder) {
+		this(episode, state);
+		this.processHolder = processHolder;
+	}
+
+	public RetreiveEvent(EpisodeDTO episode, EpisodeStateEnum state,
+			String output, ProcessHolder processHolder) {
+		this(episode, state, output);
+		this.processHolder = processHolder;
 	}
 
 	public EpisodeDTO getEpisode() {
@@ -42,12 +53,12 @@ public final class RetreiveEvent extends AbstractEvent {
 		return state;
 	}
 
-	public String getProgress() {
-		return progress;
-	}
-
 	public String getOperation() {
 		return operation;
+	}
+
+	public ProcessHolder getProcessHolder() {
+		return processHolder;
 	}
 
 	@Override
@@ -55,9 +66,6 @@ public final class RetreiveEvent extends AbstractEvent {
 		int ret = getEpisode().hashCode();
 		if (getState() != null) {
 			ret += getState().hashCode();
-		}
-		if (getProgress() != null) {
-			ret += getProgress().hashCode();
 		}
 		if (getOperation() != null) {
 			ret += getOperation().hashCode();
@@ -77,9 +85,6 @@ public final class RetreiveEvent extends AbstractEvent {
 			if (getOperation() != null) {
 				ret = ret && getOperation().equals(event.getOperation());
 			}
-			if (getProgress() != null) {
-				ret = ret && getProgress().equals(event.getProgress());
-			}
 		} else {
 			ret = false;
 		}
@@ -88,7 +93,8 @@ public final class RetreiveEvent extends AbstractEvent {
 
 	@Override
 	public String toString() {
-		return episode.toString() + "/" + getOperation() + "/" + getProgress() + "/" + getState();
+		return episode.toString() + "/" + getOperation() + "/" + "/"
+				+ getState();
 	}
 
 }

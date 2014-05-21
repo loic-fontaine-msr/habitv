@@ -6,27 +6,29 @@ import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 
-import com.dabi.habitv.api.plugin.api.CmdProgressionListener;
 import com.dabi.habitv.framework.plugin.utils.CmdExecutor;
 
 public class FFMPEGCmdExecutor extends CmdExecutor {
 
 	private static final Logger LOG = Logger.getLogger(FFMPEGCmdExecutor.class);
 
-	private static final Pattern PERCENTAGE_PATTERN = Pattern.compile(".*\\((\\d+\\.+\\d+)%\\).*");
+	private static final Pattern PERCENTAGE_PATTERN = Pattern
+			.compile(".*\\((\\d+\\.+\\d+)%\\).*");
 
-	private static final Pattern DURATION_PATTERN = Pattern.compile("Duration: (.*?), start:");
+	private static final Pattern DURATION_PATTERN = Pattern
+			.compile("Duration: (.*?), start:");
 
-	private static final Pattern TIME_PATTERN = Pattern.compile("time=(.*?) bitrate");
+	private static final Pattern TIME_PATTERN = Pattern
+			.compile("time=(.*?) bitrate");
 
 	public static final String NAME = "ffmpeg";
 	private Long duration = null;
 
-	public FFMPEGCmdExecutor(final String cmdProcessor, final String cmd, final CmdProgressionListener listener) {
-		super(cmdProcessor, cmd, FFMPEGConf.MAX_HUNG_TIME, listener);
+	public FFMPEGCmdExecutor(final String cmdProcessor, final String cmd) {
+		super(cmdProcessor, cmd, FFMPEGConf.MAX_HUNG_TIME);
 	}
 
-	private long toLong(final String duration){
+	private long toLong(final String duration) {
 		return Double.valueOf(Double.parseDouble(duration)).longValue();
 	}
 
@@ -46,13 +48,15 @@ public class FFMPEGCmdExecutor extends CmdExecutor {
 			final String[] durationTab = stringDuration.split(":");
 			long currentDuration = 0;
 			final int l = durationTab.length;
-			if (l>0){
-				currentDuration+=toLong(durationTab[l-1]);
-				if (l>1){
-					currentDuration+=TimeUnit.MINUTES.toSeconds(toLong(durationTab[l-2]));
+			if (l > 0) {
+				currentDuration += toLong(durationTab[l - 1]);
+				if (l > 1) {
+					currentDuration += TimeUnit.MINUTES
+							.toSeconds(toLong(durationTab[l - 2]));
 				}
-				if (l>2){
-					currentDuration+=TimeUnit.HOURS.toSeconds(toLong(durationTab[l-3]));
+				if (l > 2) {
+					currentDuration += TimeUnit.HOURS
+							.toSeconds(toLong(durationTab[l - 3]));
 				}
 			}
 			ret = String.valueOf((currentDuration * PERCENTAGE / duration));
@@ -84,12 +88,16 @@ public class FFMPEGCmdExecutor extends CmdExecutor {
 		Long ret = null;
 		// si recherche fructueuse
 		if (hasMatched) {
-			final String durationFormatted = matcher.group(matcher.groupCount());
+			final String durationFormatted = matcher
+					.group(matcher.groupCount());
 			final String[] durationSplitted = durationFormatted.split(":");
 			final long hours = Long.valueOf(durationSplitted[0]);
 			final long minutes = Long.valueOf(durationSplitted[1]);
-			final long seconds = Double.valueOf(durationSplitted[2]).longValue();
-			ret = TimeUnit.SECONDS.convert(hours, TimeUnit.HOURS) + TimeUnit.SECONDS.convert(minutes, TimeUnit.MINUTES) + seconds;
+			final long seconds = Double.valueOf(durationSplitted[2])
+					.longValue();
+			ret = TimeUnit.SECONDS.convert(hours, TimeUnit.HOURS)
+					+ TimeUnit.SECONDS.convert(minutes, TimeUnit.MINUTES)
+					+ seconds;
 		}
 		return ret;
 	}

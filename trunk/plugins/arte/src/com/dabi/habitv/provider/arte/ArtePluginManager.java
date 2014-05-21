@@ -1,6 +1,5 @@
 package com.dabi.habitv.provider.arte;
 
-import org.apache.log4j.Logger;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
@@ -19,6 +18,7 @@ import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
+import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -26,7 +26,6 @@ import org.jsoup.select.Elements;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import com.dabi.habitv.api.plugin.api.CmdProgressionListener;
 import com.dabi.habitv.api.plugin.api.PluginProviderDownloaderInterface;
 import com.dabi.habitv.api.plugin.dto.CategoryDTO;
 import com.dabi.habitv.api.plugin.dto.DownloadParamDTO;
@@ -34,6 +33,7 @@ import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
 import com.dabi.habitv.api.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.api.plugin.exception.TechnicalException;
 import com.dabi.habitv.api.plugin.holder.DownloaderPluginHolder;
+import com.dabi.habitv.api.plugin.holder.ProcessHolder;
 import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.api.BasePluginWithProxy;
 import com.dabi.habitv.framework.plugin.utils.DownloadUtils;
@@ -124,14 +124,13 @@ public class ArtePluginManager extends BasePluginWithProxy implements
 	}
 
 	@Override
-	public void download(final DownloadParamDTO downloadParam,
-			final DownloaderPluginHolder downloaders,
-			final CmdProgressionListener listener)
+	public ProcessHolder download(final DownloadParamDTO downloadParam,
+			final DownloaderPluginHolder downloaders)
 			throws DownloadFailedException {
 		final String downloadLink = buildDownloadLink(downloadParam
 				.getDownloadInput());
-		DownloadUtils.download(DownloadParamDTO.buildDownloadParam(
-				downloadParam, downloadLink), downloaders, listener);
+		return DownloadUtils.download(DownloadParamDTO.buildDownloadParam(
+				downloadParam, downloadLink), downloaders);
 	}
 
 	private static final String SEP = "/";

@@ -3,15 +3,15 @@ package com.dabi.habitv.plugin.curl;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.dabi.habitv.api.plugin.api.CmdProgressionListener;
 import com.dabi.habitv.framework.plugin.utils.CmdExecutor;
 
 public class CurlCmdExecutor extends CmdExecutor {
 
-	private static final Pattern PROGRESS_PATTERN = Pattern.compile("^\\s*(\\d+).*$");
+	private static final Pattern PROGRESS_PATTERN = Pattern
+			.compile("^\\s*(\\d+).*$");
 
-	public CurlCmdExecutor(final String cmdProcessor, final String cmd, final CmdProgressionListener listener) {
-		super(cmdProcessor, cmd, CurlConf.MAX_HUNG_TIME, listener);
+	public CurlCmdExecutor(final String cmdProcessor, final String cmd) {
+		super(cmdProcessor, cmd, CurlConf.MAX_HUNG_TIME);
 	}
 
 	@Override

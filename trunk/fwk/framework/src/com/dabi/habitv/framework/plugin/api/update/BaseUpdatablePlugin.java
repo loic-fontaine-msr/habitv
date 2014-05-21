@@ -11,7 +11,6 @@ import com.dabi.habitv.api.plugin.pub.Publisher;
 import com.dabi.habitv.api.plugin.pub.UpdatablePluginEvent;
 import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.utils.CmdExecutor;
-import com.dabi.habitv.framework.plugin.utils.EmptyProgressionListener;
 import com.dabi.habitv.framework.plugin.utils.OSUtils;
 import com.dabi.habitv.framework.plugin.utils.update.ZipExeUpdater;
 
@@ -56,8 +55,7 @@ public abstract class BaseUpdatablePlugin implements UpdatablePluginInterface {
 	protected abstract Pattern getVersionPattern();
 
 	private String callGetVersionCmd(final DownloaderPluginHolder downloaders) {
-		final CmdExecutor cmdExecutor = new CmdExecutor(downloaders.getCmdProcessor(), getBinParam(downloaders) + getVersionParam(), 1000,
-				EmptyProgressionListener.INSTANCE) {
+		final CmdExecutor cmdExecutor = new CmdExecutor(downloaders.getCmdProcessor(), getBinParam(downloaders) + getVersionParam(), 1000) {
 			@Override
 			public boolean isSuccess(final String fullOutput) {
 				return true;
@@ -65,7 +63,7 @@ public abstract class BaseUpdatablePlugin implements UpdatablePluginInterface {
 
 		};
 		try {
-			cmdExecutor.execute();
+			cmdExecutor.start();
 		} catch (final ExecutorFailedException e) {
 			throw new TechnicalException(e);
 		}

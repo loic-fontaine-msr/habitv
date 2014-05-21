@@ -162,7 +162,7 @@ public final class HabiTvTrayView implements CoreSubscriber {
 		case DOWNLOADED:
 
 			break;
-		case DOWNLOADING:
+		case DOWNLOAD_STARTING:
 
 			break;
 		case EXPORT_FAILED:
@@ -171,7 +171,7 @@ public final class HabiTvTrayView implements CoreSubscriber {
 							+ event.getException().getMessage(),
 					TrayIcon.MessageType.WARNING);
 			break;
-		case EXPORTING:
+		case EXPORT_STARTING:
 
 			break;
 		case FAILED:

@@ -1,9 +1,9 @@
 package com.dabi.habitv.plugin.ffmpeg;
 
-import com.dabi.habitv.api.plugin.api.CmdProgressionListener;
 import com.dabi.habitv.api.plugin.api.PluginExporterInterface;
 import com.dabi.habitv.api.plugin.exception.ExecutorFailedException;
 import com.dabi.habitv.api.plugin.exception.ExportFailedException;
+import com.dabi.habitv.api.plugin.holder.ProcessHolder;
 
 public class FFMPEGPluginExporterManager implements PluginExporterInterface {
 
@@ -13,9 +13,10 @@ public class FFMPEGPluginExporterManager implements PluginExporterInterface {
 	}
 
 	@Override
-	public void export(final String cmdProcessor, final String cmd, final CmdProgressionListener listener) throws ExportFailedException {
+	public ProcessHolder export(final String cmdProcessor, final String cmd)
+			throws ExportFailedException {
 		try {
-			(new FFMPEGCmdExecutor(cmdProcessor, cmd, listener)).execute();
+			return (new FFMPEGCmdExecutor(cmdProcessor, cmd));
 		} catch (final ExecutorFailedException e) {
 			throw new ExportFailedException(e);
 		}
