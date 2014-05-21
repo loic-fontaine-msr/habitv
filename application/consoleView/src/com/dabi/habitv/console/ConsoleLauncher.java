@@ -7,7 +7,7 @@ import com.dabi.habitv.core.config.UserConfig;
 import com.dabi.habitv.core.config.XMLUserConfig;
 import com.dabi.habitv.core.dao.GrabConfigDAO;
 import com.dabi.habitv.core.mgr.CoreManager;
-import com.dabi.habitv.framework.plugin.utils.ProcessingThread;
+import com.dabi.habitv.framework.plugin.utils.ProcessingThreads;
 
 public final class ConsoleLauncher { // NO_UCD (unused code)
 
@@ -33,7 +33,7 @@ public final class ConsoleLauncher { // NO_UCD (unused code)
 				public void run() {
 					LOG.info("Interrupted, closing all treatments");
 					coreManager.forceEnd();
-					ProcessingThread.killAllProcessing();
+					ProcessingThreads.killAllProcessing();
 				}
 
 			});

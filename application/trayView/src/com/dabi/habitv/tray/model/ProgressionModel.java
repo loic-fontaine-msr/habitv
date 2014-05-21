@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
+import com.dabi.habitv.api.plugin.holder.ProcessHolder;
 import com.dabi.habitv.core.event.EpisodeStateEnum;
 
 public class ProgressionModel {
@@ -16,16 +17,14 @@ public class ProgressionModel {
 			.synchronizedList(new LinkedList<ActionProgress>());
 
 	public void updateActionProgress(final EpisodeDTO episode,
-			final EpisodeStateEnum state, final String info,
-			final String progression) {
+			final EpisodeStateEnum state, final String info, final ProcessHolder processHolder) {
 		ActionProgress actionInProgress = getAction(episode);
 		if (actionInProgress == null) {
-			actionInProgress = new ActionProgress(state, progression, info,
-					episode);
+			actionInProgress = new ActionProgress(episode, state, info, processHolder);
 			episodeName2ActionProgress.add(actionInProgress);
 		} else {
 			actionInProgress.setState(state);
-			actionInProgress.setProgress(progression);
+			actionInProgress.setProcessHolder(processHolder);
 			actionInProgress.setInfo(info);
 		}
 		Collections.sort(episodeName2ActionProgress);
@@ -61,7 +60,7 @@ public class ProgressionModel {
 		return state != null
 				&& (state.equals(EpisodeStateEnum.READY)
 						|| state.equals(EpisodeStateEnum.EXPORT_FAILED) || state
-						.equals(EpisodeStateEnum.DOWNLOAD_FAILED));
+							.equals(EpisodeStateEnum.DOWNLOAD_FAILED));
 	}
 
 	public void clear() {

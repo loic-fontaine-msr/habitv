@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 
-import com.dabi.habitv.api.plugin.api.CmdProgressionListener;
 import com.dabi.habitv.api.plugin.api.PluginDownloaderInterface;
 import com.dabi.habitv.api.plugin.api.PluginProviderInterface;
 import com.dabi.habitv.api.plugin.dto.CategoryDTO;
@@ -13,6 +12,7 @@ import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
 import com.dabi.habitv.api.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.api.plugin.exception.TechnicalException;
 import com.dabi.habitv.api.plugin.holder.DownloaderPluginHolder;
+import com.dabi.habitv.api.plugin.holder.ProcessHolder;
 import com.dabi.habitv.api.plugin.pub.Publisher;
 import com.dabi.habitv.core.dao.DownloadedDAO;
 import com.dabi.habitv.core.event.EpisodeStateEnum;
@@ -65,8 +65,6 @@ public class DownloadTask extends AbstractEpisodeTask {
 	@Override
 	protected void started() {
 		LOG.info("Download of " + getEpisode() + " is starting");
-		publisher.addNews(new RetreiveEvent(getEpisode(),
-				EpisodeStateEnum.DOWNLOADING));
 	}
 
 	@Override
@@ -97,10 +95,9 @@ public class DownloadTask extends AbstractEpisodeTask {
 		return null;
 	}
 
-	private void download(final String outputTmpFileName)
+	private ProcessHolder download(final String outputTmpFileName)
 			throws DownloadFailedException {
 		final DownloadParamDTO downloadParam = buildDownloadParam(outputTmpFileName);
-		final CmdProgressionListener listener = buildProgressionListener();
 
 		final PluginDownloaderInterface downloader;
 		if (PluginDownloaderInterface.class.isInstance(provider)) {
@@ -109,18 +106,12 @@ public class DownloadTask extends AbstractEpisodeTask {
 			downloader = DownloadUtils
 					.getDownloader(downloadParam, downloaders);
 		}
-		downloader.download(downloadParam, downloaders, listener);
-	}
-
-	private CmdProgressionListener buildProgressionListener() {
-		final CmdProgressionListener cmdProgressionListener = new CmdProgressionListener() {
-			@Override
-			public void listen(final String progression) {
-				publisher.addNews(new RetreiveEvent(getEpisode(),
-						EpisodeStateEnum.DOWNLOADING, progression));
-			}
-		};
-		return cmdProgressionListener;
+		ProcessHolder downloadProcessHolder = downloader.download(
+				downloadParam, downloaders);
+		publisher.addNews(new RetreiveEvent(getEpisode(),
+				EpisodeStateEnum.DOWNLOAD_STARTING, downloadProcessHolder));
+		downloadProcessHolder.start();
+		return downloadProcessHolder;
 	}
 
 	private DownloadParamDTO buildDownloadParam(final String outputTmpFileName) {

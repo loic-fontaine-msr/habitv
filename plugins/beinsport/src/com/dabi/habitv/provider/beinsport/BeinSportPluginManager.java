@@ -25,7 +25,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import com.dabi.habitv.api.plugin.api.CmdProgressionListener;
 import com.dabi.habitv.api.plugin.api.PluginProviderDownloaderInterface;
 import com.dabi.habitv.api.plugin.dto.CategoryDTO;
 import com.dabi.habitv.api.plugin.dto.DownloadParamDTO;
@@ -33,6 +32,7 @@ import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
 import com.dabi.habitv.api.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.api.plugin.exception.TechnicalException;
 import com.dabi.habitv.api.plugin.holder.DownloaderPluginHolder;
+import com.dabi.habitv.api.plugin.holder.ProcessHolder;
 import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.api.BasePluginWithProxy;
 import com.dabi.habitv.framework.plugin.utils.DownloadUtils;
@@ -44,7 +44,8 @@ import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.SyndFeedInput;
 import com.sun.syndication.io.XmlReader;
 
-public class BeinSportPluginManager extends BasePluginWithProxy implements PluginProviderDownloaderInterface { // NO_UCD
+public class BeinSportPluginManager extends BasePluginWithProxy implements
+		PluginProviderDownloaderInterface { // NO_UCD
 
 	@Override
 	public String getName() {
@@ -59,20 +60,24 @@ public class BeinSportPluginManager extends BasePluginWithProxy implements Plugi
 		case BeinSportConf.REPLAY_CATEGORY:
 			final Set<EpisodeDTO> episodeDTOs = new HashSet<>();
 			for (final CategoryDTO subCategory : findReplaycategories()) {
-				episodeDTOs.addAll(findEpisodeByCategory(subCategory, BeinSportConf.HOME_URL + subCategory.getId()));
+				episodeDTOs.addAll(findEpisodeByCategory(subCategory,
+						BeinSportConf.HOME_URL + subCategory.getId()));
 			}
 			return episodeDTOs;
 		default:
-			return findEpisodeByCategory(category, BeinSportConf.HOME_URL + category.getId());
+			return findEpisodeByCategory(category, BeinSportConf.HOME_URL
+					+ category.getId());
 		}
 	}
 
-	private Set<EpisodeDTO> findEpisodeByRSS(final CategoryDTO category, final String videosUrl) {
+	private Set<EpisodeDTO> findEpisodeByRSS(final CategoryDTO category,
+			final String videosUrl) {
 		final Set<EpisodeDTO> episodeList;
 		try {
 
 			final SyndFeedInput input = new SyndFeedInput();
-			final SyndFeed feed = input.build(new XmlReader(getInputStreamFromUrl(videosUrl)));
+			final SyndFeed feed = input.build(new XmlReader(
+					getInputStreamFromUrl(videosUrl)));
 			episodeList = convertFeedToEpisodeList(feed, category);
 		} catch (IllegalArgumentException | FeedException | IOException e) {
 			throw new TechnicalException(e);
@@ -80,7 +85,8 @@ public class BeinSportPluginManager extends BasePluginWithProxy implements Plugi
 		return episodeList;
 	}
 
-	private static Set<EpisodeDTO> convertFeedToEpisodeList(final SyndFeed feed, final CategoryDTO category) {
+	private static Set<EpisodeDTO> convertFeedToEpisodeList(
+			final SyndFeed feed, final CategoryDTO category) {
 		final Set<EpisodeDTO> episodeList = new HashSet<EpisodeDTO>();
 		final List<?> entries = feed.getEntries();
 		if (!entries.isEmpty()) {
@@ -103,35 +109,46 @@ public class BeinSportPluginManager extends BasePluginWithProxy implements Plugi
 	@Override
 	public Set<CategoryDTO> findCategory() {
 		final Set<CategoryDTO> categoryDTOs = new HashSet<>();
-		categoryDTOs.add(new CategoryDTO(BeinSportConf.VIDEOS_CATEGORY, BeinSportConf.VIDEOS_CATEGORY, BeinSportConf.VIDEOS_CATEGORY, BeinSportConf.EXTENSION));
-		final CategoryDTO replayCategory = new CategoryDTO(BeinSportConf.REPLAY_CATEGORY, BeinSportConf.REPLAY_CATEGORY, BeinSportConf.REPLAY_CATEGORY,
-				BeinSportConf.EXTENSION);
+		categoryDTOs.add(new CategoryDTO(BeinSportConf.VIDEOS_CATEGORY,
+				BeinSportConf.VIDEOS_CATEGORY, BeinSportConf.VIDEOS_CATEGORY,
+				BeinSportConf.EXTENSION));
+		final CategoryDTO replayCategory = new CategoryDTO(
+				BeinSportConf.REPLAY_CATEGORY, BeinSportConf.REPLAY_CATEGORY,
+				BeinSportConf.REPLAY_CATEGORY, BeinSportConf.EXTENSION);
 		replayCategory.addSubCategories(findReplaycategories());
 		categoryDTOs.add(replayCategory);
 		return categoryDTOs;
 	}
 
 	@Override
-	public void download(final DownloadParamDTO downloadParam, final DownloaderPluginHolder downloaders, final CmdProgressionListener listener)
+	public ProcessHolder download(final DownloadParamDTO downloadParam,
+			final DownloaderPluginHolder downloaders)
 			throws DownloadFailedException {
 		if (downloadParam.getDownloadInput().endsWith(FrameworkConf.MP4)) {
-			DownloadUtils.download(downloadParam, downloaders, listener);
+			return DownloadUtils.download(downloadParam, downloaders);
 		} else {
-			final String finalVideoUrl = findFinalRtmpUrl(downloadParam.getDownloadInput());
+			final String finalVideoUrl = findFinalRtmpUrl(downloadParam
+					.getDownloadInput());
 			final String[] tab = finalVideoUrl.split("/");
 			final String contextRoot = tab[3];
-			final String rtmpdumpCmd = BeinSportConf.RTMPDUMP_CMD2.replace("#PROTOCOL#", tab[0]).replace("#HOST#", tab[2])
+			final String rtmpdumpCmd = BeinSportConf.RTMPDUMP_CMD2
+					.replace("#PROTOCOL#", tab[0]).replace("#HOST#", tab[2])
 					.replaceAll("#CONTEXT_ROOT#", contextRoot);
-			final String relativeUrl = finalVideoUrl.substring(finalVideoUrl.indexOf("/" + contextRoot + "/") + 1);
+			final String relativeUrl = finalVideoUrl.substring(finalVideoUrl
+					.indexOf("/" + contextRoot + "/") + 1);
 
 			downloadParam.addParam(FrameworkConf.PARAMETER_ARGS, rtmpdumpCmd);
-			DownloadUtils.download(DownloadParamDTO.buildDownloadParam(downloadParam, relativeUrl), downloaders, listener, FrameworkConf.RTMDUMP);
+			return DownloadUtils.download(DownloadParamDTO.buildDownloadParam(
+					downloadParam, relativeUrl), downloaders,
+					FrameworkConf.RTMDUMP);
 		}
 	}
 
-	private static final Pattern VIDEOID_PATTERN = Pattern.compile(".*videoId\\s+=\\s+\\\"(.*)\\\";.*");
+	private static final Pattern VIDEOID_PATTERN = Pattern
+			.compile(".*videoId\\s+=\\s+\\\"(.*)\\\";.*");
 
-	private Set<EpisodeDTO> findEpisodeByCategory(final CategoryDTO category, final String url) {
+	private Set<EpisodeDTO> findEpisodeByCategory(final CategoryDTO category,
+			final String url) {
 		final Set<EpisodeDTO> episodeList = new HashSet<>();
 
 		final org.jsoup.nodes.Document doc = Jsoup.parse(getUrlContent(url));
@@ -156,25 +173,29 @@ public class BeinSportPluginManager extends BasePluginWithProxy implements Plugi
 	private Collection<CategoryDTO> findReplaycategories() {
 		final Set<CategoryDTO> categories = new HashSet<>();
 
-		final org.jsoup.nodes.Document doc = Jsoup.parse(getUrlContent(BeinSportConf.REPLAY_URL));
+		final org.jsoup.nodes.Document doc = Jsoup
+				.parse(getUrlContent(BeinSportConf.REPLAY_URL));
 
 		final Elements divTabContainer = doc.select("#tabContainer");
 		for (final Element h2 : divTabContainer.select("h2")) {
 			final Element aHref = h2.child(0);
 			final String href = aHref.attr("href");
 			final String title = aHref.text();
-			categories.add(new CategoryDTO(BeinSportConf.NAME, title, href, BeinSportConf.EXTENSION));
+			categories.add(new CategoryDTO(BeinSportConf.NAME, title, href,
+					BeinSportConf.EXTENSION));
 		}
 		return categories;
 	}
 
 	private String findFinalRtmpUrl(final String url) {
-		final String content = getUrlContent(url.startsWith("http") ? url : (BeinSportConf.HOME_URL + url));
+		final String content = getUrlContent(url.startsWith("http") ? url
+				: (BeinSportConf.HOME_URL + url));
 		final String clipId = findMediaId(content);
 		ArrayList<String> urlList;
 		try {
 			urlList = findUrlList(clipId);
-		} catch (XPathExpressionException | ParserConfigurationException | SAXException | IOException e) {
+		} catch (XPathExpressionException | ParserConfigurationException
+				| SAXException | IOException e) {
 			throw new TechnicalException(e);
 		}
 		if (!urlList.isEmpty()) {
@@ -184,20 +205,26 @@ public class BeinSportPluginManager extends BasePluginWithProxy implements Plugi
 		}
 	}
 
-	private ArrayList<String> findUrlList(final String clipId) throws ParserConfigurationException, XPathExpressionException, SAXException, IOException {
+	private ArrayList<String> findUrlList(final String clipId)
+			throws ParserConfigurationException, XPathExpressionException,
+			SAXException, IOException {
 		final XPathFactory factory = XPathFactory.newInstance();
 		final XPath xpath = factory.newXPath();
 		final XPathExpression expr = xpath.compile("//file");
 
-		final DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
+		final DocumentBuilderFactory domFactory = DocumentBuilderFactory
+				.newInstance();
 		domFactory.setNamespaceAware(true);
 		final DocumentBuilder builder = domFactory.newDocumentBuilder();
-		final Document doc = builder.parse(getInputStreamFromUrl(BeinSportConf.XML_INFO + clipId));
+		final Document doc = builder
+				.parse(getInputStreamFromUrl(BeinSportConf.XML_INFO + clipId));
 
-		final NodeList nodes = (NodeList) expr.evaluate(doc, XPathConstants.NODESET);
+		final NodeList nodes = (NodeList) expr.evaluate(doc,
+				XPathConstants.NODESET);
 		final ArrayList<String> urlList = new ArrayList<>();
 		for (int i = 0; i < nodes.getLength(); i++) {
-			urlList.add(nodes.item(i).getAttributes().getNamedItem("externalPath").getTextContent());
+			urlList.add(nodes.item(i).getAttributes()
+					.getNamedItem("externalPath").getTextContent());
 		}
 
 		return urlList;

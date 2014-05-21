@@ -1,10 +1,10 @@
 package com.dabi.habitv.core.task;
 
-import com.dabi.habitv.api.plugin.api.CmdProgressionListener;
 import com.dabi.habitv.api.plugin.api.PluginExporterInterface;
 import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
 import com.dabi.habitv.api.plugin.dto.ExportDTO;
 import com.dabi.habitv.api.plugin.exception.ExportFailedException;
+import com.dabi.habitv.api.plugin.holder.ProcessHolder;
 import com.dabi.habitv.api.plugin.pub.Publisher;
 import com.dabi.habitv.core.event.EpisodeStateEnum;
 import com.dabi.habitv.core.event.RetreiveEvent;
@@ -49,18 +49,14 @@ public class ExportTask extends AbstractEpisodeTask {
 	@Override
 	protected void started() {
 		LOG.error("Episode export starting" + getEpisode() + " " + export.getName());
-		publisher.addNews(new RetreiveEvent(getEpisode(), EpisodeStateEnum.EXPORTING, export.getOutput(), null));
 	}
 
 	@Override
 	protected Object doCall() throws ExportFailedException {
 		final String cmd = TokenReplacer.replaceAll(export.getCmd(), getEpisode());
-		pluginExporter.export(export.getCmdProcessor(), cmd, new CmdProgressionListener() {
-			@Override
-			public void listen(final String progression) {
-				publisher.addNews(new RetreiveEvent(getEpisode(), EpisodeStateEnum.EXPORTING, export.getOutput(), progression));
-			}
-		});
+		  ProcessHolder processHolder = pluginExporter.export(export.getCmdProcessor(), cmd);
+		publisher.addNews(new RetreiveEvent(getEpisode(), EpisodeStateEnum.EXPORT_STARTING, export.getOutput(), processHolder));
+		processHolder.start();
 		return null;
 	}
 

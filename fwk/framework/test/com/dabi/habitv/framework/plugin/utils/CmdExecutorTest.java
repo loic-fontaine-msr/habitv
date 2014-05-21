@@ -10,7 +10,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.dabi.habitv.api.plugin.api.CmdProgressionListener;
 import com.dabi.habitv.api.plugin.exception.ExecutorFailedException;
 import com.dabi.habitv.api.plugin.exception.TechnicalException;
 import com.dabi.habitv.framework.plugin.exception.HungProcessException;
@@ -31,16 +30,10 @@ public class CmdExecutorTest {
 
 	@Before
 	public void setUp() throws Exception {
-		cmd = new CmdExecutor("", "", 500, new CmdProgressionListener() {
+		cmd = new CmdExecutor("", "", 500) {
 
 			@Override
-			public void listen(final String progression) {
-				System.out.println(progression);
-			}
-		}) {
-
-			@Override
-			protected Process buildProcess(final String cmd) throws ExecutorFailedException {
+			protected Process buildProcess() throws ExecutorFailedException {
 				return new Process() {
 
 					@Override
@@ -109,11 +102,11 @@ public class CmdExecutorTest {
 	@Test(expected = HungProcessException.class)
 	public final void testExecuteWithHungCmd() throws ExecutorFailedException {
 		hang = true;
-		cmd.execute();
+		cmd.start();
 	}
 
 	public final void testExecuteNormal() throws ExecutorFailedException {
 		hang = false;
-		cmd.execute();
+		cmd.start();
 	}
 }

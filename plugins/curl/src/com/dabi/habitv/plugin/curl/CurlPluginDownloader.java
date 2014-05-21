@@ -3,9 +3,7 @@ package com.dabi.habitv.plugin.curl;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import com.dabi.habitv.api.plugin.api.CmdProgressionListener;
 import com.dabi.habitv.api.plugin.api.PluginDownloaderInterface;
-import com.dabi.habitv.api.plugin.api.PluginDownloaderInterface.DownloadableState;
 import com.dabi.habitv.api.plugin.api.PluginWithProxyInterface;
 import com.dabi.habitv.api.plugin.dto.DownloadParamDTO;
 import com.dabi.habitv.api.plugin.dto.ProxyDTO;
@@ -13,6 +11,7 @@ import com.dabi.habitv.api.plugin.dto.ProxyDTO.ProtocolEnum;
 import com.dabi.habitv.api.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.api.plugin.exception.ExecutorFailedException;
 import com.dabi.habitv.api.plugin.holder.DownloaderPluginHolder;
+import com.dabi.habitv.api.plugin.holder.ProcessHolder;
 import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.api.update.BaseUpdatablePlugin;
 
@@ -30,9 +29,8 @@ public class CurlPluginDownloader extends BaseUpdatablePlugin implements
 	}
 
 	@Override
-	public void download(final DownloadParamDTO downloadParam,
-			final DownloaderPluginHolder downloaders,
-			final CmdProgressionListener listener)
+	public ProcessHolder download(final DownloadParamDTO downloadParam,
+			final DownloaderPluginHolder downloaders)
 			throws DownloadFailedException {
 		final String downloaderBin = getBinParam(downloaders);
 		String cmd = downloaderBin + CurlConf.CURL_CMD;
@@ -51,8 +49,7 @@ public class CurlPluginDownloader extends BaseUpdatablePlugin implements
 		}
 
 		try {
-			(new CurlCmdExecutor(downloaders.getCmdProcessor(), cmd, listener))
-					.execute();
+			return (new CurlCmdExecutor(downloaders.getCmdProcessor(), cmd));
 		} catch (final ExecutorFailedException e) {
 			throw new DownloadFailedException(e);
 		}

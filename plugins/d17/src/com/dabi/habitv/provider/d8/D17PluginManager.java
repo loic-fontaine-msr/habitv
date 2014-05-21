@@ -23,7 +23,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import com.dabi.habitv.api.plugin.api.CmdProgressionListener;
 import com.dabi.habitv.api.plugin.api.PluginProviderDownloaderInterface;
 import com.dabi.habitv.api.plugin.dto.CategoryDTO;
 import com.dabi.habitv.api.plugin.dto.DownloadParamDTO;
@@ -31,6 +30,7 @@ import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
 import com.dabi.habitv.api.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.api.plugin.exception.TechnicalException;
 import com.dabi.habitv.api.plugin.holder.DownloaderPluginHolder;
+import com.dabi.habitv.api.plugin.holder.ProcessHolder;
 import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.api.BasePluginWithProxy;
 import com.dabi.habitv.framework.plugin.utils.DownloadUtils;
@@ -102,16 +102,15 @@ public class D17PluginManager extends BasePluginWithProxy implements
 	}
 
 	@Override
-	public void download(final DownloadParamDTO downloadParam,
-			final DownloaderPluginHolder downloaders,
-			final CmdProgressionListener listener)
+	public ProcessHolder download(final DownloadParamDTO downloadParam,
+			final DownloaderPluginHolder downloaders)
 			throws DownloadFailedException {
 		final String vid = downloadParam.getDownloadInput().split("vid=")[1]
 				.split("&")[0];
 		final String videoUrl = findVideoUrl(vid);
-		DownloadUtils.download(
+		return DownloadUtils.download(
 				DownloadParamDTO.buildDownloadParam(downloadParam, videoUrl),
-				downloaders, listener);
+				downloaders);
 	}
 
 	private Collection<CategoryDTO> findSubCategories(final String catUrl) {

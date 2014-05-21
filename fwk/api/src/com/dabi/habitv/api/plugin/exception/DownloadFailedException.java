@@ -3,7 +3,7 @@ package com.dabi.habitv.api.plugin.exception;
 /**
  * Telechargement echoue
  */
-public class DownloadFailedException extends Exception {
+public class DownloadFailedException extends RuntimeException {
 
 	private static final long serialVersionUID = -7917171517194292179L;
 

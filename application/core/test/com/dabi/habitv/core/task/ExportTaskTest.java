@@ -11,13 +11,13 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.dabi.habitv.api.plugin.api.CmdProgressionListener;
 import com.dabi.habitv.api.plugin.api.PluginExporterInterface;
 import com.dabi.habitv.api.plugin.dto.CategoryDTO;
 import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
 import com.dabi.habitv.api.plugin.dto.ExportDTO;
 import com.dabi.habitv.api.plugin.exception.ExecutorFailedException;
 import com.dabi.habitv.api.plugin.exception.ExportFailedException;
+import com.dabi.habitv.api.plugin.holder.ProcessHolder;
 import com.dabi.habitv.api.plugin.pub.Publisher;
 import com.dabi.habitv.api.plugin.pub.Subscriber;
 import com.dabi.habitv.core.event.EpisodeStateEnum;
@@ -44,10 +44,15 @@ public class ExportTaskTest {
 	}
 
 	public void init(final boolean toFail) {
-		final CategoryDTO category = new CategoryDTO("channel", "category", "identifier", "extension");
-		final EpisodeDTO episode = new EpisodeDTO(category, "episode1234567890123456789012345678901234567890123456789", "videoUrl");
-		final ExecutorFailedException executorFailedException = new ExecutorFailedException("cmd", "fullOuput", "lastLine", null);
-		final ExportFailedException exportFailedException = new ExportFailedException(executorFailedException);
+		final CategoryDTO category = new CategoryDTO("channel", "category",
+				"identifier", "extension");
+		final EpisodeDTO episode = new EpisodeDTO(category,
+				"episode1234567890123456789012345678901234567890123456789",
+				"videoUrl");
+		final ExecutorFailedException executorFailedException = new ExecutorFailedException(
+				"cmd", "fullOuput", "lastLine", null);
+		final ExportFailedException exportFailedException = new ExportFailedException(
+				executorFailedException);
 		final PluginExporterInterface pluginExporter = new PluginExporterInterface() {
 
 			@Override
@@ -56,11 +61,14 @@ public class ExportTaskTest {
 			}
 
 			@Override
-			public void export(final String cmdProcessor, final String cmd, final CmdProgressionListener cmdProgressionListener) throws ExportFailedException {
+			public ProcessHolder export(final String cmdProcessor,
+					final String cmd) throws ExportFailedException {
+				MockProcessHolder processHolder = new MockProcessHolder();
+
 				assertEquals("episode1234567890123/channel/category/extension",
 						cmd);
 
-				cmdProgressionListener.listen("0");
+				processHolder.setProgression("0");
 
 				try {
 					Thread.sleep(10);
@@ -68,7 +76,7 @@ public class ExportTaskTest {
 					fail(e.getMessage());
 				}
 
-				cmdProgressionListener.listen("50");
+				processHolder.setProgression("50");
 
 				if (toFail) {
 					throw exportFailedException;
@@ -80,7 +88,9 @@ public class ExportTaskTest {
 					fail(e.getMessage());
 				}
 
-				cmdProgressionListener.listen("100");
+				processHolder.setProgression("100");
+
+				return ProcessHolder.EMPTY_PROCESS_HOLDER;
 			}
 		};
 
@@ -95,26 +105,22 @@ public class ExportTaskTest {
 				assertEquals(event, event);
 				switch (i) {
 				case 0:
-					assertEquals(new RetreiveEvent(episode, EpisodeStateEnum.TO_EXPORT), event);
+					assertEquals(new RetreiveEvent(episode,
+							EpisodeStateEnum.TO_EXPORT), event);
 					break;
 				case 1:
-					assertEquals(new RetreiveEvent(episode, EpisodeStateEnum.EXPORTING, "output", null), event);
-					break;
-				case 2:
-					assertEquals(new RetreiveEvent(episode, EpisodeStateEnum.EXPORTING, "0"), event);
-					break;
-				case 3:
-					assertEquals(new RetreiveEvent(episode, EpisodeStateEnum.EXPORTING, "50"), event);
-					break;
-				case 4:
 					if (toFail) {
-						assertEquals(new RetreiveEvent(episode, EpisodeStateEnum.EXPORT_FAILED, exportFailedException, "output"), event);
+						assertEquals(new RetreiveEvent(episode,
+								EpisodeStateEnum.EXPORT_FAILED,
+								exportFailedException, "output"), event);
 					} else {
-						assertEquals(new RetreiveEvent(episode, EpisodeStateEnum.EXPORTING, "100"), event);
+						assertEquals(new RetreiveEvent(episode,
+								EpisodeStateEnum.EXPORT_STARTING), event);
 					}
 					break;
-				case 5:
-					assertEquals(new RetreiveEvent(episode, EpisodeStateEnum.EXPORT_FAILED), event);
+				case 2:
+					assertEquals(new RetreiveEvent(episode,
+							EpisodeStateEnum.EXPORT_FAILED), event);
 					break;
 				default:
 					fail("unexpected event" + event);
@@ -124,8 +130,10 @@ public class ExportTaskTest {
 			}
 		};
 		publisher.attach(subscriber);
-		final ExportDTO export = new ExportDTO("conditionReference", "conditionPattern", "name", "output", null,
-				"#EPISODE_NAME§20#/#CHANNEL_NAME#/#TVSHOW_NAME#/#EXTENSION#", null);
+		final ExportDTO export = new ExportDTO("conditionReference",
+				"conditionPattern", "name", "output", null,
+				"#EPISODE_NAME§20#/#CHANNEL_NAME#/#TVSHOW_NAME#/#EXTENSION#",
+				null);
 		task = new ExportTask(episode, export, pluginExporter, publisher, 0);
 		assertTrue(task.equals(task));
 		assertEquals(task.hashCode(), task.hashCode());

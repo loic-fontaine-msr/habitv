@@ -3,23 +3,22 @@ package com.dabi.habitv.framework.plugin.utils;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.dabi.habitv.api.plugin.api.CmdProgressionListener;
 import com.dabi.habitv.api.plugin.api.PluginDownloaderInterface;
 import com.dabi.habitv.api.plugin.api.PluginDownloaderInterface.DownloadableState;
 import com.dabi.habitv.api.plugin.dto.DownloadParamDTO;
 import com.dabi.habitv.api.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.api.plugin.holder.DownloaderPluginHolder;
+import com.dabi.habitv.api.plugin.holder.ProcessHolder;
 import com.dabi.habitv.framework.FrameworkConf;
 
 public class DownloadUtils {
 
-	public static void download(final DownloadParamDTO downloadParam,
-			final DownloaderPluginHolder downloaders,
-			final CmdProgressionListener listener)
+	public static ProcessHolder download(final DownloadParamDTO downloadParam,
+			final DownloaderPluginHolder downloaders)
 			throws DownloadFailedException {
 		final PluginDownloaderInterface downloader = getDownloader(
 				downloadParam, downloaders);
-		downloader.download(downloadParam, downloaders, listener);
+		return downloader.download(downloadParam, downloaders);
 	}
 
 	public static PluginDownloaderInterface getDownloader(
@@ -37,13 +36,12 @@ public class DownloadUtils {
 		return downloader;
 	}
 
-	public static void download(final DownloadParamDTO downloadParam,
+	public static ProcessHolder download(final DownloadParamDTO downloadParam,
 			final DownloaderPluginHolder downloaders,
-			final CmdProgressionListener listener, final String downloaderName)
-			throws DownloadFailedException {
+			final String downloaderName) throws DownloadFailedException {
 		final PluginDownloaderInterface pluginDownloader = downloaders
 				.getPlugin(downloaderName);
-		pluginDownloader.download(downloadParam, downloaders, listener);
+		return pluginDownloader.download(downloadParam, downloaders);
 	}
 
 	private static PluginDownloaderInterface findDownloaderByUrl(

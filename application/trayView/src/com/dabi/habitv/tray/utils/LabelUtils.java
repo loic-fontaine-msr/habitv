@@ -12,13 +12,13 @@ public class LabelUtils {
 		case DOWNLOADED:
 			stateLabel.append("Téléchargé");
 			break;
-		case DOWNLOADING:
+		case DOWNLOAD_STARTING:
 			stateLabel.append("");
 			break;
 		case EXPORT_FAILED:
 			stateLabel.append("Export échoué : ");
 			break;
-		case EXPORTING:
+		case EXPORT_STARTING:
 			stateLabel.append("Export : ");
 			break;
 		case TO_DOWNLOAD:

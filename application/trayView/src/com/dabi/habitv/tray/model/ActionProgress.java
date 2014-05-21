@@ -1,21 +1,23 @@
 package com.dabi.habitv.tray.model;
 
 import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
+import com.dabi.habitv.api.plugin.holder.ProcessHolder;
 import com.dabi.habitv.core.event.EpisodeStateEnum;
 
 public class ActionProgress implements Comparable<ActionProgress> {
 	private EpisodeStateEnum state;
-	private String progress;
-	private String info;
 	private final EpisodeDTO episode;
+	private ProcessHolder processHolder;
+	private String info;
 
-	public ActionProgress(final EpisodeStateEnum state, final String progress,
-			final String info, final EpisodeDTO episode) {
+	public ActionProgress(final EpisodeDTO episode,
+			final EpisodeStateEnum state, final String info,
+			final ProcessHolder processHolder) {
 		super();
 		this.state = state;
-		this.progress = progress;
-		this.info = info;
 		this.episode = episode;
+		this.processHolder = processHolder;
+		this.info = info;
 	}
 
 	public EpisodeDTO getEpisode() {
@@ -31,28 +33,13 @@ public class ActionProgress implements Comparable<ActionProgress> {
 	}
 
 	public String getProgress() {
-		return progress;
-	}
-
-	public void setProgress(final String progress) {
-		this.progress = progress;
-	}
-
-	public String getInfo() {
-		return info;
-	}
-
-	public void setInfo(final String info) {
-		this.info = info;
+		return processHolder.getProgression();
 	}
 
 	@Override
 	public int compareTo(final ActionProgress o) {
 		int ret = state.compareTo(o.state);
 		if (ret == 0) {
-			if (o.info != null && info != null) {
-				ret = o.info.compareTo(info);
-			}
 			if (ret == 0) {
 				ret = o.episode.compareTo(episode);
 			}
@@ -77,6 +64,22 @@ public class ActionProgress implements Comparable<ActionProgress> {
 	@Override
 	public String toString() {
 		return getEpisode().toString() + " " + getState();
+	}
+
+	public void setProcessHolder(ProcessHolder processHolder) {
+		this.processHolder = processHolder;
+	}
+	
+	public ProcessHolder getProcessHolder() {
+		return processHolder;
+	}
+
+	public String getInfo() {
+		return info;
+	}
+
+	public void setInfo(String info) {
+		this.info = info;
 	}
 
 }
