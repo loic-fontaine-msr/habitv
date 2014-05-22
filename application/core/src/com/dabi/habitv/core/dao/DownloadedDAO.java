@@ -14,6 +14,8 @@ import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
 
+import com.dabi.habitv.api.plugin.dto.CategoryDTO;
+import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
 import com.dabi.habitv.api.plugin.exception.TechnicalException;
 import com.dabi.habitv.core.config.HabitTvConf;
 import com.dabi.habitv.utils.FileUtils;
@@ -24,30 +26,33 @@ public class DownloadedDAO {
 
 	private final String indexDir;
 
-	private final String category;
-
-	private final String channelName;
-
 	private boolean indexExist;
 
-	public DownloadedDAO(final String channelName, final String category, final String indexDir) {
+	private CategoryDTO category;
+
+	public DownloadedDAO(final CategoryDTO category, final String indexDir) {
 		super();
 		this.indexDir = indexDir;
 		this.category = category;
-		this.channelName = channelName;
 		final File indexDirectory = new File(indexDir);
 		if (indexDirectory.exists()) {
 			indexExist = new File(getFileIndex()).exists();
 		} else {
 			indexExist = false;
 			if (!indexDirectory.mkdir()) {
-				throw new TechnicalException("Folder can't be created" + indexDirectory.getAbsolutePath());
+				throw new TechnicalException("Folder can't be created"
+						+ indexDirectory.getAbsolutePath());
 			}
 		}
 	}
 
-	private String getFileIndex() {
-		return (indexDir + "/" + FileUtils.sanitizeFilename(channelName + "_" + getCategory() + ".index"));
+	public String getFileIndex() {
+		return getFileIndex(indexDir, category);
+	}
+
+	public static String getFileIndex(String indexDir, CategoryDTO category) {
+		return (indexDir + "/" + FileUtils.sanitizeFilename(category
+				.getChannel() + "_" + category.getName() + ".index"));
 	}
 
 	public Set<String> findDownloadedFiles() {
@@ -58,7 +63,8 @@ public class DownloadedDAO {
 		final Set<String> fileList = new TreeSet<>();
 		try {
 
-			lecteurAvecBuffer = new BufferedReader(new InputStreamReader(new FileInputStream(getFileIndex()), HabitTvConf.ENCODING));
+			lecteurAvecBuffer = new BufferedReader(new InputStreamReader(
+					new FileInputStream(getFileIndex()), HabitTvConf.ENCODING));
 			while ((ligne = lecteurAvecBuffer.readLine()) != null) {
 				fileList.add(ligne);
 			}
@@ -79,12 +85,14 @@ public class DownloadedDAO {
 		return fileList;
 	}
 
-	public synchronized void addDownloadedFiles(final String... files) {
+	public synchronized void addDownloadedFiles(final EpisodeDTO... episodes) {
 		PrintWriter writer;
 		try {
-			writer = new PrintWriter(new OutputStreamWriter(new FileOutputStream(getFileIndex(), true), HabitTvConf.ENCODING));
-			for (final String file : files) {
-				writer.println(file);
+			writer = new PrintWriter(new OutputStreamWriter(
+					new FileOutputStream(getFileIndex(), true),
+					HabitTvConf.ENCODING));
+			for (final EpisodeDTO episode : episodes) {
+				writer.println(episode.getName());
 			}
 			writer.close();
 		} catch (final IOException e) {
@@ -101,9 +109,5 @@ public class DownloadedDAO {
 		(new File(fileIndex)).delete();
 		LOG.info("réinitialisation de l'index " + fileIndex);
 		indexExist = false;
-	}
-
-	protected String getCategory() {
-		return category;
 	}
 }

@@ -124,7 +124,7 @@ public class RetreiveTaskTest {
 			}
 		};
 		publisher.attach(subscriber);
-		final DownloadedDAO downloadedDAO = new DownloadedDAO("channelName", "tvShow", ".");
+		final DownloadedDAO downloadedDAO = new DownloadedDAO(episode.getCategory(), ".");
 
 		final Map<String, PluginExporterInterface> exporterName2exporter = new HashMap<>();
 		final PluginExporterInterface pluginExporter = new PluginExporterInterface() {

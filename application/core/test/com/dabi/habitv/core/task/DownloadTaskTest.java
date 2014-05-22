@@ -172,11 +172,10 @@ public class DownloadTaskTest {
 			}
 		};
 		publisher.attach(subscriber);
-		final DownloadedDAO downloadedDAO = new DownloadedDAO("channelName",
-				"tvShow", ".") {
+		final DownloadedDAO downloadedDAO = new DownloadedDAO(category, ".") {
 
 			@Override
-			public void addDownloadedFiles(final String... files) {
+			public void addDownloadedFiles(final EpisodeDTO... episodes) {
 				downloaded = true;
 			}
 

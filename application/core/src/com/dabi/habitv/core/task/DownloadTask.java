@@ -57,7 +57,7 @@ public class DownloadTask extends AbstractEpisodeTask {
 	@Override
 	protected void ended() {
 		LOG.info("Download of " + getEpisode() + " done");
-		downloadedDAO.addDownloadedFiles(getEpisode().getName());
+		downloadedDAO.addDownloadedFiles(getEpisode());
 		publisher.addNews(new RetreiveEvent(getEpisode(),
 				EpisodeStateEnum.DOWNLOADED));
 	}

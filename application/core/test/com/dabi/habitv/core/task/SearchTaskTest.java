@@ -182,8 +182,7 @@ public class SearchTaskTest {
 
 			@Override
 			public ProcessHolder export(final String cmdProcessor,
-					final String cmd)
-					throws ExportFailedException {
+					final String cmd) throws ExportFailedException {
 				return ProcessHolder.EMPTY_PROCESS_HOLDER;
 			}
 		};
@@ -245,10 +244,10 @@ public class SearchTaskTest {
 				retreivePublisher, downloader, exporter) {
 
 			@Override
-			protected DownloadedDAO buildDownloadDAO(final String categoryName) {
-				assertNotNull(super.buildDownloadDAO(categoryName));
+			protected DownloadedDAO buildDownloadDAO(final CategoryDTO category) {
+				assertNotNull(super.buildDownloadDAO(category));
 
-				final DownloadedDAO dao = buildDLDAO(categoryName);
+				final DownloadedDAO dao = buildDLDAO(category);
 
 				return dao;
 			}
@@ -256,9 +255,8 @@ public class SearchTaskTest {
 		};
 	}
 
-	private DownloadedDAO buildDLDAO(final String categoryName) {
-		final DownloadedDAO dao = new DownloadedDAO("channel", categoryName,
-				".") {
+	private DownloadedDAO buildDLDAO(final CategoryDTO category) {
+		final DownloadedDAO dao = new DownloadedDAO(category, ".") {
 
 			@Override
 			public Set<String> findDownloadedFiles() {
@@ -268,14 +266,14 @@ public class SearchTaskTest {
 			}
 
 			@Override
-			public void addDownloadedFiles(final String... files) {
-				assertEquals("episode3", files[0]);
+			public void addDownloadedFiles(final EpisodeDTO... episodes) {
+				assertEquals("episode3", episodes[0].getName());
 			}
 
 			@Override
 			public boolean isIndexCreated() {
 				boolean ret = true;
-				if (getCategory().equals("category3")) {
+				if (category.getName().equals("category3")) {
 					ret = false;
 				}
 				return ret;

@@ -38,13 +38,13 @@ public class RetrieveTask extends AbstractEpisodeTask {
 	public RetrieveTask(final EpisodeDTO episode, final Publisher<RetreiveEvent> publisher, final TaskAdder taskAdder, final ExporterPluginHolder exporter,
 			final PluginProviderInterface provider, final DownloaderPluginHolder downloaders, final DownloadedDAO downloadDAO) {
 		super(episode);
-		retreivePublisher = publisher;
+		this.retreivePublisher = publisher;
 		this.taskAdder = taskAdder;
 		this.exporter = exporter;
 		this.provider = provider;
 		this.downloadDAO = downloadDAO;
 		this.downloaders = downloaders;
-		episodeExportState = null;
+		this.episodeExportState = null;
 	}
 
 	@Override
