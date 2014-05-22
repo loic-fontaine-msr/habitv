@@ -9,6 +9,7 @@ import javax.xml.bind.JAXBException;
 import org.apache.log4j.Logger;
 
 import com.dabi.habitv.api.plugin.dto.CategoryDTO;
+import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
 import com.dabi.habitv.api.plugin.exception.TechnicalException;
 import com.dabi.habitv.core.config.HabitTvConf;
 import com.dabi.habitv.core.config.UserConfig;
@@ -193,6 +194,14 @@ public class HabitTvViewManager extends Observable {
 		} catch (JAXBException e) {
 			throw new TechnicalException(e);
 		}
+	}
+
+	public void setDownloaded(EpisodeDTO episode) {
+		coreManager.setDownloaded(episode);
+	}
+
+	public void restart(EpisodeDTO episode, boolean exportOnly) {
+		coreManager.restart(episode, exportOnly);
 	}
 
 }

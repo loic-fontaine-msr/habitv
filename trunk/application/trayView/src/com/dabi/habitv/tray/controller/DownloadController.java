@@ -183,10 +183,10 @@ public class DownloadController extends BaseController implements
 	}
 
 	private void buildOrUpdateDownloadBox(ActionProgress actionProgress) {
-		DownloadBox downloadBox = epId2DLBox.get(actionProgress.getEpisode()
+		DownloadBox downloadBox = epId2DLBox.get( actionProgress.getEpisode()
 				.getId());
 		if (downloadBox == null) {
-			downloadBox = new DownloadBox(actionProgress);
+			downloadBox = new DownloadBox(getController(),actionProgress);
 			downloadingBox.getChildren().add(downloadBox);
 			epId2DLBox.put(actionProgress.getEpisode().getId(), downloadBox);
 		} else {

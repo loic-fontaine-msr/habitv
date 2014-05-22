@@ -14,6 +14,9 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.dabi.habitv.api.plugin.dto.CategoryDTO;
+import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
+
 /**
  * @author bidou
  * 
@@ -21,6 +24,7 @@ import org.junit.Test;
 public class DownloadedDAOTest {
 
 	private DownloadedDAO dao;
+	private CategoryDTO category;
 
 	/**
 	 * @throws java.lang.Exception
@@ -53,12 +57,15 @@ public class DownloadedDAOTest {
 	}
 
 	private void initDAO() {
-		dao = new DownloadedDAO("channel", "tvshow", ".");
+		category = new CategoryDTO("channel", "tvshow", "channel", "mp4");
+		dao = new DownloadedDAO(category, ".");
 	}
 
 	@Test
 	public final void canAddDownloadedFilesAnReadIt() {
-		final String[] toAdd = new String[] { "test1", "test2" };
+		final EpisodeDTO[] toAdd = new EpisodeDTO[] {
+				new EpisodeDTO(category, "test1", "test1"),
+				new EpisodeDTO(category, "test2", "test2") };
 		dao.initIndex();
 		initDAO();
 		assertTrue(!dao.isIndexCreated());
@@ -66,7 +73,9 @@ public class DownloadedDAOTest {
 		initDAO();
 		assertTrue(dao.isIndexCreated());
 		final Set<String> toTest = dao.findDownloadedFiles();
-		assertArrayEquals(toAdd, toTest.toArray());
+		assertArrayEquals(
+				new String[] { toAdd[0].getName(), toAdd[1].getName() },
+				toTest.toArray());
 	}
 
 	@Test

@@ -16,6 +16,7 @@ import com.dabi.habitv.api.plugin.dto.CategoryDTO;
 import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
 import com.dabi.habitv.api.plugin.exception.TechnicalException;
 import com.dabi.habitv.core.event.EpisodeStateEnum;
+import com.dabi.habitv.tray.controller.ViewController;
 import com.dabi.habitv.tray.model.ActionProgress;
 import com.dabi.habitv.tray.utils.LabelUtils;
 
@@ -25,9 +26,11 @@ public class DownloadBox extends BorderPane {
 	private Pane statePanel;
 
 	private ContextMenu contextMenu = new ContextMenu();
+	private ViewController controller;
 
-	public DownloadBox(ActionProgress actionProgress) {
+	public DownloadBox(ViewController viewController, ActionProgress actionProgress ) {
 		super();
+		this.controller = viewController;
 		this.actionProgress = actionProgress;
 
 		EpisodeDTO episode = actionProgress.getEpisode();
@@ -52,22 +55,47 @@ public class DownloadBox extends BorderPane {
 	void buildMenuItem() {
 		contextMenu.getItems().clear();
 		if (actionProgress.getState().isInProgress()) {
-			MenuItem menuItem = new MenuItem("Arrêter");
-			menuItem.setOnAction(new EventHandler<ActionEvent>() {
+			MenuItem menuItemStop = new MenuItem("Arrêter");
+			menuItemStop.setOnAction(new EventHandler<ActionEvent>() {
 
 				@Override
 				public void handle(ActionEvent event) {
 					actionProgress.getProcessHolder().stop();
 				}
 			});
-			contextMenu.getItems().add(menuItem);
+			contextMenu.getItems().add(menuItemStop);
+			MenuItem menuItemStopAndSetAsDL = new MenuItem("Arrêter et marquer comme téléchargé");
+			menuItemStopAndSetAsDL.setOnAction(new EventHandler<ActionEvent>() {
+				
+				@Override
+				public void handle(ActionEvent event) {
+					actionProgress.getProcessHolder().stop();
+					controller.setDownloaded(actionProgress.getEpisode());
+				}
+			});
 			contextMenu.getItems().add(
-					new MenuItem("Arrêter et marquer comme téléchargé"));
+					menuItemStopAndSetAsDL);
 		}
-		contextMenu.getItems().add(new MenuItem("Ouvrir l'index"));
+		MenuItem menuItemOpenIndex = new MenuItem("Ouvrir l'index");
+		menuItemOpenIndex.setOnAction(new EventHandler<ActionEvent>() {
+			
+			@Override
+			public void handle(ActionEvent event) {
+				controller.openIndex(actionProgress.getEpisode().getCategory());
+			}
+		});
+		contextMenu.getItems().add(menuItemOpenIndex);
 
 		if (actionProgress.getState().hasFailed()) {
-			contextMenu.getItems().add(new MenuItem("Relancer"));
+			MenuItem menuItemReStart = new MenuItem("Relancer");
+			menuItemReStart.setOnAction(new EventHandler<ActionEvent>() {
+				
+				@Override
+				public void handle(ActionEvent event) {
+					controller.restart(actionProgress.getEpisode(), actionProgress.getState().isExport());
+				}
+			});
+			contextMenu.getItems().add(menuItemReStart);
 		}
 	}
 

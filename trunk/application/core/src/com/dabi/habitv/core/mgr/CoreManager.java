@@ -6,6 +6,7 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 
 import com.dabi.habitv.api.plugin.dto.CategoryDTO;
+import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
 import com.dabi.habitv.api.plugin.dto.ProxyDTO;
 import com.dabi.habitv.api.plugin.dto.ProxyDTO.ProtocolEnum;
 import com.dabi.habitv.core.config.HabitTvConf;
@@ -122,6 +123,14 @@ public final class CoreManager {
 
 	public PluginManager getPluginManager() {
 		return pluginManager;
+	}
+
+	public void setDownloaded(EpisodeDTO episode) {
+		episodeManager.setDownloaded(episode);
+	}
+
+	public void restart(EpisodeDTO episode, boolean exportOnly) {
+		episodeManager.restart(episode, exportOnly);
 	}
 
 }

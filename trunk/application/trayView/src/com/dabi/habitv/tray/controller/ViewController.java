@@ -10,10 +10,12 @@ import javafx.application.Platform;
 import javafx.stage.Stage;
 
 import com.dabi.habitv.api.plugin.dto.CategoryDTO;
+import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
 import com.dabi.habitv.api.plugin.exception.TechnicalException;
 import com.dabi.habitv.api.plugin.pub.UpdatablePluginEvent;
 import com.dabi.habitv.core.config.UserConfig;
 import com.dabi.habitv.core.config.XMLUserConfig;
+import com.dabi.habitv.core.dao.DownloadedDAO;
 import com.dabi.habitv.core.event.EpisodeStateEnum;
 import com.dabi.habitv.core.event.RetreiveEvent;
 import com.dabi.habitv.core.event.SearchCategoryEvent;
@@ -254,5 +256,18 @@ public class ViewController implements CoreSubscriber {
 				primaryStage.show();
 			}
 		});
+	}
+
+	public void setDownloaded(EpisodeDTO episode) {
+		getManager().setDownloaded(episode);
+	}
+
+	public void openIndex(CategoryDTO category) {
+		final UserConfig config = getManager().getUserConfig();
+		open(DownloadedDAO.getFileIndex(config.getIndexDir(), category));
+	}
+
+	public void restart(EpisodeDTO episode, boolean exportOnly) {
+		getManager().restart(episode, exportOnly);
 	}
 }

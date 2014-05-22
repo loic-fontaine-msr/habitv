@@ -32,8 +32,11 @@ public class SearchTask extends AbstractTask<Object> {
 
 	private final ExporterPluginHolder exporter;
 
-	public SearchTask(final PluginProviderInterface provider, final Set<CategoryDTO> categoryDTOs, final TaskAdder taskAdder,
-			final Publisher<SearchEvent> searchPublisher, final Publisher<RetreiveEvent> retreivePublisher, final DownloaderPluginHolder downloader,
+	public SearchTask(final PluginProviderInterface provider,
+			final Set<CategoryDTO> categoryDTOs, final TaskAdder taskAdder,
+			final Publisher<SearchEvent> searchPublisher,
+			final Publisher<RetreiveEvent> retreivePublisher,
+			final DownloaderPluginHolder downloader,
 			final ExporterPluginHolder exporter) {
 		this.provider = provider;
 		this.categoryDTOs = categoryDTOs;
@@ -52,19 +55,22 @@ public class SearchTask extends AbstractTask<Object> {
 	@Override
 	protected void failed(final Throwable e) {
 		LOG.error("Searching episode for " + provider.getName() + " failed", e);
-		searchPublisher.addNews(new SearchEvent(provider.getName(), SearchStateEnum.ERROR));
+		searchPublisher.addNews(new SearchEvent(provider.getName(),
+				SearchStateEnum.ERROR));
 	}
 
 	@Override
 	protected void ended() {
 		LOG.info("Searching episode for " + provider.getName() + " done");
-		searchPublisher.addNews(new SearchEvent(provider.getName(), SearchStateEnum.DONE));
+		searchPublisher.addNews(new SearchEvent(provider.getName(),
+				SearchStateEnum.DONE));
 	}
 
 	@Override
 	protected void started() {
 		LOG.info("Searching episode for " + provider.getName() + " is starting");
-		searchPublisher.addNews(new SearchEvent(provider.getName(), SearchStateEnum.CHECKING_EPISODES));
+		searchPublisher.addNews(new SearchEvent(provider.getName(),
+				SearchStateEnum.CHECKING_EPISODES));
 	}
 
 	@Override
@@ -73,24 +79,28 @@ public class SearchTask extends AbstractTask<Object> {
 		return null;
 	}
 
-	private void findEpisodeByCategories(final Collection<CategoryDTO> categoryDTOs) {
+	private void findEpisodeByCategories(
+			final Collection<CategoryDTO> categoryDTOs) {
 		for (final CategoryDTO category : categoryDTOs) {
 			if (!category.getSubCategories().isEmpty()) {
 				findEpisodeByCategories(category.getSubCategories());
 			} else {
 				// dao to find dowloaded episodes
-				final DownloadedDAO dlDAO = buildDownloadDAO(category.getName());
+				final DownloadedDAO dlDAO = buildDownloadDAO(category);
 				final Set<String> dlFiles = dlDAO.findDownloadedFiles();
 				final boolean indexCreated = dlDAO.isIndexCreated();
 				// dao to find error download episodes
 				final DlErrorDAO errorDAO = new DlErrorDAO();
-				final Set<String> errorFiles = errorDAO.findDownloadedErrorFiles();
+				final Set<String> errorFiles = errorDAO
+						.findDownloadedErrorFiles();
 
 				// get list of downloadable episodes
-				final Set<EpisodeDTO> episodeList = provider.findEpisode(category);
+				final Set<EpisodeDTO> episodeList = provider
+						.findEpisode(category);
 				if (!indexCreated && !episodeList.isEmpty()) {
 					LOG.info("Creating index for " + category.getName());
-					searchPublisher.addNews(new SearchEvent(provider.getName(), category.getName(), SearchStateEnum.BUILD_INDEX));
+					searchPublisher.addNews(new SearchEvent(provider.getName(),
+							category.getName(), SearchStateEnum.BUILD_INDEX));
 				}
 				// reinit index to purge non available files from index
 				// dlDAO.initIndex(); provider may re add an old dl file, so we
@@ -103,20 +113,27 @@ public class SearchTask extends AbstractTask<Object> {
 				for (final EpisodeDTO episode : episodeList) {
 					episode.setNum(i);
 					isDownloaded = dlFiles.contains(episode.getName());
-					isErrorDownloaded = errorFiles.contains(episode.getFullName());
-					if (indexCreated && FilterUtils.filterByIncludeExcludeAndDownloaded(episode, category.getInclude(), category.getExclude()) && !isDownloaded
+					isErrorDownloaded = errorFiles.contains(episode
+							.getFullName());
+					if (indexCreated
+							&& FilterUtils.filterByIncludeExcludeAndDownloaded(
+									episode, category.getInclude(),
+									category.getExclude()) && !isDownloaded
 							&& !isErrorDownloaded) {
 						// producer download the file
-						final TaskAdResult state = taskAdder.addRetreiveTask(new RetrieveTask(episode, retreivePublisher, taskAdder, exporter, provider,
-								downloader, dlDAO));
+						final TaskAdResult state = taskAdder
+								.addRetreiveTask(new RetrieveTask(episode,
+										retreivePublisher, taskAdder, exporter,
+										provider, downloader, dlDAO));
 						if (TaskState.TO_MANY_FAILED.equals(state.getState())) {
-							errorDAO.addDownloadErrorFiles(episode.getFullName());
+							errorDAO.addDownloadErrorFiles(episode
+									.getFullName());
 						}
 					} else {
 						// if index has not been created the first run will only
 						// fill this file
 						if (!isDownloaded && !isErrorDownloaded) {
-							dlDAO.addDownloadedFiles(episode.getName());
+							dlDAO.addDownloadedFiles(episode);
 						}
 					}
 					i++;
@@ -125,8 +142,8 @@ public class SearchTask extends AbstractTask<Object> {
 		}
 	}
 
-	protected DownloadedDAO buildDownloadDAO(final String categoryName) {
-		return new DownloadedDAO(provider.getName(), categoryName, downloader.getIndexDir());
+	protected DownloadedDAO buildDownloadDAO(final CategoryDTO category) {
+		return new DownloadedDAO(category, downloader.getIndexDir());
 	}
 
 	@Override
