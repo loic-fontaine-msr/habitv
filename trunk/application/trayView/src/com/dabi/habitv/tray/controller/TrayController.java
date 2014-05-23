@@ -103,6 +103,9 @@ public class TrayController implements CoreSubscriber {
 		case TO_EXPORT:
 
 			break;
+		case TO_MANY_FAILED:
+
+			break;			
 		default:
 			break;
 		}

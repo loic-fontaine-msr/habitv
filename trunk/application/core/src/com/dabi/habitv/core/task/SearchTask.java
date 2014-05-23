@@ -121,14 +121,11 @@ public class SearchTask extends AbstractTask<Object> {
 									category.getExclude()) && !isDownloaded
 							&& !isErrorDownloaded) {
 						// producer download the file
-						final TaskAdResult state = taskAdder
+						taskAdder
 								.addRetreiveTask(new RetrieveTask(episode,
 										retreivePublisher, taskAdder, exporter,
 										provider, downloader, dlDAO));
-						if (TaskState.TO_MANY_FAILED.equals(state.getState())) {
-							errorDAO.addDownloadErrorFiles(episode
-									.getFullName());
-						}
+
 					} else {
 						// if index has not been created the first run will only
 						// fill this file

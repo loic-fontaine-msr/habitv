@@ -1,12 +1,12 @@
 package com.dabi.habitv.tray.controller;
 
-import com.dabi.habitv.core.config.UserConfig;
-
 import javafx.event.EventHandler;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.KeyEvent;
+
+import com.dabi.habitv.core.config.UserConfig;
 
 public class ConfigController extends BaseController {
 

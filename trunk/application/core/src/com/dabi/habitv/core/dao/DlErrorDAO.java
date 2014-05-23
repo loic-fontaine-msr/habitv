@@ -37,7 +37,8 @@ public class DlErrorDAO {
 		final Set<String> fileList = new HashSet<>();
 		try {
 
-			lecteurAvecBuffer = new BufferedReader(new InputStreamReader(new FileInputStream(getErrorFile()), HabitTvConf.ENCODING));
+			lecteurAvecBuffer = new BufferedReader(new InputStreamReader(
+					new FileInputStream(getErrorFile()), HabitTvConf.ENCODING));
 			while ((ligne = lecteurAvecBuffer.readLine()) != null) {
 				fileList.add(ligne);
 			}
@@ -61,9 +62,14 @@ public class DlErrorDAO {
 	public synchronized void addDownloadErrorFiles(final String... files) {
 		PrintWriter writer;
 		try {
-			writer = new PrintWriter(new OutputStreamWriter(new FileOutputStream(getErrorFile(), true), HabitTvConf.ENCODING));
+			writer = new PrintWriter(new OutputStreamWriter(
+					new FileOutputStream(getErrorFile(), true),
+					HabitTvConf.ENCODING));
+			Set<String> downloadedErrorFiles = findDownloadedErrorFiles();
 			for (final String file : files) {
-				writer.println(file);
+				if (!downloadedErrorFiles.contains(file)) {
+					writer.println(file);
+				}
 			}
 			writer.close();
 		} catch (final IOException e) {

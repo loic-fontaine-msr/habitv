@@ -13,9 +13,11 @@ import com.dabi.habitv.api.plugin.holder.DownloaderPluginHolder;
 import com.dabi.habitv.api.plugin.holder.ExporterPluginHolder;
 import com.dabi.habitv.api.plugin.holder.ProviderPluginHolder;
 import com.dabi.habitv.api.plugin.pub.Publisher;
+import com.dabi.habitv.core.dao.DlErrorDAO;
 import com.dabi.habitv.core.dao.DownloadedDAO;
 import com.dabi.habitv.core.dao.EpisodeExportState;
 import com.dabi.habitv.core.dao.ExportDAO;
+import com.dabi.habitv.core.event.EpisodeStateEnum;
 import com.dabi.habitv.core.event.RetreiveEvent;
 import com.dabi.habitv.core.event.SearchEvent;
 import com.dabi.habitv.core.event.SearchStateEnum;
@@ -195,33 +197,36 @@ public final class EpisodeManager extends AbstractManager implements TaskAdder {
 			final Integer attemptsM = downloadAttempts.get(retreiveTask
 					.getEpisode());
 			final Integer attempts = (attemptsM == null) ? 0 : attemptsM;
-			if (tooManyAttempts(attempts)) {
-				state = TaskState.TO_MANY_FAILED;
-				// reinit counter
-				downloadAttempts.remove(retreiveTask.getEpisode());
-			} else {
 
-				retreiveTask.setListener(new TaskListener() {
+			retreiveTask.setListener(new TaskListener() {
 
-					@Override
-					public void onTaskEnded() {
-						runningRetreiveTasks.remove(retreiveTask.getEpisode()
-								.hashCode());
+				@Override
+				public void onTaskEnded() {
+					runningRetreiveTasks.remove(retreiveTask.getEpisode()
+							.hashCode());
+					downloadAttempts.remove(retreiveTask.getEpisode());
+				}
+
+				@Override
+				public void onTaskFailed() {
+					runningRetreiveTasks.remove(retreiveTask.getEpisode()
+							.hashCode());
+					int newAttempts = attempts + 1;
+					downloadAttempts.put(retreiveTask.getEpisode(), newAttempts);
+					if (tooManyAttempts(newAttempts)) {
+						// reinit counter
 						downloadAttempts.remove(retreiveTask.getEpisode());
+						(new DlErrorDAO()).addDownloadErrorFiles(retreiveTask
+								.getEpisode().getFullName());
+						retreivePublisher.addNews(new RetreiveEvent(
+								retreiveTask.getEpisode(),
+								EpisodeStateEnum.TO_MANY_FAILED));
 					}
-
-					@Override
-					public void onTaskFailed() {
-						runningRetreiveTasks.remove(retreiveTask.getEpisode()
-								.hashCode());
-						downloadAttempts.put(retreiveTask.getEpisode(),
-								attempts + 1);
-					}
-				});
-				runningRetreiveTasks.add(retreiveTask.getEpisode().hashCode());
-				retreiveMgr.addTask(retreiveTask);
-				state = TaskState.ADDED;
-			}
+				}
+			});
+			runningRetreiveTasks.add(retreiveTask.getEpisode().hashCode());
+			retreiveMgr.addTask(retreiveTask);
+			state = TaskState.ADDED;
 		} else {
 			state = TaskState.ALREADY_ADD;
 		}
@@ -309,7 +314,10 @@ public final class EpisodeManager extends AbstractManager implements TaskAdder {
 				retreivePublisher, this, exporter, getProviderPluginHolder()
 						.getPlugin(episode.getCategory().getChannel()),
 				downloader, dlDAO);
-		retreiveTask.setEpisodeExportState(new EpisodeExportState(episode, 0));
+		if (exportOnly) {
+			retreiveTask.setEpisodeExportState(new EpisodeExportState(episode,
+					0));
+		}
 		addRetreiveTask(retreiveTask);
 	}
 

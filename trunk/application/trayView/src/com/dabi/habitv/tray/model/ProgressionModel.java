@@ -57,10 +57,7 @@ public class ProgressionModel {
 
 	private boolean isActionDone(final ActionProgress actionProgress) {
 		final EpisodeStateEnum state = actionProgress.getState();
-		return state != null
-				&& (state.equals(EpisodeStateEnum.READY)
-						|| state.equals(EpisodeStateEnum.EXPORT_FAILED) || state
-							.equals(EpisodeStateEnum.DOWNLOAD_FAILED));
+		return state != null && state.isDone();
 	}
 
 	public void clear() {

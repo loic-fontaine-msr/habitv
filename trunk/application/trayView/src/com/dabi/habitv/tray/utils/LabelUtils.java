@@ -33,6 +33,12 @@ public class LabelUtils {
 		case TO_EXPORT:
 			stateLabel.append("Prêt pour l'export");
 			break;
+		case STOPPED:
+			stateLabel.append("Arrêté");
+			break;		
+		case TO_MANY_FAILED:
+			stateLabel.append("En erreur");
+			break;				
 		default:
 			break;
 		}

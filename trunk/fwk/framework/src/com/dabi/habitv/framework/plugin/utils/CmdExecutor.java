@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import org.apache.log4j.Logger;
 
 import com.dabi.habitv.api.plugin.exception.ExecutorFailedException;
+import com.dabi.habitv.api.plugin.exception.ExecutorStoppedException;
 import com.dabi.habitv.api.plugin.exception.TechnicalException;
 import com.dabi.habitv.api.plugin.holder.ProcessHolder;
 import com.dabi.habitv.framework.FrameworkConf;
@@ -48,6 +49,7 @@ public class CmdExecutor implements ProcessHolder {
 
 	@Override
 	public void stop() {
+		stopped = true;
 		if (process != null) {
 			process.destroy();
 			ProcessingThreads.removeProcessing(process);
@@ -100,9 +102,13 @@ public class CmdExecutor implements ProcessHolder {
 			}
 		}
 
-		if (!stopped
-				&& (process.exitValue() != 0 || (getLastOutputLine() != null && !isSuccess(fullOutput
-						.toString())))) {
+		if (stopped) {
+			throw new ExecutorStoppedException(cmd);
+		}
+
+		if (process.exitValue() != 0
+				|| (getLastOutputLine() != null && !isSuccess(fullOutput
+						.toString()))) {
 			throw new ExecutorFailedException(cmd, fullOutput.toString(),
 					lastOutputLine, null);
 		}
@@ -117,7 +123,7 @@ public class CmdExecutor implements ProcessHolder {
 		stopped = false;
 		lastOutputLine = null;
 		progression = null;
-		
+
 	}
 
 	private Thread buildKillerThread(final StringBuffer fullOutput,
