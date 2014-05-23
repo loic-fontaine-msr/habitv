@@ -10,11 +10,14 @@ import java.util.Set;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.Tooltip;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 
+import com.dabi.habitv.api.plugin.exception.TechnicalException;
 import com.dabi.habitv.api.plugin.pub.UpdatablePluginEvent;
 import com.dabi.habitv.core.event.RetreiveEvent;
 import com.dabi.habitv.core.event.SearchCategoryEvent;
@@ -61,6 +64,7 @@ public class DownloadController extends BaseController implements
 		this.downloadDirButton = downloadDirButton;
 		this.indexButton = indexButton;
 		this.errorBUtton = errorBUtton;
+		runCheckProgressThread();
 	}
 
 	public void init() {
@@ -70,6 +74,29 @@ public class DownloadController extends BaseController implements
 		addDownloadActions();
 		addExportActions();
 		addFilesAndFoldersActions();
+	}
+
+	private void runCheckProgressThread() {
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				while (true) {
+					try {
+						Thread.sleep(1000);
+						Platform.runLater(new Runnable() {
+
+							@Override
+							public void run() {
+								updateDownloadPanel();
+							}
+						});
+					} catch (final InterruptedException e) {
+						throw new TechnicalException(e);
+					}
+				}
+			}
+		}).start();
 	}
 
 	private void addTooltip() {
@@ -183,12 +210,30 @@ public class DownloadController extends BaseController implements
 	}
 
 	private void buildOrUpdateDownloadBox(ActionProgress actionProgress) {
-		DownloadBox downloadBox = epId2DLBox.get( actionProgress.getEpisode()
+		DownloadBox downloadBox = epId2DLBox.get(actionProgress.getEpisode()
 				.getId());
 		if (downloadBox == null) {
-			downloadBox = new DownloadBox(getController(),actionProgress);
+			final DownloadBox newDownloadBox = new DownloadBox(getController(),
+					actionProgress);
+			downloadBox = newDownloadBox;
+			newDownloadBox.setPadding(new Insets(2));
 			downloadingBox.getChildren().add(downloadBox);
 			epId2DLBox.put(actionProgress.getEpisode().getId(), downloadBox);
+
+			downloadBox.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+				@Override
+				public void handle(MouseEvent event) {
+					newDownloadBox.openMenu(event);
+					newDownloadBox.select();
+					for (DownloadBox otherDownloadBox : epId2DLBox.values()) {
+						if (!otherDownloadBox.equals(newDownloadBox)) {
+							otherDownloadBox.unSelect();
+						}
+					}
+				}
+
+			});
 		} else {
 			downloadBox.update();
 		}

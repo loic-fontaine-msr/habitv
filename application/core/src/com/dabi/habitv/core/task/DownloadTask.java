@@ -10,6 +10,7 @@ import com.dabi.habitv.api.plugin.dto.CategoryDTO;
 import com.dabi.habitv.api.plugin.dto.DownloadParamDTO;
 import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
 import com.dabi.habitv.api.plugin.exception.DownloadFailedException;
+import com.dabi.habitv.api.plugin.exception.ExecutorStoppedException;
 import com.dabi.habitv.api.plugin.exception.TechnicalException;
 import com.dabi.habitv.api.plugin.holder.DownloaderPluginHolder;
 import com.dabi.habitv.api.plugin.holder.ProcessHolder;
@@ -50,8 +51,13 @@ public class DownloadTask extends AbstractEpisodeTask {
 	@Override
 	protected void failed(final Throwable e) {
 		LOG.error("Download failed for " + getEpisode(), e);
-		publisher.addNews(new RetreiveEvent(getEpisode(),
-				EpisodeStateEnum.DOWNLOAD_FAILED, e, "download"));
+		if (e instanceof ExecutorStoppedException){
+			publisher.addNews(new RetreiveEvent(getEpisode(),
+					EpisodeStateEnum.STOPPED, e, "download"));
+		} else {
+			publisher.addNews(new RetreiveEvent(getEpisode(),
+					EpisodeStateEnum.DOWNLOAD_FAILED, e, "download"));
+		}
 	}
 
 	@Override

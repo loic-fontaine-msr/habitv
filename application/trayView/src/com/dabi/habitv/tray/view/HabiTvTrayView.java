@@ -193,6 +193,9 @@ public final class HabiTvTrayView implements CoreSubscriber {
 		case TO_EXPORT:
 
 			break;
+		case STOPPED:
+
+			break;			
 		default:
 			break;
 		}

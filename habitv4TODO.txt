@@ -1,3 +1,5 @@
+config alerter qu'habitv doit être relancer
+
 IHM gérer l'ajout, TEMPLATE ?
 IHM suppression
 
@@ -13,12 +15,6 @@ téléchargement unitaire CLI
  - check, dl & stop
 
 masquer une catégorie
-
-menu contextuel dl
- - supprimer
- - supprimer et marquer comme téléchargé
- - ouvrir l'index
- - relancer
  
 menu contextuel tree
  - ouvrir l'index

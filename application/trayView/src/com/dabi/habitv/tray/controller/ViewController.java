@@ -122,6 +122,14 @@ public class ViewController implements CoreSubscriber {
 		case TO_EXPORT:
 
 			break;
+		case STOPPED:
+			getManager().getProgressionModel().updateActionProgress(
+					event.getEpisode(), EpisodeStateEnum.STOPPED, "", null);
+			break;
+		case TO_MANY_FAILED:
+			getManager().getProgressionModel().updateActionProgress(
+					event.getEpisode(), EpisodeStateEnum.TO_MANY_FAILED, "", null);
+			break;
 		default:
 			break;
 		}

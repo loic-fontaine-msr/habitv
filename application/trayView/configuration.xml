@@ -4,7 +4,7 @@
     <osConfig/>
     <downloadConfig>
         <downloadOuput>downloads/#TVSHOW_NAME#-#EPISODE#.#EXTENSION#</downloadOuput>
-        <maxAttempts>1</maxAttempts>
+        <maxAttempts>3</maxAttempts>
         <demonCheckTime>1801</demonCheckTime>
         <fileNameCutSize>50</fileNameCutSize>
     </downloadConfig>
@@ -17,7 +17,7 @@
         <export>2</export>
         <retreive>50</retreive>
         <search>5</search>
-        <download>2</download>
+        <download>1</download>
         <curl>2</curl>
         <ffmpeg>1</ffmpeg>
     </taskDefinition>

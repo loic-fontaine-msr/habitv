@@ -14,8 +14,6 @@ import javafx.scene.layout.Pane;
 
 import com.dabi.habitv.api.plugin.dto.CategoryDTO;
 import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
-import com.dabi.habitv.api.plugin.exception.TechnicalException;
-import com.dabi.habitv.core.event.EpisodeStateEnum;
 import com.dabi.habitv.tray.controller.ViewController;
 import com.dabi.habitv.tray.model.ActionProgress;
 import com.dabi.habitv.tray.utils.LabelUtils;
@@ -27,8 +25,12 @@ public class DownloadBox extends BorderPane {
 
 	private ContextMenu contextMenu = new ContextMenu();
 	private ViewController controller;
+	private Node currentLabelWidget;
+	private Label categoryLabel;
+	private Label episodeLabel;
 
-	public DownloadBox(ViewController viewController, ActionProgress actionProgress ) {
+	public DownloadBox(ViewController viewController,
+			ActionProgress actionProgress) {
 		super();
 		this.controller = viewController;
 		this.actionProgress = actionProgress;
@@ -36,25 +38,25 @@ public class DownloadBox extends BorderPane {
 		EpisodeDTO episode = actionProgress.getEpisode();
 		CategoryDTO category = episode.getCategory();
 
-		setLeft(new HBox(10, new Label(category.getChannel() + "/"
-				+ category.getName()), new Label(episode.getName())));
+		categoryLabel = new Label(category.getChannel().toUpperCase() + " - "
+				+ category.getName());
+		episodeLabel = new Label(episode.getName());
+		setLeft(new HBox(10, categoryLabel, episodeLabel));
 		statePanel = new Pane(getStateWidget(null));
 		setRight(statePanel);
 		setPadding(new Insets(10, 10, 0, 10));
-		setOnMouseClicked(new EventHandler<MouseEvent>() {
+	}
 
-			@Override
-			public void handle(MouseEvent event) {
-				buildMenuItem();
-				contextMenu.show(DownloadBox.this, event.getScreenX(),
-						event.getScreenY());
-			}
-		});
+	public void openMenu(MouseEvent event) {
+		buildMenuItem();
+		contextMenu.show(DownloadBox.this, event.getScreenX(),
+				event.getScreenY());
 	}
 
 	void buildMenuItem() {
 		contextMenu.getItems().clear();
-		if (actionProgress.getState().isInProgress()) {
+		if (actionProgress.getState().isInProgress()
+				&& actionProgress.getProcessHolder() != null) {
 			MenuItem menuItemStop = new MenuItem("Arrêter");
 			menuItemStop.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -64,21 +66,21 @@ public class DownloadBox extends BorderPane {
 				}
 			});
 			contextMenu.getItems().add(menuItemStop);
-			MenuItem menuItemStopAndSetAsDL = new MenuItem("Arrêter et marquer comme téléchargé");
+			MenuItem menuItemStopAndSetAsDL = new MenuItem(
+					"Arrêter et marquer comme téléchargé");
 			menuItemStopAndSetAsDL.setOnAction(new EventHandler<ActionEvent>() {
-				
+
 				@Override
 				public void handle(ActionEvent event) {
 					actionProgress.getProcessHolder().stop();
 					controller.setDownloaded(actionProgress.getEpisode());
 				}
 			});
-			contextMenu.getItems().add(
-					menuItemStopAndSetAsDL);
+			contextMenu.getItems().add(menuItemStopAndSetAsDL);
 		}
 		MenuItem menuItemOpenIndex = new MenuItem("Ouvrir l'index");
 		menuItemOpenIndex.setOnAction(new EventHandler<ActionEvent>() {
-			
+
 			@Override
 			public void handle(ActionEvent event) {
 				controller.openIndex(actionProgress.getEpisode().getCategory());
@@ -89,10 +91,11 @@ public class DownloadBox extends BorderPane {
 		if (actionProgress.getState().hasFailed()) {
 			MenuItem menuItemReStart = new MenuItem("Relancer");
 			menuItemReStart.setOnAction(new EventHandler<ActionEvent>() {
-				
+
 				@Override
 				public void handle(ActionEvent event) {
-					controller.restart(actionProgress.getEpisode(), actionProgress.getState().isExport());
+					controller.restart(actionProgress.getEpisode(),
+							actionProgress.getState().isExport());
 				}
 			});
 			contextMenu.getItems().add(menuItemReStart);
@@ -106,37 +109,6 @@ public class DownloadBox extends BorderPane {
 			statePanel.getChildren().clear();
 			statePanel.getChildren().add(newWidget);
 		}
-		runCheckProgressThread();
-	}
-
-	private Thread checkThread;
-
-	private void runCheckProgressThread() {
-
-		if (actionInProgress()) {
-			if (checkThread == null) {
-				checkThread = new Thread(new Runnable() {
-
-					@Override
-					public void run() {
-						while (actionInProgress()) {
-							try {
-								Thread.sleep(2000);
-								update();
-							} catch (final InterruptedException e) {
-								throw new TechnicalException(e);
-							}
-						}
-					}
-				});
-				checkThread.start();
-			}
-		}
-	}
-
-	private boolean actionInProgress() {
-		return actionProgress.getState() == EpisodeStateEnum.DOWNLOAD_STARTING
-				|| actionProgress.getState() == EpisodeStateEnum.EXPORT_STARTING;
 	}
 
 	private Node getStateWidget(Node oldWidget) {
@@ -144,9 +116,11 @@ public class DownloadBox extends BorderPane {
 		switch (actionProgress.getState()) {
 		case DOWNLOAD_STARTING:
 			widget = getProgressBarWidget(oldWidget);
+			currentLabelWidget = null;
 			break;
 		default:
 			widget = getLabelWidget(oldWidget);
+			currentLabelWidget = widget;
 			break;
 		}
 		return widget;
@@ -157,7 +131,7 @@ public class DownloadBox extends BorderPane {
 		Double progressDouble;
 		String progress = actionProgress.getProgress();
 		progressDouble = getProgressDouble(progress);
-		
+
 		ProgressIndicatorBar progressBar;
 		if (oldWidget == null || !(oldWidget instanceof ProgressIndicatorBar)) {
 			progressBar = new ProgressIndicatorBar();
@@ -222,6 +196,24 @@ public class DownloadBox extends BorderPane {
 					other.actionProgress.getEpisode());
 		}
 		return true;
+	}
+
+	public void select() {
+		setStyle("-fx-fill: white;-fx-background-color: #0096C9;");
+		categoryLabel.setStyle("-fx-text-fill: white;");
+		episodeLabel.setStyle("-fx-text-fill: white;");
+		if (currentLabelWidget != null) {
+			currentLabelWidget.setStyle("-fx-text-fill: white;");
+		}
+	}
+
+	public void unSelect() {
+		setStyle("");
+		categoryLabel.setStyle("");
+		episodeLabel.setStyle("");		
+		if (currentLabelWidget != null) {
+			currentLabelWidget.setStyle("");
+		}		
 	};
 
 }
