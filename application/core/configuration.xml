@@ -34,7 +34,7 @@
                 </condition>
                 <id>mkdir</id>
                 <label>Create dir</label>
-                <command>cmd /c mkdir "D:\divx\regular\avi\#TVSHOW_NAME#" | echo createdir</command>
+                <command>cmd /c mkdir &quot;D:\divx\regular\avi\#TVSHOW_NAME#&quot; | echo createdir</command>
                 <subexporters/>
             </exporter>
             <exporter>
@@ -44,7 +44,7 @@
                 </condition>
                 <id>move</id>
                 <label>move file</label>
-                <command>cmd /c move "D:\divx\regular\#TVSHOW_NAME#-#EPISODE_NAME_CUT#.#EXTENSION#" "D:\divx\regular\avi\#TVSHOW_NAME#\#DATE§yyyyMMdd# - #EPISODE_NAME_CUT#.avi"</command>
+                <command>cmd /c move &quot;D:\divx\regular\#TVSHOW_NAME#-#EPISODE_NAME_CUT#.#EXTENSION#&quot; &quot;D:\divx\regular\avi\#TVSHOW_NAME#\#DATE§yyyyMMdd# - #EPISODE_NAME_CUT#.avi&quot;</command>
                 <subexporters/>
             </exporter>
         </exporters>

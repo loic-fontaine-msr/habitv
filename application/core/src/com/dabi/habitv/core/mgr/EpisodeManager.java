@@ -1,6 +1,7 @@
 package com.dabi.habitv.core.mgr;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -281,7 +282,7 @@ public final class EpisodeManager extends AbstractManager implements TaskAdder {
 		for (final EpisodeExportState episodeExportState : exportDAO
 				.loadExportStep()) {
 			final String channel = episodeExportState.getEpisode()
-					.getCategory().getChannel();
+					.getCategory().getPlugin();
 			final DownloadedDAO dlDAO = new DownloadedDAO(episodeExportState
 					.getEpisode().getCategory(), downloader.getIndexDir());
 			final RetrieveTask retreiveTask = new RetrieveTask(
@@ -312,13 +313,21 @@ public final class EpisodeManager extends AbstractManager implements TaskAdder {
 				downloader.getIndexDir());
 		final RetrieveTask retreiveTask = new RetrieveTask(episode,
 				retreivePublisher, this, exporter, getProviderPluginHolder()
-						.getPlugin(episode.getCategory().getChannel()),
+						.getPlugin(episode.getCategory().getPlugin()),
 				downloader, dlDAO);
 		if (exportOnly) {
 			retreiveTask.setEpisodeExportState(new EpisodeExportState(episode,
 					0));
 		}
 		addRetreiveTask(retreiveTask);
+	}
+
+	public Set<EpisodeDTO> findEpisodeByCategory(CategoryDTO category) {
+		if (category == null || category.getPlugin() == null) {
+			return Collections.emptySet();
+		}
+		return getProviderPluginHolder().getPlugin(category.getPlugin())
+				.findEpisode(category);
 	}
 
 }

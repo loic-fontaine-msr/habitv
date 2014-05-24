@@ -325,9 +325,14 @@ public class XMLUserConfig implements UserConfig {
 	private Map<String, Integer> buildTaskName2PoolSizeMap(
 			final com.dabi.habitv.configuration.entities.Configuration.TaskDefinition taskDefinition) {
 		final Map<String, Integer> taskName2PoolSizeMap = new HashMap<>();
-		for (final Object taskDef : taskDefinition.getAny()) {
-			taskName2PoolSizeMap.put(XMLUtils.getTagName(taskDef),
-					Integer.parseInt(XMLUtils.getTagValue(taskDef)));
+		if (taskDefinition != null) {
+			List<Object> taskAny = taskDefinition.getAny();
+			if (taskAny != null) {
+				for (final Object taskDef : taskAny) {
+					taskName2PoolSizeMap.put(XMLUtils.getTagName(taskDef),
+							Integer.parseInt(XMLUtils.getTagValue(taskDef)));
+				}
+			}
 		}
 		return taskName2PoolSizeMap;
 	}

@@ -49,7 +49,7 @@ public final class TokenReplacer {
 
 			@Override
 			public String replace(final EpisodeDTO episode, final List<String> params) {
-				return cut(ensure(episode.getCategory().getChannel()),params);
+				return cut(ensure(episode.getCategory().getPlugin()),params);
 			}
 		};
 		REF2REPLACER.put("#CHANNEL_NAME#", channelReplacer);

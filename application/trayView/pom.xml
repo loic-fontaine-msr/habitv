@@ -34,6 +34,7 @@
 				<directory>src</directory>
 				<includes>
 					<include>**/*properties</include>
+					<include>**/*fxml</include>
 				</includes>
 			</resource>
 		</resources>
@@ -53,9 +54,9 @@
 					<archive>
 						<manifestEntries>
 							<JavaFX-Version>2.2+</JavaFX-Version>
-							<Main-Class>com.dabi.habitv.tray.view.window.TreeViewSample</Main-Class>
+							<Main-Class>com.dabi.habitv.tray.HabiTvSplashScreen	</Main-Class>
 							<implementation-version>2.2</implementation-version>
-							<JavaFX-Application-Class>com.dabi.habitv.tray.view.window.TreeViewSample</JavaFX-Application-Class>
+							<JavaFX-Application-Class>com.dabi.habitv.tray.HabiTvSplashScreen</JavaFX-Application-Class>
 							<!-- The artifactId (name) of the jfxrt.jar ... see dependency system 
 								scope -->
 							<Class-Path>javafx-2.2.jar</Class-Path>

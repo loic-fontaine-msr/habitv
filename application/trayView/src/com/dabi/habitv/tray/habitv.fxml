@@ -4,10 +4,9 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 
-<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
-  <children><TabPane prefHeight="386.0" prefWidth="640.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+<VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+  <children><TabPane minHeight="480.0" minWidth="640.0" prefHeight="1024.0" prefWidth="1280.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
   <tabs>
     <Tab fx:id="downloadTab" text="Téléchargement">
       <content>
@@ -40,7 +39,7 @@
 </BorderPane>
 </children></VBox>
 </center>
-<top><HBox maxHeight="30.0" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+<top><HBox fillHeight="false" maxHeight="30.0" prefHeight="30.0" prefWidth="200.0" BorderPane.alignment="CENTER">
 <children><ProgressIndicator fx:id="mainProgress" progress="0.0" /><Button fx:id="searchButton" mnemonicParsing="false" text="Recherche">
 <HBox.margin>
 <Insets left="5.0" />
@@ -56,7 +55,7 @@
 </HBox.margin></Button>
 </children>
 <BorderPane.margin>
-<Insets top="5.0" />
+<Insets />
 </BorderPane.margin></HBox>
 </top>
 <bottom><HBox maxHeight="30.0" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
@@ -77,34 +76,41 @@
     </Tab>
     <Tab fx:id="toDownloadTab" closable="false" text="A télécharger">
       <content>
-        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-<children><BorderPane prefHeight="348.0" prefWidth="640.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-<center><TreeView fx:id="toDLTree" editable="true" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" BorderPane.alignment="CENTER" />
-</center>
-<top><HBox maxHeight="30.0" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+        <AnchorPane>
+<children><BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+<top><HBox BorderPane.alignment="CENTER">
 <children><ProgressIndicator fx:id="searchCategoryProgress" progress="0.0" /><Button fx:id="refreshCategoryButton" mnemonicParsing="false" text="Rafraichir">
 <HBox.margin>
 <Insets left="5.0" />
 </HBox.margin></Button><Button fx:id="cleanCategoryButton" mnemonicParsing="false" text="Nettoyer">
 <HBox.margin>
 <Insets left="5.0" />
-</HBox.margin></Button><TextFlow fx:id="indicationTextFlow" prefHeight="200.0" prefWidth="200.0">
+</HBox.margin></Button><Label fx:id="indicationText" text="Selectionner les catégories à surveiller pour le téléchargement automatique\n et cliquer sur les épisodes à droite pour le téléchargement manuel.">
 <HBox.margin>
 <Insets left="10.0" />
-</HBox.margin></TextFlow>
+</HBox.margin></Label>
 </children>
 <BorderPane.margin>
-<Insets top="5.0" />
+<Insets top="10.0" />
 </BorderPane.margin></HBox>
 </top>
-<bottom><HBox maxHeight="30.0" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
-</bottom></BorderPane>
+<center><SplitPane dividerPositions="0.7" focusTraversable="true">
+  <items>
+    <AnchorPane>
+<children><TreeView fx:id="toDLTree" editable="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" BorderPane.alignment="CENTER" />
+</children></AnchorPane>
+    <AnchorPane>
+<children><ListView fx:id="episodeListView" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" BorderPane.alignment="CENTER" />
+</children></AnchorPane>
+  </items>
+</SplitPane>
+</center></BorderPane>
 </children></AnchorPane>
       </content>
     </Tab><Tab fx:id="configTab" text="Configuration">
   <content>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-<children><GridPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+<children><GridPane AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />

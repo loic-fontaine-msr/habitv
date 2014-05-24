@@ -40,7 +40,6 @@ public class HabiTvSplashScreen extends Application {
 	}
 
 	public HabiTvSplashScreen() {
-		updateController = new UpdateController(this);
 	}
 
 	@Override
@@ -49,7 +48,7 @@ public class HabiTvSplashScreen extends Application {
 				.getSystemResource("logo.png").openStream()));
 		loadProgress = new ProgressBar();
 		loadProgress.setPrefWidth(SPLASH_WIDTH - 20);
-		progressText = new Label("Will find friends for peanuts . . .");
+		progressText = new Label("Chargement ...");
 		splashLayout = new VBox();
 		splashLayout.getChildren().addAll(splash, loadProgress, progressText);
 		progressText.setAlignment(Pos.CENTER);
@@ -60,23 +59,9 @@ public class HabiTvSplashScreen extends Application {
 
 	@Override
 	public void start(final Stage initStage) throws Exception {
+		updateController = new UpdateController(this);
 		updateController.run(initStage);
 	}
-
-	// private void showMainStage(
-	// ReadOnlyObjectProperty<ObservableList<String>> friends) {
-	// mainStage = new Stage(StageStyle.DECORATED);
-	// mainStage.setTitle("My Friends");
-	// mainStage.setIconified(true);
-	// mainStage
-	// .getIcons()
-	// .add(new Image(
-	// "http://cdn1.iconfinder.com/data/icons/Copenhagen/PNG/32/people.png"));
-	// final ListView<String> peopleView = new ListView<>();
-	// peopleView.itemsProperty().bind(friends);
-	// mainStage.setScene(new Scene(peopleView));
-	// mainStage.show();
-	// }
 
 	public interface InitHandler {
 		void onInitDone();

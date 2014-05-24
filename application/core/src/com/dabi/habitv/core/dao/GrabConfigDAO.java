@@ -32,11 +32,11 @@ import com.dabi.habitv.grabconfig.entities.CategoryType.Excludes;
 import com.dabi.habitv.grabconfig.entities.CategoryType.Includes;
 import com.dabi.habitv.grabconfig.entities.CategoryType.Subcategories;
 import com.dabi.habitv.grabconfig.entities.Channel;
-import com.dabi.habitv.grabconfig.entities.ChannelType;
-import com.dabi.habitv.grabconfig.entities.ChannelType.Categories;
 import com.dabi.habitv.grabconfig.entities.GrabConfig;
-import com.dabi.habitv.grabconfig.entities.GrabConfig.Channels;
+import com.dabi.habitv.grabconfig.entities.GrabConfig.Plugins;
 import com.dabi.habitv.grabconfig.entities.Parameter;
+import com.dabi.habitv.grabconfig.entities.Plugin;
+import com.dabi.habitv.grabconfig.entities.Plugin.Categories;
 import com.dabi.habitv.utils.FileUtils;
 import com.dabi.habitv.utils.XMLUtils;
 
@@ -52,21 +52,21 @@ public class GrabConfigDAO {
 	public void saveGrabConfig(
 			final Map<String, Set<CategoryDTO>> channel2Categories) {
 		final GrabConfig config = new GrabConfig();
-		addChannels(channel2Categories, config);
+		addPlugins(channel2Categories, config);
 		marshal(config);
 	}
 
-	private void addChannels(
+	private void addPlugins(
 			final Map<String, Set<CategoryDTO>> channel2Categories,
 			final GrabConfig config) {
-		if (config.getChannels() == null) {
-			config.setChannels(new Channels());
+		if (config.getPlugins() == null) {
+			config.setPlugins(new Plugins());
 		}
 		for (final Entry<String, Set<CategoryDTO>> entry : channel2Categories
 				.entrySet()) {
-			final ChannelType channel = new ChannelType();
+			final Plugin channel = new Plugin();
 			channel.setName(entry.getKey());
-			channel.setStatus(StatusEnum.NEW.ordinal());
+			channel.setStatus(StatusEnum.EXIST.ordinal()); //FIXME new !
 			Categories categories = new Categories();
 			channel.setCategories(categories);
 			for (final CategoryDTO categoryDTO : entry.getValue()) {
@@ -74,7 +74,7 @@ public class GrabConfigDAO {
 					categories.getCategory().add(buildCategory(categoryDTO));
 				}
 			}
-			config.getChannels().getChannel().add(channel);
+			config.getPlugins().getPlugin().add(channel);
 		}
 	}
 
@@ -85,16 +85,26 @@ public class GrabConfigDAO {
 		category.setExtension(categoryDTO.getExtension());
 		category.setDownload(categoryDTO.isSelected());
 		category.setStatus(StatusEnum.NEW.name());
-		Excludes excludes = new Excludes();
-		category.setExcludes(excludes);
-		for (final String exclude : categoryDTO.getExclude()) {
-			excludes.getExclude().add(exclude);
+		if (categoryDTO.isTemplate()) {
+			category.setTemplate(categoryDTO.isTemplate());
 		}
-		Includes includes = new Includes();
-		category.setIncludes(includes);
-		for (final String include : categoryDTO.getInclude()) {
-			includes.getInclude().add(include);
+
+		if (!categoryDTO.getExclude().isEmpty()) {
+			Excludes excludes = new Excludes();
+			category.setExcludes(excludes);
+			for (final String exclude : categoryDTO.getExclude()) {
+				excludes.getExclude().add(exclude);
+			}
 		}
+
+		if (!categoryDTO.getInclude().isEmpty()) {
+			Includes includes = new Includes();
+			for (final String include : categoryDTO.getInclude()) {
+				includes.getInclude().add(include);
+			}
+			category.setIncludes(includes);
+		}
+
 		Subcategories subCategories = new Subcategories();
 		category.setSubcategories(subCategories);
 		for (final CategoryDTO subCategoryDTO : categoryDTO.getSubCategories()) {
@@ -158,6 +168,8 @@ public class GrabConfigDAO {
 						getExclude(category), category.getExtension());
 				categoryDTO.setSelected(category.getDownload() != null
 						&& category.getDownload());
+				categoryDTO.setTemplate(category.getTemplate() != null
+						&& category.getTemplate());
 				categoryDTO.addSubCategories(subCategoriesDTO);
 				if (category.getConfiguration() != null
 						&& !category.getConfiguration().getAny().isEmpty()) {
@@ -214,25 +226,25 @@ public class GrabConfigDAO {
 	}
 
 	private GrabConfig convertOldGrabconfig(GrabConfig grabConfig) {
-		Channels channels = new Channels();
-		grabConfig.setChannels(channels);
+		Plugins Plugins = new Plugins();
+		grabConfig.setPlugins(Plugins);
 		Iterator<Channel> it = grabConfig.getChannel().iterator();
 		while (it.hasNext()) {
-			Channel oldChannel = it.next();
-			channels.getChannel().add(buildChannelType(oldChannel));
+			Channel oldPlugin = it.next();
+			Plugins.getPlugin().add(buildPlugin(oldPlugin));
 			it.remove();
 		}
 		marshal(grabConfig);
 		return grabConfig;
 	}
 
-	private ChannelType buildChannelType(Channel oldChannel) {
-		ChannelType channelType = new ChannelType();
-		channelType.setName(oldChannel.getName());
+	private Plugin buildPlugin(Channel oldPlugin) {
+		Plugin channelType = new Plugin();
+		channelType.setName(oldPlugin.getName());
 		channelType.setStatus(channelType.getStatus());
 		Categories categories = new Categories();
 		channelType.setCategories(categories);
-		for (Category oldCategory : oldChannel.getCategory()) {
+		for (Category oldCategory : oldPlugin.getCategory()) {
 			categories.getCategory().add(buildCategoryType(oldCategory));
 		}
 		return channelType;
@@ -284,19 +296,18 @@ public class GrabConfigDAO {
 	private Map<String, Set<CategoryDTO>> buildCategoryDTO(
 			final GrabConfig grabConfig, final LoadModeEnum loadMode) {
 		final Map<String, Set<CategoryDTO>> channel2Category = new HashMap<>();
-		if (grabConfig.getChannels() != null) {
-			for (final ChannelType channel : grabConfig.getChannels()
-					.getChannel()) {
+		if (grabConfig.getPlugins() != null) {
+			for (final Plugin plugin : grabConfig.getPlugins().getPlugin()) {
 				final Set<CategoryDTO> buildCategoryListDTO;
-				if (channel.getCategories() == null) {
+				if (plugin.getCategories() == null) {
 					buildCategoryListDTO = new HashSet<>();
 				} else {
 					buildCategoryListDTO = buildCategoryListDTO(loadMode,
-							channel.getName(), channel.getCategories()
+							plugin.getName(), plugin.getCategories()
 									.getCategory());
 				}
 				if (!buildCategoryListDTO.isEmpty()) {
-					channel2Category.put(channel.getName(),
+					channel2Category.put(plugin.getName(),
 							buildCategoryListDTO);
 				}
 			}
@@ -325,27 +336,26 @@ public class GrabConfigDAO {
 		final HashMap<String, Set<CategoryDTO>> channel2CategoriesTemp = new HashMap<>(
 				channel2Categories);
 		final GrabConfig grabConfig = unmarshal();
-		if (grabConfig.getChannels() != null) {
-			StatusEnum channelStatus;
-			for (final ChannelType channel : grabConfig.getChannels()
-					.getChannel()) {
-				final Set<CategoryDTO> categoryChannel = channel2CategoriesTemp
+		if (grabConfig.getPlugins() != null) {
+			StatusEnum Pluginstatus;
+			for (final Plugin channel : grabConfig.getPlugins().getPlugin()) {
+				final Set<CategoryDTO> categoryPlugin = channel2CategoriesTemp
 						.get(channel.getName());
 				if (channel.getCategories() == null) {
 					channel.setCategories(new Categories());
 				}
-				if (categoryChannel != null) {
+				if (categoryPlugin != null) {
 					updateCategory(channel.getCategories().getCategory(),
-							categoryChannel);
+							categoryPlugin);
 					channel2CategoriesTemp.remove(channel.getName());
-					channelStatus = StatusEnum.EXIST;
+					Pluginstatus = StatusEnum.EXIST;
 				} else {
-					channelStatus = StatusEnum.DELETED;
+					Pluginstatus = StatusEnum.DELETED;
 				}
-				channel.setStatus(channelStatus.ordinal());
+				channel.setStatus(Pluginstatus.ordinal());
 			}
 		}
-		addChannels(channel2CategoriesTemp, grabConfig);
+		addPlugins(channel2CategoriesTemp, grabConfig);
 		marshal(grabConfig);
 	}
 
@@ -379,10 +389,9 @@ public class GrabConfigDAO {
 
 	public void clean() {
 		GrabConfig grabconfig = unmarshal();
-		Iterator<ChannelType> it = grabconfig.getChannels().getChannel()
-				.iterator();
+		Iterator<Plugin> it = grabconfig.getPlugins().getPlugin().iterator();
 		while (it.hasNext()) {
-			ChannelType channel = it.next();
+			Plugin channel = it.next();
 			if (StatusEnum.DELETED.name().equals(channel.getStatus())) {
 				it.remove();
 			} else {

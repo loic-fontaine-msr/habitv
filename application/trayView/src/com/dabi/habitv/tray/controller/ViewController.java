@@ -3,6 +3,7 @@ package com.dabi.habitv.tray.controller;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
@@ -277,5 +278,14 @@ public class ViewController implements CoreSubscriber {
 
 	public void restart(EpisodeDTO episode, boolean exportOnly) {
 		getManager().restart(episode, exportOnly);
+	}
+
+	public Collection<EpisodeDTO> findEpisodeByCategory(
+			CategoryDTO category) {
+		return getManager().findEpisodeByCategory(category);
+	}
+
+	public void downloadEpisode(EpisodeDTO episode) {
+		getManager().restart(episode, false);
 	}
 }

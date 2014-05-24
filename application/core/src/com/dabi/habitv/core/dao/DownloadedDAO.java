@@ -52,7 +52,7 @@ public class DownloadedDAO {
 
 	public static String getFileIndex(String indexDir, CategoryDTO category) {
 		return (indexDir + "/" + FileUtils.sanitizeFilename(category
-				.getChannel() + "_" + category.getName() + ".index"));
+				.getPlugin() + "_" + category.getName() + ".index"));
 	}
 
 	public Set<String> findDownloadedFiles() {

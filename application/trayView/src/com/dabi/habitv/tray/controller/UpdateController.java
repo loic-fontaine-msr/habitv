@@ -59,28 +59,35 @@ public class UpdateController {
 
 		@Override
 		protected Void call() throws Exception {
-			UserConfig userConfig = XMLUserConfig.initConfig();
-			final HabitTvViewManager model = new HabitTvViewManager(userConfig);
-			if (userConfig.updateOnStartup()) {
-				model.attach(this);
-				model.update();
-			}
-			habitvViewMain = new HabitvViewMain(model);
-
-			Platform.runLater(new Runnable() {
-
-				@Override
-				public void run() {
-					try {
-						habitvViewMain.run(stage);
-					} catch (Exception e) {
-						LOG.error("", e);
-					}
+			try {
+				UserConfig userConfig = XMLUserConfig.initConfig();
+				final HabitTvViewManager model = new HabitTvViewManager(
+						userConfig);
+				if (userConfig.updateOnStartup()) {
+					model.attach(this);
+					model.update();
 				}
+				habitvViewMain = new HabitvViewMain(model);
 
-			});
+				Platform.runLater(new Runnable() {
 
-			return null;
+					@Override
+					public void run() {
+						try {
+							habitvViewMain.run(stage);
+						} catch (Exception e) {
+							LOG.error("", e);
+						}
+					}
+
+				});
+
+				return null;
+			} catch (Exception e) {
+				e.printStackTrace();
+				System.exit(1);
+				throw e;
+			}
 		}
 
 		@Override

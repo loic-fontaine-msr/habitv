@@ -1,5 +1,6 @@
 package com.dabi.habitv.core.mgr;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
@@ -131,6 +132,11 @@ public final class CoreManager {
 
 	public void restart(EpisodeDTO episode, boolean exportOnly) {
 		episodeManager.restart(episode, exportOnly);
+	}
+
+	public Collection<EpisodeDTO> findEpisodeByCategory(
+			CategoryDTO category) {
+		return episodeManager.findEpisodeByCategory(category);
 	}
 
 }

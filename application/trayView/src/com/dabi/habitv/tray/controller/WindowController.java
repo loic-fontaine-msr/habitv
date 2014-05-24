@@ -5,6 +5,8 @@ import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
@@ -12,10 +14,10 @@ import javafx.scene.control.TreeView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 
 import com.dabi.habitv.api.plugin.dto.CategoryDTO;
+import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
 import com.dabi.habitv.tray.model.HabitTvViewManager;
 import com.dabi.habitv.tray.view.HabiTvTrayView;
 
@@ -61,7 +63,7 @@ public class WindowController {
 
 	@FXML
 	private ProgressIndicator searchCategoryProgress;
-	
+
 	@FXML
 	private Tab toDownloadTab;
 
@@ -72,10 +74,13 @@ public class WindowController {
 	private Button cleanCategoryButton;
 
 	@FXML
-	private TextFlow indicationTextFlow;
+	private Label indicationText;
 
 	@FXML
 	private TreeView<CategoryDTO> toDLTree;
+	
+	@FXML
+	private ListView<EpisodeDTO> episodeListView;
 
 	/*
 	 * CONFIG
@@ -119,15 +124,16 @@ public class WindowController {
 				clearExportButton, downloadingBox, downloadDirButton,
 				indexButton, errorBUtton);
 		manager.attach(downloadController);
-		downloadController.init(controller, manager);
+		downloadController.init(controller, manager, primaryStage);
 
-		ToDownloadController toDlController = new ToDownloadController(searchCategoryProgress, refreshCategoryButton, cleanCategoryButton,
-				toDLTree, indicationTextFlow);
-		toDlController.init(controller, manager);
+		ToDownloadController toDlController = new ToDownloadController(
+				searchCategoryProgress, refreshCategoryButton,
+				cleanCategoryButton, toDLTree, indicationText, episodeListView);
+		toDlController.init(controller, manager,primaryStage);
 		manager.attach(toDlController);
 
 		new ConfigController(downloadOuput, nbrMaxAttempts, daemonCheckTimeSec,
-				autoUpdate).init(controller, manager);
+				autoUpdate).init(controller, manager, primaryStage);
 
 		controller.startDownloadCheckDemon();
 	}

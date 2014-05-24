@@ -119,7 +119,7 @@ public class RetrieveTask extends AbstractEpisodeTask {
 
 	private void download() {
 		final DownloadTask downloadTask = new DownloadTask(getEpisode(), provider, downloaders, retreivePublisher, downloadDAO);
-		taskAdder.addDownloadTask(downloadTask, getEpisode().getCategory().getChannel());
+		taskAdder.addDownloadTask(downloadTask, getEpisode().getCategory().getPlugin());
 		downloadTask.waitEndOfTreatment();
 	}
 
