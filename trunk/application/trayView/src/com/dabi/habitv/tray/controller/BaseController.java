@@ -3,6 +3,8 @@ package com.dabi.habitv.tray.controller;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javafx.stage.Stage;
+
 import com.dabi.habitv.tray.model.HabitTvViewManager;
 
 public abstract class BaseController {
@@ -13,13 +15,16 @@ public abstract class BaseController {
 
 	private HabitTvViewManager model;
 
+	private Stage stage;
+
 	public BaseController() {
 		super();
 	}
 
-	public final void init(ViewController controller, HabitTvViewManager model) {
+	public final void init(ViewController controller, HabitTvViewManager model, Stage stage) {
 		this.controller = controller;
 		this.model = model;
+		this.stage = stage;
 		init();
 	}
 
@@ -53,5 +58,9 @@ public abstract class BaseController {
 				}
 			}, SAVE_SPACE);
 		}
+	}
+	
+	public Stage getStage(){
+		return stage;
 	}
 }

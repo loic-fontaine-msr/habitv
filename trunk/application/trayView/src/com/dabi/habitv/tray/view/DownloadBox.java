@@ -38,11 +38,17 @@ public class DownloadBox extends BorderPane {
 		EpisodeDTO episode = actionProgress.getEpisode();
 		CategoryDTO category = episode.getCategory();
 
-		categoryLabel = new Label(category.getChannel().toUpperCase() + " - "
+		categoryLabel = new Label(category.getPlugin().toUpperCase() + " - "
 				+ category.getName());
 		episodeLabel = new Label(episode.getName());
-		setLeft(new HBox(10, categoryLabel, episodeLabel));
-		statePanel = new Pane(getStateWidget(null));
+		HBox hBox = new HBox();
+		hBox.setSpacing(10);
+		hBox.getChildren().add(categoryLabel);
+		hBox.getChildren().add(episodeLabel);
+		
+		setLeft(hBox);
+		statePanel = new Pane();
+		statePanel.getChildren().add(getStateWidget(null));
 		setRight(statePanel);
 		setPadding(new Insets(10, 10, 0, 10));
 	}
@@ -210,10 +216,10 @@ public class DownloadBox extends BorderPane {
 	public void unSelect() {
 		setStyle("");
 		categoryLabel.setStyle("");
-		episodeLabel.setStyle("");		
+		episodeLabel.setStyle("");
 		if (currentLabelWidget != null) {
 			currentLabelWidget.setStyle("");
-		}		
+		}
 	};
 
 }

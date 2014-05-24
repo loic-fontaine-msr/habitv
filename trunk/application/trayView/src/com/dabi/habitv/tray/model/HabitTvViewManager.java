@@ -1,5 +1,6 @@
 package com.dabi.habitv.tray.model;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Set;
@@ -181,6 +182,9 @@ public class HabitTvViewManager extends Observable {
 	}
 
 	public Map<String, Set<CategoryDTO>> loadCategories() {
+		if (!grabConfigDAO.exist()) {
+			grabConfigDAO.saveGrabConfig(coreManager.findCategory());
+		}
 		return grabConfigDAO.load(LoadModeEnum.ALL);
 	}
 
@@ -202,6 +206,10 @@ public class HabitTvViewManager extends Observable {
 
 	public void restart(EpisodeDTO episode, boolean exportOnly) {
 		coreManager.restart(episode, exportOnly);
+	}
+
+	public Collection<EpisodeDTO> findEpisodeByCategory(CategoryDTO category) {
+		return coreManager.findEpisodeByCategory(category);
 	}
 
 }
