@@ -7,6 +7,7 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.input.KeyEvent;
 
 import com.dabi.habitv.core.config.UserConfig;
+import com.dabi.habitv.tray.Popin;
 
 public class ConfigController extends BaseController {
 
@@ -43,10 +44,15 @@ public class ConfigController extends BaseController {
 								+ "#EXTENSION# : extension du fichier\n"
 								+ "#NUM# : le numéro d'épisode pour le fournisseur\n"
 								+ "#DATE§yyyyMMdd# : la date de téléchargement de l'épisode, le paramètre après § peut être modifié suivant : Format de date"));
-		
-		nbrMaxAttempts.setTooltip(new Tooltip("Nombre de tentatives de téléchargement d'un épisode avant d'arrêter de retenter."));
-		daemonCheckTimeSec.setTooltip(new Tooltip("Période de temps entre 2 recherches automatiques de téléchargement."));
-		autoUpdate.setTooltip(new Tooltip("si coché habiTv se mettra à jour automatiquement."));
+
+		nbrMaxAttempts
+				.setTooltip(new Tooltip(
+						"Nombre de tentatives de téléchargement d'un épisode avant d'arrêter de retenter."));
+		daemonCheckTimeSec
+				.setTooltip(new Tooltip(
+						"Période de temps entre 2 recherches automatiques de téléchargement."));
+		autoUpdate.setTooltip(new Tooltip(
+				"si coché habiTv se mettra à jour automatiquement."));
 	}
 
 	private void loadConfig() {
@@ -70,8 +76,9 @@ public class ConfigController extends BaseController {
 						UserConfig userConfig = getController()
 								.loadUserConfig();
 						userConfig.setDownloadOuput(downloadOuput.getText());
-						getController().saveConfig(userConfig);
+						saveConfig(userConfig);
 					}
+
 				});
 			}
 		});
@@ -88,7 +95,7 @@ public class ConfigController extends BaseController {
 								.loadUserConfig();
 						userConfig.setMaxAttempts(Integer
 								.parseInt(nbrMaxAttempts.getText()));
-						getController().saveConfig(userConfig);
+						saveConfig(userConfig);
 					}
 				});
 			}
@@ -106,7 +113,7 @@ public class ConfigController extends BaseController {
 								.loadUserConfig();
 						userConfig.setDemonCheckTime(Integer
 								.parseInt(daemonCheckTimeSec.getText()));
-						getController().saveConfig(userConfig);
+						saveConfig(userConfig);
 					}
 				});
 			}
@@ -123,10 +130,17 @@ public class ConfigController extends BaseController {
 						UserConfig userConfig = getController()
 								.loadUserConfig();
 						userConfig.setUpdateOnStartup(autoUpdate.isSelected());
-						getController().saveConfig(userConfig);
+						saveConfig(userConfig);
 					}
 				});
 			}
 		});
+	}
+
+	private void saveConfig(UserConfig userConfig) {
+		getController().saveConfig(userConfig);
+		new Popin()
+				.show("Configuration sauvegardée",
+						"La configuration a été sauvegardée \n mais ne sera active qu'après un redémarrage de l'application.");
 	}
 }

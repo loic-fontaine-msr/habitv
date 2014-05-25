@@ -5,7 +5,7 @@
     <downloadConfig>
         <downloadOuput>downloads/#TVSHOW_NAME#-#EPISODE#.#EXTENSION#</downloadOuput>
         <maxAttempts>3</maxAttempts>
-        <demonCheckTime>1801</demonCheckTime>
+        <demonCheckTime>1802</demonCheckTime>
         <fileNameCutSize>50</fileNameCutSize>
     </downloadConfig>
     <updateConfig>

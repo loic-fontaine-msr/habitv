@@ -48,51 +48,51 @@ public class GrabConfigDAOTest {
 
 	@After
 	public void tearDown() throws Exception {
-		//(new File(XML_FILE)).delete();
+		// (new File(XML_FILE)).delete();
 	}
 
 	@Test
 	public final void testLoadOld() throws IOException {
 		File file = new File(XML_FILE);
 		Files.copy(new File(OLD_XML_FILE).toPath(), file.toPath());
-		final Map<String, Set<CategoryDTO>> channel2CategoriesTotest = dao
+		final Map<String, CategoryDTO> channel2CategoriesTotest = dao
 				.load(LoadModeEnum.ALL);
 		assertNotNull(channel2CategoriesTotest);
 	}
 
 	@Test
 	public final void testSaveAndLoadGrabConfig() {
-		final Map<String, Set<CategoryDTO>> channel2Categories = buildChannelMap(
+		final Map<String, CategoryDTO> channel2Categories = buildChannelMap(
 				true, false);
 		assertFalse(dao.exist());
 		dao.saveGrabConfig(channel2Categories);
 		assertTrue((new File(XML_FILE)).exists());
-		final Map<String, Set<CategoryDTO>> channel2CategoriesTotest = dao
+		final Map<String, CategoryDTO> channel2CategoriesTotest = dao
 				.load(LoadModeEnum.ALL);
 		assertEquals(channel2Categories, channel2CategoriesTotest);
 	}
 
 	@Test
 	public final void testUpdateGrabConfig() {
-		Map<String, Set<CategoryDTO>> channel2Categories = buildChannelMap(
-				true, false);
+		Map<String, CategoryDTO> channel2Categories = buildChannelMap(true,
+				false);
 		assertFalse(dao.exist());
 		dao.saveGrabConfig(channel2Categories);
 		assertTrue((new File(XML_FILE)).exists());
 		channel2Categories = buildChannelMap(false, true);
 		dao.updateGrabConfig(channel2Categories);
-		final Map<String, Set<CategoryDTO>> channel2CategoriesTotest = dao
+		final Map<String, CategoryDTO> channel2CategoriesTotest = dao
 				.load(LoadModeEnum.ALL);
 		final CategoryDTO category = channel2CategoriesTotest.get("channel1")
-				.iterator().next();
+				.getSubCategories().iterator().next();
 		assertEquals(category.getExclude().iterator().next(), "exc1");
 		assertEquals(category.getInclude().iterator().next(), "inc1");
-		assertTrue(category.getSubCategories().get(0).getName().equals("sub"));
+		assertTrue(category.getSubCategories().iterator().next().getName().equals("sub"));
 	}
 
-	private Map<String, Set<CategoryDTO>> buildChannelMap(final boolean inc,
+	private Map<String, CategoryDTO> buildChannelMap(final boolean inc,
 			final boolean sup) {
-		final Map<String, Set<CategoryDTO>> channel2Categories = new HashMap<>();
+		final Map<String, CategoryDTO> channel2Categories = new HashMap<>();
 		Set<CategoryDTO> categories = new HashSet<>();
 		List<String> includeList = null;
 		List<String> excludeList = null;
@@ -111,12 +111,14 @@ public class GrabConfigDAOTest {
 					"sub2"));
 		}
 		categories.add(category);
-		channel2Categories.put("channel1", categories);
+		channel2Categories.put("channel1", new CategoryDTO("channel1",
+				categories));
 		categories = new HashSet<>();
 		category = new CategoryDTO("channel2", "cat3", "cat3I", includeList,
 				excludeList, "ext");
 		categories.add(category);
-		channel2Categories.put("channel2", categories);
+		channel2Categories.put("channel2", new CategoryDTO("channel2",
+				categories));
 		return channel2Categories;
 	}
 }

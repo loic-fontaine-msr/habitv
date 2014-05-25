@@ -23,6 +23,7 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
 import com.dabi.habitv.api.plugin.dto.CategoryDTO;
+import com.dabi.habitv.api.plugin.dto.StatusEnum;
 import com.dabi.habitv.api.plugin.exception.TechnicalException;
 import com.dabi.habitv.core.config.HabitTvConf;
 import com.dabi.habitv.grabconfig.entities.Category;
@@ -49,32 +50,37 @@ public class GrabConfigDAO {
 		this.grabConfigFile = grabConfigFile;
 	}
 
-	public void saveGrabConfig(
-			final Map<String, Set<CategoryDTO>> channel2Categories) {
+	public void saveGrabConfig(Map<String, CategoryDTO> categories) {
 		final GrabConfig config = new GrabConfig();
-		addPlugins(channel2Categories, config);
+		addPlugins(categories, config);
 		marshal(config);
 	}
 
-	private void addPlugins(
-			final Map<String, Set<CategoryDTO>> channel2Categories,
+	private void addPlugins(final Map<String, CategoryDTO> categoriesDTO,
 			final GrabConfig config) {
 		if (config.getPlugins() == null) {
 			config.setPlugins(new Plugins());
 		}
-		for (final Entry<String, Set<CategoryDTO>> entry : channel2Categories
-				.entrySet()) {
-			final Plugin channel = new Plugin();
-			channel.setName(entry.getKey());
-			channel.setStatus(StatusEnum.EXIST.ordinal()); //FIXME new !
+		for (final CategoryDTO categoryPlugin : categoriesDTO.values()) {
+			final Plugin plugin = new Plugin();
+			plugin.setName(categoryPlugin.getName());
+			if (categoryPlugin.isDeleted()) {
+				plugin.setDeleted(categoryPlugin.isDeleted());
+			}
+			if (categoryPlugin.getState() == null) {
+				plugin.setStatus(StatusEnum.NEW.name());
+			} else {
+				plugin.setStatus(categoryPlugin.getState().name());
+			}
 			Categories categories = new Categories();
-			channel.setCategories(categories);
-			for (final CategoryDTO categoryDTO : entry.getValue()) {
+			plugin.setCategories(categories);
+			for (final CategoryDTO categoryDTO : categoryPlugin
+					.getSubCategories()) {
 				if (categoryDTO.check()) {
 					categories.getCategory().add(buildCategory(categoryDTO));
 				}
 			}
-			config.getPlugins().getPlugin().add(channel);
+			config.getPlugins().getPlugin().add(plugin);
 		}
 	}
 
@@ -84,7 +90,15 @@ public class GrabConfigDAO {
 		category.setName(categoryDTO.getName());
 		category.setExtension(categoryDTO.getExtension());
 		category.setDownload(categoryDTO.isSelected());
-		category.setStatus(StatusEnum.NEW.name());
+
+		if (categoryDTO.getState() != null) {
+			category.setStatus(categoryDTO.getState().name());
+		}
+
+		if (categoryDTO.isDeleted()) {
+			category.setDeleted(true);
+		}
+
 		if (categoryDTO.isTemplate()) {
 			category.setTemplate(categoryDTO.isTemplate());
 		}
@@ -110,12 +124,17 @@ public class GrabConfigDAO {
 		for (final CategoryDTO subCategoryDTO : categoryDTO.getSubCategories()) {
 			subCategories.getCategory().add(buildCategory(subCategoryDTO));
 		}
-		Configuration configuration = new Configuration();
-		category.setConfiguration(configuration);
-		for (final Entry<String, String> entry : categoryDTO.getParameters()
-				.entrySet()) {
-			configuration.getAny().add(
-					XMLUtils.buildAnyElement(entry.getKey(), entry.getValue()));
+
+		if (categoryDTO.getParameters() != null
+				&& !categoryDTO.getParameters().isEmpty()) {
+			Configuration configuration = new Configuration();
+			category.setConfiguration(configuration);
+			for (final Entry<String, String> entry : categoryDTO
+					.getParameters().entrySet()) {
+				configuration.getAny().add(
+						XMLUtils.buildAnyElement(entry.getKey(),
+								entry.getValue()));
+			}
 		}
 		return category;
 	}
@@ -163,27 +182,37 @@ public class GrabConfigDAO {
 			if (category.getDownload() == null || category.getDownload()
 					|| !subCategoriesDTO.isEmpty()
 					|| loadMode.equals(LoadModeEnum.ALL)) {
-				categoryDTO = new CategoryDTO(channelName, category.getName(),
-						category.getId(), getInclude(category),
-						getExclude(category), category.getExtension());
-				categoryDTO.setSelected(category.getDownload() != null
-						&& category.getDownload());
-				categoryDTO.setTemplate(category.getTemplate() != null
-						&& category.getTemplate());
-				categoryDTO.addSubCategories(subCategoriesDTO);
-				if (category.getConfiguration() != null
-						&& !category.getConfiguration().getAny().isEmpty()) {
-					for (final Object parameter : category.getConfiguration()
-							.getAny()) {
-						categoryDTO.addParameter(
-								XMLUtils.getTagName(parameter),
-								XMLUtils.getTagValue(parameter));
-					}
-				}
+				categoryDTO = buildCategoryDTO(channelName, category,
+						subCategoriesDTO);
 				categoryDTOs.add(categoryDTO);
 			}
 		}
 		return categoryDTOs;
+	}
+
+	private static CategoryDTO buildCategoryDTO(final String channelName,
+			final CategoryType category, final Set<CategoryDTO> subCategoriesDTO) {
+		CategoryDTO categoryDTO;
+		categoryDTO = new CategoryDTO(channelName, category.getName(),
+				category.getId(), getInclude(category), getExclude(category),
+				category.getExtension());
+		categoryDTO.setSelected(category.getDownload() != null
+				&& category.getDownload());
+		categoryDTO.setTemplate(category.getTemplate() != null
+				&& category.getTemplate());
+
+		categoryDTO.setState(category.getStatus() == null ? null : StatusEnum
+				.valueOf(category.getStatus()));
+
+		categoryDTO.addSubCategories(subCategoriesDTO);
+		if (category.getConfiguration() != null
+				&& !category.getConfiguration().getAny().isEmpty()) {
+			for (final Object parameter : category.getConfiguration().getAny()) {
+				categoryDTO.addParameter(XMLUtils.getTagName(parameter),
+						XMLUtils.getTagValue(parameter));
+			}
+		}
+		return categoryDTO;
 	}
 
 	private static List<String> getExclude(final CategoryType category) {
@@ -293,9 +322,9 @@ public class GrabConfigDAO {
 		categoryType.setConfiguration(configuration);
 	}
 
-	private Map<String, Set<CategoryDTO>> buildCategoryDTO(
+	private Map<String, CategoryDTO> buildCategoryDTO(
 			final GrabConfig grabConfig, final LoadModeEnum loadMode) {
-		final Map<String, Set<CategoryDTO>> channel2Category = new HashMap<>();
+		final Map<String, CategoryDTO> channel2Category = new HashMap<>();
 		if (grabConfig.getPlugins() != null) {
 			for (final Plugin plugin : grabConfig.getPlugins().getPlugin()) {
 				final Set<CategoryDTO> buildCategoryListDTO;
@@ -307,8 +336,8 @@ public class GrabConfigDAO {
 									.getCategory());
 				}
 				if (!buildCategoryListDTO.isEmpty()) {
-					channel2Category.put(plugin.getName(),
-							buildCategoryListDTO);
+					channel2Category.put(plugin.getName(), new CategoryDTO(
+							plugin.getName(), buildCategoryListDTO));
 				}
 			}
 		}
@@ -319,11 +348,11 @@ public class GrabConfigDAO {
 		ALL, TO_DOWNLOAD_ONLY;
 	}
 
-	public Map<String, Set<CategoryDTO>> load(final LoadModeEnum loadMode) {
+	public Map<String, CategoryDTO> load(final LoadModeEnum loadMode) {
 		return buildCategoryDTO(unmarshal(), loadMode);
 	}
 
-	public Map<String, Set<CategoryDTO>> load() {
+	public Map<String, CategoryDTO> load() {
 		return buildCategoryDTO(unmarshal(), LoadModeEnum.TO_DOWNLOAD_ONLY);
 	}
 
@@ -331,31 +360,30 @@ public class GrabConfigDAO {
 		return (new File(grabConfigFile)).exists();
 	}
 
-	public void updateGrabConfig(
-			final Map<String, Set<CategoryDTO>> channel2Categories) {
-		final HashMap<String, Set<CategoryDTO>> channel2CategoriesTemp = new HashMap<>(
-				channel2Categories);
+	public void updateGrabConfig(final Map<String, CategoryDTO> channel2Category) {
+		final HashMap<String, CategoryDTO> channel2CategoryTemp = new HashMap<>(
+				channel2Category);
 		final GrabConfig grabConfig = unmarshal();
 		if (grabConfig.getPlugins() != null) {
-			StatusEnum Pluginstatus;
+			StatusEnum pluginstatus;
 			for (final Plugin channel : grabConfig.getPlugins().getPlugin()) {
-				final Set<CategoryDTO> categoryPlugin = channel2CategoriesTemp
-						.get(channel.getName());
+				final Set<CategoryDTO> categoryPlugin = channel2CategoryTemp
+						.get(channel.getName()).getSubCategories();
 				if (channel.getCategories() == null) {
 					channel.setCategories(new Categories());
 				}
 				if (categoryPlugin != null) {
 					updateCategory(channel.getCategories().getCategory(),
 							categoryPlugin);
-					channel2CategoriesTemp.remove(channel.getName());
-					Pluginstatus = StatusEnum.EXIST;
+					channel2CategoryTemp.remove(channel.getName());
+					pluginstatus = StatusEnum.EXIST;
 				} else {
-					Pluginstatus = StatusEnum.DELETED;
+					pluginstatus = StatusEnum.DELETED;
 				}
-				channel.setStatus(Pluginstatus.ordinal());
+				channel.setStatus(pluginstatus.name());
 			}
 		}
-		addPlugins(channel2CategoriesTemp, grabConfig);
+		addPlugins(channel2CategoryTemp, grabConfig);
 		marshal(grabConfig);
 	}
 

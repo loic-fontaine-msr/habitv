@@ -12,7 +12,9 @@
       <content>
         <AnchorPane>
 <children><BorderPane prefHeight="200.0" prefWidth="640.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-<center><VBox fx:id="downloadingBox" prefHeight="200.0" prefWidth="700.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" BorderPane.alignment="CENTER">
+<center>
+<ScrollPane fitToHeight="true" fitToWidth="true" prefViewportWidth="1280.0">
+<content><VBox fx:id="downloadingBox" prefHeight="200.0" prefWidth="700.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" BorderPane.alignment="CENTER">
 <children><BorderPane>
 <left><Label text="Label" BorderPane.alignment="CENTER">
 <graphic><Label text="Label" />
@@ -38,6 +40,8 @@
 </right>
 </BorderPane>
 </children></VBox>
+</content>
+</ScrollPane>
 </center>
 <top><HBox fillHeight="false" maxHeight="30.0" prefHeight="30.0" prefWidth="200.0" BorderPane.alignment="CENTER">
 <children><ProgressIndicator fx:id="mainProgress" progress="0.0" /><Button fx:id="searchButton" mnemonicParsing="false" text="Recherche">

@@ -88,23 +88,27 @@ public final class EpisodeManager extends AbstractManager implements TaskAdder {
 		this.maxAttempts = maxAttempts;
 	}
 
-	void retreiveEpisode(final Map<String, Set<CategoryDTO>> channel2Categories) {
+	void retreiveEpisode(final Map<String, CategoryDTO> categoriesToGrab) {
 		Collection<PluginProviderInterface> providerPlugins = getProviderPluginHolder()
 				.getPlugins();
 		searchPublisher.addNews(new SearchEvent(SearchStateEnum.STARTING,
 				String.valueOf(providerPlugins.size())));
 		boolean oneTask = false;
 		for (final PluginProviderInterface provider : providerPlugins) {
-			final Set<CategoryDTO> categories = channel2Categories.get(provider
+			CategoryDTO categoryPlugin = categoriesToGrab.get(provider
 					.getName());
-			if (categories != null && !categories.isEmpty()) {
-				searchMgr.addTask(new SearchTask(provider, categories, this,
-						searchPublisher, retreivePublisher, downloader,
-						exporter));
-				oneTask = true;
-			} else {
-				searchPublisher.addNews(new SearchEvent(provider.getName(),
-						SearchStateEnum.DONE));
+			if (categoryPlugin != null) {
+				final Set<CategoryDTO> categories = categoryPlugin
+						.getSubCategories();
+				if (categories != null && !categories.isEmpty()) {
+					searchMgr.addTask(new SearchTask(provider, categories,
+							this, searchPublisher, retreivePublisher,
+							downloader, exporter));
+					oneTask = true;
+				} else {
+					searchPublisher.addNews(new SearchEvent(provider.getName(),
+							SearchStateEnum.DONE));
+				}
 			}
 		}
 		if (!oneTask) {

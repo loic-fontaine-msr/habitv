@@ -16,7 +16,8 @@ public class EpisodeDTO implements Comparable<EpisodeDTO>, Serializable {
 
 	private int num = 0;
 
-	public EpisodeDTO(final CategoryDTO category, final String name, final String id) {
+	public EpisodeDTO(final CategoryDTO category, final String name,
+			final String id) {
 		this.category = category;
 		this.name = name;
 		this.id = id;
@@ -24,10 +25,12 @@ public class EpisodeDTO implements Comparable<EpisodeDTO>, Serializable {
 
 	public void check() throws InvalidEpisodeException {
 		if (!checkMinSize(name)) {
-			throw new InvalidEpisodeException(name, InvalidEpisodeException.CauseField.NAME);
+			throw new InvalidEpisodeException(name,
+					InvalidEpisodeException.CauseField.NAME);
 		}
 		if (!checkMinSize(id)) {
-			throw new InvalidEpisodeException(id, InvalidEpisodeException.CauseField.URL);
+			throw new InvalidEpisodeException(id,
+					InvalidEpisodeException.CauseField.URL);
 		}
 	}
 
@@ -62,7 +65,10 @@ public class EpisodeDTO implements Comparable<EpisodeDTO>, Serializable {
 			if (this.id != null && this.id.equals(episode.id)) {
 				ret = true;
 			} else {
-				ret = category.equals(episode.getCategory()) && episode.getName().equals(name);
+				if (category != null) {
+					ret = category.equals(episode.getCategory())
+							&& episode.getName().equals(name);
+				}
 			}
 		}
 		return ret;
@@ -74,7 +80,16 @@ public class EpisodeDTO implements Comparable<EpisodeDTO>, Serializable {
 	}
 
 	public String getFullName() {
-		return getCategory().getChannel() + "-" + getCategory().getName() + "-" + getName() + "-"+getNum();
+		StringBuilder stringBuilder = new StringBuilder();
+		if (category != null) {
+			stringBuilder.append(getCategory().getPlugin() + "-"
+					+ getCategory().getName() + "-");
+		}
+		stringBuilder.append(getName());
+		if (getNum() > 0) {
+			stringBuilder.append("-" + getNum());
+		}
+		return stringBuilder.toString();
 	}
 
 	public String getId() {

@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.log4j.Logger;
 
@@ -42,8 +41,8 @@ public class CategoryManager extends AbstractManager {
 		searchCategoryPublisher = new Publisher<>();
 	}
 
-	Map<String, Set<CategoryDTO>> findCategory() {
-		final Map<String, Set<CategoryDTO>> channel2Categories = new HashMap<>();
+	Map<String, CategoryDTO> findCategory() {
+		final Map<String, CategoryDTO> channel2Categories = new HashMap<>();
 		final List<SearchCategoryTask> taskList = new ArrayList<>();
 		// search is parallelized, the final result will be build with the
 		// future result
@@ -62,8 +61,12 @@ public class CategoryManager extends AbstractManager {
 		for (final SearchCategoryTask searchTask : taskList) {
 			try {
 				searchCategoryResult = searchTask.getResult();
-				channel2Categories.put(searchCategoryResult.getChannel(),
+
+				CategoryDTO categoryPlugin = new CategoryDTO(
+						searchCategoryResult.getChannel(),
 						searchCategoryResult.getCategoryList());
+
+				channel2Categories.put(categoryPlugin.getId(), categoryPlugin);
 			} catch (final TechnicalException e) {
 				searchCategoryPublisher.addNews(new SearchCategoryEvent(
 						SearchCategoryStateEnum.ERROR,

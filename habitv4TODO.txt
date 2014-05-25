@@ -1,9 +1,6 @@
-config alerter qu'habitv doit être relancer
+boolen téléchargeable
 
-IHM gérer l'ajout, TEMPLATE ?
-IHM suppression
-
-tester linux
+gérer les erreurs de lecture
 
 repasser sur tous les plugins pour gérer le dl par url web, téléchargement manuel
 
@@ -14,13 +11,12 @@ téléchargement unitaire CLI
  - clean grabconfig
  - check, dl & stop
 
-masquer une catégorie
- 
-menu contextuel tree
- - ouvrir l'index
- - afficher les épisodes de la catégorie
- 
+  
+splashscreen caté"gori chargement 
+
 export afficher/masquer les boutons 
+
+tester linux
 
 francetvinfo
 

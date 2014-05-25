@@ -10,14 +10,13 @@ import java.io.InputStreamReader;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.jsoup.Jsoup;
-
 import com.dabi.habitv.api.plugin.api.PluginProviderInterface;
 import com.dabi.habitv.api.plugin.dto.CategoryDTO;
 import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
 import com.dabi.habitv.api.plugin.exception.TechnicalException;
 import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.api.BasePluginWithProxy;
+import com.dabi.habitv.framework.plugin.utils.RetrieverUtils;
 
 public class FilePluginManager extends BasePluginWithProxy implements
 		PluginProviderInterface {
@@ -31,7 +30,7 @@ public class FilePluginManager extends BasePluginWithProxy implements
 			for (String url : urls) {
 				String name;
 				if (url.startsWith(FrameworkConf.HTTP_PREFIX)) {
-					name = getTitle(url);
+					name = RetrieverUtils.getTitleByUrl(url);
 				} else {
 					name = url;
 				}
@@ -51,14 +50,6 @@ public class FilePluginManager extends BasePluginWithProxy implements
 	private void emptyFile(File file) {
 		try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
 			fileOutputStream.write(new String().getBytes());
-		} catch (IOException e) {
-			throw new TechnicalException(e);
-		}
-	}
-
-	private String getTitle(String url) {
-		try {
-			return Jsoup.connect(url).get().title();
 		} catch (IOException e) {
 			throw new TechnicalException(e);
 		}

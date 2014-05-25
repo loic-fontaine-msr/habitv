@@ -14,8 +14,14 @@ import java.net.URLConnection;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
+import org.jsoup.Jsoup;
+
 import com.dabi.habitv.api.plugin.exception.TechnicalException;
 import com.dabi.habitv.framework.FrameworkConf;
+import com.sun.syndication.feed.synd.SyndFeed;
+import com.sun.syndication.io.FeedException;
+import com.sun.syndication.io.SyndFeedInput;
+import com.sun.syndication.io.XmlReader;
 
 /**
  * utils function to retrieve remote data
@@ -39,11 +45,13 @@ public final class RetrieverUtils {
 	 * @param timeOut
 	 * @return the input stream
 	 */
-	public static InputStream getInputStreamFromUrl(final String url, final Proxy proxy) {
+	public static InputStream getInputStreamFromUrl(final String url,
+			final Proxy proxy) {
 		return getInputStreamFromUrl(url, FrameworkConf.TIME_OUT_MS, proxy);
 	}
 
-	public static InputStream getInputStreamFromUrl(final String url, final Integer timeOut, final Proxy proxy) {
+	public static InputStream getInputStreamFromUrl(final String url,
+			final Integer timeOut, final Proxy proxy) {
 		try {
 			final URLConnection hc = openConnection(url, proxy);
 			if (timeOut != null) {
@@ -57,7 +65,8 @@ public final class RetrieverUtils {
 		}
 	}
 
-	private static URLConnection openConnection(final String url, final Proxy proxy) throws IOException, MalformedURLException {
+	private static URLConnection openConnection(final String url,
+			final Proxy proxy) throws IOException, MalformedURLException {
 		if (useProxy(proxy)) {
 			return (new URL(url)).openConnection(proxy);
 		} else {
@@ -86,13 +95,15 @@ public final class RetrieverUtils {
 	 *            classloader
 	 * @return the unmarshalled object to be casted
 	 */
-	public static Object unmarshalInputStream(final InputStream input, final String unmarshallerPackage, final ClassLoader classLoader) {
+	public static Object unmarshalInputStream(final InputStream input,
+			final String unmarshallerPackage, final ClassLoader classLoader) {
 		try {
 			final JAXBContext context;
 			if (classLoader == null) {
 				context = JAXBContext.newInstance(unmarshallerPackage);
 			} else {
-				context = JAXBContext.newInstance(unmarshallerPackage, classLoader);
+				context = JAXBContext.newInstance(unmarshallerPackage,
+						classLoader);
 			}
 			return context.createUnmarshaller().unmarshal(input);
 		} catch (final JAXBException e) {
@@ -103,7 +114,8 @@ public final class RetrieverUtils {
 	/**
 	 * @see #unmarshalInputStream(InputStream, String) without the classloader
 	 */
-	public static Object unmarshalInputStream(final InputStream input, final String unmarshallerPackage) {
+	public static Object unmarshalInputStream(final InputStream input,
+			final String unmarshallerPackage) {
 		return unmarshalInputStream(input, unmarshallerPackage, null);
 	}
 
@@ -111,7 +123,8 @@ public final class RetrieverUtils {
 		return getUrlContent(url, null, proxy);
 	}
 
-	public static String getUrlContent(final String url, final String encoding, final Proxy proxy) {
+	public static String getUrlContent(final String url, final String encoding,
+			final Proxy proxy) {
 
 		final InputStream in = getInputStreamFromUrl(url, proxy);
 		final BufferedReader reader;
@@ -160,5 +173,21 @@ public final class RetrieverUtils {
 			}
 		}
 		return baos.toByteArray();
+	}
+
+	public static String getTitleByUrl(String url) {
+		try {
+			return Jsoup.connect(url).get().title();
+		} catch (IOException e) {
+			final SyndFeedInput input = new SyndFeedInput();
+			try {
+				final SyndFeed feed = input.build(new XmlReader(
+						getInputStreamFromUrl(url, null)));
+				return feed.getTitle();
+			} catch (IllegalArgumentException | FeedException | IOException e1) {
+				throw new TechnicalException(e);
+			}
+
+		}
 	}
 }
