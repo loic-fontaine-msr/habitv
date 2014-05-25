@@ -1,10 +1,9 @@
 package com.dabi.habitv.tray.controller;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
 
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -13,11 +12,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.GroupBuilder;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonBuilder;
 import javafx.scene.control.CheckBoxTreeItem;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
@@ -26,6 +21,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
@@ -33,16 +29,7 @@ import javafx.scene.control.cell.CheckBoxTreeCell;
 import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.BorderPaneBuilder;
-import javafx.scene.layout.HBoxBuilder;
-import javafx.scene.layout.StackPaneBuilder;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.RectangleBuilder;
-import javafx.scene.web.WebView;
-import javafx.scene.web.WebViewBuilder;
-import javafx.stage.Popup;
-import javafx.stage.PopupBuilder;
+import javafx.scene.layout.HBox;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 
@@ -53,6 +40,10 @@ import com.dabi.habitv.core.event.RetreiveEvent;
 import com.dabi.habitv.core.event.SearchCategoryEvent;
 import com.dabi.habitv.core.event.SearchEvent;
 import com.dabi.habitv.core.event.UpdatePluginEvent;
+import com.dabi.habitv.framework.FrameworkConf;
+import com.dabi.habitv.framework.plugin.utils.RetrieverUtils;
+import com.dabi.habitv.tray.Popin;
+import com.dabi.habitv.tray.PopinController.ButtonHandler;
 import com.dabi.habitv.tray.subscriber.CoreSubscriber;
 
 public class ToDownloadController extends BaseController implements
@@ -64,7 +55,7 @@ public class ToDownloadController extends BaseController implements
 
 	private TreeView<CategoryDTO> toDLTree;
 
-	private Map<String, Set<CategoryDTO>> channels;
+	private Map<String, CategoryDTO> plugins;
 
 	private Label indicationText;
 
@@ -84,17 +75,6 @@ public class ToDownloadController extends BaseController implements
 		this.searchCategoryProgress = searchCategoryProgress;
 		this.episodeListView = episodeListView;
 		final TreeView<CategoryDTO> toDLTree2 = toDLTree;
-		MenuItem ouvrirIndex = new MenuItem("");
-		ouvrirIndex.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent event) {
-				createWebViewPopup();
-				System.out.println(toDLTree2.getSelectionModel()
-						.getSelectedItem().getValue().getName());
-			}
-		});
-		// toDLTree2.setContextMenu(new ContextMenu(ouvrirIndex));
 
 		toDLTree.addEventHandler(KeyEvent.KEY_PRESSED,
 				new EventHandler<KeyEvent>() {
@@ -122,7 +102,7 @@ public class ToDownloadController extends BaseController implements
 							TreeItem<CategoryDTO> oldValue,
 							TreeItem<CategoryDTO> newValue) {
 						if (newValue != null) {
-							buildContextMenu(newValue.getValue());
+							buildContextMenu(newValue);
 							fillEpisodeList(newValue.getValue());
 						}
 					}
@@ -130,7 +110,8 @@ public class ToDownloadController extends BaseController implements
 				});
 	}
 
-	private void buildContextMenu(final CategoryDTO category) {
+	private void buildContextMenu(TreeItem<CategoryDTO> treeItem) {
+		final CategoryDTO category = treeItem.getValue();
 		ContextMenu contextMenu = new ContextMenu();
 		if (category.hasTemplates()) {
 			Menu ajoutMenu = new Menu("Ajouter une catégorie");
@@ -151,7 +132,7 @@ public class ToDownloadController extends BaseController implements
 			contextMenu.getItems().add(ajoutMenu);
 		}
 
-		if (category.getFatherCategory() != null) {
+		if (treeItem.getParent() != null) {
 			MenuItem indexMenu = new MenuItem("Ouvrir l'index");
 			indexMenu.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -161,14 +142,83 @@ public class ToDownloadController extends BaseController implements
 				}
 			});
 			contextMenu.getItems().add(indexMenu);
+
+			MenuItem supprimerMenu = new MenuItem("Supprimer");
+			supprimerMenu.setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent event) {
+					category.setDeleted(true);
+					planTaskIfNot(new Runnable() {
+
+						@Override
+						public void run() {
+							saveTree();
+						}
+					});
+					toDLTree.getSelectionModel()
+							.getSelectedItem()
+							.getParent()
+							.getChildren()
+							.remove(toDLTree.getSelectionModel()
+									.getSelectedItem());
+				}
+			});
+			contextMenu.getItems().add(supprimerMenu);
 		}
 
 		toDLTree.setContextMenu(contextMenu);
 	}
 
-	private void formulaireAjout(CategoryDTO subCategory) {
-		// TODO Auto-generated method stub
+	private void formulaireAjout(final CategoryDTO templateCategory) {
+		final CategoryForm categoryForm = new CategoryForm(templateCategory);
+		new Popin().show("Ajout d'une catégorie " + templateCategory.getName(),
+				categoryForm).setOkButtonHandler(new ButtonHandler() {
 
+			@Override
+			public void onAction() {
+				templateCategory.getFatherCategory().addSubCategory(
+						buildCategoryFromTemplate(templateCategory,
+								categoryForm.textField.getText()));
+				saveTree();
+				loadTree();
+			}
+
+		});
+	}
+
+	private CategoryDTO buildCategoryFromTemplate(CategoryDTO templateCategory,
+			String text) {
+		String id = templateCategory.getId().split("!!")[0].replace("§ID§",
+				text);
+		return new CategoryDTO(templateCategory.getPlugin(), findNameById(id),
+				id, FrameworkConf.MP4);
+	}
+
+	private String findNameById(String id) {
+		String name;
+		if (id.startsWith(FrameworkConf.HTTP_PREFIX)) {
+			name = RetrieverUtils.getTitleByUrl(id);
+		} else {
+			File file = new File(id);
+			if (file.exists()) {
+				name = file.getName();
+			} else {
+				name = id;
+			}
+		}
+		return name;
+	}
+
+	private static class CategoryForm extends HBox {
+
+		private TextField textField = new TextField();
+		
+		public CategoryForm(CategoryDTO category) {
+			super(3);	
+			getChildren().add(new Label(category.getId().split("!!")[1]));
+			getChildren().add(textField);
+		}
 	}
 
 	private void fillEpisodeList(final CategoryDTO category) {
@@ -264,6 +314,13 @@ public class ToDownloadController extends BaseController implements
 					@Override
 					public void run() {
 						getController().getManager().updateGrabConfig();
+						Platform.runLater(new Runnable() {
+							
+							@Override
+							public void run() {
+								loadTree();
+							}
+						});
 					}
 				}).start();
 			}
@@ -283,12 +340,11 @@ public class ToDownloadController extends BaseController implements
 		toDLTree.setRoot(root);
 		toDLTree.setShowRoot(false);
 		toDLTree.setCellFactory(CheckBoxTreeCell.<CategoryDTO> forTreeView());
-		channels = getController().loadCategories();
-		for (Entry<String, Set<CategoryDTO>> channel : channels.entrySet()) {
-			ChannelTreeItem channelTreeItem = new ChannelTreeItem(
-					channel.getKey());
+		plugins = getController().loadCategories();
+		for (CategoryDTO plugin : plugins.values()) {
+			PluginTreeItem channelTreeItem = new PluginTreeItem(plugin);
 			root.getChildren().add(channelTreeItem);
-			addCategoriesToTree(channelTreeItem, channel.getValue());
+			addCategoriesToTree(channelTreeItem, plugin.getSubCategories());
 		}
 
 	}
@@ -296,7 +352,7 @@ public class ToDownloadController extends BaseController implements
 	private void addCategoriesToTree(CheckBoxTreeItem<CategoryDTO> treeItem,
 			Collection<CategoryDTO> categories) {
 		for (CategoryDTO category : categories) {
-			if (!category.isTemplate()) {
+			if (!category.isTemplate() && !category.isDeleted()) {
 				CategoryTreeItem categoryTreeItem = setSelected(treeItem,
 						category);
 				treeItem.getChildren().add(categoryTreeItem);
@@ -334,17 +390,19 @@ public class ToDownloadController extends BaseController implements
 		}
 	}
 
-	private class ChannelTreeItem extends CheckBoxTreeItem<CategoryDTO> {
+	private static class PluginTreeItem extends CheckBoxTreeItem<CategoryDTO> {
 
-		public ChannelTreeItem(String channel) {
-			super(new CategoryDTO(null, channel, channel, null));
+		public PluginTreeItem(CategoryDTO plugin) {
+			super(plugin);
 		}
+
 	}
 
 	private class CategoryTreeItem extends CheckBoxTreeItem<CategoryDTO> {
 
 		public CategoryTreeItem(final CategoryDTO category) {
 			super(category);
+			setIndependent(true);
 			addEventHandler(
 					CheckBoxTreeItem.<String> checkBoxSelectionChangedEvent(),
 					new EventHandler<TreeModificationEvent<String>>() {
@@ -366,8 +424,8 @@ public class ToDownloadController extends BaseController implements
 	}
 
 	private void saveTree() {
-		if (channels != null) {
-			getController().saveGrabconfig(channels);
+		if (plugins != null) {
+			getController().getManager().saveGrabConfig(plugins);
 		}
 	}
 
@@ -422,67 +480,4 @@ public class ToDownloadController extends BaseController implements
 		});
 	}
 
-	private void createWebViewPopup() {
-		WebView webView;
-		webView = WebViewBuilder.create().prefWidth(920).prefHeight(560)
-				.build();
-
-		Button okButton;
-		Popup webViewPopup = PopupBuilder
-				.create()
-				.content(
-						StackPaneBuilder
-								.create()
-								.children(
-										RectangleBuilder.create().width(930)
-												.height(620).arcWidth(20)
-												.arcHeight(20)
-												.fill(Color.WHITE)
-												.stroke(Color.GREY)
-												.strokeWidth(2).build(),
-										BorderPaneBuilder
-												.create()
-												.center(GroupBuilder.create()
-														.children(webView)
-														.build())
-												.bottom(HBoxBuilder
-														.create()
-														.id("popupButtonBar")
-														.alignment(Pos.CENTER)
-														.spacing(10)
-														.children(
-																ButtonBuilder
-																		.create()
-																		.id("backButton")
-																		.onAction(
-																				new EventHandler<ActionEvent>() {
-																					@Override
-																					public void handle(
-																							ActionEvent e) {
-																					}
-																				})
-																		.build(),
-																okButton = ButtonBuilder
-																		.create()
-																		.text("OK")
-																		.onAction(
-																				new EventHandler<ActionEvent>() {
-																					@Override
-																					public void handle(
-																							ActionEvent e) {
-																					}
-																				})
-																		.build())
-														.build()).build())
-								.build()).build();
-
-		BorderPane.setAlignment(okButton, Pos.CENTER);
-		BorderPane.setMargin(okButton, new Insets(10, 0, 10, 0));
-
-		webViewPopup.show(getStage(),
-				(getStage().getWidth() - webViewPopup.getWidth()) / 2
-						+ getStage().getX(),
-				(getStage().getHeight() - webViewPopup.getHeight()) / 2
-						+ getStage().getY());
-	}
 }

@@ -7,6 +7,6 @@ public final class FileConf {
 	}
 
 	public static final String NAME = "file";
-	public static final String DELETE_LOADED_EP = null;
+	public static final String DELETE_LOADED_EP = "DELETE_LOADED_EP";
 
 }

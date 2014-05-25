@@ -10,7 +10,6 @@ import com.dabi.habitv.api.plugin.api.PluginProviderInterface;
 import com.dabi.habitv.api.plugin.dto.CategoryDTO;
 import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
 import com.dabi.habitv.api.plugin.exception.TechnicalException;
-import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.api.BasePluginWithProxy;
 import com.sun.syndication.feed.synd.SyndEnclosure;
 import com.sun.syndication.feed.synd.SyndEntry;
@@ -41,14 +40,29 @@ public class RSSPluginManager extends BasePluginWithProxy implements
 	@Override
 	public Set<CategoryDTO> findCategory() {
 		final Set<CategoryDTO> categoryList = new HashSet<>();
-		final CategoryDTO categoryDTO = new CategoryDTO(RSSConf.NAME,
-				"Set RSS Label Here", "Set RSS Url Here", null, null,
-				"Set files extension Here");
-		categoryDTO
-				.addParameter(FrameworkConf.DOWNLOADER_PARAM,
-						"Set the downloader here  :aria2, youtube, rtmpdump (default aria2)");
-		categoryList.add(categoryDTO);
+		addCategoryTemplate(categoryList, "RSS",
+				"§ID§||Saisissez l'URL d'un flux RSS");
+		addCategoryTemplate(
+				categoryList,
+				"Dailymotion",
+				"http://www.dailymotion.com/rss/user/§ID§/1||Saisissez l'identifiant d'un utilisateur dailymotion");
+		addCategoryTemplate(
+				categoryList,
+				"Vimeo",
+				"http://vimeo.com/§ID§/videos/rss||Saisissez l'identifiant d'un utilisateur vimeo");
+		addCategoryTemplate(
+				categoryList,
+				"Youtube",
+				"http://gdata.youtube.com/feeds/base/users/§ID§/uploads?alt=rss&amp;v=1&amp;orderby=published&amp;client=ytapi-youtube-profile||Saisissez l'identifiant d'un utilisateur youtube");
 		return categoryList;
+	}
+
+	private void addCategoryTemplate(final Set<CategoryDTO> categoryList,
+			String name, String id) {
+		final CategoryDTO categoryDTO = new CategoryDTO(RSSConf.NAME, name, id,
+				null, null, null);
+		categoryDTO.setTemplate(true);
+		categoryList.add(categoryDTO);
 	}
 
 	@Override

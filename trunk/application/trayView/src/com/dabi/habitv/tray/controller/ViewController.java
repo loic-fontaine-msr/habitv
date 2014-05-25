@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Map;
-import java.util.Set;
 
 import javafx.application.Platform;
 import javafx.stage.Stage;
@@ -129,7 +128,8 @@ public class ViewController implements CoreSubscriber {
 			break;
 		case TO_MANY_FAILED:
 			getManager().getProgressionModel().updateActionProgress(
-					event.getEpisode(), EpisodeStateEnum.TO_MANY_FAILED, "", null);
+					event.getEpisode(), EpisodeStateEnum.TO_MANY_FAILED, "",
+					null);
 			break;
 		default:
 			break;
@@ -165,11 +165,7 @@ public class ViewController implements CoreSubscriber {
 		getManager().clear();
 	}
 
-	public void updateGrabConfig() {
-		getManager().updateGrabConfig();
-	}
-
-	public Map<String, Set<CategoryDTO>> loadCategories() {
+	public Map<String, CategoryDTO> loadCategories() {
 		return getManager().loadCategories();
 	}
 
@@ -247,8 +243,8 @@ public class ViewController implements CoreSubscriber {
 		open(XMLUserConfig.GRAB_CONF_FILE);
 	}
 
-	public void saveGrabconfig(Map<String, Set<CategoryDTO>> channels) {
-		getManager().saveGrabconfig(channels);
+	public void updateGrabconfig(Map<String, CategoryDTO> channels) {
+		getManager().updateGrabconfig(channels);
 	}
 
 	public UserConfig loadUserConfig() {
@@ -280,8 +276,7 @@ public class ViewController implements CoreSubscriber {
 		getManager().restart(episode, exportOnly);
 	}
 
-	public Collection<EpisodeDTO> findEpisodeByCategory(
-			CategoryDTO category) {
+	public Collection<EpisodeDTO> findEpisodeByCategory(CategoryDTO category) {
 		return getManager().findEpisodeByCategory(category);
 	}
 

@@ -3,7 +3,6 @@ package com.dabi.habitv.tray.model;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Observable;
-import java.util.Set;
 
 import javax.xml.bind.JAXBException;
 
@@ -157,7 +156,7 @@ public class HabitTvViewManager extends Observable {
 		grabConfigDAO.updateGrabConfig(findCategories());
 	}
 
-	public Map<String, Set<CategoryDTO>> findCategories() {
+	public Map<String, CategoryDTO> findCategories() {
 		return coreManager.findCategory();
 	}
 
@@ -181,17 +180,21 @@ public class HabitTvViewManager extends Observable {
 		grabConfigDAO.clean();
 	}
 
-	public Map<String, Set<CategoryDTO>> loadCategories() {
+	public Map<String, CategoryDTO> loadCategories() {
 		if (!grabConfigDAO.exist()) {
 			grabConfigDAO.saveGrabConfig(coreManager.findCategory());
 		}
 		return grabConfigDAO.load(LoadModeEnum.ALL);
 	}
 
-	public void saveGrabconfig(Map<String, Set<CategoryDTO>> channel2Categories) {
-		grabConfigDAO.saveGrabConfig(channel2Categories);
+	public void updateGrabconfig(Map<String, CategoryDTO> channel2Categories) {
+		grabConfigDAO.updateGrabConfig(channel2Categories);
 	}
 
+	public void saveGrabConfig(Map<String, CategoryDTO> channel2Categories) {
+		grabConfigDAO.saveGrabConfig(channel2Categories);
+	}
+	
 	public void saveConfig(UserConfig userConfig) {
 		try {
 			XMLUserConfig.saveConfig(userConfig);

@@ -50,21 +50,21 @@
 		<all>
 			<element name="id" type="string" />
 			<element name="name" type="string" />
-			<element name="download" type="boolean" minOccurs="0"/>
-			<element name="template" type="boolean" minOccurs="0"/>
+			<element name="download" type="boolean" minOccurs="0" />
+			<element name="template" type="boolean" minOccurs="0" />
 			<element name="includes" minOccurs="0">
 				<complexType>
 					<sequence>
-						<element name="include" type="string" maxOccurs="unbounded"
-							minOccurs="0" />
+						<element name="include" type="string"
+							maxOccurs="unbounded" minOccurs="0" />
 					</sequence>
 				</complexType>
 			</element>
 			<element name="excludes" minOccurs="0">
 				<complexType>
 					<sequence>
-						<element name="exclude" type="string" maxOccurs="unbounded"
-							minOccurs="0" />
+						<element name="exclude" type="string"
+							maxOccurs="unbounded" minOccurs="0" />
 					</sequence>
 				</complexType>
 			</element>
@@ -77,15 +77,17 @@
 				</complexType>
 			</element>
 			<element name="extension" type="string" maxOccurs="1"
-				minOccurs="1" />
-			<element name="status" type="string" minOccurs="0"/>
+				minOccurs="0" />
+			<element name="status" type="string" minOccurs="0" />
 			<element name="configuration" minOccurs="0">
 				<complexType>
 					<sequence>
-						<any minOccurs="0" maxOccurs="unbounded" namespace="##any" processContents="lax" />
+						<any minOccurs="0" maxOccurs="unbounded"
+							namespace="##any" processContents="lax" />
 					</sequence>
 				</complexType>
 			</element>
+			<element name="deleted" type="boolean" maxOccurs="1" minOccurs="0"></element>
 		</all>
 	</complexType>
 
@@ -100,7 +102,11 @@
 					</sequence>
 				</complexType>
 			</element>
-			<element name="status" type="int" />
+			<element name="status" type="string" maxOccurs="1"
+				minOccurs="0" />
+			<element name="deleted" type="boolean" maxOccurs="1"
+				minOccurs="0">
+			</element>
 		</all>
 	</complexType>
 

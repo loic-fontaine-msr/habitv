@@ -59,6 +59,9 @@ public class HabiTvSplashScreen extends Application {
 
 	@Override
 	public void start(final Stage initStage) throws Exception {
+		initStage.getIcons().add(
+				new Image(ClassLoader.getSystemResource("fixe.gif")
+						.openStream()));		
 		updateController = new UpdateController(this);
 		updateController.run(initStage);
 	}

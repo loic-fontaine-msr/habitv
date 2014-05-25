@@ -2,7 +2,6 @@ package com.dabi.habitv.core.mgr;
 
 import java.util.Collection;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.log4j.Logger;
 
@@ -89,11 +88,11 @@ public final class CoreManager {
 	}
 
 	public void retreiveEpisode(
-			final Map<String, Set<CategoryDTO>> categoriesToGrab) {
+			final Map<String, CategoryDTO> categoriesToGrab) {
 		getEpisodeManager().retreiveEpisode(categoriesToGrab);
 	}
 
-	public Map<String, Set<CategoryDTO>> findCategory() {
+	public Map<String, CategoryDTO> findCategory() {
 		return getCategoryManager().findCategory();
 	}
 

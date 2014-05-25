@@ -4,8 +4,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Define the category of the episode The category can define sub categories
@@ -16,7 +18,7 @@ public class CategoryDTO implements Comparable<CategoryDTO>, Serializable {
 
 	private static final long serialVersionUID = -7926371729459853575L;
 
-	private final String channel;
+	private final String plugin;
 
 	private final String name;
 
@@ -24,7 +26,7 @@ public class CategoryDTO implements Comparable<CategoryDTO>, Serializable {
 
 	private CategoryDTO fatherCategory;
 
-	private List<CategoryDTO> subCategories;
+	private Set<CategoryDTO> subCategories;
 
 	private List<String> include;
 
@@ -33,14 +35,20 @@ public class CategoryDTO implements Comparable<CategoryDTO>, Serializable {
 	private final String extension;
 
 	private final Map<String, String> parameters = new HashMap<>();
-	
+
 	private boolean selected;
+
+	private boolean template;
+
+	private boolean deleted;
+	
+	private StatusEnum state;
 
 	/**
 	 * Full Constructor
 	 * 
-	 * @param channel
-	 *            channel of the category
+	 * @param plugin
+	 *            plugin of the category
 	 * @param name
 	 *            label of the category
 	 * @param identifier
@@ -54,11 +62,11 @@ public class CategoryDTO implements Comparable<CategoryDTO>, Serializable {
 	 * @param extension
 	 *            the extension of the files in this category
 	 */
-	public CategoryDTO(final String channel, final String name,
+	public CategoryDTO(final String plugin, final String name,
 			final String identifier, final List<String> include,
 			final List<String> exclude, final String extension) {
 		super();
-		this.channel = channel;
+		this.plugin = plugin;
 		this.name = name;
 		this.identifier = identifier;
 		this.include = include;
@@ -69,8 +77,8 @@ public class CategoryDTO implements Comparable<CategoryDTO>, Serializable {
 	/**
 	 * Light constructor
 	 * 
-	 * @param channel
-	 *            channel of the category
+	 * @param plugin
+	 *            plugin of the category
 	 * @param name
 	 *            label of the category
 	 * @param identifier
@@ -78,13 +86,25 @@ public class CategoryDTO implements Comparable<CategoryDTO>, Serializable {
 	 * @param extension
 	 *            the extension of the files in this category
 	 */
-	public CategoryDTO(final String channel, final String name,
+	public CategoryDTO(final String plugin, final String name,
 			final String identifier, final String extension) {
 		super();
-		this.channel = channel;
+		this.plugin = plugin;
 		this.name = name;
 		this.identifier = identifier;
 		this.extension = extension;
+	}
+
+	/**
+	 * Constructeur racine.
+	 */
+	public CategoryDTO(String name, Set<CategoryDTO> subCategories) {
+		super();
+		this.plugin = name;
+		this.name = name;
+		this.identifier = name;
+		this.extension = null;
+		addSubCategories(subCategories);
 	}
 
 	/**
@@ -124,9 +144,9 @@ public class CategoryDTO implements Comparable<CategoryDTO>, Serializable {
 	/**
 	 * @return the sub categories, init list if empty
 	 */
-	public List<CategoryDTO> getSubCategories() {
+	public Set<CategoryDTO> getSubCategories() {
 		if (subCategories == null) {
-			subCategories = new ArrayList<>();
+			subCategories = new HashSet<>();
 		}
 		return subCategories;
 	}
@@ -139,7 +159,7 @@ public class CategoryDTO implements Comparable<CategoryDTO>, Serializable {
 	 */
 	public void addSubCategory(final CategoryDTO subCategory) {
 		if (subCategories == null) {
-			subCategories = new ArrayList<>();
+			subCategories = new HashSet<>();
 		}
 		subCategory.setFatherCategory(this);
 		subCategories.add(subCategory);
@@ -153,7 +173,7 @@ public class CategoryDTO implements Comparable<CategoryDTO>, Serializable {
 	 */
 	public void addSubCategories(final Collection<CategoryDTO> categoryListDTO) {
 		if (subCategories == null) {
-			subCategories = new ArrayList<>();
+			subCategories = new HashSet<>();
 		}
 		for (final CategoryDTO subCategory : categoryListDTO) {
 			subCategory.setFatherCategory(this);
@@ -169,10 +189,10 @@ public class CategoryDTO implements Comparable<CategoryDTO>, Serializable {
 	}
 
 	/**
-	 * @return channel of the category
+	 * @return plugin of the category
 	 */
-	public String getChannel() {
-		return channel;
+	public String getPlugin() {
+		return plugin;
 	}
 
 	/**
@@ -210,6 +230,7 @@ public class CategoryDTO implements Comparable<CategoryDTO>, Serializable {
 
 	/**
 	 * Check the category
+	 * 
 	 * @return
 	 * 
 	 */
@@ -230,7 +251,7 @@ public class CategoryDTO implements Comparable<CategoryDTO>, Serializable {
 	 */
 	@Override
 	public int compareTo(final CategoryDTO o) {
-		int ret = getChannel().compareTo(o.getChannel());
+		int ret = getPlugin().compareTo(o.getPlugin());
 		if (ret != 0) {
 			ret = getId().compareTo(o.getId());
 		}
@@ -272,5 +293,48 @@ public class CategoryDTO implements Comparable<CategoryDTO>, Serializable {
 	public void setSelected(boolean selected) {
 		this.selected = selected;
 	}
-	
+
+	public boolean isTemplate() {
+		return template;
+	}
+
+	public void setTemplate(boolean template) {
+		this.template = template;
+	}
+
+	public boolean hasTemplates() {
+		if (subCategories != null) {
+			for (CategoryDTO subCategorie : subCategories) {
+				if (subCategorie.isTemplate()) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+		if (deleted) {
+			this.selected = false;
+			if (subCategories != null) {
+				for (CategoryDTO categoryDTO : subCategories) {
+					categoryDTO.setSelected(false);
+				}
+			}
+		}
+	}
+
+	public StatusEnum getState() {
+		return state;
+	}
+
+	public void setState(StatusEnum state) {
+		this.state = state;
+	}
+
 }
