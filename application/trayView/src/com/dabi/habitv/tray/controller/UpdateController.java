@@ -11,11 +11,15 @@ import com.dabi.habitv.api.plugin.pub.UpdatablePluginEvent;
 import com.dabi.habitv.api.plugin.pub.UpdatablePluginEvent.UpdatablePluginStateEnum;
 import com.dabi.habitv.core.config.UserConfig;
 import com.dabi.habitv.core.config.XMLUserConfig;
+import com.dabi.habitv.core.event.RetreiveEvent;
+import com.dabi.habitv.core.event.SearchCategoryEvent;
+import com.dabi.habitv.core.event.SearchEvent;
 import com.dabi.habitv.core.event.UpdatePluginEvent;
-import com.dabi.habitv.tray.HabitvViewMain;
 import com.dabi.habitv.tray.HabiTvSplashScreen;
 import com.dabi.habitv.tray.HabiTvSplashScreen.InitHandler;
+import com.dabi.habitv.tray.HabitvViewMain;
 import com.dabi.habitv.tray.model.HabitTvViewManager;
+import com.dabi.habitv.tray.subscriber.CoreSubscriber;
 import com.dabi.habitv.tray.subscriber.UpdateSubscriber;
 
 public class UpdateController {
@@ -44,10 +48,10 @@ public class UpdateController {
 			}
 		});
 		new Thread(runTask).start();
-		// initStage.setIconified(true);
 	}
 
-	class RunHabitvTask extends Task<Void> implements UpdateSubscriber {
+	class RunHabitvTask extends Task<Void> implements UpdateSubscriber,
+			CoreSubscriber {
 
 		private Stage stage;
 		private int updateSize;
@@ -64,23 +68,14 @@ public class UpdateController {
 				final HabitTvViewManager model = new HabitTvViewManager(
 						userConfig);
 				if (userConfig.updateOnStartup()) {
-					model.attach(this);
+					model.attach((UpdateSubscriber) this);
 					model.update();
 				}
 				habitvViewMain = new HabitvViewMain(model);
+				model.attach((CoreSubscriber) this);
+				model.buildGrabConfigIfNeeded();
 
-				Platform.runLater(new Runnable() {
-
-					@Override
-					public void run() {
-						try {
-							habitvViewMain.run(stage);
-						} catch (Exception e) {
-							LOG.error("", e);
-						}
-					}
-
-				});
+				initHabiTv();
 
 				return null;
 			} catch (Exception e) {
@@ -88,6 +83,22 @@ public class UpdateController {
 				System.exit(1);
 				throw e;
 			}
+		}
+
+		private void initHabiTv() {
+
+			Platform.runLater(new Runnable() {
+
+				@Override
+				public void run() {
+					try {
+						habitvViewMain.run(stage);
+					} catch (Exception e) {
+						LOG.error("", e);
+					}
+				}
+
+			});
 		}
 
 		@Override
@@ -146,6 +157,41 @@ public class UpdateController {
 				// event.getVersion()));
 				break;
 			case ALL_DONE:
+				break;
+			default:
+				break;
+			}
+		}
+
+		@Override
+		public void update(SearchEvent event) {
+		}
+
+		@Override
+		public void update(RetreiveEvent event) {
+		}
+
+		@Override
+		public void update(SearchCategoryEvent event) {
+			switch (event.getState()) {
+			case STARTING:
+				updateSize = Integer.parseInt(event.getInfo());
+				updateCount = 0;
+				updateProgress(updateCount, updateSize);
+				updateMessage("Chargement des catégories...");
+				break;
+			case BUILDING_CATEGORIES:
+				break;
+			case CATEGORIES_BUILT:
+				updateCount++;
+				updateProgress(updateCount, updateSize);
+				updateMessage("Catégories du plugin " + event.getPlugin()
+						+ " chargées");
+				break;
+			case ERROR:
+				break;
+			case ALL_DONE:
+				updateMessage("Sauvegarde du fichier grabconfig contenant les catégories");
 				break;
 			default:
 				break;

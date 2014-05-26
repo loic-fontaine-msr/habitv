@@ -181,10 +181,14 @@ public class HabitTvViewManager extends Observable {
 	}
 
 	public Map<String, CategoryDTO> loadCategories() {
+		buildGrabConfigIfNeeded(); //TODO utiliser ça
+		return grabConfigDAO.load(LoadModeEnum.ALL);
+	}
+
+	public void buildGrabConfigIfNeeded() {
 		if (!grabConfigDAO.exist()) {
 			grabConfigDAO.saveGrabConfig(coreManager.findCategory());
 		}
-		return grabConfigDAO.load(LoadModeEnum.ALL);
 	}
 
 	public void updateGrabconfig(Map<String, CategoryDTO> channel2Categories) {

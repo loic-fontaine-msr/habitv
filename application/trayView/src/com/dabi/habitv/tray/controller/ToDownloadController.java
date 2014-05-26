@@ -93,6 +93,24 @@ public class ToDownloadController extends BaseController implements
 					}
 				});
 
+		// toDLTree.setOnMouseClicked(new EventHandler<MouseEvent>()
+		// {
+		// @Override
+		// public void handle(MouseEvent mouseEvent)
+		// {
+		// if(mouseEvent.getClickCount() == 2)
+		// {
+		// TreeItem<CategoryDTO> item =
+		// toDLTree2.getSelectionModel().getSelectedItem();
+		//
+		// if (item instanceof CheckBoxTreeItem) {
+		// CategoryDTO category = ((CheckBoxTreeItem<CategoryDTO>)
+		// item).getValue();
+		// }
+		// }
+		// }
+		// });		
+		
 		toDLTree.getSelectionModel().selectedItemProperty()
 				.addListener(new ChangeListener<TreeItem<CategoryDTO>>() {
 
@@ -103,11 +121,21 @@ public class ToDownloadController extends BaseController implements
 							TreeItem<CategoryDTO> newValue) {
 						if (newValue != null) {
 							buildContextMenu(newValue);
-							fillEpisodeList(newValue.getValue());
+							CategoryDTO category = newValue.getValue();
+							if (category.isDownloadable()) {
+								fillEpisodeList(category);
+							} else {
+								emptyEpisodeList();
+							}
 						}
 					}
 
 				});
+	}
+
+	private void emptyEpisodeList() {
+		ObservableList<EpisodeDTO> obsEp = FXCollections.observableArrayList();
+		episodeListView.setItems(obsEp);
 	}
 
 	private void buildContextMenu(TreeItem<CategoryDTO> treeItem) {
@@ -213,9 +241,9 @@ public class ToDownloadController extends BaseController implements
 	private static class CategoryForm extends HBox {
 
 		private TextField textField = new TextField();
-		
+
 		public CategoryForm(CategoryDTO category) {
-			super(3);	
+			super(3);
 			getChildren().add(new Label(category.getId().split("!!")[1]));
 			getChildren().add(textField);
 		}
@@ -315,7 +343,7 @@ public class ToDownloadController extends BaseController implements
 					public void run() {
 						getController().getManager().updateGrabConfig();
 						Platform.runLater(new Runnable() {
-							
+
 							@Override
 							public void run() {
 								loadTree();
@@ -402,7 +430,7 @@ public class ToDownloadController extends BaseController implements
 
 		public CategoryTreeItem(final CategoryDTO category) {
 			super(category);
-			setIndependent(true);
+			setIndependent(category.isDownloadable());
 			addEventHandler(
 					CheckBoxTreeItem.<String> checkBoxSelectionChangedEvent(),
 					new EventHandler<TreeModificationEvent<String>>() {
@@ -421,6 +449,7 @@ public class ToDownloadController extends BaseController implements
 
 					});
 		}
+
 	}
 
 	private void saveTree() {

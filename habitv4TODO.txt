@@ -1,4 +1,4 @@
-boolen téléchargeable IHM
+recherche tree
 
 gérer les erreurs de lecture
 
@@ -11,8 +11,6 @@ téléchargement unitaire CLI
  - clean grabconfig
  - check, dl & stop
 
-  
-splashscreen caté"gori chargement 
 
 export afficher/masquer les boutons 
 

@@ -196,15 +196,18 @@ public class GrabConfigDAO {
 		categoryDTO = new CategoryDTO(channelName, category.getName(),
 				category.getId(), getInclude(category), getExclude(category),
 				category.getExtension());
-		
+
 		categoryDTO.setSelected(category.getDownload() != null
 				&& category.getDownload());
-		
+
 		categoryDTO.setTemplate(category.getTemplate() != null
 				&& category.getTemplate());
-		
-		categoryDTO.setDownloadable(category.getDownloadable() != null
-				&& category.getDownloadable());		
+
+		categoryDTO.setDownloadable(category.getDownloadable() == null
+				|| category.getDownloadable());
+
+		categoryDTO.setDeleted(category.getDeleted() != null
+				&& category.getDeleted());
 
 		categoryDTO.setState(category.getStatus() == null ? null : StatusEnum
 				.valueOf(category.getStatus()));
@@ -341,8 +344,10 @@ public class GrabConfigDAO {
 									.getCategory());
 				}
 				if (!buildCategoryListDTO.isEmpty()) {
-					channel2Category.put(plugin.getName(), new CategoryDTO(
-							plugin.getName(), buildCategoryListDTO));
+					CategoryDTO categoryPlugin = new CategoryDTO(
+							plugin.getName(), buildCategoryListDTO);
+					categoryPlugin.setDownloadable(false);
+					channel2Category.put(plugin.getName(), categoryPlugin);
 				}
 			}
 		}

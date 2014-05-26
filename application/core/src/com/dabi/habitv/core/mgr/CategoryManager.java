@@ -78,6 +78,8 @@ public class CategoryManager extends AbstractManager {
 						e);
 			}
 		}
+		searchCategoryPublisher.addNews(new SearchCategoryEvent(
+				SearchCategoryStateEnum.ALL_DONE));
 		return channel2Categories;
 	}
 

@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class PopinController {
 
@@ -38,6 +39,13 @@ public class PopinController {
 	private ButtonHandler cancelButtonHandler;
 
 	public void init(final Stage primaryStage) {
+		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+			
+			@Override
+			public void handle(WindowEvent event) {
+				cancelButtonHandler.onAction();
+			}
+		});		
 		cancelButton.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override

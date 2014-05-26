@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ns2:grabConfig xmlns:ns2="http://www.dabi.com/habitv/grabconfig/entities">
-    <channels>
-        <channel>
+    <plugins>
+        <plugin>
             <name>beinsport</name>
             <categories>
                 <category>
@@ -153,9 +153,8 @@
                     <configuration/>
                 </category>
             </categories>
-            <status>0</status>
-        </channel>
-        <channel>
+        </plugin>
+        <plugin>
             <name>lequipe</name>
             <categories>
                 <category>
@@ -574,9 +573,8 @@
                     <configuration/>
                 </category>
             </categories>
-            <status>0</status>
-        </channel>
-        <channel>
+        </plugin>
+        <plugin>
             <name>rss</name>
             <categories>
                 <category>
@@ -833,9 +831,8 @@
                     <configuration/>
                 </category>
             </categories>
-            <status>0</status>
-        </channel>
-        <channel>
+        </plugin>
+        <plugin>
             <name>arte</name>
             <categories>
                 <category>
@@ -1184,9 +1181,8 @@
                     <configuration/>
                 </category>
             </categories>
-            <status>0</status>
-        </channel>
-        <channel>
+        </plugin>
+        <plugin>
             <name>pluzz</name>
             <categories>
                 <category>
@@ -21624,9 +21620,8 @@
                     <configuration/>
                 </category>
             </categories>
-            <status>0</status>
-        </channel>
-        <channel>
+        </plugin>
+        <plugin>
             <name>m6w9</name>
             <categories>
                 <category>
@@ -24523,9 +24518,8 @@
                     <configuration/>
                 </category>
             </categories>
-            <status>0</status>
-        </channel>
-        <channel>
+        </plugin>
+        <plugin>
             <name>d8</name>
             <categories>
                 <category>
@@ -26385,9 +26379,8 @@
                     <configuration/>
                 </category>
             </categories>
-            <status>0</status>
-        </channel>
-        <channel>
+        </plugin>
+        <plugin>
             <name>d17</name>
             <categories>
                 <category>
@@ -27175,9 +27168,8 @@
                     <configuration/>
                 </category>
             </categories>
-            <status>0</status>
-        </channel>
-        <channel>
+        </plugin>
+        <plugin>
             <name>tvSubtitles</name>
             <categories>
                 <category>
@@ -39741,9 +39733,8 @@
                     <configuration/>
                 </category>
             </categories>
-            <status>0</status>
-        </channel>
-        <channel>
+        </plugin>
+        <plugin>
             <name>tmc</name>
             <categories>
                 <category>
@@ -40396,9 +40387,8 @@
                     <configuration/>
                 </category>
             </categories>
-            <status>0</status>
-        </channel>
-        <channel>
+        </plugin>
+        <plugin>
             <name>nrj12</name>
             <categories>
                 <category>
@@ -41062,9 +41052,8 @@
                     <configuration/>
                 </category>
             </categories>
-            <status>0</status>
-        </channel>
-        <channel>
+        </plugin>
+        <plugin>
             <name>canalPlus</name>
             <categories>
                 <category>
@@ -43801,9 +43790,8 @@
                     <configuration/>
                 </category>
             </categories>
-            <status>0</status>
-        </channel>
-        <channel>
+        </plugin>
+        <plugin>
             <name>tf1</name>
             <categories>
                 <category>
@@ -44247,7 +44235,6 @@
                     <configuration/>
                 </category>
             </categories>
-            <status>0</status>
-        </channel>
-    </channels>
+        </plugin>
+    </plugins>
 </ns2:grabConfig>
