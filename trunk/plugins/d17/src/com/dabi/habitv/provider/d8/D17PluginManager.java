@@ -125,6 +125,7 @@ public class D17PluginManager extends BasePluginWithProxy implements
 			final String name = link.text();
 			final CategoryDTO categoryDTO = new CategoryDTO(D17Conf.NAME, name,
 					url, D17Conf.EXTENSION);
+			categoryDTO.setDownloadable(true);
 			categories.add(categoryDTO);
 
 		}

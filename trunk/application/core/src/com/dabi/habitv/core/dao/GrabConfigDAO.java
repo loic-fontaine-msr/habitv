@@ -196,10 +196,15 @@ public class GrabConfigDAO {
 		categoryDTO = new CategoryDTO(channelName, category.getName(),
 				category.getId(), getInclude(category), getExclude(category),
 				category.getExtension());
+		
 		categoryDTO.setSelected(category.getDownload() != null
 				&& category.getDownload());
+		
 		categoryDTO.setTemplate(category.getTemplate() != null
 				&& category.getTemplate());
+		
+		categoryDTO.setDownloadable(category.getDownloadable() != null
+				&& category.getDownloadable());		
 
 		categoryDTO.setState(category.getStatus() == null ? null : StatusEnum
 				.valueOf(category.getStatus()));

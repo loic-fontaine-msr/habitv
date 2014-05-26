@@ -36,13 +36,15 @@ public class CategoryDTO implements Comparable<CategoryDTO>, Serializable {
 
 	private final Map<String, String> parameters = new HashMap<>();
 
-	private boolean selected;
+	private boolean selected = false;
 
 	private boolean template;
 
 	private boolean deleted;
-	
+
 	private StatusEnum state;
+
+	private boolean downloadable;
 
 	/**
 	 * Full Constructor
@@ -291,7 +293,9 @@ public class CategoryDTO implements Comparable<CategoryDTO>, Serializable {
 	}
 
 	public void setSelected(boolean selected) {
-		this.selected = selected;
+		if (downloadable) {
+			this.selected = selected;
+		}
 	}
 
 	public boolean isTemplate() {
@@ -335,6 +339,14 @@ public class CategoryDTO implements Comparable<CategoryDTO>, Serializable {
 
 	public void setState(StatusEnum state) {
 		this.state = state;
+	}
+
+	public boolean isDownloadable() {
+		return downloadable;
+	}
+
+	public void setDownloadable(boolean downloadable) {
+		this.downloadable = downloadable;
 	}
 
 }

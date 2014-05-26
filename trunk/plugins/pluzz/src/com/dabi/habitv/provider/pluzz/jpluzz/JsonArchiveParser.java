@@ -89,6 +89,7 @@ public class JsonArchiveParser {
 		final List<Object> programmes = (List<Object>) userData.get("programmes");
 		for (final Object objectProgramme : programmes) {
 			final CategoryDTO category = loadCategory((Map<String, Object>) objectProgramme);
+			category.setDownloadable(true);
 			loadEpisode((Map<String, Object>) objectProgramme, category);
 		}
 	}

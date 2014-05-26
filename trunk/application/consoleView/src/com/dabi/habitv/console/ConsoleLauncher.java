@@ -1,13 +1,7 @@
 package com.dabi.habitv.console;
 
-import org.apache.log4j.Logger;
-
-import com.dabi.habitv.core.config.HabitTvConf;
-import com.dabi.habitv.core.config.UserConfig;
-import com.dabi.habitv.core.config.XMLUserConfig;
-import com.dabi.habitv.core.dao.GrabConfigDAO;
-import com.dabi.habitv.core.mgr.CoreManager;
-import com.dabi.habitv.framework.plugin.utils.ProcessingThreads;
+import java.text.ParseException;
+import java.util.logging.Logger;
 
 public final class ConsoleLauncher { // NO_UCD (unused code)
 
@@ -19,6 +13,31 @@ public final class ConsoleLauncher { // NO_UCD (unused code)
 
 	public static void main(final String[] args) throws InterruptedException {
 		try {
+//			Options options = new Options();
+//			Option logfile   = OptionBuilder.withArgName( "file" )
+//                    .hasArg()
+//                    .withDescription(  "use given file for log" )
+//                    .create( "logfile" );			
+//			
+//			options.addOption(logfile);
+			
+//		    // create the parser
+//		    CommandLineParser parser = new DefaultParser();
+//		    try {
+//		        // parse the command line arguments
+//		        CommandLine line = parser.parse( options, args );
+//		    }
+//		    catch( ParseException exp ) {
+//		        // oops, something went wrong
+//		        System.err.println( "Parsing failed.  Reason: " + exp.getMessage() );
+//		    }		
+			
+//			// has the buildfile argument been passed?
+//			if( line.hasOption( "buildfile" ) ) {
+//			    // initialise the member variable
+//			    this.buildfile = line.getOptionValue( "buildfile" );
+//			}			
+			
 			final UserConfig config = XMLUserConfig.initConfig();
 
 			final GrabConfigDAO grabConfigDAO = new GrabConfigDAO(HabitTvConf.GRABCONFIG_XML_FILE);
