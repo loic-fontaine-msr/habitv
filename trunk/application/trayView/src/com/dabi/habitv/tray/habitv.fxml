@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 
 <VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
-  <children><TabPane minHeight="480.0" minWidth="640.0" prefHeight="1024.0" prefWidth="1280.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+  <children><TabPane minHeight="480.0" minWidth="640.0" prefHeight="600.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
   <tabs>
     <Tab fx:id="downloadTab" text="Téléchargement">
       <content>
@@ -59,7 +59,7 @@
 </HBox.margin></Button>
 </children>
 <BorderPane.margin>
-<Insets />
+<Insets top="10.0" />
 </BorderPane.margin></HBox>
 </top>
 <bottom><HBox maxHeight="30.0" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">

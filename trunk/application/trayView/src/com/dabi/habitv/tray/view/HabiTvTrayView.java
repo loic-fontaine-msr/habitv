@@ -206,7 +206,7 @@ public final class HabiTvTrayView implements CoreSubscriber {
 		switch (event.getState()) {
 		case BUILDING_CATEGORIES:
 			trayIcon.displayMessage(
-					Messages.getString("HabiTvTrayView.35"), Messages.getString("HabiTvTrayView.36") + event.getChannel(), TrayIcon.MessageType.INFO); //$NON-NLS-1$ //$NON-NLS-2$
+					Messages.getString("HabiTvTrayView.35"), Messages.getString("HabiTvTrayView.36") + event.getPlugin(), TrayIcon.MessageType.INFO); //$NON-NLS-1$ //$NON-NLS-2$
 			trayIcon.setImage(animatedImage);
 			break;
 		case DONE:

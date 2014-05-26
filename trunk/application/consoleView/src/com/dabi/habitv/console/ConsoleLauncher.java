@@ -1,7 +1,19 @@
 package com.dabi.habitv.console;
 
-import java.text.ParseException;
-import java.util.logging.Logger;
+import org.apache.commons.cli.BasicParser;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.OptionBuilder;
+import org.apache.commons.cli.Options;
+import org.apache.log4j.Logger;
+
+import com.dabi.habitv.core.config.HabitTvConf;
+import com.dabi.habitv.core.config.UserConfig;
+import com.dabi.habitv.core.config.XMLUserConfig;
+import com.dabi.habitv.core.dao.GrabConfigDAO;
+import com.dabi.habitv.core.mgr.CoreManager;
+import com.dabi.habitv.framework.plugin.utils.ProcessingThreads;
 
 public final class ConsoleLauncher { // NO_UCD (unused code)
 
@@ -13,34 +25,28 @@ public final class ConsoleLauncher { // NO_UCD (unused code)
 
 	public static void main(final String[] args) throws InterruptedException {
 		try {
-//			Options options = new Options();
-//			Option logfile   = OptionBuilder.withArgName( "file" )
-//                    .hasArg()
-//                    .withDescription(  "use given file for log" )
-//                    .create( "logfile" );			
-//			
-//			options.addOption(logfile);
-			
-//		    // create the parser
-//		    CommandLineParser parser = new DefaultParser();
-//		    try {
-//		        // parse the command line arguments
-//		        CommandLine line = parser.parse( options, args );
-//		    }
-//		    catch( ParseException exp ) {
-//		        // oops, something went wrong
-//		        System.err.println( "Parsing failed.  Reason: " + exp.getMessage() );
-//		    }		
-			
-//			// has the buildfile argument been passed?
-//			if( line.hasOption( "buildfile" ) ) {
-//			    // initialise the member variable
-//			    this.buildfile = line.getOptionValue( "buildfile" );
-//			}			
-			
+			Options options = new Options();
+			Option logfile = OptionBuilder.withArgName("file").hasArg()
+					.withDescription("use given file for log")
+					.create("logfile");
+
+			options.addOption(logfile);
+
+			// create the parser
+			CommandLineParser parser = new BasicParser();
+			// parse the command line arguments
+			CommandLine line = parser.parse(options, args);
+
+			// has the buildfile argument been passed?
+			if (line.hasOption("buildfile")) {
+				// initialise the member variable
+				line.getOptionValue("buildfile");
+			}
+
 			final UserConfig config = XMLUserConfig.initConfig();
 
-			final GrabConfigDAO grabConfigDAO = new GrabConfigDAO(HabitTvConf.GRABCONFIG_XML_FILE);
+			final GrabConfigDAO grabConfigDAO = new GrabConfigDAO(
+					HabitTvConf.GRABCONFIG_XML_FILE);
 			final CoreManager coreManager = new CoreManager(config);
 			if (config.updateOnStartup()) {
 				coreManager.update();

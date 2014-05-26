@@ -26,7 +26,7 @@ public class Popin extends Application {
 		Platform.setImplicitExit(false);
 		primaryStage.getIcons().add(
 				new Image(ClassLoader.getSystemResource("fixe.gif")
-						.openStream()));		
+						.openStream()));
 		try {
 			// primaryStage.setTitle("habiTv");
 			FXMLLoader fxmlLoader = new FXMLLoader(

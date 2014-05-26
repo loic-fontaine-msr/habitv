@@ -10,6 +10,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import com.dabi.habitv.api.plugin.exception.TechnicalException;
 import com.dabi.habitv.tray.controller.WindowController;
 import com.dabi.habitv.tray.model.HabitTvViewManager;
 
@@ -49,7 +50,7 @@ public class HabitvViewMain extends Application {
 			primaryStage.show();
 			controller.init(manager, primaryStage);
 		} catch (IOException exception) {
-			throw new RuntimeException(exception);
+			throw new TechnicalException(exception);
 		}
 	}
 

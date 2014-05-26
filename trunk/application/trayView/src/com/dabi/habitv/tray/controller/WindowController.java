@@ -18,6 +18,8 @@ import javafx.stage.Stage;
 
 import com.dabi.habitv.api.plugin.dto.CategoryDTO;
 import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
+import com.dabi.habitv.tray.Popin;
+import com.dabi.habitv.tray.PopinController.ButtonHandler;
 import com.dabi.habitv.tray.model.HabitTvViewManager;
 import com.dabi.habitv.tray.view.HabiTvTrayView;
 
@@ -78,7 +80,7 @@ public class WindowController {
 
 	@FXML
 	private TreeView<CategoryDTO> toDLTree;
-	
+
 	@FXML
 	private ListView<EpisodeDTO> episodeListView;
 
@@ -106,35 +108,53 @@ public class WindowController {
 
 	public void init(final HabitTvViewManager manager, Stage primaryStage)
 			throws IOException {
-		downloadTab.setGraphic(new ImageView(new Image((ClassLoader
-				.getSystemResource("dl.png").openStream()))));
-		toDownloadTab.setGraphic(new ImageView(new Image((ClassLoader
-				.getSystemResource("adl.png").openStream()))));
-		configTab.setGraphic(new ImageView(new Image((ClassLoader
-				.getSystemResource("config.png").openStream()))));
 
-		final ViewController controller = new ViewController(manager,
-				primaryStage);
-		final HabiTvTrayView view = new HabiTvTrayView(controller);
-		manager.attach(view);
-		manager.attach(controller);
+		try {
 
-		DownloadController downloadController = new DownloadController(
-				mainProgress, searchButton, clearButton, retryExportButton,
-				clearExportButton, downloadingBox, downloadDirButton,
-				indexButton, errorBUtton);
-		manager.attach(downloadController);
-		downloadController.init(controller, manager, primaryStage);
+			downloadTab.setGraphic(new ImageView(new Image((ClassLoader
+					.getSystemResource("dl.png").openStream()))));
+			toDownloadTab.setGraphic(new ImageView(new Image((ClassLoader
+					.getSystemResource("adl.png").openStream()))));
+			configTab.setGraphic(new ImageView(new Image((ClassLoader
+					.getSystemResource("config.png").openStream()))));
 
-		ToDownloadController toDlController = new ToDownloadController(
-				searchCategoryProgress, refreshCategoryButton,
-				cleanCategoryButton, toDLTree, indicationText, episodeListView);
-		toDlController.init(controller, manager,primaryStage);
-		manager.attach(toDlController);
+			final ViewController controller = new ViewController(manager,
+					primaryStage);
+			final HabiTvTrayView view = new HabiTvTrayView(controller);
+			manager.attach(view);
+			manager.attach(controller);
 
-		new ConfigController(downloadOuput, nbrMaxAttempts, daemonCheckTimeSec,
-				autoUpdate).init(controller, manager, primaryStage);
+			DownloadController downloadController = new DownloadController(
+					mainProgress, searchButton, clearButton, retryExportButton,
+					clearExportButton, downloadingBox, downloadDirButton,
+					indexButton, errorBUtton);
+			manager.attach(downloadController);
+			downloadController.init(controller, manager, primaryStage);
 
-		controller.startDownloadCheckDemon();
+			ToDownloadController toDlController = new ToDownloadController(
+					searchCategoryProgress, refreshCategoryButton,
+					cleanCategoryButton, toDLTree, indicationText,
+					episodeListView);
+			toDlController.init(controller, manager, primaryStage);
+			manager.attach(toDlController);
+
+			new ConfigController(downloadOuput, nbrMaxAttempts,
+					daemonCheckTimeSec, autoUpdate).init(controller, manager,
+					primaryStage);
+
+			controller.startDownloadCheckDemon();
+
+		} catch (Exception e) {
+			ButtonHandler buttonHandler = new ButtonHandler() {
+
+				@Override
+				public void onAction() {
+					System.exit(1);
+				}
+			};
+			(new Popin())
+					.setOkButtonHandler(buttonHandler).setCancelButtonHandler(buttonHandler)
+					.show("Erreur", "Une erreur est survenue habiTv va fermer.\n Consulter la log pour plus de détails.");
+		}
 	}
 }
