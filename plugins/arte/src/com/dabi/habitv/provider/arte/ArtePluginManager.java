@@ -197,8 +197,10 @@ public class ArtePluginManager extends BasePluginWithProxy implements
 		while (matcher.find()) {
 			identifier = findShowIdentifier(matcher.group(1));
 			categoryName = matcher.group(2);
-			categoryDTOs.add(new CategoryDTO(ArteConf.NAME, categoryName,
-					identifier, FrameworkConf.UTF8));
+			CategoryDTO category = new CategoryDTO(ArteConf.NAME, categoryName,
+					identifier, FrameworkConf.UTF8);
+			category.setDownloadable(true);
+			categoryDTOs.add(category);
 		}
 		return categoryDTOs;
 	}

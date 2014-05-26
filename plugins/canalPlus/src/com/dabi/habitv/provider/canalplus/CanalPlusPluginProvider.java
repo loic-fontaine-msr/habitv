@@ -83,7 +83,9 @@ public class CanalPlusPluginProvider extends BasePluginWithProxy implements Plug
 
 		final MEAS meas = (MEAS) RetrieverUtils.unmarshalInputStream(getInputStreamFromUrl(CanalPlusConf.MEA_URL + identifier), CanalPlusConf.MEA_PACKAGE_NAME, getClassLoader());
 		for (final MEA mea : meas.getMEA()) {
-			categories.add(new CategoryDTO(CanalPlusConf.NAME, mea.getRUBRIQUAGE().getRUBRIQUE(), String.valueOf(mea.getID()), getExtension()));
+			CategoryDTO category = new CategoryDTO(CanalPlusConf.NAME, mea.getRUBRIQUAGE().getRUBRIQUE(), String.valueOf(mea.getID()), getExtension());
+			category.setDownloadable(true);
+			categories.add(category);
 		}
 
 		return categories;

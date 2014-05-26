@@ -100,14 +100,18 @@ public class NRJ12PluginManager extends BasePluginWithProxy implements
 			final String identifier = anchor.attr("title");
 			if (identifier != "") {
 				// System.out.println("identifier=" + identifier.toString());
-				categories.add(new CategoryDTO(NRJ12Conf.NAME, identifier,
-						identifier, NRJ12Conf.EXTENSION));
+				CategoryDTO categoryDTO = new CategoryDTO(NRJ12Conf.NAME, identifier,
+						identifier, NRJ12Conf.EXTENSION);
+				categoryDTO.setDownloadable(true);
+				categories.add(categoryDTO);
 			}
 			i += 1;
 		}
 		// Used for other main categories (e.g. "Film/Téléfilm", etc.):
-		categories.add(new CategoryDTO(NRJ12Conf.NAME, "_other_", "_other_",
-				NRJ12Conf.EXTENSION));
+		CategoryDTO otherCategory = new CategoryDTO(NRJ12Conf.NAME, "_other_", "_other_",
+				NRJ12Conf.EXTENSION);
+		otherCategory.setDownloadable(true);
+		categories.add(otherCategory);
 		return categories;
 	}
 

@@ -1,4 +1,4 @@
-boolen téléchargeable
+boolen téléchargeable IHM
 
 gérer les erreurs de lecture
 

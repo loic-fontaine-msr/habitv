@@ -85,7 +85,21 @@ public class FilePluginManager extends BasePluginWithProxy implements
 						"Set the downloader here  :aria2, youtube, rtmpdump (default aria2)");
 		categoryDTO.addParameter(FileConf.DELETE_LOADED_EP, "true");
 		categoryList.add(categoryDTO);
+		
+		addCategoryTemplate(
+				categoryList,
+				FileConf.NAME,
+				"§ID§||Saisissez l'url d'un fichier en local \n où se trouve des urls à télécharger \"C:/temp/file.txt\"");
+		
 		return categoryList;
+	}
+	
+	private void addCategoryTemplate(final Set<CategoryDTO> categoryList,
+			String name, String id) {
+		final CategoryDTO categoryDTO = new CategoryDTO(FileConf.NAME, name, id,
+				null, null, null);
+		categoryDTO.setTemplate(true);
+		categoryList.add(categoryDTO);
 	}
 
 	@Override

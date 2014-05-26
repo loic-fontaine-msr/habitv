@@ -109,9 +109,11 @@ public class BeinSportPluginManager extends BasePluginWithProxy implements
 	@Override
 	public Set<CategoryDTO> findCategory() {
 		final Set<CategoryDTO> categoryDTOs = new HashSet<>();
-		categoryDTOs.add(new CategoryDTO(BeinSportConf.VIDEOS_CATEGORY,
+		CategoryDTO videoCategory = new CategoryDTO(BeinSportConf.VIDEOS_CATEGORY,
 				BeinSportConf.VIDEOS_CATEGORY, BeinSportConf.VIDEOS_CATEGORY,
-				BeinSportConf.EXTENSION));
+				BeinSportConf.EXTENSION);
+		videoCategory.setDownloadable(true);
+		categoryDTOs.add(videoCategory);
 		final CategoryDTO replayCategory = new CategoryDTO(
 				BeinSportConf.REPLAY_CATEGORY, BeinSportConf.REPLAY_CATEGORY,
 				BeinSportConf.REPLAY_CATEGORY, BeinSportConf.EXTENSION);
@@ -181,8 +183,10 @@ public class BeinSportPluginManager extends BasePluginWithProxy implements
 			final Element aHref = h2.child(0);
 			final String href = aHref.attr("href");
 			final String title = aHref.text();
-			categories.add(new CategoryDTO(BeinSportConf.NAME, title, href,
-					BeinSportConf.EXTENSION));
+			CategoryDTO category = new CategoryDTO(BeinSportConf.NAME, title, href,
+					BeinSportConf.EXTENSION);
+			category.setDownloadable(true);
+			categories.add(category);
 		}
 		return categories;
 	}

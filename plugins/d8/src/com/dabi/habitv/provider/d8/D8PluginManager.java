@@ -163,6 +163,7 @@ public class D8PluginManager extends BasePluginWithProxy implements
 						final String name = aElement.child(1).text();
 						final CategoryDTO categoryDTO = new CategoryDTO(
 								D8Conf.NAME, name, url, D8Conf.EXTENSION);
+						categoryDTO.setDownloadable(true);
 						categories.add(categoryDTO);
 					}
 				}

@@ -3,6 +3,8 @@ package com.dabi.habitv.core.task;
 import java.util.Collection;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
+
 import com.dabi.habitv.api.plugin.api.PluginProviderInterface;
 import com.dabi.habitv.api.plugin.dto.CategoryDTO;
 import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
@@ -14,6 +16,7 @@ import com.dabi.habitv.core.dao.DownloadedDAO;
 import com.dabi.habitv.core.event.RetreiveEvent;
 import com.dabi.habitv.core.event.SearchEvent;
 import com.dabi.habitv.core.event.SearchStateEnum;
+import com.dabi.habitv.core.mgr.CoreManager;
 import com.dabi.habitv.utils.FilterUtils;
 
 public class SearchTask extends AbstractTask<Object> {
@@ -31,6 +34,8 @@ public class SearchTask extends AbstractTask<Object> {
 	private final DownloaderPluginHolder downloader;
 
 	private final ExporterPluginHolder exporter;
+
+	private static final Logger LOG = Logger.getLogger(SearchTask.class);
 
 	public SearchTask(final PluginProviderInterface provider,
 			final Set<CategoryDTO> categoryDTOs, final TaskAdder taskAdder,
@@ -85,55 +90,63 @@ public class SearchTask extends AbstractTask<Object> {
 			if (!category.getSubCategories().isEmpty()) {
 				findEpisodeByCategories(category.getSubCategories());
 			} else {
-				// dao to find dowloaded episodes
-				final DownloadedDAO dlDAO = buildDownloadDAO(category);
-				final Set<String> dlFiles = dlDAO.findDownloadedFiles();
-				final boolean indexCreated = dlDAO.isIndexCreated();
-				// dao to find error download episodes
-				final DlErrorDAO errorDAO = new DlErrorDAO();
-				final Set<String> errorFiles = errorDAO
-						.findDownloadedErrorFiles();
+				if (category.isDownloadable()) {
+					// dao to find dowloaded episodes
+					final DownloadedDAO dlDAO = buildDownloadDAO(category);
+					final Set<String> dlFiles = dlDAO.findDownloadedFiles();
+					final boolean indexCreated = dlDAO.isIndexCreated();
+					// dao to find error download episodes
+					final DlErrorDAO errorDAO = new DlErrorDAO();
+					final Set<String> errorFiles = errorDAO
+							.findDownloadedErrorFiles();
 
-				// get list of downloadable episodes
-				final Set<EpisodeDTO> episodeList = provider
-						.findEpisode(category);
-				if (!indexCreated && !episodeList.isEmpty()) {
-					LOG.info("Creating index for " + category.getName());
-					searchPublisher.addNews(new SearchEvent(provider.getName(),
-							category.getName(), SearchStateEnum.BUILD_INDEX));
-				}
-				// reinit index to purge non available files from index
-				// dlDAO.initIndex(); provider may re add an old dl file, so we
-				// shoudl'nt reinit index
-				// filter episode lister by include/exclude and already
-				// downloaded
-				boolean isDownloaded;
-				boolean isErrorDownloaded;
-				int i = 0;
-				for (final EpisodeDTO episode : episodeList) {
-					episode.setNum(i);
-					isDownloaded = dlFiles.contains(episode.getName());
-					isErrorDownloaded = errorFiles.contains(episode
-							.getFullName());
-					if (indexCreated
-							&& FilterUtils.filterByIncludeExcludeAndDownloaded(
-									episode, category.getInclude(),
-									category.getExclude()) && !isDownloaded
-							&& !isErrorDownloaded) {
-						// producer download the file
-						taskAdder
-								.addRetreiveTask(new RetrieveTask(episode,
-										retreivePublisher, taskAdder, exporter,
-										provider, downloader, dlDAO));
-
-					} else {
-						// if index has not been created the first run will only
-						// fill this file
-						if (!isDownloaded && !isErrorDownloaded) {
-							dlDAO.addDownloadedFiles(episode);
-						}
+					// get list of downloadable episodes
+					final Set<EpisodeDTO> episodeList = provider
+							.findEpisode(category);
+					if (!indexCreated && !episodeList.isEmpty()) {
+						LOG.info("Creating index for " + category.getName());
+						searchPublisher.addNews(new SearchEvent(provider
+								.getName(), category.getName(),
+								SearchStateEnum.BUILD_INDEX));
 					}
-					i++;
+					// reinit index to purge non available files from index
+					// dlDAO.initIndex(); provider may re add an old dl file, so
+					// we
+					// shoudl'nt reinit index
+					// filter episode lister by include/exclude and already
+					// downloaded
+					boolean isDownloaded;
+					boolean isErrorDownloaded;
+					int i = 0;
+					for (final EpisodeDTO episode : episodeList) {
+						episode.setNum(i);
+						isDownloaded = dlFiles.contains(episode.getName());
+						isErrorDownloaded = errorFiles.contains(episode
+								.getFullName());
+						if (indexCreated
+								&& FilterUtils
+										.filterByIncludeExcludeAndDownloaded(
+												episode, category.getInclude(),
+												category.getExclude())
+								&& !isDownloaded && !isErrorDownloaded) {
+							// producer download the file
+							taskAdder.addRetreiveTask(new RetrieveTask(episode,
+									retreivePublisher, taskAdder, exporter,
+									provider, downloader, dlDAO));
+
+						} else {
+							// if index has not been created the first run will
+							// only
+							// fill this file
+							if (!isDownloaded && !isErrorDownloaded) {
+								dlDAO.addDownloadedFiles(episode);
+							}
+						}
+						i++;
+					}
+				} else {
+					LOG.info("La catégorie n'est pas téléchargeable : "
+							+ category);
 				}
 			}
 		}
