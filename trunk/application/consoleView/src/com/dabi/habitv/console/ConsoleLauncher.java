@@ -20,7 +20,6 @@ public final class ConsoleLauncher { // NO_UCD (unused code)
 
 	}
 
-	@SuppressWarnings({ "static-access", "unchecked" })
 	public static void main(final String[] args) throws InterruptedException,
 			ParseException {
 		if (args.length > 0 && args[0].startsWith("http://")) {//FIXME FrameworkConf.HTTP_PREFIX
@@ -54,19 +53,19 @@ public final class ConsoleLauncher { // NO_UCD (unused code)
 				episodeIdList = episodeOption.getValuesList();
 			}
 
-			List<String> categorieIdList = null;
-			if (!categories.getValuesList().isEmpty()) {
-				categorieIdList = categories.getValuesList();
-			}
-
-			List<String> pluginList = null;
-			if (!plugins.getValuesList().isEmpty()) {
-				pluginList = plugins.getValuesList();
-			}
+//			List<String> categorieIdList = null;
+//			if (!categories.getValuesList().isEmpty()) {
+//				categorieIdList = categories.getValuesList();
+//			}
+//
+//			List<String> pluginList = null;
+//			if (!plugins.getValuesList().isEmpty()) {
+//				pluginList = plugins.getValuesList();
+//			}
 
 			System.out.println(episodeIdList);
-			System.out.println(categorieIdList);
-			System.out.println(pluginList);
+//			System.out.println(categorieIdList);
+//			System.out.println(pluginList);
 			System.out.println(options);
 		}
 		

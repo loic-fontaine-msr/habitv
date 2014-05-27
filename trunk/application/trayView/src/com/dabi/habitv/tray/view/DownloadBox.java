@@ -214,7 +214,7 @@ public class DownloadBox extends BorderPane {
 	}
 
 	public void unSelect() {
-		setStyle("");
+		setStyle("-fx-fill: white;-fx-background-color: white;");
 		categoryLabel.setStyle("");
 		episodeLabel.setStyle("");
 		if (currentLabelWidget != null) {

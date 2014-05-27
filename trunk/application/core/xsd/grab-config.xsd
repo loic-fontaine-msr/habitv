@@ -39,7 +39,7 @@
 			<element name="extension" type="string" maxOccurs="1"
 				minOccurs="1">
 			</element>
-			<element name="status" type="string" maxOccurs="1" minOccurs="0">
+			<element name="status" type="integer" maxOccurs="1" minOccurs="0">
 			</element>
 			<element name="parameter" type="tns:parameter" maxOccurs="unbounded"
 				minOccurs="0"></element>

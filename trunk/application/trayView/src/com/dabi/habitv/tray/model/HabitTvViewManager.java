@@ -3,6 +3,7 @@ package com.dabi.habitv.tray.model;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Observable;
+import java.util.Set;
 
 import javax.xml.bind.JAXBException;
 
@@ -217,6 +218,10 @@ public class HabitTvViewManager extends Observable {
 
 	public Collection<EpisodeDTO> findEpisodeByCategory(CategoryDTO category) {
 		return coreManager.findEpisodeByCategory(category);
+	}
+
+	public Set<String> findDownloadedEpisodes(CategoryDTO category) {
+		return coreManager.findDownloadedEpisodes(category);
 	}
 
 }

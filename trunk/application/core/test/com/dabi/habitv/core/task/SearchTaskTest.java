@@ -63,15 +63,19 @@ public class SearchTaskTest {
 	public void init(final boolean toFail) {
 		final CategoryDTO category1 = new CategoryDTO("channel", "category1",
 				"identifier1", "extension");
+		category1.setDownloadable(true);
 		category1.getInclude().add("episode1.*");
 		final CategoryDTO subCategory = new CategoryDTO("channel",
 				"subcategory1", "subidentifier1", "subextension");
+		subCategory.setDownloadable(true);
 		category1.addSubCategory(subCategory);
 		final CategoryDTO category2 = new CategoryDTO("channel", "category2",
 				"identifier2", "extension2");
+		category2.setDownloadable(true);
 		final CategoryDTO category3 = new CategoryDTO("channel", "category3",
 				"identifier3", "extension3");
 		category3.getExclude().add("episodeExcluded");
+		category3.setDownloadable(true);
 		String url = "videoUrl";
 		if (toFail) {
 			url = "1";

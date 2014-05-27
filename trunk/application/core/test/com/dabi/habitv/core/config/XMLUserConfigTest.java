@@ -22,8 +22,10 @@ public class XMLUserConfigTest {
 
 	@Test
 	public void testInitConfig() throws IOException {
-		Files.copy(new File("testOldConfig.xml").toPath(), new File(
-				"config.xml").toPath());
+		File configFile = new File(
+				"config.xml");
+		configFile.delete();
+		Files.copy(new File("testOldConfig.xml").toPath(), configFile.toPath());
 		UserConfig config = XMLUserConfig.initConfig();
 		assertNotNull(config);
 	}

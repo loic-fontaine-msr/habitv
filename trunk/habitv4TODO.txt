@@ -1,7 +1,3 @@
-recherche tree
-
-gérer les erreurs de lecture
-
 repasser sur tous les plugins pour gérer le dl par url web, téléchargement manuel
 
 téléchargement unitaire CLI
@@ -10,9 +6,6 @@ téléchargement unitaire CLI
  - update grabconfig
  - clean grabconfig
  - check, dl & stop
-
-
-export afficher/masquer les boutons 
 
 tester linux
 
