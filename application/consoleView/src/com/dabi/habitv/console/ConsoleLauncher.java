@@ -30,84 +30,18 @@ public final class ConsoleLauncher { // NO_UCD (unused code)
 			
 			Options options = new Options();
 			
-			options.addOption( "a", "all", false, "do not hide entries starting with ." );
-			options.addOption( "A", "almost-all", false, "do not list implied . and .." );
+			options.addOption( "d", "deamon", false, "Lancement en mode démon avec scan automatique des épisodes à télécharger." );
+			options.addOption( "h", "checkAndDL", false, "Recherche des épisodes et lance les téléchargements." );
+			options.addOption( "u", "updateGrabConfig", false, "Met à jour le fichier des épisodes à télécharger." );
+			options.addOption( "k", "cleanGrabConfig", false, "Purge le fichier des épisodes à télécharger des catégories périmées." );
+			options.addOption( "le", "listEpisode", false, "Met à jour le fichier des épisodes à télécharger." );
+			options.addOption( "lc", "listCategory", false, "Recherche et liste les catégories des plugins." );
+			options.addOption( "t", "testPlugin", false, "Teste le plugin avec un téléchargement aléatoire." );
+			options.addOption( "x", "runExport", false, "Reprise des exports en échec." );
 			
-			
-			Option deamon = OptionBuilder
-					.withArgName("deamon")
-					.withDescription(
-							"Lancement en mode démon avec scan automatique des épisodes à télécharger.")
-					.create("deamon");
-			options.addOption(deamon);
-
-			Option checkAndDL = OptionBuilder
-					.withArgName("checkAndDL")
-					.withDescription(
-							"Recherche des épisodes et lance les téléchargements.")
-					.create("checkAndDL");
-			options.addOption(checkAndDL);
-
-			Option updateGrabConfig = OptionBuilder
-					.withArgName("updateGrabConfig")
-					.withDescription(
-							"Met à jour le fichier des épisodes à télécharger.")
-					.create("updateGrabConfig");
-			options.addOption(updateGrabConfig);
-
-			Option cleanGrabConfig = OptionBuilder
-					.withArgName("cleanGrabConfig")
-					.withDescription(
-							"Purge le fichier des épisodes à télécharger des catégories périmées.")
-					.create("cleanGrabConfig");
-			options.addOption(cleanGrabConfig);
-
-			Option listEpisode = OptionBuilder.withArgName("listEpisode")
-					.withDescription("Liste les épisodes d'une catégorie.")
-					.create("listEpisode");
-			options.addOption(listEpisode);
-
-			Option listCategory = OptionBuilder
-					.withArgName("listCategory")
-					.withDescription(
-							"Recherche et liste les catégories des plugins.")
-					.create("listCategory");
-			options.addOption(listCategory);
-
-			Option checkplugin = OptionBuilder
-					.withArgName("checkplugin")
-					.withDescription(
-							"Teste le plugin avec un téléchargement aléatoire.")
-					.create("checkplugin");
-			options.addOption(checkplugin);
-
-			Option runExport = OptionBuilder.withArgName("runExport")
-					.withDescription("Reprise des exports en échec.").create("runExport");
-			options.addOption(runExport);
-
-			Option plugins = OptionBuilder
-					.withArgName("p")
-					.hasOptionalArgs()
-					.withDescription(
-							"Pour lister les plugins concernés par la commande, si vide tous les plugins le seront.")
-					.create("p");
-			options.addOption(runExport);
-
-			Option categories = OptionBuilder
-					.withArgName("c")
-					.hasOptionalArgs()
-					.withDescription(
-							"Pour lister les catégories concernées par la commande, si vide tous les catégories le seront.")
-					.create("c");
-
-			Option episodes = OptionBuilder
-					.withArgName("e")
-					.hasOptionalArgs()
-					.withDescription(
-							"Pour lister les identifiants (URL)  d'épisodes concernés par la commande, si vide tous les épisodes le seront.")
-					.create("e");
-
-			options.addOption(runExport);
+			options.addOption( "p", "plugins", false, "Pour lister les plugins concernés par la commande, si vide tous les plugins le seront.");
+			options.addOption( "c", "categories", false, "Pour lister les catégories concernées par la commande, si vide tous les catégories le seront.");
+			Options episodes = options.addOption( "e", "episodes ", false, "Pour lister les identifiants (URL)  d'épisodes concernés par la commande, si vide tous les épisodes le seront.");
 
 			// create the parser
 			CommandLineParser parser = new BasicParser();
@@ -115,8 +49,9 @@ public final class ConsoleLauncher { // NO_UCD (unused code)
 			CommandLine line = parser.parse(options, args);
 
 			List<String> episodeIdList = null;
-			if (!episodes.getValuesList().isEmpty()) {
-				episodeIdList = episodes.getValuesList();
+			Option episodeOption = episodes.getOption("e");
+			if (!episodeOption.getValuesList().isEmpty()) {
+				episodeIdList = episodeOption.getValuesList();
 			}
 
 			List<String> categorieIdList = null;
