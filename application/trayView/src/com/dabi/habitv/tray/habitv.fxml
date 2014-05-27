@@ -50,12 +50,6 @@
 </HBox.margin></Button><Button fx:id="clearButton" mnemonicParsing="false" text="Effacer">
 <HBox.margin>
 <Insets left="5.0" />
-</HBox.margin></Button><Button fx:id="retryExportButton" mnemonicParsing="false" text="Relancer les exports">
-<HBox.margin>
-<Insets left="5.0" />
-</HBox.margin></Button><Button fx:id="clearExportButton" mnemonicParsing="false" text="Vider les exports">
-<HBox.margin>
-<Insets left="5.0" />
 </HBox.margin></Button>
 </children>
 <BorderPane.margin>
@@ -72,6 +66,9 @@
 </HBox.margin></Button><Button fx:id="errorBUtton" mnemonicParsing="false" text="En erreur">
 <HBox.margin>
 <Insets left="5.0" />
+</HBox.margin></Button><Button fx:id="retryExportButton" mnemonicParsing="false" text="Relancer les exports">
+<HBox.margin>
+<Insets left="5.0" />
 </HBox.margin></Button>
 </children></HBox>
 </bottom></BorderPane>
@@ -82,7 +79,7 @@
       <content>
         <AnchorPane>
 <children><BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-<top><HBox BorderPane.alignment="CENTER">
+<top><HBox maxHeight="30.0" BorderPane.alignment="CENTER">
 <children><ProgressIndicator fx:id="searchCategoryProgress" progress="0.0" /><Button fx:id="refreshCategoryButton" mnemonicParsing="false" text="Rafraichir">
 <HBox.margin>
 <Insets left="5.0" />
@@ -98,7 +95,7 @@
 <Insets top="10.0" />
 </BorderPane.margin></HBox>
 </top>
-<center><SplitPane dividerPositions="0.7" focusTraversable="true">
+<center><SplitPane dividerPositions="0.7" focusTraversable="true" maxHeight="1.7976931348623157E308">
   <items>
     <AnchorPane>
 <children><TreeView fx:id="toDLTree" editable="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" BorderPane.alignment="CENTER" />
@@ -108,7 +105,23 @@
 </children></AnchorPane>
   </items>
 </SplitPane>
+</center>
+<bottom><BorderPane maxHeight="30.0" BorderPane.alignment="CENTER">
+<right><HBox BorderPane.alignment="CENTER">
+<children><Label text="Filtrer les épisodes :">
+<HBox.margin>
+<Insets right="15.0" />
+</HBox.margin></Label><TextField fx:id="episodeFilter" />
+</children></HBox>
+</right>
+<center><HBox maxHeight="100.0" prefHeight="100.0" BorderPane.alignment="CENTER">
+<children><Label text="Filtrer les catégories :">
+<HBox.margin>
+<Insets right="15.0" />
+</HBox.margin></Label><TextField fx:id="categoryFilter" />
+</children></HBox>
 </center></BorderPane>
+</bottom></BorderPane>
 </children></AnchorPane>
       </content>
     </Tab><Tab fx:id="configTab" text="Configuration">

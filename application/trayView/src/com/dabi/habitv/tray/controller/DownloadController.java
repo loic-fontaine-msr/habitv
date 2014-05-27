@@ -14,11 +14,13 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.Tooltip;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 
 import com.dabi.habitv.api.plugin.exception.TechnicalException;
 import com.dabi.habitv.api.plugin.pub.UpdatablePluginEvent;
+import com.dabi.habitv.core.event.EpisodeStateEnum;
 import com.dabi.habitv.core.event.RetreiveEvent;
 import com.dabi.habitv.core.event.SearchCategoryEvent;
 import com.dabi.habitv.core.event.SearchEvent;
@@ -36,8 +38,6 @@ public class DownloadController extends BaseController implements
 
 	private Button retryExportButton;
 
-	private Button clearExportButton;
-
 	private VBox downloadingBox;
 
 	private Button downloadDirButton;
@@ -52,14 +52,13 @@ public class DownloadController extends BaseController implements
 
 	public DownloadController(ProgressIndicator mainProgress,
 			Button searchButton, Button clearButton, Button retryExportButton,
-			Button clearExportButton, VBox downloadingBox,
-			Button downloadDirButton, Button indexButton, Button errorBUtton) {
+			VBox downloadingBox, Button downloadDirButton, Button indexButton,
+			Button errorBUtton) {
 		super();
 		this.mainProgress = mainProgress;
 		this.searchButton = searchButton;
 		this.clearButton = clearButton;
 		this.retryExportButton = retryExportButton;
-		this.clearExportButton = clearExportButton;
 		this.downloadingBox = downloadingBox;
 		this.downloadDirButton = downloadDirButton;
 		this.indexButton = indexButton;
@@ -106,8 +105,6 @@ public class DownloadController extends BaseController implements
 				"Vider la liste des téléchargements terminés."));
 		this.retryExportButton.setTooltip(new Tooltip(
 				"Retenter les exports précédemment échoués."));
-		this.clearExportButton.setTooltip(new Tooltip(
-				"Vider les exports précédemment échoués."));
 		this.downloadDirButton.setTooltip(new Tooltip(
 				"Ouvrir le répertoire de téléchargement."));
 		this.indexButton
@@ -152,16 +149,16 @@ public class DownloadController extends BaseController implements
 				getController().reDoExport();
 			}
 		});
-		retryExportButton.setVisible(false);
+		retryExportButton.setVisible(getController().hasExportToResume());
 
-		clearExportButton.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent event) {
-				getController().clearExport();
-			}
-		});
-		clearExportButton.setVisible(false);
+		// clearExportButton.setOnAction(new EventHandler<ActionEvent>() {
+		//
+		// @Override
+		// public void handle(ActionEvent event) {
+		// getController().clearExport();
+		// }
+		// });
+		// clearExportButton.setVisible(false);
 	}
 
 	private void addDownloadActions() {
@@ -224,12 +221,14 @@ public class DownloadController extends BaseController implements
 
 				@Override
 				public void handle(MouseEvent event) {
-					newDownloadBox.openMenu(event);
 					newDownloadBox.select();
 					for (DownloadBox otherDownloadBox : epId2DLBox.values()) {
 						if (!otherDownloadBox.equals(newDownloadBox)) {
 							otherDownloadBox.unSelect();
 						}
+					}					
+					if (event.getButton() == MouseButton.SECONDARY) {
+						newDownloadBox.openMenu(event);
 					}
 				}
 
@@ -241,6 +240,10 @@ public class DownloadController extends BaseController implements
 
 	@Override
 	public void update(final RetreiveEvent event) {
+
+		if (event.getState() == EpisodeStateEnum.EXPORT_FAILED) {
+			retryExportButton.setVisible(true);
+		}
 
 		Platform.runLater(new Runnable() {
 

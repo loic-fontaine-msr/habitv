@@ -16,6 +16,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import org.apache.log4j.Logger;
+
 import com.dabi.habitv.api.plugin.dto.CategoryDTO;
 import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
 import com.dabi.habitv.tray.Popin;
@@ -24,6 +26,8 @@ import com.dabi.habitv.tray.model.HabitTvViewManager;
 import com.dabi.habitv.tray.view.HabiTvTrayView;
 
 public class WindowController {
+
+	private static final Logger LOG = Logger.getLogger(WindowController.class);
 
 	/*
 	 * DL
@@ -43,9 +47,6 @@ public class WindowController {
 
 	@FXML
 	private Button retryExportButton;
-
-	@FXML
-	private Button clearExportButton;
 
 	@FXML
 	private VBox downloadingBox;
@@ -83,6 +84,12 @@ public class WindowController {
 
 	@FXML
 	private ListView<EpisodeDTO> episodeListView;
+
+	@FXML
+	private TextField episodeFilter;
+
+	@FXML
+	private TextField categoryFilter;
 
 	/*
 	 * CONFIG
@@ -126,15 +133,14 @@ public class WindowController {
 
 			DownloadController downloadController = new DownloadController(
 					mainProgress, searchButton, clearButton, retryExportButton,
-					clearExportButton, downloadingBox, downloadDirButton,
-					indexButton, errorBUtton);
+					downloadingBox, downloadDirButton, indexButton, errorBUtton);
 			manager.attach(downloadController);
 			downloadController.init(controller, manager, primaryStage);
 
 			ToDownloadController toDlController = new ToDownloadController(
 					searchCategoryProgress, refreshCategoryButton,
 					cleanCategoryButton, toDLTree, indicationText,
-					episodeListView);
+					episodeListView, episodeFilter, categoryFilter);
 			toDlController.init(controller, manager, primaryStage);
 			manager.attach(toDlController);
 
@@ -145,6 +151,7 @@ public class WindowController {
 			controller.startDownloadCheckDemon();
 
 		} catch (Exception e) {
+			LOG.error("", e);
 			ButtonHandler buttonHandler = new ButtonHandler() {
 
 				@Override
@@ -153,8 +160,10 @@ public class WindowController {
 				}
 			};
 			(new Popin())
-					.setOkButtonHandler(buttonHandler).setCancelButtonHandler(buttonHandler)
-					.show("Erreur", "Une erreur est survenue habiTv va fermer.\n Consulter la log pour plus de détails.");
+					.setOkButtonHandler(buttonHandler)
+					.setCancelButtonHandler(buttonHandler)
+					.show("Erreur",
+							"Une erreur est survenue habiTv va fermer.\n Consulter la log pour plus de détails.");
 		}
 	}
 }

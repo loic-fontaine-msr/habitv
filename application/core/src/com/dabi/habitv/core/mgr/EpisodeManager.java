@@ -334,4 +334,10 @@ public final class EpisodeManager extends AbstractManager implements TaskAdder {
 				.findEpisode(category);
 	}
 
+	public Set<String> findDownloadedEpisodes(CategoryDTO category) {
+		final DownloadedDAO dlDAO = new DownloadedDAO(category,
+				downloader.getIndexDir());
+		return dlDAO.findDownloadedFiles();
+	}
+
 }

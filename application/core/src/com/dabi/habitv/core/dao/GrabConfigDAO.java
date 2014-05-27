@@ -309,7 +309,10 @@ public class GrabConfigDAO {
 		categoryType.setIncludes(includes);
 
 		categoryType.setName(oldCategory.getName());
-		categoryType.setStatus(oldCategory.getStatus());
+		if (oldCategory.getStatus() != null) {
+			categoryType.setStatus(StatusEnum.values()[oldCategory.getStatus()
+					.intValue()].name());
+		}
 		Subcategories subCategories = new Subcategories();
 		for (Category oldSuCategory : oldCategory.getCategory()) {
 			subCategories.getCategory().add(buildCategoryType(oldSuCategory));

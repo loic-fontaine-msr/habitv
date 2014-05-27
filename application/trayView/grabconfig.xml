@@ -2,75 +2,12 @@
 <ns2:grabConfig xmlns:ns2="http://www.dabi.com/habitv/grabconfig/entities">
     <plugins>
         <plugin>
-            <name>beinsport</name>
-            <categories>
-                <category>
-                    <id>replay</id>
-                    <name>replay</name>
-                    <download>false</download>
-                    <subcategories>
-                        <category>
-                            <id>/replay/category/7512/name/le-club-du-dimanche</id>
-                            <name>Le Club du Dimanche - Temps forts</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>/replay/category/3363/name/le-club</id>
-                            <name>Le Club - Temps forts</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>/replay/category/3361/name/lexpresso</id>
-                            <name>L’Expresso</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>/replay/category/3361/name/lexpresso</id>
-                            <name>L’Expresso - Temps forts</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>/replay/category/7512/name/le-club-du-dimanche</id>
-                            <name>Le Club du Dimanche</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>/replay/category/3363/name/le-club</id>
-                            <name>Le Club</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                    </subcategories>
-                    <extension>mp4</extension>
-                </category>
-                <category>
-                    <id>video</id>
-                    <name>video</name>
-                    <download>false</download>
-                    <subcategories/>
-                    <extension>mp4</extension>
-                </category>
-            </categories>
-            <status>NEW</status>
-        </plugin>
-        <plugin>
             <name>lequipe</name>
             <categories>
                 <category>
                     <id>/cat/cyclisme/</id>
                     <name>CYCLISME</name>
-                    <download>false</download>
+                    <download>true</download>
                     <subcategories>
                         <category>
                             <id>/cat/cyclisme-tour-de-france/</id>
@@ -332,6 +269,69 @@
             <status>NEW</status>
         </plugin>
         <plugin>
+            <name>beinsport</name>
+            <categories>
+                <category>
+                    <id>replay</id>
+                    <name>replay</name>
+                    <download>false</download>
+                    <subcategories>
+                        <category>
+                            <id>/replay/category/7512/name/le-club-du-dimanche</id>
+                            <name>Le Club du Dimanche - Temps forts</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>/replay/category/3363/name/le-club</id>
+                            <name>Le Club - Temps forts</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>/replay/category/3361/name/lexpresso</id>
+                            <name>L’Expresso</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>/replay/category/3361/name/lexpresso</id>
+                            <name>L’Expresso - Temps forts</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>/replay/category/7512/name/le-club-du-dimanche</id>
+                            <name>Le Club du Dimanche</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>/replay/category/3363/name/le-club</id>
+                            <name>Le Club</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                    </subcategories>
+                    <extension>mp4</extension>
+                </category>
+                <category>
+                    <id>video</id>
+                    <name>video</name>
+                    <download>false</download>
+                    <subcategories/>
+                    <extension>mp4</extension>
+                </category>
+            </categories>
+            <status>NEW</status>
+        </plugin>
+        <plugin>
             <name>file</name>
             <categories>
                 <category>
@@ -366,8 +366,8 @@
                     <extension>UTF-8</extension>
                 </category>
                 <category>
-                    <id>metropolis/index--3188724</id>
-                    <name>Metropolis</name>
+                    <id>environnement-science/index--3188650</id>
+                    <name>Environnement &amp; Sciences</name>
                     <download>false</download>
                     <subcategories/>
                     <extension>UTF-8</extension>
@@ -380,8 +380,8 @@
                     <extension>UTF-8</extension>
                 </category>
                 <category>
-                    <id>environnement-science/index--3188650</id>
-                    <name>Environnement &amp; Sciences</name>
+                    <id>metropolis/index--3188724</id>
+                    <name>Metropolis</name>
                     <download>false</download>
                     <subcategories/>
                     <extension>UTF-8</extension>
@@ -401,15 +401,15 @@
                     <extension>UTF-8</extension>
                 </category>
                 <category>
-                    <id>giordano-hebdo/index--3199710</id>
-                    <name>Giordano Hebdo</name>
+                    <id>europe/index--3188648</id>
+                    <name>Europe</name>
                     <download>false</download>
                     <subcategories/>
                     <extension>UTF-8</extension>
                 </category>
                 <category>
-                    <id>europe/index--3188648</id>
-                    <name>Europe</name>
+                    <id>giordano-hebdo/index--3199710</id>
+                    <name>Giordano Hebdo</name>
                     <download>false</download>
                     <subcategories/>
                     <extension>UTF-8</extension>
@@ -572,1276 +572,35 @@
             <status>NEW</status>
         </plugin>
         <plugin>
-            <name>canalPlus</name>
+            <name>rss</name>
             <categories>
                 <category>
-                    <id>73</id>
-                    <name>LES PLUS RECENTES</name>
+                    <id>http://vimeo.com/§ID§/videos/rss||Saisissez l'identifiant d'un utilisateur vimeo</id>
+                    <name>Vimeo</name>
                     <download>false</download>
-                    <subcategories>
-                        <category>
-                            <id>1076900</id>
-                            <name>FORMULE_1</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1071551</id>
-                            <name>ZAPSPORT</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1076472</id>
-                            <name>BASKET</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1075288</id>
-                            <name>AUTRES_SPORTS</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1076850</id>
-                            <name>RUGBY</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1076826</id>
-                            <name>FOOTBALL</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1076373</id>
-                            <name>TENNIS</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1076886</id>
-                            <name>HANDBALL</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                    </subcategories>
-                    <extension>mp4</extension>
-                </category>
-                <category>
-                    <id>118</id>
-                    <name>CANAL STREET - LES INCONTOURNABLES</name>
-                    <download>false</download>
-                    <subcategories>
-                        <category>
-                            <id>1077434</id>
-                            <name>SPORT</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1074579</id>
-                            <name>CSMUSIQUE</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1074565</id>
-                            <name>TENDANCES</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1062184</id>
-                            <name>DANSE</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                    </subcategories>
-                    <extension>mp4</extension>
-                </category>
-                <category>
-                    <id>119</id>
-                    <name>Les Live de CANAL STREET</name>
-                    <download>false</download>
-                    <subcategories>
-                        <category>
-                            <id>1074579</id>
-                            <name>CSMUSIQUE</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                    </subcategories>
-                    <extension>mp4</extension>
-                </category>
-                <category>
-                    <id>746</id>
-                    <name>GNARKS GNARKS</name>
-                    <download>false</download>
-                    <subcategories>
-                        <category>
-                            <id>679569</id>
-                            <name>GNARKS</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                    </subcategories>
-                    <extension>mp4</extension>
-                </category>
-                <category>
-                    <id>11</id>
-                    <name>EMISSIONS SUR CANAL+</name>
-                    <download>false</download>
-                    <subcategories>
-                        <category>
-                            <id>1075911</id>
-                            <name>EMISSION</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                    </subcategories>
-                    <extension>mp4</extension>
-                </category>
-                <category>
-                    <id>3</id>
-                    <name>TOUT LE FOOTBALL</name>
-                    <download>false</download>
-                    <subcategories>
-                        <category>
-                            <id>1076826</id>
-                            <name>FOOTBALL</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                    </subcategories>
-                    <extension>mp4</extension>
-                </category>
-                <category>
-                    <id>1080</id>
-                    <name>LES EMISSIONS DU WEEK END</name>
-                    <download>false</download>
-                    <subcategories>
-                        <category>
-                            <id>1077235</id>
-                            <name>LE_PETIT_JOURNAL</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>891046</id>
-                            <name>DIMANCHEPLUS</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1070744</id>
-                            <name>LES_NOUVEAUX_EXPLORATEURS</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>882068</id>
-                            <name>JOURNAL_DES_JEUX_VIDEO_SPORT</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1072393</id>
-                            <name>LE_SUPPLEMENT</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1073719</id>
-                            <name>ALBUM_DE_LA_SEMAINE</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1077251</id>
-                            <name>LES_GUIGNOLS</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1071958</id>
-                            <name>L_EFFET_PAPILLON</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1065867</id>
-                            <name>EMISSION</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1068130</id>
-                            <name>SALUT_LES_TERRIENS</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1041445</id>
-                            <name>GROLAND_EMISSIONS</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                    </subcategories>
-                    <extension>mp4</extension>
-                </category>
-                <category>
-                    <id>2</id>
-                    <name>LES INCONTOURNABLES</name>
-                    <download>false</download>
-                    <subcategories>
-                        <category>
-                            <id>1071551</id>
-                            <name>ZAPSPORT</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1068946</id>
-                            <name>GOLF</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1076472</id>
-                            <name>BASKET</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1075288</id>
-                            <name>AUTRES_SPORTS</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1076850</id>
-                            <name>RUGBY</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1076826</id>
-                            <name>FOOTBALL</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>911897</id>
-                            <name>X_GAMES</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1076373</id>
-                            <name>TENNIS</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1060612</id>
-                            <name>INTERIEUR_SPORT</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                    </subcategories>
-                    <extension>mp4</extension>
-                </category>
-                <category>
-                    <id>210</id>
-                    <name>Juste Debout 2011 à Bercy</name>
-                    <download>false</download>
-                    <subcategories>
-                        <category>
-                            <id>324278</id>
-                            <name>TENDANCES</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                    </subcategories>
-                    <extension>mp4</extension>
-                </category>
-                <category>
-                    <id>15</id>
-                    <name>LES VIDEOS DU MOMENT</name>
-                    <download>false</download>
-                    <subcategories>
-                        <category>
-                            <id>682125</id>
-                            <name>BODY OF PROOF - SAISON 2</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>669978</id>
-                            <name>MI_5_SAISON_9</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>694651</id>
-                            <name>SKINS - SAISON 5</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>893651</id>
-                            <name>STRIKE_BACK_SAISON_2</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>669051</id>
-                            <name>LASCARS_SAISON_1</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>700663</id>
-                            <name>UNITED STATES OF TARA - SAISON 3</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                    </subcategories>
-                    <extension>mp4</extension>
-                </category>
-                <category>
-                    <id>424</id>
-                    <name>REPORTAGES DANSE</name>
-                    <download>false</download>
-                    <subcategories>
-                        <category>
-                            <id>389680</id>
-                            <name>TENDANCES</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                    </subcategories>
-                    <extension>mp4</extension>
-                </category>
-                <category>
-                    <id>237</id>
-                    <name>Les live du Grand journal</name>
-                    <download>false</download>
-                    <subcategories>
-                        <category>
-                            <id>1075969</id>
-                            <name>LE_GRAND_JOURNAL</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                    </subcategories>
-                    <extension>mp4</extension>
-                </category>
-                <category>
-                    <id>896</id>
-                    <name>LE JOURNAL DU HARD</name>
-                    <download>false</download>
-                    <subcategories>
-                        <category>
-                            <id>1059658</id>
-                            <name>EMISSION</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                    </subcategories>
-                    <extension>mp4</extension>
-                </category>
-                <category>
-                    <id>306</id>
-                    <name>Canal Street - Les live</name>
-                    <download>false</download>
-                    <subcategories>
-                        <category>
-                            <id>837837</id>
-                            <name>CSMUSIQUE</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                    </subcategories>
-                    <extension>mp4</extension>
-                </category>
-                <category>
-                    <id>121</id>
-                    <name>Street Tendances</name>
-                    <download>false</download>
-                    <subcategories>
-                        <category>
-                            <id>666472</id>
-                            <name>TENDANCES</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                    </subcategories>
-                    <extension>mp4</extension>
-                </category>
-                <category>
-                    <id>6</id>
-                    <name>TOUT LE RUGBY</name>
-                    <download>false</download>
-                    <subcategories>
-                        <category>
-                            <id>1076850</id>
-                            <name>RUGBY</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                    </subcategories>
-                    <extension>mp4</extension>
-                </category>
-                <category>
-                    <id>27</id>
-                    <name>INFO</name>
-                    <download>false</download>
-                    <subcategories>
-                        <category>
-                            <id>823993</id>
-                            <name>LA_MATINALE</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1077413</id>
-                            <name>LE_JT_DE_CANALPLUS</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1039631</id>
-                            <name>LES_NOUVEAUX_EXPLORATEURS</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1077420</id>
-                            <name>LE_GRAND_JOURNAL</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>203105</id>
-                            <name>SPECIAL</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1072393</id>
-                            <name>LE_SUPPLEMENT</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1077499</id>
-                            <name>SUJET</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1071966</id>
-                            <name>L_EFFET_PAPILLON</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                    </subcategories>
-                    <extension>mp4</extension>
-                </category>
-                <category>
-                    <id>31</id>
-                    <name>LES LIVE</name>
-                    <download>false</download>
-                    <subcategories>
-                        <category>
-                            <id>892949</id>
-                            <name>CONCERTS_PRIVES</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1069558</id>
-                            <name>LE_GRAND_JOURNAL</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1073640</id>
-                            <name>ALBUM_DE_LA_SEMAINE</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1070842</id>
-                            <name>LA_MUSICALE</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                    </subcategories>
-                    <extension>mp4</extension>
-                </category>
-                <category>
-                    <id>32</id>
-                    <name>LES INTERVIEWS</name>
-                    <download>false</download>
-                    <subcategories>
-                        <category>
-                            <id>929266</id>
-                            <name>ALBUM_DE_LA_SEMAINE</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                    </subcategories>
-                    <extension>mp4</extension>
-                </category>
-                <category>
-                    <id>9</id>
-                    <name>AUTRES SPORTS - HOME SPORT</name>
-                    <download>false</download>
-                    <subcategories>
-                        <category>
-                            <id>1071551</id>
-                            <name>ZAPSPORT</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1068946</id>
-                            <name>GOLF</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1075288</id>
-                            <name>AUTRES_SPORTS</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                    </subcategories>
-                    <extension>mp4</extension>
-                </category>
-                <category>
-                    <id>1824</id>
-                    <name>TOUTES LES INTERVIEWS CINEMA</name>
-                    <download>false</download>
-                    <subcategories>
-                        <category>
-                            <id>1075875</id>
-                            <name>INTERVIEW</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1066621</id>
-                            <name>EMISSION</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1069863</id>
-                            <name>CINEMA_EN_SALLES</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                    </subcategories>
-                    <extension>mp4</extension>
-                </category>
-                <category>
-                    <id>124</id>
-                    <name>les interviews de Raphäl</name>
-                    <download>false</download>
+                    <template>true</template>
                     <subcategories/>
-                    <extension>mp4</extension>
                 </category>
                 <category>
-                    <id>47</id>
-                    <name>LES EXCLUS DU WEB </name>
+                    <id>http://www.dailymotion.com/rss/user/§ID§/1||Saisissez l'identifiant d'un utilisateur dailymotion</id>
+                    <name>Dailymotion</name>
                     <download>false</download>
-                    <subcategories>
-                        <category>
-                            <id>1077434</id>
-                            <name>SPORT</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1074648</id>
-                            <name>PEPITES_SUR_LE_NET</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1073520</id>
-                            <name>LA_BOITE_A_QUESTIONS</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>883844</id>
-                            <name>HUMOUR</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1067477</id>
-                            <name>CSMUSIQUE</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1077200</id>
-                            <name>LE_MEILLEUR_DU_HIER</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1074565</id>
-                            <name>TENDANCES</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1062184</id>
-                            <name>DANSE</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1076005</id>
-                            <name>TWEET_EN_CLAIR</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>933288</id>
-                            <name>LE_BOUCAN_DU_JOUR</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                    </subcategories>
-                    <extension>mp4</extension>
+                    <template>true</template>
+                    <subcategories/>
                 </category>
                 <category>
-                    <id>39</id>
-                    <name>LES EMISSIONS QUOTIDIENNES</name>
+                    <id>http://gdata.youtube.com/feeds/base/users/§ID§/uploads?alt=rss&amp;amp;v=1&amp;amp;orderby=published&amp;amp;client=ytapi-youtube-profile||Saisissez l'identifiant d'un utilisateur youtube</id>
+                    <name>Youtube</name>
                     <download>false</download>
-                    <subcategories>
-                        <category>
-                            <id>1077493</id>
-                            <name>LE_PETIT_JOURNAL</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>823993</id>
-                            <name>LA_MATINALE</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1077413</id>
-                            <name>LE_JT_DE_CANALPLUS</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1077420</id>
-                            <name>LE_GRAND_JOURNAL</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1077227</id>
-                            <name>LA_NOUVELLE_EDITION</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1077243</id>
-                            <name>ZAPPING</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1077450</id>
-                            <name>LES_GUIGNOLS</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                    </subcategories>
-                    <extension>mp4</extension>
+                    <template>true</template>
+                    <subcategories/>
                 </category>
                 <category>
-                    <id>108</id>
-                    <name>Les Musiques des émissions</name>
+                    <id>§ID§||Saisissez l'URL d'un flux RSS</id>
+                    <name>RSS</name>
                     <download>false</download>
-                    <subcategories>
-                        <category>
-                            <id>1069558</id>
-                            <name>LE_GRAND_JOURNAL</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                    </subcategories>
-                    <extension>mp4</extension>
-                </category>
-                <category>
-                    <id>10</id>
-                    <name>DERNIERES BANDES ANNONCES</name>
-                    <download>false</download>
-                    <subcategories>
-                        <category>
-                            <id>1077410</id>
-                            <name>CINEMA_EN_SALLES</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>944276</id>
-                            <name>FILM</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                    </subcategories>
-                    <extension>mp4</extension>
-                </category>
-                <category>
-                    <id>105</id>
-                    <name>Toutes les émissions</name>
-                    <download>false</download>
-                    <subcategories>
-                        <category>
-                            <id>726982</id>
-                            <name>SPECIAL_INVESTIGATION</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1074648</id>
-                            <name>PEPITES_SUR_LE_NET</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1064446</id>
-                            <name>GROLAND</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1073623</id>
-                            <name>ALBUM_DE_LA_SEMAINE</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1077227</id>
-                            <name>LA_NOUVELLE_EDITION</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1071958</id>
-                            <name>L_EFFET_PAPILLON</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>933288</id>
-                            <name>LE_BOUCAN_DU_JOUR</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1068098</id>
-                            <name>SALUT_LES_TERRIENS</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1075285</id>
-                            <name>JDJV</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>823993</id>
-                            <name>LA_MATINALE</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1077493</id>
-                            <name>LE_PETIT_JOURNAL</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1077413</id>
-                            <name>LE_JT_DE_CANALPLUS</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1077420</id>
-                            <name>LE_GRAND_JOURNAL</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1073064</id>
-                            <name>L_OEIL_DE_LINKS</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1072393</id>
-                            <name>LE_SUPPLEMENT</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1077450</id>
-                            <name>LES_GUIGNOLS</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1077243</id>
-                            <name>ZAPPING</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1075911</id>
-                            <name>EMISSION</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1076005</id>
-                            <name>TWEET_EN_CLAIR</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                    </subcategories>
-                    <extension>mp4</extension>
-                </category>
-                <category>
-                    <id>130</id>
-                    <name>DIVERTISSEMENT</name>
-                    <download>false</download>
-                    <subcategories>
-                        <category>
-                            <id>1077493</id>
-                            <name>LE_PETIT_JOURNAL</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>140257</id>
-                            <name>L'AVIS DE MOULOUD</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1077420</id>
-                            <name>LE_GRAND_JOURNAL</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1064446</id>
-                            <name>GROLAND</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1073064</id>
-                            <name>L_OEIL_DE_LINKS</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1072354</id>
-                            <name>LE_SUPPLEMENT</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1077243</id>
-                            <name>ZAPPING</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1077251</id>
-                            <name>LES_GUIGNOLS</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1076005</id>
-                            <name>TWEET_EN_CLAIR</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                    </subcategories>
-                    <extension>mp4</extension>
-                </category>
-                <category>
-                    <id>104</id>
-                    <name>Le Grand Journal</name>
-                    <download>false</download>
-                    <subcategories>
-                        <category>
-                            <id>1077457</id>
-                            <name>LE_GRAND_JOURNAL</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                    </subcategories>
-                    <extension>mp4</extension>
-                </category>
-                <category>
-                    <id>37</id>
-                    <name>L'HUMOUR DU WEEK-END </name>
-                    <download>false</download>
-                    <subcategories>
-                        <category>
-                            <id>1077486</id>
-                            <name>LE_PETIT_JOURNAL</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1067112</id>
-                            <name>LES_GUIGNOLS</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1049141</id>
-                            <name>SALUT_LES_TERRIENS</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                    </subcategories>
-                    <extension>mp4</extension>
-                </category>
-                <category>
-                    <id>72</id>
-                    <name>LES PLUS VUES</name>
-                    <download>false</download>
-                    <subcategories>
-                        <category>
-                            <id>921085</id>
-                            <name>FORMULE_1</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>937805</id>
-                            <name>BASKET</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>999607</id>
-                            <name>RUGBY</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>961017</id>
-                            <name>FOOTBALL</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>956101</id>
-                            <name>INTERIEUR_SPORT</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                    </subcategories>
-                    <extension>mp4</extension>
-                </category>
-                <category>
-                    <id>7</id>
-                    <name>LES EMISSIONS SPORT</name>
-                    <download>false</download>
-                    <subcategories>
-                        <category>
-                            <id>1060612</id>
-                            <name>INTERIEUR_SPORT</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                    </subcategories>
-                    <extension>mp4</extension>
-                </category>
-                <category>
-                    <id>1082</id>
-                    <name>Les émissions du weekend</name>
-                    <download>false</download>
-                    <subcategories>
-                        <category>
-                            <id>1076260</id>
-                            <name>LE_TUBE</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1072368</id>
-                            <name>LE_SUPPLEMENT_POLITIQUE</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1071975</id>
-                            <name>L_EFFET_PAPILLON</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1059882</id>
-                            <name>SALUT_LES_TERRIENS</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                    </subcategories>
-                    <extension>mp4</extension>
-                </category>
-                <category>
-                    <id>4</id>
-                    <name>TOUT LE TENNIS / GOLF</name>
-                    <download>false</download>
-                    <subcategories>
-                        <category>
-                            <id>1068946</id>
-                            <name>GOLF</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1076373</id>
-                            <name>TENNIS</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                    </subcategories>
-                    <extension>mp4</extension>
-                </category>
-                <category>
-                    <id>5</id>
-                    <name>TOUT LE BASKET</name>
-                    <download>false</download>
-                    <subcategories>
-                        <category>
-                            <id>1076370</id>
-                            <name>BASKET</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                    </subcategories>
-                    <extension>mp4</extension>
-                </category>
-                <category>
-                    <id>1775</id>
-                    <name>C+ - SERIES - House of cards - BA</name>
-                    <download>false</download>
-                    <subcategories>
-                        <category>
-                            <id>935608</id>
-                            <name>HOUSE_OF_CARDS</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                    </subcategories>
-                    <extension>mp4</extension>
-                </category>
-                <category>
-                    <id>12</id>
-                    <name>LES VIDEOS LES + VUES</name>
-                    <download>false</download>
-                    <subcategories>
-                        <category>
-                            <id>163643</id>
-                            <name>EMISSION</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>297591</id>
-                            <name>CINEMA_EN_SALLES</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                    </subcategories>
-                    <extension>mp4</extension>
-                </category>
-                <category>
-                    <id>290</id>
-                    <name>BANDES ANNONCES FILMS DIFFUSES SUR CANAL+</name>
-                    <download>false</download>
-                    <subcategories>
-                        <category>
-                            <id>1077387</id>
-                            <name>BA_A_L_ANTENNE</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>1075891</id>
-                            <name>EMISSION</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                    </subcategories>
-                    <extension>mp4</extension>
+                    <template>true</template>
+                    <subcategories/>
                 </category>
             </categories>
             <status>NEW</status>
@@ -2238,35 +997,1276 @@
             <status>NEW</status>
         </plugin>
         <plugin>
-            <name>rss</name>
+            <name>canalPlus</name>
             <categories>
                 <category>
-                    <id>http://vimeo.com/§ID§/videos/rss||Saisissez l'identifiant d'un utilisateur vimeo</id>
-                    <name>Vimeo</name>
+                    <id>73</id>
+                    <name>LES PLUS RECENTES</name>
                     <download>false</download>
-                    <template>true</template>
-                    <subcategories/>
+                    <subcategories>
+                        <category>
+                            <id>1076900</id>
+                            <name>FORMULE_1</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1071551</id>
+                            <name>ZAPSPORT</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1075288</id>
+                            <name>AUTRES_SPORTS</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1076472</id>
+                            <name>BASKET</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1076850</id>
+                            <name>RUGBY</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1076826</id>
+                            <name>FOOTBALL</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1076373</id>
+                            <name>TENNIS</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1076886</id>
+                            <name>HANDBALL</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                    </subcategories>
+                    <extension>mp4</extension>
                 </category>
                 <category>
-                    <id>http://www.dailymotion.com/rss/user/§ID§/1||Saisissez l'identifiant d'un utilisateur dailymotion</id>
-                    <name>Dailymotion</name>
+                    <id>118</id>
+                    <name>CANAL STREET - LES INCONTOURNABLES</name>
                     <download>false</download>
-                    <template>true</template>
-                    <subcategories/>
+                    <subcategories>
+                        <category>
+                            <id>1077434</id>
+                            <name>SPORT</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1074579</id>
+                            <name>CSMUSIQUE</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1074565</id>
+                            <name>TENDANCES</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1062184</id>
+                            <name>DANSE</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                    </subcategories>
+                    <extension>mp4</extension>
                 </category>
                 <category>
-                    <id>http://gdata.youtube.com/feeds/base/users/§ID§/uploads?alt=rss&amp;amp;v=1&amp;amp;orderby=published&amp;amp;client=ytapi-youtube-profile||Saisissez l'identifiant d'un utilisateur youtube</id>
-                    <name>Youtube</name>
+                    <id>119</id>
+                    <name>Les Live de CANAL STREET</name>
                     <download>false</download>
-                    <template>true</template>
-                    <subcategories/>
+                    <subcategories>
+                        <category>
+                            <id>1074579</id>
+                            <name>CSMUSIQUE</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                    </subcategories>
+                    <extension>mp4</extension>
                 </category>
                 <category>
-                    <id>§ID§||Saisissez l'URL d'un flux RSS</id>
-                    <name>RSS</name>
+                    <id>746</id>
+                    <name>GNARKS GNARKS</name>
                     <download>false</download>
-                    <template>true</template>
+                    <subcategories>
+                        <category>
+                            <id>679569</id>
+                            <name>GNARKS</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                    </subcategories>
+                    <extension>mp4</extension>
+                </category>
+                <category>
+                    <id>11</id>
+                    <name>EMISSIONS SUR CANAL+</name>
+                    <download>false</download>
+                    <subcategories>
+                        <category>
+                            <id>1075911</id>
+                            <name>EMISSION</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                    </subcategories>
+                    <extension>mp4</extension>
+                </category>
+                <category>
+                    <id>3</id>
+                    <name>TOUT LE FOOTBALL</name>
+                    <download>false</download>
+                    <subcategories>
+                        <category>
+                            <id>1076826</id>
+                            <name>FOOTBALL</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                    </subcategories>
+                    <extension>mp4</extension>
+                </category>
+                <category>
+                    <id>1080</id>
+                    <name>LES EMISSIONS DU WEEK END</name>
+                    <download>false</download>
+                    <subcategories>
+                        <category>
+                            <id>1077235</id>
+                            <name>LE_PETIT_JOURNAL</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>891046</id>
+                            <name>DIMANCHEPLUS</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1070744</id>
+                            <name>LES_NOUVEAUX_EXPLORATEURS</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>882068</id>
+                            <name>JOURNAL_DES_JEUX_VIDEO_SPORT</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1072393</id>
+                            <name>LE_SUPPLEMENT</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1073719</id>
+                            <name>ALBUM_DE_LA_SEMAINE</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1077251</id>
+                            <name>LES_GUIGNOLS</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1071958</id>
+                            <name>L_EFFET_PAPILLON</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1065867</id>
+                            <name>EMISSION</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1068130</id>
+                            <name>SALUT_LES_TERRIENS</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1041445</id>
+                            <name>GROLAND_EMISSIONS</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                    </subcategories>
+                    <extension>mp4</extension>
+                </category>
+                <category>
+                    <id>2</id>
+                    <name>LES INCONTOURNABLES</name>
+                    <download>false</download>
+                    <subcategories>
+                        <category>
+                            <id>1071551</id>
+                            <name>ZAPSPORT</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1068946</id>
+                            <name>GOLF</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1076472</id>
+                            <name>BASKET</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1075288</id>
+                            <name>AUTRES_SPORTS</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1076850</id>
+                            <name>RUGBY</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1076826</id>
+                            <name>FOOTBALL</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>911897</id>
+                            <name>X_GAMES</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1076373</id>
+                            <name>TENNIS</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1060612</id>
+                            <name>INTERIEUR_SPORT</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                    </subcategories>
+                    <extension>mp4</extension>
+                </category>
+                <category>
+                    <id>210</id>
+                    <name>Juste Debout 2011 à Bercy</name>
+                    <download>false</download>
+                    <subcategories>
+                        <category>
+                            <id>324278</id>
+                            <name>TENDANCES</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                    </subcategories>
+                    <extension>mp4</extension>
+                </category>
+                <category>
+                    <id>15</id>
+                    <name>LES VIDEOS DU MOMENT</name>
+                    <download>false</download>
+                    <subcategories>
+                        <category>
+                            <id>682125</id>
+                            <name>BODY OF PROOF - SAISON 2</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>669978</id>
+                            <name>MI_5_SAISON_9</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>694651</id>
+                            <name>SKINS - SAISON 5</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>893651</id>
+                            <name>STRIKE_BACK_SAISON_2</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>669051</id>
+                            <name>LASCARS_SAISON_1</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>700663</id>
+                            <name>UNITED STATES OF TARA - SAISON 3</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                    </subcategories>
+                    <extension>mp4</extension>
+                </category>
+                <category>
+                    <id>424</id>
+                    <name>REPORTAGES DANSE</name>
+                    <download>false</download>
+                    <subcategories>
+                        <category>
+                            <id>389680</id>
+                            <name>TENDANCES</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                    </subcategories>
+                    <extension>mp4</extension>
+                </category>
+                <category>
+                    <id>896</id>
+                    <name>LE JOURNAL DU HARD</name>
+                    <download>false</download>
+                    <subcategories>
+                        <category>
+                            <id>1059658</id>
+                            <name>EMISSION</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                    </subcategories>
+                    <extension>mp4</extension>
+                </category>
+                <category>
+                    <id>237</id>
+                    <name>Les live du Grand journal</name>
+                    <download>false</download>
+                    <subcategories>
+                        <category>
+                            <id>1075969</id>
+                            <name>LE_GRAND_JOURNAL</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                    </subcategories>
+                    <extension>mp4</extension>
+                </category>
+                <category>
+                    <id>6</id>
+                    <name>TOUT LE RUGBY</name>
+                    <download>false</download>
+                    <subcategories>
+                        <category>
+                            <id>1076850</id>
+                            <name>RUGBY</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                    </subcategories>
+                    <extension>mp4</extension>
+                </category>
+                <category>
+                    <id>121</id>
+                    <name>Street Tendances</name>
+                    <download>false</download>
+                    <subcategories>
+                        <category>
+                            <id>666472</id>
+                            <name>TENDANCES</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                    </subcategories>
+                    <extension>mp4</extension>
+                </category>
+                <category>
+                    <id>306</id>
+                    <name>Canal Street - Les live</name>
+                    <download>false</download>
+                    <subcategories>
+                        <category>
+                            <id>837837</id>
+                            <name>CSMUSIQUE</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                    </subcategories>
+                    <extension>mp4</extension>
+                </category>
+                <category>
+                    <id>31</id>
+                    <name>LES LIVE</name>
+                    <download>false</download>
+                    <subcategories>
+                        <category>
+                            <id>892949</id>
+                            <name>CONCERTS_PRIVES</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1069558</id>
+                            <name>LE_GRAND_JOURNAL</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1073640</id>
+                            <name>ALBUM_DE_LA_SEMAINE</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1070842</id>
+                            <name>LA_MUSICALE</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                    </subcategories>
+                    <extension>mp4</extension>
+                </category>
+                <category>
+                    <id>27</id>
+                    <name>INFO</name>
+                    <download>false</download>
+                    <subcategories>
+                        <category>
+                            <id>823993</id>
+                            <name>LA_MATINALE</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1077413</id>
+                            <name>LE_JT_DE_CANALPLUS</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1039631</id>
+                            <name>LES_NOUVEAUX_EXPLORATEURS</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1077420</id>
+                            <name>LE_GRAND_JOURNAL</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>203105</id>
+                            <name>SPECIAL</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1072393</id>
+                            <name>LE_SUPPLEMENT</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1077499</id>
+                            <name>SUJET</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1071966</id>
+                            <name>L_EFFET_PAPILLON</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                    </subcategories>
+                    <extension>mp4</extension>
+                </category>
+                <category>
+                    <id>9</id>
+                    <name>AUTRES SPORTS - HOME SPORT</name>
+                    <download>false</download>
+                    <subcategories>
+                        <category>
+                            <id>1071551</id>
+                            <name>ZAPSPORT</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1068946</id>
+                            <name>GOLF</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1075288</id>
+                            <name>AUTRES_SPORTS</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                    </subcategories>
+                    <extension>mp4</extension>
+                </category>
+                <category>
+                    <id>32</id>
+                    <name>LES INTERVIEWS</name>
+                    <download>false</download>
+                    <subcategories>
+                        <category>
+                            <id>929266</id>
+                            <name>ALBUM_DE_LA_SEMAINE</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                    </subcategories>
+                    <extension>mp4</extension>
+                </category>
+                <category>
+                    <id>1824</id>
+                    <name>TOUTES LES INTERVIEWS CINEMA</name>
+                    <download>false</download>
+                    <subcategories>
+                        <category>
+                            <id>1075875</id>
+                            <name>INTERVIEW</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1066621</id>
+                            <name>EMISSION</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1069863</id>
+                            <name>CINEMA_EN_SALLES</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                    </subcategories>
+                    <extension>mp4</extension>
+                </category>
+                <category>
+                    <id>124</id>
+                    <name>les interviews de Raphäl</name>
+                    <download>false</download>
                     <subcategories/>
+                    <extension>mp4</extension>
+                </category>
+                <category>
+                    <id>39</id>
+                    <name>LES EMISSIONS QUOTIDIENNES</name>
+                    <download>false</download>
+                    <subcategories>
+                        <category>
+                            <id>823993</id>
+                            <name>LA_MATINALE</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1077493</id>
+                            <name>LE_PETIT_JOURNAL</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1077413</id>
+                            <name>LE_JT_DE_CANALPLUS</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1077420</id>
+                            <name>LE_GRAND_JOURNAL</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1077227</id>
+                            <name>LA_NOUVELLE_EDITION</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1077243</id>
+                            <name>ZAPPING</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1077450</id>
+                            <name>LES_GUIGNOLS</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                    </subcategories>
+                    <extension>mp4</extension>
+                </category>
+                <category>
+                    <id>47</id>
+                    <name>LES EXCLUS DU WEB </name>
+                    <download>false</download>
+                    <subcategories>
+                        <category>
+                            <id>1077434</id>
+                            <name>SPORT</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1074648</id>
+                            <name>PEPITES_SUR_LE_NET</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1073520</id>
+                            <name>LA_BOITE_A_QUESTIONS</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>883844</id>
+                            <name>HUMOUR</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1067477</id>
+                            <name>CSMUSIQUE</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1077200</id>
+                            <name>LE_MEILLEUR_DU_HIER</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1074565</id>
+                            <name>TENDANCES</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1062184</id>
+                            <name>DANSE</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1076005</id>
+                            <name>TWEET_EN_CLAIR</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>933288</id>
+                            <name>LE_BOUCAN_DU_JOUR</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                    </subcategories>
+                    <extension>mp4</extension>
+                </category>
+                <category>
+                    <id>108</id>
+                    <name>Les Musiques des émissions</name>
+                    <download>false</download>
+                    <subcategories>
+                        <category>
+                            <id>1069558</id>
+                            <name>LE_GRAND_JOURNAL</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                    </subcategories>
+                    <extension>mp4</extension>
+                </category>
+                <category>
+                    <id>10</id>
+                    <name>DERNIERES BANDES ANNONCES</name>
+                    <download>false</download>
+                    <subcategories>
+                        <category>
+                            <id>1077410</id>
+                            <name>CINEMA_EN_SALLES</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>944276</id>
+                            <name>FILM</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                    </subcategories>
+                    <extension>mp4</extension>
+                </category>
+                <category>
+                    <id>105</id>
+                    <name>Toutes les émissions</name>
+                    <download>false</download>
+                    <subcategories>
+                        <category>
+                            <id>726982</id>
+                            <name>SPECIAL_INVESTIGATION</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1074648</id>
+                            <name>PEPITES_SUR_LE_NET</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1064446</id>
+                            <name>GROLAND</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1073623</id>
+                            <name>ALBUM_DE_LA_SEMAINE</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1077227</id>
+                            <name>LA_NOUVELLE_EDITION</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1071958</id>
+                            <name>L_EFFET_PAPILLON</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1068098</id>
+                            <name>SALUT_LES_TERRIENS</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>933288</id>
+                            <name>LE_BOUCAN_DU_JOUR</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1075285</id>
+                            <name>JDJV</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1077493</id>
+                            <name>LE_PETIT_JOURNAL</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>823993</id>
+                            <name>LA_MATINALE</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1077413</id>
+                            <name>LE_JT_DE_CANALPLUS</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1077420</id>
+                            <name>LE_GRAND_JOURNAL</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1073064</id>
+                            <name>L_OEIL_DE_LINKS</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1072393</id>
+                            <name>LE_SUPPLEMENT</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1077450</id>
+                            <name>LES_GUIGNOLS</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1077243</id>
+                            <name>ZAPPING</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1075911</id>
+                            <name>EMISSION</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1076005</id>
+                            <name>TWEET_EN_CLAIR</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                    </subcategories>
+                    <extension>mp4</extension>
+                </category>
+                <category>
+                    <id>130</id>
+                    <name>DIVERTISSEMENT</name>
+                    <download>false</download>
+                    <subcategories>
+                        <category>
+                            <id>1077493</id>
+                            <name>LE_PETIT_JOURNAL</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>140257</id>
+                            <name>L'AVIS DE MOULOUD</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1077420</id>
+                            <name>LE_GRAND_JOURNAL</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1064446</id>
+                            <name>GROLAND</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1073064</id>
+                            <name>L_OEIL_DE_LINKS</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1072354</id>
+                            <name>LE_SUPPLEMENT</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1077243</id>
+                            <name>ZAPPING</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1077251</id>
+                            <name>LES_GUIGNOLS</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1076005</id>
+                            <name>TWEET_EN_CLAIR</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                    </subcategories>
+                    <extension>mp4</extension>
+                </category>
+                <category>
+                    <id>104</id>
+                    <name>Le Grand Journal</name>
+                    <download>false</download>
+                    <subcategories>
+                        <category>
+                            <id>1077457</id>
+                            <name>LE_GRAND_JOURNAL</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                    </subcategories>
+                    <extension>mp4</extension>
+                </category>
+                <category>
+                    <id>37</id>
+                    <name>L'HUMOUR DU WEEK-END </name>
+                    <download>false</download>
+                    <subcategories>
+                        <category>
+                            <id>1077486</id>
+                            <name>LE_PETIT_JOURNAL</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1067112</id>
+                            <name>LES_GUIGNOLS</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1049141</id>
+                            <name>SALUT_LES_TERRIENS</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                    </subcategories>
+                    <extension>mp4</extension>
+                </category>
+                <category>
+                    <id>72</id>
+                    <name>LES PLUS VUES</name>
+                    <download>false</download>
+                    <subcategories>
+                        <category>
+                            <id>921085</id>
+                            <name>FORMULE_1</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>937805</id>
+                            <name>BASKET</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>999607</id>
+                            <name>RUGBY</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>961017</id>
+                            <name>FOOTBALL</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>956101</id>
+                            <name>INTERIEUR_SPORT</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                    </subcategories>
+                    <extension>mp4</extension>
+                </category>
+                <category>
+                    <id>7</id>
+                    <name>LES EMISSIONS SPORT</name>
+                    <download>false</download>
+                    <subcategories>
+                        <category>
+                            <id>1060612</id>
+                            <name>INTERIEUR_SPORT</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                    </subcategories>
+                    <extension>mp4</extension>
+                </category>
+                <category>
+                    <id>1082</id>
+                    <name>Les émissions du weekend</name>
+                    <download>false</download>
+                    <subcategories>
+                        <category>
+                            <id>1076260</id>
+                            <name>LE_TUBE</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1072368</id>
+                            <name>LE_SUPPLEMENT_POLITIQUE</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1071975</id>
+                            <name>L_EFFET_PAPILLON</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1059882</id>
+                            <name>SALUT_LES_TERRIENS</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                    </subcategories>
+                    <extension>mp4</extension>
+                </category>
+                <category>
+                    <id>4</id>
+                    <name>TOUT LE TENNIS / GOLF</name>
+                    <download>false</download>
+                    <subcategories>
+                        <category>
+                            <id>1068946</id>
+                            <name>GOLF</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1076373</id>
+                            <name>TENNIS</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                    </subcategories>
+                    <extension>mp4</extension>
+                </category>
+                <category>
+                    <id>5</id>
+                    <name>TOUT LE BASKET</name>
+                    <download>false</download>
+                    <subcategories>
+                        <category>
+                            <id>1076370</id>
+                            <name>BASKET</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                    </subcategories>
+                    <extension>mp4</extension>
+                </category>
+                <category>
+                    <id>1775</id>
+                    <name>C+ - SERIES - House of cards - BA</name>
+                    <download>false</download>
+                    <subcategories>
+                        <category>
+                            <id>935608</id>
+                            <name>HOUSE_OF_CARDS</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                    </subcategories>
+                    <extension>mp4</extension>
+                </category>
+                <category>
+                    <id>12</id>
+                    <name>LES VIDEOS LES + VUES</name>
+                    <download>false</download>
+                    <subcategories>
+                        <category>
+                            <id>163643</id>
+                            <name>EMISSION</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>297591</id>
+                            <name>CINEMA_EN_SALLES</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                    </subcategories>
+                    <extension>mp4</extension>
+                </category>
+                <category>
+                    <id>290</id>
+                    <name>BANDES ANNONCES FILMS DIFFUSES SUR CANAL+</name>
+                    <download>false</download>
+                    <subcategories>
+                        <category>
+                            <id>1077387</id>
+                            <name>BA_A_L_ANTENNE</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>1075891</id>
+                            <name>EMISSION</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                    </subcategories>
+                    <extension>mp4</extension>
                 </category>
             </categories>
             <status>NEW</status>
@@ -2567,6 +2567,13 @@
                             <extension>mp4</extension>
                         </category>
                         <category>
+                            <id>ka_pale</id>
+                            <name>Ka Palé</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
                             <id>les_aventures_de_bao</id>
                             <name>Les enquêtes de Bao</name>
                             <download>false</download>
@@ -2576,13 +2583,6 @@
                         <category>
                             <id>le_pitch</id>
                             <name>Le pitch</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>ka_pale</id>
-                            <name>Ka Palé</name>
                             <download>false</download>
                             <subcategories/>
                             <extension>mp4</extension>
@@ -2630,15 +2630,15 @@
                             <extension>mp4</extension>
                         </category>
                         <category>
-                            <id>alcaline_le_concert</id>
-                            <name>Alcaline, le concert</name>
+                            <id>l_agenda</id>
+                            <name>Agenda</name>
                             <download>false</download>
                             <subcategories/>
                             <extension>mp4</extension>
                         </category>
                         <category>
-                            <id>l_agenda</id>
-                            <name>Agenda</name>
+                            <id>alcaline_le_concert</id>
+                            <name>Alcaline, le concert</name>
                             <download>false</download>
                             <subcategories/>
                             <extension>mp4</extension>
@@ -2995,8 +2995,8 @@
                             <extension>mp4</extension>
                         </category>
                         <category>
-                            <id>band_of_brothers</id>
-                            <name>Band of Brothers : l'enfer du Pacifique</name>
+                            <id>la_malediction_de_la_statue_noire</id>
+                            <name>La malédiction de la statue noire</name>
                             <download>false</download>
                             <subcategories/>
                             <extension>mp4</extension>
@@ -3009,8 +3009,8 @@
                             <extension>mp4</extension>
                         </category>
                         <category>
-                            <id>la_malediction_de_la_statue_noire</id>
-                            <name>La malédiction de la statue noire</name>
+                            <id>band_of_brothers</id>
+                            <name>Band of Brothers : l'enfer du Pacifique</name>
                             <download>false</download>
                             <subcategories/>
                             <extension>mp4</extension>
@@ -3122,15 +3122,15 @@
                             <extension>mp4</extension>
                         </category>
                         <category>
-                            <id>parlons_d_immobilier</id>
-                            <name>Mieux comprendre l'immobilier</name>
+                            <id>la_voix_est_libre_alpes</id>
+                            <name>La voix est libre / Alpexpress</name>
                             <download>false</download>
                             <subcategories/>
                             <extension>mp4</extension>
                         </category>
                         <category>
-                            <id>la_voix_est_libre_alpes</id>
-                            <name>La voix est libre / Alpexpress</name>
+                            <id>parlons_d_immobilier</id>
+                            <name>Mieux comprendre l'immobilier</name>
                             <download>false</download>
                             <subcategories/>
                             <extension>mp4</extension>
@@ -3220,15 +3220,15 @@
                             <extension>mp4</extension>
                         </category>
                         <category>
-                            <id>pas_a_pas</id>
-                            <name>Pas à pas</name>
+                            <id>goutez_voir</id>
+                            <name>Goûtez voir</name>
                             <download>false</download>
                             <subcategories/>
                             <extension>mp4</extension>
                         </category>
                         <category>
-                            <id>goutez_voir</id>
-                            <name>Goûtez voir</name>
+                            <id>pas_a_pas</id>
+                            <name>Pas à pas</name>
                             <download>false</download>
                             <subcategories/>
                             <extension>mp4</extension>
@@ -3241,15 +3241,15 @@
                             <extension>mp4</extension>
                         </category>
                         <category>
-                            <id>koze_hebdo</id>
-                            <name>Kozé hebdo</name>
+                            <id>dr_cac_programme_long</id>
+                            <name>Dr CAC</name>
                             <download>false</download>
                             <subcategories/>
                             <extension>mp4</extension>
                         </category>
                         <category>
-                            <id>dr_cac_programme_long</id>
-                            <name>Dr CAC</name>
+                            <id>koze_hebdo</id>
+                            <name>Kozé hebdo</name>
                             <download>false</download>
                             <subcategories/>
                             <extension>mp4</extension>
@@ -3269,13 +3269,6 @@
                             <extension>mp4</extension>
                         </category>
                         <category>
-                            <id>sortir_en_champagne_ardenne</id>
-                            <name>Sortir en Champagne-Ardenne</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
                             <id>littoral</id>
                             <name>Littoral</name>
                             <download>false</download>
@@ -3283,8 +3276,8 @@
                             <extension>mp4</extension>
                         </category>
                         <category>
-                            <id>dans_la_peau_d_un_chef</id>
-                            <name>Dans la peau d'un chef</name>
+                            <id>sortir_en_champagne_ardenne</id>
+                            <name>Sortir en Champagne-Ardenne</name>
                             <download>false</download>
                             <subcategories/>
                             <extension>mp4</extension>
@@ -3292,6 +3285,13 @@
                         <category>
                             <id>on_nest_pas_couche</id>
                             <name>On n'est pas couché</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>dans_la_peau_d_un_chef</id>
+                            <name>Dans la peau d'un chef</name>
                             <download>false</download>
                             <subcategories/>
                             <extension>mp4</extension>
@@ -3325,15 +3325,15 @@
                             <extension>mp4</extension>
                         </category>
                         <category>
-                            <id>cocorico</id>
-                            <name>Parlons PME</name>
+                            <id>beau_travail_f2</id>
+                            <name>Beau travail</name>
                             <download>false</download>
                             <subcategories/>
                             <extension>mp4</extension>
                         </category>
                         <category>
-                            <id>beau_travail_f2</id>
-                            <name>Beau travail</name>
+                            <id>cocorico</id>
+                            <name>Parlons PME</name>
                             <download>false</download>
                             <subcategories/>
                             <extension>mp4</extension>
@@ -3353,13 +3353,6 @@
                             <extension>mp4</extension>
                         </category>
                         <category>
-                            <id>lemploi_par_le_net</id>
-                            <name>L'emploi par le Net</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
                             <id>rendez_vous_au_gite_champagne</id>
                             <name>Rendez-vous au gîte</name>
                             <download>false</download>
@@ -3367,8 +3360,8 @@
                             <extension>mp4</extension>
                         </category>
                         <category>
-                            <id>ara_ora</id>
-                            <name>Ara ora</name>
+                            <id>lemploi_par_le_net</id>
+                            <name>L'emploi par le Net</name>
                             <download>false</download>
                             <subcategories/>
                             <extension>mp4</extension>
@@ -3376,6 +3369,13 @@
                         <category>
                             <id>toutes_les_france</id>
                             <name>Toutes les France</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>ara_ora</id>
+                            <name>Ara ora</name>
                             <download>false</download>
                             <subcategories/>
                             <extension>mp4</extension>
@@ -4047,15 +4047,15 @@
                             <extension>mp4</extension>
                         </category>
                         <category>
-                            <id>foot_2_rue</id>
-                            <name>Foot 2 rue</name>
+                            <id>boris</id>
+                            <name>Boris</name>
                             <download>false</download>
                             <subcategories/>
                             <extension>mp4</extension>
                         </category>
                         <category>
-                            <id>boris</id>
-                            <name>Boris</name>
+                            <id>foot_2_rue</id>
+                            <name>Foot 2 rue</name>
                             <download>false</download>
                             <subcategories/>
                             <extension>mp4</extension>
@@ -4082,15 +4082,15 @@
                             <extension>mp4</extension>
                         </category>
                         <category>
-                            <id>sam_le_pompier</id>
-                            <name>Sam le pompier</name>
+                            <id>peppa_pig</id>
+                            <name>Peppa Pig</name>
                             <download>false</download>
                             <subcategories/>
                             <extension>mp4</extension>
                         </category>
                         <category>
-                            <id>peppa_pig</id>
-                            <name>Peppa Pig</name>
+                            <id>sam_le_pompier</id>
+                            <name>Sam le pompier</name>
                             <download>false</download>
                             <subcategories/>
                             <extension>mp4</extension>
@@ -4273,6 +4273,20 @@
                     <download>false</download>
                     <subcategories>
                         <category>
+                            <id>en_course_sur_france_3</id>
+                            <name>En course sur France 3</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>le_mag_des_sports</id>
+                            <name>Mag des sports</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
                             <id>code_phare</id>
                             <name>Code phare</name>
                             <download>false</download>
@@ -4280,15 +4294,15 @@
                             <extension>mp4</extension>
                         </category>
                         <category>
-                            <id>image_du_jour_roland_garros</id>
-                            <name>Image du jour : Roland-Garros</name>
+                            <id>stade_2</id>
+                            <name>Stade 2</name>
                             <download>false</download>
                             <subcategories/>
                             <extension>mp4</extension>
                         </category>
                         <category>
-                            <id>stade_2</id>
-                            <name>Stade 2</name>
+                            <id>image_du_jour_roland_garros</id>
+                            <name>Image du jour : Roland-Garros</name>
                             <download>false</download>
                             <subcategories/>
                             <extension>mp4</extension>
@@ -4315,8 +4329,8 @@
                             <extension>mp4</extension>
                         </category>
                         <category>
-                            <id>couleurs_sport</id>
-                            <name>Couleurs sport</name>
+                            <id>rugby_france_2</id>
+                            <name>Rugby</name>
                             <download>false</download>
                             <subcategories/>
                             <extension>mp4</extension>
@@ -4324,6 +4338,13 @@
                         <category>
                             <id>chroniques_d_en_haut</id>
                             <name>Chroniques d'en haut</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>couleurs_sport</id>
+                            <name>Couleurs sport</name>
                             <download>false</download>
                             <subcategories/>
                             <extension>mp4</extension>
@@ -4338,62 +4359,6 @@
                         <category>
                             <id>plongeon_extreme</id>
                             <name>Plongeon extrême</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>tua_ro_sports</id>
-                            <name>Tu'aro Sport, le mag</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>sport_in_corsica</id>
-                            <name>Sport in Corsica</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>le_journal_de_roland_garros</id>
-                            <name>Le journal de Roland-Garros</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>soyons_sport</id>
-                            <name>Soyons sport</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>roland_garros_et_moi</id>
-                            <name>Roland Garros et moi</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>le_mag_des_sports</id>
-                            <name>Mag des sports</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>en_course_sur_france_3</id>
-                            <name>En course sur France 3</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>rugby_france_2</id>
-                            <name>Rugby</name>
                             <download>false</download>
                             <subcategories/>
                             <extension>mp4</extension>
@@ -4427,6 +4392,13 @@
                             <extension>mp4</extension>
                         </category>
                         <category>
+                            <id>tua_ro_sports</id>
+                            <name>Tu'aro Sport, le mag</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
                             <id>tout_le_sport</id>
                             <name>Tout le sport</name>
                             <download>false</download>
@@ -4436,6 +4408,34 @@
                         <category>
                             <id>973_chrono</id>
                             <name>9.7.3 chrono Guyane 1ère</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>sport_in_corsica</id>
+                            <name>Sport in Corsica</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>le_journal_de_roland_garros</id>
+                            <name>Le journal de Roland-Garros</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>soyons_sport</id>
+                            <name>Soyons sport</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>roland_garros_et_moi</id>
+                            <name>Roland Garros et moi</name>
                             <download>false</download>
                             <subcategories/>
                             <extension>mp4</extension>
@@ -4575,15 +4575,15 @@
                             <extension>mp4</extension>
                         </category>
                         <category>
-                            <id>jt_13h_guadeloupe</id>
-                            <name>13 heures</name>
+                            <id>un_ora</id>
+                            <name>1 ora</name>
                             <download>false</download>
                             <subcategories/>
                             <extension>mp4</extension>
                         </category>
                         <category>
-                            <id>un_ora</id>
-                            <name>1 ora</name>
+                            <id>jt_13h_guadeloupe</id>
+                            <name>13 heures</name>
                             <download>false</download>
                             <subcategories/>
                             <extension>mp4</extension>
@@ -4883,13 +4883,6 @@
                             <extension>mp4</extension>
                         </category>
                         <category>
-                            <id>soir_3_alpes</id>
-                            <name>Soir 3 Alpes</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
                             <id>jt_1920_auvergne</id>
                             <name>19/20 Auvergne</name>
                             <download>false</download>
@@ -4897,8 +4890,8 @@
                             <extension>mp4</extension>
                         </category>
                         <category>
-                            <id>jt_wallis_et_futuna</id>
-                            <name>JT Wallis-et-Futuna (en wallisien)</name>
+                            <id>soir_3_alpes</id>
+                            <name>Soir 3 Alpes</name>
                             <download>false</download>
                             <subcategories/>
                             <extension>mp4</extension>
@@ -4911,22 +4904,15 @@
                             <extension>mp4</extension>
                         </category>
                         <category>
+                            <id>jt_wallis_et_futuna</id>
+                            <name>JT Wallis-et-Futuna (en wallisien)</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
                             <id>soir_3_pays_de_la_loire</id>
                             <name>Soir 3 Pays de la Loire</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>jt_guadeloupe</id>
-                            <name>Le journal Guadeloupe</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
-                            <id>jt_local_19_20_limoges</id>
-                            <name>JT Local 19-20 - Limoges</name>
                             <download>false</download>
                             <subcategories/>
                             <extension>mp4</extension>
@@ -4939,8 +4925,15 @@
                             <extension>mp4</extension>
                         </category>
                         <category>
-                            <id>jt_1920_aquitaine</id>
-                            <name>19/20 Aquitaine</name>
+                            <id>jt_local_19_20_limoges</id>
+                            <name>JT Local 19-20 - Limoges</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>jt_guadeloupe</id>
+                            <name>Le journal Guadeloupe</name>
                             <download>false</download>
                             <subcategories/>
                             <extension>mp4</extension>
@@ -4953,8 +4946,8 @@
                             <extension>mp4</extension>
                         </category>
                         <category>
-                            <id>jt_reunion_midi</id>
-                            <name>Journal Réunion 1ère</name>
+                            <id>jt_1920_aquitaine</id>
+                            <name>19/20 Aquitaine</name>
                             <download>false</download>
                             <subcategories/>
                             <extension>mp4</extension>
@@ -4967,15 +4960,15 @@
                             <extension>mp4</extension>
                         </category>
                         <category>
-                            <id>jt_1213_bourgogne</id>
-                            <name>12/13 Bourgogne</name>
+                            <id>jt_reunion_midi</id>
+                            <name>Journal Réunion 1ère</name>
                             <download>false</download>
                             <subcategories/>
                             <extension>mp4</extension>
                         </category>
                         <category>
-                            <id>envoye_special_la_suite</id>
-                            <name>Envoyé spécial : la suite</name>
+                            <id>jt_1213_bourgogne</id>
+                            <name>12/13 Bourgogne</name>
                             <download>false</download>
                             <subcategories/>
                             <extension>mp4</extension>
@@ -4988,15 +4981,15 @@
                             <extension>mp4</extension>
                         </category>
                         <category>
-                            <id>jt_1213_limousin</id>
-                            <name>12/13 Limousin</name>
+                            <id>envoye_special_la_suite</id>
+                            <name>Envoyé spécial : la suite</name>
                             <download>false</download>
                             <subcategories/>
                             <extension>mp4</extension>
                         </category>
                         <category>
-                            <id>jt_1213_corse</id>
-                            <name>Corsica Prima</name>
+                            <id>jt_1213_limousin</id>
+                            <name>12/13 Limousin</name>
                             <download>false</download>
                             <subcategories/>
                             <extension>mp4</extension>
@@ -5009,8 +5002,8 @@
                             <extension>mp4</extension>
                         </category>
                         <category>
-                            <id>soir_3_nord_pas_de_calais</id>
-                            <name>Soir 3 Nord Pas-de-Calais</name>
+                            <id>jt_1213_corse</id>
+                            <name>Corsica Prima</name>
                             <download>false</download>
                             <subcategories/>
                             <extension>mp4</extension>
@@ -5018,6 +5011,13 @@
                         <category>
                             <id>campagne_officielle_elections_f2</id>
                             <name>Campagne officielle pour les élections européennes</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>soir_3_nord_pas_de_calais</id>
+                            <name>Soir 3 Nord Pas-de-Calais</name>
                             <download>false</download>
                             <subcategories/>
                             <extension>mp4</extension>
@@ -5107,15 +5107,15 @@
                             <extension>mp4</extension>
                         </category>
                         <category>
-                            <id>jt_1920_limousin</id>
-                            <name>19/20 Limousin</name>
+                            <id>jt_1920_bretagne</id>
+                            <name>19/20 Bretagne</name>
                             <download>false</download>
                             <subcategories/>
                             <extension>mp4</extension>
                         </category>
                         <category>
-                            <id>jt_1920_bretagne</id>
-                            <name>19/20 Bretagne</name>
+                            <id>jt_1920_limousin</id>
+                            <name>19/20 Limousin</name>
                             <download>false</download>
                             <subcategories/>
                             <extension>mp4</extension>
@@ -5550,13 +5550,6 @@
                             <extension>mp4</extension>
                         </category>
                         <category>
-                            <id>meteo_alsace</id>
-                            <name>Météo Alsace</name>
-                            <download>false</download>
-                            <subcategories/>
-                            <extension>mp4</extension>
-                        </category>
-                        <category>
                             <id>emission_oecumenique</id>
                             <name>Emission oecuménique</name>
                             <download>false</download>
@@ -5564,8 +5557,15 @@
                             <extension>mp4</extension>
                         </category>
                         <category>
-                            <id>meteo_centre</id>
-                            <name>Météo Centre</name>
+                            <id>meteo_alsace</id>
+                            <name>Météo Alsace</name>
+                            <download>false</download>
+                            <subcategories/>
+                            <extension>mp4</extension>
+                        </category>
+                        <category>
+                            <id>judaica</id>
+                            <name>Judaïca</name>
                             <download>false</download>
                             <subcategories/>
                             <extension>mp4</extension>
@@ -5578,8 +5578,8 @@
                             <extension>mp4</extension>
                         </category>
                         <category>
-                            <id>judaica</id>
-                            <name>Judaïca</name>
+                            <id>meteo_centre</id>
+                            <name>Météo Centre</name>
                             <download>false</download>
                             <subcategories/>
                             <extension>mp4</extension>
@@ -5733,8 +5733,8 @@
                             <extension>mp4</extension>
                         </category>
                         <category>
-                            <id>a_la_decouverte_de_la_chine_sauvage</id>
-                            <name>A la découverte de la Chine sauvage</name>
+                            <id>les_tresors_des_archives_nationales</id>
+                            <name>Les trésors des Archives nationales</name>
                             <download>false</download>
                             <subcategories/>
                             <extension>mp4</extension>
@@ -5747,8 +5747,8 @@
                             <extension>mp4</extension>
                         </category>
                         <category>
-                            <id>les_tresors_des_archives_nationales</id>
-                            <name>Les trésors des Archives nationales</name>
+                            <id>a_la_decouverte_de_la_chine_sauvage</id>
+                            <name>A la découverte de la Chine sauvage</name>
                             <download>false</download>
                             <subcategories/>
                             <extension>mp4</extension>
@@ -5761,15 +5761,15 @@
                             <extension>mp4</extension>
                         </category>
                         <category>
-                            <id>doc_24_bretagne</id>
-                            <name>Le G.I. qui voulait être photographe</name>
+                            <id>la_galerie_france_5</id>
+                            <name>La galerie France 5</name>
                             <download>false</download>
                             <subcategories/>
                             <extension>mp4</extension>
                         </category>
                         <category>
-                            <id>la_galerie_france_5</id>
-                            <name>La galerie France 5</name>
+                            <id>doc_24_bretagne</id>
+                            <name>Le G.I. qui voulait être photographe</name>
                             <download>false</download>
                             <subcategories/>
                             <extension>mp4</extension>
@@ -5880,15 +5880,15 @@
                             <extension>mp4</extension>
                         </category>
                         <category>
-                            <id>allergies_planetaires</id>
-                            <name>Allergies planétaires, à qui la faute ?</name>
+                            <id>duels</id>
+                            <name>Duels</name>
                             <download>false</download>
                             <subcategories/>
                             <extension>mp4</extension>
                         </category>
                         <category>
-                            <id>duels</id>
-                            <name>Duels</name>
+                            <id>allergies_planetaires</id>
+                            <name>Allergies planétaires, à qui la faute ?</name>
                             <download>false</download>
                             <subcategories/>
                             <extension>mp4</extension>
@@ -5922,15 +5922,15 @@
                             <extension>mp4</extension>
                         </category>
                         <category>
-                            <id>cuba_generation_reggaeton</id>
-                            <name>Cuba, génération reggaeton</name>
+                            <id>le_carlton_paradis_du_cinema</id>
+                            <name>Le Carlton, paradis du cinéma à Cannes</name>
                             <download>false</download>
                             <subcategories/>
                             <extension>mp4</extension>
                         </category>
                         <category>
-                            <id>le_carlton_paradis_du_cinema</id>
-                            <name>Le Carlton, paradis du cinéma à Cannes</name>
+                            <id>cuba_generation_reggaeton</id>
+                            <name>Cuba, génération reggaeton</name>
                             <download>false</download>
                             <subcategories/>
                             <extension>mp4</extension>
@@ -5950,15 +5950,15 @@
                             <extension>mp4</extension>
                         </category>
                         <category>
-                            <id>des_trains_pas_comme_les_autres</id>
-                            <name>Des trains pas comme les autres</name>
+                            <id>proteges_d_eux_memes</id>
+                            <name>Protégés d'eux-mêmes</name>
                             <download>false</download>
                             <subcategories/>
                             <extension>mp4</extension>
                         </category>
                         <category>
-                            <id>proteges_d_eux_memes</id>
-                            <name>Protégés d'eux-mêmes</name>
+                            <id>des_trains_pas_comme_les_autres</id>
+                            <name>Des trains pas comme les autres</name>
                             <download>false</download>
                             <subcategories/>
                             <extension>mp4</extension>
@@ -6006,15 +6006,15 @@
                             <extension>mp4</extension>
                         </category>
                         <category>
-                            <id>dans_les_coulisses_du_festival</id>
-                            <name>Dans les coulisses du Festival de Cannes</name>
+                            <id>o_bout_du_monde</id>
+                            <name>Ô bout du monde</name>
                             <download>false</download>
                             <subcategories/>
                             <extension>mp4</extension>
                         </category>
                         <category>
-                            <id>o_bout_du_monde</id>
-                            <name>Ô bout du monde</name>
+                            <id>dans_les_coulisses_du_festival</id>
+                            <name>Dans les coulisses du Festival de Cannes</name>
                             <download>false</download>
                             <subcategories/>
                             <extension>mp4</extension>

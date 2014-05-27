@@ -3,7 +3,11 @@ package com.dabi.habitv.tray.controller;
 import java.io.File;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -26,12 +30,11 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.control.cell.CheckBoxTreeCell;
-import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 import javafx.util.Callback;
-import javafx.util.StringConverter;
 
 import com.dabi.habitv.api.plugin.dto.CategoryDTO;
 import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
@@ -63,10 +66,18 @@ public class ToDownloadController extends BaseController implements
 
 	private ListView<EpisodeDTO> episodeListView;
 
+	private TextField episodeFilter;
+	private Collection<EpisodeDTO> currentEpisodes;
+
+	private TextField categoryFilter;
+
+	private Set<String> downloadedEpisodes;
+
 	public ToDownloadController(ProgressIndicator searchCategoryProgress,
 			Button refreshCategoryButton, Button cleanCategoryButton,
 			TreeView<CategoryDTO> toDLTree, Label indicationTextFlow,
-			ListView<EpisodeDTO> episodeListView) {
+			ListView<EpisodeDTO> episodeListView, TextField episodeFilter,
+			TextField categoryFilter) {
 		super();
 		this.refreshCategoryButton = refreshCategoryButton;
 		this.cleanCategoryButton = cleanCategoryButton;
@@ -74,6 +85,8 @@ public class ToDownloadController extends BaseController implements
 		this.indicationText = indicationTextFlow;
 		this.searchCategoryProgress = searchCategoryProgress;
 		this.episodeListView = episodeListView;
+		this.episodeFilter = episodeFilter;
+		this.categoryFilter = categoryFilter;
 		final TreeView<CategoryDTO> toDLTree2 = toDLTree;
 
 		toDLTree.addEventHandler(KeyEvent.KEY_PRESSED,
@@ -109,8 +122,8 @@ public class ToDownloadController extends BaseController implements
 		// }
 		// }
 		// }
-		// });		
-		
+		// });
+
 		toDLTree.getSelectionModel().selectedItemProperty()
 				.addListener(new ChangeListener<TreeItem<CategoryDTO>>() {
 
@@ -254,17 +267,20 @@ public class ToDownloadController extends BaseController implements
 		obsEp.addAll(Arrays.asList(new EpisodeDTO(null, "Chargement...", "")));
 
 		episodeListView.setItems(obsEp);
+		downloadedEpisodes = getController().getManager()
+				.findDownloadedEpisodes(category);
+
 		new Thread(new Runnable() {
 
 			@Override
 			public void run() {
-				final Collection<EpisodeDTO> episodes = getController()
-						.findEpisodeByCategory(category);
+				currentEpisodes = getController().findEpisodeByCategory(
+						category);
 				Platform.runLater(new Runnable() {
 
 					@Override
 					public void run() {
-						initListView(episodes);
+						initListView(currentEpisodes);
 					}
 				});
 			}
@@ -278,26 +294,35 @@ public class ToDownloadController extends BaseController implements
 		obsEp.addAll(episodes);
 
 		episodeListView.setItems(obsEp);
-		StringConverter<EpisodeDTO> stringConverter = new StringConverter<EpisodeDTO>() {
-			@Override
-			public String toString(EpisodeDTO episode) {
-				return episode.getName();
-			}
 
-			@Override
-			public EpisodeDTO fromString(String string) {
-				for (EpisodeDTO episode : episodes) {
-					if (string.equals(episode.getName())) {
-						return episode;
+		episodeListView
+				.setCellFactory(new Callback<ListView<EpisodeDTO>, ListCell<EpisodeDTO>>() {
+					@Override
+					public ListCell<EpisodeDTO> call(ListView<EpisodeDTO> param) {
+						return new ListCell<EpisodeDTO>() {
+
+							@Override
+							protected void updateItem(EpisodeDTO episode,
+									boolean empty) {
+								super.updateItem(episode, empty);
+
+								if (!empty) {
+									setText(episode.getName());
+
+									if (downloadedEpisodes.contains(episode.getName())){
+										setTextFill(Color.GRAY);
+									} else {
+										setTextFill(Color.BLACK);
+									}
+								} else {
+									setText(null);
+								}
+							}
+						};
 					}
-				}
-				return null;
-			}
-		};
-		Callback<ListView<EpisodeDTO>, ListCell<EpisodeDTO>> forListView = TextFieldListCell
-				.forListView(stringConverter);
+				});
 
-		episodeListView.setCellFactory(forListView);
+		// episodeListView.setCellFactory(forListView);
 
 		episodeListView.setContextMenu(buildEpisodeContextMenu());
 	}
@@ -321,6 +346,117 @@ public class ToDownloadController extends BaseController implements
 		loadTree();
 		addButtonsActions();
 		addTooltips();
+		initFilters();
+	}
+
+	private void initFilters() {
+		episodeFilter.setOnKeyTyped(new EventHandler<KeyEvent>() {
+
+			@Override
+			public void handle(KeyEvent event) {
+				filterEpisodeListView(episodeFilter.getText());
+			}
+		});
+
+		categoryFilter.setOnKeyTyped(new EventHandler<KeyEvent>() {
+
+			@Override
+			public void handle(KeyEvent event) {
+				filterTree(categoryFilter.getText());
+			}
+
+		});
+	}
+
+	private void filterTree(String text) {
+		categoriesToHide.clear();
+		String textUpper = text.toUpperCase();
+		// filterNodes(toDLTree.getRoot().getChildren(), textUpper);
+		filterCategories(plugins, textUpper);
+		loadTree(plugins);
+		expandAll(toDLTree.getRoot().getChildren());
+	}
+
+	private void expandAll(Collection<TreeItem<CategoryDTO>> observableList) {
+		for (TreeItem<CategoryDTO> treeItem : observableList) {
+			treeItem.setExpanded(true);
+			expandAll(treeItem.getChildren());
+		}
+	}
+
+	private void filterCategories(Map<String, CategoryDTO> plugins,
+			String textUpper) {
+		for (Entry<String, CategoryDTO> pluginEntry : plugins.entrySet()) {
+			if (!categoryPassFilter(pluginEntry.getValue(), textUpper)) {
+				categoriesToHide.add(pluginEntry.getValue());
+			}
+		}
+
+	}
+
+	// private boolean filterNodes(Collection<TreeItem<CategoryDTO>> children,
+	// String textUpper) {
+	// boolean hasNodeToShow = false;
+	// for (TreeItem<CategoryDTO> treeItem : children) {
+	// boolean passFilter = treeItem.getValue().getName()
+	// .contains(textUpper);
+	// boolean hasChildrenToShow = filterNodes(treeItem.getChildren(),
+	// textUpper);
+	// boolean show = passFilter || hasChildrenToShow;
+	//
+	// treeItem.setExpanded(show);
+	//
+	// hasNodeToShow = show || hasNodeToShow;
+	// }
+	//
+	// return hasNodeToShow;
+	// }
+	private final Set<CategoryDTO> categoriesToHide = new HashSet<>();
+
+	private boolean categoryPassFilter(CategoryDTO category, String textUpper) {
+
+		boolean passFilter = category.getName().toUpperCase()
+				.contains(textUpper);
+		boolean hasChildrenToShow = categoriesPassFilter(
+				category.getSubCategories(), textUpper);
+		boolean show = passFilter || hasChildrenToShow;
+
+		if (!show) {
+			categoriesToHide.add(category);
+		}
+
+		return show;
+	}
+
+	private boolean categoriesPassFilter(Set<CategoryDTO> subCategories,
+			String textUpper) {
+		boolean catToShow = false;
+		if (subCategories != null) {
+			for (CategoryDTO categoryDTO : subCategories) {
+				catToShow = categoryPassFilter(categoryDTO, textUpper)
+						|| catToShow;
+			}
+		}
+		return catToShow;
+	}
+
+	private void filterEpisodeListView(String text) {
+		if (text != null && !text.isEmpty()) {
+			initListView(filterEpisodeList(text));
+		}
+	}
+
+	private Collection<EpisodeDTO> filterEpisodeList(String text) {
+		Collection<EpisodeDTO> filteredList = new LinkedList<>();
+		String textUpper = text.toUpperCase();
+		for (EpisodeDTO episodeDTO : currentEpisodes) {
+			String episodeName = episodeDTO.getName();
+			if (episodeName.toUpperCase().contains(textUpper)) {
+				filteredList.add(episodeDTO);
+			}
+		}
+
+		return filteredList;
 	}
 
 	private void addTooltips() {
@@ -364,23 +500,29 @@ public class ToDownloadController extends BaseController implements
 	}
 
 	private void loadTree() {
+		plugins = getController().loadCategories();
+		loadTree(plugins);
+	}
+
+	private void loadTree(Map<String, CategoryDTO> pluginsToDisplay) {
 		TreeItem<CategoryDTO> root = new RootTreeItem();
 		toDLTree.setRoot(root);
 		toDLTree.setShowRoot(false);
 		toDLTree.setCellFactory(CheckBoxTreeCell.<CategoryDTO> forTreeView());
-		plugins = getController().loadCategories();
-		for (CategoryDTO plugin : plugins.values()) {
-			PluginTreeItem channelTreeItem = new PluginTreeItem(plugin);
-			root.getChildren().add(channelTreeItem);
-			addCategoriesToTree(channelTreeItem, plugin.getSubCategories());
+		for (CategoryDTO plugin : pluginsToDisplay.values()) {
+			if (!categoriesToHide.contains(plugin)) {
+				PluginTreeItem channelTreeItem = new PluginTreeItem(plugin);
+				root.getChildren().add(channelTreeItem);
+				addCategoriesToTree(channelTreeItem, plugin.getSubCategories());
+			}
 		}
-
 	}
 
 	private void addCategoriesToTree(CheckBoxTreeItem<CategoryDTO> treeItem,
 			Collection<CategoryDTO> categories) {
 		for (CategoryDTO category : categories) {
-			if (!category.isTemplate() && !category.isDeleted()) {
+			if (!category.isTemplate() && !category.isDeleted()
+					&& !categoriesToHide.contains(category)) {
 				CategoryTreeItem categoryTreeItem = setSelected(treeItem,
 						category);
 				treeItem.getChildren().add(categoryTreeItem);
