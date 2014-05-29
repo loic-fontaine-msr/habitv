@@ -29,7 +29,6 @@ import com.dabi.habitv.config.entities.Proxy;
 import com.dabi.habitv.config.entities.TaskDefinition;
 import com.dabi.habitv.configuration.entities.ConditionType;
 import com.dabi.habitv.configuration.entities.Configuration;
-import com.dabi.habitv.configuration.entities.Configuration.DirConfig;
 import com.dabi.habitv.configuration.entities.Configuration.DownloadConfig;
 import com.dabi.habitv.configuration.entities.Configuration.DownloadConfig.Downloaders;
 import com.dabi.habitv.configuration.entities.Configuration.ExportConfig;
@@ -46,28 +45,28 @@ import com.dabi.habitv.utils.XMLUtils;
 
 public class XMLUserConfig implements UserConfig {
 
+	private static final String USER_HOME = System.getProperty("user.home").replace("\\", "/");
+
 	private static final int DEFAULT_MAX_ATTEMPTS = 5;
 
 	private static final int DEFAULT_CHECK_TIME = 1800;
 
-	private static final String DEFAULT_PLUGIN_DIR = "plugins";
-
 	private static final int DEFAULT_CUT_SIZE = 40;
 
-	private static final String DEFAULT_DL_OUTPUT = "./downloads/#TVSHOW_NAME#-#EPISODE_NAME_CUT#.#EXTENSION#";
+	private static final String DEFAULT_DL_OUTPUT = USER_HOME + "/"
+			+ "downloads/#TVSHOW_NAME#-#EPISODE_NAME_CUT#.#EXTENSION#";
 
-	private static final String DEFAULT_INDEX_DIR = "index";
+	private static final String APP_DIR = USER_HOME + "/" + "habitv";
 
-	private static final String DEFAULT_BIN_DIR = "bin";
-
+	private static final String PLUGIN_DIR = "plugins";
+	private static final String BIN_DIR = "bin";
+	private static final String INDEX_DIR = "index";
 	private final Configuration config;
 
 	private XMLUserConfig(final Configuration config) {
 		super();
 		this.config = config;
 	}
-
-	public static final String GRAB_CONF_FILE = "grabconfig.xml";
 
 	static final String OLD_CONF_FILE = "config.xml";
 
@@ -84,8 +83,8 @@ public class XMLUserConfig implements UserConfig {
 	public static UserConfig initConfig() {
 		Configuration config;
 		try {
-			final File oldConfFile = new File(OLD_CONF_FILE);
-			final File confFile = new File(CONF_FILE);
+			final File oldConfFile = new File(getOldConfFile());
+			final File confFile = new File(getConfFile());
 			if (oldConfFile.exists()) {
 				Config oldConfig = readOldConfig(oldConfFile);
 				oldConfFile.delete();
@@ -107,15 +106,24 @@ public class XMLUserConfig implements UserConfig {
 		return new XMLUserConfig(config);
 	}
 
+	private static String getConfFile() {
+		String defaultPath = APP_DIR + "/" + CONF_FILE;
+		return (new File(CONF_FILE)).exists() ? CONF_FILE : defaultPath;
+	}
+
+	private static String getOldConfFile() {
+		String defaultPath = APP_DIR + "/" + OLD_CONF_FILE;
+		return (new File(defaultPath)).exists() ? defaultPath : OLD_CONF_FILE;
+	}
+
 	public static void saveConfig(UserConfig userConfig) throws JAXBException,
 			PropertyException {
-		saveConfig(new File(CONF_FILE), ((XMLUserConfig) userConfig).config);
+		saveConfig(new File(getConfFile()), ((XMLUserConfig) userConfig).config);
 	}
 
 	private static Configuration convertOldConfig(Config oldConfig) {
 		final Configuration config = buildDefaultConfig();
 
-		buildConfigDirFromOldConfig(oldConfig, config);
 		buildDownloadConfig(oldConfig, config);
 		buildExportConfig(oldConfig, config);
 		buildOsConfig(oldConfig, config);
@@ -212,9 +220,7 @@ public class XMLUserConfig implements UserConfig {
 		downloadConfig
 				.setDemonCheckTime(oldConfig.getDemonTime() == null ? DEFAULT_CHECK_TIME
 						: oldConfig.getDemonTime());
-		downloadConfig
-				.setDownloadOuput(oldConfig.getDownloadOuput() == null ? DEFAULT_DL_OUTPUT
-						: oldConfig.getDownloadOuput());
+		downloadConfig.setDownloadOuput(DEFAULT_DL_OUTPUT);
 		downloadConfig
 				.setFileNameCutSize(oldConfig.getFileNameCutSize() == null ? DEFAULT_CUT_SIZE
 						: oldConfig.getFileNameCutSize());
@@ -229,17 +235,6 @@ public class XMLUserConfig implements UserConfig {
 
 		downloadConfig.setDownloaders(downloaders);
 		config.setDownloadConfig(downloadConfig);
-	}
-
-	private static void buildConfigDirFromOldConfig(Config oldConfig,
-			final Configuration config) {
-		DirConfig dirConfig = new DirConfig();
-		dirConfig.setBinDir(DEFAULT_BIN_DIR);
-		dirConfig
-				.setIndexDir(oldConfig.getIndexDir() == null ? DEFAULT_INDEX_DIR
-						: oldConfig.getIndexDir());
-		dirConfig.setPluginDir(DEFAULT_PLUGIN_DIR);
-		config.setDirConfig(dirConfig);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -312,9 +307,11 @@ public class XMLUserConfig implements UserConfig {
 
 	@Override
 	public String getPluginDir() {
-		return config.getDirConfig() == null
-				|| config.getDirConfig().getPluginDir() == null ? DEFAULT_PLUGIN_DIR
-				: config.getDirConfig().getPluginDir();
+		return getAppDir() + "/" + PLUGIN_DIR;
+	}
+
+	public String getAppDir() {
+		return APP_DIR;
 	}
 
 	@Override
@@ -413,9 +410,7 @@ public class XMLUserConfig implements UserConfig {
 
 	@Override
 	public String getIndexDir() {
-		return config.getDirConfig() == null
-				|| config.getDirConfig().getIndexDir() == null ? DEFAULT_INDEX_DIR
-				: config.getDirConfig().getIndexDir();
+		return getAppDir() + "/" + INDEX_DIR;
 	}
 
 	@Override
@@ -495,9 +490,7 @@ public class XMLUserConfig implements UserConfig {
 
 	@Override
 	public String getBinDir() {
-		return config.getDirConfig() == null
-				|| config.getDirConfig().getBinDir() == null ? DEFAULT_BIN_DIR
-				: config.getDirConfig().getBinDir();
+		return getAppDir() + "/" + BIN_DIR;
 	}
 
 	@Override

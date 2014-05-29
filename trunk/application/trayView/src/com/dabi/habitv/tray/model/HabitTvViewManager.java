@@ -1,5 +1,6 @@
 package com.dabi.habitv.tray.model;
 
+import java.io.File;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Observable;
@@ -47,7 +48,8 @@ public class HabitTvViewManager extends Observable {
 	public HabitTvViewManager(UserConfig userConfig) {
 		super();
 		this.userConfig = userConfig;
-		grabConfigDAO = new GrabConfigDAO(HabitTvConf.GRABCONFIG_XML_FILE);
+		grabConfigDAO = new GrabConfigDAO(userConfig.getAppDir()
+				+ File.separator + HabitTvConf.GRABCONFIG_XML_FILE);
 		coreManager = new CoreManager(userConfig);
 		progressionModel = new ProgressionModel();
 	}
@@ -182,7 +184,7 @@ public class HabitTvViewManager extends Observable {
 	}
 
 	public Map<String, CategoryDTO> loadCategories() {
-		buildGrabConfigIfNeeded(); //TODO utiliser ça
+		buildGrabConfigIfNeeded(); // TODO utiliser ça
 		return grabConfigDAO.load(LoadModeEnum.ALL);
 	}
 
@@ -199,7 +201,7 @@ public class HabitTvViewManager extends Observable {
 	public void saveGrabConfig(Map<String, CategoryDTO> channel2Categories) {
 		grabConfigDAO.saveGrabConfig(channel2Categories);
 	}
-	
+
 	public void saveConfig(UserConfig userConfig) {
 		try {
 			XMLUserConfig.saveConfig(userConfig);
