@@ -45,15 +45,15 @@ public class RSSPluginManager extends BasePluginWithProxy implements
 		addCategoryTemplate(
 				categoryList,
 				"Dailymotion",
-				"http://www.dailymotion.com/rss/user/§ID§/1||Saisissez l'identifiant d'un utilisateur dailymotion");
+				"http://www.dailymotion.com/rss/user/§ID§/1!!Saisissez l'identifiant d'un utilisateur dailymotion");
 		addCategoryTemplate(
 				categoryList,
 				"Vimeo",
-				"http://vimeo.com/§ID§/videos/rss||Saisissez l'identifiant d'un utilisateur vimeo");
+				"http://vimeo.com/§ID§/videos/rss!!Saisissez l'identifiant d'un utilisateur vimeo");
 		addCategoryTemplate(
 				categoryList,
 				"Youtube",
-				"http://gdata.youtube.com/feeds/base/users/§ID§/uploads?alt=rss&amp;v=1&amp;orderby=published&amp;client=ytapi-youtube-profile||Saisissez l'identifiant d'un utilisateur youtube");
+				"http://gdata.youtube.com/feeds/base/users/§ID§/uploads?alt=rss&amp;v=1&amp;orderby=published&amp;client=ytapi-youtube-profile!!Saisissez l'identifiant d'un utilisateur youtube");
 		return categoryList;
 	}
 
