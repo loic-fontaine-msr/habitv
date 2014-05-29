@@ -28,5 +28,6 @@
 		<module>arte</module>
 		<module>nrj12</module>
 		<module>file</module>		
+		<module>tf1</module>
 	</modules>
 </project>
