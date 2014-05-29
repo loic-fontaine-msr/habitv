@@ -39,6 +39,7 @@ import com.dabi.habitv.provider.d8.D17PluginManager;
 import com.dabi.habitv.provider.d8.D8PluginManager;
 import com.dabi.habitv.provider.lequipe.LEquipePluginManager;
 import com.dabi.habitv.provider.nrj12.NRJ12PluginManager;
+import com.dabi.habitv.provider.tf1.TF1PluginManager;
 
 public class PluginProviderDownloaderTester {
 
@@ -167,6 +168,13 @@ public class PluginProviderDownloaderTester {
 		};
 		testPluginProvider(plugin, true);
 	}
+	
+	@Test
+	public final void testProviderTF1() throws InstantiationException,
+			IllegalAccessException, DownloadFailedException {
+		testPluginProvider(TF1PluginManager.class, true);
+	}
+
 
 	private void testPluginProvider(
 			final Class<? extends PluginProviderInterface> prDlPluginClass,
