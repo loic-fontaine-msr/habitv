@@ -13,6 +13,7 @@ import com.dabi.habitv.api.plugin.dto.CategoryDTO;
 import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
 import com.dabi.habitv.api.plugin.exception.TechnicalException;
 import com.dabi.habitv.api.plugin.pub.UpdatablePluginEvent;
+import com.dabi.habitv.core.config.HabitTvConf;
 import com.dabi.habitv.core.config.UserConfig;
 import com.dabi.habitv.core.config.XMLUserConfig;
 import com.dabi.habitv.core.dao.DownloadedDAO;
@@ -240,7 +241,7 @@ public class ViewController implements CoreSubscriber {
 	}
 
 	public void openGrabConfig() {
-		open(XMLUserConfig.GRAB_CONF_FILE);
+		open(HabitTvConf.GRABCONFIG_XML_FILE);
 	}
 
 	public void updateGrabconfig(Map<String, CategoryDTO> channels) {

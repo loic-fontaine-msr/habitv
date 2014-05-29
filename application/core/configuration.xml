@@ -16,11 +16,6 @@
             <youtube>bin\youtube-dl.exe</youtube>
         </downloaders>
     </downloadConfig>
-    <dirConfig>
-        <indexDir>index</indexDir>
-        <pluginDir>plugins</pluginDir>
-        <binDir>bin</binDir>
-    </dirConfig>
     <updateConfig>
         <updateOnStartup>true</updateOnStartup>
         <autoriseSnapshot>false</autoriseSnapshot>

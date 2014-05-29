@@ -38,15 +38,6 @@
 						</all>
 					</complexType>
 				</element>
-				<element name="dirConfig" minOccurs="0">
-					<complexType>
-						<all>
-							<element name="indexDir" type="string" minOccurs="0"/>
-							<element name="pluginDir" type="string" minOccurs="0"/>
-							<element name="binDir" type="string" minOccurs="0"/>
-						</all>
-					</complexType>
-				</element>
 				<element name="updateConfig" minOccurs="0">
 					<complexType>
 						<all>

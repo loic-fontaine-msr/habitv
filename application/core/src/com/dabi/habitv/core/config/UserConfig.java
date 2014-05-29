@@ -45,4 +45,5 @@ public interface UserConfig {
 
 	void setDemonCheckTime(int demonCheckTime);
 
+	String getAppDir();
 }

@@ -16,7 +16,6 @@ import com.dabi.habitv.core.dao.DownloadedDAO;
 import com.dabi.habitv.core.event.RetreiveEvent;
 import com.dabi.habitv.core.event.SearchEvent;
 import com.dabi.habitv.core.event.SearchStateEnum;
-import com.dabi.habitv.core.mgr.CoreManager;
 import com.dabi.habitv.utils.FilterUtils;
 
 public class SearchTask extends AbstractTask<Object> {
