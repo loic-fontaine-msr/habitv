@@ -1,12 +1,20 @@
+1 exec
+
+ordonner les émissions
+
+faire clignoter tab
+
+auto-extractible
+
+dl manuel input
+
+ouvrir la log
+
 "lepisode"
 
 pb d'encodage
 
 message pour indiquer iconification
-
-écrire dans téléchargement
-
-écrire dans utilisareur/dir
 
 repasser sur tous les plugins pour gérer le dl par url web, téléchargement manuel
 

@@ -3,7 +3,7 @@
     <proxies/>
     <osConfig/>
     <downloadConfig>
-        <downloadOuput>D:/divx/regular/#TVSHOW_NAME#-#EPISODE_NAME_CUT#.#EXTENSION#</downloadOuput>
+        <downloadOuput>C:/Users/bidou/downloads/#TVSHOW_NAME#-#EPISODE_NAME_CUT#.#EXTENSION#</downloadOuput>
         <maxAttempts>5</maxAttempts>
         <demonCheckTime>1800</demonCheckTime>
         <fileNameCutSize>50</fileNameCutSize>

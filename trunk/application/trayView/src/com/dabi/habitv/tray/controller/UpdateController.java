@@ -93,7 +93,8 @@ public class UpdateController {
 				public void run() {
 					try {
 						habitvViewMain.run(stage);
-					} catch (Exception e) {
+						//FIXME close app
+					} catch (Throwable e) {
 						LOG.error("", e);
 					}
 				}
