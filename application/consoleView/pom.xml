@@ -15,11 +15,11 @@
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<!-- <dependency>
+		<dependency>
 			<groupId>com.dabi.habitv</groupId>
 			<artifactId>core</artifactId>
 			<scope>compile</scope>
-		</dependency> -->
+		</dependency>
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>

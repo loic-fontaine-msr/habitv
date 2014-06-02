@@ -1,6 +1,8 @@
 package com.dabi.habitv.tray.controller;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -18,6 +20,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBoxTreeItem;
+import javafx.scene.control.CheckBoxTreeItem.TreeModificationEvent;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
@@ -38,6 +41,7 @@ import javafx.util.Callback;
 
 import com.dabi.habitv.api.plugin.dto.CategoryDTO;
 import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
+import com.dabi.habitv.api.plugin.exception.TechnicalException;
 import com.dabi.habitv.api.plugin.pub.UpdatablePluginEvent;
 import com.dabi.habitv.core.event.RetreiveEvent;
 import com.dabi.habitv.core.event.SearchCategoryEvent;
@@ -49,8 +53,7 @@ import com.dabi.habitv.tray.Popin;
 import com.dabi.habitv.tray.PopinController.ButtonHandler;
 import com.dabi.habitv.tray.subscriber.CoreSubscriber;
 
-public class ToDownloadController extends BaseController implements
-		CoreSubscriber {
+public class ToDownloadController extends BaseController implements CoreSubscriber {
 
 	private Button refreshCategoryButton;
 
@@ -73,10 +76,8 @@ public class ToDownloadController extends BaseController implements
 
 	private Set<String> downloadedEpisodes;
 
-	public ToDownloadController(ProgressIndicator searchCategoryProgress,
-			Button refreshCategoryButton, Button cleanCategoryButton,
-			TreeView<CategoryDTO> toDLTree, Label indicationTextFlow,
-			ListView<EpisodeDTO> episodeListView, TextField episodeFilter,
+	public ToDownloadController(ProgressIndicator searchCategoryProgress, Button refreshCategoryButton, Button cleanCategoryButton,
+			TreeView<CategoryDTO> toDLTree, Label indicationTextFlow, ListView<EpisodeDTO> episodeListView, TextField episodeFilter,
 			TextField categoryFilter) {
 		super();
 		this.refreshCategoryButton = refreshCategoryButton;
@@ -89,22 +90,19 @@ public class ToDownloadController extends BaseController implements
 		this.categoryFilter = categoryFilter;
 		final TreeView<CategoryDTO> toDLTree2 = toDLTree;
 
-		toDLTree.addEventHandler(KeyEvent.KEY_PRESSED,
-				new EventHandler<KeyEvent>() {
+		toDLTree.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
 
-					@Override
-					public void handle(KeyEvent event) {
-						if (event.getCode() == KeyCode.SPACE) {
-							TreeItem<CategoryDTO> selectedItem = toDLTree2
-									.getSelectionModel().getSelectedItem();
-							if (selectedItem instanceof CheckBoxTreeItem) {
-								CheckBoxTreeItem<CategoryDTO> checkBoxTreeItem = (CheckBoxTreeItem<CategoryDTO>) selectedItem;
-								checkBoxTreeItem.setSelected(!checkBoxTreeItem
-										.isSelected());
-							}
-						}
+			@Override
+			public void handle(KeyEvent event) {
+				if (event.getCode() == KeyCode.SPACE) {
+					TreeItem<CategoryDTO> selectedItem = toDLTree2.getSelectionModel().getSelectedItem();
+					if (selectedItem instanceof CheckBoxTreeItem) {
+						CheckBoxTreeItem<CategoryDTO> checkBoxTreeItem = (CheckBoxTreeItem<CategoryDTO>) selectedItem;
+						checkBoxTreeItem.setSelected(!checkBoxTreeItem.isSelected());
 					}
-				});
+				}
+			}
+		});
 
 		// toDLTree.setOnMouseClicked(new EventHandler<MouseEvent>()
 		// {
@@ -124,26 +122,23 @@ public class ToDownloadController extends BaseController implements
 		// }
 		// });
 
-		toDLTree.getSelectionModel().selectedItemProperty()
-				.addListener(new ChangeListener<TreeItem<CategoryDTO>>() {
+		toDLTree.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<TreeItem<CategoryDTO>>() {
 
-					@Override
-					public void changed(
-							ObservableValue<? extends TreeItem<CategoryDTO>> arg0,
-							TreeItem<CategoryDTO> oldValue,
-							TreeItem<CategoryDTO> newValue) {
-						if (newValue != null) {
-							buildContextMenu(newValue);
-							CategoryDTO category = newValue.getValue();
-							if (category.isDownloadable()) {
-								fillEpisodeList(category);
-							} else {
-								emptyEpisodeList();
-							}
-						}
+			@Override
+			public void changed(ObservableValue<? extends TreeItem<CategoryDTO>> arg0, TreeItem<CategoryDTO> oldValue,
+					TreeItem<CategoryDTO> newValue) {
+				if (newValue != null) {
+					buildContextMenu(newValue);
+					CategoryDTO category = newValue.getValue();
+					if (category.isDownloadable()) {
+						fillEpisodeList(category);
+					} else {
+						emptyEpisodeList();
 					}
+				}
+			}
 
-				});
+		});
 	}
 
 	private void emptyEpisodeList() {
@@ -197,12 +192,8 @@ public class ToDownloadController extends BaseController implements
 							saveTree();
 						}
 					});
-					toDLTree.getSelectionModel()
-							.getSelectedItem()
-							.getParent()
-							.getChildren()
-							.remove(toDLTree.getSelectionModel()
-									.getSelectedItem());
+					toDLTree.getSelectionModel().getSelectedItem().getParent().getChildren()
+							.remove(toDLTree.getSelectionModel().getSelectedItem());
 				}
 			});
 			contextMenu.getItems().add(supprimerMenu);
@@ -213,14 +204,12 @@ public class ToDownloadController extends BaseController implements
 
 	private void formulaireAjout(final CategoryDTO templateCategory) {
 		final CategoryForm categoryForm = new CategoryForm(templateCategory);
-		new Popin().show("Ajout d'une catégorie " + templateCategory.getName(),
-				categoryForm).setOkButtonHandler(new ButtonHandler() {
+		new Popin().show("Ajout d'une catégorie " + templateCategory.getName(), categoryForm).setOkButtonHandler(new ButtonHandler() {
 
 			@Override
 			public void onAction() {
 				templateCategory.getFatherCategory().addSubCategory(
-						buildCategoryFromTemplate(templateCategory,
-								categoryForm.textField.getText()));
+						buildCategoryFromTemplate(templateCategory, categoryForm.textField.getText()));
 				saveTree();
 				loadTree();
 			}
@@ -228,12 +217,9 @@ public class ToDownloadController extends BaseController implements
 		});
 	}
 
-	private CategoryDTO buildCategoryFromTemplate(CategoryDTO templateCategory,
-			String text) {
-		String id = templateCategory.getId().split("!!")[0].replace("§ID§",
-				text);
-		return new CategoryDTO(templateCategory.getPlugin(), findNameById(id),
-				id, FrameworkConf.MP4);
+	private CategoryDTO buildCategoryFromTemplate(CategoryDTO templateCategory, String text) {
+		String id = templateCategory.getId().split("!!")[0].replace("§ID§", text);
+		return new CategoryDTO(templateCategory.getPlugin(), findNameById(id), id, FrameworkConf.MP4);
 	}
 
 	private String findNameById(String id) {
@@ -267,15 +253,13 @@ public class ToDownloadController extends BaseController implements
 		obsEp.addAll(Arrays.asList(new EpisodeDTO(null, "Chargement...", "")));
 
 		episodeListView.setItems(obsEp);
-		downloadedEpisodes = getController().getManager()
-				.findDownloadedEpisodes(category);
+		downloadedEpisodes = getController().getManager().findDownloadedEpisodes(category);
 
 		new Thread(new Runnable() {
 
 			@Override
 			public void run() {
-				currentEpisodes = getController().findEpisodeByCategory(
-						category);
+				currentEpisodes = getController().findEpisodeByCategory(category);
 				Platform.runLater(new Runnable() {
 
 					@Override
@@ -295,32 +279,30 @@ public class ToDownloadController extends BaseController implements
 
 		episodeListView.setItems(obsEp);
 
-		episodeListView
-				.setCellFactory(new Callback<ListView<EpisodeDTO>, ListCell<EpisodeDTO>>() {
+		episodeListView.setCellFactory(new Callback<ListView<EpisodeDTO>, ListCell<EpisodeDTO>>() {
+			@Override
+			public ListCell<EpisodeDTO> call(ListView<EpisodeDTO> param) {
+				return new ListCell<EpisodeDTO>() {
+
 					@Override
-					public ListCell<EpisodeDTO> call(ListView<EpisodeDTO> param) {
-						return new ListCell<EpisodeDTO>() {
+					protected void updateItem(EpisodeDTO episode, boolean empty) {
+						super.updateItem(episode, empty);
 
-							@Override
-							protected void updateItem(EpisodeDTO episode,
-									boolean empty) {
-								super.updateItem(episode, empty);
+						if (!empty) {
+							setText(episode.getName());
 
-								if (!empty) {
-									setText(episode.getName());
-
-									if (downloadedEpisodes.contains(episode.getName())){
-										setTextFill(Color.GRAY);
-									} else {
-										setTextFill(Color.BLACK);
-									}
-								} else {
-									setText(null);
-								}
+							if (downloadedEpisodes.contains(episode.getName())) {
+								setTextFill(Color.GRAY);
+							} else {
+								setTextFill(Color.BLACK);
 							}
-						};
+						} else {
+							setText(null);
+						}
 					}
-				});
+				};
+			}
+		});
 
 		// episodeListView.setCellFactory(forListView);
 
@@ -333,8 +315,7 @@ public class ToDownloadController extends BaseController implements
 
 			@Override
 			public void handle(ActionEvent event) {
-				getController().downloadEpisode(
-						episodeListView.getSelectionModel().getSelectedItem());
+				getController().downloadEpisode(episodeListView.getSelectionModel().getSelectedItem());
 			}
 		});
 		ContextMenu contextMenu = new ContextMenu(telecharger);
@@ -384,8 +365,7 @@ public class ToDownloadController extends BaseController implements
 		}
 	}
 
-	private void filterCategories(Map<String, CategoryDTO> plugins,
-			String textUpper) {
+	private void filterCategories(Map<String, CategoryDTO> plugins, String textUpper) {
 		for (Entry<String, CategoryDTO> pluginEntry : plugins.entrySet()) {
 			if (!categoryPassFilter(pluginEntry.getValue(), textUpper)) {
 				categoriesToHide.add(pluginEntry.getValue());
@@ -415,10 +395,8 @@ public class ToDownloadController extends BaseController implements
 
 	private boolean categoryPassFilter(CategoryDTO category, String textUpper) {
 
-		boolean passFilter = category.getName().toUpperCase()
-				.contains(textUpper);
-		boolean hasChildrenToShow = categoriesPassFilter(
-				category.getSubCategories(), textUpper);
+		boolean passFilter = category.getName().toUpperCase().contains(textUpper);
+		boolean hasChildrenToShow = categoriesPassFilter(category.getSubCategories(), textUpper);
 		boolean show = passFilter || hasChildrenToShow;
 
 		if (!show) {
@@ -428,13 +406,11 @@ public class ToDownloadController extends BaseController implements
 		return show;
 	}
 
-	private boolean categoriesPassFilter(Set<CategoryDTO> subCategories,
-			String textUpper) {
+	private boolean categoriesPassFilter(Set<CategoryDTO> subCategories, String textUpper) {
 		boolean catToShow = false;
 		if (subCategories != null) {
 			for (CategoryDTO categoryDTO : subCategories) {
-				catToShow = categoryPassFilter(categoryDTO, textUpper)
-						|| catToShow;
+				catToShow = categoryPassFilter(categoryDTO, textUpper) || catToShow;
 			}
 		}
 		return catToShow;
@@ -460,10 +436,8 @@ public class ToDownloadController extends BaseController implements
 	}
 
 	private void addTooltips() {
-		refreshCategoryButton.setTooltip(new Tooltip(
-				"Rafraichir l'arbre des catégories."));
-		cleanCategoryButton.setTooltip(new Tooltip(
-				"Enlever les catégories périmées."));
+		refreshCategoryButton.setTooltip(new Tooltip("Rafraichir l'arbre des catégories."));
+		cleanCategoryButton.setTooltip(new Tooltip("Enlever les catégories périmées."));
 		indicationText
 				.setText("Selectionner les catégories à surveiller pour le téléchargement automatique \n et cliquer sur les épisodes à droite pour le téléchargement manuel.");
 	}
@@ -518,27 +492,42 @@ public class ToDownloadController extends BaseController implements
 		}
 	}
 
-	private void addCategoriesToTree(CheckBoxTreeItem<CategoryDTO> treeItem,
-			Collection<CategoryDTO> categories) {
+	private void addCategoriesToTree(CheckBoxTreeItem<CategoryDTO> treeItem, Collection<CategoryDTO> categories) {
 		for (CategoryDTO category : categories) {
-			if (!category.isTemplate() && !category.isDeleted()
-					&& !categoriesToHide.contains(category)) {
-				CategoryTreeItem categoryTreeItem = setSelected(treeItem,
-						category);
+			if (!category.isTemplate() && !category.isDeleted() && !categoriesToHide.contains(category)) {
+				CategoryTreeItem categoryTreeItem = setSelected(treeItem, category);
 				treeItem.getChildren().add(categoryTreeItem);
-				if (category.getSubCategories() != null
-						&& !category.getSubCategories().isEmpty()) {
-					addCategoriesToTree(categoryTreeItem,
-							category.getSubCategories());
+				if (category.getSubCategories() != null && !category.getSubCategories().isEmpty()) {
+					addCategoriesToTree(categoryTreeItem, category.getSubCategories());
 				}
 			}
 		}
 	}
 
-	private CategoryTreeItem setSelected(
-			CheckBoxTreeItem<CategoryDTO> treeItem, CategoryDTO category) {
-		CategoryTreeItem categoryTreeItem = new CategoryTreeItem(category);
-		categoryTreeItem.setSelected(category.isSelected());
+	private CategoryTreeItem setSelected(CheckBoxTreeItem<CategoryDTO> treeItem, final CategoryDTO category) {
+		final CategoryTreeItem categoryTreeItem = new CategoryTreeItem(category);
+		categoryTreeItem.addEventHandler(CheckBoxTreeItem.<String> checkBoxSelectionChangedEvent(),
+				new EventHandler<TreeModificationEvent<String>>() {
+					public void handle(TreeModificationEvent<String> event) {
+						if (event.wasSelectionChanged()) {
+							//category.setSelected(categoryTreeItem.isSelected());
+							category.setSelected((Boolean) invoke(categoryTreeItem, "isSelected", null));
+							planTaskIfNot(new Runnable() {
+
+								@Override
+								public void run() {
+									saveTree();
+								}
+							});
+						}
+					}
+
+				});
+		//categoryTreeItem.setSelected(category.isSelected());
+		//categoryTreeItem.setIndependent(category.isDownloadable());
+		
+		invoke(categoryTreeItem, "setSelected", category.isSelected());
+		invoke(categoryTreeItem, "setIndependent", category.isDownloadable());
 		if (category.isSelected()) {
 			setIndeterminate(treeItem);
 		}
@@ -548,8 +537,7 @@ public class ToDownloadController extends BaseController implements
 	private void setIndeterminate(CheckBoxTreeItem<CategoryDTO> treeItem) {
 		treeItem.setIndeterminate(true);
 		if (treeItem.getParent() != null) {
-			setIndeterminate((CheckBoxTreeItem<CategoryDTO>) treeItem
-					.getParent());
+			setIndeterminate((CheckBoxTreeItem<CategoryDTO>) treeItem.getParent());
 		}
 	}
 
@@ -568,28 +556,49 @@ public class ToDownloadController extends BaseController implements
 
 	}
 
-	private class CategoryTreeItem extends CheckBoxTreeItem<CategoryDTO> {
+	private Object invoke(final Object category, String string, final Boolean var) {
+		Class types[] ;
+		if (var==null){
+			types = new Class[]{};
+		} else {
+			types =new Class[] { Boolean.TYPE };
+		}
+		//Class types[] = { Boolean.TYPE };
+		Method method;
+		try {
+			method = category.getClass().getMethod(string, types);
+			Object[] parametres;
+			if (var == null) {
+				parametres = new Object[] {};
+			} else {
+				parametres = new Object[] { var };
+			}
+			return method.invoke(category, parametres);
+
+		} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			try {
+				method = category.getClass().getMethod(string, Boolean.class);
+				Object parametres[] = { var };
+				return method.invoke(category, parametres);
+			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
+					| InvocationTargetException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+				throw new TechnicalException(e1);
+			}
+		}
+	}
+
+	private static class CategoryTreeItem extends CheckBoxTreeItem<CategoryDTO> {
 
 		public CategoryTreeItem(final CategoryDTO category) {
 			super(category);
-			setIndependent(category.isDownloadable());
-			addEventHandler(
-					CheckBoxTreeItem.<String> checkBoxSelectionChangedEvent(),
-					new EventHandler<TreeModificationEvent<String>>() {
-						public void handle(TreeModificationEvent<String> event) {
-							if (event.wasSelectionChanged()) {
-								category.setSelected(isSelected());
-								planTaskIfNot(new Runnable() {
+			// setIndependent(category.isDownloadable());
 
-									@Override
-									public void run() {
-										saveTree();
-									}
-								});
-							}
-						}
+			// invoke(this, "setIndependent", category.isDownloadable());
 
-					});
 		}
 
 	}
@@ -630,13 +639,11 @@ public class ToDownloadController extends BaseController implements
 					refreshCategoryButton.setDisable(true);
 					searchCount = 0;
 					searchSize = Integer.parseInt(event.getInfo());
-					searchCategoryProgress.setProgress((double) searchCount
-							/ searchSize);
+					searchCategoryProgress.setProgress((double) searchCount / searchSize);
 					break;
 				case CATEGORIES_BUILT:
 					searchCount++;
-					searchCategoryProgress.setProgress((double) searchCount
-							/ searchSize);
+					searchCategoryProgress.setProgress((double) searchCount / searchSize);
 					break;
 				case DONE:
 					refreshCategoryButton.setDisable(false);
