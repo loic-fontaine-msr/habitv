@@ -84,7 +84,8 @@ public class YoutubePluginDownloader extends BaseUpdatablePlugin implements
 				|| downloadInput.contains(".dailymotion.")
 				|| downloadInput.contains(".vimeo.")
 				|| downloadInput.contains(".dailymotion.")
-				|| downloadInput.contains(".tf1.")) {
+				|| downloadInput.contains(".tf1.")
+				|| downloadInput.contains(".clubic.")) {
 			return DownloadableState.SPECIFIC;
 		} else {
 			return DownloadableState.IMPOSSIBLE;
