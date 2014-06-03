@@ -5,8 +5,6 @@ import javafx.concurrent.Task;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-import org.apache.log4j.Logger;
-
 import com.dabi.habitv.api.plugin.pub.UpdatablePluginEvent;
 import com.dabi.habitv.api.plugin.pub.UpdatablePluginEvent.UpdatablePluginStateEnum;
 import com.dabi.habitv.core.config.UserConfig;
@@ -18,13 +16,12 @@ import com.dabi.habitv.core.event.UpdatePluginEvent;
 import com.dabi.habitv.tray.HabiTvSplashScreen;
 import com.dabi.habitv.tray.HabiTvSplashScreen.InitHandler;
 import com.dabi.habitv.tray.HabitvViewMain;
+import com.dabi.habitv.tray.Popin;
 import com.dabi.habitv.tray.model.HabitTvViewManager;
 import com.dabi.habitv.tray.subscriber.CoreSubscriber;
 import com.dabi.habitv.tray.subscriber.UpdateSubscriber;
 
 public class UpdateController {
-
-	private static final Logger LOG = Logger.getLogger(UpdateController.class);
 
 	private HabiTvSplashScreen taskBasedSplash;
 
@@ -93,9 +90,8 @@ public class UpdateController {
 				public void run() {
 					try {
 						habitvViewMain.run(stage);
-						//FIXME close app
 					} catch (Throwable e) {
-						LOG.error("", e);
+						Popin.fatalError();
 					}
 				}
 

@@ -9,6 +9,7 @@ import java.util.Set;
 import com.dabi.habitv.api.plugin.api.PluginProviderInterface;
 import com.dabi.habitv.api.plugin.dto.CategoryDTO;
 import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
+import com.dabi.habitv.api.plugin.dto.StatusEnum;
 import com.dabi.habitv.api.plugin.exception.TechnicalException;
 import com.dabi.habitv.framework.plugin.api.BasePluginWithProxy;
 import com.sun.syndication.feed.synd.SyndEnclosure;
@@ -62,6 +63,7 @@ public class RSSPluginManager extends BasePluginWithProxy implements
 		final CategoryDTO categoryDTO = new CategoryDTO(RSSConf.NAME, name, id,
 				null, null, null);
 		categoryDTO.setTemplate(true);
+		categoryDTO.setState(StatusEnum.USER);
 		categoryList.add(categoryDTO);
 	}
 

@@ -61,20 +61,6 @@ public class TF1PluginManager extends BasePluginWithProxy implements
 						}
 					}
 				}
-				// Element aElement;
-				// if (articleElement.children().size() > 1) {
-				// aElement = articleElement.child(1).child(0);
-				// if (!aElement.hasAttr("href")){
-				// aElement = articleElement.child(1).child(1).child(0);
-				// }
-				// } else {
-				// Element section = articleElement.child(0);
-				// if (section.children().size() > 2) {
-				// aElement = section.child(2).child(0).child(0);
-				// } else {
-				// aElement = section.child(1).child(0);
-				// }
-				// }
 			}
 		} else {
 			for (final Element liElement : teaserList.children()) {

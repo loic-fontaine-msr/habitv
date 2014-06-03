@@ -3,21 +3,21 @@
     <proxies/>
     <osConfig/>
     <downloadConfig>
-        <downloadOuput>C:/Users/bidou/downloads/#TVSHOW_NAME#-#EPISODE_NAME_CUT#.#EXTENSION#</downloadOuput>
+        <downloadOuput>C:/Documents and Settings/bidou/downloads/#TVSHOW_NAME#-#EPISODE_NAME_CUT#.#EXTENSION#</downloadOuput>
         <maxAttempts>5</maxAttempts>
         <demonCheckTime>1800</demonCheckTime>
         <fileNameCutSize>50</fileNameCutSize>
         <downloaders>
             <http/>
             <rtmpdump>bin\rtmpdump.exe</rtmpdump>
-            <aria2>bin\aria2c.exe</aria2>
+            <aria2>D:\lol\bin\aria2c.exe</aria2>
             <curl>bin\curl.exe</curl>
             <ffmpeg>bin\ffmpeg.exe</ffmpeg>
             <youtube>bin\youtube-dl.exe</youtube>
         </downloaders>
     </downloadConfig>
     <updateConfig>
-        <updateOnStartup>true</updateOnStartup>
+        <updateOnStartup>false</updateOnStartup>
         <autoriseSnapshot>false</autoriseSnapshot>
     </updateConfig>
     <exportConfig>

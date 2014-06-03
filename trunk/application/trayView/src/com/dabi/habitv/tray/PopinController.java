@@ -40,12 +40,14 @@ public class PopinController {
 
 	public void init(final Stage primaryStage) {
 		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-			
+
 			@Override
 			public void handle(WindowEvent event) {
-				cancelButtonHandler.onAction();
+				if (cancelButtonHandler != null) {
+					cancelButtonHandler.onAction();
+				}
 			}
-		});		
+		});
 		cancelButton.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override

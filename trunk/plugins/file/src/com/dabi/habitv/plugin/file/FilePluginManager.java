@@ -13,6 +13,7 @@ import java.util.Set;
 import com.dabi.habitv.api.plugin.api.PluginProviderInterface;
 import com.dabi.habitv.api.plugin.dto.CategoryDTO;
 import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
+import com.dabi.habitv.api.plugin.dto.StatusEnum;
 import com.dabi.habitv.api.plugin.exception.TechnicalException;
 import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.api.BasePluginWithProxy;
@@ -76,29 +77,20 @@ public class FilePluginManager extends BasePluginWithProxy implements
 	@Override
 	public Set<CategoryDTO> findCategory() {
 		final Set<CategoryDTO> categoryList = new HashSet<>();
-		final CategoryDTO categoryDTO = new CategoryDTO(FileConf.NAME,
-				"Set a category name : ex : ThingsToDL",
-				"Set File Url Here ex : D:/toDL.txt ", null, null,
-				"Set files extension Here");
-		categoryDTO
-				.addParameter(FrameworkConf.DOWNLOADER_PARAM,
-						"Set the downloader here  :aria2, youtube, rtmpdump (default aria2)");
-		categoryDTO.addParameter(FileConf.DELETE_LOADED_EP, "true");
-		categoryList.add(categoryDTO);
-		
 		addCategoryTemplate(
 				categoryList,
 				FileConf.NAME,
-				"§ID§||Saisissez l'url d'un fichier en local \n où se trouve des urls à télécharger \"C:/temp/file.txt\"");
-		
+				"§ID§!!Saisissez l'url d'un fichier en local \n où se trouve des urls à télécharger \"C:/temp/file.txt\"");
+
 		return categoryList;
 	}
-	
+
 	private void addCategoryTemplate(final Set<CategoryDTO> categoryList,
 			String name, String id) {
-		final CategoryDTO categoryDTO = new CategoryDTO(FileConf.NAME, name, id,
-				null, null, null);
+		final CategoryDTO categoryDTO = new CategoryDTO(FileConf.NAME, name,
+				id, null, null, null);
 		categoryDTO.setTemplate(true);
+		categoryDTO.setState(StatusEnum.USER);
 		categoryList.add(categoryDTO);
 	}
 

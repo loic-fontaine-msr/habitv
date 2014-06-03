@@ -16,7 +16,7 @@ public class AbstractPluginHolder<E extends PluginBaseInterface> {
 	}
 
 	public E getPlugin(final String pluginName) {
-		return getPlugin(pluginName, null);
+		return getPlugin(pluginName, (String) null);
 	}
 
 	public E getPlugin(final String pluginName, final String defaultPluginName) {
@@ -25,7 +25,16 @@ public class AbstractPluginHolder<E extends PluginBaseInterface> {
 			plugin = pluginName2Plugin.get(defaultPluginName);
 		}
 		if (plugin == null) {
-			throw new TechnicalException("No plugin found for " + pluginName + "and no default plugin " + defaultPluginName);
+			throw new TechnicalException("No plugin found for " + pluginName
+					+ "and no default plugin " + defaultPluginName);
+		}
+		return plugin;
+	}
+
+	public E getPlugin(final String pluginName, final E defaultPlugin) {
+		E plugin = pluginName2Plugin.get(pluginName);
+		if (plugin == null) {
+			plugin = defaultPlugin;
 		}
 		return plugin;
 	}

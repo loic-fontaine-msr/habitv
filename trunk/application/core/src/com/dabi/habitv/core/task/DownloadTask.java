@@ -51,7 +51,7 @@ public class DownloadTask extends AbstractEpisodeTask {
 	@Override
 	protected void failed(final Throwable e) {
 		LOG.error("Download failed for " + getEpisode(), e);
-		if (e instanceof ExecutorStoppedException){
+		if (e instanceof ExecutorStoppedException) {
 			publisher.addNews(new RetreiveEvent(getEpisode(),
 					EpisodeStateEnum.STOPPED, e, "download"));
 		} else {
@@ -151,7 +151,8 @@ public class DownloadTask extends AbstractEpisodeTask {
 
 	@Override
 	public String toString() {
-		return "DL" + getEpisode() + " " + provider.getName() + " "
+		return "DL" + getEpisode() + " "
+				+ (provider == null ? "no provider" : provider.getName()) + " "
 				+ downloaders.getDownloadOutput();
 	}
 

@@ -12,6 +12,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -225,7 +226,7 @@ public class GrabConfigDAO {
 
 	private static List<String> getExclude(final CategoryType category) {
 		if (category.getExcludes() == null) {
-			return Collections.emptyList();
+			return new LinkedList<>();
 		} else {
 			return category.getExcludes().getExclude();
 		}
@@ -233,7 +234,7 @@ public class GrabConfigDAO {
 
 	private static List<String> getInclude(final CategoryType category) {
 		if (category.getIncludes() == null) {
-			return Collections.emptyList();
+			return new LinkedList<>();
 		} else {
 			return category.getIncludes().getInclude();
 		}
@@ -421,7 +422,10 @@ public class GrabConfigDAO {
 			} else {
 				statusEnum = StatusEnum.DELETED;
 			}
-			category.setStatus(statusEnum.name());
+			if (category.getStatus() == null
+					|| StatusEnum.valueOf(category.getStatus()) != StatusEnum.USER) {
+				category.setStatus(statusEnum.name());
+			}
 		}
 		for (final CategoryDTO categoryDTO : catNameToCat.values()) {
 			categoryList.add(buildCategory(categoryDTO));

@@ -5,6 +5,7 @@ import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressIndicator;
@@ -13,6 +14,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TreeView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -21,7 +23,6 @@ import org.apache.log4j.Logger;
 import com.dabi.habitv.api.plugin.dto.CategoryDTO;
 import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
 import com.dabi.habitv.tray.Popin;
-import com.dabi.habitv.tray.PopinController.ButtonHandler;
 import com.dabi.habitv.tray.model.HabitTvViewManager;
 import com.dabi.habitv.tray.view.HabiTvTrayView;
 
@@ -60,6 +61,9 @@ public class WindowController {
 	@FXML
 	private Button errorBUtton;
 
+	@FXML
+	private Button openLogButton;
+	
 	/*
 	 * TO DL
 	 */
@@ -91,6 +95,15 @@ public class WindowController {
 	@FXML
 	private TextField categoryFilter;
 
+	@FXML
+	private ChoiceBox<IncludeExcludeEnum> filterTypeChoice;
+	
+	@FXML
+	private Button addFilterButton;
+
+	@FXML
+	private HBox currentFilterVBox;
+	
 	/*
 	 * CONFIG
 	 */
@@ -127,20 +140,20 @@ public class WindowController {
 
 			final ViewController controller = new ViewController(manager,
 					primaryStage);
-			final HabiTvTrayView view = new HabiTvTrayView(controller);
+			final HabiTvTrayView view = new HabiTvTrayView(controller, primaryStage);
 			manager.attach(view);
 			manager.attach(controller);
 
 			DownloadController downloadController = new DownloadController(
 					mainProgress, searchButton, clearButton, retryExportButton,
-					downloadingBox, downloadDirButton, indexButton, errorBUtton);
+					downloadingBox, downloadDirButton, indexButton, errorBUtton, openLogButton);
 			manager.attach(downloadController);
 			downloadController.init(controller, manager, primaryStage);
 
 			ToDownloadController toDlController = new ToDownloadController(
 					searchCategoryProgress, refreshCategoryButton,
 					cleanCategoryButton, toDLTree, indicationText,
-					episodeListView, episodeFilter, categoryFilter);
+					episodeListView, episodeFilter, categoryFilter, filterTypeChoice, addFilterButton, currentFilterVBox);
 			toDlController.init(controller, manager, primaryStage);
 			manager.attach(toDlController);
 
@@ -150,20 +163,9 @@ public class WindowController {
 
 			controller.startDownloadCheckDemon();
 
-		} catch (Exception e) {
+		} catch (Throwable e) {
 			LOG.error("", e);
-			ButtonHandler buttonHandler = new ButtonHandler() {
-
-				@Override
-				public void onAction() {
-					System.exit(1);
-				}
-			};
-			(new Popin())
-					.setOkButtonHandler(buttonHandler)
-					.setCancelButtonHandler(buttonHandler)
-					.show("Erreur",
-							"Une erreur est survenue habiTv va fermer.\n Consulter la log pour plus de détails.");
+			Popin.fatalError();
 		}
 	}
 }

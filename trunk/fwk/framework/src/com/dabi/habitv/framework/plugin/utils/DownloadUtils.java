@@ -63,9 +63,7 @@ public class DownloadUtils {
 		}
 
 		if (possibleDownloaders.isEmpty()) {
-			return downloaders.getPlugin(FrameworkConf.DEFAULT_DOWNLOADER); // FIXME
-			// en
-			// conf
+			return downloaders.getPlugin(FrameworkConf.DEFAULT_DOWNLOADER); // TODO
 		}
 
 		return possibleDownloaders.iterator().next();
