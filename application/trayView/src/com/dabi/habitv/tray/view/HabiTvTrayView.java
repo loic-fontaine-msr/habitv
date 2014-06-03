@@ -8,6 +8,10 @@ import java.awt.TrayIcon;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javafx.event.EventHandler;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
+
 import com.dabi.habitv.api.plugin.exception.TechnicalException;
 import com.dabi.habitv.api.plugin.pub.UpdatablePluginEvent;
 import com.dabi.habitv.api.plugin.pub.UpdatablePluginEvent.UpdatablePluginStateEnum;
@@ -34,8 +38,25 @@ public final class HabiTvTrayView implements CoreSubscriber {
 
 	private boolean updateInProgress = false;
 
-	public HabiTvTrayView(final ViewController controller) {
+	private EventHandler<WindowEvent> closingMainViewHandler = new EventHandler<WindowEvent>() {
+
+		@Override
+		public void handle(WindowEvent event) {
+			if (firstClose) {
+				trayIcon.displayMessage("habiTv",
+						"habiTv est encore en cours d'exécution.",
+						TrayIcon.MessageType.INFO);
+				firstClose = false;
+			}
+		}
+	};
+
+	private boolean firstClose = true;
+
+	public HabiTvTrayView(final ViewController controller, Stage primaryStage) {
 		this.controller = controller;
+		primaryStage.setOnHidden(closingMainViewHandler);
+		primaryStage.setOnCloseRequest(closingMainViewHandler);
 		fixImage = getImage("fixe.gif"); //$NON-NLS-1$
 		animatedImage = getImage("anim.gif"); //$NON-NLS-1$
 		trayIcon = new TrayIcon(fixImage,
@@ -55,7 +76,7 @@ public final class HabiTvTrayView implements CoreSubscriber {
 	public void init() throws AWTException {
 
 		final SystemTray tray = SystemTray.getSystemTray();
-		trayIcon.setPopupMenu(new TrayMenu(controller));
+		trayIcon.setPopupMenu(new TrayMenu(controller, closingMainViewHandler));
 
 		final MouseListener mouseListener = new MouseListener() {
 
@@ -81,8 +102,7 @@ public final class HabiTvTrayView implements CoreSubscriber {
 
 			@Override
 			public void mouseClicked(final MouseEvent mouseEvent) {
-				// if (mouseEvent.getClickCount() == 2) {
-				controller.openMainView();
+				controller.openMainView(closingMainViewHandler);
 				// } else {
 				// if (!controller.getManager().getProgressionModel()
 				// .getEpisodeName2ActionProgress().isEmpty()) {
@@ -195,7 +215,7 @@ public final class HabiTvTrayView implements CoreSubscriber {
 			break;
 		case STOPPED:
 
-			break;			
+			break;
 		default:
 			break;
 		}
@@ -275,4 +295,5 @@ public final class HabiTvTrayView implements CoreSubscriber {
 			break;
 		}
 	}
+
 }

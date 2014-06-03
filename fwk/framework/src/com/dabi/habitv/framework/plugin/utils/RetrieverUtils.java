@@ -132,7 +132,7 @@ public final class RetrieverUtils {
 			if (encoding != null) {
 				reader = new BufferedReader(new InputStreamReader(in, encoding));
 			} else {
-				reader = new BufferedReader(new InputStreamReader(in));
+				reader = new BufferedReader(new InputStreamReader(in, FrameworkConf.UTF8));
 			}
 		} catch (final UnsupportedEncodingException e) {
 			throw new TechnicalException(e);

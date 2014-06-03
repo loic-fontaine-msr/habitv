@@ -13,15 +13,21 @@ import com.dabi.habitv.core.event.EpisodeStateEnum;
 
 public class ProgressionModel {
 
+	private static final int MAX_SIZE = 100;
 	private final List<ActionProgress> episodeName2ActionProgress = Collections
 			.synchronizedList(new LinkedList<ActionProgress>());
 
 	public void updateActionProgress(final EpisodeDTO episode,
-			final EpisodeStateEnum state, final String info, final ProcessHolder processHolder) {
+			final EpisodeStateEnum state, final String info,
+			final ProcessHolder processHolder) {
 		ActionProgress actionInProgress = getAction(episode);
 		if (actionInProgress == null) {
-			actionInProgress = new ActionProgress(episode, state, info, processHolder);
+			actionInProgress = new ActionProgress(episode, state, info,
+					processHolder);
 			episodeName2ActionProgress.add(actionInProgress);
+			if (episodeName2ActionProgress.size() > MAX_SIZE) {
+				clear();
+			}
 		} else {
 			actionInProgress.setState(state);
 			actionInProgress.setProcessHolder(processHolder);

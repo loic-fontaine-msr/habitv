@@ -84,4 +84,24 @@ public class Popin extends Application {
 		return this;
 	}
 
+	private static final ButtonHandler SYSTEM_CLOSE_HANDLER = new ButtonHandler() {
+
+		@Override
+		public void onAction() {
+			System.exit(1);
+		}
+	};
+	
+	public static void fatalError() {
+		fatalError("Une erreur est survenue habiTv va fermer.\n Consulter la log pour plus de détails.");
+	}
+
+	public static void fatalError(String message) {
+		(new Popin())
+		.setOkButtonHandler(SYSTEM_CLOSE_HANDLER)
+		.setCancelButtonHandler(SYSTEM_CLOSE_HANDLER)
+		.show("Erreur",
+				message);
+	}
+
 }

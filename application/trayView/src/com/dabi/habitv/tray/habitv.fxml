@@ -39,15 +39,18 @@
 <Button mnemonicParsing="false" text="Button" BorderPane.alignment="CENTER" />
 </right>
 </BorderPane>
-</children></VBox>
+</children>
+<padding>
+<Insets top="10.0" />
+</padding></VBox>
 </content>
 </ScrollPane>
 </center>
 <top><HBox fillHeight="false" maxHeight="30.0" prefHeight="30.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-<children><ProgressIndicator fx:id="mainProgress" progress="0.0" /><Button fx:id="searchButton" mnemonicParsing="false" text="Recherche">
+<children><ProgressIndicator fx:id="mainProgress" progress="0.0" /><Button fx:id="searchButton" minWidth="80.0" mnemonicParsing="false" text="Recherche">
 <HBox.margin>
 <Insets left="5.0" />
-</HBox.margin></Button><Button fx:id="clearButton" mnemonicParsing="false" text="Effacer">
+</HBox.margin></Button><Button fx:id="clearButton" minWidth="50.0" mnemonicParsing="false" text="Effacer">
 <HBox.margin>
 <Insets left="5.0" />
 </HBox.margin></Button>
@@ -61,6 +64,9 @@
 <HBox.margin>
 <Insets left="5.0" />
 </HBox.margin></Button><Button fx:id="indexButton" mnemonicParsing="false" text="Index">
+<HBox.margin>
+<Insets left="5.0" />
+</HBox.margin></Button><Button fx:id="openLogButton" mnemonicParsing="false" text="log">
 <HBox.margin>
 <Insets left="5.0" />
 </HBox.margin></Button><Button fx:id="errorBUtton" mnemonicParsing="false" text="En erreur">
@@ -107,12 +113,27 @@
 </SplitPane>
 </center>
 <bottom><BorderPane maxHeight="30.0" BorderPane.alignment="CENTER">
-<right><HBox BorderPane.alignment="CENTER">
+<right>
+<VBox>
+<children><HBox BorderPane.alignment="CENTER">
 <children><Label text="Filtrer les épisodes :">
 <HBox.margin>
 <Insets right="15.0" />
-</HBox.margin></Label><TextField fx:id="episodeFilter" />
+</HBox.margin></Label><TextField fx:id="episodeFilter" /><ChoiceBox fx:id="filterTypeChoice" prefWidth="150.0" /><Button fx:id="addFilterButton" mnemonicParsing="false" text="Ajouter" />
 </children></HBox>
+<HBox fx:id="currentFilterVBox">
+<children><Label text="Filtres sauvegardés : " />
+<HBox>
+<children><Label text="Label" /><Label text="Label" />
+</children>
+</HBox>
+</children>
+<VBox.margin>
+<Insets top="10.0" />
+</VBox.margin>
+</HBox>
+</children>
+</VBox>
 </right>
 <center><HBox maxHeight="100.0" prefHeight="100.0" BorderPane.alignment="CENTER">
 <children><Label text="Filtrer les catégories :">
@@ -120,7 +141,10 @@
 <Insets right="15.0" />
 </HBox.margin></Label><TextField fx:id="categoryFilter" />
 </children></HBox>
-</center></BorderPane>
+</center>
+<BorderPane.margin>
+<Insets top="5.0" />
+</BorderPane.margin></BorderPane>
 </bottom></BorderPane>
 </children></AnchorPane>
       </content>

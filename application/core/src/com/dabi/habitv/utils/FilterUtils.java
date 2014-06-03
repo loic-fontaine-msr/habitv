@@ -1,6 +1,7 @@
 package com.dabi.habitv.utils;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
 
@@ -26,7 +27,7 @@ public final class FilterUtils {
 		if (excludeList != null && !excludeList.isEmpty()) {
 			boolean match = false;
 			for (final String excludePattern : excludeList) {
-				match = episodeName.matches(excludePattern);
+				match =  Pattern.compile(excludePattern, Pattern.CASE_INSENSITIVE).matcher(episodeName).find();
 				if (match) {
 					include = false;
 					break;
@@ -42,7 +43,8 @@ public final class FilterUtils {
 		if (includeList != null && !includeList.isEmpty()) {
 			include = false;
 			for (final String includePattern : includeList) {
-				include = episodeName.matches(includePattern);
+				//include = episodeName.matches(includePattern);
+				include =  Pattern.compile(includePattern, Pattern.CASE_INSENSITIVE).matcher(episodeName).find(); 
 				if (include) {
 					break;
 				}

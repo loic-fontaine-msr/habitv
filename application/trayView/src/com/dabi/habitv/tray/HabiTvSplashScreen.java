@@ -1,8 +1,9 @@
 package com.dabi.habitv.tray;
 
+import java.io.File;
 import java.io.IOException;
-
-import com.dabi.habitv.tray.controller.UpdateController;
+import java.io.RandomAccessFile;
+import java.nio.channels.FileLock;
 
 import javafx.animation.FadeTransition;
 import javafx.application.Application;
@@ -27,6 +28,11 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
+import org.apache.log4j.Logger;
+
+import com.dabi.habitv.core.config.XMLUserConfig;
+import com.dabi.habitv.tray.controller.UpdateController;
+
 public class HabiTvSplashScreen extends Application {
 	private Pane splashLayout;
 	private ProgressBar loadProgress;
@@ -34,6 +40,9 @@ public class HabiTvSplashScreen extends Application {
 	private static final int SPLASH_WIDTH = 676;
 	private static final int SPLASH_HEIGHT = 227;
 	private UpdateController updateController;
+
+	private static final Logger LOG = Logger
+			.getLogger(HabiTvSplashScreen.class);
 
 	public static void main(String[] args) throws Exception {
 		launch(args);
@@ -44,6 +53,7 @@ public class HabiTvSplashScreen extends Application {
 
 	@Override
 	public void init() throws IOException {
+
 		ImageView splash = new ImageView(new Image(ClassLoader
 				.getSystemResource("logo.png").openStream()));
 		loadProgress = new ProgressBar();
@@ -59,11 +69,18 @@ public class HabiTvSplashScreen extends Application {
 
 	@Override
 	public void start(final Stage initStage) throws Exception {
-		initStage.getIcons().add(
-				new Image(ClassLoader.getSystemResource("fixe.gif")
-						.openStream()));		
-		updateController = new UpdateController(this);
-		updateController.run(initStage);
+		String lockFile = XMLUserConfig.getCurrentAppDir() + File.separator
+				+ "habiTv.lock";
+		if (lockInstance(lockFile)) {
+			Popin.fatalError("Une instance d'habiTv est déjà en cours d'exécution.\n Si ce n'est pas le cas supprimer le fichier : \n  "
+					+ lockFile);
+		} else {
+			initStage.getIcons().add(
+					new Image(ClassLoader.getSystemResource("fixe.gif")
+							.openStream()));
+			updateController = new UpdateController(this);
+			updateController.run(initStage);
+		}
 	}
 
 	public interface InitHandler {
@@ -108,5 +125,33 @@ public class HabiTvSplashScreen extends Application {
 		initStage.setY(bounds.getMinY() + bounds.getHeight() / 2
 				- SPLASH_HEIGHT / 2);
 		initStage.show();
+	}
+
+	private static boolean lockInstance(final String lockFile) {
+		try {
+			final File file = new File(lockFile);
+			final RandomAccessFile randomAccessFile = new RandomAccessFile(
+					file, "rw");
+			final FileLock fileLock = randomAccessFile.getChannel().tryLock();
+			if (fileLock != null) {
+				Runtime.getRuntime().addShutdownHook(new Thread() {
+					public void run() {
+						try {
+							fileLock.release();
+							randomAccessFile.close();
+							file.delete();
+						} catch (Exception e) {
+							LOG.error(
+									"Unable to remove lock file: " + lockFile,
+									e);
+						}
+					}
+				});
+				return false;
+			}
+		} catch (Exception e) {
+			LOG.error("Unable to create and/or lock file: " + lockFile, e);
+		}
+		return true;
 	}
 }

@@ -7,7 +7,9 @@ import java.util.Collection;
 import java.util.Map;
 
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import com.dabi.habitv.api.plugin.dto.CategoryDTO;
 import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
@@ -221,8 +223,6 @@ public class ViewController implements CoreSubscriber {
 							canonicalPath);
 					pb.start();
 				}
-			} else {
-				desktop.open(file);
 			}
 
 		} catch (final IOException e) {
@@ -256,10 +256,12 @@ public class ViewController implements CoreSubscriber {
 		getManager().saveConfig(userConfig);
 	}
 
-	public void openMainView() {
+	public void openMainView(final EventHandler<WindowEvent> eventHandler) {
 		Platform.runLater(new Runnable() {
 			public void run() {
 				primaryStage.show();
+				primaryStage.setOnHiding(eventHandler);
+				primaryStage.setOnCloseRequest(eventHandler);
 			}
 		});
 	}
@@ -283,5 +285,9 @@ public class ViewController implements CoreSubscriber {
 
 	public void downloadEpisode(EpisodeDTO episode) {
 		getManager().restart(episode, false);
+	}
+
+	public void openLogFile() {
+		open(HabitTvConf.LOG_FILE);
 	}
 }

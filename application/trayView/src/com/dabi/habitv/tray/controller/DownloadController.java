@@ -50,10 +50,12 @@ public class DownloadController extends BaseController implements
 
 	private ProgressIndicator mainProgress;
 
+	private Button openLogButton;
+
 	public DownloadController(ProgressIndicator mainProgress,
 			Button searchButton, Button clearButton, Button retryExportButton,
 			VBox downloadingBox, Button downloadDirButton, Button indexButton,
-			Button errorBUtton) {
+			Button errorBUtton, Button openLogButton) {
 		super();
 		this.mainProgress = mainProgress;
 		this.searchButton = searchButton;
@@ -63,6 +65,7 @@ public class DownloadController extends BaseController implements
 		this.downloadDirButton = downloadDirButton;
 		this.indexButton = indexButton;
 		this.errorBUtton = errorBUtton;
+		this.openLogButton = openLogButton;
 		runCheckProgressThread();
 	}
 
@@ -183,6 +186,14 @@ public class DownloadController extends BaseController implements
 			public void handle(ActionEvent event) {
 				getController().clear();
 				updateDownloadPanel();
+			}
+		});
+		
+		openLogButton.setOnAction(new EventHandler<ActionEvent>() {
+			
+			@Override
+			public void handle(ActionEvent event) {
+				getController().openLogFile();
 			}
 		});
 	}

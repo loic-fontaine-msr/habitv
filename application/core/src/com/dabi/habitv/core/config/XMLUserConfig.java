@@ -39,13 +39,12 @@ import com.dabi.habitv.configuration.entities.Configuration.UpdateConfig;
 import com.dabi.habitv.configuration.entities.Exporter.Subexporters;
 import com.dabi.habitv.configuration.entities.ObjectFactory;
 import com.dabi.habitv.configuration.entities.PluginSupport;
+import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.utils.OSUtils;
 import com.dabi.habitv.utils.FileUtils;
 import com.dabi.habitv.utils.XMLUtils;
 
 public class XMLUserConfig implements UserConfig {
-
-	private static final String USER_HOME = System.getProperty("user.home").replace("\\", "/");
 
 	private static final int DEFAULT_MAX_ATTEMPTS = 5;
 
@@ -53,10 +52,11 @@ public class XMLUserConfig implements UserConfig {
 
 	private static final int DEFAULT_CUT_SIZE = 40;
 
-	private static final String DEFAULT_DL_OUTPUT = USER_HOME + "/"
-			+ "downloads/#TVSHOW_NAME#-#EPISODE_NAME_CUT#.#EXTENSION#";
+	private static final String DEFAULT_DL_OUTPUT = FrameworkConf.USER_HOME
+			+ "/" + "downloads/#TVSHOW_NAME#-#EPISODE_NAME_CUT#.#EXTENSION#";
 
-	private static final String APP_DIR = USER_HOME + "/" + "habitv";
+	private static final String APP_USER_HOME_DIR = FrameworkConf.USER_HOME
+			+ "/" + "habitv";
 
 	private static final String PLUGIN_DIR = "plugins";
 	private static final String BIN_DIR = "bin";
@@ -79,6 +79,22 @@ public class XMLUserConfig implements UserConfig {
 	private static final boolean DEFAULT_UPDATE_ON_STARTUP = true;
 
 	private static final Boolean DEFAULT_AUTORISE_SNAPSHOT = false;
+
+	private static final String LOCAL_PATH = getLocalPath();
+
+	private static final String DEFAULT_CONF_PATH = APP_USER_HOME_DIR + "/"
+			+ CONF_FILE;
+
+	private static final String LOCAL_CONF_PATH = LOCAL_PATH + "/" + CONF_FILE;
+
+	private static final String DEFAULT_OLD_CONF_PATH = APP_USER_HOME_DIR + "/"
+			+ OLD_CONF_FILE;
+
+	private static final String LOCAL_OLD_CONF_PATH = LOCAL_PATH + "/"
+			+ OLD_CONF_FILE;
+
+	private static final boolean IS_LOCAL_MODE = (new File(LOCAL_CONF_PATH))
+			.exists();
 
 	public static UserConfig initConfig() {
 		Configuration config;
@@ -107,13 +123,11 @@ public class XMLUserConfig implements UserConfig {
 	}
 
 	private static String getConfFile() {
-		String defaultPath = APP_DIR + "/" + CONF_FILE;
-		return (new File(CONF_FILE)).exists() ? CONF_FILE : defaultPath;
+		return IS_LOCAL_MODE ? LOCAL_CONF_PATH : DEFAULT_CONF_PATH;
 	}
 
 	private static String getOldConfFile() {
-		String defaultPath = APP_DIR + "/" + OLD_CONF_FILE;
-		return (new File(defaultPath)).exists() ? defaultPath : OLD_CONF_FILE;
+		return IS_LOCAL_MODE ? LOCAL_OLD_CONF_PATH : DEFAULT_OLD_CONF_PATH;
 	}
 
 	public static void saveConfig(UserConfig userConfig) throws JAXBException,
@@ -310,8 +324,20 @@ public class XMLUserConfig implements UserConfig {
 		return getAppDir() + "/" + PLUGIN_DIR;
 	}
 
+	private static String getLocalPath() {
+		String absolutePath = new File(XMLUserConfig.class
+				.getProtectionDomain().getCodeSource().getLocation().getPath())
+				.getAbsolutePath();
+		return absolutePath.endsWith("\\target\\classes") ? absolutePath
+				.replace("\\target\\classes", "") : absolutePath;
+	}
+
 	public String getAppDir() {
-		return APP_DIR;
+		return getCurrentAppDir();
+	}
+
+	public static String getCurrentAppDir() {
+		return IS_LOCAL_MODE ? LOCAL_PATH : APP_USER_HOME_DIR;
 	}
 
 	@Override
@@ -401,8 +427,14 @@ public class XMLUserConfig implements UserConfig {
 		final Map<String, String> downloaderName2BinPath = new HashMap<>();
 		if (downloaders != null) {
 			for (final Object downloader : downloaders.getAny()) {
+				String binPath = XMLUtils.getTagValue(downloader);
+				if (!binPath.isEmpty() && !binPath.startsWith("/")
+						&& !binPath.matches("[a-zA-Z]:.*")) {
+					binPath = getAppDir() + "/" + binPath;
+				}
+				binPath = binPath.replace("\\", "/");
 				downloaderName2BinPath.put(XMLUtils.getTagName(downloader),
-						XMLUtils.getTagValue(downloader));
+						binPath);
 			}
 		}
 		return downloaderName2BinPath;

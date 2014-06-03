@@ -317,7 +317,7 @@ public final class EpisodeManager extends AbstractManager implements TaskAdder {
 				downloader.getIndexDir());
 		final RetrieveTask retreiveTask = new RetrieveTask(episode,
 				retreivePublisher, this, exporter, getProviderPluginHolder()
-						.getPlugin(episode.getCategory().getPlugin()),
+						.getPlugin(episode.getCategory().getPlugin(), (PluginProviderInterface) null),
 				downloader, dlDAO);
 		if (exportOnly) {
 			retreiveTask.setEpisodeExportState(new EpisodeExportState(episode,
