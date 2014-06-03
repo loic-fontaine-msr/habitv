@@ -29,5 +29,6 @@
 		<module>nrj12</module>
 		<module>file</module>		
 		<module>tf1</module>
+		<module>clubic</module>
 	</modules>
 </project>

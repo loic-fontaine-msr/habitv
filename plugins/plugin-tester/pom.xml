@@ -119,6 +119,11 @@
 			<groupId>com.dabi.habitv</groupId>
 			<artifactId>tf1</artifactId>
 			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.dabi.habitv</groupId>
+			<artifactId>clubic</artifactId>
+			<version>${project.version}</version>
 		</dependency>		
 	</dependencies>
 
