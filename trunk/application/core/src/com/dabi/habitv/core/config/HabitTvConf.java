@@ -4,7 +4,7 @@ import com.dabi.habitv.framework.FrameworkConf;
 
 public interface HabitTvConf {
 
-	String DEFAULT_EXPORTER = "cmdExporter";
+	String DEFAULT_EXPORTER = "cmd";
 
 	String GRABCONFIG_XML_FILE = "grabconfig.xml";
 

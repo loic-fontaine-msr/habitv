@@ -251,15 +251,13 @@ public class DownloadController extends BaseController implements
 
 	@Override
 	public void update(final RetreiveEvent event) {
-
-		if (event.getState() == EpisodeStateEnum.EXPORT_FAILED) {
-			retryExportButton.setVisible(true);
-		}
-
 		Platform.runLater(new Runnable() {
 
 			@Override
 			public void run() {
+				if (event.getState() == EpisodeStateEnum.EXPORT_FAILED) {
+					retryExportButton.setVisible(true);
+				}				
 				updateDownloadPanel();
 			}
 

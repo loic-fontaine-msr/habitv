@@ -8,5 +8,9 @@ public class ExportFailedException extends ExecutorFailedException {
 	public ExportFailedException(final ExecutorFailedException executorFailedException) {
 		super(executorFailedException.getCmd(), executorFailedException.getFullOuput(), executorFailedException.getLastLine(), executorFailedException);
 	}
+	
+	public ExportFailedException(final Exception exception) {
+		super("", exception.getMessage(), "", exception);
+	}
 
 }

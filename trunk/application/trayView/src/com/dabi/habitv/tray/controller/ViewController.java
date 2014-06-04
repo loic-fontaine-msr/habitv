@@ -215,13 +215,17 @@ public class ViewController implements CoreSubscriber {
 			final Desktop desktop = Desktop.getDesktop();
 
 			File file = new File(canonicalPath);
-			if (file.isFile()) {
-				try {
+			if (file.exists()) {
+				if (file.isFile()) {
+					try {
+						desktop.open(file);
+					} catch (Exception e) {
+						ProcessBuilder pb = new ProcessBuilder("Notepad.exe",
+								canonicalPath);
+						pb.start();
+					}
+				} else {
 					desktop.open(file);
-				} catch (Exception e) {
-					ProcessBuilder pb = new ProcessBuilder("Notepad.exe",
-							canonicalPath);
-					pb.start();
 				}
 			}
 

@@ -202,7 +202,7 @@ public class CategoryDTO implements Comparable<CategoryDTO>, Serializable {
 	 */
 	@Override
 	public int hashCode() {
-		return getName().hashCode();
+		return getName()==null? 0 : getName().hashCode();
 	}
 
 	/**

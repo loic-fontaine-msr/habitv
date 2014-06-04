@@ -11,7 +11,15 @@ import java.util.Collection;
 import com.dabi.habitv.api.plugin.exception.TechnicalException;
 
 public class ExportDAO {
-	public synchronized void addExportStep(final EpisodeExportState episodeExportState) {
+
+	private String appDir;
+
+	public ExportDAO(String appDir) {
+		this.appDir = appDir;
+	}
+
+	public synchronized void addExportStep(
+			final EpisodeExportState episodeExportState) {
 		final EpisodeExportIndexRoot root = loadEpisodeExportIndexRoot();
 		if (!root.getEpisodeExportStates().contains(episodeExportState)) {
 			root.addEpisodeExportStates(episodeExportState);
@@ -83,7 +91,7 @@ public class ExportDAO {
 	}
 
 	private String getExportIndexFileName() {
-		return "export.index";
+		return appDir + "/export.index";
 	}
 
 	public Collection<EpisodeExportState> loadExportStep() {
@@ -99,7 +107,8 @@ public class ExportDAO {
 		}
 	}
 
-	public synchronized void removeExportStep(final EpisodeExportState episodeExportState) {
+	public synchronized void removeExportStep(
+			final EpisodeExportState episodeExportState) {
 		final EpisodeExportIndexRoot root = loadEpisodeExportIndexRoot();
 		root.removeEpisodeExportStates(episodeExportState);
 		saveExportIndex(root);

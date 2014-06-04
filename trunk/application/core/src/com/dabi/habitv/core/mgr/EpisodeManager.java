@@ -56,7 +56,7 @@ public final class EpisodeManager extends AbstractManager implements TaskAdder {
 
 	private final Map<EpisodeDTO, Integer> downloadAttempts = new HashMap<>();
 
-	private final ExportDAO exportDAO = new ExportDAO();
+	private final ExportDAO exportDAO;
 
 	private final Integer maxAttempts;
 
@@ -64,9 +64,9 @@ public final class EpisodeManager extends AbstractManager implements TaskAdder {
 			final ExporterPluginHolder exporter,
 			final ProviderPluginHolder providerPluginHolder,
 			final Map<String, Integer> taskName2PoolSize,
-			final Integer maxAttempts) {
+			final Integer maxAttempts, String appDir) {
 		super(providerPluginHolder);
-
+		exportDAO = new ExportDAO(appDir);
 		// task mgrs
 		retreiveMgr = new TaskMgr<RetrieveTask, Object>(
 				TaskTypeEnum.retreive.getPoolSize(taskName2PoolSize),
@@ -279,12 +279,12 @@ public final class EpisodeManager extends AbstractManager implements TaskAdder {
 	}
 
 	void reTryExport() {
-		if (!exportDAO.loadExportStep().isEmpty()) {
+		Collection<EpisodeExportState> exportSteps = exportDAO.loadExportStep();
+		if (!exportSteps.isEmpty()) {
 			getSearchPublisher().addNews(
 					new SearchEvent(SearchStateEnum.RESUME_EXPORT));
 		}
-		for (final EpisodeExportState episodeExportState : exportDAO
-				.loadExportStep()) {
+		for (final EpisodeExportState episodeExportState : exportSteps) {
 			final String channel = episodeExportState.getEpisode()
 					.getCategory().getPlugin();
 			final DownloadedDAO dlDAO = new DownloadedDAO(episodeExportState

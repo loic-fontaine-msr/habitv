@@ -46,7 +46,7 @@ public final class CoreManager {
 				pluginManager.getDownloadersHolder(),
 				pluginManager.getExportersHolder(),
 				pluginManager.getProvidersHolder(), taskName2PoolSizeMap,
-				config.getMaxAttempts());
+				config.getMaxAttempts(), config.getAppDir());
 		categoryManager = new CategoryManager(
 				pluginManager.getProvidersHolder(), taskName2PoolSizeMap);
 
