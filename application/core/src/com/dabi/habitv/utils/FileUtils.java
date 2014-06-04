@@ -1,7 +1,6 @@
 package com.dabi.habitv.utils;
 
 import java.io.InputStream;
-import java.text.Normalizer;
 
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
@@ -31,7 +30,8 @@ public final class FileUtils {
 	}
 
 	private static String removeNonASCII(final String string) {
-		return Normalizer.normalize(string, Normalizer.Form.NFD).replaceAll("[\u0300-\u036F]", "");
+		//return Normalizer.normalize(string, Normalizer.Form.NFD).replaceAll("[\u0300-\u036F]", "");
+		return string.replaceAll("[^\\x00-\\x7F]", "");
 	}
 
 	public static void setValidation(final Unmarshaller unmarshaller, final String xsdFile) {

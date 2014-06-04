@@ -171,7 +171,6 @@ public class DownloadBox extends BorderPane {
 		Label label;
 		if (oldWidget == null || !(oldWidget instanceof Label)) {
 			label = new Label();
-			label.setMaxWidth(50);
 		} else {
 			label = (Label) oldWidget;
 		}

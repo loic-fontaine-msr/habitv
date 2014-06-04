@@ -15,7 +15,7 @@ import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
 
 public class ExportDAOTest {
 
-	ExportDAO dao = new ExportDAO();
+	ExportDAO dao = new ExportDAO("");
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {

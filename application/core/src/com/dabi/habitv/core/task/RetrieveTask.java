@@ -35,8 +35,12 @@ public class RetrieveTask extends AbstractEpisodeTask {
 
 	private EpisodeExportState episodeExportState;
 
-	public RetrieveTask(final EpisodeDTO episode, final Publisher<RetreiveEvent> publisher, final TaskAdder taskAdder, final ExporterPluginHolder exporter,
-			final PluginProviderInterface provider, final DownloaderPluginHolder downloaders, final DownloadedDAO downloadDAO) {
+	public RetrieveTask(final EpisodeDTO episode,
+			final Publisher<RetreiveEvent> publisher,
+			final TaskAdder taskAdder, final ExporterPluginHolder exporter,
+			final PluginProviderInterface provider,
+			final DownloaderPluginHolder downloaders,
+			final DownloadedDAO downloadDAO) {
 		super(episode);
 		this.retreivePublisher = publisher;
 		this.taskAdder = taskAdder;
@@ -50,7 +54,8 @@ public class RetrieveTask extends AbstractEpisodeTask {
 	@Override
 	protected void added() {
 		LOG.info("Episode to retreive " + getEpisode());
-		retreivePublisher.addNews(new RetreiveEvent(getEpisode(), EpisodeStateEnum.TO_DOWNLOAD));
+		retreivePublisher.addNews(new RetreiveEvent(getEpisode(),
+				EpisodeStateEnum.TO_DOWNLOAD));
 	}
 
 	@Override
@@ -61,7 +66,8 @@ public class RetrieveTask extends AbstractEpisodeTask {
 	@Override
 	protected void ended() {
 		LOG.error("Episode is ready " + getEpisode());
-		retreivePublisher.addNews(new RetreiveEvent(getEpisode(), EpisodeStateEnum.READY));
+		retreivePublisher.addNews(new RetreiveEvent(getEpisode(),
+				EpisodeStateEnum.READY));
 	}
 
 	@Override
@@ -83,12 +89,17 @@ public class RetrieveTask extends AbstractEpisodeTask {
 		return episodeExportState != null;
 	}
 
-	private void export(final List<ExportDTO> exporterList) throws InterruptedException, ExecutionException {
+	private void export(final List<ExportDTO> exporterList)
+			throws InterruptedException, ExecutionException {
 		int i = 0;
 		for (final ExportDTO export : exporterList) {
 			if (validCondition(export, getEpisode()) && episodeExportResume(i)) {
-				final PluginExporterInterface pluginexporter = exporter.getPlugin(export.getName(), HabitTvConf.DEFAULT_EXPORTER);
-				final ExportTask exportTask = new ExportTask(getEpisode(), export, pluginexporter, retreivePublisher, i);
+				final PluginExporterInterface pluginexporter = exporter
+						.getPlugin(export.getName(),
+								HabitTvConf.DEFAULT_EXPORTER);
+
+				final ExportTask exportTask = new ExportTask(getEpisode(),
+						export, pluginexporter, retreivePublisher, i);
 				taskAdder.addExportTask(exportTask, export.getName());
 				// wait for the current exportTask before running an other
 				exportTask.waitEndOfTreatment();
@@ -107,19 +118,23 @@ public class RetrieveTask extends AbstractEpisodeTask {
 		return episodeExportState == null || i >= episodeExportState.getState();
 	}
 
-	private boolean validCondition(final ExportDTO export, final EpisodeDTO episode) {
+	private boolean validCondition(final ExportDTO export,
+			final EpisodeDTO episode) {
 		boolean ret = true;
 		if (export.getConditionReference() != null) {
 			final String reference = export.getConditionReference();
-			final String actualString = TokenReplacer.replaceAll(reference, episode);
+			final String actualString = TokenReplacer.replaceAll(reference,
+					episode);
 			ret = actualString.matches(export.getConditionPattern());
 		}
 		return ret;
 	}
 
 	private void download() {
-		final DownloadTask downloadTask = new DownloadTask(getEpisode(), provider, downloaders, retreivePublisher, downloadDAO);
-		taskAdder.addDownloadTask(downloadTask, getEpisode().getCategory().getPlugin());
+		final DownloadTask downloadTask = new DownloadTask(getEpisode(),
+				provider, downloaders, retreivePublisher, downloadDAO);
+		taskAdder.addDownloadTask(downloadTask, getEpisode().getCategory()
+				.getPlugin());
 		downloadTask.waitEndOfTreatment();
 	}
 
@@ -136,7 +151,8 @@ public class RetrieveTask extends AbstractEpisodeTask {
 		return "Retreiving" + getEpisode().toString();
 	}
 
-	public void setEpisodeExportState(final EpisodeExportState episodeExportState) {
+	public void setEpisodeExportState(
+			final EpisodeExportState episodeExportState) {
 		this.episodeExportState = episodeExportState;
 	}
 }
