@@ -15,11 +15,32 @@ import org.apache.log4j.Logger;
 
 //import com.dabi.habitv.framework.FrameworkConf;
 
-public final class ConsoleLauncher { // NO_UCD (unused code)
+public final class ConsoleLauncher {
+	private static final String OPTION_RUN_EXPORT = "x";
 
-	private static final Logger LOG = Logger.getLogger(ConsoleLauncher.class);
+	private static final String OPTION_TEST_PLUGIN = "t";
+
+	private static final String OPTION_LIST_PLUGIN = "lp";
+
+	private static final String OPTION_LIST_CATEGORY = "lc";
+
+	private static final String OPTION_LIST_EPISODE = "le";
+
+	private static final String OPTION_CLEAN_GRABCONFIG = "k";
+
+	private static final String OPTION_UPDATE_GRABCONFIG = "u";
+
+	private static final String OPTION_CHECK_AND_DL = "h";
+
+	private static final String OPTION_DAEMON = "d";
+
+	private static final String OPTION_CATEGORY = "c";
+
+	private static final String OPTION_EPISODE = "e";
 
 	private static final String OPTION_PLUGIN = "p";
+
+	private static final Logger LOG = Logger.getLogger(ConsoleLauncher.class);
 
 	private ConsoleLauncher() {
 
@@ -34,54 +55,32 @@ public final class ConsoleLauncher { // NO_UCD (unused code)
 
 			Options options = new Options();
 
-			options.addOption("d", "deamon", false,
-					"Lancement en mode démon avec scan automatique des épisodes à télécharger.");
-			options.addOption("h", "checkAndDL", false,
-					"Recherche des épisodes et lance les téléchargements.");
-			options.addOption("u", "updateGrabConfig", false,
-					"Met à jour le fichier des épisodes à télécharger.");
-			options.addOption("k", "cleanGrabConfig", false,
+			options.addOption(OPTION_DAEMON, "deamon", false, "Lancement en mode démon avec scan automatique des épisodes à télécharger.");
+			options.addOption(OPTION_CHECK_AND_DL, "checkAndDL", false, "Recherche des épisodes et lance les téléchargements.");
+			options.addOption(OPTION_UPDATE_GRABCONFIG, "updateGrabConfig", false, "Met à jour le fichier des épisodes à télécharger.");
+			options.addOption(OPTION_CLEAN_GRABCONFIG, "cleanGrabConfig", false,
 					"Purge le fichier des épisodes à télécharger des catégories périmées.");
-			options.addOption("le", "listEpisode", false,
-					"Met à jour le fichier des épisodes à télécharger.");
-			options.addOption("lc", "listCategory", false,
-					"Recherche et liste les catégories des plugins.");
-			options.addOption("t", "testPlugin", false,
-					"Teste le plugin avec un téléchargement aléatoire.");
-			options.addOption("x", "runExport", false,
-					"Reprise des exports en échec.");
+			options.addOption(OPTION_LIST_EPISODE, "listEpisode", false, "Met à jour le fichier des épisodes à télécharger.");
+			options.addOption(OPTION_LIST_CATEGORY, "listCategory", false, "Recherche et liste les catégories des plugins.");
+			options.addOption(OPTION_LIST_PLUGIN, "listPlugin", false, "Liste les plugins.");
+			options.addOption(OPTION_TEST_PLUGIN, "testPlugin", false, "Teste le plugin avec un téléchargement aléatoire.");
+			options.addOption(OPTION_RUN_EXPORT, "runExport", false, "Reprise des exports en échec.");
+
+			options.addOption(OptionBuilder.withLongOpt("plugins").hasArgs().withValueSeparator()
+					.withDescription("Pour lister les plugins concernés par la commande, si vide tous les plugins le seront.")
+					.create(OPTION_PLUGIN));
+			
+			options.addOption(OptionBuilder.withLongOpt("categories").hasArgs().withValueSeparator()
+					.withDescription("Pour lister les catégories concernées par la commande, si vide tous les catégories le seront.")
+					.create(OPTION_CATEGORY));
 
 			options.addOption(OptionBuilder
-					.withLongOpt("plugins")
-					.hasArgs()
-					.withValueSeparator()
-					.withDescription(
-							"Pour lister les plugins concernés par la commande, si vide tous les plugins le seront.")
-					.create(OPTION_PLUGIN));			
-			options.addOption(
-					"c",
-					"categories",
-					false,
-					"Pour lister les catégories concernées par la commande, si vide tous les catégories le seront.");
-			options.addOption(OptionBuilder
 					.withLongOpt("episodes")
 					.hasArgs()
 					.withValueSeparator()
 					.withDescription(
 							"Pour lister les identifiants (URL)  d'épisodes concernés par la commande, si vide tous les épisodes le seront.")
-					.create("e"));			
-			// options.addOption(
-			// "e",
-			// "episodes ",
-			// false,
-			// "Pour lister les identifiants (URL)  d'épisodes concernés par la commande, si vide tous les épisodes le seront.");
-			options.addOption(OptionBuilder
-					.withLongOpt("episodes")
-					.hasArgs()
-					.withValueSeparator()
-					.withDescription(
-							"Pour lister les identifiants (URL)  d'épisodes concernés par la commande, si vide tous les épisodes le seront.")
-					.create("e"));
+					.create(OPTION_EPISODE));
 
 			// create the parser
 			CommandLineParser parser = new BasicParser();
@@ -89,28 +88,45 @@ public final class ConsoleLauncher { // NO_UCD (unused code)
 			CommandLine line;
 			try {
 				line = parser.parse(options, args);
-				List<String> episodeIdList = null;
-				if (line.hasOption("e")) {
-					episodeIdList = Arrays.asList(line.getOptionValues("e"));
+
+				List<String> pluginList = null;
+				if (line.hasOption(OPTION_PLUGIN)) {
+					pluginList = Arrays.asList(line.getOptionValues(OPTION_PLUGIN));
 				}
 
-				System.out.println(episodeIdList);
+				List<String> categoryList = null;
+				if (line.hasOption(OPTION_CATEGORY)) {
+					categoryList = Arrays.asList(line.getOptionValues(OPTION_CATEGORY));
+				}
+//
+//				List<String> episodeIdList = null;
+//				if (line.hasOption(OPTION_EPISODE)) {
+//					episodeIdList = Arrays.asList(line.getOptionValues(OPTION_EPISODE));
+//				}
+
+				if (line.hasOption(OPTION_DAEMON)) {
+					daemonMode();
+				} else if (line.hasOption(OPTION_CHECK_AND_DL)) {
+					checkAndDLMode(pluginList, categoryList);
+				} else if (line.hasOption(OPTION_UPDATE_GRABCONFIG)) {
+					updateGrabConfig(pluginList);
+				} else if (line.hasOption(OPTION_CLEAN_GRABCONFIG)) {
+					updateGrabConfig(pluginList);
+				} else if (line.hasOption(OPTION_LIST_EPISODE)) {
+					listEpisode(pluginList, categoryList);
+				} else if (line.hasOption(OPTION_LIST_CATEGORY)) {
+					listCategory(pluginList);
+				} else if (line.hasOption(OPTION_LIST_PLUGIN)) {
+					listPlugin(pluginList);
+				} else if (line.hasOption(OPTION_TEST_PLUGIN)) {
+					listPlugin(pluginList);
+				} else if (line.hasOption(OPTION_RUN_EXPORT)) {
+					runExport(pluginList);
+				}
+
 			} catch (ParseException e) {
 				usage(options);
 			}
-
-			// List<String> categorieIdList = null;
-			// if (!categories.getValuesList().isEmpty()) {
-			// categorieIdList = categories.getValuesList();
-			// }
-			//
-			// List<String> pluginList = null;
-			// if (!plugins.getValuesList().isEmpty()) {
-			// pluginList = plugins.getValuesList();
-			// }
-
-			// System.out.println(categorieIdList);
-			// System.out.println(pluginList);
 		}
 
 		// try {
@@ -158,18 +174,45 @@ public final class ConsoleLauncher { // NO_UCD (unused code)
 		// }
 	}
 
-	private static void downloadEpisodes(String[] args) {
-		// TODO Auto-generated method stub
+	private static void runExport(List<String> pluginList) {
+		LOG.info("runExport : " + pluginList);
+	}
 
+	private static void listPlugin(List<String> pluginList) {
+		LOG.info("listPlugin : " + pluginList);
+	}
+
+	private static void listCategory(List<String> pluginList) {
+		LOG.info("listCategory : " + pluginList);
+	}
+
+	private static void listEpisode(List<String> pluginList, List<String> categoryList) {
+		LOG.info("listEpisode : " + pluginList + " / " + categoryList);
+	}
+
+	private static void updateGrabConfig(List<String> pluginList) {
+		LOG.info("updateGrabConfig : " + pluginList);
+	}
+
+	private static void checkAndDLMode(List<String> pluginList, List<String> categoryList) {
+		LOG.info("checkAndDLMode" + pluginList + " / " + categoryList);
+	}
+
+	private static void daemonMode() {
+		LOG.info("daemonMode");
+
+	}
+
+	private static void downloadEpisodes(String[] args) {
+		LOG.info("downloadEpisodes" + Arrays.asList(args));
 	}
 
 	public static void main2(String args[]) {
 		Options options = new Options();
 		options.addOption("n", "name", true, "[name] your name");
-		options.addOption(OptionBuilder.withLongOpt("episodes").hasArgs()
-				.withValueSeparator()
-				.withDescription("use value for given property").create("e"));
-		Option timeOption = new Option("t", false, "current time");
+		options.addOption(OptionBuilder.withLongOpt("episodes").hasArgs().withValueSeparator()
+				.withDescription("use value for given property").create(OPTION_EPISODE));
+		Option timeOption = new Option(OPTION_TEST_PLUGIN, false, "current time");
 		options.addOption(timeOption);
 
 		// ** now lets parse the input
@@ -184,7 +227,7 @@ public final class ConsoleLauncher { // NO_UCD (unused code)
 
 		// ** now lets interrogate the options and execute the relevant parts
 
-		if (cmd.hasOption("t")) {
+		if (cmd.hasOption(OPTION_TEST_PLUGIN)) {
 
 			System.out.println("You have given argument is t");
 			System.err.println("Date/Time: " + new java.util.Date());
@@ -192,15 +235,13 @@ public final class ConsoleLauncher { // NO_UCD (unused code)
 
 		if (cmd.hasOption("n")) {
 			System.out.println("You have given argument is n");
-			System.err.println("Nice to meet you: "
-					+ Arrays.asList(cmd.getOptionValues('n')));
+			System.err.println("Nice to meet you: " + Arrays.asList(cmd.getOptionValues('n')));
 			System.err.println("size " + cmd.getOptionValues('n').length);
 		}
 
-		if (cmd.hasOption("e")) {
+		if (cmd.hasOption(OPTION_EPISODE)) {
 			System.out.println("You have given argument is e");
-			System.err.println("Nice to meet you: "
-					+ Arrays.asList(cmd.getOptionValues('e')));
+			System.err.println("Nice to meet you: " + Arrays.asList(cmd.getOptionValues('e')));
 			System.err.println("size " + cmd.getOptionValues('e').length);
 		}
 
