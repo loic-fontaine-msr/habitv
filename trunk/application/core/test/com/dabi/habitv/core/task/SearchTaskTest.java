@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.LinkedHashSet;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -102,7 +103,7 @@ public class SearchTaskTest {
 				if (toFail) {
 					throw new TechnicalException("error");
 				}
-				final Set<EpisodeDTO> episodeList = new HashSet<>();
+				final Set<EpisodeDTO> episodeList = new LinkedHashSet<>();
 				if (category.getName().equals("subcategory1")) {
 					episodeList.add(episode1);
 					episodeList.add(episodeNotIncluded);
@@ -240,7 +241,7 @@ public class SearchTaskTest {
 			}
 
 		};
-		final Set<CategoryDTO> categories = new HashSet<>();
+		final Set<CategoryDTO> categories = new LinkedHashSet<>();
 		categories.add(category1);
 		categories.add(category2);
 		categories.add(category3);

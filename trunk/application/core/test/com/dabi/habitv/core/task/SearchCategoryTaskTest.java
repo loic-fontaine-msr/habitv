@@ -4,8 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.util.HashSet;
 import java.util.Set;
+import java.util.LinkedHashSet;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -67,7 +67,7 @@ public class SearchCategoryTaskTest {
 				if (toFail) {
 					throw new TechnicalException("string");
 				}
-				final Set<CategoryDTO> categoryDTOs = new HashSet<>();
+				final Set<CategoryDTO> categoryDTOs = new LinkedHashSet<>();
 				categoryDTOs.add(new CategoryDTO("channel", "name",
 						"identifier", "extension"));
 				return categoryDTOs;

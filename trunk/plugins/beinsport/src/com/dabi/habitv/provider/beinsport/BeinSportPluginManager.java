@@ -3,9 +3,9 @@ package com.dabi.habitv.provider.beinsport;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.LinkedHashSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -58,7 +58,7 @@ public class BeinSportPluginManager extends BasePluginWithProxy implements
 		case BeinSportConf.VIDEOS_CATEGORY:
 			return findEpisodeByRSS(category, BeinSportConf.VIDEOS_URL_RSS);
 		case BeinSportConf.REPLAY_CATEGORY:
-			final Set<EpisodeDTO> episodeDTOs = new HashSet<>();
+			final Set<EpisodeDTO> episodeDTOs = new LinkedHashSet<>();
 			for (final CategoryDTO subCategory : findReplaycategories()) {
 				episodeDTOs.addAll(findEpisodeByCategory(subCategory,
 						BeinSportConf.HOME_URL + subCategory.getId()));
@@ -87,7 +87,7 @@ public class BeinSportPluginManager extends BasePluginWithProxy implements
 
 	private static Set<EpisodeDTO> convertFeedToEpisodeList(
 			final SyndFeed feed, final CategoryDTO category) {
-		final Set<EpisodeDTO> episodeList = new HashSet<EpisodeDTO>();
+		final Set<EpisodeDTO> episodeList = new LinkedHashSet<EpisodeDTO>();
 		final List<?> entries = feed.getEntries();
 		if (!entries.isEmpty()) {
 			for (final Object object : entries) {
@@ -108,7 +108,7 @@ public class BeinSportPluginManager extends BasePluginWithProxy implements
 
 	@Override
 	public Set<CategoryDTO> findCategory() {
-		final Set<CategoryDTO> categoryDTOs = new HashSet<>();
+		final Set<CategoryDTO> categoryDTOs = new LinkedHashSet<>();
 		CategoryDTO videoCategory = new CategoryDTO(BeinSportConf.VIDEOS_CATEGORY,
 				BeinSportConf.VIDEOS_CATEGORY, BeinSportConf.VIDEOS_CATEGORY,
 				BeinSportConf.EXTENSION);
@@ -151,7 +151,7 @@ public class BeinSportPluginManager extends BasePluginWithProxy implements
 
 	private Set<EpisodeDTO> findEpisodeByCategory(final CategoryDTO category,
 			final String url) {
-		final Set<EpisodeDTO> episodeList = new HashSet<>();
+		final Set<EpisodeDTO> episodeList = new LinkedHashSet<>();
 
 		final org.jsoup.nodes.Document doc = Jsoup.parse(getUrlContent(url));
 
@@ -173,7 +173,7 @@ public class BeinSportPluginManager extends BasePluginWithProxy implements
 	}
 
 	private Collection<CategoryDTO> findReplaycategories() {
-		final Set<CategoryDTO> categories = new HashSet<>();
+		final Set<CategoryDTO> categories = new LinkedHashSet<>();
 
 		final org.jsoup.nodes.Document doc = Jsoup
 				.parse(getUrlContent(BeinSportConf.REPLAY_URL));

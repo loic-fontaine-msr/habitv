@@ -1,8 +1,8 @@
 package com.dabi.habitv.provider.canalplus;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.LinkedHashSet;
 
 import com.dabi.habitv.api.plugin.api.PluginClassLoaderInterface;
 import com.dabi.habitv.api.plugin.api.PluginProviderInterface;
@@ -47,7 +47,7 @@ public class CanalPlusPluginProvider extends BasePluginWithProxy implements
 				episodes.addAll(findEpisodeBySubCategory(subCategory, category));
 			}
 		} else {
-			episodes = new HashSet<>();
+			episodes = new LinkedHashSet<>();
 			for (final CategoryDTO subCategory : category.getSubCategories()) {
 				episodes.addAll(findEpisodeBySubCategory(subCategory, category));
 			}
@@ -57,7 +57,7 @@ public class CanalPlusPluginProvider extends BasePluginWithProxy implements
 
 	@Override
 	public Set<CategoryDTO> findCategory() {
-		final Set<CategoryDTO> categories = new HashSet<>();
+		final Set<CategoryDTO> categories = new LinkedHashSet<>();
 
 		final INITPLAYER initplayer = (INITPLAYER) RetrieverUtils
 				.unmarshalInputStream(
@@ -89,7 +89,7 @@ public class CanalPlusPluginProvider extends BasePluginWithProxy implements
 	}
 
 	private Collection<CategoryDTO> getCategoryById(final String identifier) {
-		final Set<CategoryDTO> categories = new HashSet<>();
+		final Set<CategoryDTO> categories = new LinkedHashSet<>();
 
 		final MEAS meas = (MEAS) RetrieverUtils.unmarshalInputStream(
 				getInputStreamFromUrl(CanalPlusConf.MEA_URL + identifier),
@@ -107,7 +107,7 @@ public class CanalPlusPluginProvider extends BasePluginWithProxy implements
 
 	private Collection<CategoryDTO> getEpisodeCategoryById(
 			final String identifier) {
-		final Set<CategoryDTO> categories = new HashSet<>();
+		final Set<CategoryDTO> categories = new LinkedHashSet<>();
 
 		final MEAS meas = (MEAS) RetrieverUtils.unmarshalInputStream(
 				getInputStreamFromUrl(CanalPlusConf.MEA_URL + identifier),
@@ -132,7 +132,7 @@ public class CanalPlusPluginProvider extends BasePluginWithProxy implements
 
 	private static Set<EpisodeDTO> buildFromVideo(final CategoryDTO category,
 			final VIDEOS videos, final CategoryDTO originalCategory) {
-		final Set<EpisodeDTO> episodes = new HashSet<>();
+		final Set<EpisodeDTO> episodes = new LinkedHashSet<>();
 		for (final VIDEO video : videos.getVIDEO()) {
 			String videoUrl = video.getMEDIA().getVIDEOS().getHLS();
 			if (videoUrl == null || videoUrl.length() < 2) {

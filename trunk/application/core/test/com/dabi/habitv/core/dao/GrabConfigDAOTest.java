@@ -10,10 +10,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.LinkedHashSet;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -93,7 +93,7 @@ public class GrabConfigDAOTest {
 	private Map<String, CategoryDTO> buildChannelMap(final boolean inc,
 			final boolean sup) {
 		final Map<String, CategoryDTO> channel2Categories = new HashMap<>();
-		Set<CategoryDTO> categories = new HashSet<>();
+		Set<CategoryDTO> categories = new LinkedHashSet<>();
 		List<String> includeList = null;
 		List<String> excludeList = null;
 		if (inc) {
@@ -113,7 +113,7 @@ public class GrabConfigDAOTest {
 		categories.add(category);
 		channel2Categories.put("channel1", new CategoryDTO("channel1",
 				categories));
-		categories = new HashSet<>();
+		categories = new LinkedHashSet<>();
 		category = new CategoryDTO("channel2", "cat3", "cat3I", includeList,
 				excludeList, "ext");
 		categories.add(category);

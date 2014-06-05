@@ -1,8 +1,8 @@
 package com.dabi.habitv.provider.pluzz;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.LinkedHashSet;
 
 import com.dabi.habitv.api.plugin.api.PluginProviderDownloaderInterface;
 import com.dabi.habitv.api.plugin.dto.CategoryDTO;
@@ -33,7 +33,7 @@ public class PluzzPluginManager extends BasePluginWithProxy implements
 
 	@Override
 	public Set<EpisodeDTO> findEpisode(final CategoryDTO category) {
-		final Set<EpisodeDTO> episodeList = new HashSet<>();
+		final Set<EpisodeDTO> episodeList = new LinkedHashSet<>();
 		if (!category.getSubCategories().isEmpty()) {
 			for (final CategoryDTO subCat : category.getSubCategories()) {
 				episodeList.addAll(findEpisode(subCat));
@@ -72,7 +72,7 @@ public class PluzzPluginManager extends BasePluginWithProxy implements
 
 	@Override
 	public Set<CategoryDTO> findCategory() {
-		return new HashSet<>(getCachedArchive().getCategories());
+		return new LinkedHashSet<>(getCachedArchive().getCategories());
 	}
 
 	@Override

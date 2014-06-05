@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -148,7 +148,7 @@ public class CategoryDTO implements Comparable<CategoryDTO>, Serializable {
 	 */
 	public Set<CategoryDTO> getSubCategories() {
 		if (subCategories == null) {
-			subCategories = new HashSet<>();
+			subCategories = new LinkedHashSet<>();
 		}
 		return subCategories;
 	}
@@ -161,7 +161,7 @@ public class CategoryDTO implements Comparable<CategoryDTO>, Serializable {
 	 */
 	public void addSubCategory(final CategoryDTO subCategory) {
 		if (subCategories == null) {
-			subCategories = new HashSet<>();
+			subCategories = new LinkedHashSet<>();
 		}
 		subCategory.setFatherCategory(this);
 		subCategories.add(subCategory);
@@ -175,7 +175,7 @@ public class CategoryDTO implements Comparable<CategoryDTO>, Serializable {
 	 */
 	public void addSubCategories(final Collection<CategoryDTO> categoryListDTO) {
 		if (subCategories == null) {
-			subCategories = new HashSet<>();
+			subCategories = new LinkedHashSet<>();
 		}
 		for (final CategoryDTO subCategory : categoryListDTO) {
 			subCategory.setFatherCategory(this);
@@ -253,9 +253,12 @@ public class CategoryDTO implements Comparable<CategoryDTO>, Serializable {
 	 */
 	@Override
 	public int compareTo(final CategoryDTO o) {
-		int ret = getPlugin().compareTo(o.getPlugin());
-		if (ret != 0) {
+		int ret = getName().compareTo(o.getName());
+		if (ret == 0) {
 			ret = getId().compareTo(o.getId());
+		}
+		if (ret == 0) {
+			ret = getPlugin().compareTo(o.getPlugin());
 		}
 		return ret;
 	}

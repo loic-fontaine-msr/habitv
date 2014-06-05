@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.LinkedHashSet;
 
 import com.dabi.habitv.api.plugin.api.PluginProviderInterface;
 import com.dabi.habitv.api.plugin.dto.CategoryDTO;
@@ -24,7 +25,7 @@ public class FilePluginManager extends BasePluginWithProxy implements
 
 	@Override
 	public Set<EpisodeDTO> findEpisode(final CategoryDTO category) {
-		final Set<EpisodeDTO> episodeList = new HashSet<>();
+		final Set<EpisodeDTO> episodeList = new LinkedHashSet<>();
 		File file = new File(category.getId());
 		if (file.exists()) {
 			Set<String> urls = findUrlInFiles(file);
@@ -76,7 +77,7 @@ public class FilePluginManager extends BasePluginWithProxy implements
 
 	@Override
 	public Set<CategoryDTO> findCategory() {
-		final Set<CategoryDTO> categoryList = new HashSet<>();
+		final Set<CategoryDTO> categoryList = new LinkedHashSet<>();
 		addCategoryTemplate(
 				categoryList,
 				FileConf.NAME,
@@ -91,6 +92,7 @@ public class FilePluginManager extends BasePluginWithProxy implements
 				id, null, null, null);
 		categoryDTO.setTemplate(true);
 		categoryDTO.setState(StatusEnum.USER);
+		categoryDTO.setDownloadable(false);
 		categoryList.add(categoryDTO);
 	}
 

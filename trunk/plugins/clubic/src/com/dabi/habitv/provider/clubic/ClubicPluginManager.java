@@ -1,7 +1,7 @@
 package com.dabi.habitv.provider.clubic;
 
-import java.util.HashSet;
 import java.util.Set;
+import java.util.LinkedHashSet;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
@@ -23,7 +23,7 @@ public class ClubicPluginManager extends BasePluginWithProxy implements
 
 	@Override
 	public Set<EpisodeDTO> findEpisode(final CategoryDTO category) {
-		final Set<EpisodeDTO> episodes = new HashSet<>();
+		final Set<EpisodeDTO> episodes = new LinkedHashSet<>();
 
 		org.jsoup.nodes.Document doc = Jsoup.parse(getUrlContent(
 				category.getId(), ClubicConf.ENCODING));
@@ -47,7 +47,7 @@ public class ClubicPluginManager extends BasePluginWithProxy implements
 
 	@Override
 	public Set<CategoryDTO> findCategory() {
-		final Set<CategoryDTO> categories = new HashSet<>();
+		final Set<CategoryDTO> categories = new LinkedHashSet<>();
 
 		final org.jsoup.nodes.Document doc = Jsoup.parse(getUrlContent(
 				ClubicConf.HOME_VIDEO_URL, ClubicConf.ENCODING));
