@@ -1,8 +1,8 @@
 package com.dabi.habitv.provider.tf1;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.LinkedHashSet;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Attribute;
@@ -24,7 +24,7 @@ public class TF1PluginManager extends BasePluginWithProxy implements
 
 	@Override
 	public Set<EpisodeDTO> findEpisode(final CategoryDTO category) {
-		final Set<EpisodeDTO> episodes = new HashSet<>();
+		final Set<EpisodeDTO> episodes = new LinkedHashSet<>();
 
 		org.jsoup.nodes.Document doc = Jsoup.parse(getUrlContent(category
 				.getId()));
@@ -77,7 +77,7 @@ public class TF1PluginManager extends BasePluginWithProxy implements
 
 	@Override
 	public Set<CategoryDTO> findCategory() {
-		final Set<CategoryDTO> categories = new HashSet<>();
+		final Set<CategoryDTO> categories = new LinkedHashSet<>();
 
 		final org.jsoup.nodes.Document doc = Jsoup
 				.parse(getUrlContent(TF1Conf.HOME_URL));
@@ -101,7 +101,7 @@ public class TF1PluginManager extends BasePluginWithProxy implements
 
 	private Collection<CategoryDTO> findSubCategories(
 			final CategoryDTO categoryFather) {
-		final Set<CategoryDTO> categories = new HashSet<>();
+		final Set<CategoryDTO> categories = new LinkedHashSet<>();
 
 		org.jsoup.nodes.Document doc = Jsoup.parse(getUrlContent(categoryFather
 				.getId()));
@@ -134,7 +134,7 @@ public class TF1PluginManager extends BasePluginWithProxy implements
 				final Element descriptionElement = liElement.child(1);
 
 				final String name;
-				final String url;
+				String url;
 				if (descriptionElement.children().size() > 2) {
 					final Element progElement = descriptionElement.child(1);
 					final Element titreElement = descriptionElement.child(2);
@@ -146,8 +146,12 @@ public class TF1PluginManager extends BasePluginWithProxy implements
 					name = aElement.text();
 					url = aElement.attr("href");
 				}
+				if (url.startsWith(FrameworkConf.HTTP_PREFIX)){
+					url = url.replace(TF1Conf.HOME_URL, "");
+				}
 				final String urlT = url.substring(1, url.length());
-				final String catUrl = urlT.substring(0, urlT.indexOf("/"));
+				int indexOfSlash = urlT.indexOf("/");
+				final String catUrl = urlT.substring(0, indexOfSlash>=0?indexOfSlash:urlT.length());
 				final CategoryDTO categoryDTO = new CategoryDTO(TF1Conf.NAME,
 						name, TF1Conf.HOME_URL + "/" + catUrl + "/",
 						TF1Conf.EXTENSION);
@@ -179,7 +183,7 @@ public class TF1PluginManager extends BasePluginWithProxy implements
 
 	private Collection<CategoryDTO> buildSubCategories(
 			CategoryDTO categoryFather) {
-		final Set<CategoryDTO> categories = new HashSet<>();
+		final Set<CategoryDTO> categories = new LinkedHashSet<>();
 		for (String catOption : CAT_OPTIONS) {
 			final CategoryDTO categoryDTO = new CategoryDTO(TF1Conf.NAME,
 					categoryFather.getName() + " - " + catOption,

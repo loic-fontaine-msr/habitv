@@ -8,10 +8,10 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+import java.util.LinkedHashSet;
 
 import org.apache.log4j.Logger;
 import org.junit.After;
@@ -142,7 +142,7 @@ public class PluginProviderDownloaderTester {
 			@Override
 			public Set<CategoryDTO> findCategory() {
 				checkCategories(super.findCategory());
-				return new HashSet<>(Arrays.asList(new CategoryDTO("rss",
+				return new LinkedHashSet<>(Arrays.asList(new CategoryDTO("rss",
 						"dessinemoileco",
 						"http://www.dailymotion.com/rss/user/Dessinemoileco/1",
 						FrameworkConf.MP4)));
@@ -163,7 +163,7 @@ public class PluginProviderDownloaderTester {
 			@Override
 			public Set<CategoryDTO> findCategory() {
 				checkCategories(super.findCategory());
-				return new HashSet<>(Arrays.asList(new CategoryDTO("file",
+				return new LinkedHashSet<>(Arrays.asList(new CategoryDTO("file",
 						TEST_FILE, TEST_FILE, FrameworkConf.MP4)));
 			}
 		};

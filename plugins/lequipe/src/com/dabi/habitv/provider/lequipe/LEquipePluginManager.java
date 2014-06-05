@@ -10,9 +10,9 @@ import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.LinkedHashSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -45,7 +45,7 @@ public class LEquipePluginManager extends BasePluginWithProxy implements
 
 	@Override
 	public Set<EpisodeDTO> findEpisode(final CategoryDTO category) {
-		final Set<EpisodeDTO> episodeList = new HashSet<>();
+		final Set<EpisodeDTO> episodeList = new LinkedHashSet<>();
 		final String baseUrl = LEquipeConf.VIDEO_HOME_URL + "/"
 				+ category.getId();
 		findEpisodeByUrl(category, episodeList, baseUrl);
@@ -60,7 +60,7 @@ public class LEquipePluginManager extends BasePluginWithProxy implements
 
 	@Override
 	public Set<CategoryDTO> findCategory() {
-		final Set<CategoryDTO> categoryDTOs = new HashSet<>();
+		final Set<CategoryDTO> categoryDTOs = new LinkedHashSet<>();
 		final Document doc = Jsoup
 				.parse(getUrlContent(LEquipeConf.VIDEO_HOME_URL));
 
@@ -249,7 +249,7 @@ public class LEquipePluginManager extends BasePluginWithProxy implements
 	}
 
 	private Collection<CategoryDTO> findSubCategories(final String categoryHref) {
-		final Set<CategoryDTO> categoryDTOs = new HashSet<>();
+		final Set<CategoryDTO> categoryDTOs = new LinkedHashSet<>();
 		final Document doc = Jsoup
 				.parse(getUrlContent(LEquipeConf.VIDEO_HOME_URL + categoryHref));
 

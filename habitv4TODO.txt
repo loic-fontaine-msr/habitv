@@ -1,6 +1,3 @@
-
-le lancement des ép au démarrage pas visible dans ihm
-
 repasser sur tous les plugins pour gérer le dl par url web, téléchargement manuel
 
 téléchargement unitaire CLI
@@ -14,15 +11,13 @@ tester linux
 
 francetvinfo
 
-clubic
-
-plugin tmc
+plugin tmc, nt1, eurosport
 
 test automatisation des dl
 
-ordonner les émissions, gérer les dates ?
-
 tester torrent
+
+agrandir l'arbre avec la fenetre
 
 doc
 

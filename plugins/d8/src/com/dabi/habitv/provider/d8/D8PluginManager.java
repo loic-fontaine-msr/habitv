@@ -3,9 +3,9 @@ package com.dabi.habitv.provider.d8;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.LinkedHashSet;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -46,7 +46,7 @@ public class D8PluginManager extends BasePluginWithProxy implements
 
 	@Override
 	public Set<EpisodeDTO> findEpisode(final CategoryDTO category) {
-		final Set<EpisodeDTO> episodes = new HashSet<>();
+		final Set<EpisodeDTO> episodes = new LinkedHashSet<>();
 
 		final org.jsoup.nodes.Document doc = Jsoup
 				.parse(getUrlContent(getUrl(category)));
@@ -103,7 +103,7 @@ public class D8PluginManager extends BasePluginWithProxy implements
 
 	@Override
 	public Set<CategoryDTO> findCategory() {
-		final Set<CategoryDTO> categories = new HashSet<>();
+		final Set<CategoryDTO> categories = new LinkedHashSet<>();
 
 		final org.jsoup.nodes.Document doc = Jsoup
 				.parse(getUrlContent(D8Conf.HOME_URL));
@@ -150,7 +150,7 @@ public class D8PluginManager extends BasePluginWithProxy implements
 	}
 
 	private Collection<CategoryDTO> findSubCategories(final String catUrl) {
-		final Set<CategoryDTO> categories = new HashSet<>();
+		final Set<CategoryDTO> categories = new LinkedHashSet<>();
 		final org.jsoup.nodes.Document doc = Jsoup.parse(getFullUrl(catUrl));
 		final Elements tpGrid = doc.select(".tp-grid");
 		if (!tpGrid.isEmpty()) {

@@ -96,6 +96,9 @@ public class WindowController {
 	private TextField categoryFilter;
 
 	@FXML
+	private CheckBox applySavedFilters;
+	
+	@FXML
 	private ChoiceBox<IncludeExcludeEnum> filterTypeChoice;
 	
 	@FXML
@@ -153,7 +156,7 @@ public class WindowController {
 			ToDownloadController toDlController = new ToDownloadController(
 					searchCategoryProgress, refreshCategoryButton,
 					cleanCategoryButton, toDLTree, indicationText,
-					episodeListView, episodeFilter, categoryFilter, filterTypeChoice, addFilterButton, currentFilterVBox);
+					episodeListView, episodeFilter, categoryFilter, applySavedFilters, filterTypeChoice, addFilterButton, currentFilterVBox);
 			toDlController.init(controller, manager, primaryStage);
 			manager.attach(toDlController);
 

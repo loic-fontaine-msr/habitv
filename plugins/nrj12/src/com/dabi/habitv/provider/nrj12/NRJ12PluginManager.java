@@ -2,6 +2,7 @@ package com.dabi.habitv.provider.nrj12;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.LinkedHashSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -31,7 +32,7 @@ public class NRJ12PluginManager extends BasePluginWithProxy implements
 
 	@Override
 	public Set<EpisodeDTO> findEpisode(final CategoryDTO category) {
-		final Set<EpisodeDTO> episodes = new HashSet<>();
+		final Set<EpisodeDTO> episodes = new LinkedHashSet<>();
 		final String main_url = NRJ12Conf.HOME_URL
 				+ "/replay-4203/collectionvideo/";
 		// System.out.println("category_url=" + category_url);

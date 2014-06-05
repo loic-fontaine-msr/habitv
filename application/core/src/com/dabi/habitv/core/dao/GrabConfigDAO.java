@@ -10,13 +10,13 @@ import java.io.UnsupportedEncodingException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.LinkedHashSet;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -91,6 +91,10 @@ public class GrabConfigDAO {
 		category.setName(categoryDTO.getName());
 		category.setExtension(categoryDTO.getExtension());
 		category.setDownload(categoryDTO.isSelected());
+
+		if (!categoryDTO.isDownloadable()) {
+			category.setDownloadable(categoryDTO.isDownloadable());
+		}
 
 		if (categoryDTO.getState() != null) {
 			category.setStatus(categoryDTO.getState().name());
@@ -169,7 +173,7 @@ public class GrabConfigDAO {
 	private static Set<CategoryDTO> buildCategoryListDTO(
 			final LoadModeEnum loadMode, final String channelName,
 			final List<CategoryType> categories) {
-		final Set<CategoryDTO> categoryDTOs = new HashSet<>(categories.size());
+		final Set<CategoryDTO> categoryDTOs = new LinkedHashSet<CategoryDTO>();
 		CategoryDTO categoryDTO;
 		for (final CategoryType category : categories) {
 			final Set<CategoryDTO> subCategoriesDTO;
@@ -341,7 +345,7 @@ public class GrabConfigDAO {
 			for (final Plugin plugin : grabConfig.getPlugins().getPlugin()) {
 				final Set<CategoryDTO> buildCategoryListDTO;
 				if (plugin.getCategories() == null) {
-					buildCategoryListDTO = new HashSet<>();
+					buildCategoryListDTO = new LinkedHashSet<>();
 				} else {
 					buildCategoryListDTO = buildCategoryListDTO(loadMode,
 							plugin.getName(), plugin.getCategories()
@@ -381,8 +385,13 @@ public class GrabConfigDAO {
 		if (grabConfig.getPlugins() != null) {
 			StatusEnum pluginstatus;
 			for (final Plugin channel : grabConfig.getPlugins().getPlugin()) {
-				final Set<CategoryDTO> categoryPlugin = channel2CategoryTemp
-						.get(channel.getName()).getSubCategories();
+				CategoryDTO categoryDTO = channel2CategoryTemp.get(channel
+						.getName());
+				if (categoryDTO == null) {
+					continue;
+				}
+				final Set<CategoryDTO> categoryPlugin = categoryDTO
+						.getSubCategories();
 				if (channel.getCategories() == null) {
 					channel.setCategories(new Categories());
 				}

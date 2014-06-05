@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.LinkedHashSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -76,7 +77,7 @@ public class ArtePluginManager extends BasePluginWithProxy implements
 	private Set<EpisodeDTO> searchEpisodeByKeyworkds(final CategoryDTO category) {
 		final String url = "http://videos.arte.tv/fr/do_search/videos/recherche?q="
 				+ category.getName().replaceAll(" ", "+");
-		final Set<EpisodeDTO> episodes = new HashSet<>();
+		final Set<EpisodeDTO> episodes = new LinkedHashSet<>();
 
 		final Document doc = Jsoup.parse(getUrlContent(url));
 
@@ -160,7 +161,7 @@ public class ArtePluginManager extends BasePluginWithProxy implements
 
 	private Set<EpisodeDTO> convertFeedToEpisodeList(final SyndFeed feed,
 			final CategoryDTO category) {
-		final Set<EpisodeDTO> episodeList = new HashSet<EpisodeDTO>();
+		final Set<EpisodeDTO> episodeList = new LinkedHashSet<EpisodeDTO>();
 		final List<?> entries = feed.getEntries();
 		final boolean uniqueTitle = isTitleUnique(entries);
 		for (final Object object : entries) {
@@ -190,7 +191,7 @@ public class ArtePluginManager extends BasePluginWithProxy implements
 	}
 
 	private Set<CategoryDTO> findCategories(final String urlContent) {
-		final Set<CategoryDTO> categoryDTOs = new HashSet<>();
+		final Set<CategoryDTO> categoryDTOs = new LinkedHashSet<>();
 		final Matcher matcher = LINK_TITLE_PATTERN.matcher(urlContent);
 		String categoryName;
 		String identifier;
