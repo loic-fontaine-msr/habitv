@@ -42,18 +42,22 @@ public class UpdateManager {
 	}
 
 	public void process() {
-		LOG.info("Checking plugin updates...");
-		String[] toUpdate = RetrieverUtils.getUrlContent(site + "/plugins.txt",
-				null).split("\\r\\n");
-		updatePublisher.addNews(new UpdatePluginEvent(
-				UpdatePluginStateEnum.STARTING_ALL, toUpdate.length));
-		final Updater updater = new JarUpdater(pluginFolder, groupId,
-				coreVersion, autoriseSnapshot, updatePublisher);
-		updater.update(toUpdate);
+		try {
+			LOG.info("Checking plugin updates...");
+			String[] toUpdate = RetrieverUtils.getUrlContent(
+					site + "/plugins.txt", null).split("\\r\\n");
+			updatePublisher.addNews(new UpdatePluginEvent(
+					UpdatePluginStateEnum.STARTING_ALL, toUpdate.length));
+			final Updater updater = new JarUpdater(pluginFolder, groupId,
+					coreVersion, autoriseSnapshot, updatePublisher);
+			updater.update(toUpdate);
 
-		updatePublisher.addNews(new UpdatePluginEvent(
-				UpdatePluginStateEnum.ALL_DONE));
-		LOG.info("Update done");
+			updatePublisher.addNews(new UpdatePluginEvent(
+					UpdatePluginStateEnum.ALL_DONE));
+			LOG.info("Update done");
+		} catch (Exception e) {
+			LOG.error("Erreur lors de la mise à jour : ", e);
+		}
 	}
 
 	public Publisher<UpdatePluginEvent> getUpdatePublisher() {

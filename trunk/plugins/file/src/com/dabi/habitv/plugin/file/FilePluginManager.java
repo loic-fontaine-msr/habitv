@@ -4,24 +4,33 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashSet;
-import java.util.Set;
 import java.util.LinkedHashSet;
+import java.util.Set;
 
+import org.apache.log4j.Logger;
+
+import com.dabi.habitv.api.plugin.api.PluginDownloaderInterface;
 import com.dabi.habitv.api.plugin.api.PluginProviderInterface;
 import com.dabi.habitv.api.plugin.dto.CategoryDTO;
+import com.dabi.habitv.api.plugin.dto.DownloadParamDTO;
 import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
 import com.dabi.habitv.api.plugin.dto.StatusEnum;
+import com.dabi.habitv.api.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.api.plugin.exception.TechnicalException;
+import com.dabi.habitv.api.plugin.holder.DownloaderPluginHolder;
+import com.dabi.habitv.api.plugin.holder.ProcessHolder;
 import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.api.BasePluginWithProxy;
+import com.dabi.habitv.framework.plugin.utils.DownloadUtils;
 import com.dabi.habitv.framework.plugin.utils.RetrieverUtils;
 
 public class FilePluginManager extends BasePluginWithProxy implements
-		PluginProviderInterface {
+		PluginProviderInterface, PluginDownloaderInterface {
+
+	private static final Logger LOG = Logger.getLogger(FilePluginManager.class);
 
 	@Override
 	public Set<EpisodeDTO> findEpisode(final CategoryDTO category) {
@@ -31,7 +40,7 @@ public class FilePluginManager extends BasePluginWithProxy implements
 			Set<String> urls = findUrlInFiles(file);
 			for (String url : urls) {
 				String name;
-				if (url.startsWith(FrameworkConf.HTTP_PREFIX)) {
+				if (DownloadUtils.isHttpUrl(url)) {
 					name = RetrieverUtils.getTitleByUrl(url);
 				} else {
 					name = url;
@@ -44,17 +53,9 @@ public class FilePluginManager extends BasePluginWithProxy implements
 				file.renameTo(new File(category.getId() + ".done"));
 			}
 		} else {
-			emptyFile(file);
+			LOG.error("Le fichier " + file.getAbsolutePath() + " n'existe pas.");
 		}
 		return episodeList;
-	}
-
-	private void emptyFile(File file) {
-		try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
-			fileOutputStream.write(new String().getBytes());
-		} catch (IOException e) {
-			throw new TechnicalException(e);
-		}
 	}
 
 	public Set<String> findUrlInFiles(final File file) {
@@ -99,6 +100,17 @@ public class FilePluginManager extends BasePluginWithProxy implements
 	@Override
 	public String getName() {
 		return FileConf.NAME;
+	}
+
+	@Override
+	public DownloadableState canDownload(String downloadInput) {
+		return DownloadableState.IMPOSSIBLE;
+	}
+
+	@Override
+	public ProcessHolder download(DownloadParamDTO downloadParam,
+			DownloaderPluginHolder downloaders) throws DownloadFailedException {
+		return DownloadUtils.download(downloadParam, downloaders);
 	}
 
 }

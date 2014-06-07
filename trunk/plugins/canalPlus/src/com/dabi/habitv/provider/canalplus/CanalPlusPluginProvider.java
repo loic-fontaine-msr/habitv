@@ -71,6 +71,7 @@ public class CanalPlusPluginProvider extends BasePluginWithProxy implements
 				categoryDTO = new CategoryDTO(CanalPlusConf.NAME,
 						selection.getNOM(), String.valueOf(selection.getID()),
 						getExtension());
+				categoryDTO.setDownloadable(true);
 				categories.add(categoryDTO);
 				categoryDTO.addSubCategories(getCategoryById(String
 						.valueOf(selection.getID())));

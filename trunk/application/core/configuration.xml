@@ -10,7 +10,7 @@
         <downloaders>
             <http/>
             <rtmpdump>bin\rtmpdump.exe</rtmpdump>
-            <aria2>D:\lol\bin\aria2c.exe</aria2>
+            <aria2>bin\aria2c.exe</aria2>
             <curl>bin\curl.exe</curl>
             <ffmpeg>bin\ffmpeg.exe</ffmpeg>
             <youtube>bin\youtube-dl.exe</youtube>
@@ -18,7 +18,7 @@
     </downloadConfig>
     <updateConfig>
         <updateOnStartup>true</updateOnStartup>
-        <autoriseSnapshot>true</autoriseSnapshot>
+        <autoriseSnapshot>false</autoriseSnapshot>
     </updateConfig>
     <exportConfig>
         <exporters>
@@ -29,7 +29,7 @@
                 </condition>
                 <id>mkdir</id>
                 <label>Create dir</label>
-                <command>cmd /c mkdir &quot;D:\divx\regular\avi\#TVSHOW_NAME#&quot; | echo createdir</command>
+                <command>cmd /c mkdir "D:\divx\regular\avi\#TVSHOW_NAME#" | echo createdir</command>
                 <subexporters/>
             </exporter>
             <exporter>
@@ -39,7 +39,7 @@
                 </condition>
                 <id>move</id>
                 <label>move file</label>
-                <command>cmd /c move &quot;C:\Documents and Settings\bidou\downloads\#TVSHOW_NAME#-#EPISODE_NAME_CUT#.#EXTENSION#&quot; &quot;D:\divx\regular\avi\#TVSHOW_NAME#\#DATE§yyyyMMdd# - #EPISODE_NAME_CUT#.avi&quot;</command>
+                <command>cmd /c move "D:\divx\regular\#TVSHOW_NAME#-#EPISODE_NAME_CUT#.#EXTENSION#" "D:\divx\regular\avi\#TVSHOW_NAME#\#DATE§yyyyMMdd# - #EPISODE_NAME_CUT#.avi"</command>
                 <subexporters/>
             </exporter>
         </exporters>

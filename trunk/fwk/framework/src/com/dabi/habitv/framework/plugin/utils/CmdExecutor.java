@@ -38,6 +38,8 @@ public class CmdExecutor implements ProcessHolder {
 	private String lastOutputLine = null;
 	private String progression;
 
+	private Thread killThread;
+
 	public CmdExecutor(final String cmdProcessor, final String cmd,
 			final long maxHungTime) {
 		super();
@@ -50,6 +52,7 @@ public class CmdExecutor implements ProcessHolder {
 	@Override
 	public void stop() {
 		stopped = true;
+		ended = true;
 		if (process != null) {
 			process.destroy();
 			ProcessingThreads.removeProcessing(process);
@@ -79,7 +82,7 @@ public class CmdExecutor implements ProcessHolder {
 			errorThread.start();
 
 			if (getHungProcessTime() != -1) {
-				final Thread killThread = buildKillerThread(fullOutput, process);
+				killThread = buildKillerThread(fullOutput, process);
 				killThread.start();
 			}
 			// wait for both thread

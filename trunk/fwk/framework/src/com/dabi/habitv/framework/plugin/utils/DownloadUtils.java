@@ -13,6 +13,20 @@ import com.dabi.habitv.framework.FrameworkConf;
 
 public class DownloadUtils {
 
+	private static final String HTTP_PREFIX = "http://";
+
+	private static final String HTTPS_PREFIX = "https://";
+
+	private static final String FTP_PREFIX = "ftp://";
+
+	public static boolean isHttpUrl(String url) {
+		return url.startsWith(HTTP_PREFIX) || url.startsWith(HTTPS_PREFIX);
+	}
+
+	public static boolean isFtpUrl(final String downloadInput) {
+		return downloadInput.startsWith(FTP_PREFIX);
+	}
+
 	public static ProcessHolder download(final DownloadParamDTO downloadParam,
 			final DownloaderPluginHolder downloaders)
 			throws DownloadFailedException {

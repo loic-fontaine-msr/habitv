@@ -1,7 +1,7 @@
 package com.dabi.habitv.provider.clubic;
 
-import java.util.Set;
 import java.util.LinkedHashSet;
+import java.util.Set;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
@@ -10,8 +10,8 @@ import org.jsoup.select.Elements;
 import com.dabi.habitv.api.plugin.api.PluginProviderInterface;
 import com.dabi.habitv.api.plugin.dto.CategoryDTO;
 import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
-import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.api.BasePluginWithProxy;
+import com.dabi.habitv.framework.plugin.utils.DownloadUtils;
 
 public class ClubicPluginManager extends BasePluginWithProxy implements
 		PluginProviderInterface { // NO_UCD
@@ -72,8 +72,7 @@ public class ClubicPluginManager extends BasePluginWithProxy implements
 	}
 
 	private String getUrl(String href) {
-		return href.startsWith(FrameworkConf.HTTP_PREFIX) ? href
+		return DownloadUtils.isHttpUrl(href) ? href
 				: (ClubicConf.HOME_URL + href);
 	}
-
 }

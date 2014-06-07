@@ -72,6 +72,7 @@ public class LEquipePluginManager extends BasePluginWithProxy implements
 				final String content = aHref.text();
 				final CategoryDTO categoryDTO = new CategoryDTO(
 						LEquipeConf.NAME, content, href, LEquipeConf.EXTENSION);
+				categoryDTO.setDownloadable(true);
 				categoryDTO.addSubCategories(findSubCategories(href));
 				categoryDTOs.add(categoryDTO);
 			}

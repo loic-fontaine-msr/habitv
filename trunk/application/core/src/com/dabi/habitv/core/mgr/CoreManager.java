@@ -1,6 +1,5 @@
 package com.dabi.habitv.core.mgr;
 
-import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
@@ -32,13 +31,6 @@ public final class CoreManager {
 	public CoreManager(final UserConfig config) {
 		stat();
 		LOG.info("habitv version " + FWKProperties.getVersion());
-		System.out.println("Default Charset=" + Charset.defaultCharset());
-		System.setProperty("file.encoding", "Latin-1");
-		System.out.println("file.encoding="
-				+ System.getProperty("file.encoding"));
-		System.out.println("Default Charset=" + Charset.defaultCharset());
-		System.out.println("Default Charset in Use="
-				+ System.getProperty("file.encoding"));
 		taskName2PoolSizeMap = config.getTaskDefinition();
 		TokenReplacer.setCutSize(config.getFileNameCutSize());
 		pluginManager = new PluginManager(config);

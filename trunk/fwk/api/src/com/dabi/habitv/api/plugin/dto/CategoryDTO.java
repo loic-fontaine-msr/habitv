@@ -202,7 +202,7 @@ public class CategoryDTO implements Comparable<CategoryDTO>, Serializable {
 	 */
 	@Override
 	public int hashCode() {
-		return getName()==null? 0 : getName().hashCode();
+		return getName() == null ? 0 : getName().hashCode();
 	}
 
 	/**
@@ -216,6 +216,9 @@ public class CategoryDTO implements Comparable<CategoryDTO>, Serializable {
 		if (obj instanceof CategoryDTO) {
 			final CategoryDTO category = (CategoryDTO) obj;
 			ret = getName().equals(category.getName());
+			if (ret){
+				ret = getPlugin().equals(category.getPlugin());
+			}
 		} else {
 			ret = false;
 		}
@@ -296,9 +299,7 @@ public class CategoryDTO implements Comparable<CategoryDTO>, Serializable {
 	}
 
 	public void setSelected(boolean selected) {
-		if (downloadable) {
-			this.selected = selected;
-		}
+		this.selected = selected;
 	}
 
 	public boolean isTemplate() {
