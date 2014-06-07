@@ -1,4 +1,10 @@
+inclusion, exclusions, ajouter les blocs sur plusieurs lignes
+
+rss content matcher
+
 repasser sur tous les plugins pour gérer le dl par url web, téléchargement manuel
+
+exclusions catégories TF1
 
 téléchargement unitaire CLI
  - lister les catégories
@@ -18,6 +24,8 @@ test automatisation des dl
 tester torrent
 
 agrandir l'arbre avec la fenetre
+
+dl auto ne pas afficher le main
 
 doc
 

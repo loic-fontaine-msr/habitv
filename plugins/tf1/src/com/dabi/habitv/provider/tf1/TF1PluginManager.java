@@ -1,8 +1,10 @@
 package com.dabi.habitv.provider.tf1;
 
+import java.util.Arrays;
 import java.util.Collection;
-import java.util.Set;
 import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Attribute;
@@ -11,11 +13,13 @@ import org.jsoup.nodes.Element;
 import com.dabi.habitv.api.plugin.api.PluginProviderInterface;
 import com.dabi.habitv.api.plugin.dto.CategoryDTO;
 import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
-import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.api.BasePluginWithProxy;
+import com.dabi.habitv.framework.plugin.utils.DownloadUtils;
 
 public class TF1PluginManager extends BasePluginWithProxy implements
 		PluginProviderInterface { // NO_UCD
+
+	private static final List<String> CATEGORIES_EXCLUDED = Arrays.asList("");
 
 	@Override
 	public String getName() {
@@ -122,8 +126,7 @@ public class TF1PluginManager extends BasePluginWithProxy implements
 	}
 
 	private String getUrl(String href) {
-		return href.startsWith(FrameworkConf.HTTP_PREFIX) ? href
-				: (TF1Conf.HOME_URL + href);
+		return DownloadUtils.isHttpUrl(href) ? href : (TF1Conf.HOME_URL + href);
 	}
 
 	private void findSubCategories(final CategoryDTO categoryFather,
@@ -146,17 +149,17 @@ public class TF1PluginManager extends BasePluginWithProxy implements
 					name = aElement.text();
 					url = aElement.attr("href");
 				}
-				if (url.startsWith(FrameworkConf.HTTP_PREFIX)){
+				if (DownloadUtils.isHttpUrl(url)) {
 					url = url.replace(TF1Conf.HOME_URL, "");
 				}
 				final String urlT = url.substring(1, url.length());
 				int indexOfSlash = urlT.indexOf("/");
-				final String catUrl = urlT.substring(0, indexOfSlash>=0?indexOfSlash:urlT.length());
+				final String catUrl = urlT.substring(0,
+						indexOfSlash >= 0 ? indexOfSlash : urlT.length());
 				final CategoryDTO categoryDTO = new CategoryDTO(TF1Conf.NAME,
 						name, TF1Conf.HOME_URL + "/" + catUrl + "/",
 						TF1Conf.EXTENSION);
 				categoryDTO.setDownloadable(true);
-				categoryDTO.addSubCategories(buildSubCategories(categoryDTO));
 				categories.add(categoryDTO);
 			}
 		}
@@ -176,22 +179,6 @@ public class TF1PluginManager extends BasePluginWithProxy implements
 			}
 		}
 		return null;
-	}
-
-	private String[] CAT_OPTIONS = new String[] { "bonus", "extraits",
-			"video-integrale" };
-
-	private Collection<CategoryDTO> buildSubCategories(
-			CategoryDTO categoryFather) {
-		final Set<CategoryDTO> categories = new LinkedHashSet<>();
-		for (String catOption : CAT_OPTIONS) {
-			final CategoryDTO categoryDTO = new CategoryDTO(TF1Conf.NAME,
-					categoryFather.getName() + " - " + catOption,
-					categoryFather.getId() + catOption + "/", TF1Conf.EXTENSION);
-			categoryDTO.setDownloadable(true);
-			categories.add(categoryDTO);
-		}
-		return categories;
 	}
 
 }

@@ -1,6 +1,7 @@
 package com.dabi.habitv.utils;
 
 import java.io.InputStream;
+import java.text.Normalizer;
 
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
@@ -26,29 +27,35 @@ public final class FileUtils {
 	 * @return
 	 */
 	public static String sanitizeFilename(final String name) {
-		return removeNonASCII(name.replaceAll("[\\s,:\\\\/*?!|<>&«»()\"\']", "_").replaceAll("__", "_"));
+		return removeNonASCII(name.replaceAll("[\\s,:\\\\/*?!|<>&«»()\"\']",
+				"_").replaceAll("__", "_"));
 	}
 
 	private static String removeNonASCII(final String string) {
-		//return Normalizer.normalize(string, Normalizer.Form.NFD).replaceAll("[\u0300-\u036F]", "");
-		return string.replaceAll("[^\\x00-\\x7F]", "");
+		return Normalizer.normalize(string, Normalizer.Form.NFD)
+				.replaceAll("[\u0300-\u036F]", "")
+				.replaceAll("[^\\x00-\\x7F]", "");
 	}
 
-	public static void setValidation(final Unmarshaller unmarshaller, final String xsdFile) {
+	public static void setValidation(final Unmarshaller unmarshaller,
+			final String xsdFile) {
 		final Schema schema = buildSchema(xsdFile);
 		unmarshaller.setSchema(schema);
 	}
 
-	public static void setValidation(final Marshaller unmarshaller, final String xsdFile) {
+	public static void setValidation(final Marshaller unmarshaller,
+			final String xsdFile) {
 		final Schema schema = buildSchema(xsdFile);
 		unmarshaller.setSchema(schema);
 	}
 
 	private static Schema buildSchema(final String xsdFile) {
-		final SchemaFactory schemaFactory = SchemaFactory.newInstance(javax.xml.XMLConstants.W3C_XML_SCHEMA_NS_URI);
+		final SchemaFactory schemaFactory = SchemaFactory
+				.newInstance(javax.xml.XMLConstants.W3C_XML_SCHEMA_NS_URI);
 		final Schema schema;
 		try {
-			schema = schemaFactory.newSchema(new StreamSource(getInputFileInClasspath(xsdFile)));
+			schema = schemaFactory.newSchema(new StreamSource(
+					getInputFileInClasspath(xsdFile)));
 		} catch (final SAXException e) {
 			throw new TechnicalException(e);
 		}
@@ -56,6 +63,7 @@ public final class FileUtils {
 	}
 
 	private static InputStream getInputFileInClasspath(final String file) {
-		return Thread.currentThread().getContextClassLoader().getResourceAsStream(file);
+		return Thread.currentThread().getContextClassLoader()
+				.getResourceAsStream(file);
 	}
 }

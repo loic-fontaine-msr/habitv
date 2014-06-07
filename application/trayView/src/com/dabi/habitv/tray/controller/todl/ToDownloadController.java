@@ -1,8 +1,6 @@
-package com.dabi.habitv.tray.controller;
+package com.dabi.habitv.tray.controller.todl;
 
 import java.io.File;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -12,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.TreeMap;
 
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -23,7 +22,6 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.CheckBoxTreeItem;
-import javafx.scene.control.CheckBoxTreeItem.TreeModificationEvent;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
@@ -33,27 +31,30 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
+import javafx.scene.control.TreeCell;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
-import javafx.scene.control.cell.CheckBoxTreeCell;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.util.Callback;
+import javafx.util.StringConverter;
 
 import com.dabi.habitv.api.plugin.dto.CategoryDTO;
 import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
-import com.dabi.habitv.api.plugin.exception.TechnicalException;
 import com.dabi.habitv.api.plugin.pub.UpdatablePluginEvent;
 import com.dabi.habitv.core.event.RetreiveEvent;
 import com.dabi.habitv.core.event.SearchCategoryEvent;
 import com.dabi.habitv.core.event.SearchEvent;
 import com.dabi.habitv.core.event.UpdatePluginEvent;
 import com.dabi.habitv.framework.FrameworkConf;
+import com.dabi.habitv.framework.plugin.utils.DownloadUtils;
 import com.dabi.habitv.framework.plugin.utils.RetrieverUtils;
 import com.dabi.habitv.tray.Popin;
 import com.dabi.habitv.tray.PopinController.ButtonHandler;
+import com.dabi.habitv.tray.controller.BaseController;
+import com.dabi.habitv.tray.controller.todl.CategoryTreeItem.SelectionChangeHandler;
 import com.dabi.habitv.tray.subscriber.CoreSubscriber;
 import com.dabi.habitv.utils.FilterUtils;
 
@@ -183,11 +184,9 @@ public class ToDownloadController extends BaseController implements
 						if (event.getCode() == KeyCode.SPACE) {
 							TreeItem<CategoryDTO> selectedItem = toDLTree2
 									.getSelectionModel().getSelectedItem();
-							if (selectedItem instanceof CheckBoxTreeItem) {
-								CheckBoxTreeItem<CategoryDTO> checkBoxTreeItem = (CheckBoxTreeItem<CategoryDTO>) selectedItem;
-								checkBoxTreeItem.setSelected(!checkBoxTreeItem
-										.isSelected());
-							}
+							CategoryTreeItem CategoryTreeItem = (CategoryTreeItem) selectedItem;
+							CategoryTreeItem.setSelected(!CategoryTreeItem
+									.isSelected());
 						}
 					}
 				});
@@ -317,15 +316,11 @@ public class ToDownloadController extends BaseController implements
 			@Override
 			public void onAction() {
 				CategoryDTO newCategory = buildCategoryFromTemplate(
-						templateCategory, categoryForm.textField.getText());
+						templateCategory, categoryForm.getTextField().getText());
 				templateCategory.addSubCategory(newCategory);
 
-				if (treeItem instanceof CheckBoxTreeItem) {
-					addCategoryToTree((CheckBoxTreeItem<CategoryDTO>) treeItem,
-							newCategory);
-				}
+				addCategoryToTree((CategoryTreeItem) treeItem, newCategory);
 				saveTree();
-				// loadTree();
 			}
 
 		});
@@ -343,7 +338,7 @@ public class ToDownloadController extends BaseController implements
 
 	private String findNameById(String id) {
 		String name;
-		if (id.startsWith(FrameworkConf.HTTP_PREFIX)) {
+		if (DownloadUtils.isHttpUrl(id)) {
 			name = RetrieverUtils.getTitleByUrl(id);
 		} else {
 			File file = new File(id);
@@ -354,17 +349,6 @@ public class ToDownloadController extends BaseController implements
 			}
 		}
 		return name;
-	}
-
-	private static class CategoryForm extends HBox {
-
-		private TextField textField = new TextField();
-
-		public CategoryForm(CategoryDTO category) {
-			super(3);
-			getChildren().add(new Label(category.getId().split("!!")[1]));
-			getChildren().add(textField);
-		}
 	}
 
 	private void fillEpisodeList(final CategoryDTO category) {
@@ -396,9 +380,6 @@ public class ToDownloadController extends BaseController implements
 	}
 
 	private void initListView(final Collection<EpisodeDTO> episodes) {
-		// List<EpisodeDTO> episodesList = new ArrayList<>(episodes);
-		// Collections.sort(episodesList);
-
 		ObservableList<EpisodeDTO> obsEp = FXCollections.observableArrayList();
 		obsEp.addAll(episodes);
 
@@ -479,10 +460,12 @@ public class ToDownloadController extends BaseController implements
 	private void filterTree(String text) {
 		categoriesToHide.clear();
 		String textUpper = text.toUpperCase();
-		// filterNodes(toDLTree.getRoot().getChildren(), textUpper);
 		filterCategories(plugins, textUpper);
 		loadTree(plugins);
-		expandAll(toDLTree.getRoot().getChildren());
+
+		if (!text.isEmpty()) {
+			expandAll(toDLTree.getRoot().getChildren());
+		}
 	}
 
 	private void expandAll(Collection<TreeItem<CategoryDTO>> observableList) {
@@ -502,23 +485,6 @@ public class ToDownloadController extends BaseController implements
 
 	}
 
-	// private boolean filterNodes(Collection<TreeItem<CategoryDTO>> children,
-	// String textUpper) {
-	// boolean hasNodeToShow = false;
-	// for (TreeItem<CategoryDTO> treeItem : children) {
-	// boolean passFilter = treeItem.getValue().getName()
-	// .contains(textUpper);
-	// boolean hasChildrenToShow = filterNodes(treeItem.getChildren(),
-	// textUpper);
-	// boolean show = passFilter || hasChildrenToShow;
-	//
-	// treeItem.setExpanded(show);
-	//
-	// hasNodeToShow = show || hasNodeToShow;
-	// }
-	//
-	// return hasNodeToShow;
-	// }
 	private final Set<CategoryDTO> categoriesToHide = new HashSet<>();
 
 	private boolean categoryPassFilter(CategoryDTO category, String textUpper) {
@@ -556,9 +522,7 @@ public class ToDownloadController extends BaseController implements
 	private Collection<EpisodeDTO> filterEpisodeList(String text,
 			boolean include) {
 		Collection<EpisodeDTO> filteredList = new LinkedList<>();
-		// String textUpper = text.toUpperCase();
 		for (EpisodeDTO episodeDTO : currentEpisodes) {
-			// String episodeName = episodeDTO.getName();
 			List<String> includeList = new ArrayList<>();
 			List<String> excludeList = new ArrayList<>();
 			if (applySavedFilters.isSelected()) {
@@ -623,35 +587,36 @@ public class ToDownloadController extends BaseController implements
 	}
 
 	private void loadTree() {
-		plugins = getController().loadCategories();
+		plugins = new TreeMap<>(getController().loadCategories());
 		loadTree(plugins);
 	}
 
 	private void loadTree(Map<String, CategoryDTO> pluginsToDisplay) {
-		TreeItem<CategoryDTO> root = new RootTreeItem();
+		TreeItem<CategoryDTO> root = new CategoryTreeItem(new CategoryDTO(null,
+				"Chaines", "root", null));
 		toDLTree.setRoot(root);
 		toDLTree.setShowRoot(false);
-		toDLTree.setCellFactory(CheckBoxTreeCell.<CategoryDTO> forTreeView());
+		toDLTree.setCellFactory(forTreeView());
 		for (CategoryDTO plugin : pluginsToDisplay.values()) {
 			if (!categoriesToHide.contains(plugin)) {
-				PluginTreeItem channelTreeItem = new PluginTreeItem(plugin);
+				TreeItem<CategoryDTO> channelTreeItem = buildCategoryTreeItem(plugin);
 				root.getChildren().add(channelTreeItem);
 				addCategoriesToTree(channelTreeItem, plugin.getSubCategories());
 			}
 		}
 	}
 
-	private void addCategoriesToTree(CheckBoxTreeItem<CategoryDTO> treeItem,
+	private void addCategoriesToTree(TreeItem<CategoryDTO> treeItem,
 			Collection<CategoryDTO> categories) {
 		for (CategoryDTO category : categories) {
 			addCategoryToTree(treeItem, category);
 		}
 	}
 
-	private void addCategoryToTree(CheckBoxTreeItem<CategoryDTO> treeItem,
+	private void addCategoryToTree(TreeItem<CategoryDTO> treeItem,
 			CategoryDTO category) {
 		if (!category.isDeleted() && !categoriesToHide.contains(category)) {
-			CategoryTreeItem categoryTreeItem = setSelected(treeItem, category);
+			final TreeItem<CategoryDTO> categoryTreeItem = buildCategoryTreeItem(category);
 			treeItem.getChildren().add(categoryTreeItem);
 			if (category.getSubCategories() != null
 					&& !category.getSubCategories().isEmpty()) {
@@ -661,148 +626,25 @@ public class ToDownloadController extends BaseController implements
 		}
 	}
 
-	private CategoryTreeItem setSelected(
-			CheckBoxTreeItem<CategoryDTO> treeItem, final CategoryDTO category) {
+	private TreeItem<CategoryDTO> buildCategoryTreeItem(CategoryDTO category) {
 		final CategoryTreeItem categoryTreeItem = new CategoryTreeItem(category);
-		categoryTreeItem.addEventHandler(
-				CheckBoxTreeItem.<String> checkBoxSelectionChangedEvent(),
-				new EventHandler<TreeModificationEvent<String>>() {
-					public void handle(TreeModificationEvent<String> event) {
-						if (event.wasSelectionChanged()) {
-							setSelected(category, categoryTreeItem);
-							planTaskIfNot(new Runnable() {
+		categoryTreeItem
+				.setSelectionChangeHandler(new SelectionChangeHandler() {
 
-								@Override
-								public void run() {
-									saveTree();
-								}
-							});
-						}
+					@Override
+					public void onSelectionChange(
+							CategoryTreeItem categoryTreeItem) {
+						planTaskIfNot(new Runnable() {
+
+							@Override
+							public void run() {
+								saveTree();
+							}
+						});
+
 					}
-
 				});
-
-		setSelected(categoryTreeItem, category);
-		setIndependant(category, categoryTreeItem);
-
-		if (category.isSelected()) {
-			setIndeterminate(treeItem);
-		}
 		return categoryTreeItem;
-	}
-
-	private boolean compatiblityMode = false;
-
-	private void setIndependant(final CategoryDTO category,
-			final CategoryTreeItem categoryTreeItem) {
-		if (compatiblityMode) {
-			invoke(categoryTreeItem, "setIndependent",
-					category.isDownloadable());
-		} else {
-			try {
-				categoryTreeItem.setIndependent(category.isDownloadable());
-			} catch (NoSuchMethodError e) {
-				compatiblityMode = true;
-				invoke(categoryTreeItem, "setIndependent",
-						category.isDownloadable());
-			}
-		}
-	}
-
-	private void setSelected(final CategoryTreeItem categoryTreeItem,
-			final CategoryDTO category) {
-		if (compatiblityMode) {
-			invoke(categoryTreeItem, "setSelected", category.isSelected());
-		} else {
-			try {
-				categoryTreeItem.setSelected(category.isSelected());
-			} catch (NoSuchMethodError e) {
-				compatiblityMode = true;
-				invoke(categoryTreeItem, "setSelected", category.isSelected());
-			}
-		}
-	}
-
-	private void setSelected(final CategoryDTO category,
-			final CategoryTreeItem categoryTreeItem) {
-		if (compatiblityMode) {
-			category.setSelected((Boolean) invoke(categoryTreeItem,
-					"isSelected", null));
-		} else {
-			try {
-				category.setSelected(categoryTreeItem.isSelected());
-			} catch (NoSuchMethodError e) {
-				compatiblityMode = true;
-				category.setSelected((Boolean) invoke(categoryTreeItem,
-						"isSelected", null));
-			}
-		}
-	}
-
-	private void setIndeterminate(CheckBoxTreeItem<CategoryDTO> treeItem) {
-		treeItem.setIndeterminate(true);
-		if (treeItem.getParent() != null) {
-			setIndeterminate((CheckBoxTreeItem<CategoryDTO>) treeItem
-					.getParent());
-		}
-	}
-
-	private class RootTreeItem extends CheckBoxTreeItem<CategoryDTO> {
-
-		public RootTreeItem() {
-			super(new CategoryDTO(null, "Chaines", "root", null));
-		}
-	}
-
-	private static class PluginTreeItem extends CheckBoxTreeItem<CategoryDTO> {
-
-		public PluginTreeItem(CategoryDTO plugin) {
-			super(plugin);
-		}
-
-	}
-
-	private Object invoke(final Object category, String methodName,
-			final Boolean var) {
-		Class<?> types[];
-		if (var == null) {
-			types = new Class[] {};
-		} else {
-			types = new Class[] { Boolean.TYPE };
-		}
-		Method method;
-		try {
-			method = category.getClass().getMethod(methodName, types);
-			Object[] parametres;
-			if (var == null) {
-				parametres = new Object[] {};
-			} else {
-				parametres = new Object[] { var };
-			}
-			return method.invoke(category, parametres);
-
-		} catch (NoSuchMethodException | SecurityException
-				| IllegalAccessException | IllegalArgumentException
-				| InvocationTargetException e) {
-			try {
-				method = category.getClass().getMethod(methodName,
-						Boolean.class);
-				Object parametres[] = { var };
-				return method.invoke(category, parametres);
-			} catch (NoSuchMethodException | SecurityException
-					| IllegalAccessException | IllegalArgumentException
-					| InvocationTargetException e1) {
-				throw new TechnicalException(e1);
-			}
-		}
-	}
-
-	private static class CategoryTreeItem extends CheckBoxTreeItem<CategoryDTO> {
-
-		public CategoryTreeItem(final CategoryDTO category) {
-			super(category);
-		}
-
 	}
 
 	private void saveTree() {
@@ -862,4 +704,62 @@ public class ToDownloadController extends BaseController implements
 		});
 	}
 
+	private static final StringConverter STR_CONVERTER = new StringConverter<TreeItem>() {
+		@Override
+		public String toString(TreeItem treeItem) {
+			CategoryTreeItem categoryTreeItem = (CategoryTreeItem) treeItem;
+			return (treeItem == null || treeItem.getValue() == null) ? ""
+					: categoryTreeItem.getValue().getName();
+//							+ (hasSelectedChild(categoryTreeItem.getValue()) ? "*"
+//									: "");
+		}
+
+//		private boolean hasSelectedChild(CategoryDTO categoryDTO) {
+//			for (CategoryDTO subCategoryDTO : categoryDTO.getSubCategories()) {
+//				if (subCategoryDTO.isSelected()) {
+//					return true;
+//				} else {
+//					if (hasSelectedChild(subCategoryDTO)) {
+//						return true;
+//					}
+//				}
+//			}
+//			return false;
+//		}
+
+		@Override
+		public TreeItem fromString(String string) {
+			return new TreeItem(string);
+		}
+	};
+
+	private static Callback<TreeView<CategoryDTO>, TreeCell<CategoryDTO>> forTreeView(
+			final Callback<TreeItem<CategoryDTO>, ObservableValue<Boolean>> getSelectedProperty) {
+		return new Callback<TreeView<CategoryDTO>, TreeCell<CategoryDTO>>() {
+			@Override
+			public TreeCell<CategoryDTO> call(TreeView<CategoryDTO> list) {
+				return new MyCheckBoxTreeCell<CategoryDTO>(STR_CONVERTER) {
+
+					@Override
+					protected boolean showCheckBox(CategoryDTO item) {
+						return item.isDownloadable();
+					}
+
+				};
+			}
+		};
+	}
+
+	public static Callback<TreeView<CategoryDTO>, TreeCell<CategoryDTO>> forTreeView() {
+		Callback<TreeItem<CategoryDTO>, ObservableValue<Boolean>> getSelectedProperty = new Callback<TreeItem<CategoryDTO>, ObservableValue<Boolean>>() {
+			@Override
+			public ObservableValue<Boolean> call(TreeItem<CategoryDTO> item) {
+				if (item instanceof CheckBoxTreeItem<?>) {
+					return ((CheckBoxTreeItem<?>) item).selectedProperty();
+				}
+				return null;
+			}
+		};
+		return forTreeView(getSelectedProperty);
+	}
 }

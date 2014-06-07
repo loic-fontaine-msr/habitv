@@ -26,6 +26,7 @@ import com.dabi.habitv.core.event.SearchEvent;
 import com.dabi.habitv.core.event.UpdatePluginEvent;
 import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.utils.ProcessingThreads;
+import com.dabi.habitv.tray.Popin;
 import com.dabi.habitv.tray.model.HabitTvViewManager;
 import com.dabi.habitv.tray.subscriber.CoreSubscriber;
 
@@ -227,6 +228,9 @@ public class ViewController implements CoreSubscriber {
 				} else {
 					desktop.open(file);
 				}
+			} else {
+				(new Popin()).show("Fichier inexistant", toOpen
+						+ " n'existe pas ");
 			}
 
 		} catch (final IOException e) {

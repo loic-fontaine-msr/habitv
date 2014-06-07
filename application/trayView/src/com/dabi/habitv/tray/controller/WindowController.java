@@ -23,6 +23,8 @@ import org.apache.log4j.Logger;
 import com.dabi.habitv.api.plugin.dto.CategoryDTO;
 import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
 import com.dabi.habitv.tray.Popin;
+import com.dabi.habitv.tray.controller.todl.IncludeExcludeEnum;
+import com.dabi.habitv.tray.controller.todl.ToDownloadController;
 import com.dabi.habitv.tray.model.HabitTvViewManager;
 import com.dabi.habitv.tray.view.HabiTvTrayView;
 

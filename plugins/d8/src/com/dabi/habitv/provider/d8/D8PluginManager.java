@@ -3,9 +3,9 @@ package com.dabi.habitv.provider.d8;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.LinkedHashSet;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -31,7 +31,6 @@ import com.dabi.habitv.api.plugin.exception.DownloadFailedException;
 import com.dabi.habitv.api.plugin.exception.TechnicalException;
 import com.dabi.habitv.api.plugin.holder.DownloaderPluginHolder;
 import com.dabi.habitv.api.plugin.holder.ProcessHolder;
-import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.api.BasePluginWithProxy;
 import com.dabi.habitv.framework.plugin.utils.DownloadUtils;
 import com.dabi.habitv.framework.plugin.utils.M3U8Utils;
@@ -97,8 +96,8 @@ public class D8PluginManager extends BasePluginWithProxy implements
 	}
 
 	private String getUrl(final CategoryDTO category) {
-		return category.getId().startsWith(FrameworkConf.HTTP_PREFIX) ? category
-				.getId() : (D8Conf.HOME_URL + category.getId());
+		return DownloadUtils.isHttpUrl(category.getId()) ? category.getId()
+				: (D8Conf.HOME_URL + category.getId());
 	}
 
 	@Override

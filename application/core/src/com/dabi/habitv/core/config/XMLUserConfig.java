@@ -93,8 +93,8 @@ public class XMLUserConfig implements UserConfig {
 	private static final String LOCAL_OLD_CONF_PATH = LOCAL_PATH + "/"
 			+ OLD_CONF_FILE;
 
-	private static final boolean IS_LOCAL_MODE = (new File(LOCAL_CONF_PATH))
-			.exists();
+	private static final boolean IS_LOCAL_MODE = (new File(LOCAL_OLD_CONF_PATH))
+			.exists() || (new File(LOCAL_CONF_PATH)).exists();
 
 	public static UserConfig initConfig() {
 		Configuration config;
@@ -329,7 +329,8 @@ public class XMLUserConfig implements UserConfig {
 				.getProtectionDomain().getCodeSource().getLocation().getPath())
 				.getAbsolutePath();
 		return absolutePath.endsWith("\\target\\classes") ? absolutePath
-				.replace("\\target\\classes", "") : absolutePath;
+				.replace("\\target\\classes", "") : absolutePath.substring(0,
+						absolutePath.lastIndexOf(File.separator));
 	}
 
 	public String getAppDir() {

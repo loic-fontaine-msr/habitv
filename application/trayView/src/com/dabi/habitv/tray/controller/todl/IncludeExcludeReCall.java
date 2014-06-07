@@ -1,4 +1,4 @@
-package com.dabi.habitv.tray.controller;
+package com.dabi.habitv.tray.controller.todl;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;

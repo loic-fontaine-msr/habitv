@@ -38,10 +38,6 @@ public interface FrameworkConf {
 
 	String DEFAULT_DOWNLOADER = CURL;
 
-	String HTTP_PREFIX = "http://";
-
-	String FTP_PREFIX = "ftp://";
-
 	String ERROR_FILE = "dlError.index";
 
 	String USER_HOME = System.getProperty("user.home")

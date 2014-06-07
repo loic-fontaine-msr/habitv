@@ -14,6 +14,7 @@ import com.dabi.habitv.api.plugin.holder.DownloaderPluginHolder;
 import com.dabi.habitv.api.plugin.holder.ProcessHolder;
 import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.api.update.BaseUpdatablePlugin;
+import com.dabi.habitv.framework.plugin.utils.DownloadUtils;
 
 public class CurlPluginDownloader extends BaseUpdatablePlugin implements
 		PluginWithProxyInterface, PluginDownloaderInterface {
@@ -72,8 +73,8 @@ public class CurlPluginDownloader extends BaseUpdatablePlugin implements
 
 	@Override
 	public DownloadableState canDownload(final String downloadInput) {
-		return downloadInput.startsWith(FrameworkConf.HTTP_PREFIX)
-				|| downloadInput.startsWith(FrameworkConf.FTP_PREFIX) ? DownloadableState.POSSIBLE
+		return DownloadUtils.isHttpUrl(downloadInput)
+				|| DownloadUtils.isFtpUrl(downloadInput) ? DownloadableState.POSSIBLE
 				: DownloadableState.IMPOSSIBLE;
 	}
 
