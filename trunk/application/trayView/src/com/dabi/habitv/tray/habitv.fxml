@@ -122,9 +122,11 @@
 </HBox.margin></Label><TextField fx:id="episodeFilter" /><ChoiceBox fx:id="filterTypeChoice" prefWidth="150.0" /><Button fx:id="addFilterButton" mnemonicParsing="false" text="Ajouter" />
 </children></HBox>
 <HBox fx:id="currentFilterVBox">
-<children><CheckBox fx:id="applySavedFilters" mnemonicParsing="false" /><Label text="Filtres sauvegardés : " /><FlowPane prefHeight="200.0" prefWidth="200.0">
+<children><CheckBox fx:id="applySavedFilters" mnemonicParsing="false" /><Label text="Filtres sauvegardés : " />
+<VBox>
 <children><Button maxWidth="300.0" mnemonicParsing="false" text="Button aaaaaaa " /><Button mnemonicParsing="false" text="Button" /><Button mnemonicParsing="false" text="Button aaaaaaaa aaaaaaaaaaaa aaaaaaaaaaaaaa a" />
-</children></FlowPane>
+</children>
+</VBox>
 </children>
 <VBox.margin>
 <Insets top="10.0" />

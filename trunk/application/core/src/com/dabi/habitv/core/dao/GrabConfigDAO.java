@@ -428,6 +428,7 @@ public class GrabConfigDAO {
 							associatedCatDTO.getSubCategories());
 				}
 				statusEnum = StatusEnum.EXIST;
+				category.setDownloadable(associatedCatDTO.isDownloadable());
 			} else {
 				statusEnum = StatusEnum.DELETED;
 			}
@@ -435,7 +436,6 @@ public class GrabConfigDAO {
 					|| StatusEnum.valueOf(category.getStatus()) != StatusEnum.USER) {
 				category.setStatus(statusEnum.name());
 			}
-			category.setDownloadable(associatedCatDTO.isDownloadable());
 		}
 		for (final CategoryDTO categoryDTO : catNameToCat.values()) {
 			categoryList.add(buildCategory(categoryDTO));

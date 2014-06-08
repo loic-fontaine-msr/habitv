@@ -523,24 +523,26 @@ public class ToDownloadController extends BaseController implements
 	private Collection<EpisodeDTO> filterEpisodeList(String text,
 			boolean include) {
 		Collection<EpisodeDTO> filteredList = new LinkedList<>();
-		for (EpisodeDTO episodeDTO : currentEpisodes) {
-			List<String> includeList = new ArrayList<>();
-			List<String> excludeList = new ArrayList<>();
-			if (applySavedFilters.isSelected()) {
-				includeList.addAll(episodeDTO.getCategory().getInclude());
-				excludeList.addAll(episodeDTO.getCategory().getExclude());
-			}
-			if (!text.isEmpty()) {
-				if (include) {
-					includeList.add(text);
-				} else {
-					excludeList.add(text);
+		if (currentEpisodes != null) {
+			for (EpisodeDTO episodeDTO : currentEpisodes) {
+				List<String> includeList = new ArrayList<>();
+				List<String> excludeList = new ArrayList<>();
+				if (applySavedFilters.isSelected()) {
+					includeList.addAll(episodeDTO.getCategory().getInclude());
+					excludeList.addAll(episodeDTO.getCategory().getExclude());
 				}
-			}
+				if (!text.isEmpty()) {
+					if (include) {
+						includeList.add(text);
+					} else {
+						excludeList.add(text);
+					}
+				}
 
-			if (FilterUtils.filterByIncludeExcludeAndDownloaded(episodeDTO,
-					includeList, excludeList)) {
-				filteredList.add(episodeDTO);
+				if (FilterUtils.filterByIncludeExcludeAndDownloaded(episodeDTO,
+						includeList, excludeList)) {
+					filteredList.add(episodeDTO);
+				}
 			}
 		}
 
