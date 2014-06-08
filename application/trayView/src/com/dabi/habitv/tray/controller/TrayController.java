@@ -1,5 +1,7 @@
 package com.dabi.habitv.tray.controller;
 
+import org.apache.log4j.Logger;
+
 import com.dabi.habitv.api.plugin.pub.UpdatablePluginEvent;
 import com.dabi.habitv.core.event.EpisodeStateEnum;
 import com.dabi.habitv.core.event.RetreiveEvent;
@@ -11,6 +13,8 @@ import com.dabi.habitv.tray.model.HabitTvViewManager;
 import com.dabi.habitv.tray.subscriber.CoreSubscriber;
 
 public class TrayController implements CoreSubscriber {
+
+	private static final Logger LOG = Logger.getLogger(TrayController.class);
 
 	private final HabitTvViewManager manager;
 
@@ -61,6 +65,7 @@ public class TrayController implements CoreSubscriber {
 
 	@Override
 	public void update(final RetreiveEvent event) {
+		LOG.info("trayC : " + event);
 		switch (event.getState()) {
 		case BUILD_INDEX:
 
@@ -105,7 +110,7 @@ public class TrayController implements CoreSubscriber {
 			break;
 		case TO_MANY_FAILED:
 
-			break;			
+			break;
 		default:
 			break;
 		}

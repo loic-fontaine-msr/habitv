@@ -234,7 +234,8 @@ public class XMLUserConfig implements UserConfig {
 		downloadConfig
 				.setDemonCheckTime(oldConfig.getDemonTime() == null ? DEFAULT_CHECK_TIME
 						: oldConfig.getDemonTime());
-		downloadConfig.setDownloadOuput(DEFAULT_DL_OUTPUT);
+		//downloadConfig.setDownloadOuput(DEFAULT_DL_OUTPUT);
+		downloadConfig.setDownloadOuput(oldConfig.getDownloadOuput());
 		downloadConfig
 				.setFileNameCutSize(oldConfig.getFileNameCutSize() == null ? DEFAULT_CUT_SIZE
 						: oldConfig.getFileNameCutSize());

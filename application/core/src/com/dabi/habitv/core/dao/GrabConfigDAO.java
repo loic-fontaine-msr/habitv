@@ -435,6 +435,7 @@ public class GrabConfigDAO {
 					|| StatusEnum.valueOf(category.getStatus()) != StatusEnum.USER) {
 				category.setStatus(statusEnum.name());
 			}
+			category.setDownloadable(associatedCatDTO.isDownloadable());
 		}
 		for (final CategoryDTO categoryDTO : catNameToCat.values()) {
 			categoryList.add(buildCategory(categoryDTO));

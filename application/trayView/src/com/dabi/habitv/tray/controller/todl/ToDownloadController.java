@@ -37,6 +37,7 @@ import javafx.scene.control.TreeView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
@@ -219,7 +220,7 @@ public class ToDownloadController extends BaseController implements
 	}
 
 	private void fillIncludeExcludePatterns(CategoryDTO category) {
-		final HBox reCallVBox = (HBox) currentFilterVBox.getChildren().get(2);
+		final Pane reCallVBox = (Pane) currentFilterVBox.getChildren().get(2);
 		reCallVBox.getChildren().clear();
 		fillPatterns(category, reCallVBox, category.getInclude(), true);
 		fillPatterns(category, reCallVBox, category.getExclude(), false);
@@ -229,7 +230,7 @@ public class ToDownloadController extends BaseController implements
 	}
 
 	private void fillPatterns(final CategoryDTO category,
-			final HBox reCallVBox, List<String> patterns, boolean include) {
+			final Pane reCallVBox, List<String> patterns, boolean include) {
 		for (String pattern : patterns) {
 			final IncludeExcludeReCall includeExcludeBox = new IncludeExcludeReCall(
 					category, pattern, include);
@@ -710,22 +711,22 @@ public class ToDownloadController extends BaseController implements
 			CategoryTreeItem categoryTreeItem = (CategoryTreeItem) treeItem;
 			return (treeItem == null || treeItem.getValue() == null) ? ""
 					: categoryTreeItem.getValue().getName();
-//							+ (hasSelectedChild(categoryTreeItem.getValue()) ? "*"
-//									: "");
+			// + (hasSelectedChild(categoryTreeItem.getValue()) ? "*"
+			// : "");
 		}
 
-//		private boolean hasSelectedChild(CategoryDTO categoryDTO) {
-//			for (CategoryDTO subCategoryDTO : categoryDTO.getSubCategories()) {
-//				if (subCategoryDTO.isSelected()) {
-//					return true;
-//				} else {
-//					if (hasSelectedChild(subCategoryDTO)) {
-//						return true;
-//					}
-//				}
-//			}
-//			return false;
-//		}
+		// private boolean hasSelectedChild(CategoryDTO categoryDTO) {
+		// for (CategoryDTO subCategoryDTO : categoryDTO.getSubCategories()) {
+		// if (subCategoryDTO.isSelected()) {
+		// return true;
+		// } else {
+		// if (hasSelectedChild(subCategoryDTO)) {
+		// return true;
+		// }
+		// }
+		// }
+		// return false;
+		// }
 
 		@Override
 		public TreeItem fromString(String string) {

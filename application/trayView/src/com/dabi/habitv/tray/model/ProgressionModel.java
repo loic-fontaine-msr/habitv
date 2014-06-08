@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
 import com.dabi.habitv.api.plugin.holder.ProcessHolder;
@@ -14,8 +14,8 @@ import com.dabi.habitv.core.event.EpisodeStateEnum;
 public class ProgressionModel {
 
 	private static final int MAX_SIZE = 100;
-	private final List<ActionProgress> episodeName2ActionProgress = Collections
-			.synchronizedList(new LinkedList<ActionProgress>());
+	private final Set<ActionProgress> episodeName2ActionProgress = Collections
+			.synchronizedSortedSet(new TreeSet<ActionProgress>());
 
 	public void updateActionProgress(final EpisodeDTO episode,
 			final EpisodeStateEnum state, final String info,
@@ -33,7 +33,6 @@ public class ProgressionModel {
 			actionInProgress.setProcessHolder(processHolder);
 			actionInProgress.setInfo(info);
 		}
-		Collections.sort(episodeName2ActionProgress);
 	}
 
 	public ActionProgress getAction(final EpisodeDTO episode) {
