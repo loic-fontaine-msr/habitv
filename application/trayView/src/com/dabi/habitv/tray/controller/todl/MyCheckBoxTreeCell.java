@@ -30,6 +30,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.CheckBoxTreeItem;
+import javafx.scene.control.Label;
 import javafx.scene.control.TreeCell;
 import javafx.scene.control.TreeItem;
 import javafx.util.Callback;
@@ -261,6 +262,8 @@ public abstract class MyCheckBoxTreeCell<T> extends TreeCell<T> {
 			setText(c.toString(getTreeItem()));
 			if (showCheckBox(item)) {
 				setGraphic(checkBox);
+			} else {
+				setGraphic(new Label("     "));
 			}
 
 			// uninstall bindings
