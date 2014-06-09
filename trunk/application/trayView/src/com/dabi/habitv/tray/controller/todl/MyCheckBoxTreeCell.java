@@ -31,8 +31,12 @@ import javafx.beans.value.ObservableValue;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.CheckBoxTreeItem;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.TreeCell;
 import javafx.scene.control.TreeItem;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 
@@ -259,7 +263,22 @@ public abstract class MyCheckBoxTreeCell<T> extends TreeCell<T> {
 			Callback<TreeItem<T>, ObservableValue<Boolean>> callback = getSelectedStateCallback();
 
 			// update the node content
-			setText(c.toString(getTreeItem()));
+			String value = c.toString(getTreeItem());
+			if (isNew(item)){
+				value+="*";
+				setTooltip(new Tooltip("Cette catégorie a été ajoutée ou modifiée lors de la dernière mise à jour."));
+			}
+			setText(value);
+			if (isBold(item)){
+				setFont(Font.font(null, FontWeight.BOLD, getFont().getSize()));
+				setTooltip(new Tooltip("Des sous-catégories sont sélectionnées pour le téléchargement auto."));
+			}
+			
+			if (isDeleted(item)){
+				setTextFill(Color.GRAY);
+				setTooltip(new Tooltip("Cette catégorie n'est plus présente chez le fournisseur."));
+			}
+			
 			if (showCheckBox(item)) {
 				setGraphic(checkBox);
 			} else {
@@ -296,6 +315,12 @@ public abstract class MyCheckBoxTreeCell<T> extends TreeCell<T> {
 			}
 		}
 	}
+
+	protected abstract boolean isNew(T item);
+
+	protected abstract boolean isDeleted(T item);
+
+	protected abstract boolean isBold(T item);
 
 	protected abstract boolean showCheckBox(T item);
 }

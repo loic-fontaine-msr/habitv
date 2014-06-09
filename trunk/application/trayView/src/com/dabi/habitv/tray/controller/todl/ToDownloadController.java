@@ -44,6 +44,7 @@ import javafx.util.StringConverter;
 
 import com.dabi.habitv.api.plugin.dto.CategoryDTO;
 import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
+import com.dabi.habitv.api.plugin.dto.StatusEnum;
 import com.dabi.habitv.api.plugin.pub.UpdatablePluginEvent;
 import com.dabi.habitv.core.event.RetreiveEvent;
 import com.dabi.habitv.core.event.SearchCategoryEvent;
@@ -642,12 +643,19 @@ public class ToDownloadController extends BaseController implements
 							@Override
 							public void run() {
 								saveTree();
+								computeNodeStyle();
 							}
+
 						});
 
 					}
 				});
 		return categoryTreeItem;
+	}
+
+	private void computeNodeStyle() {
+		// FIXME Auto-generated method stub
+
 	}
 
 	private void saveTree() {
@@ -746,6 +754,21 @@ public class ToDownloadController extends BaseController implements
 					@Override
 					protected boolean showCheckBox(CategoryDTO item) {
 						return item.isDownloadable();
+					}
+
+					@Override
+					protected boolean isDeleted(CategoryDTO item) {
+						return item.getState() == StatusEnum.DELETED;
+					}
+
+					@Override
+					protected boolean isBold(CategoryDTO item) {
+						return item.hasSelectedSubCategory();
+					}
+
+					@Override
+					protected boolean isNew(CategoryDTO item) {
+						return item.getState() == StatusEnum.NEW || item.hasSubCategoryWithState(StatusEnum.NEW);
 					}
 
 				};

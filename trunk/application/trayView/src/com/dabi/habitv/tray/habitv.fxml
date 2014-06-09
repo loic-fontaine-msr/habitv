@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 
 <VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
-  <children><TabPane minHeight="480.0" minWidth="640.0" prefHeight="800.0" prefWidth="1000.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+  <children><TabPane minHeight="480.0" minWidth="640.0" prefHeight="600.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
   <tabs>
     <Tab fx:id="downloadTab" text="Téléchargement">
       <content>
@@ -123,10 +123,7 @@
 </children></HBox>
 <HBox fx:id="currentFilterVBox">
 <children><CheckBox fx:id="applySavedFilters" mnemonicParsing="false" /><Label text="Filtres sauvegardés : " />
-<VBox>
-<children><Button maxWidth="300.0" mnemonicParsing="false" text="Button aaaaaaa " /><Button mnemonicParsing="false" text="Button" /><Button mnemonicParsing="false" text="Button aaaaaaaa aaaaaaaaaaaa aaaaaaaaaaaaaa a" />
-</children>
-</VBox>
+<VBox />
 </children>
 <VBox.margin>
 <Insets top="10.0" />

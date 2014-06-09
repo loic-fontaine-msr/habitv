@@ -216,7 +216,7 @@ public class CategoryDTO implements Comparable<CategoryDTO>, Serializable {
 		if (obj instanceof CategoryDTO) {
 			final CategoryDTO category = (CategoryDTO) obj;
 			ret = getName().equals(category.getName());
-			if (ret){
+			if (ret) {
 				ret = getPlugin().equals(category.getPlugin());
 			}
 		} else {
@@ -353,4 +353,25 @@ public class CategoryDTO implements Comparable<CategoryDTO>, Serializable {
 		this.downloadable = downloadable;
 	}
 
+	public boolean hasSelectedSubCategory() {
+		for (CategoryDTO subCategory : getSubCategories()) {
+			if (subCategory.isSelected()
+					|| subCategory.hasSelectedSubCategory()) {
+				return true;
+			}
+
+		}
+		return false;
+	}
+
+	public boolean hasSubCategoryWithState(StatusEnum state) {
+		for (CategoryDTO subCategory : getSubCategories()) {
+			if (subCategory.getState() == state
+					|| subCategory.hasSelectedSubCategory()) {
+				return true;
+			}
+
+		}
+		return false;
+	}
 }

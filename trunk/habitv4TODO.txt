@@ -1,6 +1,12 @@
-inclusion, exclusions, ajouter les blocs sur plusieurs lignes
+catégorie a ss cat dl
 
-rss content matcher
+packaging linux
+
+log rep
+
+doc
+
+tester torrent
 
 repasser sur tous les plugins pour gérer le dl par url web, téléchargement manuel
 
@@ -15,20 +21,20 @@ téléchargement unitaire CLI
 
 tester linux
 
+------------------------------------------------
+
+rss content matcher
+
 francetvinfo
 
 plugin tmc, nt1, eurosport
 
 test automatisation des dl
 
-tester torrent
-
 agrandir l'arbre avec la fenetre
+
+dl dans tableau
 
 dl auto ne pas afficher le main
 
-doc
-
 français/anglais
-
-notification linux

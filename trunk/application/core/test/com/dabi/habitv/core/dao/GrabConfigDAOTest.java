@@ -22,6 +22,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.dabi.habitv.api.plugin.dto.CategoryDTO;
+import com.dabi.habitv.api.plugin.dto.StatusEnum;
 import com.dabi.habitv.core.dao.GrabConfigDAO.LoadModeEnum;
 
 public class GrabConfigDAOTest {
@@ -102,7 +103,10 @@ public class GrabConfigDAOTest {
 		}
 		CategoryDTO category = new CategoryDTO("channel1", "cat1", "cat1I",
 				includeList, excludeList, "ext");
-		category.addSubCategory(new CategoryDTO("sub", "sub", "sub", "sub"));
+		category.setState(StatusEnum.EXIST);
+		CategoryDTO subCategory = new CategoryDTO("sub", "sub", "sub", "sub");
+		subCategory.setState(StatusEnum.EXIST);
+		category.addSubCategory(subCategory);
 		categories.add(category);
 		category = new CategoryDTO("channel1", "cat2", "cat2I", includeList,
 				excludeList, "ext2");
