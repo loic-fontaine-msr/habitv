@@ -53,7 +53,7 @@ public class XMLUserConfig implements UserConfig {
 	private static final int DEFAULT_CUT_SIZE = 40;
 
 	private static final String DEFAULT_DL_OUTPUT = FrameworkConf.USER_HOME
-			+ "/" + "downloads/#TVSHOW_NAME#-#EPISODE_NAME_CUT#.#EXTENSION#";
+			+ "/" + "Downloads/#TVSHOW_NAME#-#EPISODE_NAME_CUT#.#EXTENSION#";
 
 	private static final String APP_USER_HOME_DIR = FrameworkConf.USER_HOME
 			+ "/" + "habitv";
@@ -315,7 +315,7 @@ public class XMLUserConfig implements UserConfig {
 		downloadConfig.setMaxAttempts(DEFAULT_MAX_ATTEMPTS);
 
 		UpdateConfig updateConfig = new UpdateConfig();
-		updateConfig.setAutoriseSnapshot(DEFAULT_UPDATE_ON_STARTUP);
+		updateConfig.setAutoriseSnapshot(DEFAULT_AUTORISE_SNAPSHOT);
 		config.setUpdateConfig(updateConfig);
 		return config;
 	}
