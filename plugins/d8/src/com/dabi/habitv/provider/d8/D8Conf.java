@@ -13,5 +13,7 @@ interface D8Conf {
 	String HOME_URL = "http://www.d8.tv";
 
 	String VIDEO_INFO_URL = "http://service.canal-plus.com/video/rest/getVideosLiees/d8/";
+	
+	String ENCODING = "ISO-8859-1";
 
 }
