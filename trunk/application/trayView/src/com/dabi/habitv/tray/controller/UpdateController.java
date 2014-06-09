@@ -1,5 +1,7 @@
 package com.dabi.habitv.tray.controller;
 
+import org.apache.log4j.Logger;
+
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.stage.Stage;
@@ -13,6 +15,7 @@ import com.dabi.habitv.core.event.RetreiveEvent;
 import com.dabi.habitv.core.event.SearchCategoryEvent;
 import com.dabi.habitv.core.event.SearchEvent;
 import com.dabi.habitv.core.event.UpdatePluginEvent;
+import com.dabi.habitv.core.mgr.CoreManager;
 import com.dabi.habitv.tray.HabiTvSplashScreen;
 import com.dabi.habitv.tray.HabiTvSplashScreen.InitHandler;
 import com.dabi.habitv.tray.HabitvViewMain;
@@ -28,6 +31,8 @@ public class UpdateController {
 	private Stage mainStage;
 
 	private HabitvViewMain habitvViewMain;
+	
+	private static final Logger LOG = Logger.getLogger(UpdateController.class);
 
 	public UpdateController(HabiTvSplashScreen taskBasedSplash) {
 		this.taskBasedSplash = taskBasedSplash;
@@ -77,6 +82,7 @@ public class UpdateController {
 				return null;
 			} catch (Exception e) {
 				e.printStackTrace();
+				LOG.error("", e);
 				System.exit(1);
 				throw e;
 			}
