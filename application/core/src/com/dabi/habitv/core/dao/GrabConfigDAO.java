@@ -214,7 +214,7 @@ public class GrabConfigDAO {
 		categoryDTO.setDeleted(category.getDeleted() != null
 				&& category.getDeleted());
 
-		categoryDTO.setState(category.getStatus() == null ? null : StatusEnum
+		categoryDTO.setState(category.getStatus() == null ? StatusEnum.EXIST : StatusEnum
 				.valueOf(category.getStatus()));
 
 		categoryDTO.addSubCategories(subCategoriesDTO);

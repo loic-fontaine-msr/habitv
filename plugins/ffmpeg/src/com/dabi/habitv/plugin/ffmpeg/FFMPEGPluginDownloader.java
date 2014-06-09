@@ -10,6 +10,7 @@ import com.dabi.habitv.api.plugin.holder.DownloaderPluginHolder;
 import com.dabi.habitv.api.plugin.holder.ProcessHolder;
 import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.api.update.BaseUpdatablePlugin;
+import com.dabi.habitv.framework.plugin.utils.OSUtils;
 
 public class FFMPEGPluginDownloader extends BaseUpdatablePlugin implements
 		PluginDownloaderInterface {
@@ -28,7 +29,7 @@ public class FFMPEGPluginDownloader extends BaseUpdatablePlugin implements
 			throws DownloadFailedException {
 
 		final String downloaderBin = getBinParam(downloaders);
-		String cmd = downloaderBin + FFMPEGConf.FFMPEG_CMD;
+		String cmd = downloaderBin + getCmd();
 		cmd = cmd.replaceFirst(FrameworkConf.DOWNLOAD_INPUT,
 				downloadParam.getDownloadInput());
 		cmd = cmd.replaceFirst(FrameworkConf.DOWNLOAD_DESTINATION,
@@ -41,6 +42,11 @@ public class FFMPEGPluginDownloader extends BaseUpdatablePlugin implements
 		} catch (final ExecutorFailedException e) {
 			throw new DownloadFailedException(e);
 		}
+	}
+
+	private String getCmd() {
+		return OSUtils.isWindows() ? FFMPEGConf.FFMPEG_CMD_WINDOWS
+				: FFMPEGConf.FFMPEG_CMD_LINUX;
 	}
 
 	@Override
