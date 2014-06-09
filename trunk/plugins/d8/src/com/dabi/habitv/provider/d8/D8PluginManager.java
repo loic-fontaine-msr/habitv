@@ -48,7 +48,7 @@ public class D8PluginManager extends BasePluginWithProxy implements
 		final Set<EpisodeDTO> episodes = new LinkedHashSet<>();
 
 		final org.jsoup.nodes.Document doc = Jsoup
-				.parse(getUrlContent(getUrl(category)));
+				.parse(getUrlContent(getUrl(category), D8Conf.ENCODING));
 
 		Elements select = doc.select(".list-programmes-emissions");
 
@@ -105,7 +105,7 @@ public class D8PluginManager extends BasePluginWithProxy implements
 		final Set<CategoryDTO> categories = new LinkedHashSet<>();
 
 		final org.jsoup.nodes.Document doc = Jsoup
-				.parse(getUrlContent(D8Conf.HOME_URL));
+				.parse(getUrlContent(D8Conf.HOME_URL, D8Conf.ENCODING));
 
 		final Elements select = doc.select("#nav").get(0).child(0).children();
 		for (final Element liElement : select) {
@@ -173,7 +173,7 @@ public class D8PluginManager extends BasePluginWithProxy implements
 
 	private String getFullUrl(final String catUrl) {
 		return catUrl.startsWith("http") ? catUrl
-				: getUrlContent(D8Conf.HOME_URL + catUrl);
+				: getUrlContent(D8Conf.HOME_URL + catUrl, D8Conf.ENCODING);
 	}
 
 	private String findVideoUrl(final String id) throws DownloadFailedException {

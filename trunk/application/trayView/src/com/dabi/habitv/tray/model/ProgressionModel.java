@@ -17,7 +17,7 @@ public class ProgressionModel {
 	private final Set<ActionProgress> episodeName2ActionProgress = Collections
 			.synchronizedSortedSet(new TreeSet<ActionProgress>());
 
-	public void updateActionProgress(final EpisodeDTO episode,
+	public synchronized void updateActionProgress(final EpisodeDTO episode,
 			final EpisodeStateEnum state, final String info,
 			final ProcessHolder processHolder) {
 		ActionProgress actionInProgress = getAction(episode);

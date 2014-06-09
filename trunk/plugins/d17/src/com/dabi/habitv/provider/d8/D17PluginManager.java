@@ -51,7 +51,7 @@ public class D17PluginManager extends BasePluginWithProxy implements
 
 		final String categoryId = category.getId();
 		final org.jsoup.nodes.Document doc = Jsoup
-				.parse(getUrlContent(categoryUrl(categoryId)));
+				.parse(getUrlContent(categoryUrl(categoryId), D17Conf.ENCODING));
 
 		final Elements select = doc.select("a.loop-videos");
 		for (final Element aVideoElement : select) {
@@ -85,7 +85,7 @@ public class D17PluginManager extends BasePluginWithProxy implements
 		final Set<CategoryDTO> categories = new LinkedHashSet<>();
 
 		final org.jsoup.nodes.Document doc = Jsoup
-				.parse(getUrlContent(D17Conf.HOME_URL));
+				.parse(getUrlContent(D17Conf.HOME_URL, D17Conf.ENCODING));
 
 		final Elements select = doc.select(".main-menu").get(0).children();
 		for (final Element liElement : select) {
@@ -117,7 +117,7 @@ public class D17PluginManager extends BasePluginWithProxy implements
 		final Set<CategoryDTO> categories = new LinkedHashSet<>();
 
 		final org.jsoup.nodes.Document doc = Jsoup
-				.parse(getUrlContent(getLink(catUrl)));
+				.parse(getUrlContent(getLink(catUrl), D17Conf.ENCODING));
 		final Elements select = doc.select(".block-videos");
 		for (final Element divElement : select) {
 			final Element link = divElement.child(0).child(0).child(1);

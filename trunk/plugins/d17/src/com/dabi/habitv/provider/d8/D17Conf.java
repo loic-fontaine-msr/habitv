@@ -20,4 +20,6 @@ interface D17Conf {
 
 	String VIDEO_INFO_URL = "http://service.canal-plus.com/video/rest/getVideosLiees/d17/";
 
+	String ENCODING = "ISO-8859-1";
+
 }

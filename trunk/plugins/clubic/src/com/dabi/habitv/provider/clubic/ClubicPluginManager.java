@@ -62,6 +62,7 @@ public class ClubicPluginManager extends BasePluginWithProxy implements
 					final CategoryDTO categoryDTO = new CategoryDTO(
 							ClubicConf.NAME, name, getUrl(url),
 							ClubicConf.EXTENSION);
+					categoryDTO.setDownloadable(true);
 					categories.add(categoryDTO);
 					break;
 				}
