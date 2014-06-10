@@ -13,6 +13,8 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.log4j.Logger;
 
+import com.dabi.habitv.utils.LogUtils;
+
 //import com.dabi.habitv.framework.FrameworkConf;
 
 public final class ConsoleLauncher {
@@ -48,6 +50,7 @@ public final class ConsoleLauncher {
 
 	@SuppressWarnings("static-access")
 	public static void main(final String[] args) {
+		LogUtils.updateLog4jConfiguration();
 		if (args.length > 0 && args[0].startsWith("http://")) {// FIXME
 																// FrameworkConf.HTTP_PREFIX
 			downloadEpisodes(args);

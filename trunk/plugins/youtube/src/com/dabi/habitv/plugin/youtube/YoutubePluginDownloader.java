@@ -80,12 +80,12 @@ public class YoutubePluginDownloader extends BaseUpdatablePlugin implements
 
 	@Override
 	public DownloadableState canDownload(final String downloadInput) {
-		if (downloadInput.contains(".youtube.")
-				|| downloadInput.contains(".dailymotion.")
-				|| downloadInput.contains(".vimeo.")
-				|| downloadInput.contains(".dailymotion.")
-				|| downloadInput.contains(".tf1.")
-				|| downloadInput.contains(".clubic.")) {
+		if (downloadInput.contains("youtube.")
+				|| downloadInput.contains("dailymotion.")
+				|| downloadInput.contains("vimeo.")
+				|| downloadInput.contains("dailymotion.")
+				|| downloadInput.contains("tf1.")
+				|| downloadInput.contains("clubic.")) {
 			return DownloadableState.SPECIFIC;
 		} else {
 			return DownloadableState.IMPOSSIBLE;

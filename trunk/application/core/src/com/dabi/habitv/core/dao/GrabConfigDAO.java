@@ -44,6 +44,8 @@ import com.dabi.habitv.utils.XMLUtils;
 
 public class GrabConfigDAO {
 
+	private static final String GRAB_CONF_XSD = "grab-config.xsd";
+	
 	private final String grabConfigFile;
 
 	public GrabConfigDAO(final String grabConfigFile) {
@@ -250,7 +252,7 @@ public class GrabConfigDAO {
 			final JAXBContext jaxbContext = JAXBContext
 					.newInstance(GrabConfig.class.getPackage().getName());
 			final Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-			FileUtils.setValidation(unmarshaller, HabitTvConf.GRAB_CONF_XSD);
+			FileUtils.setValidation(unmarshaller, GRAB_CONF_XSD);
 			grabConfig = ((GrabConfig) unmarshaller
 					.unmarshal(new InputStreamReader(new FileInputStream(
 							grabConfigFile), HabitTvConf.ENCODING)));

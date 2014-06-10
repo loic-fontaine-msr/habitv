@@ -25,6 +25,7 @@ import com.dabi.habitv.tray.subscriber.CoreSubscriber;
 import com.dabi.habitv.tray.subscriber.SubscriberAdapter;
 import com.dabi.habitv.tray.subscriber.UpdateSubscriber;
 import com.dabi.habitv.tray.subscriber.UpdateSubscriberAdapter;
+import com.dabi.habitv.utils.DirUtils;
 
 public class HabitTvViewManager extends Observable {
 
@@ -48,8 +49,7 @@ public class HabitTvViewManager extends Observable {
 	public HabitTvViewManager(UserConfig userConfig) {
 		super();
 		this.userConfig = userConfig;
-		grabConfigDAO = new GrabConfigDAO(userConfig.getAppDir()
-				+ File.separator + HabitTvConf.GRABCONFIG_XML_FILE);
+		grabConfigDAO = new GrabConfigDAO(DirUtils.getGrabConfigPath());
 		coreManager = new CoreManager(userConfig);
 		progressionModel = new ProgressionModel();
 	}

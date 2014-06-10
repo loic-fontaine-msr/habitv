@@ -10,10 +10,12 @@ public interface HabitTvConf {
 
 	String ENCODING = "UTF-8";
 
-	String GRAB_CONF_XSD = "grab-config.xsd";
+	String OLD_CONF_FILE = "config.xml";
+
+	String CONF_FILE = "configuration.xml";	
 
 	String STAT_URL = "http://dabiboo.free.fr/cpt.php";
 	
-	String LOG_FILE = FrameworkConf.USER_HOME+"/habitv/"+"habiTv.log"; 
+	String LOG_FILE = "habiTv.log"; 
 
 }

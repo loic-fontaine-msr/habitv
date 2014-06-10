@@ -30,8 +30,9 @@ import javafx.util.Duration;
 
 import org.apache.log4j.Logger;
 
-import com.dabi.habitv.core.config.XMLUserConfig;
 import com.dabi.habitv.tray.controller.UpdateController;
+import com.dabi.habitv.utils.DirUtils;
+import com.dabi.habitv.utils.LogUtils;
 
 public class HabiTvSplashScreen extends Application {
 	private Pane splashLayout;
@@ -41,10 +42,8 @@ public class HabiTvSplashScreen extends Application {
 	private static final int SPLASH_HEIGHT = 227;
 	private UpdateController updateController;
 
-	private static final Logger LOG = Logger
-			.getLogger(HabiTvSplashScreen.class);
-
 	public static void main(String[] args) throws Exception {
+		LogUtils.updateLog4jConfiguration();
 		launch(args);
 	}
 
@@ -69,8 +68,7 @@ public class HabiTvSplashScreen extends Application {
 
 	@Override
 	public void start(final Stage initStage) throws Exception {
-		String lockFile = XMLUserConfig.getCurrentAppDir() + File.separator
-				+ "habiTv.lock";
+		String lockFile = DirUtils.getAppDir() + File.separator + "habiTv.lock";
 		if (lockInstance(lockFile)) {
 			Popin.fatalError("Une instance d'habiTv est déjà en cours d'exécution.\n Si ce n'est pas le cas supprimer le fichier : \n  "
 					+ lockFile);
@@ -128,6 +126,7 @@ public class HabiTvSplashScreen extends Application {
 	}
 
 	private static boolean lockInstance(final String lockFile) {
+		final Logger log = Logger.getLogger(HabiTvSplashScreen.class);
 		try {
 			final File file = new File(lockFile);
 			final RandomAccessFile randomAccessFile = new RandomAccessFile(
@@ -141,7 +140,7 @@ public class HabiTvSplashScreen extends Application {
 							randomAccessFile.close();
 							file.delete();
 						} catch (Exception e) {
-							LOG.error(
+							log.error(
 									"Unable to remove lock file: " + lockFile,
 									e);
 						}
@@ -150,7 +149,7 @@ public class HabiTvSplashScreen extends Application {
 				return false;
 			}
 		} catch (Exception e) {
-			LOG.error("Unable to create and/or lock file: " + lockFile, e);
+			log.error("Unable to create and/or lock file: " + lockFile, e);
 		}
 		return true;
 	}

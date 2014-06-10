@@ -52,7 +52,7 @@ public class SearchTask extends AbstractTask<Object> {
 	}
 
 	@Override
-	protected void added() {
+	protected void adding() {
 		LOG.info("Waiting for Searching episode for " + getCategory());
 	}
 

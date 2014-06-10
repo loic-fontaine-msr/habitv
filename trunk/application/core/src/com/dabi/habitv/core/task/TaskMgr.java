@@ -35,6 +35,7 @@ public class TaskMgr<T extends AbstractTask<R>, R> {
 	}
 
 	public synchronized void addTask(final T task, final String category) {
+		task.adding();
 		ExecutorService executorService = category2ExecutorService.get(category);
 		if (executorService == null) {
 			executorService = initExecutor(category);

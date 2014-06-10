@@ -367,7 +367,8 @@ public class CategoryDTO implements Comparable<CategoryDTO>, Serializable {
 	public boolean hasSubCategoryWithState(StatusEnum state) {
 		for (CategoryDTO subCategory : getSubCategories()) {
 			if (subCategory.getState() == state
-					|| subCategory.hasSelectedSubCategory()) {
+					|| (subCategory.getState() != StatusEnum.DELETED && subCategory
+							.hasSubCategoryWithState(state))) {
 				return true;
 			}
 

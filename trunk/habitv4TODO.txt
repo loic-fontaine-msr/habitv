@@ -1,14 +1,6 @@
-clubic vide
-
 bug a télécharger
 
-d8 encoding
-
-* catégorie a ss cat dl
-
 packaging linux
-
-log rep
 
 doc
 
@@ -25,8 +17,6 @@ téléchargement unitaire CLI
  - clean grabconfig
  - check, dl & stop
 
-tester linux
-
 ------------------------------------------------
 
 rss content matcher
@@ -40,7 +30,5 @@ test automatisation des dl
 agrandir l'arbre avec la fenetre
 
 dl dans tableau
-
-dl auto ne pas afficher le main
 
 français/anglais

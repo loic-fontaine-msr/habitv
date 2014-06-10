@@ -15,6 +15,7 @@ import com.dabi.habitv.core.config.UserConfig;
 import com.dabi.habitv.core.token.TokenReplacer;
 import com.dabi.habitv.framework.FWKProperties;
 import com.dabi.habitv.framework.plugin.utils.RetrieverUtils;
+import com.dabi.habitv.utils.DirUtils;
 
 public final class CoreManager {
 
@@ -38,7 +39,7 @@ public final class CoreManager {
 				pluginManager.getDownloadersHolder(),
 				pluginManager.getExportersHolder(),
 				pluginManager.getProvidersHolder(), taskName2PoolSizeMap,
-				config.getMaxAttempts(), config.getAppDir());
+				config.getMaxAttempts(), DirUtils.getAppDir());
 		categoryManager = new CategoryManager(
 				pluginManager.getProvidersHolder(), taskName2PoolSizeMap);
 

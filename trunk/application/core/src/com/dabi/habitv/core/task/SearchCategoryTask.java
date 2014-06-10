@@ -20,7 +20,7 @@ public final class SearchCategoryTask extends AbstractTask<SearchCategoryResult>
 	}
 
 	@Override
-	protected void added() {
+	protected void adding() {
 		LOG.error("Waiting for Grabbing categories for " + channel);
 		searchCategoryPublisher.addNews(new SearchCategoryEvent(channel, SearchCategoryStateEnum.CHANNEL_CATEGORIES_TO_BUILD));
 	}
