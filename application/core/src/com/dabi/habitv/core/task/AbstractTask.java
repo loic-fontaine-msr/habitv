@@ -39,8 +39,8 @@ abstract class AbstractTask<R> implements Callable<R> {
 		return result;
 	}
 
-	protected abstract void added();
-
+	protected abstract void adding();//appelé avant le démarrage du thread
+	
 	protected abstract void failed(Throwable e);
 
 	protected abstract void ended();
@@ -52,7 +52,6 @@ abstract class AbstractTask<R> implements Callable<R> {
 	final void addedTo(final String category, final Future<R> future) {
 		this.category = category;
 		this.future = future;
-		added();
 	}
 
 	void waitEndOfTreatment() {

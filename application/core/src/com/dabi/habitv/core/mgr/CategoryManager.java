@@ -21,6 +21,7 @@ import com.dabi.habitv.core.task.SearchCategoryTask;
 import com.dabi.habitv.core.task.TaskMgr;
 import com.dabi.habitv.core.task.TaskMgrListener;
 import com.dabi.habitv.core.task.TaskTypeEnum;
+import com.dabi.habitv.utils.DirUtils;
 
 public class CategoryManager extends AbstractManager {
 
@@ -90,14 +91,14 @@ public class CategoryManager extends AbstractManager {
 			public void onFailed(final Throwable throwable) {
 				searchCategoryPublisher.addNews(new SearchCategoryEvent(
 						SearchCategoryStateEnum.ERROR,
-						HabitTvConf.GRABCONFIG_XML_FILE));
+						DirUtils.getGrabConfigPath()));
 			}
 
 			@Override
 			public void onAllTreatmentDone() {
 				searchCategoryPublisher.addNews(new SearchCategoryEvent(
 						SearchCategoryStateEnum.DONE,
-						HabitTvConf.GRABCONFIG_XML_FILE));
+						DirUtils.getGrabConfigPath()));
 			}
 		};
 	}

@@ -1,11 +1,11 @@
 package com.dabi.habitv.tray.controller;
 
-import org.apache.log4j.Logger;
-
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+
+import org.apache.log4j.Logger;
 
 import com.dabi.habitv.api.plugin.pub.UpdatablePluginEvent;
 import com.dabi.habitv.api.plugin.pub.UpdatablePluginEvent.UpdatablePluginStateEnum;
@@ -15,7 +15,6 @@ import com.dabi.habitv.core.event.RetreiveEvent;
 import com.dabi.habitv.core.event.SearchCategoryEvent;
 import com.dabi.habitv.core.event.SearchEvent;
 import com.dabi.habitv.core.event.UpdatePluginEvent;
-import com.dabi.habitv.core.mgr.CoreManager;
 import com.dabi.habitv.tray.HabiTvSplashScreen;
 import com.dabi.habitv.tray.HabiTvSplashScreen.InitHandler;
 import com.dabi.habitv.tray.HabitvViewMain;

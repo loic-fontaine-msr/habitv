@@ -52,7 +52,7 @@ public class RetrieveTask extends AbstractEpisodeTask {
 	}
 
 	@Override
-	protected void added() {
+	protected void adding() {
 		LOG.info("Episode to retreive " + getEpisode());
 		retreivePublisher.addNews(new RetreiveEvent(getEpisode(),
 				EpisodeStateEnum.TO_DOWNLOAD));

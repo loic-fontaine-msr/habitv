@@ -11,13 +11,13 @@ import javafx.event.EventHandler;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
+import org.apache.log4j.Logger;
+
 import com.dabi.habitv.api.plugin.dto.CategoryDTO;
 import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
 import com.dabi.habitv.api.plugin.exception.TechnicalException;
 import com.dabi.habitv.api.plugin.pub.UpdatablePluginEvent;
-import com.dabi.habitv.core.config.HabitTvConf;
 import com.dabi.habitv.core.config.UserConfig;
-import com.dabi.habitv.core.config.XMLUserConfig;
 import com.dabi.habitv.core.dao.DownloadedDAO;
 import com.dabi.habitv.core.event.EpisodeStateEnum;
 import com.dabi.habitv.core.event.RetreiveEvent;
@@ -29,8 +29,11 @@ import com.dabi.habitv.framework.plugin.utils.ProcessingThreads;
 import com.dabi.habitv.tray.Popin;
 import com.dabi.habitv.tray.model.HabitTvViewManager;
 import com.dabi.habitv.tray.subscriber.CoreSubscriber;
+import com.dabi.habitv.utils.DirUtils;
 
 public class ViewController implements CoreSubscriber {
+
+	private static final Logger LOG = Logger.getLogger(ViewController.class);
 
 	private final HabitTvViewManager habitvViewManager;
 	private Stage primaryStage;
@@ -84,6 +87,7 @@ public class ViewController implements CoreSubscriber {
 
 	@Override
 	public void update(final RetreiveEvent event) {
+		LOG.info("ViewC : " + event);
 		switch (event.getState()) {
 		case BUILD_INDEX:
 
@@ -244,14 +248,6 @@ public class ViewController implements CoreSubscriber {
 				config.getDownloadOuput().indexOf("#"))); //$NON-NLS-1$
 	}
 
-	public void openConfig() {
-		open(XMLUserConfig.CONF_FILE);
-	}
-
-	public void openGrabConfig() {
-		open(HabitTvConf.GRABCONFIG_XML_FILE);
-	}
-
 	public void updateGrabconfig(Map<String, CategoryDTO> channels) {
 		getManager().updateGrabconfig(channels);
 	}
@@ -296,6 +292,6 @@ public class ViewController implements CoreSubscriber {
 	}
 
 	public void openLogFile() {
-		open(HabitTvConf.LOG_FILE);
+		open(DirUtils.getLogFile());
 	}
 }

@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 import com.dabi.habitv.api.plugin.exception.TechnicalException;
 import com.dabi.habitv.tray.controller.WindowController;
 import com.dabi.habitv.tray.model.HabitTvViewManager;
+import com.dabi.habitv.utils.LogUtils;
 
 public class HabitvViewMain extends Application {
 
@@ -55,6 +56,7 @@ public class HabitvViewMain extends Application {
 	}
 
 	public static void main(String[] args) {
+		LogUtils.updateLog4jConfiguration();
 		launch(args);
 	}
 }

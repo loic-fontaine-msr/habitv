@@ -43,11 +43,12 @@ public class DownloadTask extends AbstractEpisodeTask {
 		this.downloadedDAO = downloadedDAO;
 	}
 
-	@Override
-	protected void added() {
-		LOG.info("Waiting for download of " + getEpisode());
-	}
 
+	@Override
+	protected void adding() {
+		LOG.info("Waiting for download of " + getEpisode());	
+	}	
+	
 	@Override
 	protected void failed(final Throwable e) {
 		LOG.error("Download failed for " + getEpisode(), e);

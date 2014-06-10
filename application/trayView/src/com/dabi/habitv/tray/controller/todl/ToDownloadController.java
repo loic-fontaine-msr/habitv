@@ -643,7 +643,6 @@ public class ToDownloadController extends BaseController implements
 							@Override
 							public void run() {
 								saveTree();
-								computeNodeStyle();
 							}
 
 						});
@@ -651,11 +650,6 @@ public class ToDownloadController extends BaseController implements
 					}
 				});
 		return categoryTreeItem;
-	}
-
-	private void computeNodeStyle() {
-		// FIXME Auto-generated method stub
-
 	}
 
 	private void saveTree() {
@@ -703,7 +697,7 @@ public class ToDownloadController extends BaseController implements
 							/ searchSize);
 					break;
 				case DONE:
-					refreshCategoryButton.setDisable(false);
+					refreshCategoryButton.setDisable(false); //FIXME
 					searchCategoryProgress.setProgress(1);
 					loadTree();
 					break;

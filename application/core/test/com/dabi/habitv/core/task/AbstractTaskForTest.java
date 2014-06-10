@@ -3,7 +3,7 @@ package com.dabi.habitv.core.task;
 public abstract class AbstractTaskForTest extends AbstractTask<Object> {
 
 	@Override
-	protected void added() {
+	protected void adding() {
 
 	}
 
