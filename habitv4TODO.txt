@@ -1,4 +1,14 @@
-bug a télécharger
+dl manuel sans index -> tout sera dl...
+
+nrj12 dl ko : 00218175
+
+tf1 info
+
+bouton droit sur icone ouvre habitv
+
+menu context : copier l'url
+
+cat non sélectionnée en gras ?
 
 packaging linux
 
