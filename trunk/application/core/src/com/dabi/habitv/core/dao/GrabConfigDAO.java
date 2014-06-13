@@ -360,8 +360,10 @@ public class GrabConfigDAO {
 					categoryPlugin
 							.setDeleted(plugin.getDeleted() == null ? false
 									: plugin.getDeleted());
-					categoryPlugin.setState(StatusEnum.valueOf(plugin
-							.getStatus()));
+					if (plugin.getStatus() != null) {
+						categoryPlugin.setState(StatusEnum.valueOf(plugin
+								.getStatus()));
+					}
 					channel2Category.put(plugin.getName(), categoryPlugin);
 				}
 			}
@@ -399,13 +401,15 @@ public class GrabConfigDAO {
 				if (plugin.getCategories() == null) {
 					plugin.setCategories(new Categories());
 				}
-				if (categoryPlugin != null && categoryDTO.getState() != StatusEnum.FAILED) {
+				if (categoryPlugin != null
+						&& categoryDTO.getState() != StatusEnum.FAILED) {
 					updateCategory(plugin.getCategories().getCategory(),
 							categoryPlugin);
 					channel2CategoryTemp.remove(plugin.getName());
 					pluginstatus = StatusEnum.EXIST;
 				} else {
-					if (categoryDTO!=null && categoryDTO.getState() == StatusEnum.FAILED) {
+					if (categoryDTO != null
+							&& categoryDTO.getState() == StatusEnum.FAILED) {
 						pluginstatus = StatusEnum.FAILED;
 					} else {
 						pluginstatus = StatusEnum.DELETED;
