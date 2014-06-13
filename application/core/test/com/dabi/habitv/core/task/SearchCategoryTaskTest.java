@@ -1,11 +1,12 @@
 package com.dabi.habitv.core.task;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.util.Set;
 import java.util.LinkedHashSet;
+import java.util.Set;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -136,13 +137,12 @@ public class SearchCategoryTaskTest {
 		assertTrue(done);
 	}
 
-	@Test(expected = TaskFailedException.class)
 	public final void testSearchCategoryTaskFailed() {
 		init(true);
 		task.adding();
 		task.addedTo("retreive", null);
-		task.call();
-		assertTrue(done);
+		SearchCategoryResult result = task.call();
+		assertFalse(result.isSuccess());
 	}
 
 }
