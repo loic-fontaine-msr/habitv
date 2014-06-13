@@ -1,4 +1,4 @@
-package com.dabi.habitv.tray.controller;
+package com.dabi.habitv.tray.controller.dl;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -25,6 +25,7 @@ import com.dabi.habitv.core.event.RetreiveEvent;
 import com.dabi.habitv.core.event.SearchCategoryEvent;
 import com.dabi.habitv.core.event.SearchEvent;
 import com.dabi.habitv.core.event.UpdatePluginEvent;
+import com.dabi.habitv.tray.controller.BaseController;
 import com.dabi.habitv.tray.model.ActionProgress;
 import com.dabi.habitv.tray.subscriber.CoreSubscriber;
 import com.dabi.habitv.tray.view.DownloadBox;

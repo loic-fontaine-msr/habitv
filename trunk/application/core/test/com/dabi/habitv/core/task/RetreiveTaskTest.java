@@ -58,12 +58,14 @@ public class RetreiveTaskTest {
 	}
 
 	public void init(final boolean toFail) {
-		final CategoryDTO category = new CategoryDTO("channel", "category", "identifier", "extension");
+		final CategoryDTO category = new CategoryDTO("channel", "category",
+				"identifier", "extension");
 		String url = "videoUrl";
 		if (toFail) {
 			url = "";
 		}
-		final EpisodeDTO episode = new EpisodeDTO(category, "episode1234567890123456789012345678901234567890123456789", url);
+		final EpisodeDTO episode = new EpisodeDTO(category,
+				"episode1234567890123456789012345678901234567890123456789", url);
 		final PluginProviderDownloaderInterface provider = new PluginProviderDownloaderInterface() {
 
 			@Override
@@ -82,7 +84,8 @@ public class RetreiveTaskTest {
 			}
 
 			@Override
-			public ProcessHolder download(final DownloadParamDTO downloadParam, final DownloaderPluginHolder downloaders)
+			public ProcessHolder download(final DownloadParamDTO downloadParam,
+					final DownloaderPluginHolder downloaders)
 					throws DownloadFailedException {
 				return ProcessHolder.EMPTY_PROCESS_HOLDER;
 			}
@@ -93,9 +96,12 @@ public class RetreiveTaskTest {
 			}
 		};
 
-		final DownloaderPluginHolder downloader = new DownloaderPluginHolder(null, null, null,
-				"episode1234567890123456789012345678901234567890123456789/episode123456789012345678901234567890123/channel/category/extension", "indexDir",
-				"bin","plugins");
+		final DownloaderPluginHolder downloader = new DownloaderPluginHolder(
+				null,
+				null,
+				null,
+				"episode1234567890123456789012345678901234567890123456789/episode123456789012345678901234567890123/channel/category/extension",
+				"indexDir", "bin", "plugins");
 		final Publisher<RetreiveEvent> publisher = new Publisher<>();
 		final Subscriber<RetreiveEvent> subscriber = new Subscriber<RetreiveEvent>() {
 
@@ -105,14 +111,16 @@ public class RetreiveTaskTest {
 			public void update(final RetreiveEvent event) {
 				switch (i) {
 				case 0:
-					assertEquals(new RetreiveEvent(episode, EpisodeStateEnum.TO_DOWNLOAD), event);
+					assertEquals(new RetreiveEvent(episode,
+							EpisodeStateEnum.TO_DOWNLOAD), event);
 					break;
 				case 1:
 					if (toFail) {
 						assertEquals(episode, event.getEpisode());
 						assertEquals(EpisodeStateEnum.FAILED, event.getState());
 					} else {
-						assertEquals(new RetreiveEvent(episode, EpisodeStateEnum.READY), event);
+						assertEquals(new RetreiveEvent(episode,
+								EpisodeStateEnum.READY), event);
 						retreived = true;
 					}
 					break;
@@ -124,7 +132,8 @@ public class RetreiveTaskTest {
 			}
 		};
 		publisher.attach(subscriber);
-		final DownloadedDAO downloadedDAO = new DownloadedDAO(episode.getCategory(), ".");
+		final DownloadedDAO downloadedDAO = new DownloadedDAO(
+				episode.getCategory(), ".");
 
 		final Map<String, PluginExporterInterface> exporterName2exporter = new HashMap<>();
 		final PluginExporterInterface pluginExporter = new PluginExporterInterface() {
@@ -135,20 +144,25 @@ public class RetreiveTaskTest {
 			}
 
 			@Override
-			public ProcessHolder export(final String cmdProcessor, final String cmd) throws ExportFailedException {
+			public ProcessHolder export(final String cmdProcessor,
+					final String cmd) throws ExportFailedException {
 				return ProcessHolder.EMPTY_PROCESS_HOLDER;
 			}
 		};
 		exporterName2exporter.put("exporter", pluginExporter);
 		final List<ExportDTO> exporterList = new ArrayList<>();
 		final List<ExportDTO> exporterSubList = new ArrayList<>();
-		final ExportDTO subExporter = new ExportDTO("#EPISODE_NAME#", "episode", "exporter", "subexport1Out", null, "subcmd 1", null);
+		final ExportDTO subExporter = new ExportDTO("#EPISODE_NAME#",
+				"episode", "exporter", "subexport1Out", null, "subcmd 1", null);
 		exporterSubList.add(subExporter);
-		final ExportDTO export1 = new ExportDTO("#EPISODE_NAME#", "episode", "export1", "export1Out", null, "cmd 1", exporterSubList);
+		final ExportDTO export1 = new ExportDTO("#EPISODE_NAME#", "episode",
+				"export1", "export1Out", null, "cmd 1", exporterSubList);
 		exporterList.add(export1);
-		final ExportDTO export2 = new ExportDTO("#EPISODE_NAME#", "episode2", "export2", "export2Out", null, "cmd 2", null);
+		final ExportDTO export2 = new ExportDTO("#EPISODE_NAME#", "episode2",
+				"export2", "export2Out", null, "cmd 2", null);
 		exporterList.add(export2);
-		final ExporterPluginHolder exporter = new ExporterPluginHolder(exporterName2exporter, exporterList);
+		final ExporterPluginHolder exporter = new ExporterPluginHolder(
+				exporterName2exporter, exporterList);
 		final TaskAdder taskAdder = new TaskAdder() {
 
 			private int i = 0;
@@ -159,14 +173,17 @@ public class RetreiveTaskTest {
 			}
 
 			@Override
-			public TaskAdResult addExportTask(final ExportTask exportTask, final String category) {
+			public TaskAdResult addExportTask(final ExportTask exportTask,
+					final String category) {
 				switch (i) {
 				case 0:
-					assertEquals(new ExportTask(episode, export1, pluginExporter, publisher, 0), exportTask);
+					assertEquals(new ExportTask(episode, export1,
+							pluginExporter, publisher, 0), exportTask);
 					assertNull(category);
 					break;
 				case 1:
-					assertEquals(new ExportTask(episode, subExporter, pluginExporter, publisher, 0), exportTask);
+					assertEquals(new ExportTask(episode, subExporter,
+							pluginExporter, publisher, 0), exportTask);
 					assertNull(category);
 					break;
 				default:
@@ -178,18 +195,22 @@ public class RetreiveTaskTest {
 			}
 
 			@Override
-			public TaskAdResult addDownloadTask(final DownloadTask downloadTask, final String channel) {
-				assertEquals(new DownloadTask(episode, provider, downloader, publisher, downloadedDAO), downloadTask);
+			public TaskAdResult addDownloadTask(
+					final DownloadTask downloadTask, final String channel) {
+				assertEquals(new DownloadTask(episode, provider, downloader,
+						publisher, downloadedDAO, false), downloadTask);
 				return new TaskAdResult(TaskState.ADDED);
 			}
 
 		};
-		task = new RetrieveTask(episode, publisher, taskAdder, exporter, provider, downloader, downloadedDAO);
+		task = new RetrieveTask(episode, publisher, taskAdder, exporter,
+				provider, downloader, downloadedDAO, false);
 	}
 
 	@Test
 	public final void testRetreiveTaskSuccess() {
 		init(false);
+		task.adding();
 		task.addedTo("retreive", null);
 		task.call();
 		assertTrue(retreived);
@@ -198,6 +219,7 @@ public class RetreiveTaskTest {
 	@Test(expected = TaskFailedException.class)
 	public final void testRetreiveTaskFailed() {
 		init(true);
+		task.adding();
 		task.addedTo("retreive", null);
 		task.call();
 	}

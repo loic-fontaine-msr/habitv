@@ -19,7 +19,8 @@ import com.dabi.habitv.framework.plugin.utils.DownloadUtils;
 public class TF1PluginManager extends BasePluginWithProxy implements
 		PluginProviderInterface { // NO_UCD
 
-	private static final List<String> CATEGORIES_EXCLUDED = Arrays.asList("");
+	private static final List<String> CATEGORIES_EXCLUDED = Arrays.asList(
+			"Séries étrangères", "Fictions Françaises");
 
 	@Override
 	public String getName() {
@@ -91,11 +92,14 @@ public class TF1PluginManager extends BasePluginWithProxy implements
 			final Element aElement = liElement.child(0);
 			final String url = aElement.attr("href");
 			final String name = aElement.text();
-			final CategoryDTO categoryDTO = new CategoryDTO(TF1Conf.NAME, name,
-					getUrl(url), TF1Conf.EXTENSION);
-			Collection<CategoryDTO> subCategories = findSubCategories(categoryDTO);
-			categoryDTO.addSubCategories(subCategories);
-			categories.add(categoryDTO);
+			if (!CATEGORIES_EXCLUDED.contains(name)) {
+				final CategoryDTO categoryDTO = new CategoryDTO(TF1Conf.NAME,
+						name, getUrl(url), TF1Conf.EXTENSION);
+				categoryDTO.setDownloadable(true);
+				Collection<CategoryDTO> subCategories = findSubCategories(categoryDTO);
+				categoryDTO.addSubCategories(subCategories);
+				categories.add(categoryDTO);
+			}
 		}
 
 		return categories;
@@ -156,11 +160,14 @@ public class TF1PluginManager extends BasePluginWithProxy implements
 				int indexOfSlash = urlT.indexOf("/");
 				final String catUrl = urlT.substring(0,
 						indexOfSlash >= 0 ? indexOfSlash : urlT.length());
-				final CategoryDTO categoryDTO = new CategoryDTO(TF1Conf.NAME,
-						name, TF1Conf.HOME_URL + "/" + catUrl + "/",
-						TF1Conf.EXTENSION);
-				categoryDTO.setDownloadable(true);
-				categories.add(categoryDTO);
+
+				if (!CATEGORIES_EXCLUDED.contains(name)) {
+					final CategoryDTO categoryDTO = new CategoryDTO(
+							TF1Conf.NAME, name, TF1Conf.HOME_URL + "/" + catUrl
+									+ "/", TF1Conf.EXTENSION);
+					categoryDTO.setDownloadable(true);
+					categories.add(categoryDTO);
+				}
 			}
 		}
 	}

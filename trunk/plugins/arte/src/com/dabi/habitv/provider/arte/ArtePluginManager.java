@@ -4,9 +4,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.LinkedHashSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -66,7 +66,7 @@ public class ArtePluginManager extends BasePluginWithProxy implements
 								.replace(ArteConf.ID_EMISSION_TOKEN,
 										category.getId())));
 			} catch (Exception e) {
-				LOG.error(
+				LOG.debug(
 						"Erreur findEpisodeByCategory utilisation de la recherche",
 						e);
 				return searchEpisodeByKeyworkds(category);
@@ -87,20 +87,8 @@ public class ArtePluginManager extends BasePluginWithProxy implements
 				final Element h2 = element.child(1);
 				final Element aHref = h2.child(0);
 				final String attr = aHref.attr("href");
-				final String attrR = attr;
-				// final String videoUrl = "http://videos.arte.tv" + attr;
-				// final String videoContent = getUrlContent(videoUrl);
-				// final Matcher matcher =
-				// VIDEO_ID_PATTERN.matcher(videoContent);
-				// final boolean hasMatched = matcher.find();
-				// String attrR = null;
-				// if (hasMatched) {
-				// attrR = matcher.group(matcher.groupCount());
-				// } else {
-				// throw new TechnicalException("can't find mediaId");
-				// }
 				episodes.add(new EpisodeDTO(category, aHref.text() + "-"
-						+ getNbr(attr), attrR));
+						+ getNbr(attr), ArteConf.ARTE_PREFIX_URL + attr));
 			} catch (final IndexOutOfBoundsException e) {
 				getLog().error(element, e);
 				throw new TechnicalException(e);

@@ -40,76 +40,14 @@ import javafx.scene.text.FontWeight;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 
-/**
- * A class containing a {@link TreeCell} implementation that draws a
- * {@link CheckBox} node inside the cell, along with support for common
- * interactions (discussed in more depth shortly).
- * 
- * <p>
- * To make creating TreeViews with CheckBoxes easier, a convenience class called
- * {@link CheckBoxTreeItem} is provided. It is <b>highly</b> recommended that
- * developers use this class, rather than the regular {@link TreeItem} class,
- * when constructing their TreeView tree structures. Refer to the
- * CheckBoxTreeItem API documentation for an example on how these two classes
- * can be combined.
- * 
- * <p>
- * When used in a TreeView, the CheckBoxCell is rendered with a CheckBox to the
- * right of the 'disclosure node' (i.e. the arrow). The item stored in
- * {@link CheckBoxTreeItem#getValue()} will then have the StringConverter called
- * on it, and this text will take all remaining horizontal space. Additionally,
- * by using {@link CheckBoxTreeItem}, the TreeView will automatically handle
- * situations such as:
- * 
- * <ul>
- * <li>Clicking on the {@link CheckBox} beside an item that has children will
- * result in all children also becoming selected/unselected.
- * <li>Clicking on the {@link CheckBox} beside an item that has a parent will
- * possibly toggle the state of the parent. For example, if you select a single
- * child, the parent will become indeterminate (indicating partial selection of
- * children). If you proceed to select all children, the parent will then show
- * that it too is selected. This is recursive, with all parent nodes updating as
- * expected.
- * </ul>
- * 
- * If it is decided that using {@link CheckBoxTreeItem} is not desirable, then
- * it is necessary to call one of the constructors where a {@link Callback} is
- * provided that can return an {@code ObservableValue<Boolean>} given a
- * {@link TreeItem} instance. This {@code ObservableValue<Boolean>} should
- * represent the boolean state of the given {@link TreeItem}.
- * 
- * @param <T>
- *            The type of the elements contained within the TreeView TreeItem
- *            instances.
- * @since 2.2
- */
 public abstract class MyCheckBoxTreeCell<T> extends TreeCell<T> {
 
-	/***************************************************************************
-	 * * Static cell factories * *
-	 **************************************************************************/
-
-	/***************************************************************************
-	 * * Fields * *
-	 **************************************************************************/
 	private final CheckBox checkBox;
 
 	private ObservableValue<Boolean> booleanProperty;
 
 	private BooleanProperty indeterminateProperty;
 
-	/***************************************************************************
-	 * * Constructors * *
-	 **************************************************************************/
-
-	/**
-	 * Creates a default {@link MyCheckBoxTreeCell} that assumes the TreeView is
-	 * constructed with {@link CheckBoxTreeItem} instances, rather than the
-	 * default {@link TreeItem}. By using {@link CheckBoxTreeItem}, it will
-	 * internally manage the selected and indeterminate state of each item in
-	 * the tree.
-	 * @param strConverter 
-	 */
 	public MyCheckBoxTreeCell(StringConverter<TreeItem<T>> strConverter) {
 		// getSelectedProperty as anonymous inner class to deal with situation
 		// where the user is using CheckBoxTreeItem instances in their tree
@@ -124,36 +62,6 @@ public abstract class MyCheckBoxTreeCell<T> extends TreeCell<T> {
 		}, strConverter);
 	}
 
-	/**
-	 * Creates a {@link MyCheckBoxTreeCell} for use in a TreeView control via a
-	 * cell factory. Unlike {@link MyCheckBoxTreeCell#CheckBoxTreeCell()}, this
-	 * method does not assume that all TreeItem instances in the TreeView are
-	 * {@link CheckBoxTreeItem}.
-	 * 
-	 * <p>
-	 * To call this method, it is necessary to provide a {@link Callback} that,
-	 * given an object of type TreeItem<T>, will return an
-	 * {@code ObservableValue<Boolean>} that represents whether the given item
-	 * is selected or not. This {@code ObservableValue<Boolean>} will be bound
-	 * bidirectionally (meaning that the CheckBox in the cell will set/unset
-	 * this property based on user interactions, and the CheckBox will reflect
-	 * the state of the {@code ObservableValue<Boolean>}, if it changes
-	 * externally).
-	 * 
-	 * <p>
-	 * If the items are not {@link CheckBoxTreeItem} instances, it becomes the
-	 * developers responsibility to handle updating the state of parent and
-	 * children TreeItems. This means that, given a TreeItem, this class will
-	 * simply toggles the {@code ObservableValue<Boolean>} that is provided, and
-	 * no more. Of course, this functionality can then be implemented externally
-	 * by adding observers to the {@code ObservableValue<Boolean>}, and toggling
-	 * the state of other properties as necessary.
-	 * 
-	 * @param getSelectedProperty
-	 *            A {@link Callback} that will return an
-	 *            {@code ObservableValue<Boolean>} that represents whether the
-	 *            given item is selected or not.
-	 */
 	private final static StringConverter defaultTreeItemStringConverter = new StringConverter<TreeItem>() {
 		@Override
 		public String toString(TreeItem treeItem) {
@@ -264,21 +172,32 @@ public abstract class MyCheckBoxTreeCell<T> extends TreeCell<T> {
 
 			// update the node content
 			String value = c.toString(getTreeItem());
-			if (isNew(item)){
-				value+="*";
-				setTooltip(new Tooltip("Cette catégorie a été ajoutée ou modifiée lors de la dernière mise à jour."));
+			if (isNew(item)) {
+				value += "*";
+				setTooltip(new Tooltip(
+						"Cette catégorie a été ajoutée ou modifiée lors de la dernière mise à jour."));
 			}
 			setText(value);
-			if (isBold(item)){
+			if (isBold(item)) {
 				setFont(Font.font(null, FontWeight.BOLD, getFont().getSize()));
-				setTooltip(new Tooltip("Des sous-catégories sont sélectionnées pour le téléchargement auto."));
+				setTooltip(new Tooltip(
+						"Des sous-catégories sont sélectionnées pour le téléchargement auto."));
+			} else {
+				setFont(Font.font(null, FontWeight.NORMAL, getFont().getSize()));
 			}
-			
-			if (isDeleted(item)){
+
+			if (isDeleted(item)) {
 				setTextFill(Color.GRAY);
-				setTooltip(new Tooltip("Cette catégorie n'est plus présente chez le fournisseur."));
+				setTooltip(new Tooltip(
+						"Cette catégorie n'est plus présente chez le fournisseur."));
+			} else {
+				if (isFailed(item)) {
+					setTextFill(Color.RED);
+				} else {
+					setTextFill(Color.BLACK);
+				}
 			}
-			
+
 			if (showCheckBox(item)) {
 				setGraphic(checkBox);
 			} else {
@@ -315,6 +234,8 @@ public abstract class MyCheckBoxTreeCell<T> extends TreeCell<T> {
 			}
 		}
 	}
+
+	protected abstract boolean isFailed(T item);
 
 	protected abstract boolean isNew(T item);
 

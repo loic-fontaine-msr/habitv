@@ -31,24 +31,26 @@ public class DownloadTask extends AbstractEpisodeTask {
 
 	private final DownloadedDAO downloadedDAO;
 
+	private boolean manual;
+
 	public DownloadTask(final EpisodeDTO episode,
 			final PluginProviderInterface provider,
 			final DownloaderPluginHolder downloaders,
 			final Publisher<RetreiveEvent> publisher,
-			final DownloadedDAO downloadedDAO) {
+			final DownloadedDAO downloadedDAO, boolean manual) {
 		super(episode);
 		this.provider = provider;
 		this.downloaders = downloaders;
 		this.publisher = publisher;
 		this.downloadedDAO = downloadedDAO;
+		this.manual = manual;
 	}
-
 
 	@Override
 	protected void adding() {
-		LOG.info("Waiting for download of " + getEpisode());	
-	}	
-	
+		LOG.info("Waiting for download of " + getEpisode());
+	}
+
 	@Override
 	protected void failed(final Throwable e) {
 		LOG.error("Download failed for " + getEpisode(), e);
@@ -64,7 +66,7 @@ public class DownloadTask extends AbstractEpisodeTask {
 	@Override
 	protected void ended() {
 		LOG.info("Download of " + getEpisode() + " done");
-		downloadedDAO.addDownloadedFiles(getEpisode());
+		downloadedDAO.addDownloadedFiles(manual, getEpisode());
 		publisher.addNews(new RetreiveEvent(getEpisode(),
 				EpisodeStateEnum.DOWNLOADED));
 	}

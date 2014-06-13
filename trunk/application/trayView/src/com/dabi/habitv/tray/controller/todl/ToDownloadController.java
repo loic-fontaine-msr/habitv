@@ -419,6 +419,7 @@ public class ToDownloadController extends BaseController implements
 	}
 
 	private ContextMenu buildEpisodeContextMenu() {
+		ContextMenu contextMenu = new ContextMenu();
 		MenuItem telecharger = new MenuItem("Télécharger");
 		telecharger.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -428,7 +429,39 @@ public class ToDownloadController extends BaseController implements
 						episodeListView.getSelectionModel().getSelectedItem());
 			}
 		});
-		ContextMenu contextMenu = new ContextMenu(telecharger);
+		contextMenu.getItems().add(telecharger);
+		
+		MenuItem urlCopie = new MenuItem("Copier l'URL/Id");
+		urlCopie.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				getController().copyUrl(
+						episodeListView.getSelectionModel().getSelectedItem());
+			}
+		});
+		
+		MenuItem ouvrirUrl = new MenuItem("Ouvrir dans le navigateur");
+		ouvrirUrl.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				getController().openInBrowser(
+						episodeListView.getSelectionModel().getSelectedItem());
+			}
+		});
+		MenuItem marquerTelecharger = new MenuItem("Marquer comme téléchargé");
+		marquerTelecharger.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				EpisodeDTO episode = episodeListView.getSelectionModel()
+						.getSelectedItem();
+				getController().setDownloaded(episode);
+				filterEpisodeListView(episodeFilter.getText());
+				downloadedEpisodes.add(episode.getName());
+			}
+		});
 		return contextMenu;
 	}
 
@@ -697,7 +730,7 @@ public class ToDownloadController extends BaseController implements
 							/ searchSize);
 					break;
 				case DONE:
-					refreshCategoryButton.setDisable(false); //FIXME
+					refreshCategoryButton.setDisable(false); // FIXME
 					searchCategoryProgress.setProgress(1);
 					loadTree();
 					break;
@@ -757,12 +790,19 @@ public class ToDownloadController extends BaseController implements
 
 					@Override
 					protected boolean isBold(CategoryDTO item) {
-						return item.hasSelectedSubCategory();
+						return item.isSelected()
+								|| item.hasSelectedSubCategory();
 					}
 
 					@Override
 					protected boolean isNew(CategoryDTO item) {
-						return item.getState() == StatusEnum.NEW || item.hasSubCategoryWithState(StatusEnum.NEW);
+						return item.getState() == StatusEnum.NEW
+								|| item.hasSubCategoryWithState(StatusEnum.NEW);
+					}
+
+					@Override
+					protected boolean isFailed(CategoryDTO item) {
+						return item.getState() == StatusEnum.DELETED;
 					}
 
 				};

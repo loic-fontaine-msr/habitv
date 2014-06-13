@@ -5,7 +5,8 @@ import com.dabi.habitv.api.plugin.pub.Publisher;
 import com.dabi.habitv.core.event.SearchCategoryEvent;
 import com.dabi.habitv.core.event.SearchCategoryStateEnum;
 
-public final class SearchCategoryTask extends AbstractTask<SearchCategoryResult> {
+public final class SearchCategoryTask extends
+		AbstractTask<SearchCategoryResult> {
 
 	private final String channel;
 
@@ -13,7 +14,9 @@ public final class SearchCategoryTask extends AbstractTask<SearchCategoryResult>
 
 	private final Publisher<SearchCategoryEvent> searchCategoryPublisher;
 
-	public SearchCategoryTask(final String channel, final PluginProviderInterface provider, final Publisher<SearchCategoryEvent> searchCategoryPublisher) {
+	public SearchCategoryTask(final String channel,
+			final PluginProviderInterface provider,
+			final Publisher<SearchCategoryEvent> searchCategoryPublisher) {
 		this.channel = channel;
 		this.provider = provider;
 		this.searchCategoryPublisher = searchCategoryPublisher;
@@ -22,30 +25,39 @@ public final class SearchCategoryTask extends AbstractTask<SearchCategoryResult>
 	@Override
 	protected void adding() {
 		LOG.error("Waiting for Grabbing categories for " + channel);
-		searchCategoryPublisher.addNews(new SearchCategoryEvent(channel, SearchCategoryStateEnum.CHANNEL_CATEGORIES_TO_BUILD));
+		searchCategoryPublisher.addNews(new SearchCategoryEvent(channel,
+				SearchCategoryStateEnum.CHANNEL_CATEGORIES_TO_BUILD));
 	}
 
 	@Override
 	protected void failed(final Throwable e) {
 		LOG.error("Grabbing categories for " + channel + " failed", e);
-		searchCategoryPublisher.addNews(new SearchCategoryEvent(channel, SearchCategoryStateEnum.ERROR));
+		searchCategoryPublisher.addNews(new SearchCategoryEvent(channel,
+				SearchCategoryStateEnum.ERROR));
 	}
 
 	@Override
 	protected void ended() {
 		LOG.info("Grabbing categories for " + channel + " done");
-		searchCategoryPublisher.addNews(new SearchCategoryEvent(channel, SearchCategoryStateEnum.CATEGORIES_BUILT));
+		searchCategoryPublisher.addNews(new SearchCategoryEvent(channel,
+				SearchCategoryStateEnum.CATEGORIES_BUILT));
 	}
 
 	@Override
 	protected void started() {
 		LOG.info("Grabbing categories for " + channel + "...");
-		searchCategoryPublisher.addNews(new SearchCategoryEvent(channel, SearchCategoryStateEnum.BUILDING_CATEGORIES));
+		searchCategoryPublisher.addNews(new SearchCategoryEvent(channel,
+				SearchCategoryStateEnum.BUILDING_CATEGORIES));
 	}
 
 	@Override
 	protected SearchCategoryResult doCall() {
-		return new SearchCategoryResult(channel, provider.findCategory());
+		try {
+			return new SearchCategoryResult(channel, provider.findCategory());
+		} catch (Exception e) {
+			LOG.error("", e);
+			return new SearchCategoryResult(channel);
+		}
 	}
 
 	@Override

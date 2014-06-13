@@ -131,14 +131,14 @@ public class SearchTask extends AbstractTask<Object> {
 							// producer download the file
 							taskAdder.addRetreiveTask(new RetrieveTask(episode,
 									retreivePublisher, taskAdder, exporter,
-									provider, downloader, dlDAO));
+									provider, downloader, dlDAO, false));
 
 						} else {
 							// if index has not been created the first run will
 							// only
 							// fill this file
 							if (!isDownloaded && !isErrorDownloaded) {
-								dlDAO.addDownloadedFiles(episode);
+								dlDAO.addDownloadedFiles(false, episode);
 							}
 						}
 						i++;

@@ -35,12 +35,14 @@ public class RetrieveTask extends AbstractEpisodeTask {
 
 	private EpisodeExportState episodeExportState;
 
+	private final boolean manual;
+
 	public RetrieveTask(final EpisodeDTO episode,
 			final Publisher<RetreiveEvent> publisher,
 			final TaskAdder taskAdder, final ExporterPluginHolder exporter,
 			final PluginProviderInterface provider,
 			final DownloaderPluginHolder downloaders,
-			final DownloadedDAO downloadDAO) {
+			final DownloadedDAO downloadDAO, boolean manual) {
 		super(episode);
 		this.retreivePublisher = publisher;
 		this.taskAdder = taskAdder;
@@ -49,6 +51,7 @@ public class RetrieveTask extends AbstractEpisodeTask {
 		this.downloadDAO = downloadDAO;
 		this.downloaders = downloaders;
 		this.episodeExportState = null;
+		this.manual = manual;
 	}
 
 	@Override
@@ -132,7 +135,7 @@ public class RetrieveTask extends AbstractEpisodeTask {
 
 	private void download() {
 		final DownloadTask downloadTask = new DownloadTask(getEpisode(),
-				provider, downloaders, retreivePublisher, downloadDAO);
+				provider, downloaders, retreivePublisher, downloadDAO, manual);
 		taskAdder.addDownloadTask(downloadTask, getEpisode().getCategory()
 				.getPlugin());
 		downloadTask.waitEndOfTreatment();
