@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 
 import com.dabi.habitv.api.plugin.api.PluginProviderInterface;
 import com.dabi.habitv.api.plugin.dto.CategoryDTO;
+import com.dabi.habitv.api.plugin.dto.StatusEnum;
 import com.dabi.habitv.api.plugin.exception.TechnicalException;
 import com.dabi.habitv.api.plugin.holder.ProviderPluginHolder;
 import com.dabi.habitv.api.plugin.pub.Publisher;
@@ -66,6 +67,7 @@ public class CategoryManager extends AbstractManager {
 				CategoryDTO categoryPlugin = new CategoryDTO(
 						searchCategoryResult.getChannel(),
 						searchCategoryResult.getCategoryList());
+				categoryPlugin.setState(searchCategoryResult.isSuccess()?null:StatusEnum.FAILED);
 
 				channel2Categories.put(categoryPlugin.getId(), categoryPlugin);
 			} catch (final TechnicalException e) {

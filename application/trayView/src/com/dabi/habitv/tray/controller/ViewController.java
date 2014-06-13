@@ -1,8 +1,12 @@
 package com.dabi.habitv.tray.controller;
 
 import java.awt.Desktop;
+import java.awt.Toolkit;
+import java.awt.datatransfer.StringSelection;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Collection;
 import java.util.Map;
 
@@ -87,7 +91,6 @@ public class ViewController implements CoreSubscriber {
 
 	@Override
 	public void update(final RetreiveEvent event) {
-		LOG.info("ViewC : " + event);
 		switch (event.getState()) {
 		case BUILD_INDEX:
 
@@ -293,5 +296,18 @@ public class ViewController implements CoreSubscriber {
 
 	public void openLogFile() {
 		open(DirUtils.getLogFile());
+	}
+
+	public void copyUrl(EpisodeDTO episode) {
+		Toolkit.getDefaultToolkit().getSystemClipboard()
+				.setContents(new StringSelection(episode.getId()), null);
+	}
+
+	public void openInBrowser(EpisodeDTO episodeDTO) {
+		try {
+			Desktop.getDesktop().browse(new URI(episodeDTO.getId()));
+		} catch (IOException | URISyntaxException e) {
+			throw new TechnicalException(e);
+		}
 	}
 }

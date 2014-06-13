@@ -271,7 +271,7 @@ public class SearchTaskTest {
 			}
 
 			@Override
-			public void addDownloadedFiles(final EpisodeDTO... episodes) {
+			public void addDownloadedFiles(final boolean manual, final EpisodeDTO... episodes) {
 				assertEquals("episode3", episodes[0].getName());
 			}
 

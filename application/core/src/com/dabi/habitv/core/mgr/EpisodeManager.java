@@ -292,7 +292,7 @@ public final class EpisodeManager extends AbstractManager implements TaskAdder {
 			final RetrieveTask retreiveTask = new RetrieveTask(
 					episodeExportState.getEpisode(), retreivePublisher, this,
 					exporter, getProviderPluginHolder().getPlugin(channel),
-					downloader, dlDAO);
+					downloader, dlDAO, false);
 			retreiveTask.setEpisodeExportState(episodeExportState);
 			addRetreiveTask(retreiveTask);
 		}
@@ -309,7 +309,7 @@ public final class EpisodeManager extends AbstractManager implements TaskAdder {
 	public void setDownloaded(EpisodeDTO episode) {
 		final DownloadedDAO dlDAO = new DownloadedDAO(episode.getCategory(),
 				downloader.getIndexDir());
-		dlDAO.addDownloadedFiles(episode);
+		dlDAO.addDownloadedFiles(true, episode);
 	}
 
 	public void restart(EpisodeDTO episode, boolean exportOnly) {
@@ -317,8 +317,9 @@ public final class EpisodeManager extends AbstractManager implements TaskAdder {
 				downloader.getIndexDir());
 		final RetrieveTask retreiveTask = new RetrieveTask(episode,
 				retreivePublisher, this, exporter, getProviderPluginHolder()
-						.getPlugin(episode.getCategory().getPlugin(), (PluginProviderInterface) null),
-				downloader, dlDAO);
+						.getPlugin(episode.getCategory().getPlugin(),
+								(PluginProviderInterface) null), downloader,
+				dlDAO, true);
 		if (exportOnly) {
 			retreiveTask.setEpisodeExportState(new EpisodeExportState(episode,
 					0));

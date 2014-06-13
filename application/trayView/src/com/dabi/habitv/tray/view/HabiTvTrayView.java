@@ -102,7 +102,10 @@ public final class HabiTvTrayView implements CoreSubscriber {
 
 			@Override
 			public void mouseClicked(final MouseEvent mouseEvent) {
-				controller.openMainView(closingMainViewHandler);
+				if (mouseEvent.getButton() == MouseEvent.BUTTON1
+						&& mouseEvent.getClickCount() == 2) {
+					controller.openMainView(closingMainViewHandler);
+				}
 				// } else {
 				// if (!controller.getManager().getProgressionModel()
 				// .getEpisodeName2ActionProgress().isEmpty()) {

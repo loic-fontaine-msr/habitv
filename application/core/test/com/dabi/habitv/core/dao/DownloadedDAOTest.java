@@ -69,7 +69,7 @@ public class DownloadedDAOTest {
 		dao.initIndex();
 		initDAO();
 		assertTrue(!dao.isIndexCreated());
-		dao.addDownloadedFiles(toAdd);
+		dao.addDownloadedFiles(false, toAdd);
 		initDAO();
 		assertTrue(dao.isIndexCreated());
 		final Set<String> toTest = dao.findDownloadedFiles();

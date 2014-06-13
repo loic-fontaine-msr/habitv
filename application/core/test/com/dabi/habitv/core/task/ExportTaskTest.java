@@ -142,6 +142,7 @@ public class ExportTaskTest {
 	@Test
 	public final void testExportTaskSuccess() {
 		init(false);
+		task.adding();
 		task.addedTo("export", null);
 		task.call();
 	}
@@ -149,6 +150,7 @@ public class ExportTaskTest {
 	@Test(expected = TaskFailedException.class)
 	public final void testExportTaskFailed() {
 		init(true);
+		task.adding();
 		task.addedTo("export", null);
 		task.call();
 	}

@@ -105,7 +105,7 @@ public class LEquipePluginManager extends BasePluginWithProxy implements
 				final String nameWithoutScore = SoccerUtils.maskScore(name);
 				if (checkName(nameWithoutScore)) {
 					episodeList.add(new EpisodeDTO(category, nameWithoutScore,
-							hRef));
+							LEquipeConf.VIDEO_HOME_URL + hRef));
 				}
 			}
 		} else {
@@ -131,8 +131,7 @@ public class LEquipePluginManager extends BasePluginWithProxy implements
 	}
 
 	public String findDownloadlink(final String url) {
-		final String originalUrl = LEquipeConf.VIDEO_HOME_URL + url;
-		final String htmlContent = getUrlContent(originalUrl);
+		final String htmlContent = getUrlContent(url);
 		final Pattern pattern = Pattern
 				.compile(".*<param name=\"flashVars\" value=\"([^\"]*)\".*");
 		final Matcher matcher = pattern.matcher(htmlContent);
@@ -150,8 +149,7 @@ public class LEquipePluginManager extends BasePluginWithProxy implements
 			throw new TechnicalException("sig and player key not found");
 		}
 		try {
-			return findDownloadlinkBySigAndPlayerKey(sig, playerKey,
-					originalUrl);
+			return findDownloadlinkBySigAndPlayerKey(sig, playerKey, url);
 		} catch (final IOException e) {
 			throw new TechnicalException(e);
 		}

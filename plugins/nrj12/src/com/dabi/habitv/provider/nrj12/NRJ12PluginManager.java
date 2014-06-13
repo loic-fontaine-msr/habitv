@@ -67,7 +67,8 @@ public class NRJ12PluginManager extends BasePluginWithProxy implements
 					// System.out.println("url=" + url);
 					final String title = anchor2.ownText().trim();
 					// System.out.println("title='" + title + "'");
-					episodes.add(new EpisodeDTO(category, title, url));
+					episodes.add(new EpisodeDTO(category, title,
+							NRJ12Conf.HOME_URL + url));
 				}
 			}
 			i += 1;
@@ -101,16 +102,16 @@ public class NRJ12PluginManager extends BasePluginWithProxy implements
 			final String identifier = anchor.attr("title");
 			if (identifier != "") {
 				// System.out.println("identifier=" + identifier.toString());
-				CategoryDTO categoryDTO = new CategoryDTO(NRJ12Conf.NAME, identifier,
-						identifier, NRJ12Conf.EXTENSION);
+				CategoryDTO categoryDTO = new CategoryDTO(NRJ12Conf.NAME,
+						identifier, identifier, NRJ12Conf.EXTENSION);
 				categoryDTO.setDownloadable(true);
 				categories.add(categoryDTO);
 			}
 			i += 1;
 		}
 		// Used for other main categories (e.g. "Film/Téléfilm", etc.):
-		CategoryDTO otherCategory = new CategoryDTO(NRJ12Conf.NAME, "_other_", "_other_",
-				NRJ12Conf.EXTENSION);
+		CategoryDTO otherCategory = new CategoryDTO(NRJ12Conf.NAME, "_other_",
+				"_other_", NRJ12Conf.EXTENSION);
 		otherCategory.setDownloadable(true);
 		categories.add(otherCategory);
 		return categories;
@@ -120,10 +121,10 @@ public class NRJ12PluginManager extends BasePluginWithProxy implements
 	public ProcessHolder download(final DownloadParamDTO downloadParam,
 			final DownloaderPluginHolder downloaders)
 			throws DownloadFailedException {
-		final String videoUrl = findFinalUrl(downloadParam.getDownloadInput());
-		return DownloadUtils.download(
-				DownloadParamDTO.buildDownloadParam(downloadParam, videoUrl),
-				downloaders);
+		final String mediaId = findMediaId(getUrlContent(downloadParam
+				.getDownloadInput()));
+		return DownloadUtils.download(DownloadParamDTO.buildDownloadParam(
+				downloadParam, buildUrlVideoInfo(mediaId)), downloaders);
 
 	}
 
@@ -132,14 +133,7 @@ public class NRJ12PluginManager extends BasePluginWithProxy implements
 	private static final Pattern MEDIAID2_PATTERN = Pattern
 			.compile("\\?mediaId=(\\d*)&");
 
-	public String findFinalUrl(final String downloadInput) {
-		final String url = NRJ12Conf.HOME_URL + downloadInput;
-		final String content = getUrlContent(url);
-		final String mediaId = findMediaId(content);
-		return mediaId;
-	}
-
-	public static String buildUrlVideoInfo(final String mediaId) {
+	private static String buildUrlVideoInfo(final String mediaId) {
 		// Live HTTP headers:
 		// -
 		// http://95.81.147.19/1UU71eAEJMYNKZIWGHWj23fg_7EEGGNwF_uc=/mogador/web/00126166_h264_12.mp4

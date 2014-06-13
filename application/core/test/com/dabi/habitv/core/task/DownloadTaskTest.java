@@ -175,13 +175,13 @@ public class DownloadTaskTest {
 		final DownloadedDAO downloadedDAO = new DownloadedDAO(category, ".") {
 
 			@Override
-			public void addDownloadedFiles(final EpisodeDTO... episodes) {
+			public void addDownloadedFiles(final boolean manual, final EpisodeDTO... episodes) {
 				downloaded = true;
 			}
 
 		};
 		task = new DownloadTask(episode, provider, downloader, publisher,
-				downloadedDAO);
+				downloadedDAO,false);
 		assertTrue(task.equals(task));
 		assertEquals(task.hashCode(), task.hashCode());
 	}
