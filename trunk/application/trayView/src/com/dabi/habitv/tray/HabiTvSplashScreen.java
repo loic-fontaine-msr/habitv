@@ -6,7 +6,6 @@ import java.io.RandomAccessFile;
 import java.nio.channels.FileLock;
 
 import javafx.animation.FadeTransition;
-import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
@@ -30,11 +29,11 @@ import javafx.util.Duration;
 
 import org.apache.log4j.Logger;
 
+import com.dabi.habitv.api.plugin.exception.TechnicalException;
 import com.dabi.habitv.tray.controller.UpdateController;
 import com.dabi.habitv.utils.DirUtils;
-import com.dabi.habitv.utils.LogUtils;
 
-public class HabiTvSplashScreen extends Application {
+public class HabiTvSplashScreen {
 	private Pane splashLayout;
 	private ProgressBar loadProgress;
 	private Label progressText;
@@ -42,16 +41,15 @@ public class HabiTvSplashScreen extends Application {
 	private static final int SPLASH_HEIGHT = 227;
 	private UpdateController updateController;
 
-	public static void main(String[] args) throws Exception {
-		LogUtils.updateLog4jConfiguration();
-		launch(args);
-	}
-
 	public HabiTvSplashScreen() {
+		try {
+			init();
+		} catch (IOException e) {
+			throw new TechnicalException(e);
+		}
 	}
 
-	@Override
-	public void init() throws IOException {
+	private void init() throws IOException {
 
 		ImageView splash = new ImageView(new Image(ClassLoader
 				.getSystemResource("logo.png").openStream()));
@@ -66,7 +64,6 @@ public class HabiTvSplashScreen extends Application {
 		splashLayout.setEffect(new DropShadow());
 	}
 
-	@Override
 	public void start(final Stage initStage) throws Exception {
 		String lockFile = DirUtils.getAppDir() + File.separator + "habiTv.lock";
 		if (lockInstance(lockFile)) {

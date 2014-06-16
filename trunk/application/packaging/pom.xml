@@ -1,0 +1,116 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.dabi.habitv</groupId>
+		<artifactId>application</artifactId>
+		<version>4.0.0-SNAPSHOT</version>
+	</parent>
+
+	<properties>
+		<!-- <exec.mainClass>com.dabi.habitv.tray.HabiTvSplashScreen</exec.mainClass> -->
+		<exec.mainClass>com.dabi.habitv.packaging.HabiTvFxRunner</exec.mainClass>
+		<javafx.min.version>2.2</javafx.min.version>
+		<jdk.home>D:/dev/java/jdk1.7.0_55</jdk.home>
+		<javafx.runtime.lib.jar>${jdk.home}/jre/lib/ext/jfxrt.jar</javafx.runtime.lib.jar>
+		<javafx.tools.ant.jar>${jdk.home}/lib/ant-javafx.jar</javafx.tools.ant.jar>
+		<maven.compiler.source>7</maven.compiler.source>
+		<maven.compiler.target>7</maven.compiler.target>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<artifactId>packaging</artifactId>
+	<packaging>jar</packaging>
+	<name>packaging</name>
+	<dependencies>
+		<dependency>
+			<groupId>javafx</groupId>
+			<artifactId>jfxrt</artifactId>
+			<version>${javafx.min.version}</version>
+			<scope>system</scope>
+			<systemPath>${javafx.runtime.lib.jar}</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>com.dabi.habitv</groupId>
+			<artifactId>habitv</artifactId>
+			<scope>compile</scope>
+			<version>${project.version}</version>
+		</dependency>
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.8</version>
+				<executions>
+					<execution>
+						<id>copy-dependencies</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<excludeArtifactIds>jfxrt</excludeArtifactIds>
+							<outputDirectory>${project.build.directory}</outputDirectory>
+							<overWriteReleases>false</overWriteReleases>
+							<overWriteSnapshots>false</overWriteSnapshots>
+							<overWriteIfNewer>true</overWriteIfNewer>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.6</version>
+				<executions>
+					<execution>
+						<id>create-launcher-jar</id>
+						<phase>package</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target xmlns:fx="javafx:com.sun.javafx.tools.ant">
+								<taskdef uri="javafx:com.sun.javafx.tools.ant" resource="com/sun/javafx/tools/ant/antlib.xml"
+									classpath="${javafx.tools.ant.jar}" />
+								<fx:application id="fxApp" name="${project.name}"
+									mainClass="${exec.mainClass}" />
+								<fx:jar
+									destfile="${project.build.directory}/${project.build.finalName}-launcher">
+									<fx:application refid="fxApp" />
+									<fx:fileset dir="${project.build.directory}/classes" />
+									<fx:resources>
+										<fx:fileset dir="${project.build.directory}/"
+											includes="habitv-${project.version}.jar" />
+									</fx:resources>
+								</fx:jar>
+								<jar update="true"
+									file="${project.build.directory}/packaging-${project.version}-launcher.jar">
+									<manifest>
+										<attribute name="Class-Path" value="habitv-${project.version}.jar" /> <!-- NEW -->
+									</manifest>
+								</jar>
+								<attachartifact
+									file="${project.build.directory}/${project.build.finalName}-launcher.jar"
+									classifier="launcher" />
+								<fx:deploy nativeBundles="all" outdir="${project.build.directory}"
+									outfile="${project.name}">
+									<fx:application name="${project.name}"
+										mainClass="${exec.mainClass}" />
+									<fx:resources>
+										<fx:fileset
+											file="${project.build.directory}/packaging-${project.version}-launcher.jar" />
+										<fx:fileset
+											file="${project.build.directory}/habitv-${project.version}.jar" />
+									</fx:resources>
+									<fx:info title="${project.name}" vendor="${application.vendor}" />
+								</fx:deploy>
+							</target>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>
