@@ -15,8 +15,7 @@
 	<modules>
 		<module>core</module>
 		<module>consoleView</module>
-		<module>trayView</module>
-		
-		<module>habitv</module>
+		<module>trayView</module>		
+		<module>habiTv</module>
 	</modules>
 </project>

@@ -8,7 +8,7 @@
 	</parent>
 
 	<properties>
-		<!-- <exec.mainClass>com.dabi.habitv.tray.HabiTvSplashScreen</exec.mainClass> -->
+		<package.version>0.0.1</package.version>
 		<exec.mainClass>com.dabi.habitv.packaging.HabiTvFxRunner</exec.mainClass>
 		<javafx.min.version>2.2</javafx.min.version>
 		<jdk.home>D:/dev/java/jdk1.7.0_55</jdk.home>
@@ -19,9 +19,9 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
-	<artifactId>packaging</artifactId>
+	<artifactId>habiTv-installer</artifactId>
 	<packaging>jar</packaging>
-	<name>packaging</name>
+	<name>habiTv-installer</name>
 	<dependencies>
 		<dependency>
 			<groupId>javafx</groupId>
@@ -75,7 +75,7 @@
 								<taskdef uri="javafx:com.sun.javafx.tools.ant" resource="com/sun/javafx/tools/ant/antlib.xml"
 									classpath="${javafx.tools.ant.jar}" />
 								<fx:application id="fxApp" name="${project.name}"
-									mainClass="${exec.mainClass}" />
+									mainClass="${exec.mainClass}" version="${package.version}" />
 								<fx:jar
 									destfile="${project.build.directory}/${project.build.finalName}-launcher">
 									<fx:application refid="fxApp" />
@@ -86,7 +86,7 @@
 									</fx:resources>
 								</fx:jar>
 								<jar update="true"
-									file="${project.build.directory}/packaging-${project.version}-launcher.jar">
+									file="${project.build.directory}/${project.build.finalName}-launcher.jar">
 									<manifest>
 										<attribute name="Class-Path" value="habitv-${project.version}.jar" /> <!-- NEW -->
 									</manifest>
@@ -94,18 +94,23 @@
 								<attachartifact
 									file="${project.build.directory}/${project.build.finalName}-launcher.jar"
 									classifier="launcher" />
-								<fx:deploy nativeBundles="all" outdir="${project.build.directory}"
-									outfile="${project.name}">
-									<fx:application name="${project.name}"
-										mainClass="${exec.mainClass}" />
+								<fx:deploy nativeBundles="all" outdir="${project.build.directory}">
+									<fx:application name="habiTv" version="${package.version}"
+										mainClass="${exec.mainClass}" description="Téléchargement automatique des replays TV" />
 									<fx:resources>
 										<fx:fileset
-											file="${project.build.directory}/packaging-${project.version}-launcher.jar" />
+											file="${project.build.directory}/${project.build.finalName}-launcher.jar" />
 										<fx:fileset
 											file="${project.build.directory}/habitv-${project.version}.jar" />
 									</fx:resources>
-									<fx:info title="${project.name}" vendor="${application.vendor}" />
+									<fx:info title="${project.name}" vendor="habiTv">
+										<fx:icon href="ico.ico" kind="shortcut" width="32"
+											height="32" depth="8" />
+									</fx:info>
 								</fx:deploy>
+								<attachartifact
+									file="${project.build.directory}/bundles/habiTv-${package.version}.msi"
+									classifier="installer" />
 							</target>
 						</configuration>
 					</execution>
