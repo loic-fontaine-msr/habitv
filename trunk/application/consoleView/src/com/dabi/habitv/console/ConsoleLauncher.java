@@ -7,13 +7,19 @@ import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.Option;
 import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.log4j.Logger;
 
-import com.dabi.habitv.utils.LogUtils;
+import com.dabi.habitv.api.plugin.api.PluginBaseInterface;
+import com.dabi.habitv.core.config.HabitTvConf;
+import com.dabi.habitv.core.config.UserConfig;
+import com.dabi.habitv.core.config.XMLUserConfig;
+import com.dabi.habitv.core.dao.GrabConfigDAO;
+import com.dabi.habitv.core.mgr.CoreManager;
+import com.dabi.habitv.framework.plugin.utils.DownloadUtils;
+import com.dabi.habitv.framework.plugin.utils.ProcessingThreads;
 
 //import com.dabi.habitv.framework.FrameworkConf;
 
@@ -44,15 +50,19 @@ public final class ConsoleLauncher {
 
 	private static final Logger LOG = Logger.getLogger(ConsoleLauncher.class);
 
+	private static UserConfig config;
+
+	private static GrabConfigDAO grabConfigDAO;
+
+	private static CoreManager coreManager;
+
 	private ConsoleLauncher() {
 
 	}
 
 	@SuppressWarnings("static-access")
 	public static void main(final String[] args) {
-		LogUtils.updateLog4jConfiguration();
-		if (args.length > 0 && args[0].startsWith("http://")) {// FIXME
-																// FrameworkConf.HTTP_PREFIX
+		if (args.length > 0 && DownloadUtils.isHttpUrl(args[0])) {
 			downloadEpisodes(args);
 		} else {
 
@@ -72,7 +82,7 @@ public final class ConsoleLauncher {
 			options.addOption(OptionBuilder.withLongOpt("plugins").hasArgs().withValueSeparator()
 					.withDescription("Pour lister les plugins concernés par la commande, si vide tous les plugins le seront.")
 					.create(OPTION_PLUGIN));
-			
+
 			options.addOption(OptionBuilder.withLongOpt("categories").hasArgs().withValueSeparator()
 					.withDescription("Pour lister les catégories concernées par la commande, si vide tous les catégories le seront.")
 					.create(OPTION_CATEGORY));
@@ -101,11 +111,31 @@ public final class ConsoleLauncher {
 				if (line.hasOption(OPTION_CATEGORY)) {
 					categoryList = Arrays.asList(line.getOptionValues(OPTION_CATEGORY));
 				}
-//
-//				List<String> episodeIdList = null;
-//				if (line.hasOption(OPTION_EPISODE)) {
-//					episodeIdList = Arrays.asList(line.getOptionValues(OPTION_EPISODE));
-//				}
+				//
+				// List<String> episodeIdList = null;
+				// if (line.hasOption(OPTION_EPISODE)) {
+				// episodeIdList =
+				// Arrays.asList(line.getOptionValues(OPTION_EPISODE));
+				// }
+
+				config = XMLUserConfig.initConfig();
+
+				grabConfigDAO = new GrabConfigDAO(HabitTvConf.GRABCONFIG_XML_FILE);
+				coreManager = new CoreManager(config);
+				if (config.updateOnStartup()) {
+					coreManager.update();
+				}
+
+				Runtime.getRuntime().addShutdownHook(new Thread() {
+
+					@Override
+					public void run() {
+						LOG.info("Interrupted, closing all treatments");
+						coreManager.forceEnd();
+						ProcessingThreads.killAllProcessing();
+					}
+
+				});
 
 				if (line.hasOption(OPTION_DAEMON)) {
 					daemonMode();
@@ -120,138 +150,98 @@ public final class ConsoleLauncher {
 				} else if (line.hasOption(OPTION_LIST_CATEGORY)) {
 					listCategory(pluginList);
 				} else if (line.hasOption(OPTION_LIST_PLUGIN)) {
-					listPlugin(pluginList);
+					listPlugin();
 				} else if (line.hasOption(OPTION_TEST_PLUGIN)) {
-					listPlugin(pluginList);
+					testPlugin(pluginList);
 				} else if (line.hasOption(OPTION_RUN_EXPORT)) {
 					runExport(pluginList);
+				} else {
+					usage(options);
 				}
 
 			} catch (ParseException e) {
 				usage(options);
+			} catch (final Exception e) {
+				LOG.error("", e);
+				System.exit(1);
 			}
 		}
+	}
 
-		// try {
-		// final UserConfig config = XMLUserConfig.initConfig();
-		//
-		// final GrabConfigDAO grabConfigDAO = new GrabConfigDAO(
-		// HabitTvConf.GRABCONFIG_XML_FILE);
-		// final CoreManager coreManager = new CoreManager(config);
-		// if (config.updateOnStartup()) {
-		// coreManager.update();
-		// }
-		//
-		// Runtime.getRuntime().addShutdownHook(new Thread() {
-		//
-		// @Override
-		// public void run() {
-		// LOG.info("Interrupted, closing all treatments");
-		// coreManager.forceEnd();
-		// ProcessingThreads.killAllProcessing();
-		// }
-		//
-		// });
-		//
-		// if (grabConfigDAO.exist()) {
-		// grabConfigDAO.updateGrabConfig(coreManager.findCategory());
-		// if (config.getDemonCheckTime() == null) {
-		// coreManager.update();
-		// coreManager.retreiveEpisode(grabConfigDAO.load());
-		// } else {
-		// final long demonTime = config.getDemonCheckTime() * 1000L;
-		// // demon mode
-		// while (true) {
-		// coreManager.update();
-		// coreManager.retreiveEpisode(grabConfigDAO.load());
-		// Thread.sleep(demonTime);
-		// }
-		// }
-		// } else {
-		// LOG.info("Génération des catégories à télécharger");
-		// grabConfigDAO.saveGrabConfig(coreManager.findCategory());
-		// }
-		// } catch (final Exception e) {
-		// LOG.error("", e);
-		// System.exit(1);
-		// }
+	private static void testPlugin(List<String> pluginList) {
+		LOG.info("testPlugin : " + pluginList);
 	}
 
 	private static void runExport(List<String> pluginList) {
 		LOG.info("runExport : " + pluginList);
+		coreManager.reTryExport(pluginList);
 	}
 
-	private static void listPlugin(List<String> pluginList) {
-		LOG.info("listPlugin : " + pluginList);
+	private static void listPlugin() {
+		LOG.info("Plugin provider : ");
+		for (PluginBaseInterface pluginBaseInterface : coreManager.getPluginManager().getProvidersHolder().getPlugins()) {
+			LOG.info(pluginBaseInterface.getName());
+		}
+		LOG.info("Plugin downloader : ");
+		for (PluginBaseInterface pluginBaseInterface : coreManager.getPluginManager().getDownloadersHolder().getPlugins()) {
+			LOG.info(pluginBaseInterface.getName());
+		}
+		LOG.info("Plugin exporter : ");
+		for (PluginBaseInterface pluginBaseInterface : coreManager.getPluginManager().getExportersHolder().getPlugins()) {
+			LOG.info(pluginBaseInterface.getName());
+		}
 	}
 
 	private static void listCategory(List<String> pluginList) {
 		LOG.info("listCategory : " + pluginList);
+		coreManager.findCategory(pluginList);
 	}
 
 	private static void listEpisode(List<String> pluginList, List<String> categoryList) {
 		LOG.info("listEpisode : " + pluginList + " / " + categoryList);
+		coreManager.findCategory(pluginList);
+		coreManager.findEpisodeByCategory(category);
 	}
 
 	private static void updateGrabConfig(List<String> pluginList) {
 		LOG.info("updateGrabConfig : " + pluginList);
+		grabConfigDAO.updateGrabConfig(coreManager.findCategory(pluginList), pluginList);
 	}
 
 	private static void checkAndDLMode(List<String> pluginList, List<String> categoryList) {
 		LOG.info("checkAndDLMode" + pluginList + " / " + categoryList);
-	}
-
-	private static void daemonMode() {
-		LOG.info("daemonMode");
-
+		coreManager.retreiveEpisode(categoriesToGrab);
 	}
 
 	private static void downloadEpisodes(String[] args) {
 		LOG.info("downloadEpisodes" + Arrays.asList(args));
+
+		coreManager.restart(episode, false);
 	}
 
-	public static void main2(String args[]) {
-		Options options = new Options();
-		options.addOption("n", "name", true, "[name] your name");
-		options.addOption(OptionBuilder.withLongOpt("episodes").hasArgs().withValueSeparator()
-				.withDescription("use value for given property").create(OPTION_EPISODE));
-		Option timeOption = new Option(OPTION_TEST_PLUGIN, false, "current time");
-		options.addOption(timeOption);
-
-		// ** now lets parse the input
-		CommandLineParser parser = new BasicParser();
-		CommandLine cmd;
-		try {
-			cmd = parser.parse(options, args);
-		} catch (ParseException pe) {
-			usage(options);
-			return;
+	private static void daemonMode() throws InterruptedException {
+		LOG.info("daemonMode");
+		if (grabConfigDAO.exist()) {
+			grabConfigDAO.updateGrabConfig(coreManager.findCategory());
+			if (config.getDemonCheckTime() == null) {
+				coreManager.update();
+				coreManager.retreiveEpisode(grabConfigDAO.load());
+			} else {
+				final long demonTime = config.getDemonCheckTime() * 1000L;
+				// demon mode
+				while (true) {
+					coreManager.update();
+					coreManager.retreiveEpisode(grabConfigDAO.load());
+					Thread.sleep(demonTime);
+				}
+			}
+		} else {
+			LOG.info("Génération des catégories à télécharger");
+			grabConfigDAO.saveGrabConfig(coreManager.findCategory());
 		}
-
-		// ** now lets interrogate the options and execute the relevant parts
-
-		if (cmd.hasOption(OPTION_TEST_PLUGIN)) {
-
-			System.out.println("You have given argument is t");
-			System.err.println("Date/Time: " + new java.util.Date());
-		}
-
-		if (cmd.hasOption("n")) {
-			System.out.println("You have given argument is n");
-			System.err.println("Nice to meet you: " + Arrays.asList(cmd.getOptionValues('n')));
-			System.err.println("size " + cmd.getOptionValues('n').length);
-		}
-
-		if (cmd.hasOption(OPTION_EPISODE)) {
-			System.out.println("You have given argument is e");
-			System.err.println("Nice to meet you: " + Arrays.asList(cmd.getOptionValues('e')));
-			System.err.println("size " + cmd.getOptionValues('e').length);
-		}
-
 	}
 
 	private static void usage(Options options) {
-
 		// Use the inbuilt formatter class
 		HelpFormatter formatter = new HelpFormatter();
 		formatter.printHelp("habiTv", options);

@@ -164,7 +164,7 @@ public class HabitTvViewManager extends Observable {
 	}
 
 	public void reDoExport() {
-		coreManager.reDoExport();
+		coreManager.reTryExport();
 	}
 
 	public boolean hasExportToResume() {

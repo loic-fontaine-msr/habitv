@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -60,26 +61,20 @@ public final class EpisodeManager extends AbstractManager implements TaskAdder {
 
 	private final Integer maxAttempts;
 
-	EpisodeManager(final DownloaderPluginHolder downloader,
-			final ExporterPluginHolder exporter,
-			final ProviderPluginHolder providerPluginHolder,
-			final Map<String, Integer> taskName2PoolSize,
-			final Integer maxAttempts, String appDir) {
+	EpisodeManager(final DownloaderPluginHolder downloader, final ExporterPluginHolder exporter,
+			final ProviderPluginHolder providerPluginHolder, final Map<String, Integer> taskName2PoolSize, final Integer maxAttempts,
+			String appDir) {
 		super(providerPluginHolder);
 		exportDAO = new ExportDAO(appDir);
 		// task mgrs
-		retreiveMgr = new TaskMgr<RetrieveTask, Object>(
-				TaskTypeEnum.retreive.getPoolSize(taskName2PoolSize),
+		retreiveMgr = new TaskMgr<RetrieveTask, Object>(TaskTypeEnum.retreive.getPoolSize(taskName2PoolSize),
 				buildRetreiveTaskMgrListener(), taskName2PoolSize);
-		downloadMgr = new TaskMgr<DownloadTask, Object>(
-				TaskTypeEnum.download.getPoolSize(taskName2PoolSize),
+		downloadMgr = new TaskMgr<DownloadTask, Object>(TaskTypeEnum.download.getPoolSize(taskName2PoolSize),
 				buildDownloadTaskMgrListener(), taskName2PoolSize);
-		exportMgr = new TaskMgr<ExportTask, Object>(
-				TaskTypeEnum.export.getPoolSize(taskName2PoolSize),
-				buildExportTaskMgrListener(), taskName2PoolSize);
-		searchMgr = new TaskMgr<SearchTask, Object>(
-				TaskTypeEnum.search.getPoolSize(taskName2PoolSize),
-				buildSearchTaskMgrListener(), taskName2PoolSize);
+		exportMgr = new TaskMgr<ExportTask, Object>(TaskTypeEnum.export.getPoolSize(taskName2PoolSize), buildExportTaskMgrListener(),
+				taskName2PoolSize);
+		searchMgr = new TaskMgr<SearchTask, Object>(TaskTypeEnum.search.getPoolSize(taskName2PoolSize), buildSearchTaskMgrListener(),
+				taskName2PoolSize);
 		// publisher
 		retreivePublisher = new Publisher<>();
 		searchPublisher = new Publisher<>();
@@ -89,31 +84,23 @@ public final class EpisodeManager extends AbstractManager implements TaskAdder {
 	}
 
 	void retreiveEpisode(final Map<String, CategoryDTO> categoriesToGrab) {
-		Collection<PluginProviderInterface> providerPlugins = getProviderPluginHolder()
-				.getPlugins();
-		searchPublisher.addNews(new SearchEvent(SearchStateEnum.STARTING,
-				String.valueOf(providerPlugins.size())));
+		Collection<PluginProviderInterface> providerPlugins = getProviderPluginHolder().getPlugins();
+		searchPublisher.addNews(new SearchEvent(SearchStateEnum.STARTING, String.valueOf(providerPlugins.size())));
 		boolean oneTask = false;
 		for (final PluginProviderInterface provider : providerPlugins) {
-			CategoryDTO categoryPlugin = categoriesToGrab.get(provider
-					.getName());
+			CategoryDTO categoryPlugin = categoriesToGrab.get(provider.getName());
 			if (categoryPlugin != null) {
-				final Set<CategoryDTO> categories = categoryPlugin
-						.getSubCategories();
+				final Set<CategoryDTO> categories = categoryPlugin.getSubCategories();
 				if (categories != null && !categories.isEmpty()) {
-					searchMgr.addTask(new SearchTask(provider, categories,
-							this, searchPublisher, retreivePublisher,
-							downloader, exporter));
+					searchMgr.addTask(new SearchTask(provider, categories, this, searchPublisher, retreivePublisher, downloader, exporter));
 					oneTask = true;
 				} else {
-					searchPublisher.addNews(new SearchEvent(provider.getName(),
-							SearchStateEnum.DONE));
+					searchPublisher.addNews(new SearchEvent(provider.getName(), SearchStateEnum.DONE));
 				}
 			}
 		}
 		if (!oneTask) {
-			searchPublisher.addNews(new SearchEvent(
-					SearchStateEnum.ALL_SEARCH_DONE));
+			searchPublisher.addNews(new SearchEvent(SearchStateEnum.ALL_SEARCH_DONE));
 		}
 	}
 
@@ -122,8 +109,7 @@ public final class EpisodeManager extends AbstractManager implements TaskAdder {
 
 			@Override
 			public void onFailed(final Throwable throwable) {
-				searchPublisher.addNews(new SearchEvent(SearchStateEnum.ERROR,
-						throwable));
+				searchPublisher.addNews(new SearchEvent(SearchStateEnum.ERROR, throwable));
 			}
 
 			@Override
@@ -138,8 +124,7 @@ public final class EpisodeManager extends AbstractManager implements TaskAdder {
 
 			@Override
 			public void onFailed(final Throwable throwable) {
-				searchPublisher.addNews(new SearchEvent(SearchStateEnum.ERROR,
-						throwable));
+				searchPublisher.addNews(new SearchEvent(SearchStateEnum.ERROR, throwable));
 			}
 
 			@Override
@@ -154,14 +139,12 @@ public final class EpisodeManager extends AbstractManager implements TaskAdder {
 
 			@Override
 			public void onFailed(final Throwable throwable) {
-				searchPublisher.addNews(new SearchEvent(SearchStateEnum.ERROR,
-						throwable));
+				searchPublisher.addNews(new SearchEvent(SearchStateEnum.ERROR, throwable));
 			}
 
 			@Override
 			public void onAllTreatmentDone() {
-				searchPublisher.addNews(new SearchEvent(
-						SearchStateEnum.ALL_RETREIVE_DONE));
+				searchPublisher.addNews(new SearchEvent(SearchStateEnum.ALL_RETREIVE_DONE));
 			}
 		};
 	}
@@ -176,56 +159,46 @@ public final class EpisodeManager extends AbstractManager implements TaskAdder {
 
 			@Override
 			public void onAllTreatmentDone() {
-				searchPublisher.addNews(new SearchEvent(
-						SearchStateEnum.ALL_SEARCH_DONE));
+				searchPublisher.addNews(new SearchEvent(SearchStateEnum.ALL_SEARCH_DONE));
 			}
 		};
 	}
 
 	@Override
-	public TaskAdResult addDownloadTask(final DownloadTask downloadTask,
-			final String channel) {
+	public TaskAdResult addDownloadTask(final DownloadTask downloadTask, final String channel) {
 		downloadMgr.addTask(downloadTask, channel);
 		return new TaskAdResult(TaskState.ADDED);
 	}
 
-	private synchronized boolean isRetreiveTaskAdded(
-			final RetrieveTask retreiveTask) {
-		return runningRetreiveTasks.contains(retreiveTask.getEpisode()
-				.hashCode());
+	private synchronized boolean isRetreiveTaskAdded(final RetrieveTask retreiveTask) {
+		return runningRetreiveTasks.contains(retreiveTask.getEpisode().hashCode());
 	}
 
 	@Override
 	public TaskAdResult addRetreiveTask(final RetrieveTask retreiveTask) {
 		final TaskState state;
 		if (!isRetreiveTaskAdded(retreiveTask)) {
-			final Integer attemptsM = downloadAttempts.get(retreiveTask
-					.getEpisode());
+			final Integer attemptsM = downloadAttempts.get(retreiveTask.getEpisode());
 			final Integer attempts = (attemptsM == null) ? 0 : attemptsM;
 
 			retreiveTask.setListener(new TaskListener() {
 
 				@Override
 				public void onTaskEnded() {
-					runningRetreiveTasks.remove(retreiveTask.getEpisode()
-							.hashCode());
+					runningRetreiveTasks.remove(retreiveTask.getEpisode().hashCode());
 					downloadAttempts.remove(retreiveTask.getEpisode());
 				}
 
 				@Override
 				public void onTaskFailed() {
-					runningRetreiveTasks.remove(retreiveTask.getEpisode()
-							.hashCode());
+					runningRetreiveTasks.remove(retreiveTask.getEpisode().hashCode());
 					int newAttempts = attempts + 1;
 					downloadAttempts.put(retreiveTask.getEpisode(), newAttempts);
 					if (tooManyAttempts(newAttempts)) {
 						// reinit counter
 						downloadAttempts.remove(retreiveTask.getEpisode());
-						(new DlErrorDAO()).addDownloadErrorFiles(retreiveTask
-								.getEpisode().getFullName());
-						retreivePublisher.addNews(new RetreiveEvent(
-								retreiveTask.getEpisode(),
-								EpisodeStateEnum.TO_MANY_FAILED));
+						(new DlErrorDAO()).addDownloadErrorFiles(retreiveTask.getEpisode().getFullName());
+						retreivePublisher.addNews(new RetreiveEvent(retreiveTask.getEpisode(), EpisodeStateEnum.TO_MANY_FAILED));
 					}
 				}
 			});
@@ -243,11 +216,9 @@ public final class EpisodeManager extends AbstractManager implements TaskAdder {
 	}
 
 	@Override
-	public TaskAdResult addExportTask(final ExportTask exportTask,
-			final String category) {
+	public TaskAdResult addExportTask(final ExportTask exportTask, final String category) {
 		exportMgr.addTask(exportTask, category);
-		final EpisodeExportState episodeExportState = new EpisodeExportState(
-				exportTask.getEpisode(), exportTask.getRank());
+		final EpisodeExportState episodeExportState = new EpisodeExportState(exportTask.getEpisode(), exportTask.getRank());
 		exportDAO.addExportStep(episodeExportState);
 		exportTask.setListener(new TaskListener() {
 
@@ -279,22 +250,24 @@ public final class EpisodeManager extends AbstractManager implements TaskAdder {
 	}
 
 	void reTryExport() {
+		reTryExport(null);
+	}
+
+	public void reTryExport(List<String> pluginList) {
 		Collection<EpisodeExportState> exportSteps = exportDAO.loadExportStep();
 		if (!exportSteps.isEmpty()) {
-			getSearchPublisher().addNews(
-					new SearchEvent(SearchStateEnum.RESUME_EXPORT));
+			getSearchPublisher().addNews(new SearchEvent(SearchStateEnum.RESUME_EXPORT));
 		}
 		for (final EpisodeExportState episodeExportState : exportSteps) {
-			final String channel = episodeExportState.getEpisode()
-					.getCategory().getPlugin();
-			final DownloadedDAO dlDAO = new DownloadedDAO(episodeExportState
-					.getEpisode().getCategory(), downloader.getIndexDir());
-			final RetrieveTask retreiveTask = new RetrieveTask(
-					episodeExportState.getEpisode(), retreivePublisher, this,
-					exporter, getProviderPluginHolder().getPlugin(channel),
-					downloader, dlDAO, false);
-			retreiveTask.setEpisodeExportState(episodeExportState);
-			addRetreiveTask(retreiveTask);
+			final String channel = episodeExportState.getEpisode().getCategory().getPlugin();
+
+			if (pluginList == null || pluginList.isEmpty() || pluginList.contains(channel)) {
+				final DownloadedDAO dlDAO = new DownloadedDAO(episodeExportState.getEpisode().getCategory(), downloader.getIndexDir());
+				final RetrieveTask retreiveTask = new RetrieveTask(episodeExportState.getEpisode(), retreivePublisher, this, exporter,
+						getProviderPluginHolder().getPlugin(channel), downloader, dlDAO, false);
+				retreiveTask.setEpisodeExportState(episodeExportState);
+				addRetreiveTask(retreiveTask);
+			}
 		}
 	}
 
@@ -307,22 +280,16 @@ public final class EpisodeManager extends AbstractManager implements TaskAdder {
 	}
 
 	public void setDownloaded(EpisodeDTO episode) {
-		final DownloadedDAO dlDAO = new DownloadedDAO(episode.getCategory(),
-				downloader.getIndexDir());
+		final DownloadedDAO dlDAO = new DownloadedDAO(episode.getCategory(), downloader.getIndexDir());
 		dlDAO.addDownloadedFiles(true, episode);
 	}
 
 	public void restart(EpisodeDTO episode, boolean exportOnly) {
-		final DownloadedDAO dlDAO = new DownloadedDAO(episode.getCategory(),
-				downloader.getIndexDir());
-		final RetrieveTask retreiveTask = new RetrieveTask(episode,
-				retreivePublisher, this, exporter, getProviderPluginHolder()
-						.getPlugin(episode.getCategory().getPlugin(),
-								(PluginProviderInterface) null), downloader,
-				dlDAO, true);
+		final DownloadedDAO dlDAO = new DownloadedDAO(episode.getCategory(), downloader.getIndexDir());
+		final RetrieveTask retreiveTask = new RetrieveTask(episode, retreivePublisher, this, exporter, getProviderPluginHolder().getPlugin(
+				episode.getCategory().getPlugin(), (PluginProviderInterface) null), downloader, dlDAO, true);
 		if (exportOnly) {
-			retreiveTask.setEpisodeExportState(new EpisodeExportState(episode,
-					0));
+			retreiveTask.setEpisodeExportState(new EpisodeExportState(episode, 0));
 		}
 		addRetreiveTask(retreiveTask);
 	}
@@ -331,13 +298,11 @@ public final class EpisodeManager extends AbstractManager implements TaskAdder {
 		if (category == null || category.getPlugin() == null) {
 			return Collections.emptySet();
 		}
-		return getProviderPluginHolder().getPlugin(category.getPlugin())
-				.findEpisode(category);
+		return getProviderPluginHolder().getPlugin(category.getPlugin()).findEpisode(category);
 	}
 
 	public Set<String> findDownloadedEpisodes(CategoryDTO category) {
-		final DownloadedDAO dlDAO = new DownloadedDAO(category,
-				downloader.getIndexDir());
+		final DownloadedDAO dlDAO = new DownloadedDAO(category, downloader.getIndexDir());
 		return dlDAO.findDownloadedFiles();
 	}
 
