@@ -1,6 +1,7 @@
 package com.dabi.habitv.core.mgr;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -106,9 +107,14 @@ public final class CoreManager {
 		}
 	}
 
-	public void reDoExport() {
+	public void reTryExport() {
 		episodeManager.reTryExport();
 	}
+	
+
+	public void reTryExport(List<String> pluginList) {
+		episodeManager.reTryExport(pluginList);
+	}	
 
 	public boolean hasExportToResume() {
 		return episodeManager.hasExportToResume();
@@ -141,5 +147,6 @@ public final class CoreManager {
 	public Set<String> findDownloadedEpisodes(CategoryDTO category) {
 		return episodeManager.findDownloadedEpisodes(category);
 	}
+
 
 }
