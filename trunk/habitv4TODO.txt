@@ -1,5 +1,3 @@
-limiter libelle dl tableau ?
-
 doc
 
 repasser sur tous les plugins pour gérer le dl par url web, téléchargement manuel

@@ -10,12 +10,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TreeView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import org.apache.log4j.Logger;
@@ -26,6 +26,7 @@ import com.dabi.habitv.tray.Popin;
 import com.dabi.habitv.tray.controller.dl.DownloadController;
 import com.dabi.habitv.tray.controller.todl.IncludeExcludeEnum;
 import com.dabi.habitv.tray.controller.todl.ToDownloadController;
+import com.dabi.habitv.tray.model.ActionProgress;
 import com.dabi.habitv.tray.model.HabitTvViewManager;
 import com.dabi.habitv.tray.view.HabiTvTrayView;
 
@@ -53,7 +54,7 @@ public class WindowController {
 	private Button retryExportButton;
 
 	@FXML
-	private VBox downloadingBox;
+	private TableView<ActionProgress> downloadTable;
 
 	@FXML
 	private Button downloadDirButton;
@@ -152,7 +153,7 @@ public class WindowController {
 
 			DownloadController downloadController = new DownloadController(
 					mainProgress, searchButton, clearButton, retryExportButton,
-					downloadingBox, downloadDirButton, indexButton, errorBUtton, openLogButton);
+					downloadTable, downloadDirButton, indexButton, errorBUtton, openLogButton);
 			manager.attach(downloadController);
 			downloadController.init(controller, manager, primaryStage);
 

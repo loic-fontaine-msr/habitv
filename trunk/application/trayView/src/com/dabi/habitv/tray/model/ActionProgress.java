@@ -1,5 +1,9 @@
 package com.dabi.habitv.tray.model;
 
+import java.util.Collection;
+
+import javafx.collections.ObservableList;
+
 import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
 import com.dabi.habitv.api.plugin.holder.ProcessHolder;
 import com.dabi.habitv.core.event.EpisodeStateEnum;
@@ -69,7 +73,7 @@ public class ActionProgress implements Comparable<ActionProgress> {
 	public void setProcessHolder(ProcessHolder processHolder) {
 		this.processHolder = processHolder;
 	}
-	
+
 	public ProcessHolder getProcessHolder() {
 		return processHolder;
 	}
@@ -80,6 +84,26 @@ public class ActionProgress implements Comparable<ActionProgress> {
 
 	public void setInfo(String info) {
 		this.info = info;
+	}
+
+	public static boolean isInProgress(
+			Collection<ActionProgress> actionProgressList) {
+		for (ActionProgress actionProgress : actionProgressList) {
+			if (actionProgress.getState().isInProgress()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public static boolean hasFailed(
+			Collection<ActionProgress> actionProgressList) {
+		for (ActionProgress actionProgress : actionProgressList) {
+			if (actionProgress.getState().hasFailed()) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

@@ -1,4 +1,4 @@
-package com.dabi.habitv.tray.view;
+package com.dabi.habitv.tray.controller.dl;
 
 import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.StackPane;
