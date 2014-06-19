@@ -6,6 +6,7 @@ import java.io.File;
 import org.fuin.utils4j.Utils4J;
 
 import com.dabi.habitv.console.ConsoleLauncher;
+import com.dabi.habitv.tray.HabiTvViewRunner;
 import com.dabi.habitv.utils.LogUtils;
 
 public class HabitvLauncher {
@@ -18,7 +19,7 @@ public class HabitvLauncher {
 
 		if (SystemTray.isSupported() && (args == null || args.length == 0)) {
 			// TrayLauncher.main(args);
-			// HabiTvSplashScreen.main(args);
+			HabiTvViewRunner.main(args);
 		} else {
 			ConsoleLauncher.main(args);
 		}

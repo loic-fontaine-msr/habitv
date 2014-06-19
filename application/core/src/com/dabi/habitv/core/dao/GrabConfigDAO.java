@@ -388,34 +388,41 @@ public class GrabConfigDAO {
 	}
 
 	public void updateGrabConfig(final Map<String, CategoryDTO> channel2Category) {
+		updateGrabConfig(channel2Category, null);
+	}
+
+	public void updateGrabConfig(Map<String, CategoryDTO> channel2Category,
+			List<String> pluginList) {
 		final HashMap<String, CategoryDTO> channel2CategoryTemp = new HashMap<>(
 				channel2Category);
 		final GrabConfig grabConfig = unmarshal();
 		if (grabConfig.getPlugins() != null) {
 			StatusEnum pluginstatus;
 			for (final Plugin plugin : grabConfig.getPlugins().getPlugin()) {
-				CategoryDTO categoryDTO = channel2CategoryTemp.get(plugin
-						.getName());
-				final Set<CategoryDTO> categoryPlugin = categoryDTO == null ? null
-						: categoryDTO.getSubCategories();
-				if (plugin.getCategories() == null) {
-					plugin.setCategories(new Categories());
-				}
-				if (categoryPlugin != null
-						&& categoryDTO.getState() != StatusEnum.FAILED) {
-					updateCategory(plugin.getCategories().getCategory(),
-							categoryPlugin);
-					channel2CategoryTemp.remove(plugin.getName());
-					pluginstatus = StatusEnum.EXIST;
-				} else {
-					if (categoryDTO != null
-							&& categoryDTO.getState() == StatusEnum.FAILED) {
-						pluginstatus = StatusEnum.FAILED;
-					} else {
-						pluginstatus = StatusEnum.DELETED;
+				if (pluginList == null || pluginList.contains(plugin.getName())) {
+					CategoryDTO categoryDTO = channel2CategoryTemp.get(plugin
+							.getName());
+					final Set<CategoryDTO> categoryPlugin = categoryDTO == null ? null
+							: categoryDTO.getSubCategories();
+					if (plugin.getCategories() == null) {
+						plugin.setCategories(new Categories());
 					}
+					if (categoryPlugin != null
+							&& categoryDTO.getState() != StatusEnum.FAILED) {
+						updateCategory(plugin.getCategories().getCategory(),
+								categoryPlugin);
+						channel2CategoryTemp.remove(plugin.getName());
+						pluginstatus = StatusEnum.EXIST;
+					} else {
+						if (categoryDTO != null
+								&& categoryDTO.getState() == StatusEnum.FAILED) {
+							pluginstatus = StatusEnum.FAILED;
+						} else {
+							pluginstatus = StatusEnum.DELETED;
+						}
+					}
+					plugin.setStatus(pluginstatus.name());
 				}
-				plugin.setStatus(pluginstatus.name());
 			}
 		}
 		addPlugins(channel2CategoryTemp, grabConfig);
@@ -479,4 +486,5 @@ public class GrabConfigDAO {
 			}
 		}
 	}
+
 }

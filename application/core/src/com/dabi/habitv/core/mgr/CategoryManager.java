@@ -43,7 +43,11 @@ public class CategoryManager extends AbstractManager {
 		searchCategoryPublisher = new Publisher<>();
 	}
 
-	Map<String, CategoryDTO> findCategory() {
+	public Map<String, CategoryDTO> findCategory() {
+		return findCategory(null);
+	}
+
+	public Map<String, CategoryDTO> findCategory(List<String> pluginList) {
 		final Map<String, CategoryDTO> channel2Categories = new HashMap<>();
 		final List<SearchCategoryTask> taskList = new ArrayList<>();
 		// search is parallelized, the final result will be build with the
@@ -54,10 +58,12 @@ public class CategoryManager extends AbstractManager {
 				SearchCategoryStateEnum.STARTING, String
 						.valueOf(providerPlugins.size())));
 		for (final PluginProviderInterface provider : providerPlugins) {
-			final SearchCategoryTask searchCategoryTask = new SearchCategoryTask(
-					provider.getName(), provider, searchCategoryPublisher);
-			searchCategoryMgr.addTask(searchCategoryTask);
-			taskList.add(searchCategoryTask);
+			if (pluginList == null || pluginList.contains(provider.getName())) {
+				final SearchCategoryTask searchCategoryTask = new SearchCategoryTask(
+						provider.getName(), provider, searchCategoryPublisher);
+				searchCategoryMgr.addTask(searchCategoryTask);
+				taskList.add(searchCategoryTask);
+			}
 		}
 		SearchCategoryResult searchCategoryResult;
 		for (final SearchCategoryTask searchTask : taskList) {
@@ -67,7 +73,8 @@ public class CategoryManager extends AbstractManager {
 				CategoryDTO categoryPlugin = new CategoryDTO(
 						searchCategoryResult.getChannel(),
 						searchCategoryResult.getCategoryList());
-				categoryPlugin.setState(searchCategoryResult.isSuccess()?null:StatusEnum.FAILED);
+				categoryPlugin.setState(searchCategoryResult.isSuccess() ? null
+						: StatusEnum.FAILED);
 
 				channel2Categories.put(categoryPlugin.getId(), categoryPlugin);
 			} catch (final TechnicalException e) {
@@ -92,15 +99,15 @@ public class CategoryManager extends AbstractManager {
 			@Override
 			public void onFailed(final Throwable throwable) {
 				searchCategoryPublisher.addNews(new SearchCategoryEvent(
-						SearchCategoryStateEnum.ERROR,
-						DirUtils.getGrabConfigPath()));
+						SearchCategoryStateEnum.ERROR, DirUtils
+								.getGrabConfigPath()));
 			}
 
 			@Override
 			public void onAllTreatmentDone() {
 				searchCategoryPublisher.addNews(new SearchCategoryEvent(
-						SearchCategoryStateEnum.DONE,
-						DirUtils.getGrabConfigPath()));
+						SearchCategoryStateEnum.DONE, DirUtils
+								.getGrabConfigPath()));
 			}
 		};
 	}
