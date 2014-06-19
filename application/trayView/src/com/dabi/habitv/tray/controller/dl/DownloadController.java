@@ -1,22 +1,20 @@
 package com.dabi.habitv.tray.controller.dl;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.TableView;
 import javafx.scene.control.Tooltip;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.VBox;
 
 import com.dabi.habitv.api.plugin.exception.TechnicalException;
 import com.dabi.habitv.api.plugin.pub.UpdatablePluginEvent;
@@ -28,7 +26,6 @@ import com.dabi.habitv.core.event.UpdatePluginEvent;
 import com.dabi.habitv.tray.controller.BaseController;
 import com.dabi.habitv.tray.model.ActionProgress;
 import com.dabi.habitv.tray.subscriber.CoreSubscriber;
-import com.dabi.habitv.tray.view.DownloadBox;
 
 public class DownloadController extends BaseController implements
 		CoreSubscriber {
@@ -39,7 +36,7 @@ public class DownloadController extends BaseController implements
 
 	private Button retryExportButton;
 
-	private VBox downloadingBox;
+	private TableView<ActionProgress> downloadTable;
 
 	private Button downloadDirButton;
 
@@ -47,31 +44,112 @@ public class DownloadController extends BaseController implements
 
 	private Button errorBUtton;
 
-	private Map<String, DownloadBox> epId2DLBox = new HashMap<>();
-
 	private ProgressIndicator mainProgress;
 
 	private Button openLogButton;
 
+	private EtatColumn etatColumn;
+
+	@SuppressWarnings("unchecked")
 	public DownloadController(ProgressIndicator mainProgress,
 			Button searchButton, Button clearButton, Button retryExportButton,
-			VBox downloadingBox, Button downloadDirButton, Button indexButton,
-			Button errorBUtton, Button openLogButton) {
+			final TableView<ActionProgress> downloadTable,
+			Button downloadDirButton, Button indexButton, Button errorBUtton,
+			Button openLogButton) {
 		super();
 		this.mainProgress = mainProgress;
 		this.searchButton = searchButton;
 		this.clearButton = clearButton;
 		this.retryExportButton = retryExportButton;
-		this.downloadingBox = downloadingBox;
+		this.downloadTable = downloadTable;
 		this.downloadDirButton = downloadDirButton;
 		this.indexButton = indexButton;
 		this.errorBUtton = errorBUtton;
 		this.openLogButton = openLogButton;
 		runCheckProgressThread();
+
+		etatColumn = new EtatColumn(getController());
+
+		this.downloadTable.getColumns().clear();
+		
+		this.downloadTable.setOnContextMenuRequested(new EventHandler<Event>() {
+
+			@Override
+			public void handle(Event event) {
+				buildMenuItem(downloadTable.getSelectionModel()
+						.getSelectedItems());
+			}
+		});
+		this.downloadTable.getColumns().addAll(new PluginColumn(),
+				new CategoryColumn(), new EpisodeColumn(), etatColumn);
+		
+		this.downloadTable.setContextMenu(new ContextMenu());
+	}
+
+	void buildMenuItem(final ObservableList<ActionProgress> actionProgressList) {
+		ContextMenu contextMenu = this.downloadTable.getContextMenu();
+		contextMenu.getItems().clear();
+		if (ActionProgress.isInProgress(actionProgressList)) {
+			MenuItem menuItemStop = new MenuItem("Arrêter");
+			menuItemStop.setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent event) {
+					for (ActionProgress actionProgress : actionProgressList) {
+						if (actionProgress.getProcessHolder() != null) {
+							actionProgress.getProcessHolder().stop();
+						}
+					}
+				}
+			});
+			contextMenu.getItems().add(menuItemStop);
+			MenuItem menuItemStopAndSetAsDL = new MenuItem(
+					"Arrêter et marquer comme téléchargé");
+			menuItemStopAndSetAsDL.setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent event) {
+					for (ActionProgress actionProgress : actionProgressList) {
+						actionProgress.getProcessHolder().stop();
+						getController().setDownloaded(
+								actionProgress.getEpisode());
+					}
+				}
+			});
+			contextMenu.getItems().add(menuItemStopAndSetAsDL);
+		}
+		MenuItem menuItemOpenIndex = new MenuItem("Ouvrir l'index");
+		menuItemOpenIndex.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				for (ActionProgress actionProgress : actionProgressList) {
+					getController().openIndex(
+							actionProgress.getEpisode().getCategory());
+				}
+			}
+		});
+		contextMenu.getItems().add(menuItemOpenIndex);
+
+		if (ActionProgress.hasFailed(actionProgressList)) {
+			MenuItem menuItemReStart = new MenuItem("Relancer");
+			menuItemReStart.setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent event) {
+					for (ActionProgress actionProgress : actionProgressList) {
+						getController().restart(actionProgress.getEpisode(),
+								actionProgress.getState().isExport());
+					}
+				}
+			});
+			contextMenu.getItems().add(menuItemReStart);
+		}
+		downloadTable.setContextMenu(contextMenu);
 	}
 
 	public void init() {
-		downloadingBox.getChildren().clear();
+		downloadTable.getItems().clear();
 		addTooltip();
 		updateDownloadPanel();
 		addDownloadActions();
@@ -189,9 +267,9 @@ public class DownloadController extends BaseController implements
 				updateDownloadPanel();
 			}
 		});
-		
+
 		openLogButton.setOnAction(new EventHandler<ActionEvent>() {
-			
+
 			@Override
 			public void handle(ActionEvent event) {
 				getController().openLogFile();
@@ -203,50 +281,20 @@ public class DownloadController extends BaseController implements
 		Set<String> existingEpId = new HashSet<>();
 		for (ActionProgress actionProgress : getModel().getProgressionModel()
 				.getEpisodeName2ActionProgress()) {
-			buildOrUpdateDownloadBox(actionProgress);
+			if (!downloadTable.getItems().contains(actionProgress)) {
+				downloadTable.getItems().add(actionProgress);
+			} else {
+				etatColumn.buildOrUpdateDownloadBox(actionProgress);
+			}
 			existingEpId.add(actionProgress.getEpisode().getId());
 		}
 
-		Iterator<Entry<String, DownloadBox>> it = epId2DLBox.entrySet()
-				.iterator();
+		Iterator<ActionProgress> it = downloadTable.getItems().iterator();
 		while (it.hasNext()) {
-			Entry<String, DownloadBox> downloadBox = it.next();
-			if (!existingEpId.contains(downloadBox.getKey())) {
+			ActionProgress actionProgress = it.next();
+			if (!existingEpId.contains(actionProgress.getEpisode().getId())) {
 				it.remove();
-				downloadingBox.getChildren().remove(downloadBox.getValue());
 			}
-		}
-	}
-
-	private void buildOrUpdateDownloadBox(ActionProgress actionProgress) {
-		DownloadBox downloadBox = epId2DLBox.get(actionProgress.getEpisode()
-				.getId());
-		if (downloadBox == null) {
-			final DownloadBox newDownloadBox = new DownloadBox(getController(),
-					actionProgress);
-			downloadBox = newDownloadBox;
-			newDownloadBox.setPadding(new Insets(2));
-			downloadingBox.getChildren().add(downloadBox);
-			epId2DLBox.put(actionProgress.getEpisode().getId(), downloadBox);
-
-			downloadBox.setOnMouseClicked(new EventHandler<MouseEvent>() {
-
-				@Override
-				public void handle(MouseEvent event) {
-					newDownloadBox.select();
-					for (DownloadBox otherDownloadBox : epId2DLBox.values()) {
-						if (!otherDownloadBox.equals(newDownloadBox)) {
-							otherDownloadBox.unSelect();
-						}
-					}					
-					if (event.getButton() == MouseButton.SECONDARY) {
-						newDownloadBox.openMenu(event);
-					}
-				}
-
-			});
-		} else {
-			downloadBox.update();
 		}
 	}
 
@@ -259,7 +307,7 @@ public class DownloadController extends BaseController implements
 			public void run() {
 				if (event.getState() == EpisodeStateEnum.EXPORT_FAILED) {
 					retryExportButton.setVisible(true);
-				}				
+				}
 				updateDownloadPanel();
 			}
 
