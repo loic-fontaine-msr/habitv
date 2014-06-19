@@ -24,6 +24,11 @@ public class FFMPEGPluginDownloader extends BaseUpdatablePlugin implements
 	}
 
 	@Override
+	protected String getLinuxDefaultBuildPath() {
+		return FFMPEGConf.DEFAULT_LINUX_BIN_PATH;
+	}
+
+	@Override
 	public ProcessHolder download(final DownloadParamDTO downloadParam,
 			final DownloaderPluginHolder downloaders)
 			throws DownloadFailedException {

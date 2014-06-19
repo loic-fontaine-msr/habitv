@@ -15,8 +15,6 @@ import javafx.event.EventHandler;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
-import org.apache.log4j.Logger;
-
 import com.dabi.habitv.api.plugin.dto.CategoryDTO;
 import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
 import com.dabi.habitv.api.plugin.exception.TechnicalException;
@@ -36,8 +34,6 @@ import com.dabi.habitv.tray.subscriber.CoreSubscriber;
 import com.dabi.habitv.utils.DirUtils;
 
 public class ViewController implements CoreSubscriber {
-
-	private static final Logger LOG = Logger.getLogger(ViewController.class);
 
 	private final HabitTvViewManager habitvViewManager;
 	private Stage primaryStage;
@@ -269,6 +265,7 @@ public class ViewController implements CoreSubscriber {
 				primaryStage.show();
 				primaryStage.setOnHiding(eventHandler);
 				primaryStage.setOnCloseRequest(eventHandler);
+				primaryStage.toFront();
 			}
 		});
 	}

@@ -1,8 +1,6 @@
-packaging linux
+limiter libelle dl tableau ?
 
 doc
-
-tester torrent
 
 repasser sur tous les plugins pour gérer le dl par url web, téléchargement manuel
 -c+
@@ -18,6 +16,8 @@ téléchargement unitaire CLI
  - check, dl & stop
 
 ------------------------------------------------
+
+tester torrent
 
 rss content matcher
 

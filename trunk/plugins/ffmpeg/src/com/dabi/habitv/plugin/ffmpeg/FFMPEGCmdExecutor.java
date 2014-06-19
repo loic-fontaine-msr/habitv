@@ -21,7 +21,6 @@ public class FFMPEGCmdExecutor extends CmdExecutor {
 	private static final Pattern TIME_PATTERN = Pattern
 			.compile("time=(.*?) bitrate");
 
-	public static final String NAME = "ffmpeg";
 	private Long duration = null;
 
 	public FFMPEGCmdExecutor(final String cmdProcessor, final String cmd) {

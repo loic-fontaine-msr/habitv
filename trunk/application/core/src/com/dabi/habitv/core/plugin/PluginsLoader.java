@@ -32,7 +32,8 @@ class PluginsLoader {
 
 	@SuppressWarnings("unchecked")
 	PluginsLoader(final File[] files) {
-		this.files = (List<File>) (files == null ? Collections.emptyList() : Arrays.asList(files));
+		this.files = (List<File>) (files == null ? Collections.emptyList()
+				: Arrays.asList(files));
 		this.classPlugins = new LinkedList<>();
 	}
 
@@ -40,12 +41,16 @@ class PluginsLoader {
 
 		this.initializeLoader();
 
-		final List<PluginBaseInterface> tmpPlugins = new ArrayList<>(this.classPlugins.size());
+		final List<PluginBaseInterface> tmpPlugins = new ArrayList<>(
+				this.classPlugins.size());
 		for (final Plugin plugin : this.classPlugins) {
 			try {
-				final PluginBaseInterface pluginProviderInterface = plugin.getClassPluginProvider().newInstance();
-				if (PluginClassLoaderInterface.class.isInstance(pluginProviderInterface)) {
-					((PluginClassLoaderInterface) pluginProviderInterface).setClassLoader(plugin.getClassLoaders());
+				final PluginBaseInterface pluginProviderInterface = plugin
+						.getClassPluginProvider().newInstance();
+				if (PluginClassLoaderInterface.class
+						.isInstance(pluginProviderInterface)) {
+					((PluginClassLoaderInterface) pluginProviderInterface)
+							.setClassLoader(plugin.getClassLoaders());
 				}
 				tmpPlugins.add(pluginProviderInterface);
 			} catch (InstantiationException | IllegalAccessException e) {
@@ -86,7 +91,7 @@ class PluginsLoader {
 			final URL url = getFileUrl(file);
 			// On créer un nouveau URLClassLoader pour charger le jar qui se
 			// trouve ne dehors du CLASSPATH
-			try (URLClassLoader loader = new URLClassLoader(new URL[] { url })) {
+			try (URLClassLoader loader = new URLClassLoader(new URL[] { url }, this.getClass().getClassLoader())) {
 				// On charge le jar en mémoire
 				try (final JarFile jar = new JarFile(file.getAbsolutePath());) {
 
@@ -102,8 +107,14 @@ class PluginsLoader {
 						// pas
 						// un
 						// fichier d'informations du jar )
-						if (tmp.length() > CLASS_EXTENSION_SIZE && tmp.substring(tmp.length() - CLASS_EXTENSION_SIZE).compareTo(CLASS_EXTENSION) == 0) {
-							tmpClass = getClass(tmp.substring(0, tmp.length() - CLASS_EXTENSION_SIZE).replaceAll("/", "."), loader);
+						if (tmp.length() > CLASS_EXTENSION_SIZE
+								&& tmp.substring(
+										tmp.length() - CLASS_EXTENSION_SIZE)
+										.compareTo(CLASS_EXTENSION) == 0) {
+							tmpClass = getClass(
+									tmp.substring(0,
+											tmp.length() - CLASS_EXTENSION_SIZE)
+											.replaceAll("/", "."), loader);
 							final List<Class<?>> interfaces = getInterfaces(tmpClass);
 							for (final Class<?> interfaceClass : interfaces) {
 								// Une classe ne doit pas appartenir à deux
@@ -112,8 +123,9 @@ class PluginsLoader {
 								// Si tel est le cas on ne la place que dans la
 								// catégorie de la première interface correct
 								// trouvée
-								if (PluginBaseInterface.class.isAssignableFrom(interfaceClass)) {
-									this.classPlugins.add(new Plugin(tmpClass, loader));
+								if (isPlugin(interfaceClass)) {
+									this.classPlugins.add(new Plugin(tmpClass,
+											loader));
 								}
 							}
 
@@ -128,24 +140,40 @@ class PluginsLoader {
 		}
 	}
 
-	private List<Class<?>> getInterfaces(final Class<PluginBaseInterface> tmpClass) {
+	private boolean isPlugin(final Class<?> clazz) {
+		for (Class<?> interfaceClass : clazz.getInterfaces()) {
+			if (PluginBaseInterface.class.getName().equals(
+					interfaceClass.getName())
+					|| isPlugin(interfaceClass)) {
+				return true;
+			}
+		}
+		return false;
+//		return PluginBaseInterface.class.isAssignableFrom(clazz);
+	}
+
+	private List<Class<?>> getInterfaces(
+			final Class<PluginBaseInterface> tmpClass) {
 		final List<Class<?>> interfaces = new LinkedList<>();
 		addInterfaces(tmpClass, interfaces);
 		return interfaces;
 	}
 
-	private void addInterfaces(final Class<?> tmpClass, final List<Class<?>> interfaces) {
+	private void addInterfaces(final Class<?> tmpClass,
+			final List<Class<?>> interfaces) {
 		interfaces.addAll(Arrays.asList(tmpClass.getInterfaces()));
 		if (tmpClass.getGenericSuperclass() != null) {
 			addInterfaces(tmpClass.getSuperclass(), interfaces);
 		}
 	}
 
-	private Class<PluginBaseInterface> getClass(final String tmp, final URLClassLoader loader) {
+	private Class<PluginBaseInterface> getClass(final String tmp,
+			final ClassLoader loader) {
 		Class<PluginBaseInterface> tmpClass;
 		try {
 			@SuppressWarnings("unchecked")
-			final Class<PluginBaseInterface> forName = (Class<PluginBaseInterface>) Class.forName(tmp, true, loader);
+			final Class<PluginBaseInterface> forName = (Class<PluginBaseInterface>) Class
+					.forName(tmp, true, loader);
 			tmpClass = forName;
 		} catch (final ClassNotFoundException e) {
 			throw new TechnicalException(e);
