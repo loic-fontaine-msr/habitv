@@ -97,6 +97,11 @@ public final class CoreManager {
 	public Map<String, CategoryDTO> findCategory() {
 		return getCategoryManager().findCategory();
 	}
+	
+
+	public Map<String, CategoryDTO> findCategory(List<String> pluginList) {
+		return getCategoryManager().findCategory(pluginList);
+	}
 
 	public void forceEnd() {
 		if (episodeManager != null) {
@@ -147,6 +152,5 @@ public final class CoreManager {
 	public Set<String> findDownloadedEpisodes(CategoryDTO category) {
 		return episodeManager.findDownloadedEpisodes(category);
 	}
-
 
 }
