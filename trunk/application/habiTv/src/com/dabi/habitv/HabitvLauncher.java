@@ -18,7 +18,6 @@ public class HabitvLauncher {
 		System.out.println(System.getProperty("java.home"));
 
 		if (SystemTray.isSupported() && (args == null || args.length == 0)) {
-			// TrayLauncher.main(args);
 			HabiTvViewRunner.main(args);
 		} else {
 			ConsoleLauncher.main(args);

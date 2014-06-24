@@ -1,10 +1,13 @@
 package com.dabi.habitv.packaging;
 
-import com.dabi.habitv.tray.HabiTvSplashScreen;
-import com.dabi.habitv.utils.LogUtils;
+import java.awt.SystemTray;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
+
+import com.dabi.habitv.console.ConsoleLauncher;
+import com.dabi.habitv.tray.HabiTvSplashScreen;
+import com.dabi.habitv.utils.LogUtils;
 
 public class HabiTvFxRunner extends Application {
 
@@ -16,7 +19,12 @@ public class HabiTvFxRunner extends Application {
 
 	@Override
 	public void start(final Stage initStage) throws Exception {
-		habiTvSplashScreen.start(initStage);		
+		if (SystemTray.isSupported() && (getParameters().getRaw().isEmpty())) {
+			habiTvSplashScreen.start(initStage);
+		} else {
+			ConsoleLauncher.main(getParameters().getRaw().toArray(new String[getParameters().getRaw().size()]));
+		}
+		
 	}
 	
 	public static void main(String[] args) {

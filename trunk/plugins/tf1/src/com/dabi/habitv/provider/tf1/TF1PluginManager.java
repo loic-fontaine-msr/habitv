@@ -142,17 +142,10 @@ public class TF1PluginManager extends BasePluginWithProxy implements
 
 				final String name;
 				String url;
-				if (descriptionElement.children().size() > 2) {
-					final Element progElement = descriptionElement.child(1);
-					final Element titreElement = descriptionElement.child(2);
-					name = progElement.child(0).text();
-					url = titreElement.child(0).attr("href");
-				} else {
-					final Element aElement = descriptionElement.child(0).child(
-							0);
-					name = aElement.text();
-					url = aElement.attr("href");
-				}
+				Element aElement = descriptionElement.select("a").get(0);
+				url = aElement.attr("href");
+				name = aElement.text();
+
 				if (DownloadUtils.isHttpUrl(url)) {
 					url = url.replace(TF1Conf.HOME_URL, "");
 				}
