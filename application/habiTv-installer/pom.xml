@@ -11,8 +11,8 @@
 		<package.version>0.0.1</package.version>
 		<exec.mainClass>com.dabi.habitv.packaging.HabiTvFxRunner</exec.mainClass>
 		<javafx.min.version>2.2</javafx.min.version>
-		<jdk.home>/usr/lib/jvm/jdk1.7.0_45</jdk.home>
-		<!--<jdk.home>D:/dev/java/jdk1.7.0_55</jdk.home>-->
+		<!--<jdk.home>/usr/lib/jvm/jdk1.7.0_45</jdk.home>-->
+		<jdk.home>D:/dev/java/jdk1.7.0_55</jdk.home>
 		<javafx.runtime.lib.jar>${jdk.home}/jre/lib/ext/jfxrt.jar</javafx.runtime.lib.jar>
 		<javafx.tools.ant.jar>${jdk.home}/lib/ant-javafx.jar</javafx.tools.ant.jar>
 		<maven.compiler.source>7</maven.compiler.source>
@@ -92,9 +92,9 @@
 										<attribute name="Class-Path" value="habiTv-${project.version}.jar" /> <!-- NEW -->
 									</manifest>
 								</jar>
-								<attachartifact
+								<!-- <attachartifact
 									file="${project.build.directory}/${project.build.finalName}-launcher.jar"
-									classifier="launcher" />
+									classifier="launcher" />-->
 								<fx:deploy nativeBundles="all" outdir="${project.build.directory}">
 									<fx:application name="habiTv" version="${package.version}"
 										mainClass="${exec.mainClass}" description="Téléchargement automatique des replays TV" />
@@ -109,9 +109,11 @@
 											height="32" depth="8" />
 									</fx:info>
 								</fx:deploy>
-								<attachartifact
+								<!--<attachartifact
 									file="${project.build.directory}/bundles/habiTv-${package.version}.msi"
-									classifier="installer" />
+									classifier="installer" /> -->
+								<zip destfile="${project.build.directory}/habiTv-${project.version}.zip" basedir="${project.build.directory}/bundles" excludes="*.msi" />
+								<attachartifact file="${project.build.directory}/habiTv-${project.version}.zip" classifier="zip-windows" />
 							</target>
 						</configuration>
 					</execution>

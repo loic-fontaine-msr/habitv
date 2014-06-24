@@ -6,13 +6,6 @@ repasser sur tous les plugins pour gérer le dl par url web, téléchargement manue
 -lequipe
 -pluzz
 
-téléchargement unitaire CLI
- - lister les catégories
- - lister les épisodes
- - update grabconfig
- - clean grabconfig
- - check, dl & stop
-
 ------------------------------------------------
 
 tester torrent

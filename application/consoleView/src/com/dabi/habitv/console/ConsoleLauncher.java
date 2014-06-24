@@ -2,6 +2,7 @@ package com.dabi.habitv.console;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -14,12 +15,10 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
-import org.apache.log4j.Logger;
 
 import com.dabi.habitv.api.plugin.api.PluginBaseInterface;
 import com.dabi.habitv.api.plugin.dto.CategoryDTO;
 import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
-import com.dabi.habitv.core.config.HabitTvConf;
 import com.dabi.habitv.core.config.UserConfig;
 import com.dabi.habitv.core.config.XMLUserConfig;
 import com.dabi.habitv.core.dao.GrabConfigDAO;
@@ -27,8 +26,7 @@ import com.dabi.habitv.core.mgr.CoreManager;
 import com.dabi.habitv.framework.plugin.utils.DownloadUtils;
 import com.dabi.habitv.framework.plugin.utils.ProcessingThreads;
 import com.dabi.habitv.framework.plugin.utils.RetrieverUtils;
-
-//import com.dabi.habitv.framework.FrameworkConf;
+import com.dabi.habitv.utils.DirUtils;
 
 public final class ConsoleLauncher {
 	private static final String OPTION_RUN_EXPORT = "x";
@@ -54,8 +52,6 @@ public final class ConsoleLauncher {
 	private static final String OPTION_EPISODE = "e";
 
 	private static final String OPTION_PLUGIN = "p";
-
-	private static final Logger LOG = Logger.getLogger(ConsoleLauncher.class);
 
 	private static UserConfig config;
 
@@ -90,8 +86,8 @@ public final class ConsoleLauncher {
 					"Recherche et liste les catégories des plugins.");
 			options.addOption(OPTION_LIST_PLUGIN, "listPlugin", false,
 					"Liste les plugins.");
-			options.addOption(OPTION_TEST_PLUGIN, "testPlugin", false,
-					"Teste le plugin avec un téléchargement aléatoire.");
+//			options.addOption(OPTION_TEST_PLUGIN, "testPlugin", false,
+//					"Teste le plugin avec un téléchargement aléatoire.");
 			options.addOption(OPTION_RUN_EXPORT, "runExport", false,
 					"Reprise des exports en échec.");
 
@@ -146,9 +142,12 @@ public final class ConsoleLauncher {
 
 				config = XMLUserConfig.initConfig();
 
-				grabConfigDAO = new GrabConfigDAO(
-						HabitTvConf.GRABCONFIG_XML_FILE);
+				grabConfigDAO = new GrabConfigDAO(DirUtils.getGrabConfigPath());
 				coreManager = new CoreManager(config);
+				if (!grabConfigDAO.exist()) {
+					info("Génération des catégories à télécharger");
+					grabConfigDAO.saveGrabConfig(coreManager.findCategory());
+				}
 				if (config.updateOnStartup()) {
 					coreManager.update();
 				}
@@ -157,7 +156,7 @@ public final class ConsoleLauncher {
 
 					@Override
 					public void run() {
-						LOG.info("Interrupted, closing all treatments");
+						info("Interrupted, closing all treatments");
 						coreManager.forceEnd();
 						ProcessingThreads.killAllProcessing();
 					}
@@ -189,48 +188,48 @@ public final class ConsoleLauncher {
 			} catch (ParseException e) {
 				usage(options);
 			} catch (final Exception e) {
-				LOG.error("", e);
+				e.printStackTrace();
 				System.exit(1);
 			}
 		}
 	}
 
 	private static void testPlugin(List<String> pluginList) {
-		LOG.info("testPlugin : " + pluginList);
+		info("testPlugin : " + pluginList);
 	}
 
 	private static void runExport(List<String> pluginList) {
-		LOG.info("runExport : " + pluginList);
+		info("runExport : " + pluginList);
 		coreManager.reTryExport(pluginList);
 	}
 
 	private static void listPlugin() {
-		LOG.info("Plugin provider : ");
+		info("Plugin provider : ");
 		for (PluginBaseInterface pluginBaseInterface : coreManager
 				.getPluginManager().getProvidersHolder().getPlugins()) {
-			LOG.info(pluginBaseInterface.getName());
+			info(pluginBaseInterface.getName());
 		}
-		LOG.info("");
-		LOG.info("Plugin downloader : ");
+		info("");
+		info("Plugin downloader : ");
 		for (PluginBaseInterface pluginBaseInterface : coreManager
 				.getPluginManager().getDownloadersHolder().getPlugins()) {
-			LOG.info(pluginBaseInterface.getName());
+			info(pluginBaseInterface.getName());
 		}
-		LOG.info("");
-		LOG.info("Plugin exporter : ");
+		info("");
+		info("Plugin exporter : ");
 		for (PluginBaseInterface pluginBaseInterface : coreManager
 				.getPluginManager().getExportersHolder().getPlugins()) {
-			LOG.info(pluginBaseInterface.getName());
+			info(pluginBaseInterface.getName());
 		}
 	}
 
 	private static void listCategory(List<String> pluginList) {
-		LOG.info("listCategory : " + pluginList);
+		info("listCategory : " + pluginList);
 		Map<String, CategoryDTO> plugins2Categories = coreManager
 				.findCategory(pluginList);
 		for (Entry<String, CategoryDTO> plugin2Categories : plugins2Categories
 				.entrySet()) {
-			LOG.info("Plugin : " + plugin2Categories.getKey());
+			info("Plugin : " + plugin2Categories.getKey());
 			showCategories(plugin2Categories.getValue().getSubCategories(), 0);
 		}
 	}
@@ -238,7 +237,7 @@ public final class ConsoleLauncher {
 	private static void showCategories(Collection<CategoryDTO> categories,
 			int decalage) {
 		for (CategoryDTO category : categories) {
-			LOG.info(decalageSpace(decalage) + category.getId() + " - "
+			info(decalageSpace(decalage) + category.getId() + " - "
 					+ category.getName());
 			showCategories(category.getSubCategories(), decalage + 1);
 		}
@@ -254,7 +253,7 @@ public final class ConsoleLauncher {
 
 	private static void listEpisode(List<String> pluginList,
 			List<String> categoryList) {
-		LOG.info("listEpisode : " + pluginList + " / " + categoryList);
+		info("listEpisode : " + pluginList + " / " + categoryList);
 		Map<String, CategoryDTO> plugins2Categories = coreManager
 				.findCategory(pluginList);
 		for (Entry<String, CategoryDTO> plugin2Categories : plugins2Categories
@@ -268,28 +267,26 @@ public final class ConsoleLauncher {
 
 	private static void showEpisodes(Set<CategoryDTO> categories, int decalage) {
 		for (CategoryDTO category : categories) {
-			LOG.info(decalageSpace(decalage) + "category : "
-					+ category.getName());
+			info(decalageSpace(decalage) + "category : " + category.getName());
 			Collection<EpisodeDTO> episodeList = coreManager
 					.findEpisodeByCategory(category);
 			for (EpisodeDTO episode : episodeList) {
-				LOG.info(decalageSpace(decalage) + episode.getName());
+				info(decalageSpace(decalage) + episode.getName());
 			}
 			showEpisodes(category.getSubCategories(), decalage + 1);
 		}
 	}
 
 	private static void updateGrabConfig(List<String> pluginList) {
-		LOG.info("updateGrabConfig : " + pluginList);
+		info("updateGrabConfig : " + pluginList);
 		grabConfigDAO.updateGrabConfig(coreManager.findCategory(pluginList),
 				pluginList);
 	}
 
 	private static void checkAndDLMode(List<String> pluginList,
 			List<String> categoryList) {
-		LOG.info("checkAndDLMode" + pluginList + " / " + categoryList);
-		Map<String, CategoryDTO> plugins2Categories = coreManager
-				.findCategory(pluginList);
+		info("checkAndDLMode" + pluginList + " / " + categoryList);
+		Map<String, CategoryDTO> plugins2Categories = grabConfigDAO.load();
 		for (Entry<String, CategoryDTO> pluginsCategories : plugins2Categories
 				.entrySet()) {
 			checkAndDLMode(pluginsCategories.getValue().getSubCategories(),
@@ -299,15 +296,25 @@ public final class ConsoleLauncher {
 		coreManager.retreiveEpisode(plugins2Categories);
 	}
 
-	private static void checkAndDLMode(Set<CategoryDTO> subCategories,
+	private static boolean checkAndDLMode(Set<CategoryDTO> subCategories,
 			List<String> categoryList) {
-		for (CategoryDTO categoryDTO : subCategories) {
-			categoryDTO.setSelected(categoryList.contains(categoryDTO));
+		Iterator<CategoryDTO> it = subCategories.iterator();
+		boolean found = false;
+		while (it.hasNext()) {
+			CategoryDTO categoryDTO = it.next();
+			boolean subCatFound = checkAndDLMode(categoryDTO.getSubCategories(), categoryList);
+			if (!(subCatFound || categoryDTO.isSelected() || (categoryList != null && categoryList
+					.contains(categoryDTO)))) {
+				it.remove();
+			} else {
+				found = true;
+			}
 		}
+		return found;
 	}
 
 	private static void downloadEpisodes(String[] episodesUrl) {
-		LOG.info("downloadEpisodes" + Arrays.asList(episodesUrl));
+		info("downloadEpisodes" + Arrays.asList(episodesUrl));
 		for (String url : episodesUrl) {
 			String name = RetrieverUtils.getTitleByUrl(url);
 			coreManager.restart(new EpisodeDTO(new CategoryDTO("Manuel",
@@ -317,25 +324,21 @@ public final class ConsoleLauncher {
 	}
 
 	private static void daemonMode() throws InterruptedException {
-		LOG.info("daemonMode");
-		if (grabConfigDAO.exist()) {
-			grabConfigDAO.updateGrabConfig(coreManager.findCategory());
-			if (config.getDemonCheckTime() == null) {
-				coreManager.update();
-				coreManager.retreiveEpisode(grabConfigDAO.load());
-			} else {
-				final long demonTime = config.getDemonCheckTime() * 1000L;
-				// demon mode
-				while (true) {
-					coreManager.update();
-					coreManager.retreiveEpisode(grabConfigDAO.load());
-					Thread.sleep(demonTime);
-				}
-			}
+		info("daemonMode");
+		if (config.getDemonCheckTime() == null) {
+			coreManager.retreiveEpisode(grabConfigDAO.load());
 		} else {
-			LOG.info("Génération des catégories à télécharger");
-			grabConfigDAO.saveGrabConfig(coreManager.findCategory());
+			final long demonTime = config.getDemonCheckTime() * 1000L;
+			// demon mode
+			while (true) {
+				coreManager.retreiveEpisode(grabConfigDAO.load());
+				Thread.sleep(demonTime);
+			}
 		}
+	}
+
+	private static void info(String string) {
+		System.out.println(string);
 	}
 
 	private static void usage(Options options) {
