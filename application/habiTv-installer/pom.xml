@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.dabi.habitv</groupId>
@@ -23,7 +22,7 @@
 
 	<artifactId>habiTv-installer</artifactId>
 	<packaging>jar</packaging>
-	<version>4.0.0-SNAPSHOT</version>
+	<version>4.0.0.1</version>
 	<name>habiTv-installer</name>
 	<dependencies>
 		<dependency>
@@ -75,44 +74,33 @@
 						</goals>
 						<configuration>
 							<target xmlns:fx="javafx:com.sun.javafx.tools.ant">
-								<taskdef uri="javafx:com.sun.javafx.tools.ant" resource="com/sun/javafx/tools/ant/antlib.xml"
-									classpath="${javafx.tools.ant.jar}" />
-								<fx:application id="fxApp" name="${project.name}"
-									mainClass="${exec.mainClass}" version="${package.version}" />
-								<fx:jar
-									destfile="${project.build.directory}/${project.build.finalName}-launcher">
+								<taskdef uri="javafx:com.sun.javafx.tools.ant" resource="com/sun/javafx/tools/ant/antlib.xml" classpath="${javafx.tools.ant.jar}" />
+								<fx:application id="fxApp" name="${project.name}" mainClass="${exec.mainClass}" version="${package.version}" />
+								<fx:jar destfile="${project.build.directory}/${project.build.finalName}-launcher">
 									<fx:application refid="fxApp" />
 									<fx:fileset dir="${project.build.directory}/classes" />
 									<fx:resources>
-										<fx:fileset dir="${project.build.directory}/"
-											includes="habiTv-${project.version}.jar" />
+										<fx:fileset dir="${project.build.directory}/" includes="habiTv-${project.version}.jar" />
 									</fx:resources>
 								</fx:jar>
-								<jar update="true"
-									file="${project.build.directory}/${project.build.finalName}-launcher.jar">
+								<jar update="true" file="${project.build.directory}/${project.build.finalName}-launcher.jar">
 									<manifest>
 										<attribute name="Class-Path" value="habiTv-${project.version}.jar" /> <!-- NEW -->
 									</manifest>
 								</jar>
-								<!-- <attachartifact
-									file="${project.build.directory}/${project.build.finalName}-launcher.jar"
+								<!-- <attachartifact file="${project.build.directory}/${project.build.finalName}-launcher.jar"
 									classifier="launcher" />-->
 								<fx:deploy nativeBundles="all" outdir="${project.build.directory}">
-									<fx:application name="habiTv" version="${package.version}"
-										mainClass="${exec.mainClass}" description="Téléchargement automatique des replays TV" />
+									<fx:application name="habiTv" version="${package.version}" mainClass="${exec.mainClass}" description="Téléchargement automatique des replays TV" />
 									<fx:resources>
-										<fx:fileset
-											file="${project.build.directory}/${project.build.finalName}-launcher.jar" />
-										<fx:fileset
-											file="${project.build.directory}/habiTv-${project.version}.jar" />
+										<fx:fileset file="${project.build.directory}/${project.build.finalName}-launcher.jar" />
+										<fx:fileset file="${project.build.directory}/habiTv-${project.version}.jar" />
 									</fx:resources>
 									<fx:info title="${project.name}" vendor="habiTv">
-										<fx:icon href="ico.ico" kind="shortcut" width="32"
-											height="32" depth="8" />
+										<fx:icon href="ico.ico" kind="shortcut" width="32" height="32" depth="8" />
 									</fx:info>
 								</fx:deploy>
-								<!--<attachartifact
-									file="${project.build.directory}/bundles/habiTv-${package.version}.msi"
+								<!--<attachartifact file="${project.build.directory}/bundles/habiTv-${package.version}.msi"
 									classifier="installer" /> -->
 								<zip destfile="${project.build.directory}/habiTv-${project.version}.zip" basedir="${project.build.directory}/bundles" excludes="*.msi" />
 								<attachartifact file="${project.build.directory}/habiTv-${project.version}.zip" classifier="zip-windows" />
@@ -123,4 +111,9 @@
 			</plugin>
 		</plugins>
 	</build>
+
+  <scm>
+    <connection>scm:svn:http://subversion.assembla.com/svn/habitv/tags/habiTv-installer-4.0.0.1</connection>
+    <developerConnection>scm:svn:http://subversion.assembla.com/svn/habitv/tags/habiTv-installer-4.0.0.1</developerConnection>
+  </scm>
 </project>
