@@ -93,7 +93,7 @@
 									<manifest>
 										<attribute name="Class-Path" value="habiTv-${project.version}.jar" /> <!-- NEW -->
 									</manifest>
-								</jar> 
+								</jar>
 								<!-- <attachartifact file="${project.build.directory}/${project.build.finalName}-launcher.jar" classifier="launcher" />-->
 								<fx:deploy nativeBundles="all" outdir="${project.build.directory}">
 									<fx:application name="habiTv" version="${package.version}" mainClass="${exec.mainClass}" description="Téléchargement automatique des replays TV" />
@@ -107,7 +107,7 @@
 								</fx:deploy>
 								<!--<attachartifact file="${project.build.directory}/bundles/habiTv-${package.version}.msi" classifier="installer" /> -->
 								<zip destfile="${project.build.directory}/habiTv-${project.version}.zip" basedir="${project.build.directory}/bundles" excludes="*.msi" />
-								<!-- <attachartifact file="${project.build.directory}/habiTv-${project.version}.zip" classifier="zip-windows" /> -->
+								<attachartifact file="${project.build.directory}/habiTv-${project.version}.zip" classifier="zip-windows" />
 								<attachartifact file="${project.build.directory}/bundles/habiTv-${package.version}.deb" classifier="deb" />
 							</target>
 						</configuration>
