@@ -11,7 +11,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<habitv-api.version>${project.version}</habitv-api.version>
+		<habitv-api.version>4.0.0.1</habitv-api.version>
 	</properties>
 
 	 <scm>
