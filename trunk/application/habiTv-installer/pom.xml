@@ -10,16 +10,22 @@
 		<package.version>0.0.1</package.version>
 		<exec.mainClass>com.dabi.habitv.packaging.HabiTvFxRunner</exec.mainClass>
 		<javafx.min.version>2.2</javafx.min.version>
-		<!--<jdk.home>/usr/lib/jvm/jdk1.7.0_45</jdk.home>-->
+		<jdk.home>/usr/lib/jvm/jdk1.7.0_45</jdk.home>
 <!--<jdk.home>C:/Program Files/Java/jdk1.7.0_11</jdk.home>-->
-		<jdk.home>D:/dev/java/jdk1.7.0_55</jdk.home>
+		<!-- <jdk.home>D:/dev/java/jdk1.7.0_55</jdk.home> -->
 		<javafx.runtime.lib.jar>${jdk.home}/jre/lib/ext/jfxrt.jar</javafx.runtime.lib.jar>
 		<javafx.tools.ant.jar>${jdk.home}/lib/ant-javafx.jar</javafx.tools.ant.jar>
 		<maven.compiler.source>7</maven.compiler.source>
 		<maven.compiler.target>7</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
-
+  <repositories>
+    <repository>
+      <id>dabi-repo</id>
+      <name>dabi-repo</name>
+      <url>http://dabiboo.free.fr/repository</url>
+    </repository>
+  </repositories>  
 	<artifactId>habiTv-installer</artifactId>
 	<packaging>jar</packaging>
 	<version>4.0.0-SNAPSHOT</version>
@@ -102,6 +108,7 @@
 								<!--<attachartifact file="${project.build.directory}/bundles/habiTv-${package.version}.msi" classifier="installer" /> -->
 								<zip destfile="${project.build.directory}/habiTv-${project.version}.zip" basedir="${project.build.directory}/bundles" excludes="*.msi" />
 								<attachartifact file="${project.build.directory}/habiTv-${project.version}.zip" classifier="zip-windows" />
+								<attachartifact file="${project.build.directory}/bundles/habiTv-${package.version}.deb" classifier="deb" />
 							</target>
 						</configuration>
 					</execution>
