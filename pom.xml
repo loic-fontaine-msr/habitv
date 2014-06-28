@@ -15,8 +15,8 @@
 	</properties>
 
 	 <scm>
-        <connection>scm:svn:svn://subversion.assembla.com/svn/habitv/trunk</connection>
-        <developerConnection>scm:svn:svn://subversion.assembla.com/svn/habitv/trunk</developerConnection>
+        <connection>scm:svn:http://subversion.assembla.com/svn/habitv/trunk</connection>
+        <developerConnection>scm:svn:http://subversion.assembla.com/svn/habitv/trunk</developerConnection>
     </scm>	
 	
 	<distributionManagement>
