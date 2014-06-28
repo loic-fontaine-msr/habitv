@@ -1,4 +1,4 @@
-package com.dabi.habitv.provider.d8;
+package com.dabi.habitv.provider.canalplus;
 
 import com.dabi.habitv.framework.FrameworkConf;
 

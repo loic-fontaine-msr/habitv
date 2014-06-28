@@ -440,6 +440,7 @@ public class ToDownloadController extends BaseController implements
 						episodeListView.getSelectionModel().getSelectedItem());
 			}
 		});
+		contextMenu.getItems().add(urlCopie);
 		
 		MenuItem ouvrirUrl = new MenuItem("Ouvrir dans le navigateur");
 		ouvrirUrl.setOnAction(new EventHandler<ActionEvent>() {
@@ -450,6 +451,8 @@ public class ToDownloadController extends BaseController implements
 						episodeListView.getSelectionModel().getSelectedItem());
 			}
 		});
+		contextMenu.getItems().add(ouvrirUrl);
+		
 		MenuItem marquerTelecharger = new MenuItem("Marquer comme téléchargé");
 		marquerTelecharger.setOnAction(new EventHandler<ActionEvent>() {
 

@@ -12,7 +12,7 @@ interface CanalPlusConf {
 
 	String MEA_URL = "http://service.canal-plus.com/video/rest/getMEAs/cplus/";
 
-	String VIDEO_URL = "http://service.canal-plus.com/video/rest/getVideosLiees/cplus/";
+	String VIDEO_INFO_URL = "http://service.canal-plus.com/video/rest/getVideosLiees/cplus/";
 
 	String MEA_PACKAGE_NAME = MEA.class.getPackage().getName();
 

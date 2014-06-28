@@ -39,7 +39,7 @@ public class TF1PluginManager extends BasePluginWithProxy implements
 
 		if (navigation != null) {
 			for (int i = 1; i <= PAGE; i++) {
-				Element menuItem = navigation.child(i + 1).child(0);
+				Element menuItem = navigation.select("a").first();
 				String href = menuItem.attr("href");
 				doc = Jsoup.parse(getUrlContent(getUrl(href)));
 

@@ -1,5 +1,6 @@
 package com.dabi.habitv.tray.controller;
 
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
@@ -119,20 +120,13 @@ public class ConfigController extends BaseController {
 			}
 		});
 
-		autoUpdate.setOnKeyReleased(new EventHandler<KeyEvent>() {
+		autoUpdate.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
-			public void handle(KeyEvent event) {
-				planTaskIfNot(new Runnable() {
-
-					@Override
-					public void run() {
-						UserConfig userConfig = getController()
-								.loadUserConfig();
-						userConfig.setUpdateOnStartup(autoUpdate.isSelected());
-						saveConfig(userConfig);
-					}
-				});
+			public void handle(ActionEvent arg0) {
+				UserConfig userConfig = getController().loadUserConfig();
+				userConfig.setUpdateOnStartup(autoUpdate.isSelected());
+				saveConfig(userConfig);
 			}
 		});
 	}

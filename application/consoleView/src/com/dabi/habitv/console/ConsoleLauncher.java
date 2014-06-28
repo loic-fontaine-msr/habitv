@@ -49,7 +49,7 @@ public final class ConsoleLauncher {
 
 	private static final String OPTION_CATEGORY = "c";
 
-	private static final String OPTION_EPISODE = "e";
+//	private static final String OPTION_EPISODE = "e";
 
 	private static final String OPTION_PLUGIN = "p";
 
@@ -66,6 +66,7 @@ public final class ConsoleLauncher {
 	@SuppressWarnings("static-access")
 	public static void main(final String[] args) {
 		if (args.length > 0 && DownloadUtils.isHttpUrl(args[0])) {
+			init();
 			downloadEpisodes(args);
 		} else {
 
@@ -106,14 +107,14 @@ public final class ConsoleLauncher {
 					.withDescription(
 							"Pour lister les catégories concernées par la commande, si vide tous les catégories le seront.")
 					.create(OPTION_CATEGORY));
-
-			options.addOption(OptionBuilder
-					.withLongOpt("episodes")
-					.hasArgs()
-					.withValueSeparator()
-					.withDescription(
-							"Pour lister les identifiants (URL)  d'épisodes concernés par la commande, si vide tous les épisodes le seront.")
-					.create(OPTION_EPISODE));
+//
+//			options.addOption(OptionBuilder
+//					.withLongOpt("episodes")
+//					.hasArgs()
+//					.withValueSeparator()
+//					.withDescription(
+//							"Pour lister les identifiants (URL)  d'épisodes concernés par la commande, si vide tous les épisodes le seront.")
+//					.create(OPTION_EPISODE));
 
 			// create the parser
 			CommandLineParser parser = new BasicParser();
@@ -133,35 +134,14 @@ public final class ConsoleLauncher {
 					categoryList = Arrays.asList(line
 							.getOptionValues(OPTION_CATEGORY));
 				}
-				//
-				// List<String> episodeIdList = null;
-				// if (line.hasOption(OPTION_EPISODE)) {
-				// episodeIdList =
-				// Arrays.asList(line.getOptionValues(OPTION_EPISODE));
-				// }
+//
+//				List<String> episodeIdList = null;
+//				if (line.hasOption(OPTION_EPISODE)) {
+//					episodeIdList = Arrays.asList(line
+//							.getOptionValues(OPTION_EPISODE));
+//				}
 
-				config = XMLUserConfig.initConfig();
-
-				grabConfigDAO = new GrabConfigDAO(DirUtils.getGrabConfigPath());
-				coreManager = new CoreManager(config);
-				if (!grabConfigDAO.exist()) {
-					info("Génération des catégories à télécharger");
-					grabConfigDAO.saveGrabConfig(coreManager.findCategory());
-				}
-				if (config.updateOnStartup()) {
-					coreManager.update();
-				}
-
-				Runtime.getRuntime().addShutdownHook(new Thread() {
-
-					@Override
-					public void run() {
-						info("Interrupted, closing all treatments");
-						coreManager.forceEnd();
-						ProcessingThreads.killAllProcessing();
-					}
-
-				});
+				init();
 
 				if (line.hasOption(OPTION_DAEMON)) {
 					daemonMode();
@@ -192,6 +172,31 @@ public final class ConsoleLauncher {
 				System.exit(1);
 			}
 		}
+	}
+
+	private static void init() {
+		config = XMLUserConfig.initConfig();
+
+		grabConfigDAO = new GrabConfigDAO(DirUtils.getGrabConfigPath());
+		coreManager = new CoreManager(config);
+		if (!grabConfigDAO.exist()) {
+			info("Génération des catégories à télécharger");
+			grabConfigDAO.saveGrabConfig(coreManager.findCategory());
+		}
+		if (config.updateOnStartup()) {
+			coreManager.update();
+		}
+
+		Runtime.getRuntime().addShutdownHook(new Thread() {
+
+			@Override
+			public void run() {
+				info("Interrupted, closing all treatments");
+				coreManager.forceEnd();
+				ProcessingThreads.killAllProcessing();
+			}
+
+		});
 	}
 
 	private static void testPlugin(List<String> pluginList) {

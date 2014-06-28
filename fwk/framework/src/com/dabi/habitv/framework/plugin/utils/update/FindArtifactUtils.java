@@ -80,17 +80,17 @@ public class FindArtifactUtils {
 		}
 		final String artifactVersionUrl = artifactURL + "/" + version;
 		items = findItems(Type.FILE, artifactVersionUrl);
-		final List<String> jarFiles = new LinkedList<>();
+		final List<String> files = new LinkedList<>();
 		for (final String file : items) {
 			if (file.endsWith("."+extension)) {
-				jarFiles.add(file);
+				files.add(file);
 			}
 		}
-		if (jarFiles.isEmpty()) {
+		if (files.isEmpty()) {
 			return null;
 		} else {
-			Collections.sort(jarFiles);
-			return new ArtifactVersion(artifactVersionUrl + "/" + jarFiles.get(jarFiles.size() - 1), version);
+			Collections.sort(files);
+			return new ArtifactVersion(artifactVersionUrl + "/" + files.get(files.size() - 1), version);
 		}
 	}
 

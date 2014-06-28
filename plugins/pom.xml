@@ -15,8 +15,6 @@
 		<module>canalPlus</module>
 		<module>cmd</module>
 		<module>pluzz</module>
-		<module>d8</module>
-		<module>d17</module>
 		<module>aria2</module>
 		<module>curl</module>
 		<module>youtube</module>
