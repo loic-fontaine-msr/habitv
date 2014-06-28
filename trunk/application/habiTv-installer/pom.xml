@@ -37,7 +37,7 @@
 			<groupId>com.dabi.habitv</groupId>
 			<artifactId>habiTv</artifactId>
 			<scope>compile</scope>
-			<version>${project.version}</version>
+			<version>4.0.0.1</version>
 		</dependency>
 	</dependencies>
 	<build>
