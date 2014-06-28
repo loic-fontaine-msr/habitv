@@ -1,3 +1,7 @@
+erreur sauvegarde auto
+
+plus de maj youtube-dl
+
 doc
 
 repasser sur tous les plugins pour gérer le dl par url web, téléchargement manuel
