@@ -28,7 +28,7 @@
   </repositories>  
 	<artifactId>habiTv-installer</artifactId>
 	<packaging>jar</packaging>
-	<version>4.0.0.1</version>
+	<version>4.0.0-SNAPSHOT</version>
 	<name>habiTv-installer</name>
 	<dependencies>
 		<dependency>
@@ -93,7 +93,7 @@
 									<manifest>
 										<attribute name="Class-Path" value="habiTv-${project.version}.jar" /> <!-- NEW -->
 									</manifest>
-								</jar>
+								</jar> 
 								<!-- <attachartifact file="${project.build.directory}/${project.build.finalName}-launcher.jar" classifier="launcher" />-->
 								<fx:deploy nativeBundles="all" outdir="${project.build.directory}">
 									<fx:application name="habiTv" version="${package.version}" mainClass="${exec.mainClass}" description="Téléchargement automatique des replays TV" />
@@ -116,9 +116,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
-  <scm>
-    <connection>scm:svn:http://subversion.assembla.com/svn/habitv/tags/habiTv-installer-4.0.0.1</connection>
-    <developerConnection>scm:svn:http://subversion.assembla.com/svn/habitv/tags/habiTv-installer-4.0.0.1</developerConnection>
-  </scm>
 </project>
