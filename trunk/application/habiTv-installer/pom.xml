@@ -22,7 +22,7 @@
 
 	<artifactId>habiTv-installer</artifactId>
 	<packaging>jar</packaging>
-	<version>4.0.0.1</version>
+	<version>4.0.0-SNAPSHOT</version>
 	<name>habiTv-installer</name>
 	<dependencies>
 		<dependency>
@@ -88,8 +88,7 @@
 										<attribute name="Class-Path" value="habiTv-${project.version}.jar" /> <!-- NEW -->
 									</manifest>
 								</jar>
-								<!-- <attachartifact file="${project.build.directory}/${project.build.finalName}-launcher.jar"
-									classifier="launcher" />-->
+								<!-- <attachartifact file="${project.build.directory}/${project.build.finalName}-launcher.jar" classifier="launcher" />-->
 								<fx:deploy nativeBundles="all" outdir="${project.build.directory}">
 									<fx:application name="habiTv" version="${package.version}" mainClass="${exec.mainClass}" description="Téléchargement automatique des replays TV" />
 									<fx:resources>
@@ -100,8 +99,7 @@
 										<fx:icon href="ico.ico" kind="shortcut" width="32" height="32" depth="8" />
 									</fx:info>
 								</fx:deploy>
-								<!--<attachartifact file="${project.build.directory}/bundles/habiTv-${package.version}.msi"
-									classifier="installer" /> -->
+								<!--<attachartifact file="${project.build.directory}/bundles/habiTv-${package.version}.msi" classifier="installer" /> -->
 								<zip destfile="${project.build.directory}/habiTv-${project.version}.zip" basedir="${project.build.directory}/bundles" excludes="*.msi" />
 								<attachartifact file="${project.build.directory}/habiTv-${project.version}.zip" classifier="zip-windows" />
 							</target>
@@ -111,9 +109,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
-  <scm>
-    <connection>scm:svn:http://subversion.assembla.com/svn/habitv/tags/habiTv-installer-4.0.0.1</connection>
-    <developerConnection>scm:svn:http://subversion.assembla.com/svn/habitv/tags/habiTv-installer-4.0.0.1</developerConnection>
-  </scm>
 </project>
