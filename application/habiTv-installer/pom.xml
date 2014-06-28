@@ -28,7 +28,7 @@
   </repositories>  
 	<artifactId>habiTv-installer</artifactId>
 	<packaging>jar</packaging>
-	<version>4.0.0.1-linux</version>
+	<version>4.0.0-SNAPSHOT</version>
 	<name>habiTv-installer</name>
 	<dependencies>
 		<dependency>
@@ -116,9 +116,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
-  <scm>
-    <connection>scm:svn:http://subversion.assembla.com/svn/habitv/tags/habiTv-installer-4.0.0.1-linux</connection>
-    <developerConnection>scm:svn:http://subversion.assembla.com/svn/habitv/tags/habiTv-installer-4.0.0.1-linux</developerConnection>
-  </scm>
 </project>
