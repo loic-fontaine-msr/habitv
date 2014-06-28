@@ -38,7 +38,7 @@ public abstract class BasePluginWithProxy implements PluginWithProxyInterface {
 		}
 	}
 
-	protected InputStream getInputStreamFromUrl(final String url) {
+	public InputStream getInputStreamFromUrl(final String url) {
 		return RetrieverUtils.getInputStreamFromUrl(url, getHttpProxy());
 	}
 

@@ -1,16 +1,20 @@
 package com.dabi.habitv.provider.canalplus;
 
 import java.util.Collection;
-import java.util.Set;
 import java.util.LinkedHashSet;
+import java.util.Set;
 
 import com.dabi.habitv.api.plugin.api.PluginClassLoaderInterface;
+import com.dabi.habitv.api.plugin.api.PluginDownloaderInterface;
 import com.dabi.habitv.api.plugin.api.PluginProviderInterface;
 import com.dabi.habitv.api.plugin.dto.CategoryDTO;
+import com.dabi.habitv.api.plugin.dto.DownloadParamDTO;
 import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
+import com.dabi.habitv.api.plugin.exception.DownloadFailedException;
+import com.dabi.habitv.api.plugin.holder.DownloaderPluginHolder;
+import com.dabi.habitv.api.plugin.holder.ProcessHolder;
 import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.api.BasePluginWithProxy;
-import com.dabi.habitv.framework.plugin.utils.M3U8Utils;
 import com.dabi.habitv.framework.plugin.utils.RetrieverUtils;
 import com.dabi.habitv.framework.plugin.utils.SoccerUtils;
 import com.dabi.habitv.provider.canalplus.initplayer.entities.INITPLAYER;
@@ -22,7 +26,8 @@ import com.dabi.habitv.provider.canalplus.video.entities.VIDEO;
 import com.dabi.habitv.provider.canalplus.video.entities.VIDEOS;
 
 public class CanalPlusPluginProvider extends BasePluginWithProxy implements
-		PluginProviderInterface, PluginClassLoaderInterface { // NO_UCD
+		PluginProviderInterface, PluginClassLoaderInterface,
+		PluginDownloaderInterface { // NO_UCD
 
 	private ClassLoader classLoader;
 
@@ -125,7 +130,7 @@ public class CanalPlusPluginProvider extends BasePluginWithProxy implements
 	private Set<EpisodeDTO> findEpisodeBySubCategory(
 			final CategoryDTO category, final CategoryDTO originalcategory) {
 		final VIDEOS videos = (VIDEOS) RetrieverUtils.unmarshalInputStream(
-				getInputStreamFromUrl(CanalPlusConf.VIDEO_URL
+				getInputStreamFromUrl(CanalPlusConf.VIDEO_INFO_URL
 						+ category.getId()), CanalPlusConf.VIDEO_PACKAGE_NAME,
 				getClassLoader());
 		return buildFromVideo(category, videos, originalcategory);
@@ -135,18 +140,18 @@ public class CanalPlusPluginProvider extends BasePluginWithProxy implements
 			final VIDEOS videos, final CategoryDTO originalCategory) {
 		final Set<EpisodeDTO> episodes = new LinkedHashSet<>();
 		for (final VIDEO video : videos.getVIDEO()) {
-			String videoUrl = video.getMEDIA().getVIDEOS().getHLS();
-			if (videoUrl == null || videoUrl.length() < 2) {
-				videoUrl = video.getMEDIA().getVIDEOS().getHD();
-			} else {
-				videoUrl = M3U8Utils.keepBestQuality(videoUrl);
-			}
-			if (videoUrl == null || videoUrl.length() < 2) {
-				videoUrl = video.getMEDIA().getVIDEOS().getHAUTDEBIT();
-			}
-			if (videoUrl == null || videoUrl.length() < 2) {
-				videoUrl = video.getMEDIA().getVIDEOS().getBASDEBIT();
-			}
+			// String videoUrl = video.getMEDIA().getVIDEOS().getHLS();
+			// if (videoUrl == null || videoUrl.length() < 2) {
+			// videoUrl = video.getMEDIA().getVIDEOS().getHD();
+			// } else {
+			// videoUrl = M3U8Utils.keepBestQuality(videoUrl);
+			// }
+			// if (videoUrl == null || videoUrl.length() < 2) {
+			// videoUrl = video.getMEDIA().getVIDEOS().getHAUTDEBIT();
+			// }
+			// if (videoUrl == null || videoUrl.length() < 2) {
+			// videoUrl = video.getMEDIA().getVIDEOS().getBASDEBIT();
+			// }
 
 			String name = video.getINFOS().getTITRAGE().getSOUSTITRE() + " - "
 					+ video.getINFOS().getTITRAGE().getTITRE();
@@ -161,7 +166,8 @@ public class CanalPlusPluginProvider extends BasePluginWithProxy implements
 			// il est possible que plusieurs épisode s'appelle du soustitre
 			// mais si on concatène avec titre c'est trop long
 			if (checkName(name)) {
-				episodes.add(new EpisodeDTO(originalCategory, name, videoUrl));
+				episodes.add(new EpisodeDTO(originalCategory, name, video
+						.getURL()));
 			}
 		}
 		return episodes;
@@ -169,6 +175,21 @@ public class CanalPlusPluginProvider extends BasePluginWithProxy implements
 
 	private static boolean checkName(final String name) {
 		return name != null && !name.isEmpty();
+	}
+
+	@Override
+	public DownloadableState canDownload(String downloadInput) {
+		if (downloadInput.contains("canalplus.")) {
+			return DownloadableState.SPECIFIC;
+		} else {
+			return DownloadableState.IMPOSSIBLE;
+		}
+	}
+
+	@Override
+	public ProcessHolder download(DownloadParamDTO downloadInput,
+			DownloaderPluginHolder downloaders) throws DownloadFailedException {
+		return CanalUtils.doDownload(downloadInput, downloaders, this, CanalPlusConf.VIDEO_INFO_URL);
 	}
 
 }

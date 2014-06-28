@@ -1,14 +1,6 @@
-erreur sauvegarde auto
-
-plus de maj youtube-dl
-
 doc
 
-repasser sur tous les plugins pour gérer le dl par url web, téléchargement manuel
--c+
--d8
--lequipe
--pluzz
+release
 
 ------------------------------------------------
 
@@ -23,7 +15,5 @@ plugin tmc, nt1, eurosport
 test automatisation des dl
 
 agrandir l'arbre avec la fenetre
-
-dl dans tableau
 
 français/anglais

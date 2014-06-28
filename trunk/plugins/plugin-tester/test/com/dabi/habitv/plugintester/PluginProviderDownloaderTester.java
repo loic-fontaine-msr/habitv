@@ -40,6 +40,7 @@ import com.dabi.habitv.provider.d8.D17PluginManager;
 import com.dabi.habitv.provider.d8.D8PluginManager;
 import com.dabi.habitv.provider.lequipe.LEquipePluginManager;
 import com.dabi.habitv.provider.nrj12.NRJ12PluginManager;
+import com.dabi.habitv.provider.pluzz.PluzzPluginManager;
 import com.dabi.habitv.provider.tf1.TF1PluginManager;
 
 public class PluginProviderDownloaderTester {
@@ -163,25 +164,30 @@ public class PluginProviderDownloaderTester {
 			@Override
 			public Set<CategoryDTO> findCategory() {
 				checkCategories(super.findCategory());
-				return new LinkedHashSet<>(Arrays.asList(new CategoryDTO("file",
-						TEST_FILE, TEST_FILE, FrameworkConf.MP4)));
+				return new LinkedHashSet<>(Arrays.asList(new CategoryDTO(
+						"file", TEST_FILE, TEST_FILE, FrameworkConf.MP4)));
 			}
 		};
 		testPluginProvider(plugin, true);
 	}
-	
+
 	@Test
 	public final void testProviderTF1() throws InstantiationException,
 			IllegalAccessException, DownloadFailedException {
 		testPluginProvider(TF1PluginManager.class, true);
 	}
-	
+
 	@Test
 	public final void testProviderClubic() throws InstantiationException,
 			IllegalAccessException, DownloadFailedException {
 		testPluginProvider(ClubicPluginManager.class, true);
 	}
 
+	@Test
+	public final void testProviderPluzz() throws InstantiationException,
+			IllegalAccessException, DownloadFailedException {
+		testPluginProvider(PluzzPluginManager.class, true);
+	}
 
 	private void testPluginProvider(
 			final Class<? extends PluginProviderInterface> prDlPluginClass,
@@ -239,7 +245,7 @@ public class PluginProviderDownloaderTester {
 			if (categoryDTO.getName().isEmpty()
 					|| categoryDTO.getId().isEmpty()) {
 				LOG.error(categoryDTO);
-				Assert.fail("category incorrect");
+				Assert.fail("category incorrect : " + categoryDTO);
 			}
 		}
 	}
