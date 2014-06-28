@@ -12,6 +12,7 @@
 		<exec.mainClass>com.dabi.habitv.packaging.HabiTvFxRunner</exec.mainClass>
 		<javafx.min.version>2.2</javafx.min.version>
 		<!--<jdk.home>/usr/lib/jvm/jdk1.7.0_45</jdk.home>-->
+<!--<jdk.home>C:/Program Files/Java/jdk1.7.0_11</jdk.home>-->
 		<jdk.home>D:/dev/java/jdk1.7.0_55</jdk.home>
 		<javafx.runtime.lib.jar>${jdk.home}/jre/lib/ext/jfxrt.jar</javafx.runtime.lib.jar>
 		<javafx.tools.ant.jar>${jdk.home}/lib/ant-javafx.jar</javafx.tools.ant.jar>
