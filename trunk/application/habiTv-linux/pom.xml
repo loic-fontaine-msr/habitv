@@ -14,6 +14,15 @@
 		<connection>scm:svn:http://subversion.assembla.com/svn/habitv/trunk/application/habiTv-linux</connection>
 		<developerConnection>scm:svn:http://subversion.assembla.com/svn/habitv/trunk/application/habiTv-linux</developerConnection>
 	</scm>
+	
+  <repositories>
+    <repository>
+      <id>dabi-repo</id>
+      <name>dabi-repo</name>
+      <url>http://dabiboo.free.fr/repository</url>
+    </repository>
+  </repositories>  	
+	
 	<properties>
 		<habitv.version>4.0.0</habitv.version>
 		<package.version>4.0.0</package.version>
