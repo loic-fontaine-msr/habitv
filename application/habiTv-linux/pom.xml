@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.dabi.habitv</groupId>
 		<artifactId>application</artifactId>
-		<version>4.0.0.1</version>
+		<version>4.0.0</version>
 	</parent>	
 	<artifactId>habiTv-linux</artifactId>
 	<packaging>jar</packaging>
@@ -15,8 +15,8 @@
 		<developerConnection>scm:svn:http://subversion.assembla.com/svn/habitv/trunk/application/habiTv-linux</developerConnection>
 	</scm>
 	<properties>
-		<habitv.version>4.0.0.1</habitv.version>
-		<package.version>0.0.1</package.version>
+		<habitv.version>4.0.0</habitv.version>
+		<package.version>4.0.0</package.version>
 		<exec.mainClass>com.dabi.habitv.packaging.HabiTvFxRunner</exec.mainClass>
 		<javafx.min.version>2.2</javafx.min.version>
 		<jdk.home>/usr/lib/jvm/jdk1.7.0_45</jdk.home>
@@ -26,13 +26,6 @@
 		<maven.compiler.target>7</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
-	<repositories>
-		<repository>
-			<id>dabi-repo</id>
-			<name>dabi-repo</name>
-			<url>http://dabiboo.free.fr/repository</url>
-		</repository>
-	</repositories>
 	<dependencies>
 		<dependency>
 			<groupId>javafx</groupId>
