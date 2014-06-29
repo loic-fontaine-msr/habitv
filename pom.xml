@@ -3,19 +3,19 @@
 
 	<groupId>com.dabi.habitv</groupId>
 	<artifactId>parent</artifactId>
-	<version>4.0.0-SNAPSHOT</version>
+	<version>4.0.0</version>
 	<packaging>pom</packaging>
 
 	<name>Parent habiTv</name>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<habitv-api.version>4.0.0-SNAPSHOT</habitv-api.version>
+		<habitv-api.version>4.0.0</habitv-api.version>
 	</properties>
 
 	 <scm>
-        <connection>scm:svn:http://subversion.assembla.com/svn/habitv/trunk</connection>
-        <developerConnection>scm:svn:http://subversion.assembla.com/svn/habitv/trunk</developerConnection>
+        <connection>scm:svn:http://subversion.assembla.com/svn/habitv/tags/habiTv-4.0.0</connection>
+        <developerConnection>scm:svn:http://subversion.assembla.com/svn/habitv/tags/habiTv-4.0.0</developerConnection>
     </scm>	
 	
 	<distributionManagement>
