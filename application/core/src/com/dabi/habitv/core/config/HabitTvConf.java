@@ -1,6 +1,5 @@
 package com.dabi.habitv.core.config;
 
-import com.dabi.habitv.framework.FrameworkConf;
 
 public interface HabitTvConf {
 
