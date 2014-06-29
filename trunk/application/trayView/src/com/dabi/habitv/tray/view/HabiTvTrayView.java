@@ -186,7 +186,6 @@ public final class HabiTvTrayView implements CoreSubscriber {
 
 			break;
 		case DOWNLOAD_STARTING:
-
 			break;
 		case EXPORT_FAILED:
 			trayIcon.displayMessage(
@@ -222,6 +221,7 @@ public final class HabiTvTrayView implements CoreSubscriber {
 		default:
 			break;
 		}
+		changeAnimation();
 	}
 
 	@Override
