@@ -68,12 +68,16 @@ public class NRJ12PluginManager extends BasePluginWithProxy implements
 					final String title = anchor2.ownText().trim();
 					// System.out.println("title='" + title + "'");
 					episodes.add(new EpisodeDTO(category, title,
-							NRJ12Conf.HOME_URL + url));
+							getUrl(url)));
 				}
 			}
 			i += 1;
 		}
 		return episodes;
+	}
+
+	private String getUrl(final String url) {
+		return DownloadUtils.isHttpUrl(url)? url : (NRJ12Conf.HOME_URL + url);
 	}
 
 	@Override

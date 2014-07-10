@@ -17,7 +17,7 @@ public class HabitvLauncher {
 				+ File.separator + "lib" + File.separator + "jfxrt.jar");
 		System.out.println(System.getProperty("java.home"));
 
-		if (SystemTray.isSupported() && (args == null || args.length == 0)) {
+		if (args == null || args.length == 0) {
 			HabiTvViewRunner.main(args);
 		} else {
 			ConsoleLauncher.main(args);
