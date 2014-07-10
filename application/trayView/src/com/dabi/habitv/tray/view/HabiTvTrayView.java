@@ -12,7 +12,6 @@ import javafx.event.EventHandler;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
-import com.dabi.habitv.api.plugin.exception.TechnicalException;
 import com.dabi.habitv.api.plugin.pub.UpdatablePluginEvent;
 import com.dabi.habitv.api.plugin.pub.UpdatablePluginEvent.UpdatablePluginStateEnum;
 import com.dabi.habitv.core.event.RetreiveEvent;
@@ -61,11 +60,6 @@ public final class HabiTvTrayView implements CoreSubscriber {
 		animatedImage = getImage("anim.gif"); //$NON-NLS-1$
 		trayIcon = new TrayIcon(fixImage,
 				Messages.getString("HabiTvTrayView.2")); //$NON-NLS-1$
-		try {
-			init();
-		} catch (final AWTException e) {
-			throw new TechnicalException(e);
-		}
 	}
 
 	private Image getImage(final String image) {

@@ -1,8 +1,4 @@
-doc
-
-release
-
-------------------------------------------------
+plugin last version 4.0.0.1
 
 tester torrent
 

@@ -82,7 +82,6 @@ public class PluginProviderDownloaderTester {
 	}
 
 	@Test
-	@Ignore
 	public final void specificCheckDownload() throws DownloadFailedException {
 		testEpisode(
 				new NRJ12PluginManager(),
@@ -90,7 +89,7 @@ public class PluginProviderDownloaderTester {
 						new CategoryDTO("channel", "name", "identifier",
 								"extension"),
 						"name",
-						"/replay-4203/toutes-les-emissions-en-replay-4204/media/video/852634-crimes-dans-le-grand-ouest.html"));
+						"http://www.nrj12.fr/allo-nabilla-4503/replay-videos-4535/media/video/895741-en-famille-a-paris-episode-3.html"));
 	}
 
 	@Test

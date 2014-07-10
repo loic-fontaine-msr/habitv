@@ -1,7 +1,11 @@
 package com.dabi.habitv.tray.controller;
 
+import java.awt.AWTException;
+import java.awt.SystemTray;
 import java.io.IOException;
 
+import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -17,6 +21,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import org.apache.log4j.Logger;
 
@@ -67,7 +72,7 @@ public class WindowController {
 
 	@FXML
 	private Button openLogButton;
-	
+
 	/*
 	 * TO DL
 	 */
@@ -101,16 +106,16 @@ public class WindowController {
 
 	@FXML
 	private CheckBox applySavedFilters;
-	
+
 	@FXML
 	private ChoiceBox<IncludeExcludeEnum> filterTypeChoice;
-	
+
 	@FXML
 	private Button addFilterButton;
 
 	@FXML
 	private HBox currentFilterVBox;
-	
+
 	/*
 	 * CONFIG
 	 */
@@ -130,6 +135,8 @@ public class WindowController {
 	@FXML
 	private CheckBox autoUpdate;
 
+	private boolean trayMode = false;
+
 	public WindowController() {
 	}
 
@@ -147,20 +154,44 @@ public class WindowController {
 
 			final ViewController controller = new ViewController(manager,
 					primaryStage);
-			final HabiTvTrayView view = new HabiTvTrayView(controller, primaryStage);
-			manager.attach(view);
 			manager.attach(controller);
+
+			if (SystemTray.isSupported()) {
+				try {
+					final HabiTvTrayView view = new HabiTvTrayView(controller,
+							primaryStage);
+					view.init();
+					manager.attach(view);
+					trayMode = true;
+				} catch (AWTException e) {
+					trayMode = false;
+				}
+			}
+
+			if (!trayMode) {
+				primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+
+					@Override
+					public void handle(WindowEvent t) {
+						Platform.exit();
+					}
+
+				});
+			}
 
 			DownloadController downloadController = new DownloadController(
 					mainProgress, searchButton, clearButton, retryExportButton,
-					downloadTable, downloadDirButton, indexButton, errorBUtton, openLogButton);
+					downloadTable, downloadDirButton, indexButton, errorBUtton,
+					openLogButton);
 			manager.attach(downloadController);
 			downloadController.init(controller, manager, primaryStage);
 
 			ToDownloadController toDlController = new ToDownloadController(
 					searchCategoryProgress, refreshCategoryButton,
 					cleanCategoryButton, toDLTree, indicationText,
-					episodeListView, episodeFilter, categoryFilter, applySavedFilters, filterTypeChoice, addFilterButton, currentFilterVBox);
+					episodeListView, episodeFilter, categoryFilter,
+					applySavedFilters, filterTypeChoice, addFilterButton,
+					currentFilterVBox);
 			toDlController.init(controller, manager, primaryStage);
 			manager.attach(toDlController);
 

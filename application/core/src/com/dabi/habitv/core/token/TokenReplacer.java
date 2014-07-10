@@ -54,6 +54,7 @@ public final class TokenReplacer {
 		};
 		REF2REPLACER.put("#CHANNEL_NAME#", channelReplacer);
 		REF2REPLACER.put("#CHANNEL#", channelReplacer);
+		REF2REPLACER.put("#PLUGIN#", channelReplacer);
 		REF2REPLACER.put("#PROVIDER#", channelReplacer);
 		REF2REPLACER.put("#PROVIDER_NAME#", channelReplacer);
 
