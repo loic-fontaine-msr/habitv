@@ -7,7 +7,7 @@
 		<version>4.0.0</version>
 	</parent>
 	<artifactId>nrj12</artifactId>
-	<version>4.0.1</version>
+	<version>4.0.2-SNAPSHOT</version>
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -24,9 +24,4 @@
 			<version>4.0.0</version>
 		</dependency>
 	</dependencies>
-
-  <scm>
-    <connection>scm:svn:http://subversion.assembla.com/svn/habitv/tags/nrj12-4.0.1</connection>
-    <developerConnection>scm:svn:http://subversion.assembla.com/svn/habitv/tags/nrj12-4.0.1</developerConnection>
-  </scm>
 </project>
