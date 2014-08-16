@@ -17,7 +17,6 @@ import com.dabi.habitv.api.plugin.holder.DownloaderPluginHolder;
 import com.dabi.habitv.api.plugin.holder.ProcessHolder;
 import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.api.BasePluginWithProxy;
-import com.dabi.habitv.framework.plugin.utils.M3U8Utils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class CanalPlusPluginProvider extends BasePluginWithProxy implements
@@ -62,42 +61,8 @@ public class CanalPlusPluginProvider extends BasePluginWithProxy implements
 	private EpisodeDTO buildEpisode(CategoryDTO category,
 			Map<String, Object> mapEpisode) {
 		return new EpisodeDTO(category, (String) mapEpisode.get("title"),
-				findUrl((String) ((Map<String, Object>) mapEpisode
+				CanalUtils.findUrl(this, (String) ((Map<String, Object>) mapEpisode
 						.get("onClick")).get("URLMedias")));
-	}
-
-	@SuppressWarnings("unchecked")
-	private String findUrl(String urlMedias) {
-		final ObjectMapper mapper = new ObjectMapper();
-		try {
-			final Map<String, Object> catData = mapper
-					.readValue(getInputStreamFromUrl(urlMedias.replace(
-							"{FORMAT}", "hls")), Map.class);
-
-			List<Object> videoUrls = getVideoUrls(catData);
-			if (videoUrls == null) {
-				mapper.readValue(getInputStreamFromUrl(urlMedias.replace(
-						"{FORMAT}", "hd")), Map.class);
-				videoUrls = getVideoUrls(catData);
-			}
-			for (Object videoUrlObject : videoUrls) {
-				Map<String, Object> videoUrlMap = (Map<String, Object>) videoUrlObject;
-				String videoUrl = (String) videoUrlMap.get("videoURL");
-				if (videoUrl.endsWith(FrameworkConf.M3U8)) {
-					return M3U8Utils.keepBestQuality(videoUrl);
-				}
-				return videoUrl;
-			}
-			throw new DownloadFailedException("can't find videoUrl");
-		} catch (IOException e) {
-			throw new DownloadFailedException(e);
-		}
-	}
-
-	@SuppressWarnings("unchecked")
-	private List<Object> getVideoUrls(Map<String, Object> catData) {
-		return (List<Object>) ((Map<String, Object>) ((Map<String, Object>) catData
-				.get("detail")).get("informations")).get("videoURLs");
 	}
 
 	@Override
@@ -108,7 +73,6 @@ public class CanalPlusPluginProvider extends BasePluginWithProxy implements
 			final Map<String, Object> mainData = mapper.readValue(
 					getInputStreamFromUrl(CanalPlusConf.URL_HOME), Map.class);
 
-			// String token = (String) userData.get("token");
 			String urlMainPage = getUrlMainPage(mainData);
 
 			final Map<String, Object> catData = mapper.readValue(
