@@ -1,10 +1,12 @@
 package com.dabi.habitv.provider.canalplus;
 
-import java.util.Collection;
+import java.io.IOException;
+import java.util.Collections;
 import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
-import com.dabi.habitv.api.plugin.api.PluginClassLoaderInterface;
 import com.dabi.habitv.api.plugin.api.PluginDownloaderInterface;
 import com.dabi.habitv.api.plugin.api.PluginProviderInterface;
 import com.dabi.habitv.api.plugin.dto.CategoryDTO;
@@ -15,166 +17,172 @@ import com.dabi.habitv.api.plugin.holder.DownloaderPluginHolder;
 import com.dabi.habitv.api.plugin.holder.ProcessHolder;
 import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.api.BasePluginWithProxy;
-import com.dabi.habitv.framework.plugin.utils.RetrieverUtils;
-import com.dabi.habitv.framework.plugin.utils.SoccerUtils;
-import com.dabi.habitv.provider.canalplus.initplayer.entities.INITPLAYER;
-import com.dabi.habitv.provider.canalplus.initplayer.entities.SELECTION;
-import com.dabi.habitv.provider.canalplus.initplayer.entities.THEMATIQUE;
-import com.dabi.habitv.provider.canalplus.mea.entities.MEA;
-import com.dabi.habitv.provider.canalplus.mea.entities.MEAS;
-import com.dabi.habitv.provider.canalplus.video.entities.VIDEO;
-import com.dabi.habitv.provider.canalplus.video.entities.VIDEOS;
+import com.dabi.habitv.framework.plugin.utils.M3U8Utils;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class CanalPlusPluginProvider extends BasePluginWithProxy implements
-		PluginProviderInterface, PluginClassLoaderInterface,
-		PluginDownloaderInterface { // NO_UCD
-
-	private ClassLoader classLoader;
+		PluginProviderInterface, PluginDownloaderInterface { // NO_UCD
 
 	@Override
-	public final void setClassLoader(final ClassLoader classLoader) {
-		this.classLoader = classLoader;
-	}
-
-	private ClassLoader getClassLoader() {
-		return classLoader;
-	}
-
-	@Override
+	@SuppressWarnings("unchecked")
 	public Set<EpisodeDTO> findEpisode(final CategoryDTO category) {
-		final Set<EpisodeDTO> episodes;
+		final ObjectMapper mapper = new ObjectMapper();
+		try {
+			final Map<String, Object> catData = mapper.readValue(
+					getInputStreamFromUrl(category.getId()), Map.class);
 
-		if (category.getSubCategories() == null
-				|| category.getSubCategories().isEmpty()) {
-			episodes = findEpisodeBySubCategory(category, category);
-			for (final CategoryDTO subCategory : getEpisodeCategoryById(category
-					.getId())) {
-				episodes.addAll(findEpisodeBySubCategory(subCategory, category));
+			List<Object> strates = (List<Object>) catData.get("strates");
+			for (Object strateObject : strates) {
+				Map<String, Object> strateMap = (Map<String, Object>) strateObject;
+				String type = (String) strateMap.get("type");
+				if ("contentGrid".equals(type)) {
+					return findEpisodes(category,
+							(List<Object>) strateMap.get("contents"));
+				}
 			}
-		} else {
-			episodes = new LinkedHashSet<>();
-			for (final CategoryDTO subCategory : category.getSubCategories()) {
-				episodes.addAll(findEpisodeBySubCategory(subCategory, category));
-			}
+			return Collections.emptySet();
+		} catch (IOException e) {
+			throw new DownloadFailedException(e);
 		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private Set<EpisodeDTO> findEpisodes(CategoryDTO category,
+			List<Object> objectContent) {
+		Set<EpisodeDTO> episodes = new LinkedHashSet<>();
+		for (Object objectEpisode : objectContent) {
+			episodes.add(buildEpisode(category,
+					(Map<String, Object>) objectEpisode));
+		}
+
 		return episodes;
 	}
 
-	@Override
-	public Set<CategoryDTO> findCategory() {
-		final Set<CategoryDTO> categories = new LinkedHashSet<>();
+	@SuppressWarnings("unchecked")
+	private EpisodeDTO buildEpisode(CategoryDTO category,
+			Map<String, Object> mapEpisode) {
+		return new EpisodeDTO(category, (String) mapEpisode.get("title"),
+				findUrl((String) ((Map<String, Object>) mapEpisode
+						.get("onClick")).get("URLMedias")));
+	}
 
-		final INITPLAYER initplayer = (INITPLAYER) RetrieverUtils
-				.unmarshalInputStream(
-						getInputStreamFromUrl(CanalPlusConf.INITPLAYER_URL),
-						CanalPlusConf.INITPLAYER_PACKAGE_NAME, getClassLoader());
-		CategoryDTO categoryDTO;
-		for (final THEMATIQUE thematique : initplayer.getTHEMATIQUES()
-				.getTHEMATIQUE()) {
-			for (final SELECTION selection : thematique.getSELECTIONS()
-					.getSELECTION()) {
-				categoryDTO = new CategoryDTO(CanalPlusConf.NAME,
-						selection.getNOM(), String.valueOf(selection.getID()),
-						getExtension());
-				categoryDTO.setDownloadable(true);
-				categories.add(categoryDTO);
-				categoryDTO.addSubCategories(getCategoryById(String
-						.valueOf(selection.getID())));
+	@SuppressWarnings("unchecked")
+	private String findUrl(String urlMedias) {
+		final ObjectMapper mapper = new ObjectMapper();
+		try {
+			final Map<String, Object> catData = mapper
+					.readValue(getInputStreamFromUrl(urlMedias.replace(
+							"{FORMAT}", "hls")), Map.class);
+
+			List<Object> videoUrls = getVideoUrls(catData);
+			if (videoUrls == null) {
+				mapper.readValue(getInputStreamFromUrl(urlMedias.replace(
+						"{FORMAT}", "hd")), Map.class);
+				videoUrls = getVideoUrls(catData);
 			}
+			for (Object videoUrlObject : videoUrls) {
+				Map<String, Object> videoUrlMap = (Map<String, Object>) videoUrlObject;
+				String videoUrl = (String) videoUrlMap.get("videoURL");
+				if (videoUrl.endsWith(FrameworkConf.M3U8)) {
+					return M3U8Utils.keepBestQuality(videoUrl);
+				}
+				return videoUrl;
+			}
+			throw new DownloadFailedException("can't find videoUrl");
+		} catch (IOException e) {
+			throw new DownloadFailedException(e);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<Object> getVideoUrls(Map<String, Object> catData) {
+		return (List<Object>) ((Map<String, Object>) ((Map<String, Object>) catData
+				.get("detail")).get("informations")).get("videoURLs");
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public Set<CategoryDTO> findCategory() {
+		final ObjectMapper mapper = new ObjectMapper();
+		try {
+			final Map<String, Object> mainData = mapper.readValue(
+					getInputStreamFromUrl(CanalPlusConf.URL_HOME), Map.class);
+
+			// String token = (String) userData.get("token");
+			String urlMainPage = getUrlMainPage(mainData);
+
+			final Map<String, Object> catData = mapper.readValue(
+					getInputStreamFromUrl(urlMainPage), Map.class);
+
+			return findCategories(catData);
+
+		} catch (IOException e) {
+			throw new DownloadFailedException(e);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private Set<CategoryDTO> findCategories(Map<String, Object> catData) {
+		final Set<CategoryDTO> categories = new LinkedHashSet<>();
+		for (Object data : ((List<Object>) catData.get("strates"))) {
+			Map<String, Object> dataMap = (Map<String, Object>) data;
+			addCategory(categories, dataMap);
 		}
 		return categories;
 	}
 
-	private String getExtension() {
-		return FrameworkConf.MP4;
+	private void addCategory(final Set<CategoryDTO> categories,
+			Map<String, Object> dataMap) {
+		String type = (String) dataMap.get("type");
+		if ("landing".equals(type)) {
+			categories.add(buildLeafCategory(dataMap));
+		} else if ("contentGrid".equals(type)) {
+			categories.add(buildNodeCategory(dataMap));
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private CategoryDTO buildNodeCategory(Map<String, Object> dataMap) {
+		String title = (String) dataMap.get("title");
+		CategoryDTO categoryDTO = new CategoryDTO(CanalPlusConf.NAME, title,
+				title, FrameworkConf.MP4);
+		categoryDTO.setDownloadable(false);
+		List<Object> contents = (List<Object>) dataMap.get("contents");
+		if (contents != null) {
+			for (Object subDataMap : contents) {
+				addCategory(categoryDTO.getSubCategories(),
+						(Map<String, Object>) subDataMap);
+			}
+		}
+		return categoryDTO;
+	}
+
+	@SuppressWarnings("unchecked")
+	private CategoryDTO buildLeafCategory(Map<String, Object> dataMap) {
+		CategoryDTO categoryDTO = new CategoryDTO(CanalPlusConf.NAME,
+				(String) dataMap.get("title"),
+				(String) ((Map<String, Object>) dataMap.get("onClick"))
+						.get("URLPage"), FrameworkConf.MP4);
+		categoryDTO.setDownloadable(true);
+		return categoryDTO;
+	}
+
+	@SuppressWarnings("unchecked")
+	private String getUrlMainPage(Map<String, Object> userData) {
+		List<Object> arbList = (List<Object>) userData.get("arborescence");
+		for (Object catObject : arbList) {
+			Map<String, Object> catMap = (Map<String, Object>) catObject;
+			if ("OnDemand".equals(catMap.get("picto"))) {
+				return (String) ((Map<String, Object>) catMap.get("onClick"))
+						.get("URLPage");
+			}
+		}
+		return null;
 	}
 
 	@Override
 	public String getName() {
 		return CanalPlusConf.NAME;
-	}
-
-	private Collection<CategoryDTO> getCategoryById(final String identifier) {
-		final Set<CategoryDTO> categories = new LinkedHashSet<>();
-
-		final MEAS meas = (MEAS) RetrieverUtils.unmarshalInputStream(
-				getInputStreamFromUrl(CanalPlusConf.MEA_URL + identifier),
-				CanalPlusConf.MEA_PACKAGE_NAME, getClassLoader());
-		for (final MEA mea : meas.getMEA()) {
-			CategoryDTO category = new CategoryDTO(CanalPlusConf.NAME, mea
-					.getRUBRIQUAGE().getRUBRIQUE(),
-					String.valueOf(mea.getID()), getExtension());
-			category.setDownloadable(true);
-			categories.add(category);
-		}
-
-		return categories;
-	}
-
-	private Collection<CategoryDTO> getEpisodeCategoryById(
-			final String identifier) {
-		final Set<CategoryDTO> categories = new LinkedHashSet<>();
-
-		final MEAS meas = (MEAS) RetrieverUtils.unmarshalInputStream(
-				getInputStreamFromUrl(CanalPlusConf.MEA_URL + identifier),
-				CanalPlusConf.MEA_PACKAGE_NAME, getClassLoader());
-		for (final MEA mea : meas.getMEA()) {
-			categories.add(new CategoryDTO(CanalPlusConf.NAME, mea.getINFOS()
-					.getTITRAGE().getSOUSTITRE(), String.valueOf(mea.getID()),
-					getExtension()));
-		}
-
-		return categories;
-	}
-
-	private Set<EpisodeDTO> findEpisodeBySubCategory(
-			final CategoryDTO category, final CategoryDTO originalcategory) {
-		final VIDEOS videos = (VIDEOS) RetrieverUtils.unmarshalInputStream(
-				getInputStreamFromUrl(CanalPlusConf.VIDEO_INFO_URL
-						+ category.getId()), CanalPlusConf.VIDEO_PACKAGE_NAME,
-				getClassLoader());
-		return buildFromVideo(category, videos, originalcategory);
-	}
-
-	private static Set<EpisodeDTO> buildFromVideo(final CategoryDTO category,
-			final VIDEOS videos, final CategoryDTO originalCategory) {
-		final Set<EpisodeDTO> episodes = new LinkedHashSet<>();
-		for (final VIDEO video : videos.getVIDEO()) {
-			// String videoUrl = video.getMEDIA().getVIDEOS().getHLS();
-			// if (videoUrl == null || videoUrl.length() < 2) {
-			// videoUrl = video.getMEDIA().getVIDEOS().getHD();
-			// } else {
-			// videoUrl = M3U8Utils.keepBestQuality(videoUrl);
-			// }
-			// if (videoUrl == null || videoUrl.length() < 2) {
-			// videoUrl = video.getMEDIA().getVIDEOS().getHAUTDEBIT();
-			// }
-			// if (videoUrl == null || videoUrl.length() < 2) {
-			// videoUrl = video.getMEDIA().getVIDEOS().getBASDEBIT();
-			// }
-
-			String name = video.getINFOS().getTITRAGE().getSOUSTITRE() + " - "
-					+ video.getINFOS().getTITRAGE().getTITRE();
-			if (originalCategory.getName().contains("FOOTBALL")) {
-				name = SoccerUtils.maskScore(name);
-			}
-			if (video.getINFOS().getTITRAGE().getSOUSTITRE() == null
-					|| video.getINFOS().getTITRAGE().getSOUSTITRE().isEmpty()) {
-				name = video.getINFOS().getPUBLICATION().getDATE();
-			}
-
-			// il est possible que plusieurs épisode s'appelle du soustitre
-			// mais si on concatène avec titre c'est trop long
-			if (checkName(name)) {
-				episodes.add(new EpisodeDTO(originalCategory, name, video
-						.getURL()));
-			}
-		}
-		return episodes;
-	}
-
-	private static boolean checkName(final String name) {
-		return name != null && !name.isEmpty();
 	}
 
 	@Override
@@ -189,7 +197,8 @@ public class CanalPlusPluginProvider extends BasePluginWithProxy implements
 	@Override
 	public ProcessHolder download(DownloadParamDTO downloadInput,
 			DownloaderPluginHolder downloaders) throws DownloadFailedException {
-		return CanalUtils.doDownload(downloadInput, downloaders, this, CanalPlusConf.VIDEO_INFO_URL);
+		return CanalUtils.doDownload(downloadInput, downloaders, this,
+				CanalPlusConf.VIDEO_INFO_URL);
 	}
 
 }

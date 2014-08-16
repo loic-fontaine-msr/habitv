@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.dabi.habitv</groupId>
 		<artifactId>plugins</artifactId>
-		<version>4.0.0-SNAPSHOT</version>
+		<version>4.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>plugin-tester</artifactId>
 	<packaging>jar</packaging>
@@ -57,16 +57,6 @@
 		</dependency>
 		<dependency>
 			<groupId>com.dabi.habitv</groupId>
-			<artifactId>d8</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.dabi.habitv</groupId>
-			<artifactId>d17</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.dabi.habitv</groupId>
 			<artifactId>ffmpeg</artifactId>
 			<version>${project.version}</version>
 		</dependency>
@@ -83,16 +73,6 @@
 		<dependency>
 			<groupId>com.dabi.habitv</groupId>
 			<artifactId>pluzz</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.dabi.habitv</groupId>
-			<artifactId>d17</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.dabi.habitv</groupId>
-			<artifactId>d17</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>

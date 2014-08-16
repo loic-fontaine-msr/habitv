@@ -1,4 +1,7 @@
 plugin last version 4.0.0.1
+plugin autoriseSNapshot KO
+
+comment releaser les plugins ?
 
 tester torrent
 
