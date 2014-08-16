@@ -27,17 +27,23 @@ import com.dabi.habitv.framework.plugin.utils.M3U8Utils;
 
 public class CanalUtils {
 
-
-	public static ProcessHolder doDownload(final DownloadParamDTO downloadParam,
+	public static ProcessHolder doDownload(
+			final DownloadParamDTO downloadParam,
 			final DownloaderPluginHolder downloaders,
 			BasePluginWithProxy basePluginWithProxy, String videoInfoUrl) {
-		final String vid = CanalUtils.getVid(downloadParam);
-		final String videoUrl = CanalUtils.findVideoUrl(vid, basePluginWithProxy, videoInfoUrl);
+		final String videoUrl;
+		if (downloadParam.getDownloadInput().contains("vid=")) {
+			final String vid = CanalUtils.getVid(downloadParam);
+			videoUrl = CanalUtils.findVideoUrl(vid, basePluginWithProxy,
+					videoInfoUrl);
+		} else {
+			videoUrl = downloadParam.getDownloadInput();
+		}
 		return DownloadUtils.download(
 				DownloadParamDTO.buildDownloadParam(downloadParam, videoUrl),
 				downloaders);
-	}	
-	
+	}
+
 	public static String getVid(final DownloadParamDTO downloadParam) {
 		final String vid = downloadParam.getDownloadInput().split("vid=")[1]
 				.split("&")[0];

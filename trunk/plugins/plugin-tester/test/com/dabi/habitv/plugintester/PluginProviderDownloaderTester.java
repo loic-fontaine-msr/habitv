@@ -8,10 +8,10 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
-import java.util.LinkedHashSet;
 
 import org.apache.log4j.Logger;
 import org.junit.After;
@@ -19,7 +19,6 @@ import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.dabi.habitv.api.plugin.api.PluginDownloaderInterface;
@@ -35,9 +34,9 @@ import com.dabi.habitv.plugin.rss.RSSPluginManager;
 import com.dabi.habitv.provider.arte.ArtePluginManager;
 import com.dabi.habitv.provider.beinsport.BeinSportPluginManager;
 import com.dabi.habitv.provider.canalplus.CanalPlusPluginProvider;
+import com.dabi.habitv.provider.canalplus.D17PluginManager;
+import com.dabi.habitv.provider.canalplus.D8PluginManager;
 import com.dabi.habitv.provider.clubic.ClubicPluginManager;
-import com.dabi.habitv.provider.d8.D17PluginManager;
-import com.dabi.habitv.provider.d8.D8PluginManager;
 import com.dabi.habitv.provider.lequipe.LEquipePluginManager;
 import com.dabi.habitv.provider.nrj12.NRJ12PluginManager;
 import com.dabi.habitv.provider.pluzz.PluzzPluginManager;
@@ -262,7 +261,8 @@ public class PluginProviderDownloaderTester {
 			final Collection<CategoryDTO> categories) {
 		final CategoryDTO category = (new ArrayList<>(categories))
 				.get(getRandomIndex(categories));
-		if (episodeOnlyOnLeaf && !category.getSubCategories().isEmpty()) {
+		if ((episodeOnlyOnLeaf || !category.isDownloadable())
+				&& !category.getSubCategories().isEmpty()) {
 			return findCategory(episodeOnlyOnLeaf, category.getSubCategories());
 		}
 		return category;
