@@ -33,6 +33,7 @@ import com.dabi.habitv.plugin.file.FilePluginManager;
 import com.dabi.habitv.plugin.rss.RSSPluginManager;
 import com.dabi.habitv.provider.arte.ArtePluginManager;
 import com.dabi.habitv.provider.beinsport.BeinSportPluginManager;
+import com.dabi.habitv.provider.canalplus.CanalSportPluginProvider;
 import com.dabi.habitv.provider.canalplus.CanalPlusPluginProvider;
 import com.dabi.habitv.provider.canalplus.D17PluginManager;
 import com.dabi.habitv.provider.canalplus.D8PluginManager;
@@ -131,6 +132,12 @@ public class PluginProviderDownloaderTester {
 	public final void testProviderCanalPlus() throws InstantiationException,
 			IllegalAccessException, DownloadFailedException {
 		testPluginProvider(CanalPlusPluginProvider.class, false);
+	}
+	
+	@Test
+	public final void testProviderCanalFootballClub() throws InstantiationException,
+			IllegalAccessException, DownloadFailedException {
+		testPluginProvider(CanalSportPluginProvider.class, false);
 	}
 
 	@Test

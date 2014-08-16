@@ -9,4 +9,6 @@ interface CanalPlusConf {
 	
 	String URL_HOME = "http://service.mycanal.fr/authenticate.json/Android_Phone/1.1?highResolution=1";
 	
+	String URL_VIDEO = "http://service.mycanal.fr/getMediaUrl/{TOKEN}/{ID}.json?pfv={FORMAT}";
+	
 }

@@ -13,7 +13,8 @@ import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.utils.RetrieverUtils;
 
 public class FindArtifactUtils {
-	private static List<String> EXCLUDE = Arrays.asList("Parent Directory", "Name", "Last modified", "Size", "Description");
+	private static List<String> EXCLUDE = Arrays.asList("Parent Directory",
+			"Name", "Last modified", "Size", "Description");
 
 	public static class ArtifactVersion {
 		private String artifactId;
@@ -48,12 +49,16 @@ public class FindArtifactUtils {
 
 	}
 
-	public static ArtifactVersion findLastVersionUrl(final String groupId, final String artifactId, final String coreVersion, final boolean autoriseSnapshot, String extension) {
+	public static ArtifactVersion findLastVersionUrl(final String groupId,
+			final String artifactId, final String coreVersion,
+			final boolean autoriseSnapshot, String extension) {
 		final String versionMaj = getVersionMaj(coreVersion);
 		final String groupIdUrl = groupId.replace(".", "/");
-		final String artifactURL = FrameworkConf.UPDATE_URL + "/" + groupIdUrl + "/" + artifactId;
+		final String artifactURL = FrameworkConf.UPDATE_URL + "/" + groupIdUrl
+				+ "/" + artifactId;
 
-		final ArtifactVersion lastVersion = findLastVersionUrl(artifactURL, versionMaj, autoriseSnapshot, extension);
+		final ArtifactVersion lastVersion = findLastVersionUrl(artifactURL,
+				versionMaj, autoriseSnapshot, extension);
 		if (lastVersion == null) {
 			return null;
 		}
@@ -72,9 +77,12 @@ public class FindArtifactUtils {
 		return versionMaj;
 	}
 
-	private static ArtifactVersion findLastVersionUrl(final String artifactURL, final String versionMaj, final boolean autoriseSnapshot, final String extension) {
+	private static ArtifactVersion findLastVersionUrl(final String artifactURL,
+			final String versionMaj, final boolean autoriseSnapshot,
+			final String extension) {
 		List<String> items = findItems(Type.DIR, artifactURL + "/");
-		final String version = findLastVersion(versionMaj, items, autoriseSnapshot);
+		final String version = findLastVersion(versionMaj, items,
+				autoriseSnapshot);
 		if (version == null) {
 			return null;
 		}
@@ -82,7 +90,7 @@ public class FindArtifactUtils {
 		items = findItems(Type.FILE, artifactVersionUrl);
 		final List<String> files = new LinkedList<>();
 		for (final String file : items) {
-			if (file.endsWith("."+extension)) {
+			if (file.endsWith("." + extension)) {
 				files.add(file);
 			}
 		}
@@ -90,7 +98,8 @@ public class FindArtifactUtils {
 			return null;
 		} else {
 			Collections.sort(files);
-			return new ArtifactVersion(artifactVersionUrl + "/" + files.get(files.size() - 1), version);
+			return new ArtifactVersion(artifactVersionUrl + "/"
+					+ files.get(files.size() - 1), version);
 		}
 	}
 
@@ -99,7 +108,8 @@ public class FindArtifactUtils {
 	}
 
 	private static List<String> findItems(final Type type, final String url) {
-		final org.jsoup.nodes.Document doc = Jsoup.parse(RetrieverUtils.getUrlContent(url, null));
+		final org.jsoup.nodes.Document doc = Jsoup.parse(RetrieverUtils
+				.getUrlContent(url, null));
 
 		final Elements select = doc.select("a");
 
@@ -110,7 +120,9 @@ public class FindArtifactUtils {
 				final String hRef = aElement.attr("href");
 				final String text = aElement.text();
 				final boolean isDirectory = isDirectory(hRef);
-				if (!EXCLUDE.contains(text) && (type == Type.ALL || (type == Type.DIR && isDirectory) || (type == Type.FILE && !isDirectory))) {
+				if (!EXCLUDE.contains(text)
+						&& (type == Type.ALL
+								|| (type == Type.DIR && isDirectory) || (type == Type.FILE && !isDirectory))) {
 					items.add(hRef.replace("/", ""));
 				}
 			}
@@ -118,11 +130,15 @@ public class FindArtifactUtils {
 		return items;
 	}
 
-	private static String findLastVersion(final String versionRef, final List<String> items, final boolean autoriseSnapshot) {
+	private static String findLastVersion(final String versionRef,
+			final List<String> items, final boolean autoriseSnapshot) {
 		Collections.sort(items);
 		for (int i = items.size() - 1; i >= 0; i--) {
 			final String version = items.get(i);
-			if (versionRef == null || version.startsWith(versionRef) || (autoriseSnapshot && version.contains("SNAPSHOT"))) {
+			if (versionRef == null
+					|| (version.startsWith(versionRef) && ((autoriseSnapshot
+							&& version.contains("SNAPSHOT") || !version
+								.contains("SNAPSHOT"))))) {
 				return version;
 			}
 		}
