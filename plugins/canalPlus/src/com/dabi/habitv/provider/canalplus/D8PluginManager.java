@@ -108,7 +108,7 @@ public class D8PluginManager extends BasePluginWithProxy implements
 			final DownloaderPluginHolder downloaders)
 			throws DownloadFailedException {
 		return CanalUtils.doDownload(downloadParam, downloaders, this,
-				D8Conf.VIDEO_INFO_URL);
+				D8Conf.VIDEO_INFO_URL, getName().toLowerCase());
 	}
 
 	private static String getAttrName(final Element aLink) {

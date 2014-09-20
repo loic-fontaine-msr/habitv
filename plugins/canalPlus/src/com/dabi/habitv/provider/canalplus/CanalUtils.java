@@ -31,13 +31,14 @@ public class CanalUtils {
 	public static ProcessHolder doDownload(
 			final DownloadParamDTO downloadParam,
 			final DownloaderPluginHolder downloaders,
-			BasePluginWithProxy basePluginWithProxy, String videoInfoUrl) {
+			BasePluginWithProxy basePluginWithProxy, String videoInfoUrl,
+			String channel) {
 		final String videoUrl;
 		if (downloadParam.getDownloadInput().contains("vid=")) {
 			final String vid = CanalUtils.getVid(downloadParam);
 			try {
 				videoUrl = CanalUtils.findVideoUrl(basePluginWithProxy,
-						findToken(basePluginWithProxy), vid);
+						findToken(basePluginWithProxy), vid, channel);
 			} catch (IOException e) {
 				throw new DownloadFailedException(e);
 			}
@@ -91,12 +92,33 @@ public class CanalUtils {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
+	public static String findUrl2(BasePluginWithProxy basePluginWithProxy,
+			String urlMedias) {
+		final ObjectMapper mapper = new ObjectMapper();
+		try {
+			final Map<String, Object> catData = mapper.readValue(
+					basePluginWithProxy.getInputStreamFromUrl(urlMedias),
+					Map.class);
+
+			Map<String, Object> videoUrls = (Map<String, Object>) ((Map<String, Object>) catData
+					.get("MEDIA")).get("VIDEOS");
+			String videoUrl = (String) videoUrls.get("HLS");
+			return M3U8Utils.keepBestQuality(videoUrl);
+		} catch (IOException e) {
+			throw new DownloadFailedException(e);
+		}
+	}
+
 	public static String findVideoUrl(BasePluginWithProxy basePluginWithProxy,
-			String token, String vid) {
-		return findUrl(
-				basePluginWithProxy,
-				CanalPlusConf.URL_VIDEO.replace("{TOKEN}", token).replace(
-						"{ID}", vid));
+			String token, String vid, String channel) {
+		try {
+			return findUrl(basePluginWithProxy, CanalPlusConf.URL_VIDEO
+					.replace("{TOKEN}", token).replace("{ID}", vid));
+		} catch (Exception e) {
+			return findUrl2(basePluginWithProxy, CanalPlusConf.URL_VIDEO_2
+					.replace("{CHANNEL}", channel).replace("{ID}", vid));
+		}
 	}
 
 }

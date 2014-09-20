@@ -203,7 +203,7 @@ public class BeinSportPluginManager extends BasePluginWithProxy implements
 			throw new TechnicalException(e);
 		}
 		if (!urlList.isEmpty()) {
-			return urlList.get(urlList.size() - 1);
+			return urlList.get(0);
 		} else {
 			throw new TechnicalException("No link found");
 		}

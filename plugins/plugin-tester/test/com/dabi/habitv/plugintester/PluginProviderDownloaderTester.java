@@ -22,6 +22,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.dabi.habitv.api.plugin.api.PluginDownloaderInterface;
+import com.dabi.habitv.api.plugin.api.PluginProviderDownloaderInterface;
 import com.dabi.habitv.api.plugin.api.PluginProviderInterface;
 import com.dabi.habitv.api.plugin.dto.CategoryDTO;
 import com.dabi.habitv.api.plugin.dto.DownloadParamDTO;
@@ -33,8 +34,8 @@ import com.dabi.habitv.plugin.file.FilePluginManager;
 import com.dabi.habitv.plugin.rss.RSSPluginManager;
 import com.dabi.habitv.provider.arte.ArtePluginManager;
 import com.dabi.habitv.provider.beinsport.BeinSportPluginManager;
-import com.dabi.habitv.provider.canalplus.CanalSportPluginProvider;
 import com.dabi.habitv.provider.canalplus.CanalPlusPluginProvider;
+import com.dabi.habitv.provider.canalplus.CanalSportPluginProvider;
 import com.dabi.habitv.provider.canalplus.D17PluginManager;
 import com.dabi.habitv.provider.canalplus.D8PluginManager;
 import com.dabi.habitv.provider.clubic.ClubicPluginManager;
@@ -84,12 +85,30 @@ public class PluginProviderDownloaderTester {
 	@Test
 	public final void specificCheckDownload() throws DownloadFailedException {
 		testEpisode(
-				new NRJ12PluginManager(),
+				new BeinSportPluginManager(),
 				new EpisodeDTO(
 						new CategoryDTO("channel", "name", "identifier",
 								"extension"),
 						"name",
-						"http://www.nrj12.fr/allo-nabilla-4503/replay-videos-4535/media/video/895741-en-famille-a-paris-episode-3.html"));
+						"http://beinsports.fr/videos/article/1bcejiwk7j23e1unkovve3heku"));
+	}
+
+	@Test
+	public final void specificCheckFindEpisode() {
+		PluginProviderDownloaderInterface plugin = new BeinSportPluginManager();
+		Set<EpisodeDTO> episodeList = plugin
+				.findEpisode(new CategoryDTO(
+						"beinsport",
+						"video",
+						"video",
+						"mp4"));
+
+		checkEpisodes(episodeList);
+
+		final EpisodeDTO episode = (new ArrayList<>(episodeList))
+				.get(getRandomIndex(episodeList));
+		testEpisode(plugin, episode);
+
 	}
 
 	@Test
@@ -133,10 +152,11 @@ public class PluginProviderDownloaderTester {
 			IllegalAccessException, DownloadFailedException {
 		testPluginProvider(CanalPlusPluginProvider.class, false);
 	}
-	
+
 	@Test
-	public final void testProviderCanalFootballClub() throws InstantiationException,
-			IllegalAccessException, DownloadFailedException {
+	public final void testProviderCanalFootballClub()
+			throws InstantiationException, IllegalAccessException,
+			DownloadFailedException {
 		testPluginProvider(CanalSportPluginProvider.class, false);
 	}
 
