@@ -11,4 +11,6 @@ interface CanalPlusConf {
 	
 	String URL_VIDEO = "http://service.mycanal.fr/getMediaUrl/{TOKEN}/{ID}.json?pfv={FORMAT}";
 	
+	String URL_VIDEO_2 = "http://service.canal-plus.com/video/rest/getvideos/{CHANNEL}/{ID}?format=json";
+	
 }

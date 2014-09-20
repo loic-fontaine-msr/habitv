@@ -34,7 +34,7 @@ public class CanalPlusPluginProvider extends BasePluginWithProxy implements
 			for (Object strateObject : strates) {
 				Map<String, Object> strateMap = (Map<String, Object>) strateObject;
 				String type = (String) strateMap.get("type");
-				if ("contentGrid".equals(type)) {
+				if ("contentGrid".equals(type) || "contentRow".equals(type)) {
 					return findEpisodes(category,
 							(List<Object>) strateMap.get("contents"));
 				}
@@ -61,8 +61,9 @@ public class CanalPlusPluginProvider extends BasePluginWithProxy implements
 	private EpisodeDTO buildEpisode(CategoryDTO category,
 			Map<String, Object> mapEpisode) {
 		return new EpisodeDTO(category, (String) mapEpisode.get("title"),
-				CanalUtils.findUrl(this, (String) ((Map<String, Object>) mapEpisode
-						.get("onClick")).get("URLMedias")));
+				CanalUtils.findUrl(this,
+						(String) ((Map<String, Object>) mapEpisode
+								.get("onClick")).get("URLMedias")));
 	}
 
 	@Override
@@ -162,7 +163,7 @@ public class CanalPlusPluginProvider extends BasePluginWithProxy implements
 	public ProcessHolder download(DownloadParamDTO downloadInput,
 			DownloaderPluginHolder downloaders) throws DownloadFailedException {
 		return CanalUtils.doDownload(downloadInput, downloaders, this,
-				CanalPlusConf.VIDEO_INFO_URL);
+				CanalPlusConf.VIDEO_INFO_URL, getName().toLowerCase());
 	}
 
 }

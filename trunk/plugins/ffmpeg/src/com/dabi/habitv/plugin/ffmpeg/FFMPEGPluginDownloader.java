@@ -50,7 +50,7 @@ public class FFMPEGPluginDownloader extends BaseUpdatablePlugin implements
 	}
 
 	private String getCmd() {
-		return OSUtils.isWindows() ? FFMPEGConf.FFMPEG_CMD_WINDOWS
+		return OSUtils.isWindows() ? FFMPEGConf.FFMPEG_CMD_WINDOWS_COR
 				: FFMPEGConf.FFMPEG_CMD_LINUX;
 	}
 

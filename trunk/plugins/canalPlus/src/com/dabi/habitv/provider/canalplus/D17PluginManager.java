@@ -90,7 +90,7 @@ public class D17PluginManager extends BasePluginWithProxy implements
 			final DownloaderPluginHolder downloaders)
 			throws DownloadFailedException {
 		return CanalUtils.doDownload(downloadParam, downloaders, this,
-				D17Conf.VIDEO_INFO_URL);
+				D17Conf.VIDEO_INFO_URL, getName().toLowerCase());
 	}
 
 	private Collection<CategoryDTO> findSubCategories(final String catUrl) {
