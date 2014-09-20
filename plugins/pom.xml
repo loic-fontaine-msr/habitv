@@ -3,11 +3,11 @@
 	<parent>
 		<groupId>com.dabi.habitv</groupId>
 		<artifactId>parent</artifactId>
-		<version>4.0.2-SNAPSHOT</version>
+		<version>4.0.1</version>
 	</parent>
 	<artifactId>plugins</artifactId>
 	<packaging>pom</packaging>
-
+	<version>4.0.2-SNAPSHOT</version>
 	<name>plugins habiTv</name>
 
 	<modules>
