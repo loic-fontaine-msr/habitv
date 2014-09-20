@@ -3,7 +3,7 @@
 
 	<groupId>com.dabi.habitv</groupId>
 	<artifactId>parent</artifactId>
-	<version>4.0.2-SNAPSHOT</version>
+	<version>4.0.2</version>
 	<packaging>pom</packaging>
 
 	<name>Parent habiTv</name>
@@ -13,8 +13,8 @@
 	</properties>
 
 	 <scm>
-        <connection>scm:svn:http://subversion.assembla.com/svn/habitv/trunk</connection>
-        <developerConnection>scm:svn:http://subversion.assembla.com/svn/habitv/trunk</developerConnection>
+        <connection>scm:svn:http://subversion.assembla.com/svn/habitv/tags/parent-4.0.2</connection>
+        <developerConnection>scm:svn:http://subversion.assembla.com/svn/habitv/tags/parent-4.0.2</developerConnection>
     </scm>	
 	
 	<distributionManagement>
