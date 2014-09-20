@@ -10,7 +10,6 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<habitv-api.version>4.0.2-SNAPSHOT</habitv-api.version>
 	</properties>
 
 	 <scm>
@@ -48,7 +47,7 @@
 		<dependency>
 			<groupId>com.dabi.habitv</groupId>
 			<artifactId>api</artifactId>
-			<version>${habitv-api.version}</version>
+			<version>${project.version}</version>
 		</dependency>	
 		<dependency>
 			<groupId>com.dabi.habitv</groupId>
