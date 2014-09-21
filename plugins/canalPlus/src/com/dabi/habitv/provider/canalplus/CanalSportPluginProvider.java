@@ -16,6 +16,7 @@ import com.dabi.habitv.api.plugin.holder.DownloaderPluginHolder;
 import com.dabi.habitv.api.plugin.holder.ProcessHolder;
 import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.api.BasePluginWithProxy;
+import com.dabi.habitv.framework.plugin.utils.SoccerUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class CanalSportPluginProvider extends BasePluginWithProxy implements
@@ -53,8 +54,8 @@ public class CanalSportPluginProvider extends BasePluginWithProxy implements
 				.get("Video");
 		String vid = (String) mapVideo.get("v_id");
 		return vid == null || vid.isEmpty() ? null : new EpisodeDTO(category,
-				(String) mapVideo.get("v_s_titre"), buildUrl(token,
-						(String) vid));
+				SoccerUtils.maskScore((String) mapVideo.get("v_s_titre")),
+				buildUrl(token, (String) vid));
 	}
 
 	private String buildUrl(String token, String vid) {
