@@ -1,0 +1,84 @@
+<?php
+/* $Id: picasa_album.module,v 1.1 2008/01/06 21:27:43 cyberswat Exp $ */
+
+/**
+* @file
+* The Picasa Album module handles all transactions with albums.
+*
+* This module is intentionally not complete.  When it is complete it will 
+* register picasa_album as a node type and perform all associated functions.
+*/
+
+/**
+ * Implementation of hook_delete().
+ *
+ * @param &$node
+ *   The node being deleted.
+ */
+function picasa_album_delete(&$node) {
+  db_query('DELETE FROM {picasa_albums} WHERE nid = %d AND vid =%d', 
+    $node->nid, $node->vid);
+}
+
+/**
+ * Performs a batch insert of albums for a specific picasa guser.
+ *
+ * @param $node 
+ *   Drupals view of the user.
+ * @param $guser 
+ *   Googles view of the user.
+ */
+function picasa_album_insert_batch($node, $guser) {
+  $albums = $guser->entry;
+  if ($albums) {
+    foreach ($albums as $album) {
+      $sql = "INSERT INTO {picasa_albums} (nid, vid, uid, guser_nid, id, 
+        updated, title, summary, rights, author_name, author_uri, gphoto_id, 
+        gphoto_name, gphoto_location, gphoto_access, gphoto_timestamp, 
+        gphoto_numphotos, gphoto_user, gphoto_nickname, media_title, 
+        media_description, media_keywords, media_content, media_thumbnail, 
+        media_credit, georss_pos ) VALUES (%d, %d ,%d, %d,'%s', %d, '%s', '%s', 
+        '%s', '%s', '%s', '%s', '%s', '%s', '%s', %d, %d, '%s', '%s', '%s', 
+        '%s', '%s', '%s', '%s', '%s', '%s')";
+      db_query( $sql, $node->nid, $node->vid, $node->uid, $node->nid, 
+        $album->paid, $album->updated, $album->title, $album->summary, 
+        $album->rights, $album->author_name, $album->author_uri, 
+        $album->gphoto_id, $album->gphoto_name, $album->gphoto_location, 
+        $album->gphoto_access, $album->published, $album->gphoto_numphotos, 
+        $album->gphoto_user, $album->gphoto_nickname, 
+        $album->media_group[0]->title, $album->media_group[0]->description, 
+        $album->media_group[0]->keywords, $album->media_group[0]->content,
+        $album->media_group[0]->thumbnail, $album->media_group[0]->credit, 
+        $album->georss_where[0]->point );
+    }
+  } 
+  else {
+    $msg = t("This user has no Public Albums.");
+    drupal_set_message($msg);
+  }
+}
+
+/**
+ * Implementation of hook_load().
+ *
+ * @param $node
+ *   The node being loaded.
+ * @return $return
+ *   An array of albums.
+ */
+function picasa_album_load($node) {
+  $return = array();
+  $sql = 'SELECT nid, vid, uid, guser_nid, updated, title, summary, rights, 
+    author_name, author_uri, gphoto_id, gphoto_name, gphoto_location, 
+    gphoto_access, gphoto_timestamp, gphoto_numphotos, gphoto_user, 
+    gphoto_nickname, gphoto_commenting_enabled, gphoto_comment_count, 
+    media_title, media_description, media_keywords, media_content, 
+    media_thumbnail, media_credit, georss_pos FROM {picasa_albums} 
+    WHERE vid = %d AND nid = %d order by gphoto_timestamp desc';
+  $albums = db_query($sql, $node->vid, $node->nid);
+  while ($album = db_fetch_object($albums)) {
+    $return[] = $album;
+  }
+  return $return;
+}
+

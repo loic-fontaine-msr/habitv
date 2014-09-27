@@ -1,0 +1,98 @@
+<?php
+// $Id: persistent_login.install,v 1.4.2.1 2007/08/18 14:50:28 bjaspan Exp $
+
+function persistent_login_install() {
+  foreach (persistent_login_create_table_sql() as $sql) {
+    db_query($sql);
+  }
+}
+
+function persistent_login_uninstall() {
+  $ret[] = db_query('DROP TABLE IF EXISTS {persistent_login}');
+  $ret[] = db_query('DROP TABLE IF EXISTS {persistent_login_history}');
+}
+
+function persistent_login_create_table_sql() {
+  switch ($GLOBALS['db_type']) {
+  case 'mysql':
+  case 'mysqli':
+    $ret[] = ('CREATE TABLE {persistent_login} ('.
+      'uid int unsigned NOT NULL, '.
+      'series char(32) NOT NULL, '.
+      'token char(32) NOT NULL, '.
+      'expires int unsigned NOT NULL, '.
+      'PRIMARY KEY (uid,series), '.
+      'INDEX (expires) '.
+      ') /*!40100 DEFAULT CHARACTER SET utf8 */; ');
+    $ret[] = ('CREATE TABLE {persistent_login_history} ('.
+      'uid int unsigned NOT NULL, '.
+      'series char(32) NOT NULL, '.
+      'token char(32) NOT NULL, '.
+      'expires int unsigned NOT NULL, '.
+      'at int unsigned NOT NULL, '.
+      'why varchar(255) NOT NULL, '.
+      'PRIMARY KEY (uid,series,token), '.
+      'INDEX (at) '.
+      ') /*!40100 DEFAULT CHARACTER SET utf8 */;');
+    break;
+    
+  case 'pgsql':
+    $ret[] = ('CREATE TABLE {persistent_login} ('.
+      'uid int_unsigned NOT NULL, '.
+      'series char(32) NOT NULL, '.
+      'token char(32) NOT NULL, '.
+      'expires int_unsigned NOT NULL, '.
+      'PRIMARY KEY (uid,series))');
+    $ret[] = 'CREATE INDEX {persistent_login}_expires_idx ON {persistent_login} (expires)';
+
+    $ret[] = ('CREATE TABLE {persistent_login_history} ('.
+      'uid int_unsigned NOT NULL, '.
+      'series char(32) NOT NULL, '.
+      'token char(32) NOT NULL, '.
+      'expires int_unsigned NOT NULL, '.
+      'at int_unsigned NOT NULL, '.
+      'why varchar(255) NOT NULL, '.
+      'PRIMARY KEY (uid,series,token))');
+    $ret[] = 'CREATE INDEX {persistent_login_history}_at_idx ON {persistent_login_history} (at)';
+    break;
+  }
+  return $ret;
+}
+
+function persistent_login_update_1() {
+  $ret = array();
+  $ret[] = update_sql('DROP TABLE {persistent_login}');
+  foreach (persistent_login_create_table_sql() as $sql) {
+    $ret[] = update_sql($sql);
+  }
+  return $ret;
+}
+
+function persistent_login_update_2() {
+  $ret = array();
+  $ret[] = update_sql('DROP TABLE {persistent_login}');
+  $ret[] = update_sql('DROP TABLE IF EXISTS {persistent_login_history}');
+  foreach (persistent_login_create_table_sql() as $sql) {
+    $ret[] = update_sql($sql);
+  }
+  return $ret;
+}
+
+// Some versions of persistent_login (wrongly) did not use hook_init
+// and so may not have bootstrap set in the system table.
+function persistent_login_update_3() {
+  $ret = array();
+  $ret[] = update_sql('UPDATE {system} SET bootstrap = 1 WHERE '.
+		      'name=\'persistent_login\'');
+  return $ret;
+}
+
+function persistent_login_update_4() {
+  $ret = array();
+  $ret[] = update_sql('DROP TABLE {persistent_login}');
+  $ret[] = update_sql('DROP TABLE IF EXISTS {persistent_login_history}');
+  foreach (persistent_login_create_table_sql() as $sql) {
+    $ret[] = update_sql($sql);
+  }
+  return $ret;
+}

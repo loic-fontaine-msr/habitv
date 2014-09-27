@@ -1,0 +1,165 @@
+/* $Id: acidfree.css,v 1.12.2.2 2008/03/05 05:50:40 vhmauery Exp $ */
+
+/*
+Acidfree Photo Albums for Drupal
+Copyright (C) 2005 Vernon Mauery
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
+*/
+
+p.acidfree-center {
+  text-align: center;
+}
+
+/* Needed for IE6 when using Garland theme*/
+div.acidfree, div.acidfree-list-row {
+  position: relative;
+}
+
+div.acidfree-cell {
+  float: left;
+  overflow: hidden;
+  margin-right: 5px;
+}
+
+div.acidfree-cell p {
+  margin: 0;
+  line-height: normal;
+  font-size: 12px;
+}
+
+div.acidfree-item a {
+  display: block;
+}
+
+div.acidfree-cell a:hover {
+  text-decoration: none;
+}
+
+div.acidfree-cell img {
+  padding: 5px;
+  background-color: white;
+  border: 1px solid #ccc;
+  /* Fixes gap under image in XHTML strict themes */
+  vertical-align: bottom;
+}
+
+/* Only newer browsers get these borders */
+div.acidfree-cell > div.acidfree-item {
+  border: 2px solid transparent;
+}
+
+div.acidfree-cell > div.acidfree-item:hover {
+  border-color: #ADD8E6;
+}
+
+div.acidfree-item {
+  text-align: center;
+  padding: 5px;
+  margin: 0;
+}
+
+div.acidfree-cell div.acidfree-folder {
+  background-color: #eee;
+  border-color: #ccc;
+}
+
+div.acidfree-folder p {
+  font-weight: bold;
+}
+
+div.acidfree-thumbnail {
+  position: relative;
+  margin: 0 auto 0 auto;
+}
+
+div.acidfree-preview {
+  position: relative;
+  margin: 0 auto 0 auto;
+}
+
+div.acidfree-empty {
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-color: white;
+  border: 1px solid #ccc;
+  height: 98%;
+  width: 98%;
+}
+
+/* 
+ * To center the overlay set the height and width to 100%,
+ * set left and bottom to 0, and set background-position
+ * to center
+ */
+div.acidfree-overlay {
+  position: absolute;
+  left: 10%;
+  bottom: 10%;
+  background-position: bottom left;
+  background-repeat: no-repeat;
+}
+
+div.acidfree-overlay a {
+  height: 100%;
+  width: 100%;
+}
+
+div.acidfree-folder div.acidfree-overlay {
+  background-image: url(art/album.gif);
+  height: 24px;
+  width: 24px;
+}
+
+div.acidfree-video div.acidfree-overlay {
+  background-image: url(art/play.gif);
+  height: 16px;
+  width: 16px;
+}
+
+div.acidfree-preview div.acidfree-overlay {
+  background-image: url(art/play_big.gif);
+  height: 48px;
+  width: 48px;
+}
+
+/* Styles for list view */
+.acidfree-list-row {
+  clear: both;
+  padding-bottom: 0.5em;
+  padding-top: 0.5em;
+  border-top: 1px solid #ccc;
+}
+
+.acidfree-list-odd {
+  background-color: #eee;
+}
+
+.acidfree-list-number {
+  float: left;
+  font-size: 24px;
+  width: 50px;
+  text-align: right;
+  margin-right: 5px;
+}
+
+.acidfree-list-body {
+  margin-left: 55px;
+}
+
+.block-bottom {
+  clear: both;
+}

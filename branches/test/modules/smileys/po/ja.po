@@ -1,0 +1,298 @@
+# -----------------------------------------------------------------------------
+# Japanese translation of Drupal (smileys.module)
+#
+# Copyright (c) 2006-2007  Drupal Japan  ( http://drupal.jp/ )  /
+#                          Drupal Nippon ( http://drupon.org/ ) /
+#                          Takafumi      ( jp.drupal@imagine **reverse order**)
+#
+# Generated from file:
+#  smileys.module,v 1.47.2.2 2006/11/25 20:23:54 Gurpartap
+#  smileys.info,v 1.1.2.1 2006/11/25 20:11:15 Gurpartap
+#  smileys_import.info,v 1.1.2.1 2006/11/25 20:11:15 Gurpartap
+#  smileys_import.module,v 1.1 2006/11/16 08:24:20 Gurpartap
+#
+# -----------------------------------------------------------------------------
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2007-04-23 18:38+0900\n"
+"Last-Translator: Takafumi <jp.drupal@imagine **reverse order**>\n"
+"Language-Team: Drupal Japan / Drupal Nippon\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+
+#: smileys.module:8
+msgid "Here you can add/edit the Smileys that are recognised in your content."
+msgstr "以下で、コンテンツ内で識別されるスマイリーの追加や編集を行えます。"
+
+#: smileys.module:18
+msgid "If you include a textual smiley in your post (see chart below), it will be replaced by a graphical smiley."
+msgstr "投稿に含まれるテキスト形式のスマイリー（以下の図表を参照）は、画像形式のスマイリーに置き換えられます。"
+
+#: smileys.module:22
+msgid "<a href=\"!smileys_help\">Textual smileys</a> will be replaced with graphical ones."
+msgstr "<a href=\"!smileys_help\">テキスト形式のスマイリー</a>は画像に置き換えられます。"
+
+#: smileys.module:43
+msgid "Smileys on submission pages"
+msgstr "投稿ページでのスマイリー"
+
+#: smileys.module:49;61;110;167 smileys.info:0;0 smileys_import.info:0
+msgid "Smileys"
+msgstr "スマイリー"
+
+#: smileys.module:68
+msgid "[Show all]"
+msgstr "[すべて表示]"
+
+#: smileys.module:98;254
+msgid "Smiley"
+msgstr "スマイリー"
+
+#: smileys.module:98;254;306
+msgid "Acronyms"
+msgstr "頭字語"
+
+#: smileys.module:122
+msgid "Click to insert acronym. [<span class=\"smiley-class\" id=\"closeSmileys\">Close</span>]"
+msgstr "クリックすると頭字語を挿入できます。 [<span class=\"smiley-class\" id=\"closeSmileys\">閉じる</span>]"
+
+#: smileys.module:128;132
+msgid "Smileys filter"
+msgstr "スマイリーフィルタ"
+
+#: smileys.module:130;168 smileys.info:0
+msgid "Replaces smileys inside posts with images."
+msgstr "投稿内のスマイリー文字列を対応する画像に置き換えます。"
+
+#: smileys.module:132
+msgid "You can define a global list of smileys on the !page."
+msgstr "!pageでスマイリーの全体的なリストを定義できます。"
+
+#: smileys.module:132
+msgid "smileys settings page"
+msgstr "スマイリーの設定ページ"
+
+# ------
+#: smileys.module:174
+#msgid "List"
+#msgstr "リスト"
+
+#: smileys.module:181
+msgid "Add"
+msgstr "追加"
+
+# ------
+#: smileys.module:188
+#msgid "Settings"
+#msgstr "環境設定"
+
+#: smileys.module:189
+msgid "Smileys configuration."
+msgstr "スマイリーの設定を行います。"
+
+#: smileys.module:198
+msgid "Edit smiley"
+msgstr "スマイリーの編集"
+
+#: smileys.module:205
+msgid "Delete smiley"
+msgstr "スマイリーの削除"
+
+#: smileys.module:223
+msgid "Smileys select-box settings"
+msgstr "スマイリー選択ボックスの設定"
+
+#: smileys.module:227
+msgid "Enable smileys select box for:"
+msgstr "スマイリー選択ボックスの有効化："
+
+#: smileys.module:231
+msgid "Nodes"
+msgstr "ノード"
+
+# ------
+#: smileys.module:236
+#msgid "Comments"
+#msgstr "コメント"
+
+#: smileys.module:241
+msgid "Smileys widget-box settings"
+msgstr "スマイリーウィジェットボックスの設定"
+
+#: smileys.module:245
+msgid "Enable Smileys Widget(Popup) box"
+msgstr "スマイリーウィジェット（ポップアップ）ボックスを有効にする"
+
+#: smileys.module:246
+msgid "Adds a <em>[Show all]</em> link to the end of smileys in select box, which when clicked, opens an inline widget to insert smileys. The widget is an inline popup like approach, allowing ease of usability."
+msgstr "スマイリーウィジェットを使用するかどうかを指定してください。 ここにチェックを入れると、ウィジェットを開くための <b>[すべて表示]</b> リンクを、スマイリー選択ボックスの最後に加えます。 ウィジェットは、使い勝手をよくするためのインラインポップアップです。"
+
+# ------
+#: smileys.module:254;308
+#msgid "Description"
+#msgstr "説明"
+
+# ------
+#: smileys.module:270
+#msgid "Edit"
+#msgstr "編集"
+
+# ------
+#: smileys.module:270
+#msgid "Delete"
+#msgstr "削除"
+
+#: smileys.module:290
+msgid "No smileys found. You may !add, or !import."
+msgstr "スマイリーが見つかりませんでした。 !addか、!importを行ってください。"
+
+#: smileys.module:290;293
+msgid "add custom smileys"
+msgstr "カスタムスマイリーの追加"
+
+#: smileys.module:290
+msgid "import smiley packages"
+msgstr "スマイリーパッケージのインポート"
+
+#: smileys.module:293
+msgid "No smileys found. You may !add, or install smileys_import module & import smiley packages."
+msgstr "スマイリーが見つかりませんでした。 !addか、smileys_importモジュールをインストールしてスマイリーパッケージのインポートを行ってください。"
+
+#: smileys.module:306
+msgid "Enter a list of shorthands for the smiley you wish to add, separated by spaces. E.g. ':) ;) :smile:'"
+msgstr "追加するスマイリーの短縮表現リストを、空白文字で区切って入力してください<br /> 例： <b>:) ;) :smile:</b>"
+
+#: smileys.module:307
+msgid "Image URL"
+msgstr "画像のURL"
+
+#: smileys.module:307
+msgid "Enter the URL of the smiley-image relative to the root of your Drupal site. E.g. 'images/smileys/happy.png'."
+msgstr "スマイリー画像のパスを、Drupalがインストールされているパスからの相対パスで入力してください。<br />例： <b>images/smileys/happy.png</b>"
+
+#: smileys.module:308
+msgid "A short description of the emotion depicted to be used as tooltip for the image. E.g. 'Laughing out loud'."
+msgstr "画像のツールチップに使用される、感情表現の簡潔な説明を入力してください。<br />例： <b>大声で笑う</b>"
+
+#: smileys.module:309
+msgid "Stand-alone"
+msgstr "スタンドアロン"
+
+#: smileys.module:309
+msgid "When checked, the smiley will only be inserted when an acronym is found as a separate word. This is useful for preventing accidental smileys with short acronyms."
+msgstr "ここにチェックを入れると、頭字語が独立したワードとして見つかったときにのみ、スマイリーが挿入されます。 これは、短い頭字語が意図せずスマイリーになることを防ぐのに役立ちます。"
+
+#: smileys.module:310
+msgid "Save Smiley"
+msgstr "スマイリーの保存"
+
+#: smileys.module:312;320;338
+msgid "Delete Smiley"
+msgstr "スマイリーの削除"
+
+#: smileys.module:325
+msgid "Updated smiley: %smiley"
+msgstr "スマイリーが更新されました： %smiley"
+
+#: smileys.module:329
+msgid "Added smiley: %smiley"
+msgstr "スマイリーが追加されました： %smiley"
+
+#: smileys.module:339
+msgid "Please enter an acronym for your smiley."
+msgstr "スマイリーの頭字語を入力してください。"
+
+#: smileys.module:343
+msgid "Please enter the URL of the smiley image."
+msgstr "スマイリー画像のURLを入力してください。"
+
+#: smileys.module:353
+msgid "Deleted smiley: %smiley"
+msgstr "スマイリーが削除されました： %smiley"
+
+#: smileys.module:13
+msgid "administer smileys"
+msgstr "スマイリーの管理"
+
+#: smileys.module:13
+msgid "use smiley select box"
+msgstr "スマイリー選択ボックスの使用"
+
+#: smileys.module:0 smileys.info:0 smileys_import.info:0
+msgid "smileys"
+msgstr "スマイリー"
+
+#: smileys_import.module:7
+msgid "Here you can install/uninstall smiley import packs."
+msgstr "以下で、インポートしたスマイリーパックのインストールとアンインストールを行えます。"
+
+# ------
+#: smileys_import.module:19
+#msgid "Import"
+#msgstr "インポート"
+
+# ------
+#: smileys_import.module:27;101
+#msgid "Export"
+#msgstr "エクスポート"
+
+#: smileys_import.module:49;94
+msgid "Smiley Packs"
+msgstr "スマイリーパック"
+
+# ------
+#: smileys_import.module:54
+#msgid "Uninstall"
+#msgstr "アンインストール"
+
+#: smileys_import.module:54
+msgid "Install"
+msgstr "インストール"
+
+#: smileys_import.module:62
+msgid "No smiley packs found."
+msgstr "スマイリーパックが見つかりませんでした。"
+
+#: smileys_import.module:73
+msgid "Cannot find smiley package %package."
+msgstr "スマイリーパッケージ %package が見つかりませんでした。"
+
+#: smileys_import.module:84
+msgid "Please copy and paste the following text into a file at:<br /><strong>%package</strong><br /><em>with each smiley image in the same folder.</em>"
+msgstr "以下のテキストをコピーし、次のファイルにペーストしてください：<br /><strong>%package</strong><br />また、それぞれのスマイリー画像も同じフォルダに入れてください。"
+
+#: smileys_import.module:107
+msgid "No smiley packs to export."
+msgstr "エクスポートするスマイリーパックがありません。"
+
+#: smileys_import.module:134
+msgid "Smiley package %pack uninstalled."
+msgstr "スマイリーパッケージ %pack がアンインストールされました。"
+
+#: smileys_import.module:144
+msgid "Cannot find smiley package %pack."
+msgstr "スマイリーパッケージ %pack が見つかりませんでした。"
+
+#: smileys_import.module:158
+msgid "Smiley package %pack installed."
+msgstr "スマイリーパッケージ %pack がインストールされました。"
+
+#: smileys_import.module:0
+msgid "smileys_import"
+msgstr "smileys_import"
+
+#: smileys_import.info:0
+msgid "Smileys Import"
+msgstr "スマイリーインポート"
+
+#: smileys_import.info:0
+msgid "Enables import of Smiley sets."
+msgstr "スマイリーセットのインポートを有効化します。"
+
+# ------
+#: smileys.module:254 smileys_import.module:49;94
+#msgid "Operations"
+#msgstr "操作"
+

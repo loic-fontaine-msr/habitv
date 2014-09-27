@@ -1,0 +1,9 @@
+.doiMenuDOM table {
+	border-collapse:separate;
+	margin:0;
+	padding:0;
+}
+
+.doiMenuDOM tbody {
+	border-top: 0px none #CCCCCC;
+}

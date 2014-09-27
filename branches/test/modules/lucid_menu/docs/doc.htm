@@ -1,0 +1,2274 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<LINK REL="SHORTCUT ICON" HREF="img/doiMenu.ico" />
+<title>Documentation</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script type="text/javascript" src="../js/doiMenuDOM.js"></script>
+<script type="text/javascript" src="js/functions.js"></script>
+<style type="text/css">
+<!--
+body {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+}
+table {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+}
+a:link {
+	color: #FF0000;
+	text-decoration: underline;
+}
+a:visited {
+	color: #FF0000;
+	text-decoration: underline;
+}
+a:hover {
+	color: #000066;
+	text-decoration: underline;
+}
+a:active {
+	color: #FF0000;
+	text-decoration: underline;
+}
+td.header
+{
+	border-bottom:1px #FFCC00 solid;
+}
+div.header
+{
+	background-color:#FFCC00;
+	width:200px;
+	text-align:center;
+}
+-->
+</style>
+</head>
+
+<body>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+  	<td align="center" bgcolor="black" style="color:white;" colspan="2"  height="20px">
+  		<strong>doiMenu version 1.5 DOCUMENTATION</strong>
+  	</td>
+  </tr>
+  <tr>
+    <td colspan="2" align="left" bgcolor="#FFCC00">
+<script language="JavaScript" type="text/JavaScript">
+var doi1;
+doi1 ='<table width="100%" border="0" cellpadding="1" cellspacing="1" bgcolor="black">'
+doi1 +='  <tr> '
+doi1 +='    <td bgcolor="#CCCCCC"><div align="center"><font color="black" size="2" face="Tahoma, Verdana, Arial"><strong>doiMenu '
+doi1 +='        v.1.5.3</strong></font></div></td>'
+doi1 +='  </tr>'
+doi1 +='  <tr> '
+doi1 +='    <td bgcolor="#FFFFFF"><div align="right"><font size="1" face="Tahoma, Verdana, Arial">&copy;2003-2004 '
+doi1 +='        <br>Donna Iwan Setiawan</font></div></td>'
+doi1 +='  </tr>'
+doi1 +='</table>'
+
+
+var mm0 = new TMainMenu('mm0','horizontal');
+var pmHome0 = new TPopMenu('Home','0','a','index.html','Home');
+var pmDoi0 = new TPopMenu('doiMenu','0','','','doiMenu v.1.5');
+	var pmNews0 = new TPopMenu('News','','a','index.html#news','doiMenu v.1.5 News');
+  var pmNote0 = new TPopMenu('Notes','','a','index.html#note','doiMenu v.1.5 Notes');
+  var pmFea0 = new TPopMenu('Features','','a','index.html#fea','doiMenu v.1.5 Features');
+  var pmHist0 = new TPopMenu('History','','a','index.html#hist','doiMenu v.1.5 History');  
+  var pmBug0 = new TPopMenu('Known Bugs','','a','index.html#bug','doiMenu v.1.5 Know Bug');
+  var pmDemo0 = new TPopMenu('Demo','','f',"newWindow('demo/index.html')",'doiMenu v.1.5 demo');
+  var pmSep0 = new TPopMenu('-','','','','');
+  var pmDown0 = new TPopMenu('Download','','a','doiMenu.zip','Download doiMenu v.1.5');
+var pmHelp0 = new TPopMenu('Help','0','','','Help');
+  var pmDoc0 = new TPopMenu('Documentation','','a','doc.htm','doiMenu v.1.5 documentation');
+  var pmTutor0 = new TPopMenu('Tutorial','','','','Great Tutorial');
+    var pmTutor00 = new TPopMenu('www.w3schools.com','','f',"newWindow('http://www.w3schools.com')",'http://www.w3schools.com');
+  var pmLink0 = new TPopMenu('Links','','','','visit my links,please');
+    var pm5bit = new TPopMenu('www.limabit.com','','f',"newWindow('http://www.limabit.com')",'http://www.limabit.com');
+  var pmHSep0 = new TPopMenu('-','','','','');
+  var pmAbout0 = new TPopMenu('About','','','','About this program.');
+    var pmAbout00 = new TPopMenu('About','','function',"alert('doiMenu v.1.5.3\\n&copy; 2003-2004 Donna Iwan Setiawan')",'About this program.');
+    var pmAbout01 = new TPopMenu(doi1,'0','','','About this program.');
+
+mm0.Add(pmHome0);
+mm0.Add(pmDoi0);
+  pmDoi0.Add(pmNews0);
+  pmDoi0.Add(pmNote0);
+  pmDoi0.Add(pmFea0);
+  pmDoi0.Add(pmDemo0);
+  pmDoi0.Add(pmBug0);
+  pmDoi0.Add(pmHist0);
+  pmDoi0.Add(pmSep0);
+  pmDoi0.Add(pmDown0);
+mm0.Add(pmHelp0);
+  pmHelp0.Add(pmDoc0);
+  pmHelp0.Add(pmTutor0);
+    pmTutor0.Add(pmTutor00);
+  pmHelp0.Add(pmLink0);
+    pmLink0.Add(pm5bit);
+  pmHelp0.Add(pmHSep0);
+  pmHelp0.Add(pmAbout0);
+    pmAbout0.Add(pmAbout00);
+    pmAbout0.Add(pmAbout01);
+
+
+mm0.SetPosition('relative',0,0);
+if(_browser._name =="Konqueror")
+{
+	mm0.SetCorrection(11,10);
+	mm0._pop.SetCorrection(3,-20);
+}
+else
+{
+	mm0.SetCorrection(1,-1);
+	mm0._pop.SetCorrection(3,0);
+}
+mm0.SetCellSpacing(0);
+mm0.SetItemDimension(80,20);
+mm0.SetExpandIcon(true,'','6');
+
+mm0.SetBackground('black','','','');
+//mm0.SetShadow(true,'#B0B0B0',10);
+mm0.SetItemText('black','center','bold','','');
+mm0.SetItemBackground('#FFCC00','','','');
+mm0.SetItemBorder(0,'buttonface','solid');
+mm0.SetItemTextHL('white','center','bold','','');
+mm0.SetItemBackgroundHL('','','','');
+mm0.SetItemBorderHL(0,'black','solid');
+mm0.SetItemTextClick('#990000','center','bold','','');
+mm0.SetItemBackgroundClick('white','','','');
+mm0.SetItemBorderClick(0,'black','solid');
+mm0.SetBorder(0,'navy','solid');
+
+mm0._pop.SetItemDimension(150,20);
+mm0._pop.SetPaddings(2);
+mm0._pop.SetBackground('#FFCC00','img/m5.gif','repeat-y','top left');
+mm0._pop.SetSeparator(150,'right','black','');
+//mm0._pop.SetExpandIcon(true,'<+>',6);
+mm0._pop.SetBorder(0,'black','solid');
+//mm0._pop.SetShadow(true,'black',2);
+mm0._pop.SetDelay(500);
+mm0._pop.SetItemBorder(0,'','');
+mm0._pop.SetItemBorderHL(0,'black','solid');
+mm0._pop.SetItemPaddings(1);
+mm0._pop.SetItemPaddingsHL(1);
+mm0._pop.SetItemText('black','','bold','','');
+mm0._pop.SetItemTextHL('red','','bold','','');
+mm0._pop.SetItemBackground('','','','');
+mm0._pop.SetItemBackgroundHL('#FFCC00','','','');
+mm0._pop.SetBorderRight(1,'black','solid');
+mm0._pop.SetBorderBottom(1,'black','solid');
+  
+mm0.Build();
+</script>
+		</td>
+  </tr>
+  <tr>
+  	<td colspan="2">&nbsp;</td>
+  </tr>
+  <tr>
+    <td colspan="2" class="header"><div class="header"><strong>Content</strong></div></td>
+  </tr>
+  <tr>
+    <td width="5%">&nbsp;</td>
+    <td width="96%"><a href="#how">How To</a></td>
+  </tr>
+  <tr>
+    <td width="5%">&nbsp;</td>
+    <td><a href="#param">Parameters and Methods</a></td>
+  </tr>
+  <tr>
+    <td width="5%">&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+<table width="100%" border="0" cellspacing="5" cellpadding="0">
+	<tr>
+		<td colspan="2" class="header">
+			<div class="header"><strong><a name="how"></a>How To</strong></div>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2"><strong>Steps to build the menu:</strong></td>
+	</tr>
+	<tr>
+    <td valign="top">0.</td>
+    <td>include <strong>doiMenuDOM.js</strong>. I put the code below
+      in head section</td>
+  </tr>
+  <tr> 
+    <td valign="top">&nbsp;</td>
+    <td><strong><font color="#FF0000">&lt;script type=&quot;text/javascript&quot; 
+      src=&quot;doiMenuDOM.js&quot;&gt;&lt;/script&gt;</font></strong></td>
+  </tr>
+  <tr> 
+    <td width="3%" valign="top">1.</td>
+    <td>declare main menu like</td>
+  </tr>
+  <tr> 
+    <td valign="top">&nbsp;</td>
+    <td><strong><font color="#FF0000">var mmenu = new TMainMenu(main_menu_var_name,direction)</font></strong></td>
+  </tr>
+  <tr> 
+    <td valign="top">&nbsp;</td>
+    <td width="97%"><table width="100%" border="0" cellpadding="1" cellspacing="1" bgcolor="#CCCCCC">
+        <tr bgcolor="#CCCCCC"> 
+          <td width="20%"><strong>parameter</strong></td>
+          <td width="11%"><strong>type</strong></td>
+          <td width="69%"><strong>info</strong></td>
+        </tr>
+        <tr bgcolor="#FFFFFF"> 
+          <td width="20%" valign="top"><font color="#000066">main_menu_var_name</font></td>
+          <td width="11%" valign="top">string</td>
+          <td>main menu variable name. in this example = '<font color="#FFCC00"><strong>mmenu</strong></font>'</td>
+        </tr>
+        <tr bgcolor="#FFFFFF"> 
+          <td width="20%" valign="top"><font color="#000066">direction</font></td>
+          <td width="11%" valign="top">string</td>
+          <td><p>direction of main menu.<br>
+              available value : '<strong><font color="#FFCC00">horizontal</font></strong>','<font color="#FFCC00"><strong>vertical</strong></font>'.<br>
+              default is '<font color="#FFCC00"><strong>horizontal</strong></font>'</p></td>
+        </tr>
+        <tr bgcolor="#FFFFFF"> 
+          <td colspan="3" valign="top">&nbsp;</td>
+        </tr>
+      </table></td>
+  </tr>
+  <tr> 
+    <td valign="top">&nbsp;</td>
+    <td>See <a href="index.html#demo">demo</a> for detail</td>
+  </tr>
+  <tr> 
+    <td valign="top">2.</td>
+    <td>declare pop up menu like</td>
+  </tr>
+  <tr> 
+    <td valign="top">&nbsp;</td>
+    <td><strong><font color="#FF0000">var pmenu = new TPopMenu(label,icon,clickType,clickParam,status)</font></strong></td>
+  </tr>
+  <tr> 
+    <td valign="top">&nbsp;</td>
+    <td><table width="100%" border="0" cellpadding="1" cellspacing="1" bgcolor="#CCCCCC">
+        <tr bgcolor="#CCCCCC"> 
+          <td width="20%"><strong>parameter</strong></td>
+          <td width="10%"><strong>type</strong></td>
+          <td><strong>info</strong></td>
+        </tr>
+        <tr bgcolor="#FFFFFF"> 
+          <td width="20%" valign="top"><font color="#000066">label</font></td>
+          <td width="10%" valign="top">string</td>
+          <td>label</td>
+        </tr>
+        <tr bgcolor="#FFFFFF"> 
+          <td width="20%" valign="top"><font color="#000066">icon</font></td>
+          <td width="10%" valign="top">string</td>
+          <td>icon image or the distance between label and left edge of pop up
+            menu.<br>
+            image width will be stretched to <font color="#FFCC00"><strong>16px</strong></font>.</td>
+        </tr>
+        <tr bgcolor="#FFFFFF"> 
+          <td width="20%" valign="top"><font color="#000066">clickType</font></td>
+          <td width="10%" valign="top">string</td>
+          <td>available value:<br>
+            '<font color="#FFCC00"><strong>function</strong></font>','<font color="#FFCC00"><strong>f</strong></font>' 
+            : onclick event will execute function in clickParam<br>
+            '<font color="#FFCC00"><strong>address</strong></font>','<font color="#FFCC00"><strong>a</strong></font>': 
+            open url address in clickParam in same window<br>
+            '' : onclick will not be generated</td>
+        </tr>
+        <tr bgcolor="#FFFFFF"> 
+          <td width="20%" valign="top"><font color="#000066">clickParam</font></td>
+          <td width="10%" valign="top">string</td>
+          <td>onclick event function</td>
+        </tr>
+        <tr bgcolor="#FFFFFF"> 
+          <td width="20%" valign="top"><font color="#000066">status</font></td>
+          <td width="10%" valign="top">string</td>
+          <td>status in status bar.</td>
+        </tr>
+        <tr bgcolor="#FFFFFF"> 
+          <td colspan="3" valign="top">&nbsp;</td>
+        </tr>
+      </table></td>
+  </tr>
+  <tr> 
+    <td valign="top">&nbsp;</td>
+    <td>See <a href="index.html#demo">demo</a> for detail<br>
+    declare pop up menu as many as you need</td>
+  </tr>
+  <tr> 
+    <td valign="top">3.</td>
+    <td><p>add pop menu object (variable) to main menu object or other pop menu 
+        object that you want pop menu to appear in.<br>
+        example:<br>
+        <font color="#FF0000"><strong>mmenu.Add(pmenu)</strong></font> = pmenu 
+        will appear in main menu item<br>
+        <font color="#FF0000"><strong>pmenu1.Add(pmenu0)</strong></font> = pmenu0
+         will appear in pmenu1 pop menu item</p></td>
+  </tr>
+  <tr> 
+    <td valign="top">4.</td>
+    <td>set parameters as you need. see <a href="#param">Parameter Setting</a></td>
+  </tr>
+  <tr> 
+    <td valign="top">5.</td>
+    <td><p>build the menu code with <font color="#FF0000"><strong>Build()</strong></font> 
+        function.<br>
+        example:<br>
+        <font color="#FF0000"><strong>mmenu.Build()</strong></font></p></td>
+  </tr>
+  <tr> 
+    <td valign="top">6.</td>
+    <td>See <a href="index.html#demo">demo</a> for detail</td>
+  </tr>
+  <tr><td colspan="2">&nbsp;</td></tr>
+</table>
+<table width="98%" border="0" align="center" cellpadding="0" cellspacing="5">
+	<tr>
+		<td colspan="3" class="header">
+			<div class="header">
+			<strong><a name="param"></a>Parameters and Methods</strong>
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="3">
+			I have made some functions to set the parameter up. Those functions are
+			devided into 2 groups of function
+		</td>
+	</tr>
+  <tr>
+    <td width="3%">1.</td>
+    <td colspan="2">Main menu function</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td width="3%">&nbsp;</td>
+    <td width="94%"><p>sets parameters that affect on main menu appearance.<br>
+      example how to call the function:<br>
+      <font color="#FF0000"><strong><font color="#0000FF">mmenu</font>.SetPosition('absolute',100,100)</strong></font></p>
+    </td>
+  </tr>
+  <tr>
+    <td>2.</td>
+    <td colspan="2">Pop up menu function</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>sets parameters that affect on pop up menu appearance.<br>
+      example how to call the function:<br>
+      <font color="#FF0000"><strong><font color="#0000FF">mmenu._pop</font>.SetPaddings(0)</strong></font></td>
+  </tr>
+  <tr>
+    <td colspan="3">See the table below for  complete list of available functions.</td>
+  </tr>
+  <tr>
+    <td colspan="3">&nbsp;</td>
+  </tr>
+</table>
+<table width="98%" border="0" align="center" cellpadding="1" cellspacing="1" bgcolor="#CCCCCC">
+  <tr>
+    <td width="83%"><div align="center"><strong>function</strong></div></td>
+    <td width="17%" valign="top"><div align="center"><strong>available for</strong></div></td>
+  </tr>
+  <tr>
+    <td bgcolor="#FFFFFF"><table width="100%" border="0" cellspacing="1" cellpadding="1">
+      <tr>
+        <td colspan="4"><strong><font color="#FF0000">SetAlpha (v.1.5.2 and above)</font></strong></td>
+      </tr>
+      <tr>
+        <td colspan="4">Set menu transparency</td>
+      </tr>
+      <tr>
+        <td width="3%">&nbsp;</td>
+        <td width="23%" bgcolor="#CCCCCC"><div align="center"><strong>parameter</strong></div>
+        </td>
+        <td width="13%" bgcolor="#CCCCCC"><div align="center"><strong>type</strong></div>
+        </td>
+        <td width="61%" bgcolor="#CCCCCC"><div align="center"><strong>info</strong></div>
+        </td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dAlpha</font></td>
+        <td>integer</td>
+        <td>transparency value in %<br>
+          default is <font color="#FFCC00"><strong>100 </strong></font><font color="#000000">%</font></td>
+      </tr>
+    </table></td>
+    <td valign="top" bgcolor="#FFFFFF">pop up menu</td>
+  </tr>
+  <tr>
+    <td bgcolor="#FFFFFF"><table width="100%" border="0" cellspacing="1" cellpadding="1">
+      <tr>
+        <td colspan="4"><strong><font color="#FF0000">SetBackground</font></strong></td>
+      </tr>
+      <tr>
+        <td colspan="4">Set menu background</td>
+      </tr>
+      <tr>
+        <td width="3%">&nbsp;</td>
+        <td width="23%" bgcolor="#CCCCCC"><div align="center"><strong>parameter</strong></div>
+        </td>
+        <td width="13%" bgcolor="#CCCCCC"><div align="center"><strong>type</strong></div>
+        </td>
+        <td width="61%" bgcolor="#CCCCCC"><div align="center"><strong>info</strong></div>
+        </td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dColor</font></td>
+        <td>string</td>
+        <td>background color</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dImage</font></td>
+        <td>string</td>
+        <td>background image</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dRepeat</font></td>
+        <td>string</td>
+        <td>how the background image will be repeated.<br>
+          available value:'<font color="#FFCC00"><strong>repeat</strong></font>','<font color="#FFCC00"><strong>repeat-x</strong></font>','<font color="#FFCC00"><strong>repeat-y</strong></font>','<font color="#FFCC00"><strong>no-repeat</strong></font>'</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dPos</font></td>
+        <td>string</td>
+        <td>starting position of background image.<br>
+          available value:'<font color="#FFCC00"><strong>top left</strong></font>',
+          '<font color="#FFCC00"><strong>top
+          center</strong></font>', '<font color="#FFCC00"><strong>top right</strong></font>',
+          '<font color="#FFCC00"><strong>center
+          left</strong></font>', '<font color="#FFCC00"><strong>center center</strong></font>',
+          '<font color="#FFCC00"><strong>center
+          right</strong></font>' ,'<font color="#FFCC00"><strong>bottom left</strong></font>',
+          '<font color="#FFCC00"><strong>bottom
+          center</strong></font>', '<font color="#FFCC00"><strong>bottom right</strong></font>',
+          '<font color="#FFCC00"><strong>x-%
+          y-%</strong></font>', '<font color="#FFCC00"><strong>x-pos y-pos</strong></font>'</td>
+      </tr>
+    </table></td>
+    <td valign="top" bgcolor="#FFFFFF">both</td>
+  </tr>
+  <tr>
+    <td bgcolor="#FFFFFF"><table width="100%" border="0" cellspacing="1" cellpadding="1">
+      <tr>
+        <td colspan="4"><strong><font color="#FF0000">SetBorder</font></strong></td>
+      </tr>
+      <tr>
+        <td colspan="4">Set menu border</td>
+      </tr>
+      <tr>
+        <td width="3%">&nbsp;</td>
+        <td width="23%" bgcolor="#CCCCCC"><div align="center"><strong>parameter</strong></div>
+        </td>
+        <td width="13%" bgcolor="#CCCCCC"><div align="center"><strong>type</strong></div>
+        </td>
+        <td width="61%" bgcolor="#CCCCCC"><div align="center"><strong>info</strong></div>
+        </td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dSize</font></td>
+        <td>integer</td>
+        <td>border size in pixel</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dColor</font></td>
+        <td>string</td>
+        <td>border color</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dType</font></td>
+        <td>string</td>
+        <td>border type.<br>
+          available value:'<strong><font color="#FFCC00">none</font></strong>',
+          '<font color="#FFCC00"><strong>hidden</strong></font>', '<font color="#FFCC00"><strong>dotted</strong></font>',
+          '<font color="#FFCC00"><strong>dashed</strong></font>', '<font color="#FFCC00"><strong>solid</strong></font>',
+          '<font color="#FFCC00"><strong>double</strong></font>', '<font color="#FFCC00"><strong>groove</strong></font>',
+          '<font color="#FFCC00"><strong>ridge</strong></font>', '<font color="#FFCC00"><strong>inset</strong></font>',
+          '<font color="#FFCC00"><strong>outset</strong></font>'</td>
+      </tr>
+    </table></td>
+    <td valign="top" bgcolor="#FFFFFF">both</td>
+  </tr>
+  <tr>
+    <td bgcolor="#FFFFFF"><table width="100%" border="0" cellspacing="1" cellpadding="1">
+      <tr>
+        <td colspan="4"><strong><font color="#FF0000">SetBorderTop</font></strong></td>
+      </tr>
+      <tr>
+        <td colspan="4">Set top menu border</td>
+      </tr>
+      <tr>
+        <td width="3%">&nbsp;</td>
+        <td width="23%" bgcolor="#CCCCCC"><div align="center"><strong>parameter</strong></div>
+        </td>
+        <td width="13%" bgcolor="#CCCCCC"><div align="center"><strong>type</strong></div>
+        </td>
+        <td width="61%" bgcolor="#CCCCCC"><div align="center"><strong>info</strong></div>
+        </td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dSize</font></td>
+        <td>integer</td>
+        <td>border size in pixel</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dColor</font></td>
+        <td>string</td>
+        <td>border color</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dType</font></td>
+        <td>string</td>
+        <td>border type</td>
+      </tr>
+    </table></td>
+    <td valign="top" bgcolor="#FFFFFF">both</td>
+  </tr>
+  <tr>
+    <td bgcolor="#FFFFFF"><table width="100%" border="0" cellspacing="1" cellpadding="1">
+      <tr>
+        <td colspan="4"><strong><font color="#FF0000">SetBorderRight</font></strong></td>
+      </tr>
+      <tr>
+        <td colspan="4">Set right menu border</td>
+      </tr>
+      <tr>
+        <td width="3%">&nbsp;</td>
+        <td width="23%" bgcolor="#CCCCCC"><div align="center"><strong>parameter</strong></div>
+        </td>
+        <td width="13%" bgcolor="#CCCCCC"><div align="center"><strong>type</strong></div>
+        </td>
+        <td width="61%" bgcolor="#CCCCCC"><div align="center"><strong>info</strong></div>
+        </td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dSize</font></td>
+        <td>integer</td>
+        <td>border size in pixel</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dColor</font></td>
+        <td>string</td>
+        <td>border color</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dType</font></td>
+        <td>string</td>
+        <td>border type</td>
+      </tr>
+    </table></td>
+    <td valign="top" bgcolor="#FFFFFF">both</td>
+  </tr>
+  <tr>
+    <td bgcolor="#FFFFFF"><table width="100%" border="0" cellspacing="1" cellpadding="1">
+      <tr>
+        <td colspan="4"><strong><font color="#FF0000">SetBorderBottom</font></strong></td>
+      </tr>
+      <tr>
+        <td colspan="4">Set bottom menu border</td>
+      </tr>
+      <tr>
+        <td width="3%">&nbsp;</td>
+        <td width="23%" bgcolor="#CCCCCC"><div align="center"><strong>parameter</strong></div>
+        </td>
+        <td width="13%" bgcolor="#CCCCCC"><div align="center"><strong>type</strong></div>
+        </td>
+        <td width="61%" bgcolor="#CCCCCC"><div align="center"><strong>info</strong></div>
+        </td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dSize</font></td>
+        <td>integer</td>
+        <td>border size in pixel</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dColor</font></td>
+        <td>string</td>
+        <td>border color</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dType</font></td>
+        <td>string</td>
+        <td>border type</td>
+      </tr>
+    </table></td>
+    <td valign="top" bgcolor="#FFFFFF">both</td>
+  </tr>
+  <tr>
+    <td bgcolor="#FFFFFF"><table width="100%" border="0" cellspacing="1" cellpadding="1">
+      <tr>
+        <td colspan="4"><strong><font color="#FF0000">SetBorderLeft</font></strong></td>
+      </tr>
+      <tr>
+        <td colspan="4">Set left menu border</td>
+      </tr>
+      <tr>
+        <td width="3%">&nbsp;</td>
+        <td width="23%" bgcolor="#CCCCCC"><div align="center"><strong>parameter</strong></div>
+        </td>
+        <td width="13%" bgcolor="#CCCCCC"><div align="center"><strong>type</strong></div>
+        </td>
+        <td width="61%" bgcolor="#CCCCCC"><div align="center"><strong>info</strong></div>
+        </td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dSize</font></td>
+        <td>integer</td>
+        <td>border size in pixel</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dColor</font></td>
+        <td>string</td>
+        <td>border color</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dType</font></td>
+        <td>string</td>
+        <td>border type</td>
+      </tr>
+    </table></td>
+    <td valign="top" bgcolor="#FFFFFF">both</td>
+  </tr>
+  <tr>
+    <td bgcolor="#FFFFFF"><table width="100%" border="0" cellspacing="1" cellpadding="1">
+      <tr>
+        <td colspan="4"><strong><font color="#FF0000">SetCellSpacing</font></strong></td>
+      </tr>
+      <tr>
+        <td colspan="4">Set main menu cellspacing</td>
+      </tr>
+      <tr>
+        <td width="3%">&nbsp;</td>
+        <td width="23%" bgcolor="#CCCCCC"><div align="center"><strong>parameter</strong></div>
+        </td>
+        <td width="13%" bgcolor="#CCCCCC"><div align="center"><strong>type</strong></div>
+        </td>
+        <td width="61%" bgcolor="#CCCCCC"><div align="center"><strong>info</strong></div>
+        </td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dSpace</font></td>
+        <td>integer</td>
+        <td>cellspacing</td>
+      </tr>
+    </table></td>
+    <td valign="top" bgcolor="#FFFFFF">main menu</td>
+  </tr>
+  <tr>
+    <td bgcolor="#FFFFFF"><table width="100%" border="0" cellspacing="1" cellpadding="1">
+      <tr>
+        <td colspan="4"><strong><font color="#FF0000">SetCorrection</font></strong></td>
+      </tr>
+      <tr>
+        <td colspan="4">Set correction of distance between main menu and pop
+          up menu or pop up menus in pixel</td>
+      </tr>
+      <tr>
+        <td width="3%">&nbsp;</td>
+        <td width="23%" bgcolor="#CCCCCC"><div align="center"><strong>parameter</strong></div>
+        </td>
+        <td width="13%" bgcolor="#CCCCCC"><div align="center"><strong>type</strong></div>
+        </td>
+        <td width="61%" bgcolor="#CCCCCC"><div align="center"><strong>info</strong></div>
+        </td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dLeft</font></td>
+        <td>integer</td>
+        <td>left correction</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dTop</font></td>
+        <td>integer</td>
+        <td>top correction</td>
+      </tr>
+    </table></td>
+    <td valign="top" bgcolor="#FFFFFF">both</td>
+  </tr>
+  <tr>
+    <td bgcolor="#FFFFFF"><table width="100%" border="0" cellspacing="1" cellpadding="1">
+      <tr>
+        <td colspan="4"><strong><font color="#FF0000">SetDelay</font></strong></td>
+      </tr>
+      <tr>
+        <td colspan="4">Set time out of pop up menu appearance</td>
+      </tr>
+      <tr>
+        <td width="3%">&nbsp;</td>
+        <td width="23%" bgcolor="#CCCCCC"><div align="center"><strong>parameter</strong></div>
+        </td>
+        <td width="13%" bgcolor="#CCCCCC"><div align="center"><strong>type</strong></div>
+        </td>
+        <td width="61%" bgcolor="#CCCCCC"><div align="center"><strong>info</strong></div>
+        </td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dTimeOut</font></td>
+        <td>integer</td>
+        <td>time delay in millisecond</td>
+      </tr>
+    </table></td>
+    <td valign="top" bgcolor="#FFFFFF">pop up menu</td>
+  </tr>
+  <tr>
+    <td bgcolor="#FFFFFF"><table width="100%" border="0" cellspacing="1" cellpadding="1">
+      <tr>
+        <td colspan="4"><strong><font color="#FF0000">SetExpandIcon</font></strong></td>
+      </tr>
+      <tr>
+        <td colspan="4">Set expand icon</td>
+      </tr>
+      <tr>
+        <td width="3%">&nbsp;</td>
+        <td width="23%" bgcolor="#CCCCCC"><div align="center"><strong>parameter</strong></div>
+        </td>
+        <td width="13%" bgcolor="#CCCCCC"><div align="center"><strong>type</strong></div>
+        </td>
+        <td width="61%" bgcolor="#CCCCCC"><div align="center"><strong>info</strong></div>
+        </td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dCreate</font></td>
+        <td>boolean</td>
+        <td>create expand icon or not</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dSymbol</font></td>
+        <td>string</td>
+          <td>expand icon symbol.<br>
+            available value: ''='<font color="#FFCC00"><strong>&amp;#9658;</strong></font>' 
+            or <font face="Arial, Times New Roman, sans-serif">&#9658</font></td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dSize</font></td>
+        <td>integer</td>
+        <td>size of expand icon in point</td>
+      </tr>
+    </table></td>
+    <td valign="top" bgcolor="#FFFFFF">both</td>
+  </tr>
+  <tr>
+    <td bgcolor="#FFFFFF"><table width="100%" border="0" cellspacing="1" cellpadding="1">
+      <tr>
+        <td colspan="4"><strong><font color="#FF0000">SetFont</font></strong></td>
+      </tr>
+      <tr>
+        <td colspan="4">Set font style</td>
+      </tr>
+      <tr>
+        <td width="3%">&nbsp;</td>
+        <td width="23%" bgcolor="#CCCCCC"><div align="center"><strong>parameter</strong></div>
+        </td>
+        <td width="13%" bgcolor="#CCCCCC"><div align="center"><strong>type</strong></div>
+        </td>
+        <td width="61%" bgcolor="#CCCCCC"><div align="center"><strong>info</strong></div>
+        </td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dFamily</font></td>
+        <td>string</td>
+        <td>font family</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dSize</font></td>
+        <td>string</td>
+        <td>font size</td>
+      </tr>
+    </table></td>
+    <td valign="top" bgcolor="#FFFFFF">both</td>
+  </tr>
+  <tr>
+    <td bgcolor="#FFFFFF"><table width="100%" border="0" cellspacing="1" cellpadding="1">
+      <tr>
+        <td colspan="4"><strong><font color="#FF0000">SetItemBackground</font></strong></td>
+      </tr>
+      <tr>
+        <td colspan="4">Set background of menu item</td>
+      </tr>
+      <tr>
+        <td width="3%">&nbsp;</td>
+        <td width="23%" bgcolor="#CCCCCC"><div align="center"><strong>parameter</strong></div>
+        </td>
+        <td width="13%" bgcolor="#CCCCCC"><div align="center"><strong>type</strong></div>
+        </td>
+        <td width="61%" bgcolor="#CCCCCC"><div align="center"><strong>info</strong></div>
+        </td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dColor</font></td>
+        <td>string</td>
+        <td>background color</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dImage</font></td>
+        <td>string</td>
+        <td>background image</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dRepeat</font></td>
+        <td>string</td>
+        <td>how the background image will be repeated</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dPos</font></td>
+        <td>string</td>
+        <td>starting position of background image</td>
+      </tr>
+    </table></td>
+    <td valign="top" bgcolor="#FFFFFF">both</td>
+  </tr>
+  <tr>
+    <td bgcolor="#FFFFFF"><table width="100%" border="0" cellspacing="1" cellpadding="1">
+      <tr>
+        <td colspan="4"><strong><font color="#FF0000">SetItemBackgroundClick</font></strong></td>
+      </tr>
+      <tr>
+        <td colspan="4">Set background of main menu item when clicked</td>
+      </tr>
+      <tr>
+        <td width="3%">&nbsp;</td>
+        <td width="23%" bgcolor="#CCCCCC"><div align="center"><strong>parameter</strong></div>
+        </td>
+        <td width="13%" bgcolor="#CCCCCC"><div align="center"><strong>type</strong></div>
+        </td>
+        <td width="61%" bgcolor="#CCCCCC"><div align="center"><strong>info</strong></div>
+        </td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dColor</font></td>
+        <td>string</td>
+        <td>background color</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dImage</font></td>
+        <td>string</td>
+        <td>background image</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dRepeat</font></td>
+        <td>string</td>
+        <td>how the background image will be repeated</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dPos</font></td>
+        <td>string</td>
+        <td>starting position of background image</td>
+      </tr>
+    </table></td>
+    <td valign="top" bgcolor="#FFFFFF">main menu</td>
+  </tr>
+  <tr>
+    <td bgcolor="#FFFFFF"><table width="100%" border="0" cellspacing="1" cellpadding="1">
+      <tr>
+        <td colspan="4"><strong><font color="#FF0000">SetItemBackgroundHL</font></strong></td>
+      </tr>
+      <tr>
+        <td colspan="4">Set background of menu item when highlighted</td>
+      </tr>
+      <tr>
+        <td width="3%">&nbsp;</td>
+        <td width="23%" bgcolor="#CCCCCC"><div align="center"><strong>parameter</strong></div>
+        </td>
+        <td width="13%" bgcolor="#CCCCCC"><div align="center"><strong>type</strong></div>
+        </td>
+        <td width="61%" bgcolor="#CCCCCC"><div align="center"><strong>info</strong></div>
+        </td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dColor</font></td>
+        <td>string</td>
+        <td>background color</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dImage</font></td>
+        <td>string</td>
+        <td>background image</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dRepeat</font></td>
+        <td>string</td>
+        <td>how the background image will be repeated</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dPos</font></td>
+        <td>string</td>
+        <td>starting position of background image</td>
+      </tr>
+    </table></td>
+    <td valign="top" bgcolor="#FFFFFF">both</td>
+  </tr>
+  <tr>
+    <td bgcolor="#FFFFFF"><table width="100%" border="0" cellspacing="1" cellpadding="1">
+      <tr>
+        <td colspan="4"><strong><font color="#FF0000">SetItemBorder</font></strong></td>
+      </tr>
+      <tr>
+        <td colspan="4">Set menu item border</td>
+      </tr>
+      <tr>
+        <td width="3%">&nbsp;</td>
+        <td width="23%" bgcolor="#CCCCCC"><div align="center"><strong>parameter</strong></div>
+        </td>
+        <td width="13%" bgcolor="#CCCCCC"><div align="center"><strong>type</strong></div>
+        </td>
+        <td width="61%" bgcolor="#CCCCCC"><div align="center"><strong>info</strong></div>
+        </td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dSize</font></td>
+        <td>integer</td>
+        <td>border size in pixel</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dColor</font></td>
+        <td>string</td>
+        <td>border color</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dType</font></td>
+        <td>string</td>
+        <td>border type</td>
+      </tr>
+    </table></td>
+    <td valign="top" bgcolor="#FFFFFF">both</td>
+  </tr>
+  <tr>
+    <td bgcolor="#FFFFFF"><table width="100%" border="0" cellspacing="1" cellpadding="1">
+      <tr>
+        <td colspan="4"><strong><font color="#FF0000">SetItemBorderTop</font></strong></td>
+      </tr>
+      <tr>
+        <td colspan="4">Set top menu item border</td>
+      </tr>
+      <tr>
+        <td width="3%">&nbsp;</td>
+        <td width="23%" bgcolor="#CCCCCC"><div align="center"><strong>parameter</strong></div>
+        </td>
+        <td width="13%" bgcolor="#CCCCCC"><div align="center"><strong>type</strong></div>
+        </td>
+        <td width="61%" bgcolor="#CCCCCC"><div align="center"><strong>info</strong></div>
+        </td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dSize</font></td>
+        <td>integer</td>
+        <td>border size in pixel</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dColor</font></td>
+        <td>string</td>
+        <td>border color</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dType</font></td>
+        <td>string</td>
+        <td>border type</td>
+      </tr>
+    </table></td>
+    <td valign="top" bgcolor="#FFFFFF">both</td>
+  </tr>
+  <tr>
+    <td bgcolor="#FFFFFF"><table width="100%" border="0" cellspacing="1" cellpadding="1">
+      <tr>
+        <td colspan="4"><strong><font color="#FF0000">SetItemBorderRight</font></strong></td>
+      </tr>
+      <tr>
+        <td colspan="4">Set right menu item border</td>
+      </tr>
+      <tr>
+        <td width="3%">&nbsp;</td>
+        <td width="23%" bgcolor="#CCCCCC"><div align="center"><strong>parameter</strong></div>
+        </td>
+        <td width="13%" bgcolor="#CCCCCC"><div align="center"><strong>type</strong></div>
+        </td>
+        <td width="61%" bgcolor="#CCCCCC"><div align="center"><strong>info</strong></div>
+        </td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dSize</font></td>
+        <td>integer</td>
+        <td>border size in pixel</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dColor</font></td>
+        <td>string</td>
+        <td>border color</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dType</font></td>
+        <td>string</td>
+        <td>border type</td>
+      </tr>
+    </table></td>
+    <td valign="top" bgcolor="#FFFFFF">both</td>
+  </tr>
+  <tr>
+    <td bgcolor="#FFFFFF"><table width="100%" border="0" cellspacing="1" cellpadding="1">
+      <tr>
+        <td colspan="4"><strong><font color="#FF0000">SetItemBorderBottom</font></strong></td>
+      </tr>
+      <tr>
+        <td colspan="4">Set bottom menu item border</td>
+      </tr>
+      <tr>
+        <td width="3%">&nbsp;</td>
+        <td width="23%" bgcolor="#CCCCCC"><div align="center"><strong>parameter</strong></div>
+        </td>
+        <td width="13%" bgcolor="#CCCCCC"><div align="center"><strong>type</strong></div>
+        </td>
+        <td width="61%" bgcolor="#CCCCCC"><div align="center"><strong>info</strong></div>
+        </td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dSize</font></td>
+        <td>integer</td>
+        <td>border size in pixel</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dColor</font></td>
+        <td>string</td>
+        <td>border color</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dType</font></td>
+        <td>string</td>
+        <td>border type</td>
+      </tr>
+    </table></td>
+    <td valign="top" bgcolor="#FFFFFF">both</td>
+  </tr>
+  <tr>
+    <td bgcolor="#FFFFFF"><table width="100%" border="0" cellspacing="1" cellpadding="1">
+      <tr>
+        <td colspan="4"><strong><font color="#FF0000">SetItemBorderLeft</font></strong></td>
+      </tr>
+      <tr>
+        <td colspan="4">Set left menu item border</td>
+      </tr>
+      <tr>
+        <td width="3%">&nbsp;</td>
+        <td width="23%" bgcolor="#CCCCCC"><div align="center"><strong>parameter</strong></div>
+        </td>
+        <td width="13%" bgcolor="#CCCCCC"><div align="center"><strong>type</strong></div>
+        </td>
+        <td width="61%" bgcolor="#CCCCCC"><div align="center"><strong>info</strong></div>
+        </td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dSize</font></td>
+        <td>integer</td>
+        <td>border size in pixel</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dColor</font></td>
+        <td>string</td>
+        <td>border color</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dType</font></td>
+        <td>string</td>
+        <td>border type</td>
+      </tr>
+    </table></td>
+    <td valign="top" bgcolor="#FFFFFF">both</td>
+  </tr>
+  <tr>
+    <td bgcolor="#FFFFFF"><table width="100%" border="0" cellspacing="1" cellpadding="1">
+      <tr>
+        <td colspan="4"><strong><font color="#FF0000">SetItemBorderClick</font></strong></td>
+      </tr>
+      <tr>
+        <td colspan="4">Set menu item border when clicked</td>
+      </tr>
+      <tr>
+        <td width="3%">&nbsp;</td>
+        <td width="23%" bgcolor="#CCCCCC"><div align="center"><strong>parameter</strong></div>
+        </td>
+        <td width="13%" bgcolor="#CCCCCC"><div align="center"><strong>type</strong></div>
+        </td>
+        <td width="61%" bgcolor="#CCCCCC"><div align="center"><strong>info</strong></div>
+        </td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dSize</font></td>
+        <td>integer</td>
+        <td>border size in pixel</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dColor</font></td>
+        <td>string</td>
+        <td>border color</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dType</font></td>
+        <td>string</td>
+        <td>border type</td>
+      </tr>
+    </table></td>
+    <td valign="top" bgcolor="#FFFFFF">main menu</td>
+  </tr>
+  <tr>
+    <td bgcolor="#FFFFFF"><table width="100%" border="0" cellspacing="1" cellpadding="1">
+      <tr>
+        <td colspan="4"><strong><font color="#FF0000">SetItemBorderTopClick</font></strong></td>
+      </tr>
+      <tr>
+        <td colspan="4">Set top menu item border when clicked</td>
+      </tr>
+      <tr>
+        <td width="3%">&nbsp;</td>
+        <td width="23%" bgcolor="#CCCCCC"><div align="center"><strong>parameter</strong></div>
+        </td>
+        <td width="13%" bgcolor="#CCCCCC"><div align="center"><strong>type</strong></div>
+        </td>
+        <td width="61%" bgcolor="#CCCCCC"><div align="center"><strong>info</strong></div>
+        </td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dSize</font></td>
+        <td>integer</td>
+        <td>border size in pixel</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dColor</font></td>
+        <td>string</td>
+        <td>border color</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dType</font></td>
+        <td>string</td>
+        <td>border type</td>
+      </tr>
+    </table></td>
+    <td valign="top" bgcolor="#FFFFFF">main menu</td>
+  </tr>
+  <tr>
+    <td bgcolor="#FFFFFF"><table width="100%" border="0" cellspacing="1" cellpadding="1">
+      <tr>
+        <td colspan="4"><strong><font color="#FF0000">SetItemBorderRightClick</font></strong></td>
+      </tr>
+      <tr>
+        <td colspan="4">Set right menu item border when clicked</td>
+      </tr>
+      <tr>
+        <td width="3%">&nbsp;</td>
+        <td width="23%" bgcolor="#CCCCCC"><div align="center"><strong>parameter</strong></div>
+        </td>
+        <td width="13%" bgcolor="#CCCCCC"><div align="center"><strong>type</strong></div>
+        </td>
+        <td width="61%" bgcolor="#CCCCCC"><div align="center"><strong>info</strong></div>
+        </td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dSize</font></td>
+        <td>integer</td>
+        <td>border size in pixel</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dColor</font></td>
+        <td>string</td>
+        <td>border color</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dType</font></td>
+        <td>string</td>
+        <td>border type</td>
+      </tr>
+    </table></td>
+    <td valign="top" bgcolor="#FFFFFF">main menu</td>
+  </tr>
+  <tr>
+    <td bgcolor="#FFFFFF"><table width="100%" border="0" cellspacing="1" cellpadding="1">
+      <tr>
+        <td colspan="4"><strong><font color="#FF0000">SetItemBorderBottomClick</font></strong></td>
+      </tr>
+      <tr>
+        <td colspan="4">Set bottom menu item border when clicked</td>
+      </tr>
+      <tr>
+        <td width="3%">&nbsp;</td>
+        <td width="23%" bgcolor="#CCCCCC"><div align="center"><strong>parameter</strong></div>
+        </td>
+        <td width="13%" bgcolor="#CCCCCC"><div align="center"><strong>type</strong></div>
+        </td>
+        <td width="61%" bgcolor="#CCCCCC"><div align="center"><strong>info</strong></div>
+        </td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dSize</font></td>
+        <td>integer</td>
+        <td>border size in pixel</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dColor</font></td>
+        <td>string</td>
+        <td>border color</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dType</font></td>
+        <td>string</td>
+        <td>border type</td>
+      </tr>
+    </table></td>
+    <td valign="top" bgcolor="#FFFFFF">main menu</td>
+  </tr>
+  <tr>
+    <td bgcolor="#FFFFFF"><table width="100%" border="0" cellspacing="1" cellpadding="1">
+      <tr>
+        <td colspan="4"><strong><font color="#FF0000">SetItemBorderLeftClick</font></strong></td>
+      </tr>
+      <tr>
+        <td colspan="4">Set left menu item border when clicked</td>
+      </tr>
+      <tr>
+        <td width="3%">&nbsp;</td>
+        <td width="23%" bgcolor="#CCCCCC"><div align="center"><strong>parameter</strong></div>
+        </td>
+        <td width="13%" bgcolor="#CCCCCC"><div align="center"><strong>type</strong></div>
+        </td>
+        <td width="61%" bgcolor="#CCCCCC"><div align="center"><strong>info</strong></div>
+        </td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dSize</font></td>
+        <td>integer</td>
+        <td>border size in pixel</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dColor</font></td>
+        <td>string</td>
+        <td>border color</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dType</font></td>
+        <td>string</td>
+        <td>border type</td>
+      </tr>
+    </table></td>
+    <td valign="top" bgcolor="#FFFFFF">main menu</td>
+  </tr>
+  <tr>
+    <td bgcolor="#FFFFFF"><table width="100%" border="0" cellspacing="1" cellpadding="1">
+      <tr>
+        <td colspan="4"><strong><font color="#FF0000">SetItemBorderHL</font></strong></td>
+      </tr>
+      <tr>
+        <td colspan="4">Set menu item border when highlighted</td>
+      </tr>
+      <tr>
+        <td width="3%">&nbsp;</td>
+        <td width="23%" bgcolor="#CCCCCC"><div align="center"><strong>parameter</strong></div>
+        </td>
+        <td width="13%" bgcolor="#CCCCCC"><div align="center"><strong>type</strong></div>
+        </td>
+        <td width="61%" bgcolor="#CCCCCC"><div align="center"><strong>info</strong></div>
+        </td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dSize</font></td>
+        <td>integer</td>
+        <td>border size in pixel</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dColor</font></td>
+        <td>string</td>
+        <td>border color</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dType</font></td>
+        <td>string</td>
+        <td>border type</td>
+      </tr>
+    </table></td>
+    <td valign="top" bgcolor="#FFFFFF">both</td>
+  </tr>
+  <tr>
+    <td bgcolor="#FFFFFF"><table width="100%" border="0" cellspacing="1" cellpadding="1">
+      <tr>
+        <td colspan="4"><strong><font color="#FF0000">SetItemBorderTopHL</font></strong></td>
+      </tr>
+      <tr>
+        <td colspan="4">Set top menu item border when highlighted</td>
+      </tr>
+      <tr>
+        <td width="3%">&nbsp;</td>
+        <td width="23%" bgcolor="#CCCCCC"><div align="center"><strong>parameter</strong></div>
+        </td>
+        <td width="13%" bgcolor="#CCCCCC"><div align="center"><strong>type</strong></div>
+        </td>
+        <td width="61%" bgcolor="#CCCCCC"><div align="center"><strong>info</strong></div>
+        </td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dSize</font></td>
+        <td>integer</td>
+        <td>border size in pixel</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dColor</font></td>
+        <td>string</td>
+        <td>border color</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dType</font></td>
+        <td>string</td>
+        <td>border type</td>
+      </tr>
+    </table></td>
+    <td valign="top" bgcolor="#FFFFFF">both</td>
+  </tr>
+  <tr>
+    <td bgcolor="#FFFFFF"><table width="100%" border="0" cellspacing="1" cellpadding="1">
+      <tr>
+        <td colspan="4"><strong><font color="#FF0000">SetItemBorderRightHL</font></strong></td>
+      </tr>
+      <tr>
+        <td colspan="4">Set right menu item border when highlighted</td>
+      </tr>
+      <tr>
+        <td width="3%">&nbsp;</td>
+        <td width="23%" bgcolor="#CCCCCC"><div align="center"><strong>parameter</strong></div>
+        </td>
+        <td width="13%" bgcolor="#CCCCCC"><div align="center"><strong>type</strong></div>
+        </td>
+        <td width="61%" bgcolor="#CCCCCC"><div align="center"><strong>info</strong></div>
+        </td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dSize</font></td>
+        <td>integer</td>
+        <td>border size in pixel</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dColor</font></td>
+        <td>string</td>
+        <td>border color</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dType</font></td>
+        <td>string</td>
+        <td>border type</td>
+      </tr>
+    </table></td>
+    <td valign="top" bgcolor="#FFFFFF">both</td>
+  </tr>
+  <tr>
+    <td bgcolor="#FFFFFF"><table width="100%" border="0" cellspacing="1" cellpadding="1">
+      <tr>
+        <td colspan="4"><strong><font color="#FF0000">SetItemBorderBottomHL</font></strong></td>
+      </tr>
+      <tr>
+        <td colspan="4">Set bottom menu item border when highlighted</td>
+      </tr>
+      <tr>
+        <td width="3%">&nbsp;</td>
+        <td width="23%" bgcolor="#CCCCCC"><div align="center"><strong>parameter</strong></div>
+        </td>
+        <td width="13%" bgcolor="#CCCCCC"><div align="center"><strong>type</strong></div>
+        </td>
+        <td width="61%" bgcolor="#CCCCCC"><div align="center"><strong>info</strong></div>
+        </td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dSize</font></td>
+        <td>integer</td>
+        <td>border size in pixel</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dColor</font></td>
+        <td>string</td>
+        <td>border color</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dType</font></td>
+        <td>string</td>
+        <td>border type</td>
+      </tr>
+    </table></td>
+    <td valign="top" bgcolor="#FFFFFF">both</td>
+  </tr>
+  <tr>
+    <td bgcolor="#FFFFFF"><table width="100%" border="0" cellspacing="1" cellpadding="1">
+      <tr>
+        <td colspan="4"><strong><font color="#FF0000">SetItemBorderLeftHL</font></strong></td>
+      </tr>
+      <tr>
+        <td colspan="4">Set left menu item border when highlighted</td>
+      </tr>
+      <tr>
+        <td width="3%">&nbsp;</td>
+        <td width="23%" bgcolor="#CCCCCC"><div align="center"><strong>parameter</strong></div>
+        </td>
+        <td width="13%" bgcolor="#CCCCCC"><div align="center"><strong>type</strong></div>
+        </td>
+        <td width="61%" bgcolor="#CCCCCC"><div align="center"><strong>info</strong></div>
+        </td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dSize</font></td>
+        <td>integer</td>
+        <td>border size in pixel</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dColor</font></td>
+        <td>string</td>
+        <td>border color</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dType</font></td>
+        <td>string</td>
+        <td>border type</td>
+      </tr>
+    </table></td>
+    <td valign="top" bgcolor="#FFFFFF">both</td>
+  </tr>
+  <tr>
+    <td bgcolor="#FFFFFF"><table width="100%" border="0" cellspacing="1" cellpadding="1">
+      <tr>
+        <td colspan="4"><strong><font color="#FF0000">SetItemDimension</font></strong></td>
+      </tr>
+      <tr>
+        <td colspan="4">Set dimension of menu item</td>
+      </tr>
+      <tr>
+        <td width="3%">&nbsp;</td>
+        <td width="23%" bgcolor="#CCCCCC"><div align="center"><strong>parameter</strong></div>
+        </td>
+        <td width="13%" bgcolor="#CCCCCC"><div align="center"><strong>type</strong></div>
+        </td>
+        <td width="61%" bgcolor="#CCCCCC"><div align="center"><strong>info</strong></div>
+        </td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dWidth</font></td>
+        <td>integer</td>
+        <td>width of menu item in pixel</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dHeight</font></td>
+        <td>integer</td>
+        <td>height of menu item in pixel</td>
+      </tr>
+    </table></td>
+    <td valign="top" bgcolor="#FFFFFF">both</td>
+  </tr>
+  <tr>
+    <td bgcolor="#FFFFFF"><table width="100%" border="0" cellspacing="1" cellpadding="1">
+      <tr>
+        <td colspan="4"><strong><font color="#FF0000">SetItemPadding</font></strong></td>
+      </tr>
+      <tr>
+        <td colspan="4">Set pop up menu item padding</td>
+      </tr>
+      <tr>
+        <td width="3%">&nbsp;</td>
+        <td width="23%" bgcolor="#CCCCCC"><div align="center"><strong>parameter</strong></div>
+        </td>
+        <td width="13%" bgcolor="#CCCCCC"><div align="center"><strong>type</strong></div>
+        </td>
+        <td width="61%" bgcolor="#CCCCCC"><div align="center"><strong>info</strong></div>
+        </td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dTop</font></td>
+        <td>integer</td>
+        <td>top padding size in pixel</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dRight</font></td>
+        <td>integer</td>
+        <td>right padding size in pixel</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dBottom</font></td>
+        <td>integer</td>
+        <td>bottom padding size in pixel</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dLeft</font></td>
+        <td>integer</td>
+        <td>left padding size in pixel</td>
+      </tr>
+    </table></td>
+    <td valign="top" bgcolor="#FFFFFF">pop up menu</td>
+  </tr>
+  <tr>
+    <td bgcolor="#FFFFFF"><table width="100%" border="0" cellspacing="1" cellpadding="1">
+      <tr>
+        <td colspan="4"><strong><font color="#FF0000">SetItemPaddings</font></strong></td>
+      </tr>
+      <tr>
+        <td colspan="4">Set pop up menu item padding</td>
+      </tr>
+      <tr>
+        <td width="3%">&nbsp;</td>
+        <td width="23%" bgcolor="#CCCCCC"><div align="center"><strong>parameter</strong></div>
+        </td>
+        <td width="13%" bgcolor="#CCCCCC"><div align="center"><strong>type</strong></div>
+        </td>
+        <td width="61%" bgcolor="#CCCCCC"><div align="center"><strong>info</strong></div>
+        </td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dSize</font></td>
+        <td>integer</td>
+        <td>padding size in pixel</td>
+      </tr>
+    </table></td>
+    <td valign="top" bgcolor="#FFFFFF">pop up menu</td>
+  </tr>
+  <tr>
+    <td bgcolor="#FFFFFF"><table width="100%" border="0" cellspacing="1" cellpadding="1">
+      <tr>
+        <td colspan="4"><strong><font color="#FF0000">SetItemPaddingHL</font></strong></td>
+      </tr>
+      <tr>
+        <td colspan="4">Set pop up menu item padding when highlighted</td>
+      </tr>
+      <tr>
+        <td width="3%">&nbsp;</td>
+        <td width="23%" bgcolor="#CCCCCC"><div align="center"><strong>parameter</strong></div>
+        </td>
+        <td width="13%" bgcolor="#CCCCCC"><div align="center"><strong>type</strong></div>
+        </td>
+        <td width="61%" bgcolor="#CCCCCC"><div align="center"><strong>info</strong></div>
+        </td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dTop</font></td>
+        <td>integer</td>
+        <td>top padding size in pixel</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dRight</font></td>
+        <td>integer</td>
+        <td>right padding size in pixel</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dBottom</font></td>
+        <td>integer</td>
+        <td>bottom padding size in pixel</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dLeft</font></td>
+        <td>integer</td>
+        <td>left padding size in pixel</td>
+      </tr>
+    </table></td>
+    <td valign="top" bgcolor="#FFFFFF">pop up menu</td>
+  </tr>
+  <tr>
+    <td bgcolor="#FFFFFF"><table width="100%" border="0" cellspacing="1" cellpadding="1">
+      <tr>
+        <td colspan="4"><strong><font color="#FF0000">SetItemPaddingsHL</font></strong></td>
+      </tr>
+      <tr>
+        <td colspan="4">Set pop up menu item padding when highlighted</td>
+      </tr>
+      <tr>
+        <td width="3%">&nbsp;</td>
+        <td width="23%" bgcolor="#CCCCCC"><div align="center"><strong>parameter</strong></div>
+        </td>
+        <td width="13%" bgcolor="#CCCCCC"><div align="center"><strong>type</strong></div>
+        </td>
+        <td width="61%" bgcolor="#CCCCCC"><div align="center"><strong>info</strong></div>
+        </td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dSize</font></td>
+        <td>integer</td>
+        <td>padding size in pixel</td>
+      </tr>
+    </table></td>
+    <td valign="top" bgcolor="#FFFFFF">pop up menu</td>
+  </tr>
+  <tr>
+    <td bgcolor="#FFFFFF"><table width="100%" border="0" cellspacing="1" cellpadding="1">
+      <tr>
+        <td colspan="4"><strong><font color="#FF0000">SetItemText</font></strong></td>
+      </tr>
+      <tr>
+        <td colspan="4">Set appearance of text label of menu item</td>
+      </tr>
+      <tr>
+        <td width="3%">&nbsp;</td>
+        <td width="23%" bgcolor="#CCCCCC"><div align="center"><strong>parameter</strong></div>
+        </td>
+        <td width="13%" bgcolor="#CCCCCC"><div align="center"><strong>type</strong></div>
+        </td>
+        <td width="61%" bgcolor="#CCCCCC"><div align="center"><strong>info</strong></div>
+        </td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dColor</font></td>
+        <td>string</td>
+        <td>text label color</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dAlign</font></td>
+        <td>string</td>
+        <td>alignment type of text label.<br>
+          available value: '<font color="#FFCC00"><strong>left</strong></font>','<font color="#FFCC00"><strong>center</strong></font>','<font color="#FFCC00"><strong>right</strong></font>',
+          '<strong><font color="#FFCC00">justify</font></strong>'</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dWeight</font></td>
+        <td>string</td>
+        <td>weight type of text label.<br>
+          available value: '<font color="#FFCC00"><strong>normal</strong></font>' ,'<font color="#FFCC00"><strong>bold</strong></font>' ,'<font color="#FFCC00"><strong>bolder</strong></font>' ,'<font color="#FFCC00"><strong>lighter</strong></font>' ,'<font color="#FFCC00"><strong>100</strong></font>' ,'<font color="#FFCC00"><strong>200</strong></font>'
+          ,'<font color="#FFCC00"><strong>300</strong></font>' ,'<font color="#FFCC00"><strong>400</strong></font>' ,'<font color="#FFCC00"><strong>500</strong></font>' ,'<font color="#FFCC00"><strong>600</strong></font>' ,'<font color="#FFCC00"><strong>700</strong></font>' ,'<font color="#FFCC00"><strong>800</strong></font>' ,'<font color="#FFCC00"><strong>900</strong></font>'</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dDecoration</font></td>
+        <td>string</td>
+        <td>decoration type of text label.<br>
+          available value: '<font color="#FFCC00"><strong>none</strong></font>', '<font color="#FFCC00"><strong>underline</strong></font>', '<font color="#FFCC00"><strong>overline</strong></font>', '<font color="#FFCC00"><strong>line-through</strong></font>', '<font color="#FFCC00"><strong>blink</strong></font>'</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dWSpace</font></td>
+        <td>string</td>
+        <td>white space type of text label.<br>
+          available value: '<font color="#FFCC00"><strong>normal</strong></font>', '<strong><font color="#FFCC00">pre</font></strong>', '<font color="#FFCC00"><strong>nowrap</strong></font>'</td>
+      </tr>
+    </table></td>
+    <td valign="top" bgcolor="#FFFFFF">both</td>
+  </tr>
+  <tr>
+    <td bgcolor="#FFFFFF"><table width="100%" border="0" cellspacing="1" cellpadding="1">
+      <tr>
+        <td colspan="4"><strong><font color="#FF0000">SetItemTextClick</font></strong></td>
+      </tr>
+      <tr>
+        <td colspan="4">Set appearance of text label of menu item when clicked</td>
+      </tr>
+      <tr>
+        <td width="3%">&nbsp;</td>
+        <td width="23%" bgcolor="#CCCCCC"><div align="center"><strong>parameter</strong></div>
+        </td>
+        <td width="13%" bgcolor="#CCCCCC"><div align="center"><strong>type</strong></div>
+        </td>
+        <td width="61%" bgcolor="#CCCCCC"><div align="center"><strong>info</strong></div>
+        </td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dColor</font></td>
+        <td>string</td>
+        <td>text label color</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dAlign</font></td>
+        <td>string</td>
+        <td>alignment type of text label</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dWeight</font></td>
+        <td>string</td>
+        <td>weight type of text label</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dDecoration</font></td>
+        <td>string</td>
+        <td>decoration type of text label</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dWSpace</font></td>
+        <td>string</td>
+        <td>white space type of text label</td>
+      </tr>
+    </table></td>
+    <td valign="top" bgcolor="#FFFFFF">main menu</td>
+  </tr>
+  <tr>
+    <td bgcolor="#FFFFFF"><table width="100%" border="0" cellspacing="1" cellpadding="1">
+      <tr>
+        <td colspan="4"><strong><font color="#FF0000">SetItemTextHL</font></strong></td>
+      </tr>
+      <tr>
+        <td colspan="4">Set appearance of text label of menu item when highlighted</td>
+      </tr>
+      <tr>
+        <td width="3%">&nbsp;</td>
+        <td width="23%" bgcolor="#CCCCCC"><div align="center"><strong>parameter</strong></div>
+        </td>
+        <td width="13%" bgcolor="#CCCCCC"><div align="center"><strong>type</strong></div>
+        </td>
+        <td width="61%" bgcolor="#CCCCCC"><div align="center"><strong>info</strong></div>
+        </td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dColor</font></td>
+        <td>string</td>
+        <td>text label color</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dAlign</font></td>
+        <td>string</td>
+        <td>alignment type of text label</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dWeight</font></td>
+        <td>string</td>
+        <td>weight type of text label</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dDecoration</font></td>
+        <td>string</td>
+        <td>decoration type of text label</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dWSpace</font></td>
+        <td>string</td>
+        <td>white space type of text label</td>
+      </tr>
+    </table></td>
+    <td valign="top" bgcolor="#FFFFFF">both</td>
+  </tr>
+  <tr>
+    <td bgcolor="#FFFFFF"><table width="100%" border="0" cellspacing="1" cellpadding="1">
+      <tr>
+        <td colspan="4"><strong><font color="#FF0000">SetPadding</font></strong></td>
+      </tr>
+      <tr>
+        <td colspan="4">Set pop up menu padding</td>
+      </tr>
+      <tr>
+        <td width="3%">&nbsp;</td>
+        <td width="23%" bgcolor="#CCCCCC"><div align="center"><strong>parameter</strong></div>
+        </td>
+        <td width="13%" bgcolor="#CCCCCC"><div align="center"><strong>type</strong></div>
+        </td>
+        <td width="61%" bgcolor="#CCCCCC"><div align="center"><strong>info</strong></div>
+        </td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dTop</font></td>
+        <td>integer</td>
+        <td>top padding size in pixel</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dRight</font></td>
+        <td>integer</td>
+        <td>right padding size in pixel</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dBottom</font></td>
+        <td>integer</td>
+        <td>bottom padding size in pixel</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dLeft</font></td>
+        <td>integer</td>
+        <td>left padding size in pixel</td>
+      </tr>
+    </table></td>
+    <td valign="top" bgcolor="#FFFFFF">pop up menu</td>
+  </tr>
+  <tr>
+    <td bgcolor="#FFFFFF"><table width="100%" border="0" cellspacing="1" cellpadding="1">
+      <tr>
+        <td colspan="4"><strong><font color="#FF0000">SetPaddings</font></strong></td>
+      </tr>
+      <tr>
+        <td colspan="4">Set pop up menu padding</td>
+      </tr>
+      <tr>
+        <td width="3%">&nbsp;</td>
+        <td width="23%" bgcolor="#CCCCCC"><div align="center"><strong>parameter</strong></div>
+        </td>
+        <td width="13%" bgcolor="#CCCCCC"><div align="center"><strong>type</strong></div>
+        </td>
+        <td width="61%" bgcolor="#CCCCCC"><div align="center"><strong>info</strong></div>
+        </td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dSize</font></td>
+        <td>integer</td>
+        <td>padding size in pixel</td>
+      </tr>
+    </table></td>
+    <td valign="top" bgcolor="#FFFFFF">pop up menu</td>
+  </tr>
+  <tr>
+    <td bgcolor="#FFFFFF"><table width="100%" border="0" cellspacing="1" cellpadding="1">
+      <tr>
+        <td colspan="4"><strong><font color="#FF0000">SetPopOnClick (v.1.5.2
+              and above)</font></strong></td>
+      </tr>
+      <tr>
+        <td colspan="4">Set whether pop up menu pops up on main menu click event
+          or not</td>
+      </tr>
+      <tr>
+        <td width="3%">&nbsp;</td>
+        <td width="23%" bgcolor="#CCCCCC"><div align="center"><strong>parameter</strong></div>
+        </td>
+        <td width="13%" bgcolor="#CCCCCC"><div align="center"><strong>type</strong></div>
+        </td>
+        <td width="61%" bgcolor="#CCCCCC"><div align="center"><strong>info</strong></div>
+        </td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dBool</font></td>
+        <td>boolean</td>
+        <td>default is <font color="#FFCC00"><strong>false</strong></font></td>
+      </tr>
+    </table></td>
+    <td valign="top" bgcolor="#FFFFFF">main menu</td>
+  </tr>
+  <tr>
+    <td bgcolor="#FFFFFF"><table width="100%" border="0" cellspacing="1" cellpadding="1">
+      <tr>
+        <td colspan="4"><strong><font color="#FF0000">SetParentRedirects (in version 1.0 of lucid_menu)</font></strong></td>
+      </tr>
+      <tr>
+        <td colspan="4">Set weather parent menus redirect to URL or simply display their children</td>
+      </tr>
+      <tr>
+        <td width="3%">&nbsp;</td>
+        <td width="23%" bgcolor="#CCCCCC"><div align="center"><strong>parameter</strong></div>
+        </td>
+        <td width="13%" bgcolor="#CCCCCC"><div align="center"><strong>type</strong></div>
+        </td>
+        <td width="61%" bgcolor="#CCCCCC"><div align="center"><strong>info</strong></div>
+        </td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dBool</font></td>
+        <td>boolean</td>
+        <td>default is <font color="#FFCC00"><strong>true</strong></font></td>
+      </tr>
+    </table></td>
+    <td valign="top" bgcolor="#FFFFFF">main menu</td>
+  </tr>
+  <tr>
+    <td bgcolor="#FFFFFF"><table width="100%" border="0" cellspacing="1" cellpadding="1">
+      <tr>
+        <td colspan="4"><strong><font color="#FF0000">SetPosition</font></strong></td>
+      </tr>
+      <tr>
+        <td colspan="4">Set position style of main menu</td>
+      </tr>
+      <tr>
+        <td width="3%">&nbsp;</td>
+        <td width="23%" bgcolor="#CCCCCC"><div align="center"><strong>parameter</strong></div>
+        </td>
+        <td width="13%" bgcolor="#CCCCCC"><div align="center"><strong>type</strong></div>
+        </td>
+        <td width="61%" bgcolor="#CCCCCC"><div align="center"><strong>info</strong></div>
+        </td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dPosition</font></td>
+        <td>string</td>
+        <td>position style.<br>
+          Available value: '<font color="#FFCC00"><strong>absolute</strong></font>','<font color="#FFCC00"><strong>relative</strong></font>'</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dLeft</font></td>
+        <td>integer</td>
+        <td>left position in pixel</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dTop</font></td>
+        <td>integer</td>
+        <td>top position in pixel</td>
+      </tr>
+    </table></td>
+    <td valign="top" bgcolor="#FFFFFF">main menu</td>
+  </tr>
+  <tr>
+    <td bgcolor="#FFFFFF"><table width="100%" border="0" cellspacing="1" cellpadding="1">
+      <tr>
+        <td colspan="4"><strong><font color="#FF0000">SetSeparator</font></strong></td>
+      </tr>
+      <tr>
+        <td colspan="4">Set appearance of separator</td>
+      </tr>
+      <tr>
+        <td width="3%">&nbsp;</td>
+        <td width="23%" bgcolor="#CCCCCC"><div align="center"><strong>parameter</strong></div>
+        </td>
+        <td width="13%" bgcolor="#CCCCCC"><div align="center"><strong>type</strong></div>
+        </td>
+        <td width="61%" bgcolor="#CCCCCC"><div align="center"><strong>info</strong></div>
+        </td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dWidth</font></td>
+        <td>integer</td>
+        <td>width of separator in pixel</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dAlign</font></td>
+        <td>string</td>
+        <td>alignment of separator</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dColor1</font></td>
+        <td>string</td>
+        <td>top color of separator</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dColor2</font></td>
+        <td>string</td>
+        <td>bottom color of separator</td>
+      </tr>
+    </table></td>
+    <td valign="top" bgcolor="#FFFFFF">pop up menu</td>
+  </tr>
+  <tr>
+    <td bgcolor="#FFFFFF"><table width="100%" border="0" cellspacing="1" cellpadding="1">
+      <tr>
+        <td colspan="4"><strong><font color="#FF0000">SetShadow</font></strong></td>
+      </tr>
+      <tr>
+        <td colspan="4">Set menu shadow</td>
+      </tr>
+      <tr>
+        <td width="3%">&nbsp;</td>
+        <td width="23%" bgcolor="#CCCCCC"><div align="center"><strong>parameter</strong></div>
+        </td>
+        <td width="13%" bgcolor="#CCCCCC"><div align="center"><strong>type</strong></div>
+        </td>
+        <td width="61%" bgcolor="#CCCCCC"><div align="center"><strong>info</strong></div>
+        </td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dCreate</font></td>
+        <td>boolean</td>
+        <td>create shadow or not</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dColor</font></td>
+        <td>string</td>
+        <td>shadow color</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dDistance</font></td>
+        <td>integer</td>
+        <td>distance between menu and shadow</td>
+      </tr>
+    </table></td>
+    <td valign="top" bgcolor="#FFFFFF">both</td>
+  </tr>
+  <tr>
+    <td bgcolor="#FFFFFF"><table width="100%" border="0" cellspacing="1" cellpadding="1">
+      <tr>
+        <td colspan="4"><strong><font color="#FF0000">SetType (v.1.5.3)</font></strong></td>
+      </tr>
+      <tr>
+        <td colspan="4"><p>Set menu type</p>
+          </td>
+      </tr>
+      <tr>
+        <td width="3%">&nbsp;</td>
+        <td width="23%" bgcolor="#CCCCCC"><div align="center"><strong>parameter</strong></div>
+        </td>
+        <td width="13%" bgcolor="#CCCCCC"><div align="center"><strong>type</strong></div>
+        </td>
+        <td width="61%" bgcolor="#CCCCCC"><div align="center"><strong>info</strong></div>
+        </td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dType</font></td>
+        <td>string</td>
+        <td><p><font color="#000066"><strong>on main menu</strong></font>, available
+            values are : '','<strong><font color="#FFCC00">free</font></strong>','<strong><font color="#FFCC00">float</font></strong>'.<br>
+'':normal<br>
+'<strong><font color="#FFCC00">free</font></strong>':dragable menu<br>
+'<strong><font color="#FFCC00">float</font></strong>':menu position follows browser
+scrollbars<br>
+Works when menu position is <strong>absolute</strong></p>
+          <p><font color="#000066"><strong>on pop menu</strong></font>,available
+            values are : '','<font color="#FFCC00"><strong>header</strong></font>'
+            or '<strong><font color="#FFCC00">h</font></strong>'<br>
+  '':normal<br>
+  '<font color="#FFCC00">header</font>':pop menu acts as section. Works when
+  pop menu has no child.</p>
+          <p>See source of demo file for detail</p></td>
+      </tr>
+    </table></td>
+    <td valign="top" bgcolor="#FFFFFF">both</td>
+  </tr>
+  <tr>
+    <td bgcolor="#FFFFFF"><table width="100%" border="0" cellspacing="1" cellpadding="1">
+      <tr>
+        <td colspan="4"><strong><font color="#FF0000">SetWidth</font></strong></td>
+      </tr>
+      <tr>
+        <td colspan="4">Set menu width</td>
+      </tr>
+      <tr>
+        <td width="3%">&nbsp;</td>
+        <td width="23%" bgcolor="#CCCCCC"><div align="center"><strong>parameter</strong></div>
+        </td>
+        <td width="13%" bgcolor="#CCCCCC"><div align="center"><strong>type</strong></div>
+        </td>
+        <td width="61%" bgcolor="#CCCCCC"><div align="center"><strong>info</strong></div>
+        </td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dWidth</font></td>
+        <td>integer</td>
+        <td>width in pixel</td>
+      </tr>
+    </table></td>
+    <td valign="top" bgcolor="#FFFFFF">main menu</td>
+  </tr>
+  <tr>
+    <td bgcolor="#FFFFFF"><table width="100%" border="0" cellspacing="1" cellpadding="1">
+      <tr>
+        <td colspan="3"><strong><font color="#FF0000">_header (v.1.5.3)</font></strong></td>
+      </tr>
+      <tr>
+        <td colspan="3"><p><font color="#000066"><strong>on main menu</strong></font>,
+            set dragable menu header appearance.</p>
+            <p><font color="#000066"><strong>on pop menu</strong></font>, set
+              section /header appearance</p>
+            <p>See <strong><font color="#FF0000">SetType</font></strong> method<br>
+        See source of demo file for detail</p>
+        </td>
+      </tr>
+      <tr>
+        <td width="3%">&nbsp;</td>
+        <td width="47%" bgcolor="#CCCCCC"><div align="center"><strong>method</strong></div>
+        </td>
+        <td width="50%" bgcolor="#CCCCCC"><div align="center"><strong>info</strong></div>
+        </td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><strong><font color="#FF0000">SetBackground<br>
+        </font></strong></td>
+        <td>See <font color="#FF0000"><strong>SetBackground</strong></font> method</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><strong><font color="#FF0000">SetText</font></strong></td>
+        <td>See <font color="#FF0000"><strong>SetText </strong></font>method</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><strong><font color="#FF0000">SetFont</font></strong></td>
+        <td>See <font color="#FF0000"><strong>SetFont</strong></font> method</td>
+      </tr>
+    </table></td>
+    <td valign="top" bgcolor="#FFFFFF">both</td>
+  </tr>
+  <tr>
+    <td bgcolor="#FFFFFF"><table width="100%" border="0" cellspacing="1" cellpadding="1">
+      <tr>
+        <td colspan="4"><strong><font color="#FF0000">SetHeaderText (v.1.5.3)</font></strong></td>
+      </tr>
+      <tr>
+        <td colspan="4"><p>Set dragable menu header text</p>
+            <p>See <font color="#FF0000"><strong>_header</strong></font>, <font color="#FF0000"><strong>SetType</strong></font> method<br>
+        See source of demo file for detail </p>
+        </td>
+      </tr>
+      <tr>
+        <td width="3%">&nbsp;</td>
+        <td width="23%" bgcolor="#CCCCCC"><div align="center"><strong>parameter</strong></div>
+        </td>
+        <td width="13%" bgcolor="#CCCCCC"><div align="center"><strong>type</strong></div>
+        </td>
+        <td width="61%" bgcolor="#CCCCCC"><div align="center"><strong>info</strong></div>
+        </td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><font color="#000066">dText</font></td>
+        <td>string</td>
+        <td>header text</td>
+      </tr>
+    </table></td>
+    <td valign="top" bgcolor="#FFFFFF">main menu</td>
+  </tr>
+  <tr>
+    <td bgcolor="#FFFFFF"><table width="100%" border="0" cellspacing="1" cellpadding="1">
+      <tr>
+        <td colspan="5"><strong><font color="#FF0000">_hideObject (v.1.5.2 and
+          above)</font></strong></td>
+      </tr>
+      <tr>
+        <td colspan="5"><p>hide object by id such as form object when menu pops
+            up</p>
+            <p>See source of demo file for detail </p>
+        </td>
+      </tr>
+      <tr>
+        <td width="3%">&nbsp;</td>
+        <td width="17%" bgcolor="#CCCCCC"><div align="center"><strong>method</strong></div>
+        </td>
+        <td width="15%" bgcolor="#CCCCCC"><div align="center"><strong>parameter</strong></div>
+        </td>
+        <td width="18%" bgcolor="#CCCCCC"><div align="center"><strong>type</strong></div>
+        </td>
+        <td width="47%" bgcolor="#CCCCCC"><div align="center"><strong>info</strong></div></td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><strong><font color="#FF0000">Add</font></strong></td>
+        <td><font color="#000066">dObjectbyID</font></td>
+        <td>Object by ID</td>
+        <td>add object by id to be hid when menu pops up</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><strong><font color="#FF0000">Clear</font></strong></td>
+        <td><font color="#000066">none</font></td>
+        <td>none</td>
+        <td>clear hidden object</td>
+      </tr>
+    </table></td>
+    <td valign="top" bgcolor="#FFFFFF">main menu</td>
+  </tr>
+  <tr>
+    <td colspan="2" bgcolor="#FFFFFF">See <a href="index.html#demo">demo</a> for
+    detail</td>
+  </tr>
+</table>
+	<table width="100%" cellspacing="5" cellpadding="0" border="0">
+    <tr>
+    	<td align="center" bgcolor="FFCC00">
+    		Copyright &copy; 2003-2004 Donna Iwan Setiawan
+    	</td>
+    </tr>
+  </table>
+</body>
+</html>

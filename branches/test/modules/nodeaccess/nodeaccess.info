@@ -1,0 +1,9 @@
+; $Id: nodeaccess.info,v 1.1.2.1 2007/02/16 20:39:23 debtman7 Exp $
+name = Nodeaccess
+description = Provides per node access control
+
+; Information added by drupal.org packaging script on 2007-06-09
+version = "5.x-1.x-dev"
+project = "nodeaccess"
+datestamp = "1181347903"
+

@@ -1,0 +1,270 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf-8">
+	<TITLE></TITLE>
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 2.3  (Linux)">
+	<META NAME="AUTHOR" CONTENT="Silvio">
+	<META NAME="CREATED" CONTENT="20071025;22544100">
+	<META NAME="CHANGEDBY" CONTENT="Silvio Gutierrez">
+	<META NAME="CHANGED" CONTENT="20071029;22214500">
+	<STYLE TYPE="text/css">
+	<!--
+		@page { size: 8.5in 11in; margin: 0.79in }
+		P { margin-bottom: 0.08in }
+	-->
+	</STYLE>
+</HEAD>
+<BODY LANG="en-US" DIR="LTR">
+<P ALIGN=CENTER STYLE="margin-bottom: 0in"><B>Gallerix 1.0
+Documentation</B></P>
+<P ALIGN=LEFT STYLE="margin-bottom: 0in"><B>Introduction</B></P>
+<P ALIGN=LEFT STYLE="margin-bottom: 0in"><B>	</B><SPAN STYLE="font-weight: medium">Gallerix
+is a photo album module for Drupal. It it's AJAX-centric but still
+relies on traditional methods to upload and manage pictures. Gallerix
+allows for per-user albums, and also includes an optional security
+mode.</SPAN></P>
+<P ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><BR>
+</P>
+<P ALIGN=LEFT STYLE="margin-bottom: 0in"><B>Installation</B></P>
+<P ALIGN=LEFT STYLE="margin-bottom: 0in"><B>	</B><SPAN STYLE="font-weight: medium">Gallerix
+relies on a few essential PHP privileges to work properly. During
+installation, Gallerix will perform the following operations:</SPAN></P>
+<UL>
+	<LI><P ALIGN=LEFT STYLE="margin-bottom: 0in"><SPAN STYLE="font-weight: medium">Create
+	the tables </SPAN><I><SPAN STYLE="font-weight: medium">gallerix_pictures</SPAN></I><SPAN STYLE="font-weight: medium">
+	and </SPAN><I><SPAN STYLE="font-weight: medium">gallerix_albums</SPAN></I><SPAN STYLE="font-weight: medium">.</SPAN></P>
+	<LI><P ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium">Create
+	the following table structure inside the files directory:</P>
+	<UL>
+		<LI><P ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium">Gallerix</P>
+		<UL>
+			<LI><P ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium">Albums</P>
+			<LI><P ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium">Repository</P>
+			<LI><P ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium">Trash</P>
+		</UL>
+	</UL>
+	<LI><P ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium">CHMOD
+	each of these folders to 0777.</P>
+</UL>
+<P ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><BR>
+</P>
+<P ALIGN=LEFT STYLE="margin-bottom: 0in"><B>Requirements</B></P>
+<UL>
+	<LI><P ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium">MKDIR,
+	RMDIR, CHMOD privileges.</P>
+	<LI><P ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium">Working
+	Image Toolkit (GD, ImageMagick)</P>
+</UL>
+<P ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><BR>
+</P>
+<P ALIGN=LEFT STYLE="margin-bottom: 0in"><B>Recommended</B></P>
+<UL>
+	<LI><P ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium">Modifiable
+	execution time, set to unlimited (-1)</P>
+	<UL>
+		<LI><P ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium">Resizing
+		pictures takes a huge toll on execution time, if you you have the
+		option, either modify the .ini file, or use
+		set_ini('max_execution_time', '-1') to set the max execution time
+		to infinite.</P>
+	</UL>
+	<LI><P ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium">Modifiable
+	max upload size and max post size.</P>
+	<UL>
+		<LI><P ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium">If
+		you plan on enabling archive uploads, you will need to modify PHP's
+		default 2 MB limit.</P>
+	</UL>
+	<LI><P ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium">Views
+	Module</P>
+	<UL>
+		<LI><P ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium">If
+		Views is installed, Gallerix will use the link
+		<A HREF="http://www.example.com/gallery">www.example.com/gallery</A>
+		to list all albums, and it will also accept a UID as an argument.</P>
+	</UL>
+</UL>
+<P ALIGN=LEFT STYLE="margin-bottom: 0in"><B>Options</B></P>
+<UL>
+	<LI><P STYLE="margin-bottom: 0in">Resolutions</P>
+	<UL>
+		<LI><P STYLE="margin-bottom: 0in">You can modify the resolutions of
+		all derivative images created by Gallerix. Note that the full size
+		images are scaled, not resized, so the aspect ratio will remain the
+		same. Thumbnails will first be scaled to the width, and then
+		cropped, so they will have a landscape ratio, but remain
+		proportional.</P>
+	</UL>
+	<LI><P STYLE="margin-bottom: 0in">Display Options</P>
+	<UL>
+		<LI><P STYLE="margin-bottom: 0in">Sort: You can set the default
+		sort order of all albums here. You can override this on a per-album
+		basis in the album edit page.</P>
+		<LI><P STYLE="margin-bottom: 0in">Number of Thumbnails: This will
+		change how many thumbnails display when viewing an album. This
+		should probably be an odd number so the thumbnail of the current
+		picture</P>
+	</UL>
+	<LI><P STYLE="margin-bottom: 0in">Picture Sources</P>
+	<UL>
+		<LI><P STYLE="margin-bottom: 0in">Number of Upload Fields: controls
+		how many pictures users will be able to upload at a time. Remember
+		that this is more useful if you turn off archive uploading.</P>
+		<LI><P STYLE="margin-bottom: 0in">Archive uploading: allows users
+		to upload ZIP/TAR.GZ files. This will generally require you to
+		increase the max post size, and max upload size.</P>
+		<LI><P STYLE="margin-bottom: 0in">Enable Repository: Whenever
+		you're in the Manage Pictures screen, Gallerix will scan
+		files/gallerix/repository for pictures/archives to use. This is
+		very useful if only a handful of trusted people can create albums,
+		since you can upload everything with FTP.</P>
+		<LI><P STYLE="margin-bottom: 0in">Delete From Repository: if
+		checked, files will be moved from the repository to the album
+		rather than copied.</P>
+		<LI><P STYLE="margin-bottom: 0in">Add Trashcan Pictures: if the
+		trash can is enabled (see below), the files in it will show up as
+		files you can add.</P>
+	</UL>
+	<LI><P STYLE="margin-bottom: 0in">Picture Insertion</P>
+	<UL>
+		<LI><P STYLE="margin-bottom: 0in">Extract EXIF Data: will extract
+		the selected tags from any uploaded picture, and store them for
+		other modules to use. Note that EXIF data is poorly standardized so
+		only add fields you think are supported by your camera model. The
+		default ones are fairly standard. 
+		</P>
+		<LI><P STYLE="margin-bottom: 0in">Extract IPTC Tags: will extract
+		tags added by programs like Photoshop and Photoshop Elements that
+		describe the picture, such as people, places, and authors.
+		Unfortunately, PHP cannot differentiate between the type of tags,
+		so they will all be treated the same.</P>
+	</UL>
+	<LI><P STYLE="margin-bottom: 0in">Picture Deletion</P>
+	<UL>
+		<LI><P STYLE="margin-bottom: 0in">Enable Trashcan: When enabled,
+		all deleted pictures will be moved to files/gallerix/trashcan
+		rather than disposed of.</P>
+	</UL>
+	<LI><P STYLE="margin-bottom: 0in">Gallerix Security</P>
+	<UL>
+		<LI><P STYLE="margin-bottom: 0in">Secure Mode: Activating this will
+		enable secure mode, which for the time being is NOT retroactive.
+		You should activate this from the very beginning if you wish to use
+		this feature. See below for an in depth description.</P>
+	</UL>
+</UL>
+<P STYLE="margin-bottom: 0in"><B>Security</B></P>
+<P STYLE="margin-bottom: 0in">	Gallerix provides no node access
+management, because this is best left to more specialized modules.
+What Gallerix can do, however, is make sure users stay within the
+realm of pictures they are allowed to see. 
+</P>
+<P STYLE="margin-bottom: 0in">	For example, lets say you nave node 20
+with 4 pictures in it, with PIDs 1, 2, 3, 4. Then you also have node
+25 which is only viewable by a few users (using your favorite node
+access module). Node 25 has 2 pictures in it, with PIDs 10, and 11. 
+</P>
+<P STYLE="margin-bottom: 0in">	In our example, when secure mode is
+activated, Gallerix will make sure users are only viewing pictures
+that belong to the NID they are in. That is, they can't just change
+the URL or the AJAX request to view pictures outside of the current
+node. With secure mode off, Gallerix will simply show whatever PID is
+requested, with no integrity checks. 
+</P>
+<P STYLE="margin-bottom: 0in">	Secure mode utilizes a variety of
+checks to perform its job, but the most important one is that it
+changes filenames to avoid sequential access. This is done using a
+SHA1 algorithm to every uploaded file. Of course, the original
+filename is lost. Similarly, the  “sort by filename” option
+becomes useless since there will be no pattern in the new names. 
+</P>
+<P STYLE="margin-bottom: 0in"><BR>
+</P>
+<P STYLE="margin-bottom: 0in"><B>Adding Pictures</B></P>
+<P STYLE="margin-bottom: 0in"><B>	</B><SPAN STYLE="font-weight: medium">Creating
+albums using Gallerix is a two step process. First you must create
+the album just like any other node in Drupal. The title becomes the
+album name, and the body is an internal description that users will
+not see. You can also select a sort order that overrides the default
+sort order, if you wish to do so. </SPAN>
+</P>
+<P STYLE="margin-bottom: 0in"><SPAN STYLE="font-weight: medium">	</SPAN><SPAN STYLE="font-weight: medium">Once
+the album has been created, you'll be taken to the main viewing page,
+which will tell you the album is empty. Click on the tab that says
+“Manage Pictures” to add pictures to the album. You can also
+remove pictures from the album through this screen, and add captions
+to existing pictures. </SPAN>
+</P>
+<P STYLE="margin-bottom: 0in; font-weight: medium">	</P>
+<P STYLE="margin-bottom: 0in; font-weight: medium">	Captions will
+appear when you hover over a thumbnail. Other modules can also make
+use of the caption feature. Note that if you enable the “Extract
+EXIF” option, Gallerix will use the ImageDescription field as the
+caption field. If there's no ImageDescription, it will use Title. If
+there's no title, it'll leave it blank for the user to fill in.</P>
+<P STYLE="margin-bottom: 0in; font-weight: medium"><BR>
+</P>
+<P STYLE="margin-bottom: 0in; font-weight: medium"><BR>
+</P>
+<P ALIGN=LEFT STYLE="margin-bottom: 0in"><B>Mass Operations</B></P>
+<P ALIGN=LEFT STYLE="margin-bottom: 0in"><B>	</B><SPAN STYLE="font-weight: medium">If
+you decide to change the default sort order, you should run “Resort
+Albums” on all Gallerix albums. This will only resort the albums
+that did not override the default sort order. Albums that do override
+the default sort order do not need to be resorted manually, they will
+automatically resort themselves upon submitting the edit form.</SPAN></P>
+<P ALIGN=LEFT STYLE="margin-bottom: 0in"><SPAN STYLE="font-weight: medium">	If
+you change the resolution of thumbnails or full pictures, you need to
+run “Rebuild Derivatives” on all the albums you wish to update.
+Keep in mind that building derivatives is an </SPAN><B>extremely</B><SPAN STYLE="font-weight: medium">
+intensive operation that will probably monopolize the server. </SPAN>
+</P>
+<P ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><BR>
+</P>
+<P ALIGN=LEFT STYLE="margin-bottom: 0in"><B>Gallerix Widget Engine</B></P>
+<P ALIGN=LEFT STYLE="margin-bottom: 0in"><B>	</B><SPAN STYLE="font-weight: medium">Although
+Gallerix is a robust module capable of managing all of your image
+needs, it becomes even more useful and powerful when paired with the
+Gallerix Widget Engine. When enabled, the engine will allow a variety
+to widgets to attach themselves to each image. The engine itself is
+bundled with four widgets:</SPAN></P>
+<UL>
+	<LI><P ALIGN=LEFT STYLE="margin-bottom: 0in"><B>Original Widget:
+	</B><SPAN STYLE="font-weight: medium">This is the simplest of all
+	the widgets. It will add a link on all pictures that will take you
+	to the location of the original, full sized image. You will probably
+	want to avoid using this if you plan to resell your pictures.</SPAN></P>
+	<LI><P ALIGN=LEFT STYLE="margin-bottom: 0in"><B>Date Widget: </B><SPAN STYLE="font-weight: medium">This
+	simple widget will use the EXIF field “DateTimeOriginal” to let
+	viewers know when the picture was taken. Note that EXIF extraction
+	must be enabled in the general settings page.</SPAN></P>
+	<LI><P ALIGN=LEFT STYLE="margin-bottom: 0in"><B>Caption Widget:</B><SPAN STYLE="font-weight: medium">
+	Similar to the date widget, this will show the viewer whatever
+	caption you added to the picture. This is very useful if you caption
+	your pictures with management software such as Photoshop Elements.</SPAN></P>
+	<LI><P ALIGN=LEFT STYLE="margin-bottom: 0in"><B>Story Widget:
+	</B><SPAN STYLE="font-weight: medium">Although captions can be
+	useful, they have a length limit since they are displayed right
+	under the picture. Using this widget, you can add a story to each
+	picture, and then submit it using AJAX. Only the album creator can
+	use this widget. </SPAN>
+	</P>
+</UL>
+<P ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><BR>
+</P>
+<P ALIGN=LEFT STYLE="margin-bottom: 0in"><SPAN STYLE="font-weight: medium">	Although
+Gallerix is open source and available for no charge, the Gallerix
+Widget Engine is only available through a (small) paid license. To
+purchase the license, visit </SPAN><A HREF="http://the.failbo.at/gallerix"><SPAN STYLE="font-weight: medium">http://the.failbo.at/gallerix</SPAN></A><SPAN STYLE="font-weight: medium">
+to learn more.</SPAN></P>
+<P ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"><BR>
+</P>
+<P ALIGN=LEFT STYLE="margin-bottom: 0in"><B>Change Log</B></P>
+<UL>
+	<LI><P ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium">1.0
+	Beta</P>
+	<P ALIGN=LEFT STYLE="margin-bottom: 0in; font-weight: medium"></P>
+</UL>
+</BODY>
+</HTML>

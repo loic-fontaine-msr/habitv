@@ -1,0 +1,305 @@
+<?php
+// $Id: imagex.module,v 1.4 2007/11/27 10:52:23 sdrycroft Exp $
+
+/**
+ * Implementation of hook_menu
+ */
+function imagex_menu($may_cache) {
+  $items = array();
+
+  if ($may_cache) {
+    $items[] = array(
+      'path' => 'admin/settings/imagex',
+      'title' => t('Multiple image settings'),
+      'callback' => 'drupal_get_form',
+      'callback arguments' => array('imagex_admin_settings'),
+      'access' => user_access('administer site configuration'),
+      'type' => MENU_NORMAL_ITEM,
+      'description' => t('Change the way that multiple image upload is handled'));
+    $items[] = array(
+      'path' => 'imagex/upload',
+      'access' => user_access('create images'),
+      'title' => t('Imagex upload'),
+      'callback' => 'imagex_upload_image',
+      'type' => MENU_CALLBACK);
+    $items[] = array(
+      'path' => 'imagex/get',
+      'title' => t('Imagex thumbs'),
+      'access' => user_access('create images'),
+      'type' => MENU_CALLBACK,
+      'callback' => 'imagex_js'
+    );
+  }
+  return $items;
+}
+
+/**
+ * Admin settings callback.
+ */
+function imagex_admin_settings() {
+  $options = array (
+    'menu' => 'menu'
+  );
+  $default_value = array();
+  foreach($options as $option){
+    if(variable_get('imagex_hide_menu_'.$option,true)){
+      $default_value[$option] = $option;
+    }
+  }
+  $form['hide_items'] = array(
+    '#title' => t('Remove following items from the Image form'),
+    '#type' => 'checkboxes',
+    '#options' => $options,
+    '#default_value' => $default_value
+  );
+  return system_settings_form($form);
+}
+
+function imagex_admin_settings_submit($form_id, $form_values){
+  //print_r($form_values);exit;
+  if (isset($form_values['hide_items']) && count($form_values['hide_items'])>0){
+    $keys = array_keys($form_values['hide_items']);
+    foreach ($keys as $hide_item){
+      if ($form_values['hide_items'][$hide_item]==0){
+        variable_set('imagex_hide_menu_'.$hide_item,$form_values['hide_items'][$hide_item]);
+      }
+      else {
+        variable_set('imagex_hide_menu_'.$hide_item, 1);
+      }
+    }
+  }
+}
+
+/**
+ * Handle the file upload
+ */
+function imagex_upload_image(){
+  global $user;
+  // Output a postlet error if the user isn't allowed to upload.
+  if (!user_access('create images')){
+    ?>
+POSTLET REPLY
+POSTLET:NO
+POSTLET:SERVER ERROR
+POSTLET:ABORT ALL
+END POSTLET REPLY
+    <?php
+    exit;
+  }
+  else {
+    // User is allowed to upload, well lets do it    
+    $uploaded = 0;
+    $image_node = image_create_node_from($_FILES['userfile']['tmp_name'], $_FILES['userfile']['name']);
+    if (!$image_node){
+      // Lets work out why it wasn't uploaded and change the error accordingly.
+    }
+    else {
+      // Add the node to the imagex table
+      db_query("INSERT INTO {imagex} (uid,nid) VALUES (".$user->uid.",".$image_node->nid.");");
+    }
+    switch($uploaded){
+      case 0:
+        ?>
+POSTLET REPLY
+POSTLET:YES
+END POSTLET REPLY
+        <?php
+        break;
+      case 1:
+        ?>
+POSTLET REPLY
+POSTLET:NO
+POSTLET:TOO LARGE
+POSTLET:ABORT THIS
+END POSTLET REPLY
+        <?php
+        break;
+      case 2:
+        ?>
+POSTLET REPLY
+POSTLET:NO
+POSTLET:FILE TYPE NOT ALLOWED
+POSTLET:ABORT THIS
+END POSTLET REPLY
+        <?php
+        break;
+      case 3:
+        ?>
+POSTLET REPLY
+POSTLET:NO
+POSTLET:SERVER ERROR
+POSTLET:ABORT ALL
+END POSTLET REPLY
+        <?php
+        break;        
+    }
+  }
+  exit;
+}
+
+/**
+ * Menu callback, ajax call to populate the page with the thumbnails
+ */
+function imagex_js(){
+  // Reurns HTML as JS for the thumbs of images uploaded
+  // Does this for the user logged in only
+  print drupal_to_js(array('html' => imagex_get_thumbs_html()));
+  exit();
+}
+
+function imagex_get_thumbs_html(){
+  global $user;
+  $result = db_query("SELECT nid FROM {imagex} WHERE uid = ".$user->uid);
+  $html = '<div>';
+  while($node = db_fetch_object($result)){
+    $node = node_load($node->nid);
+    //$html .= node_view($node,TRUE);
+    //print_r($node);exit;
+    $html .= '<div class="imagexthumb" id="imagexthumb-'.$node->nid.'" onclick="imagexclick(\''.$node->nid.'\');">'.image_display($node, $label = IMAGE_THUMBNAIL).'</div>';
+  }
+  $html .= '</div>';
+  return $html;
+}
+
+function imagex_form_submit($form_id, $form_values){
+  // Submit schtuff
+  // Is this multiple images, or a single upload?
+  if ($form_values['selected_images']=='|'){
+    // Single - Do we have a file?
+    // We should only arrive here if editing an image page.
+    if(count($form_values['files']>0)){
+      // We're editing or uploading a single image
+      return node_form_submit($form_id, $form_values);
+    }
+    else {
+      // Error, explain to either select images, or upload a file (Wankers).
+      form_set_error('file', t('Either upload a single file, or select image(s) to annotate'));
+      return;
+    }
+  }
+  else {
+    // We're mucking about with loads of images.  Each one should have a node associated
+    // For each one change the $form_values, and submit the bitch
+    $images = explode('|',$form_values['selected_images']);
+    foreach($images as $image_node){
+      // First and last probably blank
+      $image_node = trim($image_node);
+      if($image_node!=""){
+        $node = node_load($image_node);
+        $form_values['nid']=$node->nid;
+        $form_values['vid']=$node->vid;
+        unset($form_values['created']);
+        //print_r($form_values);exit;
+        node_form_submit($form_id,$form_values);
+      }
+    }
+    // Following is safe as no node can have nid of 0!
+    db_query("DELETE FROM {imagex} WHERE nid IN (0".str_replace("|",",",$form_values['selected_images'])."0);");
+  }
+}
+
+/**
+ * hook_form_alter blah blah blah.
+ */
+function imagex_form_alter($form_id, &$form) {
+  //print_r($form_id);exit;
+  if($form_id!='image_node_form'){
+    return;
+  }
+  $form['#submit'] = array(
+    'imagex_form_submit' => array()
+  );
+  
+  // Add descriptions explaining that Title, body etc will apply to ALL images
+  $form['apply_all_images'] = array(
+    '#value' => '<div class="messages">Steps for adding images:<ol><li>Upload Images</li><li>Browse and Select uploaded images</li><li>Annotate Images</li></ol>Please be aware that annotations will apply to all images.</div>',
+    '#weight' => -1000
+  );
+  
+  // If we're lookin' at the form, then chuffin heck, we need t'JavaScript & CSS
+  drupal_add_js(drupal_get_path('module','imagex').'/imagex.js');
+  drupal_add_css(drupal_get_path('module','imagex').'/imagex.css');
+    
+  $form['multiple'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('1. Upload Images'),
+    '#collapsible' => TRUE,
+    '#collapsed' => false,
+    '#weight' => -900
+  );
+  unset($form['image']);
+  $form['body_filter']['body']['#title'] = 'Notes';
+  
+  // Add the applet!
+  $form['multiple']['applet'] = array(
+    '#prefix' => '<div>',
+    '#suffix' => '</div>',
+    '#value' => '<p>Please drop your image files into the space provided below. Upload should commence automatically.  Upon completion of upload, thumbnails of your uploaded images should appear below.</p>
+<div class="postlet">
+	<applet name="postlet" code="Main.class" archive="'.base_path().drupal_get_path('module','imagex').'/postlet/postlet.jar" width="400" height="200" mayscript>
+		<param name = "dropimage"		value = "'.base_path().drupal_get_path('module','imagex').'/postlet/image.jpg"/>
+		<param name = "dropimageupload"		value = "'.base_path().drupal_get_path('module','imagex').'/postlet/imageupload.jpg"/>
+		<param name = "maxthreads"		value = "5" />
+		<param name = "language"		value = "EMPTY" />
+
+		<param name = "type"			value = "application/x-java-applet;version=1.3.1" />
+		<param name = "destination"		value = "'.url('imagex/upload',NULL,NULL,TRUE).'" />
+		<param name = "backgroundcolour" value = "16777215" />
+		<param name = "tableheaderbackgroundcolour" value = "14079989" />
+		<param name = "tableheadercolour" value = "0" />
+		<param name = "warnmessage" value = "false" />
+		<param name = "autoupload" value = "true" />
+		<param name = "helpbutton" value = "false" />
+		<param name = "removebutton" value = "false" />
+		<param name = "addbutton" value = "false" />
+		<param name = "uploadbutton" value = "false" />
+		<param name = "fileextensions" value = "Image Files,jpg,gif,jpeg" />
+	</applet>
+</div>'
+  );
+  $form['thumbs_fieldset'] = array(
+    '#type' => 'fieldset',
+    '#title' => '2. Uploaded images',
+    '#collapsible' => TRUE,
+    '#collapsed' => false,
+    '#weight' => -800
+  );
+  $form['thumbs_fieldset']['thumbs'] = array(
+    '#prefix' => '<div>',
+    '#suffix' => '</div>',
+    '#value' => '<p>Click on images to select them.</p><div id="imagexthumbs">'.imagex_get_thumbs_html().'</div>'
+  );
+  $form['selected_images'] = array(
+    '#type' => 'hidden',
+    '#default_value' => '|'
+  );
+  
+  // Unset all the required shit
+  if(!function_exists('imagex_unset_required')){
+    function imagex_unset_required(&$param, $key){
+      if (is_array($param))
+        array_walk($param, 'imagex_unset_required');
+      else {
+        if ($key == '#required' && $param ==1)
+          $param = 0;
+      }
+    }
+  }
+  array_walk($form, 'imagex_unset_required');
+  
+  $form['third_stage'] = array(
+    '#value' => '<p>3. Annotate Images</p>',
+    '#weight' => -700
+  );
+  
+  // Unset the validate bit, as it stop us from posting without title, file etc
+  unset($form['#validate']);
+  
+  $form['path']['#collapsed'] = 1;
+  $form['groups']['#collapsed'] = 1;
+  $form['creativecommons_lite']['#weight'] = -1;
+  unset($form['attachments']);
+  if(variable_get('imagex_hide_menu_menu',TRUE)){
+    unset($form['menu']);
+  }
+}

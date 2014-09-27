@@ -1,0 +1,1014 @@
+# translation of it.po to
+# translation of acidfree.po to
+# $Id: it.po,v 1.2.2.2 2007/05/10 13:22:47 vhmauery Exp $
+# LANGUAGE translation of Drupal (sites/all/modules/acidfree/class_album.inc)
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+# Generated from file:
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: it\n"
+"POT-Creation-Date: 2007-05-10 09:57+0000\n"
+"PO-Revision-Date: 2007-05-10 12:05+0200\n"
+"Last-Translator:  <skizzo>\n"
+"Language-Team:  <en@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Language-English: Italian\n"
+"X-Language-Local: Italiano\n"
+"X-Generator: KBabel 1.11.4\n"
+
+#: sites/all/modules/acidfree/class_album.inc:34
+msgid "Add an album"
+msgstr "Aggiungi un album"
+
+#: sites/all/modules/acidfree/class_album.inc:109;252
+msgid "Delete"
+msgstr "Cancella"
+
+#: sites/all/modules/acidfree/class_album.inc:114
+msgid "removed '%item' from album"
+msgstr "rimosso '%item' dall'album"
+
+#: sites/all/modules/acidfree/class_album.inc:121;248
+msgid "Copy"
+msgstr "Copia"
+
+#: sites/all/modules/acidfree/class_album.inc:127;244
+msgid "Move"
+msgstr "Sposta"
+
+#: sites/all/modules/acidfree/class_album.inc:145
+msgid "Could not set '%item' to be own ancestor album"
+msgstr "Impossibile definire '%item' come proprio album predecessore"
+
+#: sites/all/modules/acidfree/class_album.inc:160
+msgid "Changes saved."
+msgstr "Salvato modifiche"
+
+#: sites/all/modules/acidfree/class_album.inc:168;223;368;386
+msgid "This album is empty"
+msgstr "Questo album è vuoto"
+
+#: sites/all/modules/acidfree/class_album.inc:213
+msgid "%title Contents"
+msgstr "%title Contenuti"
+
+#: sites/all/modules/acidfree/class_album.inc:234
+msgid "All"
+msgstr "Tutti"
+
+#: sites/all/modules/acidfree/class_album.inc:234
+msgid "None"
+msgstr "Nessuno"
+
+#: sites/all/modules/acidfree/class_album.inc:234
+msgid "Invert"
+msgstr "Inve rti selezione"
+
+#: sites/all/modules/acidfree/class_album.inc:241
+msgid "Destination"
+msgstr "Destinazione"
+
+#: sites/all/modules/acidfree/class_album.inc:256
+msgid "Submit"
+msgstr "Invia"
+
+#: sites/all/modules/acidfree/class_album.inc:418;438
+msgid "Empty"
+msgstr "Vuoto"
+
+#: sites/all/modules/acidfree/class_album.inc:443
+msgid "Item"
+msgstr "Elemento"
+
+#: sites/all/modules/acidfree/class_album.inc:443
+msgid "Items"
+msgstr "Elementi"
+
+#: sites/all/modules/acidfree/class_album.inc:464
+msgid "Parent album"
+msgstr "Album genitore"
+
+#: sites/all/modules/acidfree/class_image.inc:38
+msgid "image"
+msgstr "immagine"
+
+#: sites/all/modules/acidfree/class_image.inc:39
+msgid "Add an image"
+msgstr "Aggiungi immagine"
+
+#: sites/all/modules/acidfree/class_image.inc:96
+msgid "Counterclockwise"
+msgstr "Antiorario"
+
+#: sites/all/modules/acidfree/class_image.inc:97
+msgid "No rotation"
+msgstr "Nessuna rotazione "
+
+#: sites/all/modules/acidfree/class_image.inc:98
+msgid "Clockwise"
+msgstr "Orario"
+
+#: sites/all/modules/acidfree/class_image.inc:99
+msgid "Use exif orientation tag"
+msgstr "Usa il tag di orientamento exif"
+
+#: sites/all/modules/acidfree/class_image.inc:103
+msgid "Rotate image"
+msgstr "Ruota immagine"
+
+#: sites/all/modules/acidfree/class_video.inc:39
+msgid "video"
+msgstr "video"
+
+#: sites/all/modules/acidfree/class_video.inc:40
+msgid "Add a video"
+msgstr "Aggiungi video"
+
+#: sites/all/modules/acidfree/image.imagick.inc:25
+msgid ""
+"The built-in imagick image toolkit requires that the imagick module for PHP "
+"be installed and configured properly. For more information see %url."
+msgstr ""
+"Il kit di trattamento immagini incluso (imagick) richiede che il modulo "
+"imagick per PHP sia installato e configurato opportunamente. Maggiori "
+"informazioni su %url."
+
+#: sites/all/modules/acidfree/image.imagick.inc:29
+msgid "Imagick JPEG image quality (1-100)"
+msgstr "Qualità immagine JPEG per Imagick (1-100)"
+
+#: sites/all/modules/acidfree/image.imagick.inc:41
+msgid "%function failed: %reason: %description"
+msgstr "%function failed: %reason: %description"
+
+#: sites/all/modules/acidfree/image.imagick.inc:47;57
+msgid "imagick_readimage failed to open file %file"
+msgstr "imagick_readimage, errore in apertura file %file"
+
+#: sites/all/modules/acidfree/image_manip.inc:121
+msgid "image rotate failed for %image"
+msgstr "errore nella rotazione di %image"
+
+#: sites/all/modules/acidfree/views_acidfree.inc:16
+msgid "Album grid"
+msgstr "Griglia album"
+
+#: sites/all/modules/acidfree/views_acidfree.inc:17
+msgid "Provides a grid view of items in an album"
+msgstr "Fornisce una visualizzazione a griglia per gli elementi di un album"
+
+#: sites/all/modules/acidfree/views_acidfree.inc:110
+msgid "Album list"
+msgstr "Lista album"
+
+#: sites/all/modules/acidfree/acidfree.module:99
+msgid "Acidfree albums are used for the categorization of images and videos."
+msgstr "Gli albums Acidfree sono usati per catalogare immagini e video"
+
+#: sites/all/modules/acidfree/acidfree.module:189
+msgid "Edit %title"
+msgstr "Modifica %title"
+
+#: sites/all/modules/acidfree/acidfree.module:195
+msgid "Title"
+msgstr "Titolo"
+
+#: sites/all/modules/acidfree/acidfree.module:221
+msgid "Body"
+msgstr "Body"
+
+#: sites/all/modules/acidfree/acidfree.module:227
+msgid "Sort album by"
+msgstr "Ordina album secondo"
+
+#: sites/all/modules/acidfree/acidfree.module:229
+msgid "Use global settings"
+msgstr "Utilizza i settaggi globali"
+
+#: sites/all/modules/acidfree/acidfree.module:230;661
+msgid "Latest post first"
+msgstr "Ultimo inserimento per primo"
+
+#: sites/all/modules/acidfree/acidfree.module:231;662
+msgid "Posted order"
+msgstr "Ordine di inserimento"
+
+#: sites/all/modules/acidfree/acidfree.module:232;663
+msgid "Alphabetical order"
+msgstr "Ordine alfabetico"
+
+#: sites/all/modules/acidfree/acidfree.module:233;664
+msgid "Chronological order by creation date"
+msgstr "Ordine cronologico secondo data di creazione"
+
+#: sites/all/modules/acidfree/acidfree.module:259
+msgid ""
+"Select a fixed album thumbnail or select 'Random' to have a random thumbnail "
+"appear for the album thumbnail"
+msgstr ""
+"Selezionare l'icona di un dato album o selezionare 'Casuale' per "
+"rappresentare l'album con una icona a caso"
+
+#: sites/all/modules/acidfree/acidfree.module:265
+msgid "Album thumbnail"
+msgstr "Icona dell'album"
+
+#: sites/all/modules/acidfree/acidfree.module:280
+msgid "Allow others to post items to this album"
+msgstr "Consenti ad altri di inserire elementi in questo album"
+
+#: sites/all/modules/acidfree/acidfree.module:287
+msgid "Weight"
+msgstr "Peso"
+
+#: sites/all/modules/acidfree/acidfree.module:289
+msgid ""
+"In listings, the heavier albums will sink and the lighter albums will be "
+"positioned nearer the top."
+msgstr ""
+"Nei listati gli albums più pesanti scenderanno verso il fondo e quelli più "
+"leggeri verranno posizionati in alto"
+
+#: sites/all/modules/acidfree/acidfree.module:307
+msgid ""
+"A better photo album than Gallery or Album. Acidfree is node based and well "
+"integrated into Drupal."
+msgstr ""
+"Un album fotografico migliore di Gallery o Album. Acidfree è basato sul "
+"concetto di nodo ed è ben integrato in Drupal"
+
+#: sites/all/modules/acidfree/acidfree.module:310
+msgid ""
+"Add an album here.  Other elements you can add are in the 'create content' "
+"menu."
+msgstr ""
+"Aggiungi un album. Altri elementi che possono essere aggiunti sono elencati "
+"nel menù di creazione contenuti"
+
+#: sites/all/modules/acidfree/acidfree.module:312
+msgid ""
+"<p>Acidfree is an album system that has the ability to store any kind of "
+"media (assuming the class is existent.)  Currently implemented are %types.  "
+"Following the example of one of the currently implemented classes, it is "
+"easy to create a new media type.</p>"
+msgstr ""
+"<p>Acidfree è un sistema di album fotografici con la capacità di "
+"immagazzinare ogni tipo di media (ovviamente se la classe corrispondente è "
+"stata definita). Attualmente sono implementati: %types. Seguendo l'esempio "
+"di una delle classi attualmente implementate è facile creare un nuovo tipo "
+"di media.</p>"
+
+#: sites/all/modules/acidfree/acidfree.module:314
+msgid ""
+"<p>Because Acidfree is more than simply a storage and viewing module, it "
+"requires some depenencies for the album management.  First, it requires the "
+"Filemanager module.  Until the Filemanager gets patched to have the exended "
+"API that Acidfree requires, Acidfree will ship with a patch for the "
+"Filemanager.  Second, it requires some form of image manipulation.  Drupal "
+"provides a frontend to the GD library that can do what is required.  Or, if "
+"you would rather use ImageMagick or libmagick (php-imagick module), set that "
+"up (copy the image.*.inc files to the includes directory) and select it.  "
+"Finally, if you want lossless rotations for your images, you will require "
+"jpegtran or exiftran.</p><p>For video thumbnailing, there are three "
+"options.  You can choose a static image for all your videos (no thumbnail), "
+"upload your own thumbnail (user thumbnail) or have mplayer thumbnail them "
+"automatically for you.  If you choose the first option, you will be asked to "
+"give the dimensions of the video so it can be displayed correctly in the "
+"'full' view.  With option two, be sure to upload a thumbnail that is the "
+"same dimensions as the actual video (grab a frame from the video, do not "
+"resize it.)  The third option obviously implies that you have mplayer and "
+"all the win32 codecs installed on your <b>server</b> and that you are "
+"allowed to exec other programs (i.e., not running in safe mode.).  "
+msgstr ""
+"<p>Poiché Acidfree è più di un semplice sistema di immagazinamento e "
+"visualizzazione dipende per il suo funzionamento da alcuni moduli per la "
+"gestione degli album. Primo, richiede il modulo Filemanager. Fino a quando "
+"Filemanager includerà l'estensione della API necessaria, Acidfree viene "
+"rilasciato con una patch per Filemanager. Secondo, è richiesta una qualche "
+"forma di manipolazione delle immagini. Drupal fornisce una interfaccia alla "
+"libreria GD che può svolgere le funzioni richieste. Se si preferisce "
+"utilizzare ImageMagick o libmagick (il modulo php-imagick) lo si può fare "
+"copiando i files image.*.inc nel directory degli includes e selezionando la "
+"modalità. Inoltre, se si desidera la rotazione lossless delle immagini, è "
+"necessario utilizzare jpegtran  o exiftran.</p><p>Per i thumbnails associati "
+"ai  video ci sono tre opzioni. Si può scegliere una immagine statica per "
+"tutti i video (no thumbnail), caricare un proprio thumbnail (user thumbnail) "
+"o utilizzare mplayer per creare un thumbnail del video. Con la prima opzione "
+"vi verrà richiesto di fornire le dimensioni del video, così che sarà "
+"possibile visualizzarlo correttamente in 'full view'. Con la seconda opzione "
+"assicuratevi di caricare una thumbnail delle stesse dimensioni del video "
+"(estraete un frame dal video e non ridimensionatelo). La terza opzione "
+"implica che abbiate mplayer e tutti i codecs win32 installati sul <b>server</"
+"b>, e che abbiate i diritti per eseguire i programmi (i.e.: che non operiate "
+"in modalità protetta)."
+
+#: sites/all/modules/acidfree/acidfree.module:316
+msgid "Change these settings to however you like.  You are w00t, afterall."
+msgstr "Modifica queste impostazioni come desiderato. Dopotutto tu sei w00t..."
+
+#: sites/all/modules/acidfree/acidfree.module:318
+msgid ""
+"The common attributes that Acidfree will have are: 'Sticky at top of lists', "
+"which allows the albums to be sorted before the other media types (image, "
+"video, etc.) in the various album views;  and *not* 'Promoted to front page' "
+"because that would make all the albums show up at the top of the front page, "
+"which is probably not desirable."
+msgstr ""
+"Gli attributi comuni associati con Acidfree sono: 'Sticky at top of lists', "
+"che causa l'ordinamento degli albums prima degli altri elementi (immagini, "
+"video...) in varie visualizzazioni degli albums; e *non* 'Promoted to front "
+"page'  in quanto ciò visualizzerebbe gli albums in testa alla pagina "
+"frontale, che probabilmente non è un effetto desiderato."
+
+#: sites/all/modules/acidfree/acidfree.module:368
+msgid "Album"
+msgstr "Album"
+
+#: sites/all/modules/acidfree/acidfree.module:374
+msgid "Acidfree settings"
+msgstr "Parametri di Acidfree"
+
+#: sites/all/modules/acidfree/acidfree.module:377
+msgid "Site-wide Acidfree settings."
+msgstr "Parametri di Acidfree per tutto il sito"
+
+#: sites/all/modules/acidfree/acidfree.module:383;1145;1236
+msgid "Acidfree albums"
+msgstr "Albums Acidfree"
+
+#: sites/all/modules/acidfree/acidfree.module:389;811
+msgid "Mass import"
+msgstr "Importazione di massa"
+
+#: sites/all/modules/acidfree/acidfree.module:407
+#, fuzzy
+msgid "Album contents"
+msgstr "contenuti dell'album"
+
+#: sites/all/modules/acidfree/acidfree.module:413
+msgid "Grid"
+msgstr "Griglia"
+
+#: sites/all/modules/acidfree/acidfree.module:413
+#, fuzzy
+msgid "List"
+msgstr "lista"
+
+#: sites/all/modules/acidfree/acidfree.module:427
+msgid "My Acidfree Albums"
+msgstr "I miei albums Acidfree"
+
+#: sites/all/modules/acidfree/acidfree.module:586
+msgid "Thumbnails per page must be a non-negative integer"
+msgstr "Icone per pagina deve essere un intero non negativo"
+
+#: sites/all/modules/acidfree/acidfree.module:589
+msgid "Thumbnail padding must be a non-negative integer"
+msgstr "Il padding per le icone deve essere un intero non negativo"
+
+#: sites/all/modules/acidfree/acidfree.module:625
+msgid "General Settings"
+msgstr "Parametri generali"
+
+#: sites/all/modules/acidfree/acidfree.module:629
+msgid "Per user albums"
+msgstr "Albums per utente"
+
+#: sites/all/modules/acidfree/acidfree.module:630
+msgid ""
+"This options will allow each user to have a top-level album of their own.  "
+"The per user album is located at user/acidfree if logged in and acidfree/"
+"user/nnn for each individual album."
+msgstr ""
+"Queste opzioni permettono ad ogni utente di avere un proprio album a livello "
+"massimo. L'album di utente è localizzato su user/acidfree dopo il login, e "
+"su acidfree/user/nnn per gli album singoli "
+
+#: sites/all/modules/acidfree/acidfree.module:640
+msgid ""
+"Neither exiftran nor jpegtran executables are in the safe_mode_exec_dir (%"
+"safe_dir) &mdash; lossy jpeg rotation will be used instead"
+msgstr ""
+"Né exiftran né jpegtran sono in safe_mode_exec_dir (%safe_dir) &mdash; in "
+"sostituzione si usa una rotazione jpeg lossy."
+
+#: sites/all/modules/acidfree/acidfree.module:644
+msgid ""
+"Neither exiftran nor jpegtran are available &mdash; lossy jpeg rotation will "
+"be used instead"
+msgstr ""
+"Né exiftran né jpegtran sono disponibili &mdash; in sostituzione si usa una "
+"rotazione jpeg lossy."
+
+#: sites/all/modules/acidfree/acidfree.module:648
+msgid "Acidfree Display"
+msgstr "Display Acidfree"
+
+#: sites/all/modules/acidfree/acidfree.module:652
+msgid "Show alternative album view"
+msgstr "Mostra visualizzazioni di album alternative"
+
+#: sites/all/modules/acidfree/acidfree.module:654
+msgid ""
+"Albums normally have two views: grid and list.  This option controls whether "
+"or not when viewing the album, users can switch to the alternate view.  "
+"Which view is the default view is set individually in each album"
+msgstr "Gli album normalmente hanno due visualizzazioni: griglia e lista. Questa opzione controlla la possibilità per l'utente di scegliere la visualizzazione alternativa. La visualizzazione di default è impostata individualmente per ogni album"
+
+#: sites/all/modules/acidfree/acidfree.module:658
+msgid "Sort albums by"
+msgstr "Ordina gli album secondo"
+
+#: sites/all/modules/acidfree/acidfree.module:669
+msgid "Sort all albums"
+msgstr "Ordina tutti gli album"
+
+#: sites/all/modules/acidfree/acidfree.module:671
+msgid "Force all albums to use this selected sort order"
+msgstr "Forza tutti gli album a usare il criterio di ordinamento selezionato"
+
+#: sites/all/modules/acidfree/acidfree.module:678
+msgid "List albums first"
+msgstr "Elenca gli albums per primi"
+
+#: sites/all/modules/acidfree/acidfree.module:680
+msgid "Show albums first in all lists (marks them as 'sticky')"
+msgstr "Mostra gli albums per primi in tutti gli elenchi (marcali come 'sticky')"
+
+#: sites/all/modules/acidfree/acidfree.module:684
+msgid "Thumbnails per page"
+msgstr "Icone per pagina"
+
+#: sites/all/modules/acidfree/acidfree.module:688
+msgid "Enter 0 for unlimited"
+msgstr "Inserire 0 per non imporre alcun limite"
+
+#: sites/all/modules/acidfree/acidfree.module:692
+msgid "Show image title as default caption for inline images"
+msgstr "Mostra il titolo dell'immagine come didascalia per immagini in linea"
+
+#: sites/all/modules/acidfree/acidfree.module:698
+msgid "Amount of padding/border on each side of thumbnail image"
+msgstr "Dimensione del padding o bordo su ogni lato della immagine icona"
+
+#: sites/all/modules/acidfree/acidfree.module:700
+msgid ""
+"In pixels. Only needs to be changed if you modify the padding/border around "
+"the thumbnail."
+msgstr "In pixels. Cambiare solo se modifichi il padding/bordo intorno alle icone "
+
+#: sites/all/modules/acidfree/acidfree.module:704
+msgid ""
+"No image toolkit has been properly installed or configured.  Go to admin/"
+"settings to fix this."
+msgstr ""
+"Nessun toolkit di trattamento immagini è stato installato o configurato "
+"opportunamente. Correggere in admin/settings"
+
+#: sites/all/modules/acidfree/acidfree.module:707
+msgid "Image Manipulation"
+msgstr "Trattamento dell'immagine"
+
+#: sites/all/modules/acidfree/acidfree.module:712
+msgid ""
+"exiftran provides lossless rotation of jpeg images and keeps EXIF "
+"information.  If you provide a working path, Acidfree will try to use it."
+msgstr ""
+"exiftran fornisce rotazione lossless per immagini jpeg e preserva "
+"l'informazione EXIF. Se fornisci un path valido Acidfree tenterà di usarlo."
+
+#: sites/all/modules/acidfree/acidfree.module:717
+msgid ""
+"jpegtran provides lossless rotation of jpeg images and can somewhat munge "
+"the EXIF information.  If you provide a working path, Acidfree will try to "
+"use it."
+msgstr ""
+"jpegtran fornisce rotazione lossless per immagini jpeg e può alterare "
+"l'informazione EXIF. Se fornisci un path valido Acidfree tenterà di usarlo."
+
+#: sites/all/modules/acidfree/acidfree.module:780
+msgid "edit this album"
+msgstr "modifica questo album"
+
+#: sites/all/modules/acidfree/acidfree.module:855
+msgid "Recent Acidfree items"
+msgstr "Elementi Acidfree recenti"
+
+#: sites/all/modules/acidfree/acidfree.module:856
+msgid "Favorite Acidfree items"
+msgstr "Elementi Acidfree preferiti"
+
+#: sites/all/modules/acidfree/acidfree.module:857
+msgid "Random Acidfree items"
+msgstr "Elementi Acidfree casuali"
+
+#: sites/all/modules/acidfree/acidfree.module:858
+msgid "Add Acidfree items"
+msgstr "Inserisci elementi Acidfree"
+
+#: sites/all/modules/acidfree/acidfree.module:862
+msgid "Acidfree item recent selection"
+msgstr "Selezione recente elementi Acidfree"
+
+#: sites/all/modules/acidfree/acidfree.module:863
+msgid "Acidfree item favorite selection"
+msgstr "Selezione favorita elemento Acidfree"
+
+#: sites/all/modules/acidfree/acidfree.module:864
+msgid "Acidfree item random selection"
+msgstr "Selezione casuale elemento Acidfree"
+
+#: sites/all/modules/acidfree/acidfree.module:865
+msgid "Add Acidfree items quick links"
+msgstr "Inserisci link veloce a elementi Acidfree"
+
+#: sites/all/modules/acidfree/acidfree.module:919
+msgid "Number of items"
+msgstr "Numero di elementi"
+
+#: sites/all/modules/acidfree/acidfree.module:928
+msgid "Include items from all albums"
+msgstr "Includi elementi da tutti gli album"
+
+#: sites/all/modules/acidfree/acidfree.module:934
+msgid "Select random items from these albums"
+msgstr "Seleziona elementi casuali da questi albums"
+
+#: sites/all/modules/acidfree/acidfree.module:934
+#, fuzzy
+msgid "description"
+msgstr "Destinazione"
+
+#: sites/all/modules/acidfree/acidfree.module:969
+msgid "No file supplied"
+msgstr "Non è stato fornito alcun file"
+
+#: sites/all/modules/acidfree/acidfree.module:977
+msgid "Image module sanity check passed."
+msgstr "Validazione del modulo image superata"
+
+#: sites/all/modules/acidfree/acidfree.module:979
+msgid "Image module sanity check failed. Check the settings at !imgurl and !fsurl."
+msgstr ""
+"Validazione del modulo image non superata. Verifica la configurazione su !"
+"imgurl e !fsurl."
+
+#: sites/all/modules/acidfree/acidfree.module:985
+msgid "Video Upload module sanity check passed."
+msgstr "Validazione del modulo Video Upload superata."
+
+#: sites/all/modules/acidfree/acidfree.module:987
+msgid "Video Upload module sanity check failed. Check the settings at !fsurl."
+msgstr ""
+"Validazione del modulo Video Upload non superata. Verifica la configurazione "
+"su !fsurl."
+
+#: sites/all/modules/acidfree/acidfree.module:992
+msgid "Temporary path okay."
+msgstr "Path temporaneo ok."
+
+#: sites/all/modules/acidfree/acidfree.module:994
+msgid "Temporary path does not exist. Check the settings at !fsurl."
+msgstr "Il path temporaneo non esiste. Verifica configurazione su !fsurl."
+
+#: sites/all/modules/acidfree/acidfree.module:1012;1023
+msgid "Updated %mod module weight."
+msgstr "Aggiornato peso modulo %mod"
+
+#: sites/all/modules/acidfree/acidfree.module:1015;1026
+msgid "%mod module weight okay."
+msgstr "peso modulo %mod ok."
+
+#: sites/all/modules/acidfree/acidfree.module:1029
+msgid "%itk image toolkit installed and properly configured"
+msgstr "Toolkit per immagini %itk  installato e correttamente configurato."
+
+#: sites/all/modules/acidfree/acidfree.module:1031
+msgid ""
+"Image toolkit not properly installed or configured.  Go to %url and "
+"configure the image toolkit properly."
+msgstr ""
+"Toolkit per immagini %itk non installato o non correttamente configurato. "
+"Visita %url e configura correttamente il toolkit."
+
+#: sites/all/modules/acidfree/acidfree.module:1036
+msgid ""
+"Errors were detected.  Please correct the above errors before you do "
+"anything else with Acidfree."
+msgstr ""
+"Si sono riscontrati degli errori. Si prega di correggere gli errori citati "
+"prima di intraprendere altre azioni."
+
+#: sites/all/modules/acidfree/acidfree.module:1038
+msgid ""
+"No errors were detected.  But this doesn't mean that Acidfree is guaranteed "
+"to work flawlessly.  It is a complex system and still under development.  "
+"Please be patient while all the wrinkles are found and ironed out."
+msgstr ""
+"Non è stato riscontrato alcun errore. Ciò non garantisce un funzionamento "
+"impeccabile, in quanto Acidfree è un sistema complesso tuttora in corso di "
+"sviluppo. Si prega di pazientare mentre tutti i malfunzionamenti vengono "
+"evidenziati e corretti."
+
+#: sites/all/modules/acidfree/acidfree.module:1040
+msgid "Published, promoted and sticky configuration"
+msgstr "Pubblicato, promosso in prima pagina e sticky"
+
+#: sites/all/modules/acidfree/acidfree.module:1044;1052;1061;1072
+msgid "Published"
+msgstr "Pubblicato"
+
+#: sites/all/modules/acidfree/acidfree.module:1044;1052;1061;1072
+msgid "Not published"
+msgstr "Non pubblicato"
+
+#: sites/all/modules/acidfree/acidfree.module:1045;1053;1062;1073
+msgid "Promoted"
+msgstr "Promosso in prima pagina"
+
+#: sites/all/modules/acidfree/acidfree.module:1045;1053;1062;1073
+msgid "Not promoted"
+msgstr "Non promosso in prima pagina"
+
+#: sites/all/modules/acidfree/acidfree.module:1046;1054;1063;1074
+msgid "Sticky"
+msgstr "Sticky"
+
+#: sites/all/modules/acidfree/acidfree.module:1046;1054;1063;1074
+msgid "Not sticky"
+msgstr "Non sticky"
+
+#: sites/all/modules/acidfree/acidfree.module:1047
+msgid "Acidfree recommends Published, Not promoted, and Sticky"
+msgstr "Acidfree raccomanda: Pubblicato, Non promosso in prima pagina e Sticky"
+
+#: sites/all/modules/acidfree/acidfree.module:1052
+msgid "Images"
+msgstr "Immagini"
+
+#: sites/all/modules/acidfree/acidfree.module:1055;1064
+msgid "Acidfree recommends Published, Not promoted, and Not sticky"
+msgstr "Acidfree raccomanda: Pubblicato, Non promosso in prima pagina e Non sticky"
+
+#: sites/all/modules/acidfree/acidfree.module:1061
+msgid "Videos"
+msgstr "Video"
+
+#: sites/all/modules/acidfree/acidfree.module:1072
+msgid "Video thumbnails"
+msgstr "Icone video"
+
+#: sites/all/modules/acidfree/acidfree.module:1075
+msgid "Acidfree recommends Not published, Not promoted, and Not sticky"
+msgstr ""
+"Acidfree raccomanda: Non pubblicato, Non promosso in prima pagina e Non "
+"sticky"
+
+#: sites/all/modules/acidfree/acidfree.module:1086
+msgid "PHP configuration"
+msgstr "configurazione PHP"
+
+#: sites/all/modules/acidfree/acidfree.module:1087
+msgid "Maximum file upload size is"
+msgstr "La massima dimensione per il caricamento files è"
+
+#: sites/all/modules/acidfree/acidfree.module:1088
+msgid "Maximum POST size is"
+msgstr "La massima dimensione per POST è"
+
+#: sites/all/modules/acidfree/acidfree.module:1089
+msgid "Maximum execution time is %max_time seconds"
+msgstr "Il tempo massimo di esecuzione è %max_time secondi"
+
+#: sites/all/modules/acidfree/acidfree.module:1090
+msgid "Maximum memory usage is"
+msgstr "L'utilizzo massimo di memoria è"
+
+#: sites/all/modules/acidfree/acidfree.module:1091
+msgid ""
+"If these limits are smaller than the files you plan on uploading, you should "
+"change the settings in your php.ini file"
+msgstr ""
+"Se questi limiti sono inadeguati per i files che intendi caricare dovresti "
+"modificarli nel file php.ini"
+
+#: sites/all/modules/acidfree/acidfree.module:1150
+msgid ""
+"This is an Acidfree vocabulary.  Please use the exposed Acidfree interfaces "
+"to modify values rather than directly editing vocabs and terms via the "
+"taxonomy interface."
+msgstr ""
+"Questo è un vocabolario di Acidfree. Si prega di modificarlo utilizzando "
+"l'interfaccia fornita da Acidfree, e non direttamente tramite l'interfaccia "
+"del modulo Tassonomia"
+
+#: sites/all/modules/acidfree/acidfree.module:1164
+msgid "failed to create vocabulary for Acidfree albums"
+msgstr "errore nella creazione del vocabolario per gli albums Acidfree"
+
+#: sites/all/modules/acidfree/acidfree.module:1167
+msgid "Created Acidfree vocabulary"
+msgstr "Creato vocabolario Acidfree"
+
+#: sites/all/modules/acidfree/acidfree.module:1182
+msgid "Acidfree root album"
+msgstr "Album root di Acidfree"
+
+#: sites/all/modules/acidfree/acidfree.module:1216
+msgid "!username's Acidfree album"
+msgstr "Album Acidfree di !username"
+
+#: sites/all/modules/acidfree/acidfree.module:1254
+msgid "Acidfree inline filter"
+msgstr "Filtro in-linea di Acidfree"
+
+#: sites/all/modules/acidfree/acidfree.module:1258
+msgid "add acidfree images to other nodes using a syntax like [acidfree:xx ...]"
+msgstr ""
+"aggiungi immagini Acidfree ad altri nodi utilizzando la sintassi [acidfree:"
+"xx ...]"
+
+#: sites/all/modules/acidfree/acidfree.module:1273
+msgid ""
+"<b>Acidfree inline tags</b></li>\n"
+"\n"
+"    It is possible to change the way the &#91;acidfree:nnn&#93; tags look by "
+"adding a few name/value pairs.  Note that any value that has spaces in it "
+"must be quoted either with single quotes ' or with double quotes \".  "
+"Currently, the choices are:\n"
+"<ul>\n"
+"<li><tt>title</tt>: use this string as the caption (Note that you can have "
+"the node title be the default caption by modifying the setting in admin/"
+"settings/acidfree)</li>\n"
+"<li><tt>align</tt>: {left,right}</li>\n"
+"<li><tt>size</tt>: {M, WxH} where M=max dimension and WxH=WidthxHeight</li>\n"
+"<li><tt>link</tt>: 'none' or relative or absolute url e.g. http://www.google."
+"com or node/59.  If set to none, thumbnail will not be a link</li>\n"
+"<li><tt>popup</tt>: any value.  If set, it will cause the link to be a popup "
+"link</li> \n"
+"<li><tt>style</tt>: CSS style information for the image</li>\n"
+"<li><tt>class</tt>: additional class for the image</li>\n"
+"</ul>\n"
+"<b>Examples</b>\n"
+"<ul>\n"
+"<li>&#91;acidfree:1234 size=300 align=right&#93; - right aligned thumbnail "
+"of node 1234 with max dimension of 300 pixels</li>\n"
+"<li>&#91;acidfree:4321&#93; - left aligned thumbnail of node 4321 (default "
+"thumbnail size)</li>\n"
+"<li>&#91;acidfree:3241 align=left size=320x240&#93; - right aligned "
+"thumbnail of node 3241 with size = 320x240</li>\n"
+"<li>&#91;acidfree:3241 title='This is a different title' size=320 popup=true "
+"link=\"http://mysite.dom/\"&#93; - left aligned thumbnail of node 3241 with "
+"a title set, size = 320x240, link pointing to mysite.dom and target=blank_ "
+"set in the anchor</li>\n"
+"<li>&#91;acidfree:3241 link=none class='my-image your-image' style=\"border: "
+"2 px grey inset;\"&#93; - left aligned thumbnail of 3241, default size, "
+"class set and new style info</li>\n"
+"</ul>"
+msgstr ""
+"<b>Tags Acidfree in-linea</b></li>\n"
+"\n"
+"E' possibile modificare il modulo in cui i tags &#91;acidfree:nnn&#93; si "
+"manifestano aggiungendo alcune coppie nome/valore . Nota che ogni valore "
+"contenente spazi deve essere racchiuso fra apici singoli o doppi \".  "
+"Correntemente le scelte possibili sono:\n"
+"<ul>\n"
+"<li><tt>title</tt>: usa questa stringa come didascalia (Nota che puoi "
+"assegnare la didascalia di default come titolo del nodo modificando la "
+"configurazione in admin/settings/acidfree)</li>\n"
+"<li><tt>align</tt>: {left,right}</li>\n"
+"<li><tt>size</tt>: {M, WxH} dove M=dimensione massima e WxH=Larghezza x "
+"Altezza</li>\n"
+"<li><tt>link</tt>: 'none' o url relativa o assoluta p.e. http://www.google."
+"com or node/59. Se si utilizza none, il thumbnail non sarà un link</li>\n"
+"<li><tt>popup</tt>: qualsiasi valore.  Se settato il link sarà un link a "
+"popup</li> \n"
+"<li><tt>style</tt>: informazione di style CSS per l'immagine</li>\n"
+"<li><tt>class</tt>: classe addizionale per l'immagine</li>\n"
+"</ul>\n"
+"<b>Esempi</b>\n"
+"<ul>\n"
+"<li>&#91;acidfree:1234 size=300 align=right&#93; - icona del nodo 1234 "
+"allineata a destra con dimensione massima di 300 pixels</li>\n"
+"<li>&#91;acidfree:4321&#93; - icona del nodo 4321 allineata a sinistra "
+"(dimensione icona di default)</li>\n"
+"<li>&#91;acidfree:3241 align=left size=320x240&#93; - icona del nodo 3241  "
+"allineata a destra con dimensione = 320x240</li>\n"
+"<li>&#91;acidfree:3241 title='Questo è un titolo diverso' size=320 "
+"popup=true link=\"http://mysite.dom/\"&#93; - icona del nodo 3241 allineata "
+"a sinistra con forzatura del titolo, dimensione = 320x240, link a mysite.dom "
+"e target=blank_ nella anchor </li>\n"
+"<li>&#91;acidfree:3241 link=none class='my-image your-image' style=\"border: "
+"2 px grey inset;\"&#93; - icona di 3241 allineata a sinistra, dimensione di "
+"default, impostate classe e info su style</li>\n"
+"</ul>"
+
+#: sites/all/modules/acidfree/acidfree.module:1295
+msgid ""
+"You may use <a href=\"!acidfree_help\">[acidfree:xx] tags</a> to display "
+"acidfree videos or images inline."
+msgstr ""
+"Puoi utilizzare tags <a href=\"!acidfree_help\">[acidfree:xx]</a> per "
+"includere video o immagini ACidfree in linea."
+
+#: sites/all/modules/acidfree/acidfree.module:1300
+msgid "Home"
+msgstr "Home"
+
+#: sites/all/modules/acidfree/acidfree.module:1355
+msgid "file %filename is not a valid acidfree element type (%mime)"
+msgstr "il file  %filename non è un tipo Acidfree valido  (%mime)"
+
+#: sites/all/modules/acidfree/acidfree.module:1441;1501
+msgid "failed to import '%filename'"
+msgstr "Errore nell'importazione di '%filename'"
+
+#: sites/all/modules/acidfree/acidfree.module:1509
+#, fuzzy
+msgid "failed to import '%filename' (could not extract archive)"
+msgstr "Errore nell'importazione di '%filename'"
+
+#: sites/all/modules/acidfree/acidfree.module:1515
+msgid "Could not create temporary directory for mass import"
+msgstr "Impossibile creare il directory temporaneo per l'importazione di massa"
+
+#: sites/all/modules/acidfree/acidfree.module:1544;1720
+msgid "Import"
+msgstr "Importazione"
+
+#: sites/all/modules/acidfree/acidfree.module:1547
+msgid "Could not find server-side directory %tmpdir"
+msgstr "Errore nella localizzazione del directory %tmpdir sul server"
+
+#: sites/all/modules/acidfree/acidfree.module:1549
+msgid "Importing server side directory %tmpdir"
+msgstr "Importazione del directory %tmpdir sul server"
+
+#: sites/all/modules/acidfree/acidfree.module:1553;1700
+msgid "Upload"
+msgstr "Caricamento"
+
+#: sites/all/modules/acidfree/acidfree.module:1557
+msgid "Importing file %filename"
+msgstr "Importazione del file %filename"
+
+#: sites/all/modules/acidfree/acidfree.module:1562
+msgid "Failed to import %filename"
+msgstr "Errore nell'importazione del file %filename"
+
+#: sites/all/modules/acidfree/acidfree.module:1606
+msgid "Parent"
+msgstr "Genitore"
+
+#: sites/all/modules/acidfree/acidfree.module:1631
+msgid "No node types available"
+msgstr "Nessun tipo di nodo disponibile"
+
+#: sites/all/modules/acidfree/acidfree.module:1661
+msgid "Files to upload"
+msgstr "Files da caricare"
+
+#: sites/all/modules/acidfree/acidfree.module:1662
+msgid ""
+"Be sure to limit the uploaded file sizes to the following:<ul><li>Max file "
+"size: %max_file</li><li>Max total file size: %max_post</li></ul>"
+msgstr ""
+"Assicurati di rispettare i seguenti limiti di caricamento<ul><li>Massima "
+"dimensione del singolo file: %max_file</li><li>Massima dimensione totale dei "
+"files: %max_post</li></ul>"
+
+#: sites/all/modules/acidfree/acidfree.module:1671
+msgid "File to upload"
+msgstr "File da caricare"
+
+#: sites/all/modules/acidfree/acidfree.module:1673
+msgid ""
+"File to upload.  This may be an image, video clip, zip file, or a tar file "
+"that is gzipped or bzipped.  You may upload up to five at a time."
+msgstr ""
+"File da caricare. Può essere una immagine, un video clip, uno zip file, o un "
+"tar file comprezzo tramite gzip o bzip. Puoi caricare fino a 5 files "
+"contemporaneamente."
+
+#: sites/all/modules/acidfree/acidfree.module:1704
+msgid "Import local files"
+msgstr "Importa files locali"
+
+#: sites/all/modules/acidfree/acidfree.module:1710
+msgid "Path on server"
+msgstr "Path sul server"
+
+#: sites/all/modules/acidfree/acidfree.module:1711
+msgid "This must be the full path to a directory on the server that is readable."
+msgstr "Path completo di un directory leggibile sul server."
+
+#: sites/all/modules/acidfree/acidfree.module:1715
+msgid "Include subdirectories"
+msgstr "Includi i subdirectories"
+
+#: sites/all/modules/acidfree/acidfree.module:2222;2225;2236
+msgid "[acidfreepath]"
+msgstr "[acidfreepath]"
+
+#: sites/all/modules/acidfree/acidfree.module:2222
+msgid ""
+"Concatentated Acidfree album path (minus root album) e.g. trips/seattle.  "
+"Try something like 'albums/[acidfreepath]/[title]'."
+msgstr ""
+"Path concatenato dell'album Acidfree (escluso l'album root) p.es. trips/"
+"seattle.  Prova  'albums/[acidfreepath]/[title]'."
+
+#: sites/all/modules/acidfree/acidfree.module:2254
+msgid "Personal album"
+msgstr "Album personale"
+
+#: sites/all/modules/acidfree/acidfree.module:2258
+msgid "Acidfree Albums"
+msgstr "Albums Acidfree"
+
+#: sites/all/modules/acidfree/acidfree.module:2383
+msgid "Sort column '%k' is not supported, it is being ignored"
+msgstr "Ordinamento su colonna '%k' ignorato in quanto  non supportato"
+
+#: sites/all/modules/acidfree/acidfree.module:2383
+#: sites/all/modules/acidfree/acidfree.info:0
+msgid "Acidfree"
+msgstr "Acidfree"
+
+#: sites/all/modules/acidfree/acidfree.module:0
+#: sites/all/modules/acidfree/acidfree.info:0
+msgid "acidfree"
+msgstr "acidfree"
+
+#: sites/all/modules/acidfree/acidfree.install:210
+msgid "finished updating albums"
+msgstr "aggiornamento degli album terminato"
+
+#: sites/all/modules/acidfree/acidfree.install:254
+msgid "Finished updating images"
+msgstr "Aggiornamento delle immagini terminato"
+
+#: sites/all/modules/acidfree/acidfree.install:314
+msgid "finished updating videos"
+msgstr "aggiornamento dei video terminato"
+
+#: sites/all/modules/acidfree/acidfree.install:368
+msgid "The following modules are missing and prevent Acidfree from being upgraded:"
+msgstr "I seguenti moduli sono mancanti e impediscono l'aggiornamento di Acidfree:"
+
+#: sites/all/modules/acidfree/acidfree.install:433;441
+msgid "file exists: %fn"
+msgstr "file esistente: %fn"
+
+#: sites/all/modules/acidfree/acidfree.install:457
+msgid "The removal of the original file %file has failed."
+msgstr "Errore nella cancellazione del file originale %file"
+
+#: sites/all/modules/acidfree/acidfree.install:467
+msgid ""
+"The selected file %file could not be uploaded, because the destination %"
+"directory is not properly configured."
+msgstr ""
+"Il file selezionato %file  non può essere caricato perché la destinazione %"
+"directory non è configurata opportunamente."
+
+#: sites/all/modules/acidfree/acidfree.install:468
+msgid ""
+"The selected file %file could not not be uploaded, because the destination %"
+"directory could not be found, or because its permissions do not allow the "
+"file to be written."
+msgstr ""
+"Il file selezionato %file  non può essere caricato perché la destinazione %"
+"directory non è individuabile, o perché i permessi non consentono la "
+"scrittura del file"
+
+#: sites/all/modules/acidfree/acidfree.install:484
+msgid ""
+"The selected file %file could not be copied, because no file by that name "
+"exists.  Please check that you supplied the correct filename."
+msgstr "Il file selezionato %file non può essere copiato perché non esiste un file con il nome dato. Verifica se il nome fornito è corretto."
+
+#: sites/all/modules/acidfree/acidfree.install:517
+msgid ""
+"The selected file %file could not be copied, because a file by that name "
+"already exists in the destination."
+msgstr ""
+"Il file selezionato %file non può essere copiato perché esiste già "
+"un file con il nome dato nella destinazione. "
+
+#: sites/all/modules/acidfree/acidfree.install:523
+msgid "The selected file %file could not be copied."
+msgstr "Il file selezionato %file non può essere copiato "
+
+#: sites/all/modules/acidfree/acidfree.install:468
+msgid "file system"
+msgstr "file system"
+
+#: sites/all/modules/acidfree/acidfree.info:0
+msgid "A simple unified media management module for Image and Video modules"
+msgstr "Un modulo semplice per la gestione unificata dei moduli Immagine e Video"
+

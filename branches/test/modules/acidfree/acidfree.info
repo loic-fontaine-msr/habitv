@@ -1,0 +1,11 @@
+; $Id: acidfree.info,v 1.4 2007/02/26 21:08:48 vhmauery Exp $
+name = Acidfree
+description = A simple unified media management module for Image and Video modules
+dependencies = taxonomy views image
+
+
+; Information added by drupal.org packaging script on 2008-11-02
+version = "5.x-1.x-dev"
+project = "acidfree"
+datestamp = "1225584019"
+

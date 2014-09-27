@@ -1,0 +1,24 @@
+CREATE TABLE shoutbox (
+  shout_id int(10) unsigned NOT NULL auto_increment,
+  uid int(10) NOT NULL default '0',
+  nick varchar(32) NOT NULL default '',
+  shout varchar(255) NOT NULL default '',
+  url varchar(100) NOT NULL default '',
+  status tinyint(2) NOT NULL default '0',
+  moderate int(2) NOT NULL default '0',
+  created int(11) NOT NULL default '0',
+  changed int(11) NOT NULL default '0',
+  hostname varchar(255) NOT NULL default '',
+  PRIMARY KEY  (shout_id)
+) TYPE=MyISAM;
+
+
+CREATE TABLE shoutbox_moderation (
+  moderation_id int(10) unsigned NOT NULL auto_increment,
+  shout_id int(10) unsigned default '0',
+  uid int(10) unsigned default '0',
+  vote tinyint(3) default '0',
+  timestamp int(11) unsigned default '0',
+  PRIMARY KEY  (moderation_id),
+  KEY moderation_id (moderation_id)
+) TYPE=MyISAM;

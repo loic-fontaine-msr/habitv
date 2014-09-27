@@ -1,0 +1,98 @@
+/* $Id: picasa.css,v 1.1 2008/01/06 21:27:44 cyberswat Exp $ */
+#picasa_leftbox {
+  background-color: #fff;
+  vertical-align: top;
+}
+.picasa_album_title tbody {
+  border-top: 0px;
+}
+#picasa_rightbox {
+  background-color: #fff;
+  width: 235px;
+  vertical-align: top;
+}
+#picasa_guser {
+  body: none repeat scroll 0%;
+  padding: 8px;
+  margin-left: 0px;
+  vertical-align: top;
+}
+#picasa_guser .picasa_guser {
+  margin: 0pt;
+  padding: 0pt;
+  border-collapse: collapse;
+}
+
+#picasa_guser .picasa_guser_portraitcontainer {
+	position: relative;
+	border-collapse: collapse;
+}
+
+#picasa_guser .picasa_gphoto_thumbnail {
+  border: 1px solid #999;
+  margin-right: 0.4em;
+  color: #333;
+  font-weight: bold;
+  text-decoration: none;
+}
+#picasa_guser .picasa_guser_column_left {
+  width: 45px;
+  border-collapse: collapse;
+}
+#picasa_guser .picasa_guser_column_right {
+  border-collapse: collapse;
+}
+#picasa_guser .gphoto_nickname {
+  font-weight: bold;
+}
+.picasa_sidebox {
+  width: 235px;
+  overflow: hidden;
+}
+.picasa_prettybox {
+  background-color: #fff;
+  border: 1px solid #CCC;
+  margin: 0pt 7px 7px 0pt;
+}
+#picasa_guser tbody {
+	border-top: 0px;
+}
+
+.picasa_album, 
+.picasa_album_description {
+	display: inline;
+	width: 220px;
+	margin: 4px;
+	text-align: center;
+}
+.picasa_image_box, .picasa_album_description {
+  display: table-row;
+  padding: 0px;
+  margin: 0px;
+}
+.picasa_frame {
+  height: 194px;
+  width: 194px;
+  background-color: blue;
+  background: transparent url(images/album_background.gif) no-repeat scroll left center;
+  text-align: center;
+}
+.picasa_padding {
+ padding-top: 16px;
+ text-align: center;
+}
+.picasa_album_description {
+ width: 225px;
+ overflow: hidden;
+}
+.picasa_album_titlebox {
+	line-height: 1.2em;
+	overflow: hidden;
+	width: 225px;
+	text-align: center;
+}
+.picasa_album_info {
+	padding: 0pt 4px;
+	white-space nowrap;
+	color: #808080
+}

@@ -1,0 +1,65 @@
+<?php
+/* $Id: picasa_album.install,v 1.1 2008/01/06 21:27:43 cyberswat Exp $ */
+
+/**
+ * Implementation of hook_install().
+ */
+function picasa_album_install() {
+  switch ($GLOBALS['db_type']) {
+    case 'mysql':
+    case 'mysqli':
+      db_query("CREATE TABLE IF NOT EXISTS {picasa_albums} (
+        nid int(10) unsigned NOT NULL default '0',
+        vid int(10) unsigned NOT NULL default '0',
+        uid int(11) unsigned NOT NULL default '0',
+        guser_nid int(11) NOT NULL default '0',
+        id varchar(255) NOT NULL,
+        published int(11) NOT NULL default '0',
+        updated int(11) NOT NULL default '0',
+        title varchar(255) NOT NULL,
+        summary text,
+        rights varchar(255) NOT NULL,
+        author_name varchar(100) NOT NULL,
+        author_uri varchar(255) NOT NULL,
+        gphoto_id varchar(255) NOT NULL,
+        gphoto_name varchar(255) NOT NULL,
+        gphoto_location varchar(255) default NULL,
+        gphoto_access varchar(255) NOT NULL,
+        gphoto_timestamp int(11) NOT NULL default '0',
+        gphoto_numphotos int(11) NOT NULL,
+        gphoto_user varchar(255) NOT NULL,
+        gphoto_nickname varchar(255) NOT NULL,
+        gphoto_commenting_enabled varchar(6) NOT NULL,
+        gphoto_comment_count int(11) NOT NULL,
+        media_title varchar(255) default NULL,
+        media_description varchar(255) default NULL,
+        media_keywords varchar(255) default NULL,
+        media_content varchar(255) default NULL,
+        media_thumbnail varchar(255) default NULL,
+        media_credit varchar(255) default NULL,
+        georss_pos varchar(255) default NULL,
+        PRIMARY KEY  (gphoto_id),
+        KEY vid (vid),
+        KEY nid (nid)
+      ) ENGINE=MyISAM DEFAULT CHARSET=utf8
+      ");
+      $msg = t("The Picasa album module has been installed: ");
+      drupal_set_message($msg, 'status');
+      watchdog('picasa_album', $msg, 'WATCHDOG_NOTICE');
+      break;
+    default:
+      $error = t("The Picasa album module only supports the Mysql Database.");
+      drupal_set_message($error, 'error');
+      watchdog('picasa_album', $error, 'WATCHDOG_ERROR');
+  }
+}
+
+/**
+ * Implementation of hook_uninstall().
+ */
+function picasa_album_uninstall() {
+  db_query('DROP TABLE IF EXISTS {picasa_albums}');
+  $msg = t("The Picasa album module has been uninstalled.");
+  drupal_set_message($msg, 'status');
+  watchdog('picasa_album', $msg, 'WATCHDOG_NOTICE');
+}

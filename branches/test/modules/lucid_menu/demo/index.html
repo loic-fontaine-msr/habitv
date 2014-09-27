@@ -1,0 +1,633 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<LINK REL="SHORTCUT ICON" HREF="img/doiMenu.ico" />
+<title>doiMenu v.1.5 Demo</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<style type="text/css">
+<!--
+body, table {
+	font-family: Tahoma, Verdana, Arial;
+	font-size: 9pt;
+	text-decoration: none;
+}
+-->
+</style>
+<script type="text/javascript" src="../js/doiMenuDOM.js"></script>
+<script type="text/javascript" src="../js/functions.js"></script>
+<script type="text/javascript">
+function deep1(no,deep)
+{
+  if(deep == 10)
+    return;
+  for(var i=0;i<5;i++)
+  {
+	switch(no)
+	{
+      case 2:
+        eval("pmL"+no+""+deep+""+i+"=new TPopMenu('Menu "+i+"','0','','',' Menu "+deep+" "+i+"');"); 
+	    break;
+ 	  default:
+		eval("pmL"+no+""+deep+""+i+"=new TPopMenu('Menu "+i+"','','','',' Menu "+deep+" "+i+"');"); 
+	}
+       
+  }
+  deep1(no,++deep);
+}
+function deep2(par,no,deep)
+{ 
+  if(deep == 10)
+    return;
+  var j = Math.round(Math.random()*4);
+  for(var i=0;i<5;i++)
+  {
+    eval(par+".Add(pmL"+no+""+deep+""+i+");");
+    if(i== j)
+    {  
+      var d = deep+1;  
+      deep2("pmL"+no+""+deep+""+i,no,d);
+    }
+  }
+}
+//xp style
+  var mm0 = new TMainMenu('mm0','vertical');
+  mm0.SetParentsRedirect(false);
+  
+  var pmDemo00 = new TPopMenu('Demo','0','','','doiMenu v.1.5 demo');
+    var pmIcon00 = new TPopMenu('with Icon','','','','with icon');
+      var pmFav00 = new TPopMenu('Favorites','img/favorites.gif','','','favorites'); 
+      var pmHist00 = new TPopMenu('History','img/history.gif','','','History');
+      var pmHome00 = new TPopMenu('Home','img/home.gif','','','Home');
+      var pmSep00 = new TPopMenu('-','','','','');
+      var pmRef00 = new TPopMenu('Refresh','img/refresh.gif','','','Refresh');
+      var pmStop00 = new TPopMenu('Stop','img/stop.gif','','','Stop');
+
+    var pmOpen00 = new TPopMenu('Open page','','','','Open page demo');
+      var pmSame00 = new TPopMenu('in same window','','a','index.html','Open page in same window');
+      var pmDiv00 = new TPopMenu('in new window','','f',"newWindow('index.html')",'Open page in new window');
+    var pmL00 = new TPopMenu('Long popup menu','','','','Popup menu demo');
+  
+  var pmAlert00 = new TPopMenu('Alert','0','f',"alert('You have clicked me!')",'Alert');
+  
+  var pmHelp00 = new TPopMenu('Help','0','','','Help');
+    var pmAbout00 = new TPopMenu('About','','f',"alert('doiMenu v.1.5.3\\n&copy; 2003 - 2004 Donna Iwan Setiawan')",'About this program');
+
+  
+  mm0.Add(pmDemo00);
+  pmDemo00.Add(pmIcon00);
+    pmIcon00.Add(pmFav00);
+    pmIcon00.Add(pmHist00);
+    pmIcon00.Add(pmHome00);
+    pmIcon00.Add(pmSep00);
+    pmIcon00.Add(pmRef00);
+    pmIcon00.Add(pmStop00);
+  pmDemo00.Add(pmSep00);
+  pmDemo00.Add(pmOpen00);
+    pmOpen00.Add(pmSame00);
+    pmOpen00.Add(pmDiv00);
+  pmDemo00.Add(pmL00);
+  mm0.Add(pmAlert00);
+  mm0.Add(pmHelp00);
+  pmHelp00.Add(pmAbout00);
+//end of xp style
+
+//doi style
+  var mm1 = new TMainMenu('mm1','horizontal');
+  mm1.SetParentsRedirect(false);
+  
+  var pmDemo10 = new TPopMenu('Demo','0','','','doiMenu v.1.5 demo');
+    var pmIcon10 = new TPopMenu('with Icon','','','','with icon');
+      var pmFav10 = new TPopMenu('Favorites','img/favorites.gif','','','favorites'); 
+      var pmHist10 = new TPopMenu('History','img/history.gif','','','History');
+      var pmHome10 = new TPopMenu('Home','img/home.gif','','','Home');
+      var pmSep10 = new TPopMenu('-','','','','');
+      var pmRef10 = new TPopMenu('Refresh','img/refresh.gif','','','Refresh');
+      var pmStop10 = new TPopMenu('Stop','img/stop.gif','','','Stop');
+
+    var pmOpen10 = new TPopMenu('Open page','','','','Open page demo');
+      var pmSame10 = new TPopMenu('in same window','','a','index.html','Open page in same window');
+      var pmDiv10 = new TPopMenu('in new window','','f',"newWindow('index.html')",'Open page in new window');
+    var pmL10 = new TPopMenu('Long popup menu','','','','Popup menu demo');
+  
+  var pmAlert10 = new TPopMenu('Alert','0','f',"alert('You have clicked me!')",'Alert');
+  
+  var pmHelp10 = new TPopMenu('Help','0','','','Help');
+    //var pmAbout10 = new TPopMenu('About','','f',"alert('doiMenu v.1.5\\nThis is freeware\\n&copy; 2003 - 2004 Donna Iwan Setiawan')",'About this program');
+
+  
+  mm1.Add(pmDemo10);
+  pmDemo10.Add(pmIcon10);
+    pmIcon10.Add(pmFav10);
+    pmIcon10.Add(pmHist10);
+    pmIcon10.Add(pmHome10);
+    pmIcon10.Add(pmSep10);
+    pmIcon10.Add(pmRef10);
+    pmIcon10.Add(pmStop10);
+  pmDemo10.Add(pmSep10);
+  pmDemo10.Add(pmOpen10);
+    pmOpen10.Add(pmSame10);
+    pmOpen10.Add(pmDiv10);
+  pmDemo10.Add(pmL10);
+  mm1.Add(pmAlert10);
+  mm1.Add(pmHelp10);
+  pmHelp10.Add(pmAbout00);
+//end of 9x style
+
+//custom style 1
+  var mm2 = new TMainMenu('mm2','horizontal');
+  mm2.SetParentsRedirect(false);
+  
+  var pmDemo20 = new TPopMenu('Demo','0','','','doiMenu v.1.5 demo');
+    var pmIcon20 = new TPopMenu('with Icon','0','','','with icon');
+      var pmFav20 = new TPopMenu('Favorites','0','','','favorites'); 
+      var pmHist20 = new TPopMenu('History','0','','','History');
+      var pmHome20 = new TPopMenu('Home','0','','','Home');
+      //var pmSep20 = new TPopMenu('-','','','','');
+      var pmRef20 = new TPopMenu('Refresh','0','','','Refresh');
+      var pmStop20 = new TPopMenu('Stop','0','','','Stop');
+
+    var pmOpen20 = new TPopMenu('Open page','0','','','Open page demo');
+      var pmSame20 = new TPopMenu('in same window','0','a','index.html','Open page in same window');
+      var pmDiv20 = new TPopMenu('in new window','0','f',"newWindow('index.html')",'Open page in new window');
+    var pmL20 = new TPopMenu('Long popup menu','0','','','Popup menu demo');
+  
+  var pmAlert20 = new TPopMenu('Alert','0','f',"alert('You have clicked me!')",'Alert');
+  
+  var pmHelp20 = new TPopMenu('Help','0','','','Help');
+    //var pmAbout20 = new TPopMenu('About','0','f',"alert('doiMenu v.1.5\\nThis is freeware\\n&copy; 2003 Donna Iwan Setiawan')",'About this program');
+
+  
+  mm2.Add(pmDemo20);
+  pmDemo20.Add(pmIcon20);
+    pmIcon20.Add(pmFav20);
+    pmIcon20.Add(pmHist20);
+    pmIcon20.Add(pmHome20);
+    //pmIcon20.Add(pmSep20);
+    pmIcon20.Add(pmRef20);
+    pmIcon20.Add(pmStop20);
+  //pmDemo20.Add(pmSep20);
+  pmDemo20.Add(pmOpen20);
+    pmOpen20.Add(pmSame20);
+    pmOpen20.Add(pmDiv20);
+  pmDemo20.Add(pmL20);
+  mm2.Add(pmAlert20);
+  mm2.Add(pmHelp20);
+  pmHelp20.Add(pmAbout00);
+//end of custom style 1
+
+//custom style 2
+  var mm3 = new TMainMenu('mm3','horizontal');
+  mm3.SetParentsRedirect(false);
+  
+  var pmDemo30 = new TPopMenu('Demo','0','','','doiMenu v.1.5 demo');
+    var pmIcon30 = new TPopMenu('with Icon','','','','with icon');
+      var pmFav30 = new TPopMenu('Favorites','img/favorites.gif','','','favorites'); 
+      var pmHist30 = new TPopMenu('History','img/history.gif','','','History');
+      var pmHome30 = new TPopMenu('Home','img/home.gif','','','Home');
+      var pmSep30 = new TPopMenu('-','','','','');
+      var pmRef30 = new TPopMenu('Refresh','img/refresh.gif','','','Refresh');
+      var pmStop30 = new TPopMenu('Stop','img/stop.gif','','','Stop');
+
+    var pmOpen30 = new TPopMenu('Open page','','','','Open page demo');
+      var pmSame30 = new TPopMenu('in same window','','a','index.html','Open page in same window');
+      var pmDiv30 = new TPopMenu('in new window','','f',"newWindow('index.html')",'Open page in new window');
+    var pmL30 = new TPopMenu('Long popup menu','','','','Popup menu demo');
+  
+  var pmAlert30 = new TPopMenu('Alert','0','f',"alert('You have clicked me!')",'Alert');
+  
+  var pmHelp30 = new TPopMenu('Help','0','','','Help');
+    //var pmAbout30 = new TPopMenu('About','','f',"alert('doiMenu v.1.5\\nThis is freeware\\n&copy; 2003 Donna Iwan Setiawan')",'About this program');
+
+  
+  mm3.Add(pmDemo30);
+  pmDemo30.Add(pmIcon30);
+    pmIcon30.Add(pmFav30);
+    pmIcon30.Add(pmHist30);
+    pmIcon30.Add(pmHome30);
+    pmIcon30.Add(pmSep30);
+    pmIcon30.Add(pmRef30);
+    pmIcon30.Add(pmStop30);
+  pmDemo30.Add(pmSep30);
+  pmDemo30.Add(pmOpen30);
+    pmOpen30.Add(pmSame30);
+    pmOpen30.Add(pmDiv30);
+  pmDemo30.Add(pmL30);
+  mm3.Add(pmAlert30);
+  mm3.Add(pmHelp30);
+  pmHelp30.Add(pmAbout00);
+//end of custom style 2
+
+//custom style 3
+  var mm4 = new TMainMenu('mm4','horizontal');
+  mm4.SetParentsRedirect(false);
+  
+  var pmDemo40 = new TPopMenu('Demo','0','','','doiMenu v.1.5 demo');
+    var pmIcon40 = new TPopMenu('with Icon','','','','with icon');
+      var pmFav40 = new TPopMenu('Favorites','img/favorites.gif','','','favorites'); 
+      var pmHist40 = new TPopMenu('History','img/history.gif','','','History');
+      var pmHome40 = new TPopMenu('Home','img/home.gif','','','Home');
+      var pmSep40 = new TPopMenu('-','','','','');
+      var pmRef40 = new TPopMenu('Refresh','img/refresh.gif','','','Refresh');
+      var pmStop40 = new TPopMenu('Stop','img/stop.gif','','','Stop');
+
+    var pmOpen40 = new TPopMenu('Open page','','','','Open page demo');
+      var pmSame40 = new TPopMenu('in same window','','a','index.html','Open page in same window');
+      var pmDiv40 = new TPopMenu('in new window','','f',"newWindow('index.html')",'Open page in new window');
+    var pmL40 = new TPopMenu('Long popup menu','','','','Popup menu demo');
+  
+  var pmAlert40 = new TPopMenu('Alert','0','f',"alert('You have clicked me!')",'Alert');
+  
+  var pmHelp40 = new TPopMenu('Help','0','','','Help');
+    //var pmAbout40 = new TPopMenu('About','','f',"alert('doiMenu v.1.5\\nThis is freeware\\n&copy; 2003 Donna Iwan Setiawan')",'About this program');
+
+  
+  mm4.Add(pmDemo40);
+  pmDemo40.Add(pmIcon40);
+    pmIcon40.Add(pmFav40);
+    pmIcon40.Add(pmHist40);
+    pmIcon40.Add(pmHome40);
+    pmIcon40.Add(pmSep40);
+    pmIcon40.Add(pmRef40);
+    pmIcon40.Add(pmStop40);
+  pmDemo40.Add(pmSep40);
+  pmDemo40.Add(pmOpen40);
+    pmOpen40.Add(pmSame40);
+    pmOpen40.Add(pmDiv40);
+  pmDemo40.Add(pmL40);
+  mm4.Add(pmAlert40);
+  mm4.Add(pmHelp40);
+  pmHelp40.Add(pmAbout00);
+//end of custom style 3
+
+//custom style 4
+  var mm5 = new TMainMenu('mm5','horizontal');
+  mm5.SetParentsRedirect(false);
+  
+  var pmDemo50 = new TPopMenu('Demo','0','','','doiMenu v.1.5 demo');
+    var pmIcon50 = new TPopMenu('with Icon','','','','with icon');
+      var pmFav50 = new TPopMenu('Favorites','img/favorites.gif','','','favorites'); 
+      var pmHist50 = new TPopMenu('History','img/history.gif','','','History');
+      var pmHome50 = new TPopMenu('Home','img/home.gif','','','Home');
+      var pmSep50 = new TPopMenu('-','','','','');
+      var pmRef50 = new TPopMenu('Refresh','img/refresh.gif','','','Refresh');
+      var pmStop50 = new TPopMenu('Stop','img/stop.gif','','','Stop');
+
+    var pmOpen50 = new TPopMenu('Open page','','','','Open page demo');
+      var pmSame50 = new TPopMenu('in same window','','a','index.html','Open page in same window');
+      var pmDiv50 = new TPopMenu('in new window','','f',"newWindow('index.html')",'Open page in new window');
+    var pmL50 = new TPopMenu('Long popup menu','','','','Popup menu demo');
+  
+  var pmAlert50 = new TPopMenu('Alert','0','f',"alert('You have clicked me!')",'Alert');
+  
+  var pmHelp50 = new TPopMenu('Help','0','','','Help');
+    //var pmAbout50 = new TPopMenu('About','','f',"alert('doiMenu v.1.5\\nThis is freeware\\n&copy; 2003 Donna Iwan Setiawan')",'About this program');
+
+  
+  mm5.Add(pmDemo50);
+  pmDemo50.Add(pmIcon50);
+    pmIcon50.Add(pmFav50);
+    pmIcon50.Add(pmHist50);
+    pmIcon50.Add(pmHome50);
+    pmIcon50.Add(pmSep50);
+    pmIcon50.Add(pmRef50);
+    pmIcon50.Add(pmStop50);
+  pmDemo50.Add(pmSep50);
+  pmDemo50.Add(pmOpen50);
+    pmOpen50.Add(pmSame50);
+    pmOpen50.Add(pmDiv50);
+  pmDemo50.Add(pmL50);
+  mm5.Add(pmAlert50);
+  mm5.Add(pmHelp50);
+  pmHelp50.Add(pmAbout00);
+//end of custom style 4
+
+var menus=6;
+for(var i=0;i<menus;i++)
+{
+  deep1(i,0);
+  deep2('pmL'+i+'0',i,0);
+} 
+</script>
+</head>
+
+<body>
+<div style="position:absolute;top:10;left:520;width:110px;height:105px;background-color:white;border:1px black dotted;">
+<div style="background-color:#FFCC00;" align="center">
+	<b>Dragable Menu</b>
+</div>
+<div>
+	It has bug(s),but I don't know why :)
+</div>
+</div>
+<div style="position:absolute;top:10;left:10;width:319px;height:46px;background-color:white;border:1px black dotted;">
+<div style="background-color:#FFCC00;" align="center">
+	<b>Floating Menu</b>
+</div>
+</div>
+
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<table width="500" border="0" cellspacing="0" cellpadding="0" bgcolor="white" style="border:1px black dotted;">
+  <tr>
+    <td align="center" style="background-color:#FFCC00"><b>doiMenu v.1.5.3</b> </td>
+  </tr>
+  <tr>
+    <td>&nbsp; </td>
+  <tr>
+  <tr>
+    <td align="right"> <b>Custom Style 1</b> </td>
+  <tr>
+  <tr>
+    <td align="right">
+      <script language="JavaScript" type="text/JavaScript">
+						//custom style 1
+							mm2.SetPosition('relative',0,0);
+							mm2.SetCorrection(1,0);
+							mm2.SetCellSpacing(0);
+							mm2.SetItemDimension(150,20);
+							mm2.SetBackground('navy','','','');
+							mm2.SetFont('verdana,tahoma,arial','10pt');
+							mm2.SetItemText('navy','center','bold','','nowrap');
+							mm2.SetItemBackground('#66CCFF','img/but.png','repeat-x','');
+							mm2.SetItemBorder(1,'#66CCFF','solid');
+							mm2.SetItemTextHL('navy','center','bold','underline','nowrap');
+							mm2.SetItemBackgroundHL('#66CCFF','img/but.png','repeat-x','');
+							mm2.SetItemBorderHL(1,'navy','solid');
+							mm2.SetItemTextClick('white','center','bold','','nowrap');
+							mm2.SetItemBackgroundClick('#66CCFF','img/but1.png','repeat-x','');
+							mm2.SetItemBorderClick(1,'navy','solid');
+							mm2.SetBorder(1,'navy','solid');
+							mm2._pop.SetCorrection(6,0);
+							mm2._pop.SetItemDimension(150,20);
+							mm2._pop.SetPaddings(0);
+							mm2._pop.SetBackground('navy','','','');
+							//mm2._pop.SetSeparator(150,'center','navy','');
+							mm2._pop.SetExpandIcon(false,'',6);
+							mm2._pop.SetFont('tahoma,verdana,arial','10pt');
+							mm2._pop.SetShadow(true,'#B0B0B0',5);
+							mm2._pop.SetDelay(500);
+							mm2._pop.SetItemBorder(1,'#66CCFF','solid');
+							mm2._pop.SetItemBorderHL(1,'navy','solid');
+							mm2._pop.SetItemPaddings(0);
+							mm2._pop.SetItemPaddingsHL(0);
+							mm2._pop.SetItemText('navy','center','bold','','nowrap');
+							mm2._pop.SetItemTextHL('white','center','bold','','nowrap');
+							mm2._pop.SetItemBackground('#66CCFF','img/but.png','repeat-x','');
+							mm2._pop.SetItemBackgroundHL('#66CCFF','img/but1.png','repeat-x','');
+							mm2.Build();
+						</script>
+    </td>
+  </tr>
+  <tr>
+    <td align="center"><br>
+        <b>Custom Style 2</b></td>
+  </tr>
+  <tr>
+    <td align="center">
+      <script language="JavaScript" type="text/JavaScript">
+					//custom style 2
+						mm3.SetPosition('relative',0,0);
+						mm3.SetCorrection(1,0);
+						mm3.SetCellSpacing(2);
+						mm3.SetItemDimension(50,20);
+						mm3.SetBackground('whitesmoke','','','');
+						//mm3.SetShadow(true,'#E8E8E8',6);
+						mm3.SetItemText('black','center','','','');
+						mm3.SetItemBorder(1,'buttonface','solid');
+						mm3.SetItemTextHL('black','center','','','');
+						mm3.SetItemBackgroundHL('','','','');
+						mm3.SetItemBorderHL(1,'black','solid');
+						mm3.SetItemTextClick('black','center','','','');
+						mm3.SetItemBackgroundClick('buttonface','','','');
+						mm3.SetItemBorderClick(1,'black','solid');
+						mm3.SetBorder(1,'navy','solid');
+			
+						mm3._pop.SetCorrection(3,0);
+						mm3._pop.SetItemDimension(150,20);
+						mm3._pop.SetPaddings(1);
+						mm3._pop.SetBackground('whitesmoke','','','');
+						mm3._pop.SetSeparator(150,'center','black','');
+						mm3._pop.SetExpandIcon(true,'++',6);
+						mm3._pop.SetShadow(true,'#E8E8E8',6);
+						mm3._pop.SetDelay(500);
+						mm3._pop.SetItemBorder(0,'#66CCFF','solid');
+						mm3._pop.SetItemBorderHL(1,'black','solid');
+						mm3._pop.SetItemPaddings(1);
+						mm3._pop.SetItemPaddingsHL(0);
+						mm3._pop.SetItemText('black','','','','');
+						mm3._pop.SetItemTextHL('black','','','','');
+						mm3._pop.SetItemBackground('','','','');
+						mm3._pop.SetItemBackgroundHL('buttonface','','','');
+						mm3.Build();
+					</script>
+    </td>
+  </tr>
+  <tr>
+    <td><br>
+        <b>Custom Style 3</b></td>
+  </tr>
+  <tr>
+    <td>
+      <script language="JavaScript" type="text/JavaScript">
+							mm4.SetPosition('relative',0,0);
+							mm4.SetCorrection(0,0);
+							mm4.SetCellSpacing(2);
+							mm4.SetItemDimension(50,20);
+							
+							mm4.SetBackground('#990000','','','');
+							//mm4.SetShadow(true,'#B0B0B0',6);
+							mm4.SetItemText('black','center','bold','','');
+							mm4.SetItemBackground('#FFCCCC','','','');
+							mm4.SetItemBorder(0,'buttonface','solid');
+							mm4.SetItemTextHL('white','center','bold','','');
+							mm4.SetItemBackgroundHL('','','','');
+							mm4.SetItemBorderHL(0,'black','solid');
+							mm4.SetItemTextClick('#990000','center','bold','','');
+							mm4.SetItemBackgroundClick('white','','','');
+							mm4.SetItemBorderClick(0,'black','solid');
+							mm4.SetBorder(0,'navy','solid');
+							
+							mm4._pop.SetCorrection(3,0);
+							mm4._pop.SetItemDimension(150,20);
+							mm4._pop.SetPaddings(2);
+							mm4._pop.SetBackground('#990000','','','');
+							mm4._pop.SetSeparator(150,'center','black','');
+							mm4._pop.SetExpandIcon(true,'++',6);
+							mm4._pop.SetBorder(0,'','');
+							mm4._pop.SetShadow(true,'#E8E8E8',6);
+							mm4._pop.SetDelay(500);
+							mm4._pop.SetItemBorder(0,'','');
+							mm4._pop.SetItemBorderHL(1,'#990000','solid');
+							mm4._pop.SetItemPaddings(1);
+							mm4._pop.SetItemPaddingsHL(0);
+							mm4._pop.SetItemText('black','','bold','','');
+							mm4._pop.SetItemTextHL('#990000','','bold','','');
+							mm4._pop.SetItemBackground('#FFCCCC','','','');
+							mm4._pop.SetItemBackgroundHL('white','','','');
+							mm4.Build();
+						</script>
+    </td>
+  </tr>
+  <tr>
+    <td align="right"><br>
+        <b>Custom Style 4</b></td>
+  </tr>
+  <tr>
+    <td align="right">
+      <input type="checkbox" name="hideCBox" value="1" onclick="HideObjectForm(this)" >
+      Hide Form Object
+      <script language="JavaScript" type="text/JavaScript">
+							function HideObjectForm(obj)
+							{
+								if(obj.checked)
+								{
+									mm5._hideObject.Add("selectID");
+								}
+								else
+								{
+									mm5._hideObject.Clear();
+								}
+							}
+							mm5.SetPosition('relative',0,0);
+							mm5.SetCorrection(0,0);
+							mm5.SetCellSpacing(1);
+							mm5.SetItemDimension(80,20);
+							
+							mm5.SetBackground('black','','','');
+							//mm5.SetShadow(true,'#B0B0B0',6);
+							mm5.SetItemText('black','center','bold','','');
+							mm5.SetItemBackground('#FFCC00','','','');
+							mm5.SetItemBorder(0,'buttonface','solid');
+							mm5.SetItemTextHL('white','center','bold','','');
+							mm5.SetItemBackgroundHL('','','','');
+							mm5.SetItemBorderHL(0,'black','solid');
+							mm5.SetItemTextClick('#990000','center','bold','','');
+							mm5.SetItemBackgroundClick('white','','','');
+							mm5.SetItemBorderClick(0,'black','solid');
+							mm5.SetBorder(0,'navy','solid');
+							
+							mm5._pop.SetCorrection(3,0);
+							mm5._pop.SetItemDimension(150,20);
+							mm5._pop.SetPaddings(2);
+							mm5._pop.SetBackground('#FFCC00','img/m5.gif','repeat-y','top left');
+							mm5._pop.SetSeparator(150,'right','black','');
+							//mm5._pop.SetExpandIcon(true,'<+>',6);
+							mm5._pop.SetBorder(1,'black','dotted');
+							mm5._pop.SetShadow(true,'#B0B0B0',6);
+							mm5._pop.SetDelay(500);
+							mm5._pop.SetItemBorder(0,'','');
+							mm5._pop.SetItemBorderHL(0,'','');
+							mm5._pop.SetItemPaddings(1);
+							mm5._pop.SetItemPaddingsHL(1);
+							mm5._pop.SetItemText('white','','bold','','');
+							mm5._pop.SetItemTextHL('black','','bold','','');
+							mm5._pop.SetItemBackground('','','','');
+							mm5._pop.SetItemBackgroundHL('#FFCC00','','','');
+							mm5.Build();
+						</script>
+    </td>
+  </tr>
+  <tr>
+    <td align="right">
+      <select name="select" id="selectID">
+        <option value="1">Value 1</option>
+        <option value="2">Value 2</option>
+        <option value="3">Value 3</option>
+      </select>
+      <input name="button" type="button" value="Submit" />
+    </td>
+  </tr>
+</table>
+<script language="JavaScript" type="text/JavaScript">
+	
+	//9x style
+		mm1.SetPosition('absolute',11,27);
+		mm1.SetType('float');
+		mm1.SetCorrection(0,0);
+		mm1.SetCellSpacing(2);
+		mm1.SetItemDimension(100,20);
+		//mm1.SetBackground('buttonface','','','');
+		mm1.SetShadow(true,'#B0B0B0',6);
+		mm1.SetItemBorder(1,'buttonface','solid');
+		mm1.SetItemText('black','center','','','');
+		mm1.SetItemTextHL('black','center','','','');
+		mm1.SetItemBackgroundHL('','','','');
+		mm1.SetItemBorderTopHL(1,'white','solid');
+		mm1.SetItemBorderRightHL(1,'buttonshadow','solid');
+		mm1.SetItemBorderBottomHL(1,'buttonshadow','solid');
+		mm1.SetItemBorderLeftHL(1,'white','solid');
+		mm1.SetItemTextClick('black','center','','','');
+		mm1.SetItemBackgroundClick('','','','');
+		mm1.SetItemBorderTopClick(1,'buttonshadow','solid');
+		mm1.SetItemBorderRightClick(1,'white','solid');
+		mm1.SetItemBorderBottomClick(1,'white','solid');
+		mm1.SetItemBorderLeftClick(1,'buttonshadow','solid');
+		mm1.SetBorderTop(2,'buttonhighlight','outset');
+		mm1.SetBorderRight(2,'buttonface','outset');
+		mm1.SetBorderBottom(2,'buttonface','outset');
+		mm1.SetBorderLeft(2,'buttonhighlight','outset');
+		
+		mm1._pop.SetCorrection(0,0);
+		mm1._pop.SetItemDimension(150,20);
+		mm1._pop.SetPaddings(1);
+		mm1._pop.SetBackground('buttonface','','','');
+		mm1._pop.SetSeparator(150,'center','buttonshadow','white');
+		mm1._pop.SetExpandIcon(true,'',6);
+		mm1._pop.SetFont('tahoma,verdana,arial','8pt');
+		mm1._pop.SetBorderTop(2,'buttonhighlight','outset');
+		mm1._pop.SetBorderRight(2,'buttonface','outset');
+		mm1._pop.SetBorderBottom(2,'buttonface','outset');
+		mm1._pop.SetBorderLeft(2,'buttonhighlight','outset');
+		mm1._pop.SetDelay(500);
+		mm1._pop.SetItemBorder(0,'navy','solid');
+		mm1._pop.SetItemBorderHL(0,'#00FF00','solid');
+		mm1._pop.SetItemPaddings(0);
+		mm1._pop.SetItemPaddingsHL(0);
+		mm1._pop.SetItemBackgroundHL('#002266','','','');
+		mm1.Build();
+	
+</script>	
+	<script language="JavaScript" type="text/JavaScript">
+	//xp style
+		mm0.SetPosition('absolute',521,27);
+		mm0.SetCorrection(0,0);
+		mm0.SetCellSpacing(2);
+		
+		mm0.SetExpandIcon(true,'','6');
+		mm0.SetType('free');
+		
+		//uncomment these lines to see the effect
+		//mm0._header.SetBackground('red','','','');
+		//mm0._header.SetFont('arial','10pt');
+		//mm0._header.SetText('white','right','bold','','');
+		//mm0.SetHeaderText('Click Here to get the idea');
+		
+		//pmHist00.SetType('h');
+		//pmHome00.SetType('header');
+		//mm0._pop._header.SetBackground('red','','','');
+		//mm0._pop._header.SetFont('arial','10pt');
+		//mm0._pop._header.SetText('white','right','bold','','');
+		
+		mm0.SetBackground('whitesmoke','img/xp.gif','repeat-y','top left');		
+		mm0.SetItemText('','center','','','');
+		mm0.SetItemTextHL('','center','','','');
+		mm0.SetItemTextClick('','center','','','');
+		
+		mm0.SetItemDimension(100,20);
+		mm0.SetShadow(true,'#B0B0B0',6);
+		mm0._pop.SetCorrection(0,0);
+		mm0._pop.SetAlpha(90);
+		mm0._pop.SetItemDimension(150,20);
+		mm0._pop.SetPaddings(1);
+		mm0._pop.SetBackground('whitesmoke','img/xp.gif','repeat-y','top left');
+		mm0._pop.SetSeparator(125,'right','gray','');
+		mm0._pop.SetExpandIcon(true,'',6);
+		mm0._pop.SetFont('tahoma,verdana,arial','8pt');
+		mm0._pop.SetBorder(1,'gray','solid');
+		//mm0._pop.SetShadow(true,'#B0B0B0',6);
+		mm0._pop.SetDelay(500);
+		mm0.Build();
+	
+</script>
+</body>
+</html>

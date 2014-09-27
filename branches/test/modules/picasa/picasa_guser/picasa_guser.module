@@ -1,0 +1,583 @@
+<?php
+/* $Id: picasa_guser.module,v 1.1 2008/01/06 21:27:44 cyberswat Exp $ */
+define(PICASA_SCOPE, "http://picasaweb.google.com/data/");
+
+/**
+ * Implementation of hook_access().
+ * 
+ * @param $op 
+ *   The operation to be performed. (create,delete,update,view)
+ * @param $node 
+ *   The node on which the operation is to be performed, or, if it does not yet 
+ *   exist, the type of node to be created.
+ * @return boolean
+ *   returns TRUE if the current user has the requested permission.
+ */
+
+function picasa_guser_access($op, $node) {
+  global $user;
+  if ($op == 'create') {
+    return (user_access('create picasa guser'));
+  }
+  if ($op == 'update' || $op == 'delete') {
+    return (user_access('edit own picasa guser') && ($user->uid == $node->uid));
+  }
+}
+
+/**
+ * Implementation of hook_delete().
+ */
+function picasa_guser_delete(&$node) {
+  global $user;
+  // Delete the related information we were saving for this node.
+  db_query('DELETE FROM {picasa_gusers} WHERE nid = %d', $node->nid);
+  db_query('DELETE FROM {picasa_albums} WHERE uid = %d', $node->uid);
+}
+
+/**
+ * Implementation of hook_form().
+ * @param $node 
+ *   The node being added or edited.
+ * @return array 
+ *   An array containing the form elements to be displayed in the node edit form.
+ * 
+ */
+function picasa_guser_form($node) {
+  $data = array(
+    "url" => "http://picasaweb.google.com/data/feed/api/user/". 
+      check_plain($node->title),
+    "scope" => variable_get('picasa_scope', PICASA_SCOPE)
+  );
+  google_auth_request($data);
+
+/*  
+  google_auth_required($node, $data);
+*/
+    // Get metadata for this node type
+  // (we use it for labeling title and body fields).
+  // We defined this in picasa_guser_node_info().
+  $type = node_get_types('type', $node);
+  $form['title'] = array(
+    '#type' => 'textfield',
+    '#title' => check_plain($type->title_label),
+    '#required' => TRUE,
+    '#description' => t('This Picasa account username. ex: cyberswat'),
+    '#default_value' => $node->title,
+    '#weight' => -5
+  );
+  $msg = "This data is tied to your Google This data is provided by Google.";
+  $msg .= " Changes you make to it are not recorded.";
+  $form['google_data'] = array(
+    '#title' => t('Google Data'),
+    '#type' => 'fieldset',
+    '#description' => t($msg),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+     
+  );
+  $msg = "A unique identifier generally provided by Google.";
+  $msg .= " ex: http://picasaweb.google.com/data/feed/api/user/cyberswat";
+  $form['google_data']['id'] = array(
+    '#type' => 'textfield',
+    '#title' => t('id'),
+    '#required' => FALSE,
+    '#description' => t($msg),
+    '#default_value' => $node->id,
+    '#weight' => -5
+  );
+  $msg = "The time the feed that contains this nodes information was generated";
+  $msg .= " by Google.";
+  $form['google_data']['updated'] = array(
+    '#type' => 'textfield',
+    '#title' => t('updated'),
+    '#required' => FALSE,
+    '#description' => t($msg),
+    '#default_value' => $node->updated,
+    '#weight' => -5
+  );
+  $form['google_data']['subtitle'] = array(
+    '#type' => 'textfield',
+    '#title' => t('subtitle'),
+    '#required' => FALSE,
+    '#description' => t('The Picasa users subtitle'),
+    '#default_value' => $node->subtitle,
+    '#weight' => -5
+  );
+  $form['google_data']['icon'] = array(
+    '#type' => 'textfield',
+    '#title' => t('icon'),
+    '#required' => FALSE,
+    '#description' => t('The Picasa users icon'),
+    '#default_value' => $node->icon,
+    '#weight' => -5
+  );
+  $form['google_data']['author_name'] = array(
+    '#type' => 'textfield',
+    '#title' => t('author name'),
+    '#required' => FALSE,
+    '#description' => t('The Picasa author\'s name'),
+    '#default_value' => $node->author_name,
+    '#weight' => -5
+  );
+  $form['google_data']['author_uri'] = array(
+    '#type' => 'textfield',
+    '#title' => t('author uri'),
+    '#required' => FALSE,
+    '#description' => t('The Picasa author\'s uri'),
+    '#default_value' => $node->author_uri,
+    '#weight' => -5
+  );
+  $form['google_data']['opensearch_total_results'] = array(
+    '#type' => 'textfield',
+    '#title' => t('openSearch:totalResults'),
+    '#required' => FALSE,
+    '#description' => t('The number of public galleries owned by this user.'),
+    '#default_value' => $node->opensearch_total_results,
+    '#weight' => -5
+  );
+  $form['google_data']['opensearch_start_index'] = array(
+    '#type' => 'textfield',
+    '#title' => t('openSearch:startIndex'),
+    '#required' => FALSE,
+    '#default_value' => $node->opensearch_start_index,
+    '#weight' => -5
+  );
+  $form['google_data']['opensearch_items_per_page'] = array(
+    '#type' => 'textfield',
+    '#title' => t('openSearch:itemsPerPage'),
+    '#required' => FALSE,
+    '#default_value' => $node->opensearch_items_per_page,
+    '#weight' => -5
+  );
+  $form['google_data']['gphoto_user'] = array(
+    '#type' => 'textfield',
+    '#title' => t('gphoto:user'),
+    '#required' => FALSE,
+    '#default_value' => $node->gphoto_user,
+    '#weight' => -5
+  );
+  $form['google_data']['gphoto_nickname'] = array(
+    '#type' => 'textfield',
+    '#title' => t('gphoto:nickname'),
+    '#required' => FALSE,
+    '#default_value' => $node->gphoto_user,
+    '#weight' => -5
+  );
+  $form['google_data']['gphoto_thumbnail'] = array(
+    '#type' => 'textfield',
+    '#title' => t('gphoto:thumbnail'),
+    '#required' => FALSE,
+    '#default_value' => $node->gphoto_thumbnail,
+    '#weight' => -5
+  );
+  return $form;
+}
+function _picasa_get_google_auth($node) {
+  $data = array(
+    "url" => "http://picasaweb.google.com/data/feed/api/user/". 
+      check_plain($node->title),
+    "scope" => variable_get('picasa_scope', PICASA_SCOPE)
+  );
+  return $data;
+}
+function picasa_guser_validate($node, $form=array()) {
+  if (!$node->nid) {
+    $sql = 'SELECT nid, uid FROM {node} WHERE uid = %d AND title = "%s"';
+    $user = db_fetch_object(db_query($sql, $node->uid, $node->title));
+    if ($user->nid) {
+      form_set_error('title', t('You have already registered that username.'));
+    }
+  }
+  $data = _picasa_get_google_auth($node);
+  $guser = google_auth_request($data);
+  if (!is_array($guser)) {
+    form_set_error('title', t('Google validation failed. Try again.'));
+  } 
+  
+  return $return;
+  
+}
+/**
+  * Implementation of hook_insert().
+  */
+function picasa_guser_insert($node) {
+  global $user;
+  $data = _picasa_get_google_auth($node);
+  $guser = google_auth_request($data);
+  $guser = _picasa_guser_convert($guser, $node);
+  $sql = "insert into {picasa_gusers} (nid, vid, uid, id, updated, title, 
+    subtitle, icon, author_name, author_uri, opensearch_total_results,
+    opensearch_start_index, opensearch_items_per_page, gphoto_user, 
+    gphoto_nickname, gphoto_thumbnail) VALUES (%d,%d,%d,'%s',%d,'%s','%s',
+    '%s','%s','%s',%d,%d,%d,'%s','%s','%s')";
+  db_query($sql, $node->nid, $node->vid, $node->uid, $guser->pid, 
+    $guser->updated, $guser->title, $guser->subtitle, 
+    $guser->icon, $guser->author_name, $guser->author_uri,
+    $guser->opensearch_total_results, $guser->opensearch_start_index,
+    $guser->opensearch_items_per_page, $guser->gphoto_user,
+    $guser->gphoto_nickname, $guser->gphoto_thumbnail);
+    picasa_album_insert_batch($node, $guser);
+}
+
+/**
+ * Implementation of hook_load().
+ */
+function picasa_guser_load($node) {
+  $return = db_fetch_object(db_query('SELECT nid, vid, uid, id, updated,  
+    subtitle, icon, author_name, author_uri, opensearch_total_results,
+    opensearch_start_index, opensearch_items_per_page, gphoto_user, 
+    gphoto_nickname, gphoto_thumbnail FROM {picasa_gusers} WHERE vid = %d AND
+    nid = %d ',
+    $node->vid, $node->nid));
+  return $return;
+}
+
+function picasa_guser_nodeapi($node, $op, $arg = 0) {
+  switch ($op) {
+    case 'load':
+      $node->picasa_albums = picasa_album_load($node);
+    break;
+  }
+}
+
+/**
+ * Implementation of hook_node_info().
+ */
+function picasa_guser_node_info() {
+  // We return an array since a module can define multiple node types.
+  // We're only defining one node type, type 'picasa_guser'.
+  return array(
+     'picasa_guser' => array(
+       'name' => t('Picasa Guser'),
+       'module' => 'picasa_guser',
+       'description' => t('A Google user account for Picasa'),
+       'has_title' => TRUE,
+       'title_label' => t('Picasa Guser'),
+       'has_body' => FALSE,
+       'locked' => TRUE
+     )
+  );
+}
+/**
+ * Implementation of hook_perm().
+ * @return array An array of permissions strings.
+ */
+function picasa_guser_perm() {
+  return array('create picasa guser', 'edit own picasa guser');
+}
+/**
+ * Implementation of hook_update().
+ */
+function picasa_guser_update($node) {
+  if ($node->revision) {
+    picasa_guser_insert($node);
+  }
+  else {
+    $data = _picasa_get_google_auth($node);
+    $guser = google_auth_request($data);
+    $guser = _picasa_guser_convert($guser, $node);
+     $sql = "update {picasa_gusers} set 
+     uid = %d, 
+     id = '%s', 
+     updated = %d, 
+     title = '%s', 
+     subtitle = '%s', 
+     icon = '%s', 
+     author_name = '%s', 
+     author_uri = '%s', 
+     opensearch_total_results = %d,
+     opensearch_start_index = %d, 
+     opensearch_items_per_page = %d, 
+     gphoto_user = '%s', 
+     gphoto_nickname = '%s', 
+     gphoto_thumbnail = '%s'
+     WHERE nid = %d and vid = %d;";
+    db_query($sql, $node->uid, $guser->pid, 
+      $guser->updated, $guser->title, $guser->subtitle, 
+      $guser->icon, $guser->author_name, $guser->author_uri,
+      $guser->opensearch_total_results, $guser->opensearch_start_index,
+      $guser->opensearch_items_per_page, $guser->gphoto_user,
+      $guser->gphoto_nickname, $guser->gphoto_thumbnail, $node->nid, 
+      $node->vid);
+    picasa_album_delete($node);
+    picasa_album_insert_batch($node, $guser);
+  }
+ }
+
+/**
+ * Implementation of hook_view().
+ */
+function picasa_guser_view($node, $teaser = FALSE, $page = FALSE) {
+  if (!$teaser) {
+    $node = node_prepare($node, $teaser);
+    $node->content['picasa_guser'] = array(
+      '#value' => theme('picasa_guser_node', $node),
+      '#weight' => 2
+      );
+  }
+  if ($teaser) {
+    // Use Drupal's default node view.
+    $node = node_prepare($node, $teaser);
+    $node->content['picasa_guser'] = array(
+      '#value' => theme('picasa_guser_teaser', $node),
+      '#weight' => 2
+      );
+  }
+  return $node;
+}
+
+function _picasa_guser_convert($data, $node) {
+  $guser->uid = $node->uid;
+  $guser->pid = $data['FEED'][0]['ID'][0]['VALUE'];
+  $guser->updated = strtotime($data['FEED'][0]['UPDATED'][0]['VALUE']);
+  $guser->title = $data['FEED'][0]['TITLE'][0]['VALUE'];
+  $guser->subtitle = $data['FEED'][0]['SUBTITLE'][0]['VALUE'];
+  $guser->icon = $data['FEED'][0]['ICON'][0]['VALUE'];
+  $guser->author_name = $data['FEED'][0]['AUTHOR'][0]['NAME'][0]['VALUE'];
+  $guser->author_uri = $data['FEED'][0]['AUTHOR'][0]['URI'][0]['VALUE'];
+  $guser->opensearch_total_results = 
+    $data['FEED'][0]['OPENSEARCH:TOTALRESULTS'][0]['VALUE'];
+  $guser->opensearch_start_index = 
+    $data['FEED'][0]['OPENSEARCH:STARTINDEX'][0]['VALUE'];
+  $guser->opensearch_items_per_page = 
+    $data['FEED'][0]['OPENSEARCH:ITEMSPERPAGE'][0]['VALUE'];
+  $guser->gphoto_user = $data['FEED'][0]['GPHOTO:USER'][0]['VALUE'];
+  $guser->gphoto_nickname = $data['FEED'][0]['GPHOTO:NICKNAME'][0]['VALUE'];
+  $guser->gphoto_thumbnail = $data['FEED'][0]['GPHOTO:THUMBNAIL'][0]['VALUE'];
+  if ($data['FEED'][0]['ENTRY']) {
+    foreach ($data['FEED'][0]['ENTRY'] as $e) {
+      $entry = null;
+      $entry->paid = $e['ID'][0]['VALUE'];
+      $entry->published = strtotime($e['PUBLISHED'][0]['VALUE']);
+      $entry->updated = strtotime($e['UPDATED'][0]['VALUE']);
+      $entry->title = $e['TITLE'][0]['VALUE'];
+      $entry->summary = $e['SUMMARY'][0]['VALUE'];
+      $entry->rights = $e['RIGHTS'][0]['VALUE'];
+      $entry->author_name = $e['AUTHOR'][0]['NAME'][0]['VALUE'];
+      $entry->author_uri = $e['AUTHOR'][0]['URI'][0]['VALUE'];
+      $entry->gphoto_id = $e['GPHOTO:ID'][0]['VALUE'];
+      $entry->gphoto_name = $e['GPHOTO:NAME'][0]['VALUE'];
+      $entry->gphoto_location = $e['GPHOTO:LOCATION'][0]['VALUE'];
+      $entry->gphoto_access = $e['GPHOTO:ACCESS'][0]['VALUE'];
+      $entry->gphoto_timestamp = $e['GPHOTO:TIMESTAMP'][0]['VALUE'];
+      $entry->gphoto_numphotos = $e['GPHOTO:NUMPHOTOS'][0]['VALUE'];
+      $entry->gphoto_user = $e['GPHOTO:USER'][0]['VALUE'];
+      $entry->gphoto_nickname = $e['GPHOTO:NICKNAME'][0]['VALUE'];
+      $entry->gphoto_commenting_enabled = 
+        $e['GPHOTO:COMMENTINGENABLED'][0]['VALUE'];
+      $entry->gphoto_commenting_count = $e['GPHOTO:COMMENTCOUNT'][0]['VALUE'];
+      foreach ($e['MEDIA:GROUP'] as $m) {
+        $media = null;
+        $media->title = $m['MEDIA:TITLE'][0]['VALUE'];
+        $media->description = $m['MEDIA:DESCRIPTION'][0]['VALUE'];
+        $media->keywords = $m['MEDIA:KEYWORDS'][0]['VALUE'];
+        $media->content = $m['MEDIA:CONTENT'][0]['ATTRIBUTES']['URL'];
+        $media->thumbnail = $m['MEDIA:THUMBNAIL'][0]['ATTRIBUTES']['URL'];
+        $media->credit = $m['MEDIA:CREDIT'][0]['VALUE'];
+        $entry->media_group[] = $media;
+      }
+      if ($e['GEORSS:WHERE']) {
+        foreach ($e['GEORSS:WHERE'] as $g) {
+          $georss = null;
+          $georss->point = $g['GML:POINT'][0]['GML:POS'][0]['VALUE'];
+          $entry->georss_where[] = $georss;
+        }
+      }
+      $guser->entry[] = $entry;
+  }
+  } 
+  else {
+    $msg = "This user has no Public Albums.";
+    drupal_set_message($msg);
+  }
+  return $guser;
+}
+/**
+ * Available variables are:
+ *  - $node->nid
+ *  - $node->vid
+ *  - $node->type
+ *  - $node->status
+ *  - $node->created
+ *  - $node->changed
+ *  - $node->comment
+ *  - $node->promote
+ *  - $node->sticky
+ *  - $node->revision_timestamp
+ *  - $node->title
+ *  - $node->body
+ *  - $node->teaser
+ *  - $node->log
+ *  - $node->format
+ *  - $node->uid
+ *  - $node->name
+ *  - $node->picture
+ *  - $node->data
+ *  - $node->id
+ *  - $node->updated
+ *  - $node->updated
+ *  - $node->subtitle
+ *  - $node->icon
+ *  - $node->author_name
+ *  - $node->author_uri
+ *  - $node->opensearch_total_results
+ *  - $node->opensearch_start_index
+ *  - $node->opensearch_items_per_page
+ *  - $node->gphoto_user
+ *  - $node->gphoto_nickname
+ *  - $node->gphoto_thumbnail
+ *  - $node->last_comment_timestamp
+ *  - $node->last_comment_name
+ *  - $node->comment_count
+ *  - $node->taxonomy
+ *
+ * @param unknown_type $node
+ * @return unknown
+ */
+function theme_picasa_guser_teaser($node) {
+  $path = drupal_get_path('module', 'picasa_guser') .'/picasa.css';
+  drupal_add_css($path);  
+  $output = "<div class=\"picasa_prettybox picasa_sidebox\">\n";
+  $output .= "<div id=\"picasa_guser\">\n";
+  $output .= "<table class=\"picasa_guser\">\n";
+  $output .= "<tbody><tr>\n";
+  $output .= "<div class=\"picasa_guser_portraitcontainer\">\n";
+  $output .= "<td class=\"picasa_guser_column_left\">";
+  $gphoto_thumbnail = "<img width=\"64\" height=\"64\" ";
+  $gphoto_thumbnail .= "src=\"$node->gphoto_thumbnail\" class=\"";
+  $gphoto_thumbnail .= "picasa_gphoto_thumbnail\" alt=\"$node->gphoto_nickname";
+  $gphoto_thumbnail .= "\" title=\"$node->gphoto_nickname\" />";
+  $output .= 
+    l($gphoto_thumbnail, "node/$node->nid", array(), NULL, NULL, FALSE, TRUE);
+  $output .= "</td>\n";
+  $output .= "<td class=\"picasa_guser_column_right\">\n";
+  $output .= "<div id=\"picasa_guser_nickname\" class=\"gphoto_nickname\">";
+  $output .= $node->gphoto_nickname ."</div>\n";
+  $recordcount = 0;
+  if ($node->picasa_albums) {
+    $albums = $node->picasa_albums;
+  } 
+  else {
+    $albums = $node->entry;
+  }
+  $output .= "<div class=\"picasa_guser_info\">Public albums: ". count($albums); 
+  $output .= "</div>\n";
+  $output .= "</td>\n";
+  $output .= "</tr>\n";
+  $output .= "</tbody></table>\n";
+  $output .= "</div>\n";
+  $output .= "</div>\n";
+  return $output;
+}
+
+function theme_picasa_guser_node($node) {
+  if ($node->in_preview) {
+    $data = _picasa_get_google_auth($node);
+    $guser = google_auth_request($data);
+    $node = _picasa_guser_convert($guser, $node);
+  }
+  $path = drupal_get_path('module', 'picasa_guser') .'/picasa.css';
+  drupal_add_css($path);  
+  $output .= "<table><tbody><tr><td id=\"picasa_leftbox\">\n";
+  $recordcount = 0;
+  if ($node->picasa_albums) {
+    $albums = $node->picasa_albums;
+  } 
+  else {
+    $albums = $node->entry;
+  }
+  if (count($albums) > 0) {
+    foreach ($albums as $entry) {
+      $output .= "\n<div class=\"picasa_album\">\n";
+      $output .= "\t<div class=\"picasa_image_box\">\n\t\t<center>\n";
+      $output .= "\t\t\t<div class=\"picasa_frame\">\n";
+      $output .= "\t\t\t\t<div class=\"picasa_padding\">\n";
+      $output .= "\t\t\t\t\t". _picasa_guser_get_album_teaser($entry) ."\n";
+      $output .= "\t\t\t\t\t<img width=\"160\" height=\"160\" src=\"$image_src";
+      $output .= "\"/>\n";
+      
+      $output .= "\t\t\t\t</div><!-- close picasa_padding -->\n";
+      $output .= "\t\t\t</div><!-- close picasa_frame -->\n";
+      $output .= "\t\t</center>\n";
+      $output .= "\t\t<div class=\"picasa_album_description\">\n";
+      $output .= "\t\t\t<table class=\"picasa_album_title\" style=\"height: ";
+      $output .= "4em;\">\n";
+      $output .= "\t\t\t\t<tr>\n";
+      $output .= "\t\t\t\t\t<td>\n";
+      $output .= "\t\t\t\t\t\t<div class=\"picasa_album_titlebox\">";
+      $output .= $entry->title;
+      $output .= "<span class=\"picasa_album_info\">($entry->gphoto_numphotos";
+      $output .= ")</span>";
+      if ($entry->georss_pos) {
+        $georss = $entry->georss_pos;
+      } 
+      else {
+        $georss = $entry->georss_where[0];
+      }
+      if ($georss->point || strlen($georss)) {
+        $output .= "<img src=\"". base_path();
+        $output .= drupal_get_path('module', 'picasa_guser');
+        $output .= "/images/mapped.gif\" />";
+      }
+  
+      $output .= "</div>\n";
+      if (!$entry->published) {
+        $published = date("M d, Y", $entry->gphoto_timestamp);
+      } 
+      else {
+        $published = date("M d, Y", $entry->published);
+      }
+      $output .= "\t\t\t\t\t\t<div class=\"picasa_album_info\">". $published;
+      $output .= "</div>\n";
+      
+      $output .= "\t\t\t\t\t</td>\n";
+      $output .= "\t\t\t\t</tr>\n";
+      $output .= "\t\t\t</table>\n";
+      $output .= "\t\t</div><!-- close picasa_album_description -->\n";
+      $output .= "\t</div><!-- close picasa_image_box -->\n";
+      $output .= "</div><!-- close picasa_album -->\n";
+      $recordcount++;    
+    }
+  }
+  $output .= "</td><td id=\"picasa_rightbox\">";
+  $output .= "<div id=\"picasa_guser\">";
+  $output .= "<div class=\"picasa_prettybox picasa_sidebox\">\n";
+  $output .= "<div id=\"picasa_guser\">\n";
+  $output .= "<table class=\"picasa_guser\">\n";
+  $output .= "<tbody><tr>\n";
+  $output .= "<div class=\"picasa_guser_portraitcontainer\">\n";
+  $output .= "<td class=\"picasa_guser_column_left\">";
+  $gphoto_thumbnail = "<img width=\"64\" height=\"64\" src=\"";
+  $gphoto_thumbnail .= $node->gphoto_thumbnail ."\" class=\"";
+  $gphoto_thumbnail .= "picasa_gphoto_thumbnail\" alt=\"$node->gphoto_nickname";
+  $gphoto_thumbnail .= "\" title=\"$node->gphoto_nickname\" />";
+  $output .= 
+    l($gphoto_thumbnail, "node/$node->nid", array(), NULL, NULL, FALSE, TRUE);
+  $output .= "</td>\n";
+  $output .= "<td class=\"picasa_guser_column_right\">\n";
+  $output .= "<div id=\"picasa_guser_nickname\" class=\"gphoto_nickname\">";
+  $output .= $node->gphoto_nickname ."</div>\n";
+  $output .= "<div class=\"picasa_guser_info\">Public albums: ". $recordcount;
+  $output .= "</div>\n";
+  $output .= "</td>\n";
+  $output .= "</tr>\n";
+  $output .= "</tbody></table>\n";
+  $output .= "</div>\n";
+  $output .= "</div>\n";
+  $output .= "</div>\n";
+  $output .= "</td></tr></tbody></table>";
+  
+  return $output;
+}
+function _picasa_guser_get_album_teaser($entry) {
+  if ($entry->media_thumbnail) {
+    $image_src = $entry->media_thumbnail;
+  } 
+  else {
+    $image_src = $entry->media_group[0]->thumbnail;
+  }
+  $html = "<img width=\"160\" height=\"160\" src=\"$image_src\"/>";
+  $path = $entry->author_uri ."/". $entry->gphoto_name;
+  $thumbnail = l($html, $path, array(), null, null, false, true);
+  return $thumbnail;
+}

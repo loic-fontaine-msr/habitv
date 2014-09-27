@@ -1,0 +1,68 @@
+# translation of smileys_import-module.po to Hungarian
+# Hungarian translation of Drupal (smileys.module)
+# Copyright Drupal.hu Fordítási Csapat <forditas [at] drupal.hu>
+# Generated from file: smileys.module,v 1.43 2005/04/30 07:34:27 tdobes
+# Copyright Fehér János <feher.janos@mindworks.hu>, 2005.
+#
+# FEHÉR János <feher.janos _at- mindworks.hu>, 2007.
+msgid ""
+msgstr ""
+"Project-Id-Version: smileys_import-module\n"
+"POT-Creation-Date: 2007-02-20 10:53+0100\n"
+"PO-Revision-Date: 2007-02-21 12:03+0100\n"
+"Last-Translator: FEHÉR János <feher.janos _at- mindworks.hu>\n"
+"Language-Team: Hungarian <Drupal.hu Fordítási Csapat <forditas [at] drupal.hu>>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: KBabel 1.11.4\n"
+
+#: smileys_import.module:7
+msgid "Here you can install/uninstall smiley import packs."
+msgstr ""
+
+#: smileys_import.module:19
+msgid "Import"
+msgstr "Import"
+
+#: smileys_import.module:27;101
+msgid "Export"
+msgstr "Export"
+
+#: smileys_import.module:49;94
+msgid "Smiley Packs"
+msgstr "Mosolygók csomag"
+
+#: smileys_import.module:49;94
+#, fuzzy
+msgid "Operations"
+msgstr "műveletek"
+
+#: smileys_import.module:54
+msgid "Uninstall"
+msgstr "Eltávolítás"
+
+#: smileys_import.module:54
+msgid "Install"
+msgstr "Telepítés"
+
+#: smileys_import.module:62
+msgid "No smiley packs found."
+msgstr "Nincs elérhető mosolygók csomag"
+
+#: smileys_import.module:84
+msgid ""
+"Please copy and paste the following text into a file at:<br /><strong>%"
+"package</strong><br /><em>with each smiley image in the same folder.</em>"
+msgstr ""
+
+#: smileys_import.module:107
+msgid "No smiley packs to export."
+msgstr "Nincs exportálható mosolygók csomag"
+
+#: smileys_import.module:0
+#, fuzzy
+msgid "smileys_import"
+msgstr "mosolygók"
+

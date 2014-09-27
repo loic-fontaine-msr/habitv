@@ -1,0 +1,2795 @@
+<?php
+/* ex: set syntax=php tabstop=4 expandtab shiftwidth=4 softtabstop=4: */
+/*
+Acidfree Photo Albums for Drupal
+Copyright (C) 2005 Vernon Mauery
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
+*/
+
+/**
+ * @file
+ * Acidfree implements a better photo album than gallery.  Better being
+ * defined as doing it The Right Way (TM).  Acidfree was designed as a
+ * node based system and written to work seamlessly with Drupal. 
+ *
+ */
+
+/*
+TODO:
+ * add some ajax love
+ * write an xmlrpc hook
+ * 
+ */
+
+define('ALBUM_PAGER', 0);
+define('ELEMENT_PAGER', 1);
+define('PAGER_STRING', "page");
+
+/**
+ * Acidfree Classes
+ * Each class must support a basic register function and several
+ * callbacks that are used.  Specifically, a class named 'foo'
+ * would be implemented in a file called class_foo.inc and be
+ * required to implement the following hooks:
+ * class_foo_init() - returns an object that has info about the class:
+    $class->class = 'foo';
+    $class->name = t('foo');
+    $class->addme = t('Add a foo');
+    $class->mime_ext = Array('bin/foo'=>'foo');
+    $class->form_alter = '_class_foo_form_alter';
+    $class->nodeapi = '_class_foo_nodeapi';
+    $class->access = 'create new foo';
+ * theme_acidfree_print_full_foo(&$node) - called from acidfree_view()
+ * theme_acidfree_print_thumb_foo(&$node, &$parent=null, $offset=0)
+ *      - called theme_acidfree_print_full_album or the block hook
+ */
+
+/**
+ * call an arbitrary method with arbitrary arguments
+ *
+ * note that if you are calling a function that only requires a single arg
+ * that is an array, you must pass it in inside of an array like:
+ * $bob = array(2,3,4); acidfree_call('chump', array($bob));
+ * if you don't chump will be called as chump(2,3,4)
+ * which probably isn't what you want
+ *
+ * passing args by reference is allowed, but you must make the call like:
+ * acidfree_call('chump', array(&$foo, $baz));
+ * where $foo would be passed by reference and $baz wouldn't.  a call like:
+ * acidfree_call('chump', $foo, $baz) will pass by value
+ */
+function acidfree_call($function) {
+    $args = false;
+    $argc = func_num_args();
+    if ($argc > 2) {
+        $args = func_get_args();
+        array_shift($args);
+    } elseif ($argc != 1) {
+        $args = func_get_arg(1);
+        if (!is_array($args)) {
+            $args = func_get_args();
+            array_shift($args);
+        }
+    }
+    if (!$args)
+        $args = array();
+    if (function_exists($function))
+        return call_user_func_array($function, $args);
+    return null;
+}
+
+function acidfree_node_info() {
+    return array(
+            'acidfree' => array(
+                'name' => t('Album'),
+                'module' => 'acidfree',
+                'description' => t("Acidfree albums are used for the categorization of images and videos."),
+                )
+            );
+}
+
+function acidfree_load(&$node) {
+    $items = db_fetch_object(db_query("SELECT * FROM {acidfree_album} WHERE aid=%d", $node->nid));
+    if (isset($items->thumb) && !$items->thumb) {
+        $items->thumb = '';
+    }
+    return $items;
+}
+
+function acidfree_insert(&$node) {
+    $vocab = acidfree_get_vocab_id();
+    $term = array(
+            'vid' => $vocab,
+            'name' => $node->title,
+            'description' => $node->body,
+            'weight' => $node->weight,
+            'parent' => $node->taxonomy[$vocab],
+        );
+    taxonomy_save_term($term);
+    $node->tid = $term['tid'];
+    db_query("INSERT INTO {acidfree_album} (aid,tid,thumb,share,order_by,view) values ".
+        "(%d, %d, '%s', %d, '%s', '%s')", $node->nid, $node->tid, $node->thumb,
+        $node->share, $node->order_by, $node->view);
+    if (function_exists('views_invalidate_cache'))
+        views_invalidate_cache();
+}
+
+function acidfree_update(&$node) {
+    $vocab = acidfree_get_vocab_id();
+    $term = array(
+            'vid' => $vocab,
+            'tid' => $node->tid,
+            'name' => $node->title,
+            'description' => $node->body,
+            'weight' => $node->weight,
+            'parent' => $node->taxonomy[$vocab],
+        );
+    taxonomy_save_term($term);
+    db_query("UPDATE {acidfree_album} SET thumb='%s', share=%d, order_by='%s', view='%s' WHERE aid=%d",
+        $node->thumb, $node->share, $node->order_by, $node->view, $node->nid);
+    if (function_exists('views_invalidate_cache'))
+        views_invalidate_cache();
+}
+
+function acidfree_delete(&$node) {
+    // delete the children first
+    $children = _acidfree_get_children($node->tid, -1, 0, true);
+    if (count($children)) {
+        $query = db_query("SELECT n.nid, COUNT(tn.tid) AS nr_albums FROM {node} n INNER JOIN {term_node} tn ON n.nid=tn.nid WHERE n.nid IN (%s) GROUP BY n.nid", implode(',', $children));
+        while ($child = db_fetch_object($query)) {
+            if ($child->nr_albums == 1) {
+                node_delete($child->nid);
+            }
+        }
+    }
+    taxonomy_del_term($node->tid);
+    db_query("DELETE FROM {acidfree_album} WHERE aid=%d", $node->nid);
+}
+
+function acidfree_view($node, $teaser = FALSE, $page = FALSE) {
+    if ($page) {
+        $view = "album_{$node->view}_view";
+        $node->content['body'] = array(
+                '#value' => acidfree_album_view($view, $node->tid),
+                //'#value' => '<div class="clear-block">' . $output . '</div>',
+                '#weight' => 0,
+            );
+        return $node;
+    } else {
+        static $head_set;
+        if (!$head_set) {
+            $size = _acidfree_get_sizes('thumbnail');
+            // 5px padding + 1px border on both sides of image +
+            // 5px padding and 2px border on both sides of acidfree-item
+            // gives 26. Height needs more because it contains text underneath.
+            $style = '<style type="text/css" media="all">';
+            $style .= '.acidfree-cell{width:' . ($size['width'] + 26) . 'px;}';
+            $style .= '.acidfree .acidfree-cell{height:' . ($size['height'] + 45) . 'px;}';
+            $style .= '</style>';
+            drupal_set_html_head($style);
+            $head_set = TRUE;
+        }
+
+        $node->readmore = (strlen($node->teaser) < strlen($node->body));
+        $output = theme("acidfree_print_thumb_acidfree", $node);
+        $output .= check_markup($node->teaser, $node->format, FALSE);
+        $node->content['body'] = array(
+                '#value' => '<div class="clear-block">' . $output . '</div>',
+                '#weight' => 0,
+            );
+        return $node;
+    }
+}
+
+function acidfree_form(&$node) {
+    if ($node->nid && !strstr($_REQUEST['q'], 'contents')) {
+        drupal_set_title(t('Edit %title', array('%title' => $node->title)));
+        drupal_set_breadcrumb(acidfree_make_breadcrumbs($node));
+    }
+    $form = array();
+    $form['title'] = array(
+            '#type' => 'textfield',
+            '#title' => t('Title'),
+            '#default_value' => $node->title,
+            '#required' => true,
+            '#weight' => -20,
+        );
+    if (!isset($node->tid)) {
+        $parent = _path_match('node', 'add', 'acidfree', '%d');
+        if (!$parent) {
+            $parent = acidfree_get_root();
+        } else {
+            $parent = acidfree_get_node_by_id($parent[0]);
+            $parent = $parent->tid;
+        }
+    } else {
+        $parent = taxonomy_get_parents($node->tid);
+        $parent = array_keys($parent);
+        $parent = $parent[0];
+    }
+    // HACK -- taxonomy rudely assumes that if $form['taxonomy'] is set
+    // then in its form_alter hook, it puts it into a field set.  grrr.
+    // so we fight back by calling it parent here and renaming it to
+    // taxonomy in our form_alter, which is call after taxonomy's
+    global $user;
+    if (isset($node->tid) && ($node->tid == acidfree_get_root() || $node->tid == $user->acidfree_album)) {
+        $form['parent'] = array('#type' => 'hidden', '#value' => 0);
+    } else {
+        $form['parent'] = _acidfree_parent_select($parent, $node->tid);
+    }
+    $form['body'] = array(
+            '#type' => 'textarea',
+            '#title' => t('Body'),
+            '#default_value' => $node->body,
+            '#weight' => -1,
+        );
+    $form['view'] = array(
+            '#type' => 'select',
+            '#title' => t('Default album view'),
+            '#options' => array(
+                    'grid' => t('Grid view'),
+                    'list' => t('List view'),
+                ),
+            '#default_value' => $node->view,
+            '#weight' => 0,
+        );
+    $form['order_by'] = array(
+            '#type' => 'select',
+            '#title' => t('Sort album by'),
+            '#options' => array(
+                    '<default>' => t('Use global settings'),
+                    'node.nid DESC' => t('Latest post first'),
+                    'node.nid ASC' => t('Posted order'),
+                    'node.title ASC' => t('Alphabetical order'),
+                    'node.title DESC' => t('Reverse alphabetical order'),
+                    'node.created ASC' => t('Chronological order by creation date'),
+                    'node.created DESC' => t('Reverse chronological order by creation date'),
+                ),
+            '#default_value' => $node->order_by,
+            '#weight' => -1,
+            '#attributes' => array('class' => 'order-by'),
+        );
+    if ($node->nid) {
+        $thumb_options['0'] = 'Random';
+        $children = _acidfree_get_children($node->tid, -1, 0);
+        if (!is_array($children)) {
+            if (count($children) == 1)
+                $children = Array($children);
+            else
+                $children = Array();
+        }
+        foreach ($children as $child) {
+            $child = acidfree_get_node_by_id($child);
+            if (strlen($child->title) > 20)
+                $title = substr($child->title, 0, 20)."...";
+            else
+                $title = $child->title;
+            $thumb_options[$child->nid] = check_plain($title);
+        }
+        // in album contents mode, this would be a duplicate thumbnail
+        if (!strstr($_GET['q'], 'contents')) {
+            $prefix = theme('acidfree_print_thumb_acidfree', $node);
+            $description = t("Select a fixed album thumbnail or select 'Random' to have a random thumbnail appear for the album thumbnail");
+        }
+        global $base_url;
+        $form['thumb'] = array(
+                '#type' => 'select',
+                '#prefix' => $prefix,
+                '#title' => t('Album thumbnail'),
+                '#description' => $description,
+                '#default_value' => $node->thumb,
+                '#options' => $thumb_options,
+                '#attributes' => array(
+                        'class' => 'order-by',
+                        'onchange' => "set_thumb('$base_url', this, {$node->nid}, ".count($children).")",
+                    ),
+                '#acidfree_form' => true,
+            );
+    } else {
+        $form['thumb'] = array('#type' => 'hidden', '#value' => '');
+    }
+    $form['share'] = array(
+            '#type' => 'checkbox',
+            '#title' => t('Allow others to post items to this album'),
+            '#default_value' => $node->share,
+            '#weight' => -1,
+        );
+    $term = taxonomy_get_term($node->tid);
+    $form['weight'] = array(
+            '#type' => 'weight',
+            '#title' => t('Weight'),
+            '#default_value' => $term->weight,
+            '#description' => t('In listings, the heavier albums will sink and the lighter albums will be positioned nearer the top.'),
+        );
+    return $form;
+}
+
+/**
+ * Implementation of hook_help().
+ *
+ * Throughout Drupal, hook_help() is used to display help text at the top of
+ * pages. Some other parts of Drupal pages get explanatory text from these hooks
+ * as well. We use it here to provide a description of the module on the
+ * module administration page.
+ */
+function acidfree_help($section) {
+    global $acidfree_types;
+    switch ($section) {
+        case 'admin/settings/modules#description':
+            // This description is shown in the listing at admin/settings/modules.
+            return t('A better photo album than Gallery or Album. Acidfree is node based and well integrated into Drupal.');
+        case 'node/add#acidfree':
+            // This description shows up when users click "create content."
+            return t('Add an album here.  Other elements you can add are in the \'create content\' menu.');
+        case 'admin/help/acidfree':
+            $types = array();
+            foreach ($acidfree_types as $type) {
+                $types[] = $type->name;
+            }
+            return t('<p>Acidfree is an album system that has the ability to store any kind of media (assuming the class is existent.)  Currently implemented are %types.  Following the example of one of the currently implemented classes, it is easy to create a new media type.</p>', array('%types' => implode(', ', $types))); 
+        case 'admin/help#acidfree':
+            return t('<p>Because Acidfree is more than simply a storage and viewing module, it requires some depenencies for the album management.  First, it requires the Filemanager module.  Until the Filemanager gets patched to have the exended API that Acidfree requires, Acidfree will ship with a patch for the Filemanager.  Second, it requires some form of image manipulation.  Drupal provides a frontend to the GD library that can do what is required.  Or, if you would rather use ImageMagick or libmagick (php-imagick module), set that up (copy the image.*.inc files to the includes directory) and select it.  Finally, if you want lossless rotations for your images, you will require jpegtran or exiftran.</p><p>For video thumbnailing, there are three options.  You can choose a static image for all your videos (no thumbnail), upload your own thumbnail (user thumbnail) or have mplayer thumbnail them automatically for you.  If you choose the first option, you will be asked to give the dimensions of the video so it can be displayed correctly in the \'full\' view.  With option two, be sure to upload a thumbnail that is the same dimensions as the actual video (grab a frame from the video, do not resize it.)  The third option obviously implies that you have mplayer and all the win32 codecs installed on your <b>server</b> and that you are allowed to exec other programs (i.e., not running in safe mode.).  ');
+        case 'admin/settings/acidfree':
+            return t('These settings affect all Acidfree albums and displays.  However, some items can be overridden on a per-album or per-image basis.');
+        case 'admin/content/types/acidfree':
+            return t("The common attributes that Acidfree will have are: 'Sticky at top of lists', which allows the albums to be sorted before the other media types (image, video, etc.) in the various album views;  and *not* 'Promoted to front page' because that would make all the albums show up at the top of the front page, which is probably not desirable.");
+        default:
+            return "";
+    }
+}
+
+function include_acidfree_files($reset=false) {
+    global $acidfree_types;
+    static $loaded = false;
+
+    if ($loaded && !$reset) {
+      return;
+    }
+
+    if ($reset) {
+        cache_clear_all('acidfree_types', 'cache');
+    }
+
+    $acidfree_types = cache_get('acidfree_types');
+    
+    $acidfree_base = dirname(drupal_get_filename('module', 'acidfree'));
+    if (!$acidfree_types) {
+        $acidfree_types = array();
+        foreach (glob($acidfree_base.DIRECTORY_SEPARATOR.'class_*.inc') as $classfile) {
+            require_once($classfile);
+            $type = acidfree_call(basename($classfile, ".inc") . "_register");
+            if ($type->class) {
+                $key = ($type->class == 'album' ? 'acidfree' : $type->class);
+                $acidfree_types[$key] = $type;
+            }
+        }
+        cache_set('acidfree_types', 'cache', serialize($acidfree_types), CACHE_PERMANENT);
+    } else {
+        $acidfree_types = unserialize($acidfree_types->data);
+        foreach ($acidfree_types as $type) {
+            $file = $acidfree_base.DIRECTORY_SEPARATOR."class_{$type->class}.inc";
+            if (file_exists($file)) {
+                require_once($file);
+            } else {
+                include_acidfree_files(true);
+            }
+        }
+    }
+    require_once $acidfree_base.DIRECTORY_SEPARATOR.'image_manip.inc';
+    $loaded = true;
+}
+
+function acidfree_menu($may_cache) {
+    $items = array();
+
+    include_acidfree_files();
+    if ($may_cache) {
+        $items[] = array(
+                'path' => 'node/add/acidfree',
+                'title' => t('Album'),
+                'access' => user_access('create acidfree albums'),
+                'callback' => 'node_add',
+                'callback arguments' => array('acidfree'),
+            );
+        $items[] = array('path' => 'admin/settings/acidfree',
+                'title' => t('Acidfree settings'),
+                'callback' => 'drupal_get_form',
+                'callback arguments' => array('acidfree_admin_settings'),
+                'description' => t('Site-wide Acidfree settings.'),
+                'access' => user_access('administer site configuration'),
+                'type' => MENU_NORMAL_ITEM,
+            );
+        $items[] = array('path' => 'acidfree',
+                'callback' => 'acidfree_page',
+                'title' => t('Acidfree albums'),
+                'access' => user_access('access content'),
+                'type' => MENU_SUGGESTED_ITEM);
+        // acidfree_init stuff
+        $create_acidfree_elements = false;
+        $default_class_callback = false;
+        $items[] = array('path' => 'acidfree/thumbnail',
+                'callback' => 'acidfree_fetch_thumb',
+                'type' => 0,
+            );
+    } else {
+        $acidfree_base = drupal_get_path('module', 'acidfree');
+        drupal_add_css("$acidfree_base/acidfree.css", 'module', 'all');
+
+        $path = explode('/', $_GET['q']);
+        if ($path[0] == 'node' && is_numeric($path[1])) {
+            $album = acidfree_get_node_by_id($path[1]);
+            if ($album && $album->type == 'acidfree') {
+                $items[] = Array('path' => "node/{$path[1]}/contents",
+                        'access' => node_access('update', $album) && user_access('use album contents mode'),
+                        'title' => t('Album contents'),
+                        'callback' => 'drupal_get_form',
+                        'callback arguments' => array('acidfree_album_contents', $album->tid),
+                        'type' => MENU_LOCAL_TASK);
+                if (variable_get('acidfree_show_alternate_view', true)) {
+                    $other_view = array('grid' => 'list', 'list' => 'grid');
+                    $view_name = array('grid' => t('Grid'), 'list' => t('List'));
+                    $view = $other_view[$album->view];
+                    $items[] = Array('path' => "node/{$path[1]}/{$view}",
+                            'access' => 1,
+                            'title' => $view_name[$view],
+                            'callback' => 'acidfree_album_view',
+                            'callback arguments' => array("album_{$view}_view", $album->tid),
+                            'type' => MENU_LOCAL_TASK,
+                            'weight' => -4,
+                        );
+                }
+                if ($album->share || node_access('update', $album) ||
+                        user_access('can upload to any album')) {
+                    $items[] = array('path' => "node/{$path[1]}/import",
+                            'access' => user_access('acidfree mass import'),
+                            'title' => t('Mass import'),
+                            'callback' => 'acidfree_mass_import_form',
+                            'callback arguments' => $album->nid,
+                            'type' => variable_get('acidfree_mass_import_local_task', false) ? 
+                                MENU_LOCAL_TASK : MENU_SUGGESTED_ITEM,
+                            'weight' => 5,
+                        );
+                }
+            }
+        }
+        if (variable_get('acidfree_per_user_albums', false)) {
+            $items[] = array('path' => 'user/acidfree', 'title' => t('My Acidfree Albums'),
+                    'access' => user_access('get a per-user album'),
+                    'callback' => 'acidfree_page',
+                    'type' => MENU_SUGGESTED_ITEM,
+                );
+        }
+        drupal_add_js(drupal_get_path('module', 'acidfree').'/acidfree.js');
+    }
+    return $items;
+}
+
+function acidfree_fetch_thumb($nid=0) {
+    if ($nid == 0 || !($node = acidfree_get_node_by_id($nid))) {
+        return drupal_not_found();
+    }
+    if (!node_access('view', $node)) {
+        return drupal_access_denied();
+    }
+    $file_path = _acidfree_get_thumb_path($node);
+    file_transfer($file_path, array('Content-Type: '.acidfree_mime($file_path), 'Content-Length: '. filesize($filepath), 'Content-Disposition: filename=' . basename($file_path)));
+}
+
+function _acidfree_can_create() {
+    return user_access('create images') ||
+           user_access('create video') ||
+           user_access('create acidfree albums');
+}
+
+function _acidfree_add_pager(&$node) {
+    // determine the acidfree term -- if no term, bail out
+    if (!$node->taxonomy) {
+        return;
+    }
+
+    // FIXME: this is part of our ugly pager
+    $parent = _acidfree_get_parent($node);
+    $parent = $parent->tid;
+    $offset = _acidfree_get_offset_in_parent($parent, $node);
+    $p = "pid={$parent}";
+    $pager = _acidfree_make_pager_string(array(ELEMENT_PAGER=>"$offset"));
+    $nid = $node->nid;
+
+    // Node ID was present so just hack in the other elements so the system can deal with it. No redirect needed
+    $_GET[PAGER_STRING] = $pager;
+    $_GET['pid'] = $parent->nid;
+    // END: ugly hack
+
+    $node->content['acidfree_pager'] = array(
+            '#weight' => -19,
+            '#value' => acidfree_pager_creator($node),
+        );
+}
+
+/**
+ * Implementation of hook_nodeapi
+ */
+function acidfree_nodeapi(&$node, $op, $teaser = NULL, $page = NULL) {
+    switch ($op) {
+    case "delete":
+        break;
+    case "insert":
+        break;
+    case "load":
+        break;
+    case "prepare":
+        break;
+    case "search result":
+        break;
+    case "print":
+        break;
+    case "update":
+        // if it is an image node, check to see if we need to rotate it
+        if ($node->type == 'image') {
+            _class_image_rotate($node);
+        }
+        break;
+    case "submit":
+        break;
+    case "update index":
+        break;
+    case "validate":
+        break;
+    case "view":
+        if (($node->type == 'image' || $node->type == 'video') && !$teaser) {
+            $node->content['body']['#weight'] = 1;
+            if ($page) {
+                drupal_set_breadcrumb(acidfree_make_breadcrumbs($node));
+                _acidfree_add_pager($node);
+            }
+            acidfree_call('_class_'.$node->type.'_view_alter', array(&$node));
+        }
+        break;
+    case "rss item":
+        break;
+    }
+}
+
+function &acidfree_get_node_by_id($nid) {
+    if (!is_numeric($nid)) {
+        return null;
+    }
+    if (!$nid && function_exists('trace_msg')) {
+        trace_msg();
+        return null;
+    }
+    $node =& node_load($nid);
+    global $acidfree_types;
+    if (in_array($node->type, array_keys($acidfree_types))) {
+        return $node;
+    }
+    return null;
+}
+
+function _acidfree_album_is_shared($option) {
+    global $user;
+    $tid = array_keys($option->option);
+    $node = _album_from_tid($tid[0]);
+    return ($node->share || $node->uid == $user->uid);
+}
+
+function _acidfree_filter_taxonomy(&$taxonomy) {
+    if (!user_access('can upload to any album')) {
+        $albums = array();
+        if (!is_array($taxonomy) || !is_array($taxonomy['#options']))
+            return;
+        $taxonomy['#options'] = array_filter($taxonomy['#options'], '_acidfree_album_is_shared');
+    }
+}
+
+function acidfree_form_alter($form_id, &$form) {
+  global $acidfree_types;
+  // dm($form);
+  // m($form_id);
+  $q = $_GET['q'];
+  $nodes_to_check = array();
+  switch ($form_id) {
+    case 'acidfree_node_form':
+      acidfree_call($acidfree_types['acidfree']->form_alter, array($form_id, &$form));
+        break;
+    case 'image_node_form':
+      acidfree_call($acidfree_types['image']->form_alter, array($form_id, &$form));
+      break;
+    case 'video_node_form':
+      acidfree_call($acidfree_types['video']->form_alter, array($form_id, &$form));
+      break;
+    case 'system_modules':
+      include_acidfree_files(true);
+      break;
+    case 'node_multiple_delete_confirm':
+        $nodes_to_check = $form['#post']['nodes'];
+    case 'node_delete_confirm':
+        if (isset($form['#post']['confirm']) && $form['#post']['confirm'] == 1) {
+            // don't show the warning after the delete confirmation
+            break;
+        }
+        if (isset($form['nid']['#value'])) {
+            $nodes_to_check[] = $form['nid']['#value'];
+        }
+        if (count($nodes_to_check)) {
+            $album_count = db_result(db_query("SELECT COUNT(nid) FROM {node} WHERE type='acidfree' AND nid IN (%s)", implode(',', $nodes_to_check)));
+            if ($album_count) {
+                drupal_set_message(t('WARNING: This action will delete at least one album and all of its contents'), 'error');
+            }
+        }
+        break;
+    default:
+      //drupal_set_message("form_alter: $form_id (not modified)");
+      break;
+  }
+}
+
+function _is_int($value) {
+    return (is_numeric($value) && ((int)$value == $value));
+}
+function valid_integer($value, $min=null, $max=null) {
+    if (is_null($min)) {
+        return _is_int($value);
+    }
+    if (is_null($max)) {
+        return (_is_int($value) && $value >= $min);
+    }
+    return (_is_int($value) && $value >= $min && $value <= $max);
+}
+
+function acidfree_settings_validate($form_id, $values, &$form) {
+    if (!valid_integer($values['acidfree_num_thumbs'], 0)) {
+        form_set_error('acidfree_num_thumbs', t('Thumbnails per page must be a non-negative integer'));
+    }
+    if (!valid_integer($values['acidfree_extra_length'], 0)) {
+        form_set_error('acidfree-extra-length', t('Thumbnail padding must be a non-negative integer'));
+    }
+    if (!valid_integer($values['acidfree_mass_import_filecount'], 1)) {
+        form_set_error('acidfree_mass_import_filecount', t('Mass import file count must be a positive integer'));
+    }
+}
+
+function _acidfree_sort_by_type($a, $b) {
+    if ($a['#af_type'] < $b['#af_type']) {
+        return -1;
+    } else if ($a['#af_type'] > $b['#af_type']) {
+        return 1;
+    }
+    if ($a['#field_name'] < $b['#field_name']) {
+        return -1;
+    } else if ($a['#field_name'] < $b['#field_name']) {
+        return 1;
+    }
+    return 0;
+}
+
+function theme_acidfree_settings_fields(&$form) {
+    global $acidfree_types;
+    $last_type = '';
+    $rows = array();
+    uasort($form, '_acidfree_sort_by_type');
+    foreach (element_children($form) as $i) {
+        $field = &$form[$i];
+        // type header
+        $type = $field['#af_type'];
+        if ($type != $last_type) {
+            if ($type == 'common') {
+                $tname = t('Common');
+            } else {
+                $tname = $acidfree_types[$type]->name;
+            }
+            $type_title = t('@type fields', array('@type' => drupal_ucfirst($tname)));
+            $rows[] = array(array('data' => $type_title, 'class' => 'region', 'colspan' => 2));
+            $last_type = $type;
+        }
+        $title = $field['#field_name'];
+        $row = array(
+                $title,
+                drupal_render($field),
+            );
+        $rows[] = $row;
+    }
+
+    // Finish table
+    $header = array(t('Field'), t('Region'));
+    $output = theme('table', $header, $rows, array('id' => 'blocks'));
+    $output .= drupal_render($form);
+
+    return $output;
+}
+
+function acidfree_settings_submit($form, &$edit) {
+    if ($edit['acidfree_order_force']) {
+        db_query("UPDATE {acidfree_album} SET order_by = '<default>'");
+    }
+    $node = new stdClass();
+    $node->type = 'acidfree';
+    _acidfree_set_node_defaults($node);
+    if ($node->sticky != $edit['acidfree_album_sticky']) {
+        $name = 'node_options_acidfree';
+        $options = variable_get($name, array());
+        if ($edit['acidfree_album_sticky']) {
+            $options[] = 'sticky';
+        } else {
+            $options = array_filter($options, create_function('$v', 'return ($v != "sticky");'));
+        }
+        variable_set($name, $options);
+        db_query("UPDATE {node} SET sticky=%d WHERE type='acidfree'", $edit['acidfree_album_sticky']);
+    }
+    foreach ($edit as $key => $value) {
+        variable_set($key, $value);
+    }
+}
+
+/**
+ * Implementation of hook_settings
+ */
+function acidfree_admin_settings() {
+    $form = array();
+    $form['#validate'] = array('acidfree_settings_validate' => array());
+    $form['#submit'] = array('acidfree_settings_submit' => array());
+    $form['general'] = array(
+            '#type' => 'fieldset',
+            '#title' => t('General Settings'),
+            '#collapsible' => 'true',
+        );
+    $form['general']['acidfree_mass_import_filecount'] = array(
+            '#type' => 'textfield',
+            '#title' => t('Mass import file count'),
+            '#description' => t('Number of simultaneous file uploads per mass-import submit.  Note that the actual number of files that will be accepted by the server depends on the file size of each file and the total size of all posted files.'),
+            '#default_value' => variable_get('acidfree_mass_import_filecount', 5),
+        );
+    $form['general']['acidfree_per_user_albums'] = array(
+            '#type' => 'checkbox',
+            '#title' => t('Per user albums'),
+            '#description' => t('This options will allow each user to have a top-level album of their own.  The per user album is located at user/acidfree if logged in and acidfree/user/nnn for each individual album.'),
+            '#default_value' => variable_get('acidfree_per_user_albums', false),
+        );
+    $form['general']['acidfree_share_by_default'] = array(
+            '#type' => 'checkbox',
+            '#title' => t('Share albums by default'),
+            '#description' => t('Marking an album as shared will allow other users to post items in it.'),
+            '#default_value' => variable_get('acidfree_share_by_default', 0),
+        );
+    $exiftran_path = variable_get('acidfree_path_to_exiftran', '/usr/bin/exiftran');
+    $jpegtran_path = variable_get('acidfree_path_to_jpegtran', '/usr/bin/jpegtran');
+    if (ini_get('safe_mode')) {
+        $safe_dirs = explode(PATH_SEPARATOR, ini_get('safe_mode_exec_dir'));
+        array_walk($safe_dirs, create_function('&$a, $b', '$a = realpath($a);'));
+        if (!in_array(dirname($jpegtran_path), $safe_dirs) &&
+            !in_array(dirname($exiftran_path), $safe_dirs)) {
+            drupal_set_message(t('Neither exiftran nor jpegtran executables are in the safe_mode_exec_dir (%safe_dir) &mdash; lossy jpeg rotation will be used instead', array('%safe_dir' => $safe_dir)));
+        }
+    }
+    if (!is_executable($exiftran_path) && !is_executable($jpegtran_path))
+        drupal_set_message(t('Neither exiftran nor jpegtran are available &mdash; lossy jpeg rotation will be used instead'));
+    drupal_add_js(drupal_get_path('module', 'acidfree').'/acidfree.js');
+    $form['display'] = array(
+            '#type' => 'fieldset',
+            '#title' => t('Acidfree Display'),
+            '#collapsible' => 'true',
+        );
+    $form['display']['acidfree_filter_caption'] = array(
+            '#type' => 'checkbox',
+            '#title' => t('Show image title as default caption for inline images'),
+            '#default_value' => variable_get('acidfree_filter_caption', false),
+            '#description' => t('When using the [acidfree:nnn] filters, if you don\'t explicitly set a title value, no title will appear.  If this setting is set, if no title is specified, the filter will use the title of the node as the default caption for the inline image.'),
+        );
+    $form['display']['acidfree_extra_length'] = array(
+      '#type' => 'textfield',
+      '#size' => 3,
+      '#title' => t('Amount of padding/border on each side of thumbnail image'),
+      '#default_value' => variable_get('acidfree_extra_length',12),
+      '#description' => t('In pixels. Only needs to be changed if you modify the padding/border around the thumbnail.')
+    );
+    $form['album'] = array(
+            '#type' => 'fieldset',
+            '#title' => t('Album settings'),
+            '#collapsible' => 'true',
+        );
+    $form['album']['acidfree_mass_import_local_task'] = array(
+            '#type' => 'checkbox',
+            '#title' => t('Show mass import tab in album view'),
+            '#default_value' => variable_get('acidfree_mass_import_local_task', false),
+        );
+    $form['album']['acidfree_show_alternate_view'] = array(
+            '#type' => 'checkbox',
+            '#title' => t('Show alternative album view'),
+            '#default_value' => variable_get('acidfree_show_alternate_view', true),
+            '#description' => t('Albums normally have two views: grid and list.  This option controls whether or not when viewing the album, users can switch to the alternate view.  Which view is the default view is set individually in each album'),
+        );
+    $form['album']['acidfree_order'] = array(
+            '#type' => 'select',
+            '#title' => t('Sort albums by'),
+            '#default_value' => variable_get('acidfree_order', 'node.nid DESC'),
+            '#options' => array(
+                    'node.nid DESC' => t('Latest post first'),
+                    'node.nid ASC' => t('Posted order'),
+                    'node.title ASC' => t('Alphabetical order'),
+                    'node.title DESC' => t('Reverse alphabetical order'),
+                    'node.created ASC' => t('Chronological order by creation date'),
+                    'node.created DESC' => t('Reverse chronological order by creation date'),
+                ),
+        );
+    $form['album']['acidfree_order_force'] = array(
+            '#type' => 'checkbox',
+            '#title' => t('Sort all albums'),
+            '#default_value' => 0,
+            '#description' => t('Force all albums to use this selected sort order'),
+        );
+    $node = new stdClass();
+    $node->type = 'acidfree';
+    _acidfree_set_node_defaults($node);
+    $form['album']['acidfree_album_sticky'] = array(
+            '#type' => 'checkbox',
+            '#title' => t('List albums first'),
+            '#default_value' => $node->sticky,
+            '#description' => t("Show albums first in all lists (marks them as 'sticky')"),
+        );
+    $form['album']['acidfree_num_thumbs'] = array(
+            '#type' => 'textfield',
+            '#title' => t('Thumbnails per page'),
+            '#size' => 5,
+            '#maxlength' => 10,
+            '#default_value' => variable_get('acidfree_num_thumbs', 15),
+            '#description' => t('Enter 0 for unlimited')
+        );
+    $form['display']['acidfree_show_term_links'] = array(
+            '#type' => 'checkbox',
+            '#title' => t('Show category links in Acidfree node views'),
+            '#default_value' => variable_get('acidfree_show_term_links', false),
+            '#description' => t('By default, the Taxonomy module add category links to all nodes that are tagged with a term.  Acidfree disables this.  By selecting this box, these redundant links will be shown in the node view of albums and items.'),
+        );
+
+    if (!image_get_toolkit())
+        drupal_set_message(t('No image toolkit has been properly installed or configured.  Go to admin/settings to fix this.'), 'error');
+    $form['image_manip'] = array(
+            '#type' => 'fieldset',
+            '#title' => t('Image Manipulation'),
+            '#collapsible' => 'true',
+        );
+    $form['image_manip']['acidfree_path_to_exiftran'] = array(
+            '#type' => 'textfield',
+            '#default_value' => $exiftran_path,
+            '#description' => t('exiftran provides lossless rotation of jpeg images and keeps EXIF information.  If you provide a working path, Acidfree will try to use it.'),
+        );
+    $form['image_manip']['acidfree_path_to_jpegtran'] = array(
+        '#type' => 'textfield',
+        '#default_value' => $jpegtran_path,
+        '#description' => t('jpegtran provides lossless rotation of jpeg images and can somewhat munge the EXIF information.  If you provide a working path, Acidfree will try to use it.'),
+    );
+    if (function_exists('_class_video_manipulation_options'))
+        $form = array_merge($form, acidfree_call('_class_video_manipulation_options'));
+
+    $form['album_contents'] = array(
+            '#type' => 'fieldset',
+            '#title' => t('Album Contents'),
+            '#collapsible' => 'true',
+        );
+    $form['album_contents']['acidfree_content_fields_all'] = array(
+            '#title' => t('Show all fields available in "Album Contents" view'),
+            '#type' => 'checkbox',
+            '#default_value' => variable_get('acidfree_content_fields_all', true),
+        );
+    $form['album_contents']['fields']['#type'] = 'fieldset';
+    $form['album_contents']['fields']['#title'] = t('Fields to show');
+    $form['album_contents']['fields']['#collapsible'] = true;
+    $form['album_contents']['fields']['#collapsed'] = variable_get('acidfree_content_fields_all', true);
+    $form['album_contents']['fields']['#description'] = t('The album contents view gets very cluttered.  To remedy this, you may pick and choose which field elements appear on the form and what column they appear in.  The form will render with two columns and you may put any item in either column.');
+    $form['album_contents']['fields']['acidfree_content_fields'] = _album_contents_available_fields();
+    drupal_set_title(t('Acidfree settings'));
+
+    return system_settings_form($form);
+}
+
+/**
+ * Implementation of hook_access().
+ *
+ * Node modules may implement node_access() to determine the operations
+ * users may perform on nodes. This example uses a very common access pattern.
+ */
+function acidfree_access($op, $node=null) {
+    global $user;
+
+    if ($op == 'create') {
+        // Only users with permission to do so may create this node type.
+        return user_access('create acidfree albums');
+    }
+
+    // Users who create a node may edit or delete it later, assuming they have the
+    // necessary permissions.
+    if ($op == 'update' || $op == 'delete') {
+        if (user_access('edit own acidfree albums') && ($user->uid == $node->uid)) {
+            return TRUE;
+        }
+    }
+}
+
+/**
+ * Implementation of hook_perm().
+ *
+ * Since we are limiting the ability to create new nodes to certain users,
+ * we need to define what those permissions are here. We also define a permission
+ * to allow users to edit the nodes they created.
+ */
+function acidfree_perm() {
+    $perms = Array();
+    $perms[] = 'create acidfree albums';
+    $perms[] = 'edit own acidfree albums';
+    $perms[] = 'acidfree mass import';
+    $perms[] = 'can upload to any album';
+    $perms[] = 'use album contents mode';
+    if (variable_get('acidfree_per_user_albums', 0)) {
+        $perms[] = 'get a per-user album';
+    }
+    return $perms;
+}
+
+/**
+ * Implementation of hook_link().
+ *
+ * This is implemented so that an edit link is displayed for users who have
+ * the rights to edit a node.
+ */
+function acidfree_link($type, $node = null, $teaser = false) {
+    $links = array();
+    if ($type == 'node' && $node->type == 'acidfree') {
+        // Don't display a redundant edit link if they are node administrators.
+        if (acidfree_access('update', $node) && !user_access('administer nodes')) {
+            // determine whether or not we are actually viewing an album or a node
+            $links['acidfree_edit_node'] = array(
+                    'title' => t('edit this album'),
+                    'href' => "node/{$node->nid}/edit",
+                );
+        }
+    }
+    return $links;
+}
+
+function acidfree_term_path($term) {
+    $album = _album_from_tid($term->tid);
+    if ($album) {
+        return "node/{$album->nid}";
+    }
+    return null;
+}
+
+function acidfree_link_alter(&$node, &$links) {
+    if (variable_get('acidfree_show_term_links', false)) {
+        return;
+    }
+    global $acidfree_types;
+    $vid = acidfree_get_vocab_id();
+    if (in_array($node->type, array_keys($acidfree_types))) {
+        foreach ($links as $name => $link) {
+            if (strstr($name, 'taxonomy_term')) {
+                $term = taxonomy_get_term(substr($name, 14));
+                if ($term->vid == $vid) {
+                    unset($links[$name]);
+                }
+            }
+        }
+    }
+}
+
+function _acidfree_create_quick_links(&$album) {
+    global $acidfree_types;
+    global $user;
+    if (!isset($album->nid)) {
+        $album = _album_from_tid(acidfree_get_root($user->uid));
+        if (!isset($album->nid)) {
+            $album = _album_from_tid(acidfree_get_root());
+        }
+    }
+    $tpath = "/{$album->nid}";
+    $links = Array();
+    if (!(node_access('update', $album) ||
+        (_acidfree_can_create() && $album->share) ||
+        user_access('can upload to any album'))) {
+        $tpath = '';
+    }
+    foreach ($acidfree_types as $type => $info) {
+        if (user_access($info->access)) {
+            $links[] = l($info->addme, "node/add/{$type}{$tpath}");
+        }
+    }
+    if ($tpath && user_access('acidfree mass import'))
+        $links[] = l(t('Mass import'), "node{$tpath}/import");
+    return theme('item_list',$links);
+}
+
+function acidfree_get_block_nodes($order, $count, $albums=array()) {
+    if ($order == 'counts') {
+        $order = 'votes DESC';
+        $join = 'INNER JOIN {node_counter} c on n.nid=c.nid ';
+        $select = ', ABS(c.daycount*10 + c.totalcount) AS votes';
+    } else if ($order == 'RAND()') {
+        $order = 'rand DESC';
+        $select = ', RAND() as rand';
+    }
+    // FIXME: we should make this query use $acidfree_types
+    if (count($albums) > 0) {
+        $terms = implode(',', $albums);
+        $query = "SELECT n.nid $select FROM {node} n ".
+            "INNER JOIN {term_node} t on n.nid=t.nid ".
+            "WHERE n.type IN ('image', 'video') AND ".
+            "t.tid IN ($terms) AND n.status=1 ".
+            "ORDER BY $order LIMIT $count";
+    } else {
+        $query = "SELECT n.nid $select FROM {node} n $join".
+            "WHERE n.type IN ('image', 'video') AND n.status=1 ".
+            "ORDER BY $order LIMIT $count";
+    }
+    $query = db_rewrite_sql($query);
+    $result = db_query($query);
+    $nodes = Array();
+    while ($row = db_fetch_object($result)) {
+        $nodes[] = acidfree_get_node_by_id($row->nid);
+    }
+    return $nodes;
+}
+
+function theme_acidfree_block_contents($node_array) {
+    $nodes =& $node_array[0];
+    foreach ($nodes as $node) {
+        $output .= "<div class='block-cell'>";
+        $output .= theme("acidfree_print_thumb_{$node->type}", $node);
+        $output .= "</div>";
+    }
+    $output .= "<div class='block-bottom'>&nbsp;</div>\n";
+    return $output;
+}
+
+function acidfree_block($op = 'list', $delta = 0, $edit=array()) {
+    $titles = array(
+        0=>variable_get("acidfree_block_0_title", t('Recent Acidfree items')),
+        1=>variable_get("acidfree_block_1_title", t('Favorite Acidfree items')),
+        2=>variable_get("acidfree_block_2_title", t('Random Acidfree items')),
+        3=>variable_get("acidfree_block_3_title", t('Add Acidfree items')),
+    );
+    switch ($op) {
+    case 'list':
+        $blocks[0]['info'] = t('Acidfree item recent selection');
+        $blocks[1]['info'] = t('Acidfree item favorite selection');
+        $blocks[2]['info'] = t('Acidfree item random selection');
+        $blocks[3]['info'] = t('Add Acidfree items quick links');
+        return $blocks;
+    case 'view':
+        if (user_access('access content')) {
+            $albums = array();
+            $block['subject'] = $titles[$delta];
+            switch ($delta) {
+                case 0:
+                    $order = "nid DESC";
+                    break;
+                case 1:
+                    $order = "counts";
+                    break;
+                case 2:
+                    $all_albums = variable_get('acidfree_block_2_all_albums', 1);
+                    if (!$all_albums) {
+                        $albums = variable_get('acidfree_block_2_random_albums', array());
+                    }
+                    $order = "RAND()";
+                    break;
+                case 3:
+                    global $acidfree_types;
+                    $q = explode('/', $_GET['q']);
+                    if ($q[0] == 'node' && is_numeric($q[1])) {
+                        $node = acidfree_get_node_by_id($q[1]);
+                        if ($node && $node->type != 'acidfree') {
+                            $parent = _acidfree_get_parent($node);
+                            $node = _album_from_tid($parent->tid);
+                        }
+                    } else if ($type = _path_match('node', 'add', '%s', '%?d')) {
+                        if (in_array($type[0], array_keys($acidfree_types))) {
+                            if (!isset($q[3])) {
+                                $node = new stdClass();
+                            } else {
+                                $node = acidfree_get_node_by_id($q[3]);
+                            }
+                        }
+                    } else if (strstr($_GET['q'], 'node/add/acidfree')) {
+                        $node = acidfree_get_node_by_id($q[4]);
+                    }
+                    if (isset($node)) {
+                        $block['content'] = _acidfree_create_quick_links($node);
+                    }
+                    break;
+                default:
+                    break;
+            }
+            if ($delta >= 0 && $delta <= 2) {
+                $nodes = acidfree_get_block_nodes($order,
+                    variable_get("acidfree_block_{$delta}_items", 3), $albums);
+                $block['content'] = theme('acidfree_block_contents', array(&$nodes));
+            } 
+            return $block; 
+        }
+    case 'configure':
+        {
+            $fields = array();
+            if ($delta == 3)
+                return $fields;
+            $fields["acidfree_block_{$delta}_items"] = array(
+                    '#type' => 'select',
+                    '#title' => t('Number of items'),
+                    '#default_value' => variable_get("acidfree_block_{$delta}_items", '5'),
+                    '#options' => drupal_map_assoc(range(1,20)),
+                );
+            if ($delta == 2) {
+                drupal_add_js(drupal_get_path('module', 'acidfree').'/acidfree.js');
+                $all_albums = variable_get('acidfree_block_2_all_albums', 1);
+                $fields['acidfree_block_2_all_albums'] = array(
+                        '#type' => 'checkbox',
+                        '#title' => t('Include items from all albums'),
+                        '#default_value' => $all_albums,
+                        '#attributes' => array('onchange' => 'toggle_album_select(this);'),
+                    );
+                $random_selected = variable_get('acidfree_block_2_random_albums', array());
+                $fields['acidfree_block_2_random_albums'] = _taxonomy_term_select(
+                        t('Select random items from these albums'), null, $random_selected, acidfree_get_vocab_id(), t('description'), true, false);
+                if ($all_albums) {
+                    $fields['acidfree_block_2_random_albums']['#attributes'] = array('disabled' => 'disabled');
+                }
+            }
+            return $fields;
+        }
+    case 'save':
+        if ($delta == 3)
+            break;
+        variable_set("acidfree_block_{$delta}_items", $edit["acidfree_block_{$delta}_items"]);
+        if ($delta == 2) {
+            variable_set('acidfree_block_2_random_albums', $edit['acidfree_block_2_random_albums']);
+            variable_set('acidfree_block_2_all_albums', $edit['acidfree_block_2_all_albums'] == 1);
+        }
+        break;
+    }
+}
+
+function _acidfree_form_element($item) {
+    $el = '#acidfree_form';
+    $item = (array) $item;
+    return isset($item['#acidfree_form']);
+}
+function acidfree_form_elements($arr) {
+    return array_filter($arr, '_acidfree_form_element');
+}
+
+function acidfree_validate($form_id, &$edit, &$form) {
+    if ($form_id != 'acidfree_node_form')
+        return;
+}
+
+function acidfree_test() {
+    $errors = 0;
+    $output .= "<ol>\n";
+    if (module_exists('image')) {
+        if (_image_check_settings()) {
+            $output .= '<li class="testok">'.t('Image module sanity check passed.').'</li>';
+        } else {
+            $output .= '<li class="testfail">'.t('Image module sanity check failed. Check the settings at !imgurl and !fsurl.', array('!imgurl'=>'<a href="'.url('admin/settings/image').'">admin/settings/image</a>', '!fsurl'=>'<a href="'.url('admin/settings/file-system').'">admin/settings/file-system</a>')).'</li>';
+            $errors++;
+        }
+    }
+    if (module_exists('video_upload')) {
+        if (_video_upload_check_settings()) {
+            $output .= '<li class="testok">'.t('Video Upload module sanity check passed.').'</li>';
+        } else {
+            $output .= '<li class="testfail">'.t('Video Upload module sanity check failed. Check the settings at !fsurl.', array('!fsurl'=>'<a href="'.url('admin/settings/file-system').'">admin/settings/file-system</a>')).'</li>';
+            $errors++;
+        }
+    }
+    if (file_check_directory(file_directory_temp(), FILE_CREATE_DIRECTORY) && 
+        ($tdir = acidfree_mktmpdir('testdir'))) {
+        @rmdir($tdir);
+        $output .= '<li class="testok">'.t('Temporary path okay.').'</li>';
+    } else {
+        $output .= '<li class="testfail">'.t('Temporary path does not exist. Check the settings at !fsurl.', array('!fsurl'=>'<a href="'.url('admin/settings/file-system').'">admin/settings/file-system</a>')).'</li>';
+        $errors++;
+    }
+    $modules = array(
+            "'acidfree'",
+            "'image'",
+            "'taxonomy'",
+            "'video'",
+            "'video_image'",
+            "'video_upload'",
+        );
+    $results = db_query('SELECT name,weight FROM {system} WHERE name IN ('.implode(',', $modules).')');
+    while (($row = db_fetch_array($results))) {
+        $weights[$row['name']] = $row['weight'];
+    }
+    $query = "UPDATE {system} SET weight=%d WHERE name='%s'";
+    if ($weights['video_image'] < $weights['video_upload']) {
+        db_query($query, ++$weights['video_upload'], 'video_image');
+        $output .= '<li class="testfail">'.t('Updated %mod module weight.', array('%mod' => 'video_image')).'</li>';
+        $errors++;
+    } else {
+        $output .= '<li class="testok">'.t('%mod module weight okay.', array('%mod' => 'video_image')).'</li>';
+    }
+    if ($weights['acidfree'] < $weights['image'] ||
+        $weights['acidfree'] < $weights['taxonomy'] ||
+        $weights['acidfree'] < $weights['video'] ||
+        $weights['acidfree'] < $weights['video_image'] ||
+        $weights['acidfree'] < $weights['video_upload']) {
+        db_query($query, max($weights)+1, 'acidfree');
+        $output .= '<li class="testfail">'.t('Updated %mod module weight.', array('%mod' => 'acidfree')).'</li>';
+        $errors++;
+    } else {
+        $output .= '<li class="testok">'.t('%mod module weight okay.', array('%mod' => 'acidfree')).'</li>';
+    }
+    if (($itk = image_get_toolkit()) && image_toolkit_invoke('check_settings')) {
+        $output .= '<li class="testok">'.t('%itk image toolkit installed and properly configured', array('%itk' => $itk)).'</li>';
+    } else {
+        $output .= '<li class="testfail">'.t('Image toolkit not properly installed or configured.  Go to %url and configure the image toolkit properly.', array('%url' => '<a href="%url">admin/settings</a>', array('%url' => url('admin/settings')))).'</li>';
+        $errors++;
+    }
+    $output .= "</ol>\n";
+    if ($errors) {
+        $output .= '<p>'.t('Errors were detected.  Please correct the above errors before you do anything else with Acidfree.')."</p>\n";
+    } else {
+        $output .= '<p>'.t("No errors were detected.  But this doesn't mean that Acidfree is guaranteed to work flawlessly.  It is a complex system and still under development.  Please be patient while all the wrinkles are found and ironed out.")."</p>\n";
+    }
+    $output .= '<h4>'.t('Published, promoted and sticky configuration').'</h4><ul>';
+    $node = new stdClass();
+    $node->type = 'acidfree';
+    _acidfree_set_node_defaults($node);
+    $output .= '<li>'.t('Albums').': '.($node->status?t('Published'):t('Not published')).', '.
+        ($node->promoted?t('Promoted'):t('Not promoted')).', '.
+        ($node->sticky?t('Sticky'):t('Not sticky')).'. '.
+        t('Acidfree recommends Published, Not promoted, and Sticky').'</li>';
+    if (module_exists('image')) {
+        $node = new stdClass();
+        $node->type = 'image';
+        _acidfree_set_node_defaults($node);
+        $output .= '<li>'.t('Images').': '.($node->status?t('Published'):t('Not published')).', '.
+            ($node->promoted?t('Promoted'):t('Not promoted')).', '.
+            ($node->sticky?t('Sticky'):t('Not sticky')).'. '.
+            t('Acidfree recommends Published, Not promoted, and Not sticky').'</li>';
+    }
+    if (module_exists('video')) {
+        $node = new stdClass();
+        $node->type = 'video';
+        _acidfree_set_node_defaults($node);
+        $output .= '<li>'.t('Videos').': '.($node->status?t('Published'):t('Not published')).', '.
+            ($node->promoted?t('Promoted'):t('Not promoted')).', '.
+            ($node->sticky?t('Sticky'):t('Not sticky')).'. '.
+            t('Acidfree recommends Published, Not promoted, and Not sticky').'</li>';
+    }
+    if (module_exists('video_image')) {
+        $node = new stdClass();
+        $node->type = 'video';
+        _acidfree_set_node_defaults($node);
+        $node->status = _video_image_publish_thumbnails();
+        $node->promte = _video_image_promote_thumbnails();
+        $output .= '<li>'.t('Video thumbnails').': '.($node->status?t('Published'):t('Not published')).', '.
+            ($node->promoted?t('Promoted'):t('Not promoted')).', '.
+            ($node->sticky?t('Sticky'):t('Not sticky')).'. '.
+            t('Acidfree recommends Not published, Not promoted, and Not sticky').'</li>';
+    }
+    $output .= "</ul>";
+    
+    // check for video_image thumbnailing
+    // check the number of vocabularies that work with acidfree types
+    /* we can do further checks for exiftran, jpegtran, mplayer if we want */
+    $max_filesize = ini_get('upload_max_filesize');
+    $max_post = ini_get('post_max_size');
+    $max_time = ini_get('max_execution_time');
+    $max_mem = ini_get('memory_limit');
+    $output .= '<h4>'.t('PHP configuration').'</h4><ul>';
+    $output .= '<li>'.t('Maximum file upload size is')." $max_filesize (upload_max_filesize)</li>";
+    $output .= '<li>'.t('Maximum POST size is')." $max_post (post_max_size)</li>";
+    $output .= '<li>'.t('Maximum execution time is %max_time seconds', array('%max_time' => $max_time)).' (max_execution_time)</li>';
+    $output .= '<li>'.t('Maximum memory usage is')." $max_mem (memory_limit)</li>";
+    $output .= '</ul><p>'.t('If these limits are smaller than the files you plan on uploading, you should change the settings in your php.ini file').'</p>';
+    return $output;
+}
+
+function acidfree_page() {
+    $argc = func_num_args();
+    $argv = func_get_args();
+    $path = _acidfree_get_path(true);
+    drupal_add_js(drupal_get_path('module', 'acidfree').'/acidfree.js');
+    if ($path == 'user/acidfree' && user_access('get a per-user album') &&
+            variable_get('acidfree_per_user_albums', 0)) {
+        global $user;
+        $tid = acidfree_get_root($user->uid, true);
+        if (!$tid)
+            return drupal_not_found();
+        $nid = _nid_from_tid($tid);
+        drupal_goto("node/{$nid}");
+    } elseif ($argc == 0) {
+        $tid = acidfree_get_root();
+        $nid = _nid_from_tid($tid);
+        drupal_goto("node/{$nid}");
+    } elseif ($argv[0] == 'version') {
+        $version =  '$Id: acidfree.module,v 1.133.2.51 2008/10/31 14:28:55 vhmauery Exp $';
+        return $version;
+    } elseif ($argv[0] == 'test') {
+        if (user_access('site administration')) {
+            return acidfree_test();
+        }
+        return drupal_access_denied();
+    } elseif ($argv[0] == 'per-user-albums' &&
+        variable_get('acidfree_per_user_albums', 0)) {
+        $output = acidfree_list_per_user_albums();
+    } else if ($argc == 2 && $argv[0] == 'user' && is_numeric($argv[1])) {
+        $tid = acidfree_get_root($argv[1]);
+        if (!$node)
+            return drupal_not_found();
+        $nid = _nid_from_tid($tid);
+        drupal_goto("node/{$nid}");
+    } else {
+        drupal_not_found();
+        //gotto(__LINE__);
+        return;
+    }
+    return $output;
+}
+
+function acidfree_get_vocab_id($title=NULL, $reset=true) {
+    static $recursion_level = 0;
+    if ($reset) $recursion_level = 0;
+    if ($recursion_level++ > 2) {
+        trace();
+        exit(1);
+    }
+    if ($title === NULL) {
+        $title = t('Acidfree albums');
+    }
+    if (!($vid = variable_get('acidfree_vocab_id', 0))) {
+        $edit = Array(
+                'name' => $title,
+                'description' => t('This is an Acidfree vocabulary.  Please use the exposed Acidfree interfaces to modify values rather than directly editing vocabs and terms via the taxonomy interface.'),
+                'help' => '',
+                'relations' => 1,
+                'hierarchy' => 2,
+                'multiple' => 1,
+                'required' => 1,
+                'tags' => 0,
+                'module' => 'acidfree', // this could allow us to set custom paths
+                'weight' => 0,
+                'nodes' => array('image' => 1, 'video' => 1),
+            );
+        taxonomy_save_vocabulary($edit);
+        $vid = $edit['vid'];
+        if (!$vid) {
+            drupal_set_message(t('failed to create vocabulary for Acidfree albums', 'error'));
+            drupal_goto('node');
+        }
+        drupal_set_message(t('Created Acidfree vocabulary'));
+        variable_set('acidfree_vocab_id', $vid);
+    } else if (!taxonomy_get_vocabulary($vid)) {
+        variable_set('acidfree_vocab_id', 0);
+        return acidfree_get_vocab_id($title, false);
+    }
+    return $vid;
+}
+
+function _acidfree_create_root($title, $uid) {
+    $vid = acidfree_get_vocab_id();
+    $node = acidfree_create_album($title, array($vid => array(0)), t('Acidfree root album'));
+    return $node->tid;
+}
+
+function acidfree_get_root($uid=-1, $create=false, $reset=true) {
+    static $recursion_level = 0;
+    static $vocab_id = -1;
+    static $root_term_id = -1;
+    if ($reset) $recursion_level = 0;
+    if ($recursion_level++ > 2) {
+        trace();
+        exit(1);
+    }
+    if ($uid != -1) {
+        $luser = user_load(array('uid' => $uid));
+        if (!$luser) {
+            $uid = -1;
+        }
+    }
+    global $user;
+    if ($create && $user->uid != $luser->uid) {
+        $create = false;
+    }
+    if ($uid != -1 && variable_get('acidfree_per_user_albums', 0)
+            && user_access('get a per-user album', $luser)) {
+
+        if (!$luser->acidfree_album) {
+            if ($create) {
+                $tid = _acidfree_create_root(t('!username\'s Acidfree album', array('!username' => $luser->name)), $user->uid);
+                $luser->acidfree_album = $tid;
+                user_save($luser, array('acidfree_album' => $tid));
+                return $tid;
+            }
+            return acidfree_get_root();
+        } else {
+            $term = taxonomy_get_term($luser->acidfree_album);
+            if (!$term) {
+                user_save($luser, array('acidfree_album' => null));
+                return acidfree_get_root($uid, $create, false);
+            }
+            return $term->tid;
+        }
+    }
+    else {
+        if ($vocab_id == -1) {
+            $vocab_id = acidfree_get_vocab_id();
+        }
+        if (!($root_term_id = variable_get('acidfree_root_term_id', 0))) {
+            $root_term_id = _acidfree_create_root(t('Acidfree albums'), 1);
+            variable_set('acidfree_root_term_id', $root_term_id);
+        }
+        $term = taxonomy_get_term($root_term_id);
+        if (!$term) {
+            variable_set('acidfree_root_term_id', 0);
+            return acidfree_get_root($uid, $create, false);
+        }
+        return $root_term_id;
+    }
+}
+
+/**
+ * implement the hook_filter method
+ */
+function acidfree_filter($op, $delta = 0, $format = -1, $text = '') {
+    switch ($op) {
+    case 'list':
+        return array(0 => t('Acidfree inline filter'));
+    case 'no cache':
+        return true;
+    case 'description':
+        return t('add acidfree images to other nodes using a syntax like [acidfree:xx ...]');
+    case 'prepare':
+        return $text;
+    case 'process':
+        return preg_replace_callback("@\[acidfree:([0-9]*)([^\\]]*)\]@i",
+                        '_acidfree_filter_tag', $text);
+    case 'settings':
+        return '';
+    default:
+        return $text;
+    }
+}
+
+function acidfree_filter_tips($delta, $format, $long = false) {
+  if ($long) {
+    return t('<b>Acidfree inline tags</b></li>
+
+    It is possible to change the way the &#91;acidfree:nnn&#93; tags look by adding a few name/value pairs.  Note that any value that has spaces in it must be quoted either with single quotes \' or with double quotes ".  Currently, the choices are:
+<ul>
+<li><tt>title</tt>: use this string as the caption (Note that you can have the node title be the default caption by modifying the setting in admin/settings/acidfree)</li>
+<li><tt>align</tt>: {left,right}</li>
+<li><tt>size</tt>: {M, WxH} where M=max dimension and WxH=WidthxHeight</li>
+<li><tt>link</tt>: \'none\', \'album\', or relative or absolute url e.g. http://www.google.com or node/59.  If set to none, thumbnail will not be a link.  If set to album, link will point to album of selected item.</li>
+<li><tt>popup</tt>: any value.  If set, it will cause the link to be a popup link</li> 
+<li><tt>style</tt>: CSS style information for the image</li>
+<li><tt>class</tt>: additional class for the image</li>
+</ul>
+<b>Examples</b>
+<ul>
+<li>&#91;acidfree:1234 size=300 align=right&#93; - right aligned thumbnail of node 1234 with max dimension of 300 pixels</li>
+<li>&#91;acidfree:4321&#93; - left aligned thumbnail of node 4321 (default thumbnail size)</li>
+<li>&#91;acidfree:3241 align=left size=320x240&#93; - right aligned thumbnail of node 3241 with size = 320x240</li>
+<li>&#91;acidfree:3241 title=\'This is a different title\' size=320 popup=true link="http://mysite.dom/"&#93; - left aligned thumbnail of node 3241 with a title set, size = 320x240, link pointing to mysite.dom and target=blank_ set in the anchor</li>
+<li>&#91;acidfree:3241 link=none class=\'my-image your-image\' style="border: 2 px grey inset;"&#93; - left aligned thumbnail of 3241, default size, class set and new style info</li>
+</ul>');
+  }
+  else {
+    return t('You may use <a href="!acidfree_help">[acidfree:xx] tags</a> to display acidfree videos or images inline.', array("!acidfree_help" => url("filter/tips/$format", NULL, 'filter-acidfree')));
+  }
+}
+
+function &acidfree_make_breadcrumbs(&$node) {
+    $crumbs = Array(l(t('Home'), NULL));
+    $parents = _acidfree_get_ancestors($node);
+    if (!$node->nid && !$node->type) {
+        $parents = array_slice($parents, 0, count($parents) - 1);
+    }
+    if (count($parents)) {
+        foreach ($parents as $parent) {
+            $nid = _nid_from_tid($parent->tid);
+            $crumbs[] = l($parent->name, "node/{$nid}");
+        }
+    }
+    return $crumbs;
+}
+
+function _acidfree_clone_album(&$node, $parent) {
+    // create a new album node the same as node
+    $n = $node;
+    $n->nid = 0;
+    $n->parent = array($parent);
+    node_save($n);
+    // collect all the children and copy them in too
+    $children = _acidfree_get_children($node->tid);
+    foreach ($children as $child) {
+        if ($child->type != 'acidfree') {
+            // add dest->nid to parent list
+            $child->parent[] = $n->nid;
+            node_save($child);
+        } else {
+            _acidfree_clone_album($child, $n->nid);
+        }
+    }
+}
+
+function _acidfree_node_from_file($parent, &$file, $node_items, $tmpdir=null) {
+    global $acidfree_types;
+    $node = new stdClass();
+    $time = filemtime($file->filepath);
+    if (!$time) {
+        $time = time();
+    }
+    $node->created = $node->updated = $time;
+    $node->weight = 0;
+    if (is_dir($file->filepath)) {
+        $node->type = 'acidfree';
+    } else {
+        foreach ($acidfree_types as $type) {
+            if (in_array($file->filemime, array_keys($type->mime_ext))) {
+                $node->type = $type->class;
+                break;
+            }
+        }
+        if (!isset($node->type)) {
+            drupal_set_message(t('file %filename is not a valid acidfree element type (%mime)', Array('%filename' => $file->filename, '%mime'=>$file->filemime)), 'error');
+            return false;
+        }
+    }
+    _acidfree_set_node_defaults($node);
+    $node->title = acidfree_title_from_file($file->filename);
+    //drupal_set_message("creating {$node->type} {$node->title}");
+    $vid = acidfree_get_vocab_id();
+    $node = _acidfree_object_merge($node, $node_items);
+    $node->taxonomy[$vid] = array($parent->tid);
+    $node->parent = $parent->tid;
+    if ($tmpdir) {
+        // copy the file to a temporary location
+        file_copy($file, "{$tmpdir}");
+    }
+    $fn = $acidfree_types[$node->type]->import;
+    $node = acidfree_call($fn, $node, $file);
+    return $node;
+}
+
+/* this does variable lookups to determine default published/status
+ * bits for a given node type.  $node->type must be set for this function
+ */
+function _acidfree_set_node_defaults(&$node) {
+    $node->title = $node->body = $node->teaser = '';
+    $node_options = variable_get('node_options_'.$node->type, array('status', 'promote'));
+    $node->comment = variable_get('comment_'.$node->type, 2);
+    $node->promote = in_array('promote', $node_options);
+    $node->status = in_array('status', $node_options);
+    $node->moderate = in_array('moderate', $node_options);
+    $node->sticky = in_array('sticky', $node_options);
+    $node->published = in_array('published', $node_options);
+    if ($node->type == 'acidfree') {
+        $node->order_by = '<default>';
+        $node->view = 'grid';
+        $node->share = variable_get('acidfree_share_by_default', 0);
+    }
+    global $user;
+    $node->uid = $user->uid;
+    $node->name = $user->name;
+}
+
+function _acidfree_object_merge($base, $obj) {
+    if (empty($obj))
+        return $base;
+    foreach ($obj as $k => $v) {
+        if (is_array($base->$k) && is_array($v)) {
+            $base->$k = array_merge($base->$k, $v);
+        } else {
+            $base->$k = $v;
+        }
+    }
+    return $base;
+}
+
+function _acidfree_import_dir($parent, $path, $recursive, $node_items, $uptmpdir=null) {
+    if (isset($uptmpdir)) {
+        $ltmpdir = $uptmpdir;
+    } else {
+        $ltmpdir = acidfree_mktmpdir("localimport");
+    }
+    $dirs = Array();
+    $dirlist = file_scan_directory($path, '.*', array('.', '..', 'CVS'), 0, false);
+    foreach ($dirlist as $fullpath => $file) {
+        $file->source = 'acidfree_local_filesystem';
+        $file->filepath = $fullpath;
+        $file->filename = $file->basename;
+
+        // echo "importing file $filename<br>\n";
+        if ($recursive && is_dir($fullpath)) {
+            $dirs[] = $file;
+            continue;
+        }
+        $file->filemime = acidfree_mime($file);
+        $file->filesize = filesize($file->filepath);
+        $node = _acidfree_node_from_file($parent, $file, $node_items, $ltmpdir);
+        if (!$node->nid) {
+            drupal_set_message(t("failed to import '%filename'",
+                    array('%filename' => $file->filename)), 'error');
+        }
+    }
+    foreach ($dirs as $dir) {
+        if (!($cur_album = _acidfree_node_from_file($parent, $dir, $node_items)))
+            continue;
+        if ($recursive) {
+            _acidfree_import_dir($cur_album, $dir->filepath, $recursive, $node_items, $ltmpdir);
+        }
+    }
+    if (!isset($uptmpdir)) {
+        rmdir_rec($ltmpdir);
+    }
+}
+
+function _acidfree_rand() {
+    static $seeded = false;
+    if (!$seeded) {
+        $seeded = true;
+        $pid = 0;
+        if (function_exists('posix_getpid')) {
+            $pid = posix_getpid();
+        }
+        list($s,$m) = microtime();
+        mt_srand($pid + (float)$s + (float)$m * 1000000);
+    }
+    return mt_rand(0, mt_getrandmax()/10);
+}
+
+function acidfree_mktmpdir($name) {
+  $tmp = file_directory_temp();
+  // I realize that while this is not completely race-free, it would be a tough nut to crack...
+  $tmpfile = tempnam($tmp, $name);
+  if (!$tmpfile)
+    return false;
+  $tmpdir = $tmpfile.substr(md5(microtime()._acidfree_rand()), 0, 8);
+  $success = mkdir($tmpdir) ? $tmpdir : false;
+  unlink($tmpfile);
+  return $success;
+}
+function _acidfree_handle_uploaded_file(&$file, &$parent, $node_items) {
+    // We just can't seem to trust the mimetypes that browers
+    // give us, so we are forced to use our own mime code every time
+    $file->filemime = acidfree_mime($file);
+    switch ($file->filemime) {
+        case 'application/zip':
+        case 'application/x-zip':
+        case 'application/x-zip-compressed':
+            $cmd = "unzip -qq {$file->filepath} -d %aftmpdir";
+            break;
+        case 'application/x-bzip2':
+        case 'application/x-bzip':
+            $cmd = "tar -C %aftmpdir -xjf {$file->filepath}";
+            break;
+        case 'application/gzip':
+        case 'application/x-gzip':
+            $cmd = "tar -C %aftmpdir -xzf {$file->filepath}";
+            break;
+        default:
+            file_move($file, dirname($file->filepath).'/'.$file->filename);
+            $saved_filename = $file->filename;
+            $node = _acidfree_node_from_file($parent, $file, $node_items);
+            if (!$node->nid) {
+                drupal_set_message(t("failed to import '%filename'",
+                            array('%filename' => $saved_filename)), 'error');
+            }
+            break;
+    }
+    // extract the archive
+    if (strlen($cmd) > 0) {
+        if (!function_exists('system')) {
+            drupal_set_message(t("failed to import '%filename' (could not extract archive)", array('%filename' => $file->filename)), 'error');
+            return;
+        }
+            
+        $tmpdir = acidfree_mktmpdir("massupload");
+        if (!$tmpdir) {
+            drupal_set_message(t('Could not create temporary directory for mass import'), 'error');
+            return;
+        }
+        $cmd = preg_replace('/%aftmpdir/', $tmpdir, $cmd);
+        system($cmd);
+        _acidfree_import_dir($parent, $tmpdir, true, $node_items);
+        rmdir_rec($tmpdir);
+    }
+}
+
+function acidfree_mass_import_submit($form_id, $form) {
+    $op = isset($_POST['op']) ? $_POST['op'] : '';
+    $extime = ini_set('max_execution_time', 600);
+    //drupal_set_message("mass import submit($op)");
+    $recursive = isset($form['recursive']) ? $form['recursive'] : true;
+    $nokeep = array('parent', 'path', 'op', 'upload', 'recursive', 'import', 'form_token', 'form_id');
+    for ($i=0; $i<5; $i++) {
+        $nokeep[] = "acidfreeupload$i";
+        $nokeep[] = "acidfreeupload{$i}name";
+    }
+    $node_items = array();
+    foreach (array_keys($form) as $k) {
+        if (!in_array($k, $nokeep) && $k{0} != '#') {
+            $node_items[$k] = $form[$k];
+        }
+    }
+    $parent = array_values($form['parent']);
+    $parent = $parent[0];
+    $p = _album_from_tid($parent);
+    if ($op == t('Import')) {
+        $tmpdir = $form['serverpath'];
+        if ($tmpdir && !is_dir($tmpdir)) {
+            drupal_set_message(t('Could not find server-side directory %tmpdir', array('%tmpdir' => $tmpdir)), 'error');
+        } elseif ($tmpdir) {
+            drupal_set_message(t("Importing server side directory %tmpdir",
+                    array('%tmpdir' => $tmpdir)));
+            _acidfree_import_dir($p, $tmpdir, $recursive, $node_items);
+        }
+    } elseif ($op == t('Upload')) {
+        for ($i=0; $i<variable_get('acidfree_mass_import_filecount', 5); $i++) {
+            if ($form["acidfreeupload{$i}name"]) {
+                if ($file = file_check_upload("acidfreeupload$i")) {
+                    drupal_set_message(t('Importing file %filename',
+                        array('%filename' => $file->filename)));
+                    _acidfree_handle_uploaded_file($file, $p, $node_items);
+                } else {
+                    $filename = $form["acidfreeupload{$i}name"];
+                    drupal_set_message(t('Failed to import %filename',
+                        array('%filename' => $filename)), 'error');
+                }
+            }
+        }
+    }
+    ini_set('max_execution_time', $extime);
+    $parent = _nid_from_tid($parent);
+    drupal_goto("node/{$parent}");
+}
+
+/* return a selector to choose the parent album
+ * if $parent is set, it is selected
+ * if $exclude_self is set, $exclude_self and all children are excluded
+ */
+function _acidfree_parent_select($parent=NULL, $exclude_self=NULL) {
+    if (!is_null($parent)) {
+        if (is_numeric($parent)) {
+            $parent = taxonomy_get_term($parent);
+        }
+        if (is_object($parent)) {
+            $selected = $parent->tid;
+            $root = $parent->vid;
+        }
+    }
+    if (!isset($selected)) {
+        $root = acidfree_get_vocab_id();
+        // FIXME: this is wrong (find a better selected)
+        // this way assigns other per-user albums to be under admin's per-user album
+        global $user;
+        $uid = (variable_get('acidfree_per_user_albums', 0)
+            && user_access('get a per-user album')) ? $user->uid : -1;
+        $selected = acidfree_get_root($uid);
+    }
+    $exclude = array();
+    if ($exclude_self) {
+        $exclude[] = $exclude_self;
+        foreach (taxonomy_get_tree($root, $exclude_self) as $t) {
+           $exclude[] = $t->tid;
+        }
+    }
+    //                           title        name      value      vid    desc mul blank exclude
+    $blank = user_access('administer site configuration')?'<'.t('root').'>':NULL;
+    return array(
+        $root => _taxonomy_term_select(t('Parent'), 'parent',
+                    $selected, $root, NULL, 0, $blank, $exclude),
+        '#weight' => -3,
+        '#tree' => true,
+    );
+}
+
+function acidfree_mass_import(&$parent) {
+    drupal_set_title(t('Mass import'));
+    // just as a sanity check make sure the destination stuff is configured
+    if (module_exists('image') || module_exists('video_image')) {
+        _image_check_settings();
+    }
+    if (module_exists('video_upload')) {
+        _video_upload_check_settings();
+    }
+    $form = array();
+
+    $types = array();
+    global $acidfree_types;
+    foreach ($acidfree_types as $type) {
+        if (user_access($type->create)) {
+            $types[] = $type->class;
+        }
+    }
+    if (!$types) {
+        $form['nothing'] = array('#value' => t('No node types available'));
+        return $form;
+    }
+    $vocabs = array();
+    $node = new stdClass();
+    $form['#id'] = 'node-form';
+    foreach ($types as $type) {
+        $node->type = $type;
+        $form['#node'] = $node;
+        $form['type'] = array('#value' => $type);
+        foreach(module_implements('form_alter') as $module) {
+            // for some reason, menu causes segfaults.  The others are ours,
+            // so we don't want to see all the extras that they might add.
+            if (in_array($module, array('acidfree', 'comment', 'menu', 'image', 'video', 'video_upload', 'video_image', 'video_ffmpeg_helper'))) continue;
+            $function = "{$module}_form_alter";
+            $function($type.'_node_form', $form);
+        }
+    }
+    $vid = acidfree_get_vocab_id();
+    unset($form['taxonomy'][$vid]);
+    if (count (element_children($form['taxonomy'])) == 0) {
+        unset($form['taxonomy']);
+    }
+    unset($form['#node']);
+    unset($form['type']);
+
+    $form['parent'] = _acidfree_parent_select($parent->tid);
+    _acidfree_filter_taxonomy($form['parent'][$vid]);
+    $form['upload'] = array(
+            '#type' => 'fieldset',
+            '#title' => t('Files to upload'),
+            '#description' => t('Be sure to limit the uploaded file sizes to the following:<ul><li>Max file size: %max_file</li><li>Max total file size: %max_post</li></ul>',
+            array(
+                    '%max_file' => ini_get('upload_max_filesize'),
+                    '%max_post' => ini_get('post_max_size'),
+                )
+            ),
+        );
+    $form['upload']['acidfreeupload0'] = array(
+            '#type' => 'file',
+            '#title' => t('File to upload'),
+            '#size' => '50',
+            '#description' => t('File to upload.  This may be an image, video clip, zip file, or a tar file that is gzipped or bzipped.  You may upload up to %count at a time.', array('%count' => variable_get('acidfree_mass_import_filecount', 5))),
+            '#attributes' => array(
+                    'onchange' => 'set_filename(this);',
+                ),
+        );
+    $file = array(
+            '#type' => 'file',
+            '#size' => '50',
+            '#attributes' => array(
+                    'onchange' => 'set_filename(this);',
+                ),
+        );
+    $filename = array(
+            '#type' => 'hidden',
+            '#default_value' => '',
+        );
+    $form['upload']['acidfreeupload0name'] = $filename;
+    for ($i=1; $i<variable_get('acidfree_mass_import_filecount', 5); $i++) {
+        $form['upload']['acidfreeupload'.$i] = $file;
+        $form['upload']['acidfreeupload'.$i.'name'] = $filename;
+    }
+    $form['upload']['upload'] = array(
+            '#type' => 'submit',
+            '#value' => t('Upload'),
+        );
+    $form['import'] = array(
+            '#type' => 'fieldset',
+            '#title' => t('Import local files'),
+            '#collapsible' => true,
+            '#collapsed' => true,
+        );
+    $form['import']['serverpath'] = array(
+            '#type' => 'textfield',
+            '#title' => t('Path on server'), 
+            '#description' => t('This must be the full path to a directory on the server that is readable.'),
+        );
+    $form['import']['recursive'] = array(
+            '#type' => 'checkbox',
+            '#title' => t('Include subdirectories'),
+            '#default_value' => 1,
+        );
+    $form['import']['import'] = array(
+            '#type' => 'submit',
+            '#value' => t('Import'),
+        );
+    $form['#attributes'] = array('enctype' => 'multipart/form-data');
+    return $form;
+}
+
+function acidfree_mass_import_form() {
+    $argv = func_get_args();
+    $argc = func_num_args();
+    if ($argc == 1) {
+        $parent = acidfree_get_node_by_id($argv[0]);
+    } else {
+        $parent = acidfree_get_root();
+        $parent = acidfree_get_node_by_id($parent);
+    }
+    drupal_add_js(drupal_get_path('module', 'acidfree').'/acidfree.js');
+    return drupal_get_form('acidfree_mass_import', $parent);
+}
+
+/* tags we recognize:
+ *   style => css style info for the image
+ *   size => image size in pixels (can be WxH or just largest dimension)
+ *   title => caption to put under image
+ *   link => link that the image links to (or none for no link)
+ *   popup => true for link to be a popup
+ *   align => float left or right
+ *   class => class for the image
+ */
+function _acidfree_filter_tag($matches) {
+    $node = acidfree_get_node_by_id($matches[1]);
+    if (!$node) {
+        return "<span style='color: #f00;'>{$matches[0]}</span>";
+    } else {
+        $args = preg_replace("/[ \\r\\n\\t]+/", ' ', $matches[2]);
+        $match_count = preg_match_all("/([-\w]+)=(([^'\" ]+)|'([^']*)'|\"([^\"]*)\")/i", $args, $pairs);
+        $names = $pairs[1];
+        for ($i=0;$i<count($names); $i++) {
+            if ($pairs[3][$i])
+                $values[] = $pairs[3][$i];
+            elseif ($pairs[4][$i])
+                $values[] = $pairs[4][$i];
+            elseif ($pairs[5][$i])
+                $values[] = $pairs[5][$i];
+        }
+        $use_caption = variable_get('acidfree_filter_caption', false);
+        $tsize = _acidfree_get_sizes('thumbnail');
+        $tsize = min($tsize['width'], $tsize['height']);
+        $settings = Array(
+                'align' => 'left',
+                'size' => "{$tsize}x{$tsize}",
+                'type' => 'image',
+                'link' => "node/{$node->nid}",
+                'popup' => false,
+                'title' => $use_caption?$node->title:NULL,
+            );
+        foreach ($names as $index => $name) {
+            $name = strtolower(trim($name));
+            $value = trim($values[$index]);
+            $lvalue = strtolower($value);
+            if ($name == "style" && ($lvalue == 'slide' || $lvalue == 'image'))
+                $name = 'type';
+            $settings[$name] = $value;
+        }
+        if ($settings['link'] == 'album') {
+            $pterm = _acidfree_get_parent($node);
+            $pnid = _nid_from_tid($pterm->tid);
+            $settings['link'] = 'node/'.$pnid;
+        }
+        $ret = "<span class='filter-thumb' style='float: {$settings['align']};'>";
+        if ($settings['type'] != 'slide') {
+            $size = explode('x', $settings['size']);
+            $width = $size[0]; $height = ($size[1] ? $size[1] : $size[0]);
+            if (max($width, $height) > $tsize) {
+                $filepath = _acidfree_get_thumb_path($node, 'preview');
+                $fileurl = _acidfree_get_thumb_url($node, 'preview');
+            } else {
+                $filepath = _acidfree_get_thumb_path($node);
+                $fileurl = _acidfree_get_thumb_url($node);
+            }
+            $f_dim = getimagesize($filepath);
+            if (!$f_dim) 
+                return "<span style='color: #f00;'>{$matches[0]}</span>";
+            $f_width = $f_dim[0]; $f_height = $f_dim[1];
+            $aspect = $f_height / $f_width;
+            if ($aspect < $height / $width) {
+                $width = (int)min($width, $f_width);
+                $height = (int)round($width * $aspect);
+            }
+            else {
+                $height = (int)min($height, $f_height);
+                $width = (int)round($height / $aspect);
+            }
+            if ($settings['link'] == 'none') {
+                $ret .= theme('image', $fileurl, $node->title, $node->title, 
+                            array('class' => "acidfree-plain {$settings['class']}",
+                                'width' => $width, 'height' => $height,
+                                'style' => $settings['style']), false);
+            } else {
+                $attributes = $settings['popup']?array('target'=>'blank_'):NULL;
+                $ret .= l(theme('image', $fileurl, $node->title, $node->title, 
+                            array('class' => "acidfree-plain {$settings['class']}",
+                                'width' => $width, 'height' => $height,
+                                'style' => $settings['style']), false),
+                        $settings['link'],
+                        $attributes,
+                        NULL, NULL, FALSE, TRUE);
+            }
+        } else {
+            $ret .= theme("acidfree_print_thumb_{$node->type}", $node);
+        }
+        if ($settings['title']) {
+            $ret .= "<div class='filter-thumb-title'>{$settings['title']}</div>";
+        }
+        $ret .= "</span>";
+        return $ret;
+    }
+}
+
+function &_acidfree_get_children($tid, $limit=-1, $pagerid=0, $include_albums=false, $order='n.sticky DESC, n.nid DESC') {
+    if ($include_albums) {
+        $include_albums = '';
+    } else {
+        $include_albums = "n.type <> 'acidfree' AND";
+    }
+    if ($order == 'RAND()') {
+        $order = 'rand DESC';
+        $select = ', RAND() as rand';
+    }
+    // Create count query. Drupal's pager function does not build the query properly
+    $clauses = "FROM {node} n INNER JOIN {term_node} tn ON n.nid = tn.nid WHERE $include_albums tn.tid = %d AND n.status = 1";
+    $query = db_rewrite_sql("SELECT DISTINCT(n.nid), n.title, n.created, n.sticky $select " . $clauses.' ORDER BY '. $order);
+    $count_query = db_rewrite_sql("SELECT COUNT(DISTINCT(n.nid)) " . $clauses);
+    if ($limit == -1) {
+        $kids = db_query($query, $tid);
+    } else if ($pagerid == -1) {
+        $kids = db_query_range($query, $tid, 0, $limit);
+    } else {
+        $kids = pager_query($query, $limit, $pagerid, $count_query, $tid);
+    }
+    $children = array();
+    while ($kid = db_fetch_array($kids)) {
+            $children[] = $kid['nid'];
+    }
+    return $children;
+}
+
+function _acidfree_get_parent(&$node) {
+    if (!$node->nid) {
+        //drupal_set_message(__FUNCTION__.": node->nid is null");
+        return null;
+    }
+    global $acidfree_types;
+    if (!in_array($node->type, array_keys($acidfree_types))) {
+        //drupal_set_message(__FUNCTION__.": node->type ({$node->type}) is not an acidfree type");
+        return null;
+    }
+
+    if (!is_array($node->taxonomy)) {
+        //drupal_set_message(__FUNCTION__.": node->taxonomy is not an array");
+        return null;
+    }
+    $vid = acidfree_get_vocab_id();
+    if (isset($node->op)) {
+        $terms = $node->taxonomy[$vid];
+    } else {
+        $terms = array_filter($node->taxonomy, create_function('$v', 'return (!isset($v->vid) || ($v->vid == '.$vid.'));'));
+    }
+    if (is_array($terms)) {
+        $keys = array_keys($terms);
+    } else {
+        $keys = array($terms);
+    }
+    if (isset($_REQUEST['pid']) && in_array($_REQUEST['pid'], $keys)) {
+        return taxonomy_get_term($_REQUEST['pid']);
+    }
+    return taxonomy_get_term($keys[0]);
+}
+
+function &_acidfree_get_ancestors(&$node) {
+    //drupal_set_message("get_ancestors($node->nid, $node->title)");
+    if ($node == null) {
+        return Array();
+    }
+    if ($node->nid) {
+        $parent = _acidfree_get_parent($node);
+    } else {
+        $parent = $node;
+    }
+    $parents = array_reverse(taxonomy_get_parents_all($parent->tid));
+    return $parents;
+}
+
+function _acidfree_forward(&$node) {
+    // do a sanity check first -- strangly enough, view may be called
+    // from other pages and this would forward away from them
+    $path = _acidfree_get_path();
+    if ($path[0] != 'node' || $path[1] != $node->nid) {
+        return;
+    }
+    if ($node->type == 'acidfree') {
+        if (($offset = _acidfree_get_pager_offset_from_path(ELEMENT_PAGER)) == null) {
+            return;
+        }
+        // Album has an offset in it, locate the applicable node and generate a redirect
+        $child = _acidfree_get_children($node->tid, 1, ELEMENT_PAGER);
+        $child = $child[0];
+        if (!$child) {
+            drupal_not_found();
+            //gotto(__LINE__);
+            exit(1);
+        }
+drupal_set_message("REDIRECT: album");
+        $p = "pid={$node->nid}";
+        $pager = _acidfree_make_pager_query();
+        $nid = $child->nid;
+    } else {
+        // FIXME: this is part of our ugly pager
+        $parent = _acidfree_get_parent($node);
+        $offset = _acidfree_get_offset_in_parent($parent->tid, $node);
+        $p = "pid={$parent->nid}";
+        $pager = _acidfree_make_pager_string(array(ELEMENT_PAGER=>"$offset"));
+        $nid = $node->nid;
+
+        // Node ID was present so just hack in the other elements so the system can deal with it. No redirect needed
+        $_GET[PAGER_STRING] = $pager;
+        $_GET['pid'] = $parent->nid;
+        return;
+    }
+
+    drupal_goto(url("node/$nid", "{$p}&{$pager}", NULL, true));
+}
+
+function _acidfree_get_offset_in_parent($parent, &$node) {
+    $pnode = _album_from_tid($parent);
+    $order = _acidfree_content_sort_array($pnode);
+    /* kjh: added the n.nid check to prevent the current node from being
+       included. Works around a bug when sorting on title and title has embedded
+       single quote
+       */
+    foreach ($order[0] as $k => $ltgt) { break; }
+    $ltgt = $ltgt == 'ASC' ? '<' : '>';
+    $query = 'SELECT COUNT(n.nid) FROM {node} n INNER JOIN {term_node} tn ON n.nid = tn.nid WHERE n.type <> \'acidfree\' AND tn.tid = %d AND (n.moderate = 0 AND n.status = 1) AND ' . _acidfree_filter_clause($order, 'n') . " $ltgt '" . _acidfree_filter_clause($order, $node) . "' and n.nid <> %d";
+
+    $query = db_rewrite_sql($query);
+    $res = db_query($query, $parent, $node->nid);
+    if (db_num_rows($res) == 0)
+        return 0;
+
+    return db_result($res);
+}
+
+function _acidfree_get_pager_offset_from_path($pager_id) {
+    $pager = explode(',', $_GET[PAGER_STRING]);
+    if (is_numeric($pager[$pager_id]))
+        return $pager[$pager_id];
+    return null;
+}
+
+/**
+ * _acidfree_make_pager_string
+ *
+ * @arg $values
+ *    array of values for pager, keyed on pagerid.  Any values in this
+ *    will get merged in with the existing pager offsets
+ *
+ * @return
+ *    a pager string in the form a,b,c,d,e
+ */
+function _acidfree_make_pager_string($values=array()) {
+    $pager = explode(',', $_GET[PAGER_STRING]);
+    foreach ($values as $key => $val) {
+        $pager[$key] = "$val";
+    }
+    foreach ($pager as $key => $val) {
+        if (!is_numeric($val))
+            $pager[$key] = "0";
+    }
+    return implode(',', $pager);
+}
+
+/**
+ * _acidfree_make_pager_query
+ *
+ * @arg $values
+ *    array of values for pager, keyed on pagerid.  Any values in this
+ *    will get merged in with the existing pager offsets
+ *
+ * @return
+ *    a pager string in the form from=a,b,c,d,e
+ */
+function _acidfree_make_pager_query($values=array()) {
+    return PAGER_STRING.'='._acidfree_make_pager_string($values);
+}
+
+function _acidfree_get_path($string=false) {
+    $menu = menu_get_menu();
+    $path = $menu['items'][menu_get_active_item()]['path'];
+    if ($string)
+        return $path;
+    return explode('/', $path);
+}
+
+function _acidfree_get_parent_from_path() {
+    $path = _acidfree_get_path();
+    if ($path[0] == 'node' && is_numeric($path[1]) && isset($_GET['pid']))
+        return $_GET['pid'];
+    $path = explode('/', $_GET['q']);
+    if ($path[0] == 'node' && $path[1] == 'add' && $path[2] == 'acidfree' &&
+            is_numeric($path[4]))
+        return $path[4];
+    return false;
+}
+
+
+function mkdir_rec($dir, $mode=0770) {
+    if (version_compare(PHP_VERSION, "5.0.0", ">=")) {
+        return mkdir($dir, $mode, true);
+    } else {
+        if (!is_dir(dirname($dir))) {
+            if (!mkdir_rec(dirname($dir), $mode))
+                return false;
+        }
+        mkdir($dir, $mode);
+    }
+    return true;
+}
+function rmdir_rec($path) {
+    $dir = opendir($path);
+    while ($file = readdir($dir)) {
+        if ($file == '.' || $file == '..')
+            continue;
+        $filename = "{$path}/{$file}";
+        if (is_dir($filename)) {
+            rmdir_rec($filename);
+        } else {
+            unlink($filename);
+        }
+    }
+    closedir($dir);
+    return rmdir($path);
+}
+
+function acidfree_title_from_file($filename) {
+    $pinfo = pathinfo($filename);
+    return preg_replace("/\.{$pinfo['extension']}/", "", $pinfo['basename']);
+}
+
+// is_executable was introduced in php 5.0.0 for windows
+if (!function_exists('is_executable')) {
+function is_executable($filename) {
+    return is_file($filename);
+}
+}
+
+/**
+ * Mime stuff -- it is so hard to deal with mime and magic,
+ * so I wrote a wrapper that tries to match mimes with files
+ * that acidfree knows about.
+ */
+function _acidfree_file_mime($f) {
+    if (ini_get('safe_mode') || !function_exists('shell_exec'))
+        return 'safe_mode';
+    $f = escapeshellarg($f);
+    $ret = explode(' ', trim( `file -biN $f` ));
+    return $ret[count($ret)-1];
+}
+function _acidfree_finfo_file($fname) {
+    if (!function_exists('finfo_open'))
+        return 'no_finfo';
+    $res = finfo_open(FILEINFO_MIME); /* return mime type ala mimetype extension */
+    if (!$res)
+        return 'no_finfo';
+    $ret = finfo_file($res, $fname);
+    finfo_close($res);
+    $ret = explode(' ', $ret);
+    return $ret[count($ret)-1];
+}
+
+/**
+ * acidfree_mime
+ * @param $file
+ *  the file object that contains filepath, filename, filemime, etc.
+ * @return
+ *  returns the mimetype using fileinfo extenstion, exec'ing file -ib, 
+ *  or based on a guess by file extension of known acidfree types
+ */
+function acidfree_mime(&$file) {
+    // all our files should have an extension
+    $file_ext = strtolower(pathinfo($file->filename, PATHINFO_EXTENSION));
+    if (strlen($file_ext) < 1) {
+        return 'file/unknown';
+    }
+    global $acidfree_types;
+    foreach ($acidfree_types as $type) {
+        foreach ($type->mime_ext as $mime=>$ext) {
+            if ($ext == $file_ext) {
+                $first_guess = $mime;
+                break;
+            }
+        }
+        if (isset($first_guess))
+            break;
+    }
+    if (!isset($first_guess)) {
+        switch ($file_ext) {
+        case 'gz':
+        case 'tgz':
+            $first_guess = 'application/x-gzip';
+            break;
+        case 'bz2':
+            $first_guess = 'application/x-bzip2';
+            break;
+        case 'zip':
+            $first_guess = 'application/x-zip';
+            break;
+        }
+    }
+    /* this is a lazy cheap way to get mime info,
+     * assuming it is a recognized image type
+     */
+    if (!isset($first_guess)) {
+        if ($finfo = getimagesize($file->filepath))
+            $first_guess = $finfo['mime'];
+    }
+    $finfo_guess = _acidfree_finfo_file($file->filepath);
+    $file_guess = _acidfree_file_mime($file->filepath);
+    if (strlen($first_guess) > 0 && $first_guess == $finfo_guess) {
+        return $first_guess;
+    } elseif (strlen($file_guess) > 0 && $file_guess == $first_guess) {
+        return $first_guess;
+    } elseif (strlen($first_guess) > 0) {
+        return $first_guess;
+    } elseif (strlen($file_guess) > 0 && $file_guess == $finfo_guess) {
+        return $file_guess;
+    } elseif (strlen($file_guess) > 0) {
+        return $file_guess;
+    } elseif (strlen($finfo_guess) > 0) {
+        return $finfo_guess;
+    }
+    return 'file/unknown';
+}
+
+
+/** Helper function for dealing with drupal paths
+ *
+ * @arg $part ...
+ *    a part of the path to match (can be %d, %s, to match args)
+ *    to make a part an optional match, do %?s %?d
+ *
+ * @return
+ *    true or args on success (array of % matched args)
+ */
+function _path_match($part) {
+    $args = func_get_args();
+    $q = explode('/', $_GET['q']);
+    $size = max(count($q), count($args));
+    $matched = array();
+    for ($i=0; $i<$size; $i++) {
+        if ($args[$i]{0} == '%') {
+            $type_index = ($args[$i]{1} == '?') ? 2 : 1;
+            switch ($args[$i]{$type_index}) {
+            case '*':
+                break;
+            case 'd':
+            case 'i':
+                if (!isset($q[$i]) && $type_index == 2) {
+                    $matched[] = NULL;
+                } else if (is_numeric($q[$i]))
+                    $matched[] = $q[$i];
+                else {
+                    return false;
+                }
+                break;
+            case 's':
+                $matched[] = $q[$i];
+                break;
+            }
+        } else if ($args[$i] != $q[$i]) {
+            return false;
+        }
+    }
+    if (count($matched) > 0)
+        return $matched;
+    return true;
+}
+
+/**
+ * Implementation of the pathauto_node hook
+ *
+ * @arg $op
+ *    the operation to perform -- currently 'placeholders' or 'values'
+ * @arg $node
+ *    if called with $op='value', generate the placeholder values for $node
+ * @return
+ *    returns the placeholder names or values for the given node
+ */
+function acidfree_pathauto_node($op, $node=null) {
+    switch ($op) {
+    case 'placeholders':
+        return array(t('[acidfreepath]') => t('Concatentated Acidfree album path (minus root album) e.g. trips/seattle.  Try something like \'albums/[acidfreepath]/[title]\'.'));
+    case 'values':
+        {
+            $empty = array(t('[acidfreepath]') => '');
+            if (!$node->type)
+                $node = acidfree_get_node_by_id($node->nid);
+            if (!($node->type == 'acidfree' || $node->type == 'image' || $node->type == 'video'))
+                return $empty;
+            $path = _acidfree_get_ancestors($node);
+            array_shift($path);
+            foreach ($path as $k => $v) {
+                $cleanpath[$k] = pathauto_cleanstring($v->name);
+            }
+            if (count($cleanpath))
+                return array(t('[acidfreepath]') => implode('/', $cleanpath));
+            return $empty;
+        }
+    }
+}
+
+/**
+ * Implementation of hook_user
+ */
+function acidfree_user($op, &$edit, &$account, $category = NULL) {
+    if ($op == 'view' && variable_get('acidfree_per_user_albums', 0)
+            && user_access('get a per-user album', $account)) {
+        $album = _album_from_tid($account->acidfree_album);
+        if (!$album) {
+            user_save($account, array('acidfree_album' => null));
+            return null;
+        }
+        $items['acidfree-albums'] = array(
+                'title' => t('Personal album'),
+                'value' => l($album->title, "node/{$album->nid}"),
+                'class' => 'acidfree-albums',
+            );
+        return array(t('Acidfree Albums') => $items);
+    }
+}
+
+function acidfree_list_per_user_albums() {
+    // loop through all the users and list their albums (paginated)
+    $count = variable_get('acidfree_num_thumbs', 15);
+    $query = "SELECT uid from {users} WHERE data LIKE '%s'";
+    $count_query = "SELECT COUNT(uid) from {users} WHERE data LIKE '%s'";
+    if ($count == 0) {
+        $items = db_query($query, '%acidfree_album%');
+    } else {
+        $items = pager_query($query, $count, 0, $count_query, '%acidfree_album%');
+    }
+    $bad_albums = false;
+    while ($item = db_fetch_array($items)) {
+        $user = user_load(array('uid' => $item['uid']));
+        $album = _album_from_tid($user->acidfree_album);
+        if (!$album) {
+            user_save($user, array('acidfree_album' => null));
+            $bad_albums = true;
+        } else {
+            $nodes[] = $album;
+        }
+    }
+    if ($bad_albums) {
+        return acidfree_list_per_user_albums();
+    }
+    // admittedly, this is a hack, calling the views hook and all...
+    // but it makes it look the same as the rest.
+    $view = new stdClass();
+    $view->args[0] = acidfree_get_root();
+    return theme('views_view_album_grid_view', $view, '', $nodes);
+}
+
+/*
+ * Returns SQL ORDER BY clause to use for sorting the album contents. Includes
+ * the ORDER BY. Callers need to prefix/suffix with spaces as needed.
+ *
+ * This code can be expanded in the future to support additional sorting criteria
+ */
+
+function _acidfree_content_sort_clause(&$album) {
+  $order = _acidfree_content_sort_array($album);
+
+  $sort = array();
+  for ($i=0; $i<count($order); $i++) {
+    $item = $order[$i];
+    foreach ($item as $k => $v) {
+      $sort[] = "$k $v";
+    }
+  }
+  return implode(', ', $sort);
+}
+
+
+/**
+ * _acidfree_filter_clause
+ *
+ * This method creates either a complex SQL statement or a string based on the
+ * data passed. If table names (strings) are passed then an SQL formula is
+ * created that if sorted would simulate the normal contents sort order. If a
+ * node object is passed (the second parameter is not used) then a string is
+ * created from the node data that can be compared to the first form.
+ *
+ * This is used only when looking for the number of nodes that precede a given
+ * node. It is a bit tricky but saves a server side query (which creates at
+ * least a RAM table), a sort of that result set and a loop on the client (this
+ * script) to locate the proper node. The query presented will be faster than
+ * the above for all  but the simplest cases and for those simple cases both
+ * methods are blazing fast.
+ *
+ * Do NOT use this for normal sorting. It is faster to use the results of
+ * _acidfree_content_sort_clause() to sort than creating a server side string
+ * and sorting on that.
+ *
+ * Returns a clause that equates to the sort order passed. It does this by
+ * dynamically creating a single string which acts the same as the sort clause.
+ * If new columns are added to possible sort range this method MUST be changed.
+ */
+function _acidfree_filter_clause($order, $node_data = 'n') {
+  // If a node is passed the class returned will be a normal string
+  if (is_object($node_data)) {
+    $object = TRUE;
+  }
+  else {
+    $object = FALSE;
+  }
+
+  $filter = array();
+  for ($i=0; $i<count($order); $i++) {
+    $item = $order[$i];
+    foreach ($item as $k => $v) {
+      switch($k) {
+        case 'title':
+          if ($object) {
+            $filter[] = str_pad(db_escape_string($node_data->title), 32, ' ', STR_PAD_RIGHT);
+          } else {
+            $filter[] = "rpad({$node_data}.title, 32, ' ')";
+          }
+          break;
+
+        case 'created':
+              if ($object) {
+                $filter[] = str_pad($node_data->created, 10, '0', STR_PAD_LEFT);
+              } else {
+                $filter[] = "cast(LPAD(n.created, 10, '0') as char)";
+              }
+            break;
+        case 'nid':
+              if ($object) {
+                $filter[] = str_pad($node_data->nid, 10, '0', STR_PAD_LEFT);
+              } else {
+                $filter[] = "cast(LPAD(n.nid, 10, '0') as char)";
+              }
+            break;
+
+        default:
+          watchdog("Acidfree", t("Sort column '%k' is not supported, it is being ignored", array('%k' => $k)), WATCHDOG_ERROR);
+          break;
+      }
+    }
+  }
+  if ($object) {
+    return implode('', $filter);
+  }
+  // some filters only have one column to order by, thus making concat incorrect
+  if (count($filter) == 1) {
+    return implode('', $filter);
+  }
+  return 'CONCAT('. implode(', ', $filter) .')';
+}
+
+function _acidfree_content_sort_array(&$album) {
+    if (!$album->order_by || $album->order_by == '<default>') {
+        $order = variable_get('acidfree_order', 'node.nid DESC');
+    } else {
+        $order = $album->order_by;
+    }
+    $order = preg_replace('/node\./', '', $order);
+    $order = explode(' ', $order);
+    $sort = array();
+    $sort[] = array($order[0] => $order[1]);
+    if ($order[0] != 'node.nid') {
+        $sort[] = array('nid' => $order[1]);
+    }
+    return $sort;
+}
+
+function acidfree_pager_creator(&$node) {
+    global $acidfree_pid;
+    global $pager_sort;
+
+    $parent = _acidfree_get_parent($node);
+    $parent = $parent->tid;
+    $pnode = _album_from_tid($parent);
+    $pager_sort = $pnode->order_by;
+    if (!$pager_sort || $pager_sort == '<default>') {
+        $pager_sort = variable_get('acidfree_order', 'node.nid DESC');
+    }
+    $pager_sort = _acidfree_content_sort_clause($pnode);
+    $nodes = _acidfree_get_children($parent, 1, ELEMENT_PAGER, false, $pager_sort);
+
+    // this hack is to force the pager into paging in the parent, not the photo
+    // trust me, Luke, this is the only way...
+    $q = $_GET['q'];
+    $_GET['q'] = "node/{$pnode->nid}";
+    if (isset($_REQUEST['pid'])) {
+        $pid = $_GET['pid'];
+        unset($_GET['pid']);
+        unset($_REQUEST['pid']);
+    }
+
+    // Get pager per Drupal
+    $pager = theme('pager', NULL, 1, ELEMENT_PAGER);
+
+    $_GET['q'] = $q;
+    if (isset($pid)) {
+        $_GET['pid'] = $pid;
+        $_REQUEST['pid'] = $pid;
+    }
+
+    /* Modify generated pager to avoid having to do redirects. Drupal's pager
+       assumes a page contains a page of nodes. In this case the page contains
+       only the node. The pager theme could be rewritten but that makes upgrades
+       and integration into existing sites even harder. This code is a bit of a
+       hack but since Drupal lacks a pager link hook this will suffice for now.
+    */
+    // Allow the pager regex rewriter to know the parent
+    $acidfree_pid = $parent;
+    $pager = preg_replace_callback(
+      '{(href=[\'"])[^\'"]+'. PAGER_STRING .'=([^&"\']*)}',
+      '_acidfree_pager_rewrite',
+      $pager);
+
+    return "\n".$pager."\n\n";
+}
+
+/*
+ * Translates the href passed from a pager style link to a direct acidfree node
+ * link. The link will include the pid (from acidfree_pid global) and from=
+ * sequences. The node will be aliased if one exists.
+ *
+ * @param $matches
+ *  0 = full text
+ *  1 = href and the ' or "
+ *  2 = page offsets, 0 = album, 1 = element, 2+ unknown
+ *
+ * @returns
+ *  A new complete url pointing to the target node
+ */
+function _acidfree_pager_rewrite($matches) {
+    global $acidfree_pid;
+    global $pager_sort;
+    static $offset_lookup = array();
+    static $pid_lookup = array();
+    static $vid = null;
+    
+    if (!isset($vid)) $vid = acidfree_get_vocab_id();
+
+    // Get page elements
+    $pager = explode(',', $matches[2]);
+    if (count($pager) < ELEMENT_PAGER+1)
+        $pager = explode('%2C', $matches[2]);
+    $offset = $pager[ELEMENT_PAGER];
+
+    $nid = $offset_lookup[$acidfree_pid][$offset];
+    if (! $nid) {
+        // Create count query. Drupal's pager function does not build the query properly
+        $clauses = 'SELECT DISTINCT(n.nid) FROM {node} n INNER JOIN {term_node} tn ON n.nid = tn.nid WHERE n.type <> \'acidfree\' AND tn.tid = %d AND n.status = 1 ORDER BY '. $pager_sort . " LIMIT 1 OFFSET %d";
+        $query = db_rewrite_sql($clauses);
+        $nid = db_result(db_query($query, $acidfree_pid, $offset));
+        $offset_lookup[$acidfree_pid][$offset] = $nid;
+        $parents = taxonomy_node_get_terms($nid);
+        if (is_array($parents)) {
+            $parents = array_filter($parents, create_function('$v', 'return (!isset($v->vid) || ($v->vid == '.$vid.'));'));
+        }
+        if (count($parents) > 1)
+            $pid_lookup[$nid] = true;
+    }
+
+    // pid: Remembers the album associated with this content.
+    //      Content can appear in multiple albums so this is important
+    // from: we are faking the from by manually setting the from in $_GET on view
+    if ($pid_lookup[$nid]) {
+        $pidstr = "pid=$acidfree_pid";
+    }
+    return $matches[1] . url("node/$nid", $pidstr);
+}
+
+function _acidfree_get_sizes($size=null) {
+    if (function_exists('image_get_sizes')) {
+        return image_get_sizes($size);
+    }
+    if (function_exists('_image_get_sizes')) {
+        return _image_get_sizes($size);
+    }
+    if (function_exists('_image_get_dimensions')) {
+        return _image_get_dimensions($size);
+    }
+    return false;
+}
+
+/* wrapper functions for image and video nodes to get the correct 
+ * sized images/videos with a single call */
+function _acidfree_get_thumb_url(&$node, $size='thumbnail') {
+    
+    switch ($node->type) {
+    case 'acidfree':
+        return _acidfree_get_thumb_url(_acidfree_get_album_thumb($node));
+    case 'image':
+        return file_create_url($node->images[$size]);
+    case 'video':
+        $image = acidfree_get_node_by_id($node->iid);
+        return file_create_url($image->images[$size]);
+    }
+}
+
+function _acidfree_get_thumb_path(&$node, $size='thumbnail') {
+    switch ($node->type) {
+    case 'acidfree':
+        return _acidfree_get_thumb_path(_acidfree_get_album_thumb($node));
+    case 'image':
+        return file_create_path($node->images[$size]);
+    case 'video':
+        $image = acidfree_get_node_by_id($node->iid);
+        return file_create_path($image->images[$size]);
+    }
+}
+
+/**
+ * Create an <img> tag for an image.
+ */
+function _acidfree_image_display(&$node, $label = 'preview', $attributes = array()) {
+  // check to see if we are displaying a faked image
+  if (!$node->images) {
+    $attributes['width'] = $node->info['width'];
+    $attributes['height'] = $node->info['height'];
+    return theme('acidfree_image_display', $node, $node->url, $attributes);
+  }
+  if ($node->images[$label] != $node->images['_original'] &&
+      (!file_exists(file_create_path($node->images[$label])) ||
+       filemtime(file_create_path($node->images[$label])) < variable_get('image_updated', 0))) {
+    _image_build_derivatives($node);
+  }
+
+  if (empty($node->images[$label])) {
+    return;
+  }
+  
+  $attributes['title'] = isset($attributes['title']) ? $attributes['title'] : check_plain($node->title);
+  $attributes['class'] = "image $label". (isset($attributes['class']) ? " ". $attributes['class'] : "");
+
+  return theme('acidfree_image_display', $node, file_create_url($node->images[$label]), $attributes);
+}
+
+/**
+  * Theme an img tag for displaying the image.
+  */
+function theme_acidfree_image_display($node, $url, $attributes) {
+  return '<img src="'. check_url($url) .'" alt="'. check_plain($node->title) .'" '. drupal_attributes($attributes) .' />';
+}
+
+/* This function is a kludge, but I really think it is needed
+ * in order to help .-~smooth~-. out the end-user's experience
+ * The idea is to snapshot the drupal messages so anything
+ * that happens in the meantime doesn't show up
+ * For example, when doing mass updates, it creates a lot of noise
+ * saving each node on the page and the user might get worried
+ */
+function _acidfree_pause_messages($snapshot = false) {
+    static $messages = null;
+    static $depth = 0;
+    if ($snapshot) {
+        $d = $depth++;
+    } else {
+        $d = max(0, --$depth);
+    }
+    if ($d) {
+        return;
+    }
+    if ($snapshot) {
+        $messages = drupal_get_messages();
+    } else if (is_array($messages)) {
+        $_SESSION['messages'] = $messages;
+        $messages = null;
+    }
+}
+
+
+// require the views file until we can convince them to take it
+$acidfree_base = dirname(drupal_get_filename('module', 'acidfree'));
+require_once($acidfree_base.DIRECTORY_SEPARATOR.'views_acidfree.inc');
+
+?>

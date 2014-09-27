@@ -1,0 +1,36 @@
+#wrapper {
+  width: 750px;
+  max-width: 95%;
+  margin: 0 auto 0 auto;
+}
+#header #logo, #branding, #main, .sidebar {
+  float: left;
+}
+#search, #header-additional {
+  float: right;
+}
+#menu, #content, #footer {
+  clear: both;
+}
+#main {
+  width: 91%;
+  padding: 2em 5% 1.5em 4%;
+}
+.sidebar-left #main, .sidebar-right #main {
+  width: 66%;
+}
+.sidebars #main {
+  width: 45%;
+}
+.sidebar {
+  width: 22.85%;
+}
+#sidebar-left {
+  margin-right: -1px;
+}
+#sidebar-right {
+  margin-left: -1px;
+}
+#footer {
+  width: 100%;
+}

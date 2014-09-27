@@ -1,0 +1,39 @@
+/* $Id: UPGRADE,v 1.8.2.1 2007/04/30 20:34:04 vhmauery Exp $ */
+
+Steps for upgrading from 4.7 to 5.0
+
+1. Go to admin/modules and disable Acidfree
+2. Perform the Drupal upgrade process
+3. Download and unpack the Drupal 5.0 modules: Acidfree, Image, and Views. 
+   If your site has any Acidfree videos, download Video as well.
+4. Go to admin/build/modules and enable Acidfree, Image, Taxonomy, and Views.
+   If your site has any Acidfree videos, enable Video, Video Image,
+   and Video Upload.
+5. After enabling the modules, there is a link to update.php.  Run the update
+   script again and make sure that Acidfree Module Version selected is 3.
+6. Press the Update button and wait while the update script converts all the
+   images and videos to the new version.
+   
+WARNING WARNING WARNING
+
+Upgrading should be done with great care.  Please back up all your data BEFORE
+doing anything.  This means both the database AND the image/video files.
+Upgrading may destroy your website and suck many days out of your life.  So
+I am warning you here to test the upgrade on a replica of your production site
+to make sure it will go smoothly.  Try it a couple of times to make sure it
+will work.  Report any problems you have so they can get fixed.
+
+The actual execution time of the upgrade may be a long time.  If the script
+gets killed because it ran past the max execution time, you will almost
+certainly corrupt the Acidfree tables.  You may want to modify the line in your
+php.ini to allow for longer execution time:
+
+max_execution_time = 600     ; Maximum execution time of each script, in seconds
+
+I set it to 10 minutes for the upgrade of my large site and that was plenty.
+This may take some time, depending on the number of Acidfree nodes, the
+image/video file sizes, etc.  As an example of how long it might take, a 3000+
+node site of mostly images with a few videos might take about five minutes.
+Much of the time spent is actually file copy time (moving it from the
+Filemanager file store to the Drupal file system), so faster hard drives mean
+faster execution time.  

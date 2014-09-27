@@ -1,0 +1,160 @@
+<?php
+// $Id: smileys_import.module,v 1.1.2.3 2007/04/23 16:27:09 Gurpartap Exp $
+
+function smileys_import_help($section) {
+  switch ($section) {
+    case 'admin/settings/smileys/import':
+      return t('Here you can install/uninstall smiley import packs.');
+  }
+}
+
+function smileys_import_menu($may_cache) {
+  $items = array();
+
+  if ($may_cache) {
+    $access = user_access('administer smileys');
+
+    $items[] = array(
+      'path' => 'admin/settings/smileys/import',
+      'title' => t('Import'),
+      'callback' => 'smileys_import_page',
+      'access' => $access,
+      'weight' => 2,
+      'type' => MENU_LOCAL_TASK);
+
+    $items[] = array(
+      'path' => 'admin/settings/smileys/export',
+      'title' => t('Export'),
+      'callback' => 'smileys_export_page',
+      'access' => $access,
+      'weight' => 3,
+      'type' => MENU_LOCAL_TASK);
+
+    $items[] = array(
+      'path' => 'admin/settings/smileys/import/add',
+      'callback' => 'smileys_import_add',
+      'access' => $access,
+      'type' => MENU_CALLBACK);
+
+    $items[] = array(
+      'path' => 'admin/settings/smileys/import/delete',
+      'callback' => 'smileys_import_delete',
+      'access' => $access,
+      'type' => MENU_CALLBACK);
+  }
+  return $items;
+}
+
+function smileys_import_page() {
+  $header = array(t('Smiley Packs'), t('Operations'));
+  $rows = array();
+  $packs = smileys_import_packs();
+  foreach ($packs as $pack) {
+    $smileyp = db_fetch_array(db_query("SELECT * FROM {smileys} WHERE package = '%s'", $pack->name));
+    $option_link = $smileyp ? l(t('Uninstall'), 'admin/settings/smileys/import/delete/'. $pack->name) : l(t('Install'), 'admin/settings/smileys/import/add/'. $pack->name);
+    $rows[] = array(
+      '<strong>' . $pack->name . '</strong>',
+       $option_link
+    );
+  }
+  $output = theme('table', $header, $rows);
+  if (empty($rows)) {
+    drupal_set_message(t('No smiley packs found.'));
+    $output = '';
+  }
+  return $output;
+}
+
+function smileys_export_page() {
+  if ($package = arg(4)) {
+    $smileys = db_query("SELECT * FROM {smileys} WHERE package = '%s' ORDER BY id", $package);
+    $path = drupal_get_path('module', 'smileys');
+    if (!$packd = smileys_import_packs($package)) {
+      drupal_set_message(t('Cannot find smiley package %pack.', array('%pack' => $package)));
+      drupal_goto('admin/settings/smileys/export');
+    }
+    $smile_pak = "";
+    $delimeter  = '=+:';
+    while ($smiley = db_fetch_object($smileys)) {
+      $smile_pak .= str_replace(dirname($packd->filename) . '/', '', $smiley->image) . $delimeter;
+      $smile_pak .= $smiley->description . $delimeter;
+      $smile_pak .= $smiley->acronyms . "\n";
+    }
+    $output  = "<div id=\"module-message\">\n";
+    $output .= t('Please copy and paste the following text into a file at:<br /><strong>%package</strong><br /><em>with each smiley image in the same folder.</em>', array('%package' => $path . '/packs/' . $package . '/' . $package . '.pak')) . "\n";
+    $output .= "</div>\n";
+    $output .= "<div id=\"module-code\">\n";
+    $output .= "<textarea cols=\"80\" rows=\"15\">\n";
+    $output .= $smile_pak;
+    $output .= "</textarea>\n";
+    $output .= "</div>\n";
+  }
+  else {
+    $packs = array();
+    $header = array(t('Smiley Packs'), t('Operations'));
+    $smileyp = db_query("SELECT DISTINCT package FROM {smileys} ORDER BY package");
+    while ($pack = db_fetch_object($smileyp)) {
+      if ($pack->package != 'Uncategorized') {
+      $packs[] = $pack->package;
+      $rows[] = array(
+        '<strong>' . $pack->package . '</strong>',
+         l(t('Export'), 'admin/settings/smileys/export/'. $pack->package)
+      );
+      }
+    }
+    $output = theme('table', $header, $rows);
+    if (empty($rows)) {
+      drupal_set_message(t('No smiley packs to export.'));
+      $output = '';
+    }
+  }
+  return $output;
+}
+
+function smileys_import_packs($a = NULL) {
+  $packs = file_scan_directory(drupal_get_path('module', 'smileys') . '/packs', '\.pak$');
+  ksort($packs);
+  $pack_names = array();
+  if ($a) {
+    $packd = NULL;
+    foreach ($packs as $pack) {
+      if ($pack->name == $a) {
+        $packd = $pack;
+      }
+    }
+    return $packd;
+  }
+  return $packs;
+}
+
+function smileys_import_delete($packname, $redirect = 0) {
+  $pack = $packname ? $packname : arg(5);
+  db_query("DELETE FROM {smileys} WHERE package = '%s'", $pack);
+  if ($redirect == 0) {
+    drupal_set_message(t('Smiley package %pack uninstalled.', array('%pack' => $pack)));
+    drupal_goto('admin/settings/smileys/import');
+  }
+}
+
+function smileys_import_add($packname) {
+  $delimeter  = '=+:';
+  $pack = $packname ? $packname : arg(5);
+  smileys_import_delete($pack, 1);
+  if (!$packd = smileys_import_packs($pack)) {
+    drupal_set_message(t('Cannot find smiley package %pack.', array('%pack' => $pack)));
+    drupal_goto('admin/settings/smileys/import');
+  }
+  $fcontents = @file(dirname($packd->filename) . '/' . $pack . '.pak');
+
+  for ($i = 0; $i < count($fcontents); $i++) {
+    $smile_data = explode($delimeter, trim(addslashes($fcontents[$i])));
+    for ($j = 2; $j < count($smile_data); $j++) {
+      $smile_data[$j] = str_replace("<", "&lt;", $smile_data[$j]);
+      $smile_data[$j] = str_replace(">", "&gt;", $smile_data[$j]);
+      $k = $smile_data[$j];
+      db_query("INSERT INTO {smileys} (acronyms, image, description, standalone, package) VALUES('%s', '%s', '%s', %d, '%s')", str_replace("\'", "''", $smile_data[$j]), dirname($packd->filename) . '/' . str_replace("\'", "''", $smile_data[0]), str_replace("\'", "''", $smile_data[1]), 1, $pack);
+    }
+  }
+  drupal_set_message(t('Smiley package %pack installed.', array('%pack' => $pack)));
+  drupal_goto('admin/settings/smileys/import');
+}

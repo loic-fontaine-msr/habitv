@@ -1,0 +1,57 @@
+/* $Id: smileys.css,v 1.1.2.2 2007/04/29 19:53:45 Gurpartap Exp $ */
+
+.smileys {
+  position: relative;
+  padding: 6px 10px 6px 10px;
+}
+
+.smileys strong {
+  position: absolute;
+  left: 25px;
+  top: 6px;
+}
+
+.smileys span {
+  float: left;
+  width: 41px;
+  height: 47px;
+  text-align: center;
+}
+
+.smileys span span {
+  display: block;
+  margin: 0 auto;
+  height: 22px;
+}
+
+.smiley-class {
+  cursor: pointer;
+  border: 0;
+}
+
+.smileysWindow {
+  width: 250px;
+  background: #FFFFFF;
+  overflow: auto;
+  max-height: 275px;
+  max-width: 290px;
+  border-top: 2px dashed #564d43;
+  border: 2px dashed #564d43;
+  padding-top: 3px;
+}
+
+.smileysWindowtext {
+  background: #123456;
+  color: #FFFFFF;
+  text-align: center;
+}
+
+.smileysWindow span {
+  margin: 13px 13px 13px 13px;
+  text-align: center;
+}
+
+#smileysWindow {
+  position: absolute;
+  z-index: 1000;
+}

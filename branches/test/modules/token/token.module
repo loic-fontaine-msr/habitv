@@ -1,0 +1,112 @@
+<?php
+// $Id: token.module,v 1.5.2.9 2007/08/13 16:01:25 greggles Exp $
+
+/**
+ * Implementation of hook_init().
+ * Note that this will cause Drupal to post a warning on the admin screen
+ * when agressive caching is activated. Like CCK, Token's use of hook_init
+ * IS compatible with agressive caching, we just need a way to annouce that.
+ */
+function token_init() {
+  // Ensure we are not serving a cached page
+  if (function_exists('drupal_set_content')) {
+    // we don't do this in hook_menu to ensure the files are already included when
+    require_once(drupal_get_path('module', 'token') . '/token.inc');
+  }
+}
+
+
+/**
+ * For a given context, builds a formatted list of tokens and descriptions
+ * of their replacement values.
+ *
+ * @param type
+ *    The token types to display documentation for. Defaults to 'all'.
+ * @param prefix
+ *    The prefix your module will use when parsing tokens. Defaults to '['
+ * @param suffix
+ *    The suffix your module will use when parsing tokens. Defaults to ']'
+ * @return An HTML table containing the formatting docs.
+ **/
+function theme_token_help($type = 'all', $prefix = '[', $suffix = ']') {
+  token_include();
+  $full_list = token_get_list($type);
+  
+  $headers = array(t('Token'), t('Replacement value'));
+  $rows = array();
+  foreach ($full_list as $key => $category) {
+    $rows[] = array(array('data' => drupal_ucfirst($key) . ' ' . t('tokens'), 'class' => 'region', 'colspan' => 2));
+    foreach ($category as $token => $description) {
+      $row = array();
+      $row[] = $prefix . $token . $suffix;
+      $row[] = $description;
+      $rows[] = $row;
+    }
+  }
+
+  $output = theme('table', $headers, $rows, array('class' => 'description'));
+  return $output;
+}
+
+/**
+ * Sample implementation of hook_token_values(). 
+ *
+ * @param type
+ *   A flag indicating the class of substitution tokens to use. If an
+ *   object is passed in the second param, 'type' should contain the
+ *   object's type. For example, 'node', 'comment', or 'user'. If your
+ *   implemention of the hook inserts globally applicable tokens that
+ *   do not depend on a particular object, it should only return values
+ *   when $type is 'global'.
+ * @param object
+ *   Optionally, the object to use for building substitution values.
+ *   A node, comment, user, etc.
+ * @return
+ *   A keyed array containing the substitution tokens and the substition
+ *   values for the passed-in type and object.
+ */
+function token_token_values($type, $object = NULL) {
+  global $user;
+  global $base_url;
+  $values = array();
+
+  switch ($type) {
+    case 'global':
+      $values['user-name']    = $user->uid ? $user->name : variable_get('anonymous', t('Anonymous'));
+      $values['user-id']      = $user->uid ? $user->uid : 0;
+      $values['user-mail']    = $user->uid ? $user->mail : '';
+      $values['site-url']     = $base_url;
+      $values['site-name']    = variable_get('site_name', t('Drupal'));
+      $values['site-slogan']  = variable_get('site_slogan', '');
+      $values['site-mail']    = variable_get('site_mail', '');
+      $values['site-date']    = format_date(time(), 'short', '', variable_get('date_default_timezone', 0));
+      break;
+  }
+  return $values;
+}
+
+/**
+ * Sample implementation of hook_token_list(). Documents the individual
+ * tokens handled by your module.
+ *
+ * @param type
+ *   A flag indicating the class of substitution tokens to return
+ *   information on. If this is set to 'all', a complete list is being
+ *   built and your module should return its full list, regardless of
+ *   type. Global tokens should always be returned, regardless of the
+ *   $type passed in.
+ * @return
+ *   A keyed array listing the substitution tokens. Elements should be
+ *   in the form of: $list[$type][$token] = $description
+ */
+function token_token_list($type = 'all') {
+  $tokens['global']['user-name']    = t('The name of the currently logged in user.');
+  $tokens['global']['user-id']      = t('The user ID of the currently logged in user.');
+  $tokens['global']['user-mail']    = t('The email address of the currently logged in user.');
+  $tokens['global']['site-url']     = t('The url of the current Drupal website.');
+  $tokens['global']['site-name']    = t('The name of the current Drupal website.');
+  $tokens['global']['site-slogan']  = t('The slogan of the current Drupal website.');
+  $tokens['global']['site-mail']    = t('The contact email address for the current Drupal website.');
+  $tokens['global']['site-date']    = t("The current date on the site's server.");
+  return $tokens;
+}

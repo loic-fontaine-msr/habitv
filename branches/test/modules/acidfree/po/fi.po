@@ -1,0 +1,776 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: drupal 5.1 acidfree albums\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2007-05-02 06:36+0200\n"
+"Last-Translator: Juhani Pirinen <juhani.pirinen@netti.in>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Poedit-Language: Finnish\n"
+"X-Poedit-Country: FINLAND\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#: acidfree/acidfree.module:99
+msgid "Acidfree albums are used for the categorization of images and videos."
+msgstr "Acidfree albumeita käytetään kuvien ja videoiden kategorisointiin"
+
+#: acidfree/acidfree.module:189
+msgid "Edit %title"
+msgstr "Muokkaa %title"
+
+#: acidfree/acidfree.module:195
+msgid "Title"
+msgstr "Otsikko"
+
+#: acidfree/acidfree.module:221
+msgid "Body"
+msgstr "Vartalo"
+
+#: acidfree/acidfree.module:227
+msgid "Sort album by"
+msgstr "Lajittele albumi"
+
+#: acidfree/acidfree.module:229
+msgid "Use global settings"
+msgstr "Käytä sivustonlaajuisia asetuksia"
+
+#: acidfree/acidfree.module:230;652
+msgid "Latest post first"
+msgstr "Viimeisin lähetys ensin"
+
+#: acidfree/acidfree.module:231;653
+msgid "Posted order"
+msgstr "Lähetysjärjestys"
+
+#: acidfree/acidfree.module:232;654
+msgid "Alphabetical order"
+msgstr "Aakkosellinen järjestys"
+
+#: acidfree/acidfree.module:233;655
+msgid "Chronological order by creation date"
+msgstr "Luomispäiväyksen mukaan"
+
+#: acidfree/acidfree.module:259
+msgid "Select a fixed album thumbnail or select 'Random' to have a random thumbnail appear for the album thumbnail"
+msgstr "Valitse kuva albumin pysyväksi pienoiskuvaksi tai 'Random', jolloin satunnainen kuva ilmestyy albumin pienoiskuvaksi"
+
+#: acidfree/acidfree.module:265
+msgid "Album thumbnail"
+msgstr "Albumin pienoiskuva"
+
+#: acidfree/acidfree.module:280
+msgid "Allow others to post items to this album"
+msgstr "Salli toisten luoda sisältöä tähän albumiin"
+
+#: acidfree/acidfree.module:287
+msgid "Weight"
+msgstr "Paino"
+
+#: acidfree/acidfree.module:289
+msgid "In listings, the heavier albums will sink and the lighter albums will be positioned nearer the top."
+msgstr "Listauksissa painavammat albumit \"uppoavat\" ja kevyemmät albumit sijoittuvat ylemmäksi"
+
+#: acidfree/acidfree.module:307
+msgid "A better photo album than Gallery or Album. Acidfree is node based and well integrated into Drupal."
+msgstr "Parempi kuva-albumi kuin Gallery tai Album.  Acidfree pohjautuu solmuihin ja integroituu hyvin Drupaliin."
+
+#: acidfree/acidfree.module:310
+msgid "Add an album here.  Other elements you can add are in the 'create content' menu."
+msgstr "Lisää albumi täällä.  Muut lisättävät elementit löytyvät 'Luo sisältöä' menusta."
+
+#: acidfree/acidfree.module:312
+msgid "<p>Acidfree is an album system that has the ability to store any kind of media (assuming the class is existent.)  Currently implemented are %types.  Following the example of one of the currently implemented classes, it is easy to create a new media type.</p>"
+msgstr "<p>Acidfree on albumijärjestelmä, joka pystyy kategorisoimaan mitä tahansa mediaa (olettaen että luokka on olemassa).  Tällä hetkellä käytössä ovat %types.  Seuraava esimerkki on yhdestä parhaillaan käyttöön otetuista luokista; on helppoa luoda uusi mediatyyppi.</p>"
+
+#: acidfree/acidfree.module:314
+msgid "<p>Because Acidfree is more than simply a storage and viewing module, it requires some depenencies for the album management.  First, it requires the Filemanager module.  Until the Filemanager gets patched to have the exended API that Acidfree requires, Acidfree will ship with a patch for the Filemanager.  Second, it requires some form of image manipulation.  Drupal provides a frontend to the GD library that can do what is required.  Or, if you would rather use ImageMagick or libmagick (php-imagick module), set that up (copy the image.*.inc files to the includes directory) and select it.  Finally, if you want lossless rotations for your images, you will require jpegtran or exiftran.</p><p>For video thumbnailing, there are three options.  You can choose a static image for all your videos (no thumbnail), upload your own thumbnail (user thumbnail) or have mplayer thumbnail them automatically for you.  If you choose the first option, you will be asked to give the dimensions of the video so it can be displayed correctly in the 'full' view.  With option two, be sure to upload a thumbnail that is the same dimensions as the actual video (grab a frame from the video, do not resize it.)  The third option obviously implies that you have mplayer and all the win32 codecs installed on your <b>server</b> and that you are allowed to exec other programs (i.e., not running in safe mode.).  "
+msgstr ""
+
+#: acidfree/acidfree.module:316
+msgid "Change these settings to however you like.  You are w00t, afterall."
+msgstr "Muuta näitä asetuksia haluamallasi tavalla."
+
+#: acidfree/acidfree.module:318
+msgid "The common attributes that Acidfree will have are: 'Sticky at top of lists', which allows the albums to be sorted before the other media types (image, video, etc.) in the various album views;  and *not* 'Promoted to front page' because that would make all the albums show up at the top of the front page, which is probably not desirable."
+msgstr "Yhteiset Acidfree attribuutit ovat: 'Kiinnitetty pysyvästi listojen yläosaan', mikä mahdollistaa albumien tulla lajitelluiksi ennen muita mediatyyppejä (kuva, video, jne) useissa albuminäkymissä; ja *ei* 'Ylennetty etusivulle' koska tämä saisi kaikki albumit näkymään ensimmäisenä etusivulla, mitä todennäköisesti ei haluta."
+
+#: acidfree/acidfree.module:368
+msgid "Album"
+msgstr "Albumi"
+
+#: acidfree/acidfree.module:374
+msgid "Acidfree settings"
+msgstr "Acidfree albumien asetukset"
+
+#: acidfree/acidfree.module:377
+msgid "Site-wide Acidfree settings."
+msgstr "Sivustonlaajuiset Acidfree albumien asetukset"
+
+#: acidfree/acidfree.module:383;1136;1227
+msgid "Acidfree albums"
+msgstr "Albumit"
+
+#: acidfree/acidfree.module:389;802
+msgid "Mass import"
+msgstr "Massatuonti"
+
+#: acidfree/acidfree.module:407
+msgid "Album contents"
+msgstr "Albumin sisältö"
+
+#: acidfree/acidfree.module:412
+msgid "Grid"
+msgstr "Ruudukko"
+
+#: acidfree/acidfree.module:412
+msgid "List"
+msgstr "Listaa"
+
+#: acidfree/acidfree.module:424
+msgid "My Acidfree Albums"
+msgstr "Omat albumit"
+
+#: acidfree/acidfree.module:583
+msgid "Thumbnails per page must be a non-negative integer"
+msgstr "Pienoiskuvia sivua kohden täytyy olla positiivinen kokonaisluku"
+
+#: acidfree/acidfree.module:586
+msgid "Thumbnail padding must be a non-negative integer"
+msgstr "Pienoiskuvien täyte täytyy olla positiivinen kokonaisluku"
+
+#: acidfree/acidfree.module:622
+msgid "General Settings"
+msgstr "Yleiset asetukset"
+
+#: acidfree/acidfree.module:626
+msgid "Per user albums"
+msgstr "Käyttäjäkohtaiset albumit"
+
+#: acidfree/acidfree.module:627
+msgid "This options will allow each user to have a top-level album of their own.  The per user album is located at user/acidfree if logged in and acidfree/user/nnn for each individual album."
+msgstr "Tämä mahdollistaa jokaiselle käyttäjälle oman juuritason albumin.  Sisäänkirjautuneiden käyttäjien käyttäjäkohtainen albumi sijaitsee verkko-osoitteessa user/acidfree ja jokainen yksilöllinen albumi osoitteessa user/acidfree/nnn."
+
+#: acidfree/acidfree.module:637
+msgid "Neither exiftran nor jpegtran executables are in the safe_mode_exec_dir (%safe_dir) &mdash; lossy jpeg rotation will be used instead"
+msgstr "Kumpikaan exiftran tai jpegtran eivät ole hakemistossa safe_mode_exec_dir (%safe_dir) &mdash; tämän sijaan käytetään dataa hävittäviä jpeg muunnoksia"
+
+#: acidfree/acidfree.module:641
+msgid "Neither exiftran nor jpegtran are available &mdash; lossy jpeg rotation will be used instead"
+msgstr "Kumpaakaan exiftran tai jpegtran ei ole saatavilla &mdash; tämän sijaan käytetään dataa hävittäviä jpeg muunnoksia"
+
+#: acidfree/acidfree.module:645
+msgid "Acidfree Display"
+msgstr "Albumien näyttäminen"
+
+#: acidfree/acidfree.module:649
+msgid "Sort albums by"
+msgstr "Lajittele albumit"
+
+#: acidfree/acidfree.module:660
+msgid "Sort all albums"
+msgstr "Lajittele kaikki albumit"
+
+#: acidfree/acidfree.module:662
+msgid "Force all albums to use this selected sort order"
+msgstr "Pakota kaikki albumit näyttämään valittua järjestystä"
+
+#: acidfree/acidfree.module:669
+msgid "List albums first"
+msgstr "Listaa albumit ensin"
+
+#: acidfree/acidfree.module:671
+msgid "Show albums first in all lists (marks them as 'sticky')"
+msgstr "Näytä albumit ensin kaikissa listoissa (merkitsee ne 'kiinnitetyiksi' listojen yläosaan)"
+
+#: acidfree/acidfree.module:675
+msgid "Thumbnails per page"
+msgstr "Pienoiskuvia sivua kohden"
+
+#: acidfree/acidfree.module:679
+msgid "Enter 0 for unlimited"
+msgstr "Rajoittamaton: 0"
+
+#: acidfree/acidfree.module:683
+msgid "Show image title as default caption for inline images"
+msgstr "Näytä kuvan otsikko oletusotsikkona kaikille inline-kuville"
+
+#: acidfree/acidfree.module:689
+msgid "Amount of padding/border on each side of thumbnail image"
+msgstr "Täytteen/reunojen koko pienoiskuvan ympärillä"
+
+#: acidfree/acidfree.module:691
+msgid "In pixels. Only needs to be changed if you modify the padding/border around the thumbnail."
+msgstr "Pikseleissä.  Tätä tarvitsee muuttaa vain, jos pienoiskuvan ympärillä olevaa täytettä/reunoja muokataan."
+
+#: acidfree/acidfree.module:695
+msgid "No image toolkit has been properly installed or configured.  Go to admin/settings to fix this."
+msgstr "Kuvatyökaluja ei ole kelvollisesti asennettu ja asetettu.  Mene kohtaan Ylläpito / Sivuston asetukset korjataksesti tämän."
+
+#: acidfree/acidfree.module:698
+msgid "Image Manipulation"
+msgstr "Kuvamuunnokset"
+
+#: acidfree/acidfree.module:703
+msgid "exiftran provides lossless rotation of jpeg images and keeps EXIF information.  If you provide a working path, Acidfree will try to use it."
+msgstr "exiftran tarjoaa häviöttämät jpeg kuvien muunnokset ja säilyttää EXIF tiedot.  Jos tarjoat toimivan hakupolun, Acidfree yrittää käyttää sitä."
+
+#: acidfree/acidfree.module:708
+msgid "jpegtran provides lossless rotation of jpeg images and can somewhat munge the EXIF information.  If you provide a working path, Acidfree will try to use it."
+msgstr "jpegtran tarjoaa häviöttämät jpeg kuvien muunnokset ja jokseenkin säilyttää EXIF tiedot.  Jos tarjoat toimivan hakupolun, Acidfree yrittää käyttää sitä."
+
+#: acidfree/acidfree.module:771
+msgid "edit this album"
+msgstr "muokkaa tätä albumia"
+
+#: acidfree/acidfree.module:846
+msgid "Recent Acidfree items"
+msgstr "Uutta albumeissa"
+
+#: acidfree/acidfree.module:847
+msgid "Favorite Acidfree items"
+msgstr "Suosituinta albumeissa"
+
+#: acidfree/acidfree.module:848
+msgid "Random Acidfree items"
+msgstr "Satunnaista albumien sisältöä"
+
+#: acidfree/acidfree.module:849
+msgid "Add Acidfree items"
+msgstr "Lisää sisältöä albumiin"
+
+#: acidfree/acidfree.module:853
+msgid "Acidfree item recent selection"
+msgstr "Uutta albumeissa -valikoima"
+
+#: acidfree/acidfree.module:854
+msgid "Acidfree item favorite selection"
+msgstr "Suosituinta albumeissa -valikoima"
+
+#: acidfree/acidfree.module:855
+msgid "Acidfree item random selection"
+msgstr "Satunnaista albumien sisältöä -valkoima"
+
+#: acidfree/acidfree.module:856
+msgid "Add Acidfree items quick links"
+msgstr "Lisää albumin kohteisiin pikalinkkejä"
+
+#: acidfree/acidfree.module:910
+msgid "Number of items"
+msgstr "Kohteiden määrä"
+
+#: acidfree/acidfree.module:919
+msgid "Include items from all albums"
+msgstr "Sisällytä kohteita kaikista albumeista"
+
+#: acidfree/acidfree.module:925
+msgid "Select random items from these albums"
+msgstr "Valitse satunnaisia kohteita kaikista näistä albumeista"
+
+#: acidfree/acidfree.module:925
+msgid "description"
+msgstr "kuvaus"
+
+#: acidfree/acidfree.module:960
+msgid "No file supplied"
+msgstr "Tiedostoa ei toimitettu"
+
+#: acidfree/acidfree.module:968
+msgid "Image module sanity check passed."
+msgstr "Kuvamoduulin toimivuustarkistus onnistui."
+
+#: acidfree/acidfree.module:970
+msgid "Image module sanity check failed. Check the settings at !imgurl and !fsurl."
+msgstr "Kuvamoduulin toimivuustarkistus epäonnistui.  Tarkista asetukset kohdissa !imgurl ja !fsurl."
+
+#: acidfree/acidfree.module:976
+msgid "Video Upload module sanity check passed."
+msgstr "Video Upload moduulin toimivuustarkistus onnistui."
+
+#: acidfree/acidfree.module:978
+msgid "Video Upload module sanity check failed. Check the settings at !fsurl."
+msgstr "Video Upload moduulin toimivuustarkistus epäonnistui.  Tarkista asetukset kohdassa !fsurl."
+
+#: acidfree/acidfree.module:983
+msgid "Temporary path okay."
+msgstr "Väliaikainen polku kunnossa."
+
+#: acidfree/acidfree.module:985
+msgid "Temporary path does not exist. Check the settings at !fsurl."
+msgstr "Väliaikaista polkua ei ole olemassa.  Tarkista asetukset kohdassa !fsurl."
+
+#: acidfree/acidfree.module:1003;1014
+msgid "Updated %mod module weight."
+msgstr "Päivitetty %mod moduulin paino."
+
+#: acidfree/acidfree.module:1006;1017
+msgid "%mod module weight okay."
+msgstr "%mod moduulin paino kunnossa."
+
+#: acidfree/acidfree.module:1020
+msgid "%itk image toolkit installed and properly configured"
+msgstr "%itk kuvatyökalut asennettu ja kelvollisesti asetettu"
+
+#: acidfree/acidfree.module:1022
+msgid "Image toolkit not properly installed or configured.  Go to %url and configure the image toolkit properly."
+msgstr "Kuvatyökaluja ei ole kelvollisesti asennettu ja asetettu.  Mene kohtaan %url ja aseta kuvatyökalut kuntoon."
+
+#: acidfree/acidfree.module:1027
+msgid "Errors were detected.  Please correct the above errors before you do anything else with Acidfree."
+msgstr "Virheitä havaittu.  Korjaa ylläolevat virheet, ennen kuin teet mitään muuta Acidfreellä."
+
+#: acidfree/acidfree.module:1029
+msgid "No errors were detected.  But this doesn't mean that Acidfree is guaranteed to work flawlessly.  It is a complex system and still under development.  Please be patient while all the wrinkles are found and ironed out."
+msgstr "Virheitä ei havaittu.  Mutta tämä ei tarkoita, että Acidfree toimisi virheettömästi.  Se on monimutkainen järjestelmä ja yhä kehityksessä.  Ole kärsivällinen, kaikki bugit löydetään ja korjataan."
+
+#: acidfree/acidfree.module:1031
+msgid "Published, promoted and sticky configuration"
+msgstr "Julkaistu, ylennetty ja kiinnitetty asetukset"
+
+#: acidfree/acidfree.module:1035;1043;1052;1063
+msgid "Published"
+msgstr "Julkaistu"
+
+#: acidfree/acidfree.module:1035;1043;1052;1063
+msgid "Not published"
+msgstr "Ei julkaistu"
+
+#: acidfree/acidfree.module:1036;1044;1053;1064
+msgid "Promoted"
+msgstr "Ylennetty"
+
+#: acidfree/acidfree.module:1036;1044;1053;1064
+msgid "Not promoted"
+msgstr "Ei ylennetty"
+
+#: acidfree/acidfree.module:1037;1045;1054;1065
+msgid "Sticky"
+msgstr "Kiinnitetty"
+
+#: acidfree/acidfree.module:1037;1045;1054;1065
+msgid "Not sticky"
+msgstr "Ei kiinnitetty"
+
+#: acidfree/acidfree.module:1038
+msgid "Acidfree recommends Published, Not promoted, and Sticky"
+msgstr "Acidfree suosittelee Julkaistu, Ei ylennetty ja Kiinnitetty"
+
+#: acidfree/acidfree.module:1043
+msgid "Images"
+msgstr "Kuvat"
+
+#: acidfree/acidfree.module:1046;1055
+msgid "Acidfree recommends Published, Not promoted, and Not sticky"
+msgstr "Acidfree suosittelee Julkaistu, Ei ylennetty ja Ei kiinnitetty"
+
+#: acidfree/acidfree.module:1052
+msgid "Videos"
+msgstr "Videot"
+
+#: acidfree/acidfree.module:1063
+msgid "Video thumbnails"
+msgstr "Videoiden pienoiskuvat"
+
+#: acidfree/acidfree.module:1066
+msgid "Acidfree recommends Not published, Not promoted, and Not sticky"
+msgstr "Acidfree suosittelee Ei julkaistu, Ei ylennetty ja Ei kiinnitetty"
+
+#: acidfree/acidfree.module:1077
+msgid "PHP configuration"
+msgstr "PHP asetukset"
+
+#: acidfree/acidfree.module:1078
+msgid "Maximum file upload size is"
+msgstr "Suurin palvelimelle siirrettävän tiedoston koko on"
+
+#: acidfree/acidfree.module:1079
+msgid "Maximum POST size is"
+msgstr "Suurin POST koko on"
+
+#: acidfree/acidfree.module:1080
+msgid "Maximum execution time is %max_time seconds"
+msgstr "Enimmäissuoritusaika on %max_time seconds"
+
+#: acidfree/acidfree.module:1081
+msgid "Maximum memory usage is"
+msgstr "Muistin käytön enimmäismäärä on"
+
+#: acidfree/acidfree.module:1082
+msgid "If these limits are smaller than the files you plan on uploading, you should change the settings in your php.ini file"
+msgstr "Jos nämä rajat ovat pienempiä kuin tiedostot joita suunnittelet siirtää palvelimelle, sinun pitäisi muuttaa asetuksia php.ini tiedostossa"
+
+#: acidfree/acidfree.module:1141
+msgid "This is an Acidfree vocabulary.  Please use the exposed Acidfree interfaces to modify values rather than directly editing vocabs and terms via the taxonomy interface."
+msgstr "Tämä on Acidfree sanasto.  Käytä Acidfree käyttöliittymää arvojen muokkaamiseen mieluummin, kuin Kategoriat käyttöliittymää sanastojen ja termien muokkaamiseen."
+
+#: acidfree/acidfree.module:1155
+msgid "failed to create vocabulary for Acidfree albums"
+msgstr "sanaston luominen Acidfree albumeille epäonnistui"
+
+#: acidfree/acidfree.module:1158
+msgid "Created Acidfree vocabulary"
+msgstr "Acidfree sanasto luotu"
+
+#: acidfree/acidfree.module:1173
+msgid "Acidfree root album"
+msgstr "Juurialbumi"
+
+#: acidfree/acidfree.module:1207
+msgid "!username's Acidfree album"
+msgstr "!username - albumi"
+
+#: acidfree/acidfree.module:1245
+msgid "Acidfree inline filter"
+msgstr "Acidfree inline suodatin"
+
+#: acidfree/acidfree.module:1249
+msgid "add acidfree images to other nodes using a syntax like [acidfree:xx ...]"
+msgstr "lisää acidfree kuvia toisiin solmuihin käyttäjien syntaksia [acidfree:xx ...]"
+
+#: acidfree/acidfree.module:1264
+msgid ""
+"<b>Acidfree inline tags</b></li>\n"
+"\n"
+"    It is possible to change the way the &#91;acidfree:nnn&#93; tags look by adding a few name/value pairs.  Note that any value that has spaces in it must be quoted either with single quotes ' or with double quotes \".  Currently, the choices are:\n"
+"<ul>\n"
+"<li><tt>title</tt>: use this string as the caption (Note that you can have the node title be the default caption by modifying the setting in admin/settings/acidfree)</li>\n"
+"<li><tt>align</tt>: {left,right}</li>\n"
+"<li><tt>size</tt>: {M, WxH} where M=max dimension and WxH=WidthxHeight</li>\n"
+"<li><tt>link</tt>: 'none' or relative or absolute url e.g. http://www.google.com or node/59.  If set to none, thumbnail will not be a link</li>\n"
+"<li><tt>popup</tt>: any value.  If set, it will cause the link to be a popup link</li> \n"
+"<li><tt>style</tt>: CSS style information for the image</li>\n"
+"<li><tt>class</tt>: additional class for the image</li>\n"
+"</ul>\n"
+"<b>Examples</b>\n"
+"<ul>\n"
+"<li>&#91;acidfree:1234 size=300 align=right&#93; - right aligned thumbnail of node 1234 with max dimension of 300 pixels</li>\n"
+"<li>&#91;acidfree:4321&#93; - left aligned thumbnail of node 4321 (default thumbnail size)</li>\n"
+"<li>&#91;acidfree:3241 align=left size=320x240&#93; - right aligned thumbnail of node 3241 with size = 320x240</li>\n"
+"<li>&#91;acidfree:3241 title='This is a different title' size=320 popup=true link=\"http://mysite.dom/\"&#93; - left aligned thumbnail of node 3241 with a title set, size = 320x240, link pointing to mysite.dom and target=blank_ set in the anchor</li>\n"
+"<li>&#91;acidfree:3241 link=none class='my-image your-image' style=\"border: 2 px grey inset;\"&#93; - left aligned thumbnail of 3241, default size, class set and new style info</li>\n"
+"</ul>"
+msgstr ""
+
+#: acidfree/acidfree.module:1286
+msgid "You may use <a href=\"!acidfree_help\">[acidfree:xx] tags</a> to display acidfree videos or images inline."
+msgstr "Saat käyttää <a href=\"!acidfree_help\">[acidfree:xx] merkkauksia</a> näyttääksesi acidfree videoita ja kuvia sivustolla."
+
+#: acidfree/acidfree.module:1291
+msgid "Home"
+msgstr "Koti"
+
+#: acidfree/acidfree.module:1346
+msgid "file %filename is not a valid acidfree element type (%mime)"
+msgstr "tiedosto %filename ei ole kelvollinen acidfree elementtityyppi (%mime)"
+
+#: acidfree/acidfree.module:1429;1489
+msgid "failed to import '%filename'"
+msgstr "'%filename' tuonti epäonnistui"
+
+#: acidfree/acidfree.module:1498
+msgid "Could not create temporary directory for mass import"
+msgstr "Ei voitu luoda väliaikaista hakemistoa massatuonnille"
+
+#: acidfree/acidfree.module:1527;1694
+msgid "Import"
+msgstr "Tuo"
+
+#: acidfree/acidfree.module:1530
+msgid "Could not find server-side directory %tmpdir"
+msgstr "Ei voitu löytää palvelinpuolen hakemistoa %tmpdir"
+
+#: acidfree/acidfree.module:1532
+msgid "Importing server side directory %tmpdir"
+msgstr "Tuodaan palvelinpuolen hakemistoon %tmpdir"
+
+#: acidfree/acidfree.module:1536;1674
+msgid "Upload"
+msgstr "Siirrä"
+
+#: acidfree/acidfree.module:1540
+msgid "Importing file %filename"
+msgstr "Tuodaan tiedostoa %filename"
+
+#: acidfree/acidfree.module:1545
+msgid "Failed to import %filename"
+msgstr "%filename tuonti epäonnistui"
+
+#: acidfree/acidfree.module:1578
+msgid "Parent"
+msgstr "Isäntä"
+
+#: acidfree/acidfree.module:1603
+msgid "No node types available"
+msgstr "Ei solmutyyppejä saatavilla"
+
+#: acidfree/acidfree.module:1635
+msgid "Files to upload"
+msgstr "Siirrettävät tiedostot"
+
+#: acidfree/acidfree.module:1636
+msgid "Be sure to limit the uploaded file sizes to the following:<ul><li>Max file size: %max_file</li><li>Max total file size: %max_post</li></ul>"
+msgstr "Varmista, että rajoitat palvelimelle siirrettävien tiedostojen kokoa seuraavasti:<ul><li>Tiedoston enimmäiskoko: %max_file</li><li>Tiedostojen koko yhteensä: %max_post</li></ul>"
+
+#: acidfree/acidfree.module:1645
+msgid "File to upload"
+msgstr "Siirrettävä tiedosto"
+
+#: acidfree/acidfree.module:1647
+msgid "File to upload.  This may be an image, video clip, zip file, or a tar file that is gzipped or bzipped.  You may upload up to five at a time."
+msgstr "Tiedosto palvelimelle siirrettäväksi.  Tämä voi olla kuva, videoleike, zip tiedosto tai tar tiedosto, jolla on gzip tai bzip pakkaus.  Voit siirtää viisi kerrallaan."
+
+#: acidfree/acidfree.module:1678
+msgid "Import local files"
+msgstr "Tuo paikallisia tiedostoja"
+
+#: acidfree/acidfree.module:1684
+msgid "Path on server"
+msgstr "Polku palvelimella"
+
+#: acidfree/acidfree.module:1685
+msgid "This must be the full path to a directory on the server that is readable."
+msgstr "Tämä täytyy olla täysi hakupolku palvelimen hakemistoon, joka on luettavissa."
+
+#: acidfree/acidfree.module:1689
+msgid "Include subdirectories"
+msgstr "Sisällytä alihakemistot"
+
+#: acidfree/acidfree.module:2196;2199;2210
+msgid "[acidfreepath]"
+msgstr "[acidfreepolku]"
+
+#: acidfree/acidfree.module:2196
+msgid "Concatentated Acidfree album path (minus root album) e.g. trips/seattle.  Try something like 'albums/[acidfreepath]/[title]'."
+msgstr "Yhteenliitetty Acidfree albumipolku (ei juuri albumille) esim matkat/seattle.  Kokeille vaikka 'albumit/[acidfreepolku]/[otsikko]'."
+
+#: acidfree/acidfree.module:2228
+msgid "Personal album"
+msgstr "Henkilökohtainen albumi"
+
+#: acidfree/acidfree.module:2232
+msgid "Acidfree Albums"
+msgstr "Albumit"
+
+#: acidfree/acidfree.module:2357
+msgid "Sort column '%k' is not supported, it is being ignored"
+msgstr "Lajittelusaraketta '%k' ei tueta, se jätetään huomiotta."
+
+#: acidfree/acidfree.module:2357
+#: acidfree/acidfree.info:0
+msgid "Acidfree"
+msgstr "Acidfree"
+
+#: acidfree/acidfree.module:0
+#: acidfree/acidfree.info:0
+msgid "acidfree"
+msgstr "acidfree"
+
+#: acidfree/acidfree.install:210
+msgid "finished updating albums"
+msgstr "Albumien päivitys valmis"
+
+#: acidfree/acidfree.install:254
+msgid "Finished updating images"
+msgstr "Kuvien päivitys valmis"
+
+#: acidfree/acidfree.install:314
+msgid "finished updating videos"
+msgstr "Videoiden päivitys valmis"
+
+#: acidfree/acidfree.install:365
+msgid "The following modules are missing and prevent Acidfree from being upgraded:"
+msgstr "Seuraavat albumit ovat kadoksissa ja estävät Acidfree:tä päivittymästä:"
+
+#: acidfree/acidfree.install:430;438
+msgid "file exists: %fn"
+msgstr "tiedosto %fn on olemassa"
+
+#: acidfree/acidfree.install:454
+msgid "The removal of the original file %file has failed."
+msgstr "Alkuperäisen tiedoston %file poisto epäonnistui."
+
+#: acidfree/acidfree.install:464
+msgid "The selected file %file could not be uploaded, because the destination %directory is not properly configured."
+msgstr "Valittua tiedostoa %file ei voitu siirtää palvelimelle, koska kohde %directory ei ole kelvollisesti asetettu."
+
+#: acidfree/acidfree.install:465
+msgid "The selected file %file could not not be uploaded, because the destination %directory could not be found, or because its permissions do not allow the file to be written."
+msgstr "Valittua tiedostoa %file ei voitu siirtää palvelimelle, koska kohdetta %directory ei voitu löytää tai koska sen oikeudet eivät salli tiedostoa kirjoitettavan."
+
+#: acidfree/acidfree.install:481
+msgid "The selected file %file could not be copied, because no file by that name exists.  Please check that you supplied the correct filename."
+msgstr "Valitua tiedostoa %file ei voitu kopioida, koska tämän nimistä tiedostoa ei ole olemassa.  Tarkista, että annoit oikean tiedostonimen."
+
+#: acidfree/acidfree.install:514
+msgid "The selected file %file could not be copied, because a file by that name already exists in the destination."
+msgstr "Tiedostoa %file ei voitu kopioida, koska samanniminen tiedosto on jo olemassa kohteessa."
+
+#: acidfree/acidfree.install:520
+msgid "The selected file %file could not be copied."
+msgstr "Tiedostoa %file ei voitu kopioida."
+
+#: acidfree/acidfree.install:465
+msgid "file system"
+msgstr "tiedostojärjestelmä"
+
+#: acidfree/acidfree.info:0
+msgid "A simple unified media management module for Image and Video modules"
+msgstr "Yksinkertainen keskitetty ylläpitomoduuli Kuva- ja Video moduuleille"
+
+#: acidfree/class_album.inc:34
+msgid "Add an album"
+msgstr "Lisää albumi"
+
+#: acidfree/class_album.inc:109;252
+msgid "Delete"
+msgstr "Poista"
+
+#: acidfree/class_album.inc:114
+msgid "removed '%item' from album"
+msgstr "poistettu '%item' albumista"
+
+#: acidfree/class_album.inc:121;248
+msgid "Copy"
+msgstr "Kopioi"
+
+#: acidfree/class_album.inc:127;244
+msgid "Move"
+msgstr "Siirrä"
+
+#: acidfree/class_album.inc:145
+msgid "Could not set '%item' to be own ancestor album"
+msgstr "Ei voitu asettaa '%item' omaksi isäntäalbumiksi"
+
+#: acidfree/class_album.inc:160
+msgid "Changes saved."
+msgstr "Muutokset talletettu."
+
+#: acidfree/class_album.inc:168;223;368;386
+msgid "This album is empty"
+msgstr "Tämä albumi on tyhjä"
+
+#: acidfree/class_album.inc:213
+msgid "%title Contents"
+msgstr "%title Sisältö"
+
+#: acidfree/class_album.inc:234
+msgid "All"
+msgstr "Kaikki"
+
+#: acidfree/class_album.inc:234
+msgid "None"
+msgstr "Ei mitään"
+
+#: acidfree/class_album.inc:234
+msgid "Invert"
+msgstr "Käännä päinvastaiseksi"
+
+#: acidfree/class_album.inc:241
+msgid "Destination"
+msgstr "Kohde"
+
+#: acidfree/class_album.inc:256
+msgid "Submit"
+msgstr "Lähetä"
+
+#: acidfree/class_album.inc:418;438
+msgid "Empty"
+msgstr "Tyhjä"
+
+#: acidfree/class_album.inc:443
+msgid "Item"
+msgstr "Kohde"
+
+#: acidfree/class_album.inc:443
+msgid "Items"
+msgstr "Kohdetta"
+
+#: acidfree/class_album.inc:464
+msgid "Parent album"
+msgstr "Isäntäalbumi"
+
+#: acidfree/class_album.inc:33
+#: acidfree/acidfree.module:97
+msgid "album"
+msgstr "albumi"
+
+#: acidfree/class_album.inc:446;446
+#: acidfree/acidfree.module:1035;1294
+msgid "Albums"
+msgstr "Albumit"
+
+#: acidfree/class_album.inc:475
+#: acidfree/acidfree.module:1576
+msgid "root"
+msgstr "juuri"
+
+#: acidfree/class_image.inc:38
+msgid "image"
+msgstr "kuva"
+
+#: acidfree/class_image.inc:39
+msgid "Add an image"
+msgstr "Lisää kuva"
+
+#: acidfree/class_image.inc:96
+msgid "Counterclockwise"
+msgstr "Vastapäivään"
+
+#: acidfree/class_image.inc:97
+msgid "No rotation"
+msgstr "Ei kierretä"
+
+#: acidfree/class_image.inc:98
+msgid "Clockwise"
+msgstr "Myötäpäivään"
+
+#: acidfree/class_image.inc:99
+msgid "Use exif orientation tag"
+msgstr "Käytä exif suuntamerkkausta"
+
+#: acidfree/class_image.inc:103
+msgid "Rotate image"
+msgstr "Kierrä kuvaa"
+
+#: acidfree/class_video.inc:39
+msgid "video"
+msgstr "video"
+
+#: acidfree/class_video.inc:40
+msgid "Add a video"
+msgstr "Lisää video"
+
+#: acidfree/image.imagick.inc:25
+msgid "The built-in imagick image toolkit requires that the imagick module for PHP be installed and configured properly. For more information see %url."
+msgstr "The built-in imagick image toolkit requires that the imagick module for PHP be installed and configured properly. For more information see %url."
+
+#: acidfree/image.imagick.inc:29
+msgid "Imagick JPEG image quality (1-100)"
+msgstr "Imagick JPEG kuvanlaatu (1-100)"
+
+#: acidfree/image.imagick.inc:41
+msgid "%function failed: %reason: %description"
+msgstr "%function epäonnistui: %reason: %description"
+
+#: acidfree/image.imagick.inc:47;57
+msgid "imagick_readimage failed to open file %file"
+msgstr "imagick_readimage ei onnistunut avaamaan tiedostoa %file"
+
+#: acidfree/image_manip.inc:121
+msgid "image rotate failed for %image"
+msgstr "kuvan %image kiertäminen epäonnistui"
+
+#: acidfree/views_acidfree.inc:16
+msgid "Album grid"
+msgstr "Albumiruudukko"
+
+#: acidfree/views_acidfree.inc:17
+msgid "Provides a grid view of items in an album"
+msgstr "Tarjoaa ruudukkonäkymän albumin kohteille"
+
+#: acidfree/views_acidfree.inc:110
+msgid "Album list"
+msgstr "Albumilista"
+

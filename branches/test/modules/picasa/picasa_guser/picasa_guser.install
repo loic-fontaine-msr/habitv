@@ -1,0 +1,54 @@
+<?php
+/* $Id: picasa_guser.install,v 1.1 2008/01/06 21:27:44 cyberswat Exp $ */
+/**
+ * Implementation of hook_install().
+ */
+function picasa_guser_install() {
+  global $user;
+  switch ($GLOBALS['db_type']) {
+    case 'mysql':
+    case 'mysqli':
+      db_query("CREATE TABLE IF NOT EXISTS {picasa_gusers} (
+          nid int(10) unsigned NOT NULL default '0',
+          vid int(10) unsigned NOT NULL default '0',
+          uid int(11) NOT NULL default '0',
+          id varchar(255) NOT NULL,
+          updated int(11) NOT NULL,
+          title varchar(255) NOT NULL,
+          subtitle varchar(255) default NULL,
+          icon varchar(255) default NULL,
+          author_name varchar(100) NOT NULL,
+          author_uri varchar(255) NOT NULL,
+          opensearch_total_results int(11) NOT NULL,
+          opensearch_start_index int(11) NOT NULL,
+          opensearch_items_per_page int(11) NOT NULL,
+          gphoto_user varchar(255) NOT NULL,
+          gphoto_nickname varchar(255) NOT NULL,
+          gphoto_thumbnail varchar(255) NOT NULL,
+          PRIMARY KEY  (nid,vid),
+          UNIQUE KEY vid (vid),
+          UNIQUE KEY gphoto_user (gphoto_user)
+        ) ENGINE=MyISAM DEFAULT CHARSET=utf8
+      ");
+      $msg = t("The Picasa user module has been installed: ");
+      $msg .= "uid($user->uid) $user->name";
+      drupal_set_message($msg, 'status');
+      watchdog('picasa_guser', $msg, 'WATCHDOG_NOTICE');
+      break;
+    default:
+      $error = t("The Picasa user module only supports the Mysql Database.");
+      drupal_set_message($error, 'error');
+      watchdog('picasa_guser', $error, 'WATCHDOG_ERROR');
+  }
+}
+
+/**
+ * Implementation of hook_uninstall().
+ */
+function picasa_guser_uninstall() {
+  db_query('DROP TABLE IF EXISTS {picasa_gusers}');
+  variable_del('PICASA_SCOPE');
+  $msg = t("The Picasa user module has been uninstalled");
+  drupal_set_message($msg, 'status');
+  watchdog('picasa_guser', $msg, 'WATCHDOG_NOTICE');
+}

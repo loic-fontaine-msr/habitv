@@ -1,0 +1,6 @@
+; $Id$
+name = BoWoB
+description = Chat Drupal Integrated
+package = Chat
+version = 1
+dependencies = user

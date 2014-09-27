@@ -1,0 +1,8 @@
+<?php
+// $Id: emfield.install,v 1.1.4.3 2008/02/19 16:52:28 aaron Exp $
+
+/**
+ * Implementation of hook_install().
+ */
+function emfield_install() {
+}

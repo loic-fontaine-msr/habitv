@@ -1,0 +1,8 @@
+; $Id$
+name = Chatblock
+description = Lets users chat with each other in a block.
+; Information added by drupal.org packaging script on 2007-11-21
+version = "5.x-1.0.x-dev"
+project = "chatblock"
+datestamp = "1195603308"
+

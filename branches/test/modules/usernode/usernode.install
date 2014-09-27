@@ -1,0 +1,66 @@
+<?php
+// $Id: usernode.install,v 1.3.2.4 2007/09/11 13:28:12 fago Exp $
+
+if (!defined('USERNODE_CONTENT_TYPE')) {
+  //if the module isn't included yet, we need to make this define so that things are working...
+  define('USERNODE_CONTENT_TYPE', "usernode");
+}
+
+function usernode_install() {
+  switch ($GLOBALS['db_type']) {
+    case 'mysqli':
+    case 'mysql':
+      db_query("CREATE TABLE if not exists {usernode} (
+        nid int(10) unsigned NOT NULL,
+        uid int(10) unsigned NOT NULL,
+        PRIMARY KEY(uid,nid)
+      ) TYPE=MyISAM /*!40100 DEFAULT CHARACTER SET utf8 */;");
+      break;
+    case 'pgsql':
+      db_query("CREATE TABLE {usernode} (
+        nid int_unsigned NOT NULL,
+        uid int_unsigned NOT NULL,
+        PRIMARY KEY(uid,nid)
+      )");
+      break;
+    default:
+      break;
+  }
+
+  // Prevent the promotion of new usernode objects to the front page by default,
+  // by only placing 'status' (the 'Published' option) into the node options.
+  variable_set('node_options_'. USERNODE_CONTENT_TYPE, array('status'));
+}
+
+function usernode_uninstall() {
+  // We can't call node_type_delete() because usernode_delete() forbids that,
+  // so let's find and delete the usernodes manually
+  $result = db_query("SELECT u.* FROM {users} u ".
+                     "JOIN {node} n ON u.uid = n.uid ".
+                     "WHERE n.type = '". USERNODE_CONTENT_TYPE ."'");
+
+  while ($user = db_fetch_object($result)) {
+    usernode_delete_node($user);
+  }
+
+  db_query("DROP TABLE {usernode}");
+  db_query("DELETE FROM {node_type} WHERE type = '". USERNODE_CONTENT_TYPE ."'");
+  variable_del('node_options_'. USERNODE_CONTENT_TYPE);
+}
+
+/*
+ * Set the nodefamily maximum population, so that nodefamily knows that usernodes are lonely nodes
+ */
+function usernode_update_1() {
+  if (module_exists('nodefamily')) {
+    nodefamily_content_type_set_max(USERNODE_CONTENT_TYPE, 1);
+  }
+  return array();
+}
+
+function usernode_update_2() {
+  //when the define was missing during installation, a wrong variable has been created
+  //this update removes it
+  variable_del('node_options_USERNODE_CONTENT_TYPE');
+  return array();
+}

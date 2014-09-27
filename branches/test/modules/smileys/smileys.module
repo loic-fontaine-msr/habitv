@@ -1,0 +1,368 @@
+<?php
+// $Id: smileys.module,v 1.47.2.6 2007/04/29 19:53:45 Gurpartap Exp $
+
+function smileys_help($section) {
+  switch ($section) {
+    case 'admin/settings/smileys':
+    case 'admin/settings/smileys/list':
+      return t('Here you can add/edit the Smileys that are recognised in your content.');
+  }
+}
+
+function smileys_perm() {
+  return array('administer smileys', 'use smiley select box');
+}
+
+function smileys_filter_tips($delta, $format, $long = false) {
+  if ($long) {
+    return t('If you include a textual smiley in your post (see chart below), it will be replaced by a graphical smiley.') . '<br />' . smileys_table();
+  }
+  else {
+    $GLOBALS['display_smileys_block'] = true;
+    return t('<a href="!smileys_help">Textual smileys</a> will be replaced with graphical ones.', array('!smileys_help' => url('filter/tips/'.$format, NULL, 'filter-smileys-'.$delta)));
+  }
+}
+
+function _smileys_list($refresh = 0, $whereclause = '') {
+ if($whereclause != '') {
+   $whereclause = ' WHERE ' . $whereclause;
+  }
+  static $list;
+  if (!$list || $refresh) {
+    $result = db_query('SELECT * FROM {smileys} ' . $whereclause);
+    $list = array();
+    while ($a = db_fetch_object($result)) {
+      $list[] = $a;
+    }
+  }
+  return $list;
+}
+
+function smileys_block($op = 'list', $delta = 0) {
+  if ($op == 'list') {
+    $blocks[0]['info'] = t('Smileys on submission pages');
+    return $blocks;
+  }
+  else if ($op == 'view') {
+    switch ($delta) {
+      case 0:
+        $block['subject'] = t('Smileys');
+        $block['content'] = $GLOBALS['display_smileys_block'] ? smileys_table() : '';
+        return $block;
+    }
+  }
+}
+
+function smileys_form_alter($form_id, &$form) {
+  if (user_access('use smiley select box') && ((isset($form['type']) && $form['type']['#value'] .'_node_form' == $form_id) && variable_get('smileys_enable_for_nodes', 0) && isset($form['body_filter']) || ('comment_form' == $form_id && variable_get('smileys_enable_for_comments', 0)))) {
+    $output = '';
+    $form['smileys'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Smileys'),
+      '#collapsible' => TRUE,
+      '#collapsed' => TRUE,
+      '#weight' => 0,
+    );
+    $form['smileys']['smileys_box'] = array(
+      '#type' => 'markup',
+      '#value' => theme('smileys_select_table') . (variable_get('smileys_enable_widget', 0) ? '<span id="showSmileysWindow" class="smiley-class">'. t('[Show all]') .'</span>' : ''),
+    );
+  }
+  return $form;
+}
+
+function _smileys_select_table() {
+  $content = '';
+  $list = _smileys_list();
+  foreach ($list as $smiley) {
+    $acronyms = explode(' ', $smiley->acronyms);
+    $alt = check_plain(implode('  ', $acronyms));
+    $desc = implode('&nbsp; ', $acronyms);
+    $content .= '<span><img src="'. check_url(base_path() . $smiley->image) .'" title="'. check_plain($smiley->description) .'" alt="'. $acronyms[0] .'" class="smiley-class"/></span>';
+  }
+  return $content;
+}
+
+function theme_smileys_select_table() {
+  drupal_add_js(array('smileys' => array('basePath' => base_path() . (variable_get('clean_url', 0) ? '' : '?q='))), 'setting');
+  drupal_add_js(drupal_get_path('module', 'smileys') .'/smileys.js');
+  drupal_add_css(drupal_get_path('module', 'smileys') .'/smileys.css');
+
+  return '<div class="smileys">'. _smileys_select_table() .'</div>';
+}
+
+function smileys_table() {
+  drupal_add_js(drupal_get_path('module', 'smileys') .'/smileys.js');
+  drupal_add_css(drupal_get_path('module', 'smileys') .'/smileys.css');
+  $form = array();
+  $output = '';
+  $header = array(t('Smiley'), t('Acronyms'));
+  $rows = array();
+  $list = _smileys_list(1);
+  foreach ($list as $smiley) {
+  $acronyms = explode(' ', $smiley->acronyms);
+    $rows[] = array(
+      '<img src="'. check_url(base_path() . $smiley->image) .'" alt="'. $acronyms[0] .'" title="'. check_plain($smiley->description) .'" class="smiley-class" />',
+      check_plain($smiley->acronyms)
+    );
+  }
+  $form['smileys'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Smileys'),
+    '#collapsible' => TRUE,
+  );
+  $form['smileys']['smileys_box'] = array(
+    '#type' => 'markup',
+    '#value' => theme('table', $header, $rows),
+  );
+  $output .= drupal_render($form);
+  return $output;
+}
+
+function smileys_list() {
+  print '<div class="smileysWindowtext">'. t('Click to insert acronym. [<span class="smiley-class" id="closeSmileys">Close</span>]') .'</div><div class="smileysWindow">'. _smileys_select_table() .'</div>';
+}
+
+function smileys_filter($op, $delta = 0, $format = -1, $text = "") {
+  switch ($op) {
+    case 'list':
+      return array(0 => t('Smileys filter'));
+    case 'description':
+      return t('Replaces smileys inside posts with images.');
+    case 'settings':
+        $form['smileys_filter'] = array('#type' => 'fieldset', '#title' => t('Smileys filter'), '#value' => t('You can define a global list of smileys on the !page.', array('!page' => l(t('smileys settings page'), 'admin/settings/smileys'))));
+      return $form;
+    case "process":
+      return smileys_filter_process($text);
+    default:
+      return $text;
+  }
+}
+
+function smileys_filter_process($text) {
+  $text = ' '. $text .' ';
+  $list = _smileys_list();
+  foreach ($list as $smiley) {
+    $acronyms = explode(" ", $smiley->acronyms);
+    $alt = str_replace('\\', '\\\\', check_plain($smiley->description));
+    foreach ($acronyms as $a) {
+      if ($smiley->standalone)
+        $text = eregi_replace("([ ,\.\?!:\(\)\r\n\<\>])". preg_quote($a) ."([ ,\.\?!:\(\)\r\n\<\>])", "\\1<img src=\"". check_url(base_path() . $smiley->image) ."\" title=\"". check_plain($alt) ."\" alt=\"". check_plain($alt) ."\" />\\2", $text);
+      else
+        $text = eregi_replace(preg_quote($a), '<img src="'. check_url(base_path() . $smiley->image) .'" title="'. check_plain($alt) .'" alt="'. check_plain($alt) .'" />', $text);
+    }
+  }
+  $text = substr($text, 1, -1);
+
+  return $text;
+}
+
+function smileys_menu($may_cache) {
+  $items = array();
+
+  if ($may_cache) {
+    $access = user_access('administer smileys');
+
+    $items[] = array(
+      'path' => 'admin/settings/smileys',
+      'title' => t('Smileys'),
+      'description' => t('Replaces smileys inside posts with images.'),
+      'callback' => 'smileys_admin_list',
+      'access' => $access);
+
+    $items[] = array(
+      'path' => 'admin/settings/smileys/list',
+      'title' => t('List'),
+      'callback' => 'smileys_admin_list',
+      'type' => MENU_DEFAULT_LOCAL_TASK,
+      'weight' => -10);
+
+    $items[] = array(
+      'path' => 'admin/settings/smileys/add',
+      'title' => t('Add'),
+      'callback' => 'smileys_admin_add',
+      'access' => $access,
+      'type' => MENU_LOCAL_TASK);
+
+    $items[] = array(
+      'path' => 'admin/settings/smileys/configure',
+      'title' => t('Settings'),
+      'description' => t('Smileys configuration.'),
+      'callback' => 'drupal_get_form',
+      'callback arguments' => 'smileys_admin_settings',
+      'access' => user_access('administer smileys'),
+      'weight' => 8,
+      'type' => MENU_LOCAL_TASK,);
+
+    $items[] = array(
+      'path' => 'admin/settings/smileys/edit',
+      'title' => t('Edit smiley'),
+      'callback' => 'smileys_admin_add',
+      'access' => $access,
+      'type' => MENU_CALLBACK);
+
+    $items[] = array(
+      'path' => 'admin/settings/smileys/delete',
+      'title' => t('Delete smiley'),
+      'callback' => 'smileys_admin_delete',
+      'access' => $access,
+      'type' => MENU_CALLBACK);
+
+    $items[] = array(
+      'path' => 'live/smileys',
+      'callback' => 'smileys_list',
+      'access' => user_access('use smiley select box'),
+      'type' => MENU_CALLBACK);
+  }
+  return $items;
+}
+
+function smileys_admin_settings() {
+  $form = array();
+  $form['smileys_selectbox'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Smileys select-box settings'),
+  );
+  $form['smileys_selectbox']['smileys_enable_for'] = array(
+    '#type' => 'markup',
+    '#value' => t('Enable smileys select box for:'),
+  );
+  $form['smileys_selectbox']['smileys_enable_for_nodes'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Nodes'),
+    '#default_value' => variable_get('smileys_enable_for_nodes', 0),
+  );
+  $form['smileys_selectbox']['smileys_enable_for_comments'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Comments'),
+    '#default_value' => variable_get('smileys_enable_for_comments', 0),
+  );
+  $form['smileys_widgetbox'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Smileys widget-box settings'),
+  );
+  $form['smileys_widgetbox']['smileys_enable_widget'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Enable Smileys Widget(Popup) box'),
+    '#description' => t('Adds a <em>[Show all]</em> link to the end of smileys in select box, which when clicked, opens an inline widget to insert smileys. The widget is an inline popup like approach, allowing ease of usability.'),
+    '#default_value' => variable_get('smileys_enable_widget', 0),
+  );
+  
+ return system_settings_form($form);
+}
+
+function smileys_admin_list() {
+  $header = array(t('Smiley'), t('Acronyms'), t('Description'), t('Operations'));
+  $rows = array();
+  $output = '';
+  $smileyp = db_query("SELECT DISTINCT package FROM {smileys} ORDER BY package");
+  while ($pack = db_fetch_object($smileyp)) {
+    $package = $pack->package;
+    $list = _smileys_list(1, " package = '$package' ");
+    foreach ($list as $smiley) {
+      $each_acronym = explode(' ', $smiley->acronyms);
+      foreach ($each_acronym as $key => $eac) {
+        $acronyms .= '<span style="color:'. ($key % 2 == 0 ? "#000000" : "#53616e") .';">'. check_plain($eac) .'</span>&nbsp;';
+      }
+      $rows[] = array(
+        '<img src="'. check_url(base_path() . $smiley->image) .'" alt="'. check_plain($smiley->description) .'" />',
+        $acronyms,
+        check_plain($smiley->description),
+        l(t('Edit'), 'admin/settings/smileys/edit/'. $smiley->id) . ' · ' . l(t('Delete'), 'admin/settings/smileys/delete/'. $smiley->id)
+      );
+$acronyms = '';
+    }
+  $form['smileys'][$package] = array(
+    '#type' => 'fieldset',
+    '#title' => t($package),
+    '#collapsed' => TRUE,
+    '#collapsible' => TRUE,
+  );
+  $form['smileys'][$package]['smileys_box'] = array(
+    '#type' => 'markup',
+    '#value' => theme('table', $header, $rows),
+  );
+  $output .= drupal_render($form);
+  $form = array();
+  $rows = array();
+  }
+  if ($output == '') {
+    if (module_exists('smileys_import')) {
+      $msg = t('No smileys found. You may !add, or !import.', array('!add' => l(t('add custom smileys'), 'admin/settings/smileys/add'), '!import' => l(t('import smiley packages'), 'admin/settings/smileys/import')));
+    }
+    else {
+      $msg = t('No smileys found. You may !add, or install smileys_import module & import smiley packages.', array('!add' => l(t('add custom smileys'), 'admin/settings/smileys/add')));
+    }
+    drupal_set_message($msg);
+  }
+
+  return $output;
+}
+
+function smileys_admin_form($edit = array()) {
+  $form = array();
+  if ($edit['id']) {
+    $form['id'] = array('#type' => 'hidden', '#value' => $edit['id']);
+  }
+  $form['acronyms'] = array('#type' => 'textfield', '#title' => t('Acronyms'), '#default_value' => $edit['acronyms'], '#size' => 16, '#maxlength' => 255, '#description' => t('Enter a list of shorthands for the smiley you wish to add, separated by spaces. E.g. \':) ;) :smile:\''));
+  $form['image'] = array('#type' => 'textfield', '#title' => t('Image URL'), '#default_value' =>  $edit['image'], '#size' => 50, '#maxlength' => 255, '#description' => t('Enter the URL of the smiley-image relative to the root of your Drupal site. E.g. \'images/smileys/happy.png\'.'));
+  $form['description'] = array('#type' => 'textfield', '#title' => t('Description'), '#default_value' => $edit['description'], '#size' => 50, '#maxlength' => 64, '#description' => t('A short description of the emotion depicted to be used as tooltip for the image. E.g. \'Laughing out loud\'.'));
+  $form['standalone'] = array('#type' => 'checkbox', '#title' => t('Stand-alone'), '#default_value' =>  $edit['standalone'], '#description' => t('When checked, the smiley will only be inserted when an acronym is found as a separate word. This is useful for preventing accidental smileys with short acronyms.'));
+  $form['submit'] = array('#type' => 'submit', '#value' => t('Save Smiley'));
+  if ($edit['id']) {
+      $form['delete'] = array('#type' => 'submit', '#value' => t('Delete Smiley'));
+  }
+
+  return $form;
+}
+
+function smileys_admin_form_submit($form_id, $form_values) {
+  if (isset($form_values['id'])) {
+    if ($form_values['op'] == t('Delete Smiley')) {
+      smileys_admin_delete($form_values['id']);
+      return 'admin/settings/smileys';
+    }
+    db_query("UPDATE {smileys} SET acronyms='%s', image='%s', description='%s', standalone=%d WHERE id = %d", $form_values['acronyms'], $form_values['image'], $form_values['description'], $form_values['standalone'], $form_values['id']);
+    $message = t('Updated smiley: %smiley', array('%smiley' => $form_values['acronyms']));
+  }
+  else {
+    db_query("INSERT INTO {smileys} (acronyms, image, description, standalone) VALUES ('%s', '%s', '%s', %d)", $form_values["acronyms"], $form_values["image"], $form_values["description"], $form_values["standalone"]);
+    $message = t('Added smiley: %smiley', array('%smiley' => $form_values['acronyms']));
+  }
+
+  // watchdog('regular', $message);
+  drupal_set_message($message);
+  return 'admin/settings/smileys';
+}
+
+function smileys_admin_form_validate($form_id, $form_values) {
+  if (trim($form_values['acronyms']) == t('Delete Smiley')) {
+    form_set_error('acronyms', t('Please enter an acronym for your smiley.'));
+  }
+
+  if ($form_values['image'] == '') {
+    form_set_error('image', t('Please enter the URL of the smiley image.'));
+  }
+  return !form_get_errors();
+}
+
+function smileys_admin_delete($sid) {
+  $smiley_id = $sid ? $sid : arg(4);
+  $smiley = db_fetch_array(db_query('SELECT * FROM {smileys} WHERE id = %d', $smiley_id));
+  if ($smiley_id) {
+    db_query("DELETE FROM {smileys} WHERE id = %d", $smiley_id);
+    $message = t('Deleted smiley: %smiley', array('%smiley' => $smiley['acronyms']));
+    // watchdog('regular', $message);
+    drupal_set_message($message);
+  }
+  drupal_goto('admin/settings/smileys');
+}
+
+function smileys_admin_add() {
+  $edit = $_POST['edit'];
+  if ($smiley_id = arg(4)) {
+    $smiley = db_fetch_array(db_query('SELECT * FROM {smileys} WHERE id = %d', $smiley_id));
+    $edit = $smiley ? $smiley : $_POST['edit'];
+  }
+  return drupal_get_form('smileys_admin_form', $edit);
+}

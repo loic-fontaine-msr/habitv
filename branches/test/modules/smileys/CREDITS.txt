@@ -1,0 +1,7 @@
+This module and the example smileys that come with it were originally made by
+Steven Wittens <unconed@drop.org>.
+
+And is currently maintained and actively developed (for Drupal 5.x+) by
+Gurpartap Singh <http://drupal.org/user/41470/contact>
+
+Feel free to contact me about it!

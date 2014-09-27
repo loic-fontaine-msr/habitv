@@ -1,0 +1,89 @@
+<?php
+
+// $Id: shoutbox.install,v 1.1.2.2 2007/10/18 06:39:17 disterics Exp $
+
+function shoutbox_install() {
+	switch ($GLOBALS['db_type']) {
+		case 'mysql':
+		case 'mysqli':
+			db_query("
+				CREATE TABLE {shoutbox} (
+				 shout_id int(10) unsigned NOT NULL auto_increment,
+				 uid int(10) NOT NULL default '0',
+				 nick varchar(32) NOT NULL default '',
+				 shout varchar(255) NOT NULL default '',
+				 url varchar(100) NOT NULL default '',
+				 status tinyint(2) NOT NULL default '0',
+				 moderate int(2) NOT NULL default '0',
+				 created int(11) NOT NULL default '0',
+				 changed int(11) NOT NULL default '0',
+				 hostname varchar(255) NOT NULL default '',
+				 PRIMARY KEY  (shout_id)
+				 ) /*!40100 DEFAULT CHARACTER SET utf8 */ ");
+
+			db_query("			
+				 CREATE TABLE {shoutbox_moderation} (
+				 moderation_id int(10) unsigned NOT NULL auto_increment,
+				 shout_id int(10) unsigned default '0',
+				 uid int(10) unsigned default '0',
+				 vote tinyint(3) default '0',
+				 timestamp int(11) unsigned default '0',
+				 PRIMARY KEY  (moderation_id),
+				 KEY moderation_id (moderation_id)
+				 ) /*!40100 DEFAULT CHARACTER SET utf8 */ ");
+			break;
+		case 'pgsql':
+			db_query("
+			CREATE TABLE {shoutbox} (
+			shout_id serial NOT NULL,
+			uid int NOT NULL default '0',
+			nick varchar(32) NOT NULL default '',
+			shout varchar(255) NOT NULL default '',
+			url varchar(100) NOT NULL default '',
+			status smallint NOT NULL default '0',
+			moderate int NOT NULL default '0',
+			created int NOT NULL default '0',
+			changed int NOT NULL default '0',
+			hostname varchar(255) NOT NULL default '',
+			PRIMARY KEY (shout_id)
+			)");
+
+			db_query("			
+			CREATE TABLE {shoutbox_moderation} (
+			moderation_id serial NOT NULL,
+			shout_id int default '0',
+			uid int default '0',
+			vote smallint default '0',
+			timestamp int default '0',
+			PRIMARY KEY (moderation_id)
+			)");
+			break;
+	}
+}
+
+/**
+ * Uninstall shoutbox
+ */
+function shoutbox_uninstall() {
+  switch ($GLOBALS['db_type']) {
+    case 'pgsql':
+    case 'mysql':
+    case 'mysqli':
+    default:
+		db_query("DROP TABLE {shoutbox_moderation}");
+		db_query("DROP TABLE {shoutbox}");
+			// delete variables
+		variable_del('shoutbox_expire');
+		variable_del('shoutbox_showamount');
+		variable_del('shoutbox_ascending');
+		variable_del('shoutbox_defaultname');
+		variable_del('shoutbox_shownamefield');
+		variable_del('shoutbox_showurlfield');
+		variable_del('shoutbox_refresh');
+		variable_del('shoutbox_anonymous_timeout');
+		variable_del('shoutbox_registered_timeout');
+		break;
+  }
+}
+
+		

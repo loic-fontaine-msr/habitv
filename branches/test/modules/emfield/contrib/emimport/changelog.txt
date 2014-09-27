@@ -1,0 +1,19 @@
+/* $Id: changelog.txt,v 1.1.2.3 2008/02/19 16:52:26 aaron Exp $ */
+
+2007-10-08
+readme
+
+2007-10-05
+checkboxes selected by default
+gray url textfield during import process
+
+2007-10-04
+allow override of title/body/tags
+add taxonomy capability
+node saves
+
+2007-10-03
+pull tn's from sets
+import form page
+settings pages
+started module

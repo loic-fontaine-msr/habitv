@@ -1,0 +1,35 @@
+<?php
+// $Id: imagex.install,v 1.3 2007/11/27 10:52:23 sdrycroft Exp $
+
+/**
+ * Installing and updating imagex.module.
+ */
+function imagex_install() {
+  // Create the database to link images with users.  
+  switch ($GLOBALS['db_type']) {
+    case 'mysql':
+    case 'mysqli':    
+      $result = db_query("CREATE TABLE {imagex} (
+                           uid INT(10),
+                           nid INT(10),
+                           CONSTRAINT imagex_primary_key PRIMARY KEY (uid,nid)
+                          );");
+      break;
+    case 'pgsql':
+      $result = false;
+      break;
+  }
+  if ($result){    
+  	drupal_set_message(t('Imagex installed'));
+  }
+  else{    
+  	drupal_set_message(t('I\'m sorry Dave, I\'m afraid I can\'t do that. Imagex installation failed'), 'error');
+  }
+}
+
+/**
+ * Kick that loser to touch.
+ */
+function imagex_uninstall() {
+  db_query("DROP TABLE {imagex};");// If this fails, then it's probably because imagex isn't present.
+}

@@ -1,0 +1,251 @@
+<?php
+/* $Id$ */
+/** 
+ * Lucid menus
+ *
+ * Allow advanced javascript menu manupulations. I've used dhtml_menu as a starting point, thanks merlinofchaos
+ */
+
+if (variable_get('lucid_menu_defaults', 0))
+	_lucid_menu_delete_globals();
+
+/**
+ * Implementation of hook_block
+ *
+ */
+function lucid_menu_block($op = 'list', $delta = 0, $edit = array()) 
+{
+	if ($op == 'list') 
+	{
+		$blocks = array();
+		$root_menus = menu_get_root_menus();
+		foreach ($root_menus as $mid => $title) {
+			$blocks[$mid]['info'] = t('Lucid: ') .$title;
+		}
+		
+		return $blocks;
+	}
+	else if ($op == 'view') 
+	{
+		$path = drupal_get_path('module', 'lucid_menu');
+		
+		drupal_add_js("$path/js/doiMenuDOM.js");
+		drupal_add_js("$path/js/lucid_menu_custom.js");
+		drupal_add_css("$path/css/lucid_menu.css");
+		
+		$item = menu_get_item($delta);
+		$data['subject'] = check_plain($item['title']);
+		
+		$block_settings = variable_get("lucid_menu_$delta", '');
+		
+		$block_settings = trim($block_settings);
+		
+		if (!empty($block_settings))
+			$block_settings = unserialize($block_settings);
+			
+		if ($block_settings['options'])
+			$block_settings['options'] = str_replace('%theme_path', path_to_theme(), $block_settings['options']);
+		
+		if ($block_settings['options'])
+			$block_settings['options'] = str_replace('%module_path', drupal_get_path('module', 'lucid_menu'), 
+				$block_settings['options']);
+		
+		// create main menu
+
+		$GLOBALS['LUCID_MENU_DEPTH'] = 0;
+		$GLOBALS['DELTA'] = $delta;
+		unset($GLOBALS['LAST_MENU_IN_DEPTH']);
+		$GLOBALS['LAST_MENU_IN_DEPTH'] = array();
+		$GLOBALS['COUNTER'] = 0;
+		
+		$data['content'] = "var menu_{$delta}_{$GLOBALS['LUCID_MENU_DEPTH']}_0 = new TMainMenu('menu_{$delta}_{$GLOBALS['LUCID_MENU_DEPTH']}_0', '{$block_settings['direction']}');\n";
+		
+		if ($block_settings['direction'] &&  $block_settings['direction'] == 'horizontal')
+			$global_settings = variable_get('lucid_menu_horizontal', _lucid_menu_horizontal_defaults());
+		else 
+			$global_settings = variable_get('lucid_menu_vertical', _lucid_menu_vertical_defaults());
+			
+		$global_settings = str_replace('%theme_path', path_to_theme(), $global_settings);
+		$global_settings = str_replace('%module_path', drupal_get_path('module', 'lucid_menu'), $global_settings);
+		
+		$global_settings = explode("\n", $global_settings);
+		
+		foreach ($global_settings AS $key => $value)
+			if (!empty($value))
+				$data['content'] .= "menu_{$delta}_{$GLOBALS['LUCID_MENU_DEPTH']}_0.".$value.";\n";
+		
+		$block_settings['options'] = explode("\n", $block_settings['options']);
+		
+		foreach ($block_settings['options'] AS $key => $value)
+			if (!empty($value))
+				$data['content'] .= "menu_{$delta}_{$GLOBALS['LUCID_MENU_DEPTH']}_0.".$value.";\n";
+			
+		$GLOBALS['LAST_MENU_IN_DEPTH'][0] = "menu_{$delta}_{$GLOBALS['LUCID_MENU_DEPTH']}_0";
+		
+		$menu_content = lucid_menu_tree($delta, TRUE)."\n";
+
+		if (trim($menu_content) != '')
+			$data['content'] = "<div class=\"doiMenuDOM\"><script type=\"text/javascript\">{$data['content']}\n{$menu_content}menu_{$delta}_{$GLOBALS['LUCID_MENU_DEPTH']}_0.Build();\n</script></div>";
+		else
+			$data['content'] = '';
+		
+		return $data;
+	}
+	
+	else if ($op == 'configure')
+	{
+		$values = variable_get("lucid_menu_$delta", '');
+		
+		$values = trim($values);
+		
+		if (!empty($values))
+			$values = unserialize($values);
+		
+		$form['direction'] = array(
+			'#type' => 'select',
+			'#title' => t('Please choose the desired menu type'),
+			'#default_value' => $values['direction'] ? $values['direction'] : 'horizontal',
+			'#options' => array (
+				'horizontal' => t('Horizontal'),
+				'vertical' => t('Vertical')
+			),
+		);
+		
+		$form['options'] = array(
+			'#type' => 'textarea',
+			'#title' => t('Customizations'),
+			'#description' => t('Refer to the doc.htm for details on javascript customizations. You can also use "%theme_path"'.
+				'and %module_path to refer to the theme path and to the module path respectively. Include each '.
+				'directive on a seperate line. '.
+				'Examples of customizations :<br />SetPosition(\'absolute\',100,100)<br />'.
+				'_pop.SetPadding(0)'),
+			'#default_value' => $values['options'] ? $values['options'] : '',
+		);
+		
+		return $form;
+	}
+	else if ($op == 'save')
+		variable_set("lucid_menu_$delta", serialize($edit));
+}
+
+function theme_lucid_menu_item($mid) {
+  $menu_leaf = menu_item_link($mid, FALSE);
+  
+  $GLOBALS['LAST_MENU_IN_DEPTH'][$GLOBALS['LUCID_MENU_DEPTH']] = "menu_{$GLOBALS['DELTA']}_{$GLOBALS['LUCID_MENU_DEPTH']}_{$GLOBALS['COUNTER']}";
+  
+  $menu = "var menu_{$GLOBALS['DELTA']}_{$GLOBALS['LUCID_MENU_DEPTH']}_{$GLOBALS['COUNTER']} = new TPopMenu('".addslashes($menu_leaf['title'])."', '16px', 'a', '".url($menu_leaf['href'])."', '".addslashes($menu_leaf['title'])."');\n";
+  
+  $last_menu_in_parent_depth = $GLOBALS['LAST_MENU_IN_DEPTH'][$GLOBALS['LUCID_MENU_DEPTH'] - 1];
+  
+  $menu .= "$last_menu_in_parent_depth.Add(menu_{$GLOBALS['DELTA']}_{$GLOBALS['LUCID_MENU_DEPTH']}_{$GLOBALS['COUNTER']});\n".$children;
+  
+  $GLOBALS['COUNTER']++;
+  
+  return $menu;
+}
+
+function lucid_menu_tree($pid = 1, $skip_parent) {
+  $menu = menu_get_menu();
+  $output = '';
+  
+  if ($skip_parent && !(isset($menu['visible'][$pid]) && $menu['visible'][$pid]['children'])) return '';
+  
+  if (!$skip_parent)
+  	$GLOBALS['LUCID_MENU_DEPTH']++;
+  if (isset($menu['visible'][$pid]) && $menu['visible'][$pid]['children']) 
+  {
+  	if (!$skip_parent)
+  		$output .= theme_lucid_menu_item($pid);
+    foreach ($menu['visible'][$pid]['children'] as $mid) 
+    {
+      $type = isset($menu['visible'][$mid]['type']) ? $menu['visible'][$mid]['type'] : NULL;
+      $children = isset($menu['visible'][$mid]['children']) ? $menu['visible'][$mid]['children'] : NULL;
+      $output .= lucid_menu_tree($mid, FALSE);
+    }
+  }
+  else 
+  	$output .= theme('lucid_menu_item', $pid);
+  	
+ if (!$skip_parent)
+  	$GLOBALS['LUCID_MENU_DEPTH']--;
+
+  return $output;
+}
+
+/**
+ * Implementation of hook_menu().
+ *
+ */
+function lucid_menu_menu($may_cache)
+{
+	$items = array();
+	
+	if (!$may_cache)
+	{
+		$items[] = array(
+		'path' => 'admin/settings/lucid_menu',
+		'title' => t('Lucid menu'),
+		'description' => t('These options control common menu properties.'),
+		'callback' => 'drupal_get_form',
+		'callback arguments' => array('lucid_menu_admin_settings'),
+		'access' => user_access('administer site configuration'),
+		'type' => MENU_NORMAL_ITEM);
+	}
+	
+	return $items;
+}
+
+function lucid_menu_admin_settings()
+{
+	$form = array();
+	
+	$form['lucid_menu_horizontal'] = array(
+		'#type' => 'textarea',
+		'#title' => t('Horizontal menu common customizations'),
+		'#description' => t('Refer to the doc.htm for details on javascript customizations. You can also use "%theme_path"'.
+			'and %module_path to refer to the theme path and to the module path respectively. Include each '.
+			'directive on a seperate line. '.
+			'Examples of customizations :<br />SetPosition(\'absolute\',100,100)<br />'.
+			'_pop.SetPadding(0)'),
+		'#default_value' => variable_get("lucid_menu_horizontal", 
+			_lucid_menu_horizontal_defaults()),
+	);
+	
+	$form['lucid_menu_vertical'] = array(
+		'#type' => 'textarea',
+		'#title' => t('Vertical menu common customizations'),
+		'#description' => t('Refer to the doc.htm for details on javascript customizations. You can also use "%theme_path"'.
+			'and %module_path to refer to the theme path and to the module path respectively. Include each '.
+			'directive on a seperate line. '.
+			'Examples of customizations :<br />SetPosition(\'absolute\',100,100)<br />'.
+			'_pop.SetPadding(0)'),
+		'#default_value' => variable_get("lucid_menu_vertical", 
+			_lucid_menu_vertical_defaults()),
+	);
+	
+	$form['lucid_menu_defaults'] = array(
+		'#type' => 'checkbox',
+		'#title' => t('Revert to defaults'),
+		'#description' => t('This will revert the global options to the defaults'),
+		'#default_value' => 0
+	);	
+	
+	return system_settings_form($form);
+}
+
+function _lucid_menu_vertical_defaults()
+{
+	return "SetBackground('%module_path/m5.gif')\nSetCorrection(-19, -152)\n_pop.SetCorrection(-12, -152)\nSetExpandIcon(true,'','')";
+}
+
+function _lucid_menu_horizontal_defaults()
+{
+	return "SetCorrection(-19, -152)\n_pop.SetCorrection(-12, -152)\nSetExpandIcon(true,'','')";
+}
+
+function _lucid_menu_delete_globals()
+{
+	variable_del('lucid_menu_horizontal');
+	variable_del('lucid_menu_vertical');
+	variable_del('lucid_menu_defaults');
+}

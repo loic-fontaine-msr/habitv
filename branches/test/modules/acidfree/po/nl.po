@@ -1,0 +1,848 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Acidfree dutch translation\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2007-05-22 14:50+0100\n"
+"Last-Translator: Roy Scholten <roy@yoroy.com>\n"
+"Language-Team: yoroy <roy@yoroy.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Country: Netherlands\n"
+"X-Poedit-Language: Dutch\n"
+
+#: class_album.inc:33
+#: acidfree.module:97
+msgid "album"
+msgstr "album"
+
+#: class_album.inc:34
+msgid "Add an album"
+msgstr "Voeg een album toe"
+
+#: class_album.inc:109;252
+msgid "Delete"
+msgstr "Verwijder"
+
+#: class_album.inc:114
+msgid "removed '%item' from album"
+msgstr "'%item' uit album verwijderd"
+
+#: class_album.inc:121;248
+msgid "Copy"
+msgstr "Kopieer"
+
+#: class_album.inc:127;244
+msgid "Move"
+msgstr "Verplaats"
+
+#: class_album.inc:145
+msgid "Could not set '%item' to be own ancestor album"
+msgstr "Kon '%item' niet als eigen topalbum instellen"
+
+#: class_album.inc:160
+msgid "Changes saved."
+msgstr "Wijzigingen opgeslagen"
+
+#: class_album.inc:168;223;368;386
+msgid "This album is empty"
+msgstr "Dit album is leeg"
+
+#: class_album.inc:213
+msgid "%title Contents"
+msgstr "%title inhoud"
+
+#: class_album.inc:234
+msgid "All"
+msgstr "Alle"
+
+#: class_album.inc:234
+msgid "None"
+msgstr "Geen"
+
+#: class_album.inc:234
+msgid "Invert"
+msgstr "Invert"
+
+#: class_album.inc:241
+msgid "Destination"
+msgstr "Bestemming"
+
+#: class_album.inc:256
+msgid "Submit"
+msgstr "Indienen"
+
+#: class_album.inc:418;438
+msgid "Empty"
+msgstr "Leeg"
+
+#: class_album.inc:443
+msgid "Item"
+msgstr "Item"
+
+#: class_album.inc:443
+msgid "Items"
+msgstr "Items"
+
+#: class_album.inc:446;446
+#: acidfree.module:1106;1366
+msgid "Albums"
+msgstr "Albums"
+
+#: class_album.inc:467
+msgid "Parent album"
+msgstr "Bovenliggend album"
+
+#: class_album.inc:478
+#: acidfree.module:1667
+msgid "root"
+msgstr "root"
+
+#: class_image.inc:38
+msgid "image"
+msgstr "afbeelding"
+
+#: class_image.inc:39
+msgid "Add an image"
+msgstr "Voeg een afbeelding toe"
+
+#: class_image.inc:97
+msgid "Counterclockwise"
+msgstr "Linksom"
+
+#: class_image.inc:98
+msgid "No rotation"
+msgstr "Geen rotatie"
+
+#: class_image.inc:99
+msgid "Clockwise"
+msgstr "Rechtsom"
+
+#: class_image.inc:100
+msgid "Use exif orientation tag"
+msgstr "Gebruik exif orientatie tag"
+
+#: class_image.inc:104
+msgid "Rotate image"
+msgstr "Roteer afbeelding"
+
+#: class_video.inc:39
+msgid "video"
+msgstr "video"
+
+#: class_video.inc:40
+msgid "Add a video"
+msgstr "Voeg een video toe"
+
+#: image.imagick.inc:25
+msgid "The built-in imagick image toolkit requires that the imagick module for PHP be installed and configured properly. For more information see %url."
+msgstr "De ingebouwde imagich beeldbewerkingstoolkit vereist installatie en correcte instelling van de imagick module voor PHP. Zie %url voor meer informatie."
+
+#: image.imagick.inc:29
+msgid "Imagick JPEG image quality (1-100)"
+msgstr "Imagick JPEG beeldkwaliteit (1-100)"
+
+#: image.imagick.inc:41
+msgid "%function failed: %reason: %description"
+msgstr "%functie mislukt: %reason: %description"
+
+#: image.imagick.inc:47;57
+msgid "imagick_readimage failed to open file %file"
+msgstr "imagick_readimage kon %file niet openen"
+
+#: image_manip.inc:121
+msgid "image rotate failed for %image"
+msgstr "Roteren mislukt voor %image"
+
+#: views_acidfree.inc:16
+msgid "Album grid"
+msgstr "Album grid"
+
+#: views_acidfree.inc:17
+msgid "Provides a grid view of items in an album"
+msgstr "Biedt een index-print layout van een album"
+
+#: views_acidfree.inc:110
+msgid "Album list"
+msgstr "Album lijst"
+
+#: acidfree.module:99
+msgid "Acidfree albums are used for the categorization of images and videos."
+msgstr "Gebruik Acidfree albums om afbeeldingen en videos te categoriseren."
+
+#: acidfree.module:189
+msgid "Edit %title"
+msgstr "Bewerk %title"
+
+#: acidfree.module:195
+msgid "Title"
+msgstr "Titel"
+
+#: acidfree.module:221
+msgid "Body"
+msgstr "Berichttekst"
+
+#: acidfree.module:227
+msgid "Default album view"
+msgstr "Standaard album layout"
+
+#: acidfree.module:229
+msgid "Grid view"
+msgstr "Grid layout"
+
+#: acidfree.module:230
+msgid "List view"
+msgstr "Lijst layout"
+
+#: acidfree.module:237
+msgid "Sort album by"
+msgstr "Sorteer album op"
+
+#: acidfree.module:239
+msgid "Use global settings"
+msgstr "Gebruik algemene instellingen"
+
+#: acidfree.module:240;692
+msgid "Latest post first"
+msgstr "Laatste toevoeging eerst"
+
+#: acidfree.module:241;693
+msgid "Posted order"
+msgstr "Volgorde van toevoegen"
+
+#: acidfree.module:242;694
+msgid "Alphabetical order"
+msgstr "Alfabetische volgorde"
+
+#: acidfree.module:243;695
+msgid "Chronological order by creation date"
+msgstr "Chronologisch op aanmaakdatum"
+
+#: acidfree.module:269
+msgid "Select a fixed album thumbnail or select 'Random' to have a random thumbnail appear for the album thumbnail"
+msgstr "Selecteer een vaste miniatuur afbeelding of selecteer 'Willekeurig' om een willekeurige miniatuur te gebruiken voor een album"
+
+#: acidfree.module:275
+msgid "Album thumbnail"
+msgstr "Album miniatuur"
+
+#: acidfree.module:290
+msgid "Allow others to post items to this album"
+msgstr "Anderen mogen items aan dit album toevoegen"
+
+#: acidfree.module:297
+msgid "Weight"
+msgstr "Gewicht"
+
+#: acidfree.module:299
+msgid "In listings, the heavier albums will sink and the lighter albums will be positioned nearer the top."
+msgstr "In opsommingen zullen de zwaardere albums naar beneden zinken en zullen de lichtere albums bovenaan geplaatst worden."
+
+#: acidfree.module:317
+msgid "A better photo album than Gallery or Album. Acidfree is node based and well integrated into Drupal."
+msgstr "Een beter foto-album dan Gallery of Album. Acidfree is gebaseerd op nodes en goed in Drupal geintegreerd."
+
+#: acidfree.module:320
+msgid "Add an album here.  Other elements you can add are in the 'create content' menu."
+msgstr "Hier een album toevoegen. Andere elementen kun je toevoegen in het 'maak inhoud' menu."
+
+#: acidfree.module:326
+msgid "<p>Acidfree is an album system that has the ability to store any kind of media (assuming the class is existent.)  Currently implemented are %types.  Following the example of one of the currently implemented classes, it is easy to create a new media type.</p>"
+msgstr "<p>Acidfree is een album systeem dat elke soort media (voor zover beschikbaar in drupal) kan bevatten. Momenteel zijn %types beschikbaar. Volg het voorbeeld van één van de beschikbare typen om eenvoudig nieuwe media typen aan te maken.</p>"
+
+#: acidfree.module:328
+msgid "<p>Because Acidfree is more than simply a storage and viewing module, it requires some depenencies for the album management.  First, it requires the Filemanager module.  Until the Filemanager gets patched to have the exended API that Acidfree requires, Acidfree will ship with a patch for the Filemanager.  Second, it requires some form of image manipulation.  Drupal provides a frontend to the GD library that can do what is required.  Or, if you would rather use ImageMagick or libmagick (php-imagick module), set that up (copy the image.*.inc files to the includes directory) and select it.  Finally, if you want lossless rotations for your images, you will require jpegtran or exiftran.</p><p>For video thumbnailing, there are three options.  You can choose a static image for all your videos (no thumbnail), upload your own thumbnail (user thumbnail) or have mplayer thumbnail them automatically for you.  If you choose the first option, you will be asked to give the dimensions of the video so it can be displayed correctly in the 'full' view.  With option two, be sure to upload a thumbnail that is the same dimensions as the actual video (grab a frame from the video, do not resize it.)  The third option obviously implies that you have mplayer and all the win32 codecs installed on your <b>server</b> and that you are allowed to exec other programs (i.e., not running in safe mode.).  "
+msgstr "<p>Een goed functionerend Acidfree is afhankelijk van een aantal zaken. Ten eerste vereist het de Filemanager module. Totdat Filemanager bijgewerkt wordt naar de uitgebreide API zoals Acidfree die nodig heeft, wordt Acidfree met een patch voor Filemanager geleverd. Ten tweede moet een vorm van beeldbewerking mogelijk zijn. Drupal biedt zelf een koppeling met de GD bibliotheek, deze voldoet aan de vereisten. Als je liever ImageMagick of Libmagick (php-imagick module) gebruikt, installeer en selecteer ze (kopieer alle image.*.inc bestanden naar de includes map). Ten slotte, als je afbeeldingen wilt roteren zonder kwaliteitsverlies heb je jpegtran of exiftran nodig</p><p>Voor miniaturen van videos heb je drie opties. Je kunt een standaard afbeelding (ikoon) gebruiken voor alle videos of een eigen miniatuur uploaden (gebruiker's miniatuur) of mplayer automatisch de miniaturen laten genereren. Bij de eerste optie zul je gevraagd worden de afmetingen van de videoclip aan te geven, zodat deze correct weergegeven kan worden. Bij optie twee moet je er op letten dat de miniatuur exact dezelfde afmetingen heeft als de video (bewaar een beeld uit de video, verander de afmetingen niet). De derde optie gaat er natuurlijk van uit dat je mplayer en alle win32 codes geinstalleerd hebt op je <strong>server</strong> en dat je de mogelijkheid hebt om andere applicaties uit te voeren (oftewel, niet in 'safe mode' opereert)."
+
+#: acidfree.module:330
+msgid "Change these settings to however you like.  You are w00t, afterall."
+msgstr "Verander deze instellingen naar wens."
+
+#: acidfree.module:332
+msgid "The common attributes that Acidfree will have are: 'Sticky at top of lists', which allows the albums to be sorted before the other media types (image, video, etc.) in the various album views;  and *not* 'Promoted to front page' because that would make all the albums show up at the top of the front page, which is probably not desirable."
+msgstr "De gangbare opties die Acidfree meekrijgt zijn: 'Vastgeplakt bovenaan de lijst', hierdaar staan Albums altijd boven andere mediatypen (beeld, video, etc) in de diverse layouts; en <em>niet</em> 'Aangeraden op de voorpagina', omdat dit alle albums bovenaan de lijst op de standaard voorpagina zou tonen, wat waarschijnlijk niet gewenst is."
+
+#: acidfree.module:386
+msgid "Album"
+msgstr "Album"
+
+#: acidfree.module:392
+msgid "Acidfree settings"
+msgstr "Acidfree instellingen"
+
+#: acidfree.module:395
+msgid "Site-wide Acidfree settings."
+msgstr "Site-brede instellingen"
+
+#: acidfree.module:401;1207;1299
+msgid "Acidfree albums"
+msgstr "Acidfree albums"
+
+#: acidfree.module:421
+msgid "Album contents"
+msgstr "Album inhoud"
+
+#: acidfree.module:427
+msgid "Grid"
+msgstr "Grid"
+
+#: acidfree.module:427
+msgid "List"
+msgstr "Lijst"
+
+#: acidfree.module:442;870;1677
+msgid "Mass import"
+msgstr "Multi-import"
+
+#: acidfree.module:453
+msgid "My Acidfree Albums"
+msgstr "Mijn Acidfree Albums"
+
+#: acidfree.module:612
+msgid "Thumbnails per page must be a non-negative integer"
+msgstr "Miniaturen per pagina moet een niet-negatief heel getal zijn."
+
+#: acidfree.module:615
+msgid "Thumbnail padding must be a non-negative integer"
+msgstr "Miniatuur marge moet een niet-negatief heel getal zijn."
+
+#: acidfree.module:651
+msgid "General Settings"
+msgstr "Algemene instellingen"
+
+#: acidfree.module:655
+msgid "Per user albums"
+msgstr "Albums per gebruiker"
+
+#: acidfree.module:656
+msgid "This options will allow each user to have a top-level album of their own.  The per user album is located at user/acidfree if logged in and acidfree/user/nnn for each individual album."
+msgstr "Deze optie geeft elke gebruiker een eigen top-album. Het gebruikers-album bevindt zich op user/acidfree wanneer ingelogd. Elk individueel album op acidfree/user/nnn."
+
+#: acidfree.module:666
+msgid "Neither exiftran nor jpegtran executables are in the safe_mode_exec_dir (%safe_dir) &mdash; lossy jpeg rotation will be used instead"
+msgstr "De exiftran noch jpegtran toepassingen bevinden zich in de safe_mode_exec_dir(%safe_dir) &mdash; jpeg rotatie met kwaliteitsverlies zal worden gebruikt."
+
+#: acidfree.module:670
+msgid "Neither exiftran nor jpegtran are available &mdash; lossy jpeg rotation will be used instead"
+msgstr "Exiftran noch jpegtran zijn beschikbaar; jpeg rotatie met kwaliteitsverlies zal worden gebruikt."
+
+#: acidfree.module:674
+msgid "Acidfree Display"
+msgstr "Acidfree weergave"
+
+#: acidfree.module:678
+msgid "Show mass import tab in album view"
+msgstr "Toon multi-import tab in album overzicht"
+
+#: acidfree.module:683
+msgid "Show alternative album view"
+msgstr "Toon alternatieve album layout"
+
+#: acidfree.module:685
+msgid "Albums normally have two views: grid and list.  This option controls whether or not when viewing the album, users can switch to the alternate view.  Which view is the default view is set individually in each album"
+msgstr "Albums hebben normaliter twee layouts: grid en lijst. Deze optie stelt in of gebruikers kunnen wisselen tussen beide layouts. De standaard layout wordt voor elk album apart ingesteld."
+
+#: acidfree.module:689
+msgid "Sort albums by"
+msgstr "Sorteer albums op"
+
+#: acidfree.module:700
+msgid "Sort all albums"
+msgstr "Sorteer alle albums"
+
+#: acidfree.module:702
+msgid "Force all albums to use this selected sort order"
+msgstr "Verplicht elk album deze sortering te gebruiken"
+
+#: acidfree.module:709
+msgid "List albums first"
+msgstr "Albums als eerste opsommen"
+
+#: acidfree.module:711
+msgid "Show albums first in all lists (marks them as 'sticky')"
+msgstr "Toon albums als eerste in alle opsommingen (markeer ze 'sticky')"
+
+#: acidfree.module:715
+msgid "Thumbnails per page"
+msgstr "Miniaturen per pagina"
+
+#: acidfree.module:719
+msgid "Enter 0 for unlimited"
+msgstr "Vul 0 in voor ongelimiteerd"
+
+#: acidfree.module:723
+msgid "Show category links in Acidfree node views"
+msgstr "Toon categorie-links in Acidfree node "
+
+#: acidfree.module:725
+msgid "By default, the Taxonomy module add category links to all nodes that are tagged with a term.  Acidfree disables this.  By selecting this box, these redundant links will be shown in the node view of albums and items."
+msgstr "Taxonomy module voegt standaard de categorie links toe aan nodes die met een bepaalde term gelabeld zijn. Acidfree schakelt dit uit. Selecteer deze optie om die links weer te tonen in de node view van albums en items."
+
+#: acidfree.module:729
+msgid "Show image title as default caption for inline images"
+msgstr "Toon afbeeldingstitel als standaard bijschrijft voor ingevoegde afbeeldingen."
+
+#: acidfree.module:735
+msgid "Amount of padding/border on each side of thumbnail image"
+msgstr "Hoeveelheid marge en omlijning aan elke zijde van miniatuur afbeelding"
+
+#: acidfree.module:737
+msgid "In pixels. Only needs to be changed if you modify the padding/border around the thumbnail."
+msgstr "In pixels. Hoeft alleen aangepast te worden als je de marge/omlijning om de miniatuur aangepast hebt."
+
+#: acidfree.module:741
+msgid "No image toolkit has been properly installed or configured.  Go to admin/settings to fix this."
+msgstr "Geen beeldbewerkingstoolkit geinstalleerd of geconfigureerd. Ga naar admin/settings om dit te verhelpen."
+
+#: acidfree.module:744
+msgid "Image Manipulation"
+msgstr "Beeldbewerking"
+
+#: acidfree.module:749
+msgid "exiftran provides lossless rotation of jpeg images and keeps EXIF information.  If you provide a working path, Acidfree will try to use it."
+msgstr "exiftran biedt rotatie van jpeg afbeeldingen zonder kwaliteitsverlies en behoudt EXIF informatie. Als je een werkend pad aangeeft zal Acidfree het proberen te gebruiken."
+
+#: acidfree.module:754
+msgid "jpegtran provides lossless rotation of jpeg images and can somewhat munge the EXIF information.  If you provide a working path, Acidfree will try to use it."
+msgstr "jpegtran biedt rotatie van jpeg afbeeldingen zonder kwaliteitsverlies en kan EXIF informatie enigszins verhaspelen. Als je een werkend pad aangeeft zal Acidfree het proberen te gebruiken."
+
+#: acidfree.module:817
+msgid "edit this album"
+msgstr "bewerk dit album"
+
+#: acidfree.module:914
+msgid "Recent Acidfree items"
+msgstr "Recente Acidfree items"
+
+#: acidfree.module:915
+msgid "Favorite Acidfree items"
+msgstr "Favoriete Acidfree items"
+
+#: acidfree.module:916
+msgid "Random Acidfree items"
+msgstr "Willekeurige Acidfree items"
+
+#: acidfree.module:917
+msgid "Add Acidfree items"
+msgstr "Voeg Acidfree items toe"
+
+#: acidfree.module:921
+msgid "Acidfree item recent selection"
+msgstr "Acidfree item recente selectie"
+
+#: acidfree.module:922
+msgid "Acidfree item favorite selection"
+msgstr "Acidfree item favoriete selectie"
+
+#: acidfree.module:923
+msgid "Acidfree item random selection"
+msgstr "Acidfree item willekeurige selectie"
+
+#: acidfree.module:924
+msgid "Add Acidfree items quick links"
+msgstr "Voeg Acidfree items snel-links toe"
+
+#: acidfree.module:981
+msgid "Number of items"
+msgstr "Aantal items"
+
+#: acidfree.module:990
+msgid "Include items from all albums"
+msgstr "Neem items uit alle albums mee"
+
+#: acidfree.module:996
+msgid "Select random items from these albums"
+msgstr "Selecteer willekeurige items uit deze albums"
+
+#: acidfree.module:996
+msgid "description"
+msgstr "omschrijving"
+
+#: acidfree.module:1031
+msgid "No file supplied"
+msgstr "Geen bestand meegegeven"
+
+#: acidfree.module:1039
+msgid "Image module sanity check passed."
+msgstr "Image module OK"
+
+#: acidfree.module:1041
+msgid "Image module sanity check failed. Check the settings at !imgurl and !fsurl."
+msgstr "Image module niet OK. Controleer de instellingen bij !imgurl en !fsurl."
+
+#: acidfree.module:1047
+msgid "Video Upload module sanity check passed."
+msgstr "Video Upload module OK."
+
+#: acidfree.module:1049
+msgid "Video Upload module sanity check failed. Check the settings at !fsurl."
+msgstr "Video Upload module niet OK. Controleer de instellingen bij !fsurl."
+
+#: acidfree.module:1054
+msgid "Temporary path okay."
+msgstr "Tijdelijk pad is OK."
+
+#: acidfree.module:1056
+msgid "Temporary path does not exist. Check the settings at !fsurl."
+msgstr "Het tijdelijk pad bestaat niet. Controleer de instellingen bij !fsurl."
+
+#: acidfree.module:1074;1085
+msgid "Updated %mod module weight."
+msgstr "%mod module gewicht bijgewerkt."
+
+#: acidfree.module:1077;1088
+msgid "%mod module weight okay."
+msgstr "%mod module gewicht OK."
+
+#: acidfree.module:1091
+msgid "%itk image toolkit installed and properly configured"
+msgstr "%tk beeldbewerkingstoolkit geinstalleerd en correct geconfigureerd."
+
+#: acidfree.module:1093
+msgid "Image toolkit not properly installed or configured.  Go to %url and configure the image toolkit properly."
+msgstr "Beeldbewerkingstoolkit niet correct geinstalleerd of geconfigureerd. Corrigeer de instellingen hier: %url."
+
+#: acidfree.module:1098
+msgid "Errors were detected.  Please correct the above errors before you do anything else with Acidfree."
+msgstr "Er zijn fouten opgetreden. Verhelp de bovenstaande fouten voordat je iets anders doet met Acidfree."
+
+#: acidfree.module:1100
+msgid "No errors were detected.  But this doesn't mean that Acidfree is guaranteed to work flawlessly.  It is a complex system and still under development.  Please be patient while all the wrinkles are found and ironed out."
+msgstr "Er zijn fouten opgetreden. Dit betekent niet dat Acidfree gegarandeerd foutloos werkt. Acidfree is nog stees in ontwikkeling. Heb alstublieft geduld terwijl we de laatste plooien gladstrijken."
+
+#: acidfree.module:1102
+msgid "Published, promoted and sticky configuration"
+msgstr "Gepubliceerd, aangeraden en sticky configuratie"
+
+#: acidfree.module:1106;1114;1123;1134
+msgid "Published"
+msgstr "Gepubliceerd"
+
+#: acidfree.module:1106;1114;1123;1134
+msgid "Not published"
+msgstr "Niet gepubliceerd"
+
+#: acidfree.module:1107;1115;1124;1135
+msgid "Promoted"
+msgstr "Aangeraden"
+
+#: acidfree.module:1107;1115;1124;1135
+msgid "Not promoted"
+msgstr "Niet aangeraden"
+
+#: acidfree.module:1108;1116;1125;1136
+msgid "Sticky"
+msgstr "Sticky"
+
+#: acidfree.module:1108;1116;1125;1136
+msgid "Not sticky"
+msgstr "Niet sticky"
+
+#: acidfree.module:1109
+msgid "Acidfree recommends Published, Not promoted, and Sticky"
+msgstr "Acidfree raadt aan: Gepubliceerd, Niet aangeraden en Sticky"
+
+#: acidfree.module:1114
+msgid "Images"
+msgstr "Afbeeldingen"
+
+#: acidfree.module:1117;1126
+msgid "Acidfree recommends Published, Not promoted, and Not sticky"
+msgstr "Acidfree raadt aan: Gepubliceerd, Niet aangeraden en Niet sticky"
+
+#: acidfree.module:1123
+msgid "Videos"
+msgstr "Videos"
+
+#: acidfree.module:1134
+msgid "Video thumbnails"
+msgstr "Video miniaturen"
+
+#: acidfree.module:1137
+msgid "Acidfree recommends Not published, Not promoted, and Not sticky"
+msgstr "Acidfree raadt aan: Niet gepubliceerd, Niet aangeraden en Niet sticky"
+
+#: acidfree.module:1148
+msgid "PHP configuration"
+msgstr "PHP instellingen"
+
+#: acidfree.module:1149
+msgid "Maximum file upload size is"
+msgstr "Maximum grootte voor uploadbestand is"
+
+#: acidfree.module:1150
+msgid "Maximum POST size is"
+msgstr "Maximum POST grootte is"
+
+#: acidfree.module:1151
+msgid "Maximum execution time is %max_time seconds"
+msgstr "Maximale uitvoeringstijd is %max_time seconden"
+
+#: acidfree.module:1152
+msgid "Maximum memory usage is"
+msgstr "Maximum geheugengebruik is"
+
+#: acidfree.module:1153
+msgid "If these limits are smaller than the files you plan on uploading, you should change the settings in your php.ini file"
+msgstr "Als deze maxima kleiner zijn dan de bestanden die je wil uploaden moet je eerst de instellingen in je php.ini bestand veranderen"
+
+#: acidfree.module:1212
+msgid "This is an Acidfree vocabulary.  Please use the exposed Acidfree interfaces to modify values rather than directly editing vocabs and terms via the taxonomy interface."
+msgstr "Dit is een Acidfree vocabulaire. Gebruik aub de hiervoor in Acidfree beschikbare instellingen om waarden te veranderen i.p.v. directe bewerkingen in de taxonomy instellingen zelf."
+
+#: acidfree.module:1226
+msgid "failed to create vocabulary for Acidfree albums"
+msgstr "Aanmaken vocabulaire voor Acidfree albums mislukt."
+
+#: acidfree.module:1229
+msgid "Created Acidfree vocabulary"
+msgstr "Acidfree vocabulaire aangemaakt"
+
+#: acidfree.module:1244
+msgid "Acidfree root album"
+msgstr "Acidfree top-album"
+
+#: acidfree.module:1279
+msgid "!username's Acidfree album"
+msgstr "!username's Acidfree album"
+
+#: acidfree.module:1317
+msgid "Acidfree inline filter"
+msgstr "Acidfree invoeg filter"
+
+#: acidfree.module:1321
+msgid "add acidfree images to other nodes using a syntax like [acidfree:xx ...]"
+msgstr "Voeg Acidfree afbeeldingen toe aan andere nodes met [acidfree:xx…]"
+
+#: acidfree.module:1336
+msgid ""
+"<b>Acidfree inline tags</b></li>\n"
+"\n"
+"    It is possible to change the way the &#91;acidfree:nnn&#93; tags look by adding a few name/value pairs.  Note that any value that has spaces in it must be quoted either with single quotes ' or with double quotes \".  Currently, the choices are:\n"
+"<ul>\n"
+"<li><tt>title</tt>: use this string as the caption (Note that you can have the node title be the default caption by modifying the setting in admin/settings/acidfree)</li>\n"
+"<li><tt>align</tt>: {left,right}</li>\n"
+"<li><tt>size</tt>: {M, WxH} where M=max dimension and WxH=WidthxHeight</li>\n"
+"<li><tt>link</tt>: 'none' or relative or absolute url e.g. http://www.google.com or node/59.  If set to none, thumbnail will not be a link</li>\n"
+"<li><tt>popup</tt>: any value.  If set, it will cause the link to be a popup link</li> \n"
+"<li><tt>style</tt>: CSS style information for the image</li>\n"
+"<li><tt>class</tt>: additional class for the image</li>\n"
+"</ul>\n"
+"<b>Examples</b>\n"
+"<ul>\n"
+"<li>&#91;acidfree:1234 size=300 align=right&#93; - right aligned thumbnail of node 1234 with max dimension of 300 pixels</li>\n"
+"<li>&#91;acidfree:4321&#93; - left aligned thumbnail of node 4321 (default thumbnail size)</li>\n"
+"<li>&#91;acidfree:3241 align=left size=320x240&#93; - right aligned thumbnail of node 3241 with size = 320x240</li>\n"
+"<li>&#91;acidfree:3241 title='This is a different title' size=320 popup=true link=\"http://mysite.dom/\"&#93; - left aligned thumbnail of node 3241 with a title set, size = 320x240, link pointing to mysite.dom and target=blank_ set in the anchor</li>\n"
+"<li>&#91;acidfree:3241 link=none class='my-image your-image' style=\"border: 2 px grey inset;\"&#93; - left aligned thumbnail of 3241, default size, class set and new style info</li>\n"
+"</ul>"
+msgstr ""
+"<b>Acidfree invoeg tags</b></li>\n"
+"\n"
+"    Verander de opmaak van &#91;acidfree:nnn&#93; tags door een aantal naam/waarde paren toe te voegen. Let op: elke waarde die spaties bevat moet tussen enkele ' of dubblele \" aanhalingstekens staan. Dit zijn de mogelijkheden:\n"
+"<ul>\n"
+"<li><tt>title</tt>: gebruik <em>title</em> als bijschrift (Je kunt dit de standaard instelling maken in admin/settings/acidfree)</li>\n"
+"<li><tt>align</tt>: {left,right}</li>\n"
+"<li><tt>size</tt>: {M, WxH} waarbij M=max. afmetingen en WxH=BreedtexHoogte</li>\n"
+"<li><tt>link</tt>: 'none' of een relatieve of absolute url, bijv. http://www.google.com of node/59. Als 'none' meegegeven wordt zal de miniatuur-afbeelding geen link zijn.</li>\n"
+"<li><tt>popup</tt>: Elke waarde mogelijk. Indien ingesteld zal de link in een popup venster openen.</li> \n"
+"<li><tt>style</tt>: CSS opmaak informatie voor de afbeelding.</li>\n"
+"<li><tt>class</tt>: Een extra CSS class-naam voor de afbeelding</li>\n"
+"</ul>\n"
+"<b>Voorbeelden</b>\n"
+"<ul>\n"
+"<li>&#91;acidfree:1234 size=300 align=right&#93; - rechts uitgelijnd miniatuur van node 1234 met maximale afmetingen van 300 pixels.</li>\n"
+"<li>&#91;acidfree:4321&#93; - links uitgelijnd miniatuur van node 4321 met standaard miniatuur afmetingen.</li>\n"
+"<li>&#91;acidfree:3241 align=right size=320x240&#93; - Rechts uitgelijnde miniatuur van node 3241 met afmetingen van 320x240</li>\n"
+"<li>&#91;acidfree:3241 title='Dit is een andere titel' size=320 popup=true link=\"http://mysite.com/\"&#93; - links uitgelijnde miniatuur van node 3241 met een andere titel, afmetingen van 320x240, met een link naar mysite.com en een target=\"_blank\" in de anchor tag.</li>\n"
+"<li>&#91;acidfree:3241 link=none class='my-image your-image' style=\"border: 2 px grey inset;\"&#93; - Links uitgelijnd miniatuur van node 3241, standaard afmetingen, een extra CSS class en nieuwe CSS opmaak informatie.</li>\n"
+"</ul>"
+
+#: acidfree.module:1358
+msgid "You may use <a href=\"!acidfree_help\">[acidfree:xx] tags</a> to display acidfree videos or images inline."
+msgstr "Je kunt <a href=\"!acidfree_help\">[acidfree:xx] tags</a> gebruiken om videos of afbeeldingen in te voegen."
+
+#: acidfree.module:1363
+msgid "Home"
+msgstr "Home"
+
+#: acidfree.module:1418
+msgid "file %filename is not a valid acidfree element type (%mime)"
+msgstr "Bestand %filename is geen geldig Acidfree element type (%mime)"
+
+#: acidfree.module:1504;1564
+msgid "failed to import '%filename'"
+msgstr "Import van '%filename' is mislukt."
+
+#: acidfree.module:1572
+msgid "failed to import '%filename' (could not extract archive)"
+msgstr "Import van '%filename' is mislukt (kon archief niet uitpakken)"
+
+#: acidfree.module:1578
+msgid "Could not create temporary directory for mass import"
+msgstr "Kon geen tijdelijke map aanmaken voor multi-import"
+
+#: acidfree.module:1607;1784
+msgid "Import"
+msgstr "Importeer"
+
+#: acidfree.module:1610
+msgid "Could not find server-side directory %tmpdir"
+msgstr "Kon servermap %tmpdir niet vinden"
+
+#: acidfree.module:1612
+msgid "Importing server side directory %tmpdir"
+msgstr "Nu bezig servermap %tmpdir te importeren"
+
+#: acidfree.module:1616;1764
+msgid "Upload"
+msgstr "Upload"
+
+#: acidfree.module:1620
+msgid "Importing file %filename"
+msgstr "Importing bestand %filename"
+
+#: acidfree.module:1625
+msgid "Failed to import %filename"
+msgstr "Import van %filename mislukt"
+
+#: acidfree.module:1669
+msgid "Parent"
+msgstr "Bovenliggend album"
+
+#: acidfree.module:1695
+msgid "No node types available"
+msgstr "Geen node-typen beschikbaar"
+
+#: acidfree.module:1725
+msgid "Files to upload"
+msgstr "Te uploaden bestanden"
+
+#: acidfree.module:1726
+msgid "Be sure to limit the uploaded file sizes to the following:<ul><li>Max file size: %max_file</li><li>Max total file size: %max_post</li></ul>"
+msgstr "Zorg ervoor de uploadbestanden binnen deze limieten vallen:<ul>Max. bestandsgrootte: %max_file</li><li>Max. totale bestandsgrootte: %max_post</li></ul>"
+
+#: acidfree.module:1735
+msgid "File to upload"
+msgstr "Te uploaden bestand"
+
+#: acidfree.module:1737
+msgid "File to upload.  This may be an image, video clip, zip file, or a tar file that is gzipped or bzipped.  You may upload up to five at a time."
+msgstr "Te uploaden bestand. Dit kan een afbeelding, video, zip bestand of een gzipped of bzipped tar bestand. Je kunt maximaal vijf bestanden per keer uploaden."
+
+#: acidfree.module:1768
+msgid "Import local files"
+msgstr "Importeer lokale bestanden"
+
+#: acidfree.module:1774
+msgid "Path on server"
+msgstr "Pad op de server"
+
+#: acidfree.module:1775
+msgid "This must be the full path to a directory on the server that is readable."
+msgstr "Dit moet een volledig pad naar een leesbare map op de server zijn."
+
+#: acidfree.module:1779
+msgid "Include subdirectories"
+msgstr "Inclusief submappen"
+
+#: acidfree.module:2258;2261;2272
+msgid "[acidfreepath]"
+msgstr "[acidfreepath]"
+
+#: acidfree.module:2258
+msgid "Concatentated Acidfree album path (minus root album) e.g. trips/seattle.  Try something like 'albums/[acidfreepath]/[title]'."
+msgstr "Samengesteld Acidfree album pad (minus het top-album) bijv. vakanties/spanje. Probeer iets als 'albums/[acidfreepath]/[title]'."
+
+#: acidfree.module:2290
+msgid "Personal album"
+msgstr "Persoonlijk album"
+
+#: acidfree.module:2294
+msgid "Acidfree Albums"
+msgstr "Acidfree Albums"
+
+#: acidfree.module:2419
+msgid "Sort column '%k' is not supported, it is being ignored"
+msgstr "Sorteerkolom '%k' wordt niet ondersteund en wordt genegeerd."
+
+#: acidfree.module:2419
+msgid "Acidfree"
+msgstr "Acidfree"
+
+#: acidfree.module:794
+msgid "create acidfree albums"
+msgstr "Acidfree albums maken"
+
+#: acidfree.module:795
+msgid "edit own acidfree albums"
+msgstr "Eigen acidfree albums bewerken"
+
+#: acidfree.module:796
+msgid "acidfree mass import"
+msgstr "Acidfree multi-import"
+
+#: acidfree.module:797
+msgid "can upload to any album"
+msgstr "Kan naar elk album uploaden"
+
+#: acidfree.module:798
+msgid "acidfree_per_user_albums"
+msgstr "acidfree_per_user_albums"
+
+#: acidfree.module:799
+msgid "get a per-user album"
+msgstr "Verkrijg een album-per-gebruiker"
+
+#: acidfree.module:0
+msgid "acidfree"
+msgstr "Acidfree"
+
+#: acidfree.install:197
+msgid "finished updating albums"
+msgstr "Bijwerken albums voltooid"
+
+#: acidfree.install:241
+msgid "Finished updating images"
+msgstr "Bijwerken afbeeldingen voltooid"
+
+#: acidfree.install:301
+msgid "finished updating videos"
+msgstr "Bijwerken videos voltooid"
+
+#: acidfree.install:309
+msgid "Acidfree update failed because of missing dependencies.  Please refer to the UPGRADE file distributed with Acidfree.  The following modules are required for you to upgrade: %modules.  Please install these modules, ensure they are configured properly and try the installation again."
+msgstr "Acidfree bijwerken is mislukt wegens ontbrekende vereiste onderdelen. Lees het UPGRADE bestand in de Acidfree map. De volgende modules zijn vereist om bij te kunnen werken: %modules. Installeer deze modules, stel ze correct in en probeer Acidfree dan opnieuw te installeren."
+
+#: acidfree.install:416;424
+msgid "file exists: %fn"
+msgstr "Bestand bestaat: %fn"
+
+#: acidfree.install:440
+msgid "The removal of the original file %file has failed."
+msgstr "Verwijderen van het originele bestand %file is mislukt."
+
+#: acidfree.install:450
+msgid "The selected file %file could not be uploaded, because the destination %directory is not properly configured."
+msgstr "Het geselecteerde bestand %file kon niet geupload worden omdat de bestemmingsmap niet juist ingesteld is."
+
+#: acidfree.install:451
+msgid "The selected file %file could not not be uploaded, because the destination %directory could not be found, or because its permissions do not allow the file to be written."
+msgstr "Het geselecteerde bestand %file kon niet geupload worden omdat de bestemmingsmap niet gevonden werd of omdat de map-permissies het niet toelaten het bestand te plaatsen."
+
+#: acidfree.install:467
+msgid "The selected file %file could not be copied, because no file by that name exists.  Please check that you supplied the correct filename."
+msgstr "Het geselecteerde bestand %file kon niet gekopieerd worden omdat er geen bestand met die naam bestaat. Controleer of je de juiste bestandsnaam hebt ingevoerd."
+
+#: acidfree.install:500
+msgid "The selected file %file could not be copied, because a file by that name already exists in the destination."
+msgstr "Het geselecteerde bestand %file kon niet gekopieerd worden omdat daar al een bestand met die naam bestaat."
+
+#: acidfree.install:506
+msgid "The selected file %file could not be copied."
+msgstr "Het geselecteerde bestand %file kon niet gekopieerd worden."
+
+#: acidfree.install:451
+msgid "file system"
+msgstr "Bestandssysteem"
+

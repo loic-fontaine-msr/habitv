@@ -1,0 +1,11 @@
+; $ID$
+name = Gallerix
+description = An AJAX gallery for Drupal.
+package = Gallerix
+
+
+; Information added by drupal.org packaging script on 2007-11-02
+version = "5.x-1.0"
+project = "gallerix"
+datestamp = "1194041705"
+

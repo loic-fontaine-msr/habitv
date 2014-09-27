@@ -1,0 +1,203 @@
+# translation of smileys-module.po to Hungarian
+# Hungarian translation of Drupal (smileys.module)
+# Copyright Drupal.hu Fordítási Csapat <forditas [at] drupal.hu>
+# Generated from file: smileys.module,v 1.43 2005/04/30 07:34:27 tdobes
+# Copyright Fehér János <feher.janos@mindworks.hu>, 2005.
+#
+# FEHÉR János <feher.janos _at- mindworks.hu>, 2007.
+msgid ""
+msgstr ""
+"Project-Id-Version: smileys-module\n"
+"POT-Creation-Date: 2007-02-20 10:53+0100\n"
+"PO-Revision-Date: 2007-02-21 12:06+0100\n"
+"Last-Translator: FEHÉR János <feher.janos _at- mindworks.hu>\n"
+"Language-Team: Hungarian <Drupal.hu Fordítási Csapat <forditas [at] drupal.hu>>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: KBabel 1.11.4\n"
+
+#: smileys.module:8
+#, fuzzy
+msgid "Here you can add/edit the Smileys that are recognised in your content."
+msgstr "Itt szerkeszthetőek a webhely által értelmezett mosolygók."
+
+#: smileys.module:18
+msgid ""
+"If you include a textual smiley in your post (see chart below), it will be "
+"replaced by a graphical smiley."
+msgstr ""
+"Ha a tartalomban szöveges mosolygó található (lásd a grafikont lent), akkor "
+"az le lesz cserélve egy grafikus változatra."
+
+#: smileys.module:22
+msgid ""
+"<a href=\"!smileys_help\">Textual smileys</a> will be replaced with "
+"graphical ones."
+msgstr "A <a href=\"!smileys_help\">szöveges mosolygók</a> le lesznek cserélve a grafikus megfelelőikre."
+
+#: smileys.module:43
+msgid "Smileys on submission pages"
+msgstr "Mosolygók a beküldési oldalakon"
+
+#: smileys.module:49;61;106;159
+msgid "Smileys"
+msgstr "Mosolygók"
+
+#: smileys.module:94;230
+msgid "Smiley"
+msgstr "Mosolyó"
+
+#: smileys.module:94;230;272
+msgid "Acronyms"
+msgstr "Rövidítések"
+
+#: smileys.module:120;124
+msgid "Smileys filter"
+msgstr "Mosolygók szűrő"
+
+#: smileys.module:122;160
+msgid "Replaces smileys inside posts with images."
+msgstr "Kicseréli a tartalmakban található mosolygókat képekre."
+
+#: smileys.module:166
+msgid "List"
+msgstr "Lista"
+
+#: smileys.module:173
+msgid "Add"
+msgstr "Hozzáadás"
+
+#: smileys.module:180
+msgid "Settings"
+msgstr "Beállítások"
+
+#: smileys.module:181
+msgid "Smileys configuration."
+msgstr "Mosolygókbeállítása."
+
+#: smileys.module:190
+msgid "Edit smiley"
+msgstr "Mosolygó szerkesztése"
+
+#: smileys.module:197
+msgid "Delete smiley"
+msgstr "Mosolygó törlés"
+
+#: smileys.module:209
+msgid "Smileys settings"
+msgstr "Mosolygók beállításai"
+
+#: smileys.module:213
+msgid "Enable smileys select box for"
+msgstr ""
+
+#: smileys.module:217
+msgid "Nodes"
+msgstr "Tartalmak"
+
+#: smileys.module:222
+msgid "Comments"
+msgstr "Hozzászólások"
+
+#: smileys.module:230;274
+msgid "Description"
+msgstr "Leírás"
+
+#: smileys.module:230
+msgid "Operations"
+msgstr "Műveletek"
+
+#: smileys.module:242
+msgid "Edit"
+msgstr "Szerkesztés"
+
+#: smileys.module:242
+msgid "Delete"
+msgstr "Törlés"
+
+#: smileys.module:272
+msgid ""
+"Enter a list of shorthands for the smiley you wish to add, separated by "
+"spaces. E.g. ':) ;) :smile:'"
+msgstr ""
+"Meg kell adni a mosolygót helyettesítő kifejezések listáját szóközzel "
+"elválasztva. Például: „:) ;) :smile:” ."
+
+#: smileys.module:273
+msgid "Image URL"
+msgstr "Kép URL"
+
+#: smileys.module:273
+msgid ""
+"Enter the URL of the smiley-image relative to the root of your Drupal site. "
+"E.g. 'images/smileys/happy.png'."
+msgstr ""
+
+#: smileys.module:274
+msgid ""
+"A short description of the emotion depicted to be used as tooltip for the "
+"image. E.g. 'Laughing out loud'."
+msgstr ""
+"Rövid leírás arról, hogy a kép mit jelől; a gyengénlátók és a képet nem "
+"értelmezők számára segítség lehet. Például: „Hangosan kacag”, „Most ki vagy "
+"nevetve” stb."
+
+#: smileys.module:275
+msgid "Stand-alone"
+msgstr "Önálló"
+
+#: smileys.module:275
+msgid ""
+"When checked, the smiley will only be inserted when an acronym is found as a "
+"separate word. This is useful for preventing accidental smileys with short "
+"acronyms."
+msgstr ""
+"Bekapcsolt állapotban csak abban az esetben lesz kicserélve a mosolygó, ha a "
+"rövidítésa különálló szóként szerepel. Ez hasznos lehetőség a rövidítések "
+"ütközésének elkerüléséhez. Például: a „:]”-re beállított kép Önálló "
+"állapotban nem kerül behelyettesítésre „:]]]” esetén, azaz nem lesz "
+"kicserélve „-kép-]]”-re. Ezáltal lehetőség van - többek közt - a fokozásra "
+"is."
+
+#: smileys.module:276
+msgid "Save Smiley"
+msgstr "Mosolygó mentése"
+
+#: smileys.module:278;286;304
+msgid "Delete Smiley"
+msgstr "Mosolygó törlése"
+
+#: smileys.module:291
+msgid "Updated smiley: %smiley"
+msgstr "Frissített mosolygó: %smiley"
+
+#: smileys.module:295
+msgid "Added smiley: %smiley"
+msgstr "Mosolygó hozzáadva: %smiley"
+
+#: smileys.module:305
+msgid "Please enter an acronym for your smiley."
+msgstr "Meg kell adni egy rövidítést, amely a mosolygót jellemzi."
+
+#: smileys.module:309
+msgid "Please enter the URL of the smiley image."
+msgstr "Meg kell adni a mosolygó kép URL-jét."
+
+#: smileys.module:319
+msgid "Deleted smiley: %smiley"
+msgstr "Mosolygó törölve: %smiley"
+
+#: smileys.module:13
+msgid "administer smileys"
+msgstr "mosolygók adminisztrációja"
+
+#: smileys.module:13
+msgid "use smiley select box"
+msgstr ""
+
+#: smileys.module:0
+msgid "smileys"
+msgstr "mosolygók"
+

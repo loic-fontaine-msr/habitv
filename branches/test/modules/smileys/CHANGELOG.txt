@@ -1,0 +1,25 @@
+23 April 2007
+----------------------------
+- Inline popup widget with clickable smileys.
+
+16 November 2006
+----------------------------
+- Include new smileys import module, more usability features added to original module.
+- Clickable smileys to insert acronyms into textareas.
+
+11 August 2004
+----------------------------
+- Updated for new filter system.
+
+23 January 2002
+----------------------------
+- Added acronyms in the form of ":word:" in the example setup.
+- Added a dynamic block that shows on submission pages as a quick reference.
+
+23 December 2001
+----------------------------
+- Added smileys with noses (hyphens) in the example setup.
+
+20 December 2001
+----------------------------
+- Initial release

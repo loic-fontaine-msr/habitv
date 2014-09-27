@@ -1,0 +1,87 @@
+/* $Id: README,v 1.13 2006/11/26 14:07:40 vhmauery Exp $ */
+
+Acidfree Albums
+Author - Vernon Mauery <vernon At mauery d0t com>
+Copyright 2005 Vernon Mauery
+Licensed under the GPL v2.0
+
+About
+-----------------------------
+Acidfree albums were designed with simplicity in mind.  There are as many
+web based photo albums as there are people with digital pictures, yet when
+Acidfree albums were written, they all were found lacking.  Some were too
+fancy, others were too ugly, and others (gasp!) were not even written in php.
+
+To this end, Acidfree albums were created.  This version is the fourth revision
+of the albums.  While functionally the same in each version, this is the first
+modular enough to be easily distributed and used by others.  Previous versions
+have been in use by websites for several years now, but tailoring them into the
+various websites was not easy.  But then I found Drupal and fell in love with
+it.  But it too was missing a good photo album.  So here it is.
+
+Features
+-----------------------------
+* easy to install (well it was for me, but others may report differently)
+* very configurable via the various admin venues
+* node based -- tied into Drupal's core
+* full featured, yet simple
+* uses Image, Video, Taxonomy, and Views modules
+* fully themeable
+* best darn looking photo album you have ever seen
+* handles images using Drupal's image toolkit
+* can handle most video types (with different thumbnail options)
+* handles node_access grants gracefully (think Organic Groups)
+* has a built in filter for adding images to other node content
+  with tags like [acidfree:nnnn...] (see instructions below)
+
+Install
+-----------------------------
+1. install the Views module
+2. enable Views and Taxonomy modules
+3. for image albums, enable the Image module and make sure settings are correct
+   (this includes setting the appropriate paths at admin/settings/file-system
+   and admin/settings/image)
+2. untar acidfree directory into your modules directory
+3. enable the acidfree module on the admin/build/modules page
+4. go to http://yoursite.dom/acidfree/test (or 
+   http://yoursite.dom/?q=acidfree/test) to check your install and settings.
+   Follow any instructions it offers.
+5. create albums and content!!
+
+Advanced Options
+-----------------------------
+Acidfree has a filter so you can add thumbnails of your images to the body
+of other nodes with a tag like [acidfree:nnnn ...].  Before using this feature,
+you must enable it by going to Administer -> Input Formats (admin/filters) and
+configure each input type you want to have the [acidfree:nnnn] tags in.  Hit
+configure for the type (e.g. admin/filters/1) and check the box by
+Acidfree Inline Filter.  Hit save and you will see
+'You may use [acidfree:xx] tags to display acidfree videos or images inline.'
+in the 'Formatting guidelines' section on the node edit pages.  Read the online
+documentation at http://vernon.mauery.com/content/acidfree_manual/advanced_topics
+or the inline help provided by your installed acidfree/drupal site.
+
+Now that Acidfree uses the drupal image toolkit to do its image processing, you
+can use whatever toolkit you desire.  I have written one that works with
+php-imagick (libMagick for php) which uses the same libraries ImageMagick does,
+but without needing to fork and exec a new process.  To use it, install the
+php-imagick libraries, enable them in the php.ini file and copy the
+image.imagick.inc file to the drupal includes directory and select it from the
+admin/settings image manipulation section.  Another option for this is the
+image.imagemagick.inc file that is distributed with the image.module.  If you
+like the forky-execy method and don't want to install php-imagick or set up gd
+(which is th e default toolkit), you can use the binaries you used with
+previous versions of Acidfree with the ImageMagick toolkit.
+
+Of course, Acidfree also offers the option for lossless jpeg rotation via
+exiftran or jpegtran.  Set the path of your preferred option in
+admin/settings/acidfree and Acidfree will use it to rotate images instead of
+the image toolkit option.  This is provided for all you jpeg artifact snobs
+(myself included.)
+
+Better mime handling (hopefully).  We can use PECL's fileinfo extension (for
+those fearful of exec'ing `file -ib`), file -ib, or a guess based on file
+extensions recognized by Acidfree. Take your pick.  Acidfree will automatically
+use its best guess depending on which options it can find and use.  No setup
+required (unless you are using fileinfo extension and then you obviously have
+to install it and enable it in php.ini)

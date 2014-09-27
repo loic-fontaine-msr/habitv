@@ -1,0 +1,1817 @@
+<?php
+// $Id: gallerix.module,v 1.3 2007/10/30 02:24:23 silviogutierrez Exp $
+
+/**
+ * @file
+ * Provides a photo gallery.
+ */
+
+
+/**
+ * Implementation of hook_perm().
+ */
+function gallerix_perm() {
+  return array('create album', 'edit own album', 'configure gallerix');
+}
+
+/**
+ * Implementation of hook_access().
+ */
+function gallerix_access($op, $node) {
+  global $user;
+
+  if ($op == 'create') {
+    return (user_access('create album'));
+  }
+
+
+  if ($op == 'update' || $op == 'delete') {
+    return (user_access('edit own album') && ($user->uid == $node->uid));
+  }
+}
+
+/**
+ * Implementation of hook_menu().
+ */
+function gallerix_menu($may_cache) {
+  $items = array();
+  
+  //This is for Mosso users. 
+  if (isset($_SERVER['HTTP_X_CLUSTER_CLIENT_IP'])) {
+    $_SERVER['REMOTE_ADDR'] = $_SERVER['HTTP_X_CLUSTER_CLIENT_IP'];  
+  }
+  
+  // Do not cache this menu item during the development of this module.
+  if (!$may_cache) {
+    $items[] = array(
+      'path' => 'node/add/album',
+      'title' => t('album'),
+      'access' => user_access('create album'),
+    );
+    $items[] = array(
+      'path' => 'admin/gallerix',
+      'title' => t('Gallerix'),  
+      'description' => t('Administer Gallerix Settings.'),
+      'callback' => 'system_admin_menu_block_page',
+      'position' => 'left',
+      'access' => user_access('configure gallerix'),
+    );
+    $items[] = array(
+      'path' => 'admin/gallerix/general',
+      'title' => t('General Settings'),  
+      'description' => t('Configure your galleries.'),
+      'callback' => 'drupal_get_form',
+      'callback arguments' => array('gallerix_admin_settings'),
+      'access' => user_access('configure gallerix'),
+    );
+    if (is_numeric(arg(1))) {
+      
+      if (arg(0) == 'node') {
+      
+        $node = node_load(arg(1));
+        global $user;
+        
+        if ($node->type == 'album') {
+          $items[] = array('path' => 'node/'. arg(1) .'/manage',
+            'title' => t('Gerer les images de l\'album'),
+            'callback' => 'gallerix_manage_pictures',
+            'callback arguments' => array('node', arg(1)),
+            'type' => MENU_LOCAL_TASK,
+            'access' => user_access('edit own album') && ($user->uid == $node->uid),
+          );
+          
+          $items[] = array('path' => 'node/' . arg(1) . '/picture',
+            'callback' => 'gallerix_fetch_picture',
+            'type' => MENU_CALLBACK,
+            'access' => user_access('access content'),
+          );    
+        }
+      }
+    } 
+  }
+
+  return $items;
+}
+
+
+
+/**
+ * Implementation of hook_node_info().
+ */
+function gallerix_node_info() {
+  // We return an array since a module can define multiple node types.
+  // We're only defining one node type, type 'gallerix'.
+ 
+  return array(
+    'album' => array(
+      'name' => t('Album'), // Required.
+      'module' => 'gallerix',  // Required.
+      'description' => t('Create an album of images.'), // Required.
+      'has_title' => TRUE,
+      'title_label' => t('Album Name'),
+      'has_body' => TRUE,
+      'body_label' => t('Album Description'),
+      'min_word_count' => 0,
+      'locked' => TRUE
+    )
+  );
+  
+
+}
+
+/**
+ * Implementation of hook_perm().
+ */
+function gallerix_node_operations() {
+  $operations = array(
+    'gallerix_rebuild_derivatives' => array(
+      'label' => t('Rebuild Album Derivatives'),
+      'callback' => '_gallerix_rebuild_albums'
+    ),
+    'gallerix_resort' => array(
+      'label' => t('Resort Album'),
+      'callback' => '_gallerix_resort_albums'
+    ),
+    'gallerix_extract' => array(
+      'label' => t('Rebuild Picture Information'),
+      'callback' => '_gallerix_rebuild_picture_info'
+    ),    
+  );
+  return $operations;
+}
+
+
+/**
+ *
+ * Rebuild albums.
+ * 
+ * @author walkah
+ */
+function _gallerix_rebuild_albums($nids) {
+  foreach ($nids as $nid) {
+    if ($node = node_load($nid)) {
+      if ($node->type == 'album') {
+        drupal_set_message(t("Rebuilding %node-title's derivatives.", array('%node-title' => $node->title)));
+        _gallerix_build_derivatives($nid, 'full');
+        _gallerix_build_derivatives($nid, 'thumbnails');
+      }
+    }
+  }
+}
+
+
+/**
+ *
+ * Resort albums.
+ * 
+ * @author walkah
+ */
+function _gallerix_resort_albums($nids) {
+  foreach ($nids as $nid) {
+    if ($node = node_load($nid)) {
+      if ($node->type == 'album') {
+        drupal_set_message(t("Resorted %node-title.", array('%node-title' => $node->title)));
+        _gallerix_sort_album($node);
+      }
+    }
+  }
+}
+
+
+/**
+ *
+ * Resort albums.
+ * 
+ * @author walkah
+ */
+function _gallerix_rebuild_picture_info($nids) {
+  foreach ($nids as $nid) {
+    if ($node = node_load($nid)) {
+      if ($node->type == 'album') {
+        drupal_set_message(t("Extracted data for %node-title.", array('%node-title' => $node->title)));
+        _gallerix_extract_data($node);
+      }
+    }
+  }
+}
+
+
+
+function gallerix_fetch_picture($pid) {
+  $key = $pid;
+  
+  $pid = _gallerix_validate_request($pid);
+  
+  if (!$pid) {
+    return; //Either the PID key did not validate, or an argument wasn't provided.
+  }
+  
+  $picture = db_query('SELECT nid, pid, width, height, path, name, caption, created, exif, sort FROM {gallerix_pictures} WHERE pid = %d', $pid);
+  $picture = db_fetch_object($picture);
+  
+  $album = db_query('SELECT nid, path FROM {gallerix_albums} WHERE nid = %d', $picture->nid);
+  $album = db_fetch_object($album);
+
+  $node = db_fetch_object(db_query('SELECT nid, title, uid FROM {node} WHERE nid = %d', $picture->nid));
+  $album_name = _gallerix_album_name($node); 
+  $paths = _gallerix_album_paths($node, FALSE);
+ 
+  $links = db_query('SELECT nid, pid, path, name, caption, created, exif FROM {gallerix_pictures} WHERE nid = %d', $picture->nid);
+  $count = db_affected_rows();
+
+  
+  $exif = $picture->exif ? unserialize($picture->exif) : array();
+
+  $thumbnail_info = array();
+  $thumbnail_number = variable_get('gallerix_thumbnail_number', 5);
+  $thumbnail_path = $paths['thumbnails'] . '/';
+
+  $current = floor($thumbnail_number/2);
+
+  $thumbnails = array();
+  $thumbnail = theme('image', $thumbnail_path, $alt = '', '', array('class' => 'gallerix-thumbnail'));
+  $thumbnails['gallerix-thumbnail-link-' . $current] = array(_gallerix_generate_picture_link($picture->nid, $pid), $thumbnail_path . $picture->name, $picture->caption);
+  
+  $previous_count = 0;
+  for ($x = $current; $x > 0; $x--) {
+  
+    $previous_sort = $picture->sort - $x;
+    
+    if ($previous_sort <= 0) {
+      $previous_sort += $count;
+    }
+    $previous = db_fetch_object(db_query('SELECT nid, pid, name, caption from {gallerix_pictures} WHERE nid = %d AND sort = %d', $picture->nid, $previous_sort));
+    $thumbnail = array(_gallerix_generate_picture_link($previous->nid, $previous->pid), $thumbnail_path . $previous->name, $previous->caption);
+    $thumbnails['gallerix-thumbnail-link-' . $previous_count] = $thumbnail;    
+    $previous_count++;
+  }
+
+  for ($x = $current + 1; $x < $thumbnail_number; $x++) {
+    $ahead_sort = $picture->sort + ($x - $current);
+    
+    if ($ahead_sort > $count) {
+      $ahead_sort -= $count;
+    }
+    $ahead = db_fetch_object(db_query('SELECT nid, pid, name, caption from {gallerix_pictures} WHERE nid = %d AND sort = %d', $picture->nid, $ahead_sort));
+    $thumbnail = array(_gallerix_generate_picture_link($ahead->nid, $ahead->pid), $thumbnail_path . $ahead->name, $ahead->caption);
+    $thumbnails['gallerix-thumbnail-link-' . $x] = $thumbnail;
+
+  }
+
+  $picture_data = array(
+    'path' => $paths['full'] . '/' . $picture->name,
+    'caption' => $picture->caption,
+    'name' => $picture->name,
+    'nid' => $picture->nid,
+    'pid' => $picture->pid,
+    'key' => $key,
+    'width' => $picture->width,
+    'height' => $picture->height,
+    'exif' => $exif,
+    'thumbnails' => $thumbnails,
+    'thumbnail_count' => $thumbnail_number,
+    'count' => $count
+  );
+  
+  //Here we add all necessary widget data.
+  if (module_exists('gallerix_widget_engine')) {
+    $widget_data = _gallerix_widget_engine_load_widgets($picture, $album);
+    $data = array_merge($picture_data, $widget_data); 
+  }
+  else {
+    $data = $picture_data;
+  }  
+
+  print drupal_to_js($data);
+  
+  exit();
+}
+
+
+
+function gallerix_admin_settings() {
+  //Resolution Options
+  $form['gallerix_resolutions'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Resolutions'),
+  );
+  $form['gallerix_resolutions']['gallerix_full_resolution'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Full Resolution'),
+    '#description' => t('Use the format Width x Height'),
+    '#size' => 10,
+    '#default_value' => implode("x", variable_get('gallerix_full_resolution', array(500, 400))),
+  );
+  $form['gallerix_resolutions']['gallerix_thumbnail_resolution'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Thumbnail Resolution'),
+    '#description' => t('Use the format Width x Height'),
+    '#size' => 10,
+    '#default_value' => implode("x", variable_get('gallerix_thumbnail_resolution', array(100, 70))),
+  );
+  
+  //Display Options
+  $form['gallerix_display'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Display Options'),
+  );
+  $form['gallerix_display']['gallerix_default_sort'] = array(
+    '#type' => 'select',
+    '#title' => t('Default Sort Order'),
+    '#description' => t("Your album pictures will be displayed in the selected order. You can override this setting individually by selecting a different order in the album creation page."),
+    '#options' => array('ascending' => 'Date Taken Ascending', 'descending' => 'Date Taken Descending', 'random' => 'Random', 'filename' =>'Filename'),
+    '#default_value' => variable_get('gallerix_default_sort', 'ascending'),
+  );
+  $form['gallerix_display']['gallerix_thumbnail_number'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Number of Thumbnails'),
+    '#description' => t('This number controls the amount of thumbnails displayed in each album for browsing. Raising this might decrease performance since there will be more database queries.'),
+    '#size' => 2,
+    '#default_value' => variable_get('gallerix_thumbnail_number', 5),
+  );
+    
+  //Source Options
+  $form['gallerix_sources'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Picture Sources'),
+  );
+  $form['gallerix_sources']['gallerix_upload_number'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Number of Upload Fields'),
+    '#description' => t('Controls the number of file upload fields available to users at the same time. Set to 0 to disable file upload.'),
+    '#size' => 2,
+    '#default_value' => variable_get('gallerix_upload_number', 1)   
+  );   
+  $form['gallerix_sources']['gallerix_allow_archives'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Allow Archives'),
+    '#description' => t('When enabled, users will be able to upload archive files as well as images.'),
+    '#size' => 2,
+    '#default_value' => variable_get('gallerix_allow_archives', false)   
+  );    
+  $form['gallerix_sources']['gallerix_repository'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Enable Repository.'),
+    '#description' => t('Enabling the repository will provide a common place to upload your pictures using FTP. 
+                         This is very useful if you are not using per-user albums, or you have a site with a controlled set of a few trusted users. 
+                         When enabled, simply place picture files inside files/gallerix/repository, and they will show up whenever your adding pictures to your albums. '),
+    '#default_value' => variable_get('gallerix_repository', 0)
+  );
+  $form['gallerix_sources']['gallerix_delete_repository'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Delete From Repository.'),
+    '#description' => t('When enabled, files will be moved to the repository to the album folder. If disabled, a copy will be made instead and the original files will be left untouched in the repository folder.'),
+    '#default_value' => variable_get('gallerix_delete_repository', FALSE)
+  );  
+  $form['gallerix_sources']['gallerix_trash_add'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Add Trashcan Pictures'),
+    '#disabled' => !variable_get('gallerix_trash_can', 0),
+    '#description' => t('The trash can will emulate the repository. Pictures in the trashcan will be available for use in the Add Pictures page. 
+                        Useful if you merge albums often. Note: to use this feature, the trash can must be enabled below.'),
+    '#default_value' => variable_get('gallerix_trash_add', 0) && variable_get('gallerix_trash_can', 0)
+  );
+ 
+  
+  //Insertion Options
+  $form['gallerix_insertion'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Picture Insertion'),
+  );  
+  $form['gallerix_insertion']['gallerix_extract_exif'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Extract EXIF Data'),
+    '#description' => t('Information such as Date Taken and Image Description are stored inside each file. If you enable this option, Gallerix will try to extract the EXIF from the 
+.'),
+    '#default_value' => variable_get('gallerix_extract_exif', 0)
+  );
+  $form['gallerix_insertion']['gallerix_fields_to_extract'] = array(
+    '#type' => 'textfield',
+    '#title' => t('EXIF Fields'),
+    '#description' => t("By default, Gallerix will extract ImageDescription, DateTimeOriginal and Title from a file. 
+                         The first two fields are fairly standard and are used by most cameras. Title is the field used by Windows Vista to comment on pictures, so Gallerix attempts to extract that and use it as the description of                       the picture. If Title can't be found, ImageDescription is used instead. You can add other fields to extract and store using comma separated values.
+                         You must know the exact name of the field."),
+    '#default_value' => implode(",", variable_get('gallerix_fields_to_extract', array('Title', 'ImageDescription','DateTimeOriginal'))),
+  );
+  $form['gallerix_insertion']['gallerix_extract_iptc'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Extract IPTC Tags'),
+    '#description' => t("Use this option to have Gallerix attempt to extract IPTC keywords from the files. This is very useful if you use Photoshop Elements or Photoshop to tag your files. No distinction between the tags is made, so location, people, etc, all go under the same category. The data will be extracted and stored in the database, but it's up to other modules to utilize the data."),
+    '#default_value' => variable_get('gallerix_extract_iptc', 0)
+  );
+  /*
+  $form['gallerix_insertion']['gallerix_build_derivatives'] = array(
+    '#type' => 'radios',
+    '#title' => t('Build Derivatives'), 
+    '#disabled' => TRUE, //Option not available yet.
+    '#options' => array(0 => 'After Insertion',  1 => 'During Cron'),
+    '#default_value' => variable_get('gallerix_build_derivatives', 0)
+  );*/    
+  
+  
+  //Deletion Options
+  $form['gallerix_deletion'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Picture Deletion'),
+  );  
+  $form['gallerix_deletion']['gallerix_trash_can'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Enable Trashcan'),
+    '#description' => t('When enabled, Gallerix will never delete a picture when removed from an album. All removed pictures will be moved to the trash folder.'),
+    '#default_value' => variable_get('gallerix_trash_can', 0)
+  );/*
+  $form['gallerix_deletion']['gallerix_purge_trash'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Purge Trashcan'),
+    '#disabled' => TRUE, //Option not available yet.
+    '#description' => t('If enabled, the trashcan will be purged during cron. Highly recommended for sites with user albums.'),
+    '#default_value' => variable_get('gallerix_purge_trash', 0)
+  );*/
+  
+  //Security Options
+  $form['gallerix_security'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Gallerix Security'),
+  );  
+  $form['gallerix_security']['gallerix_secure_mode'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Secure Mode'),
+    '#description' => t('If you are enabling Gallerix for a user-driven site, you may want to prevent users from simply altering the AJAX client side and viewing other albums. This will apply a basic SHA1 algorithm to album directories, 
+                         and use some light security features. Overall, secure mode tries to ensure that users only view pictures that belong to albums they are allowed to see. Remember, actual album access is not control. 
+                         Use a Node Access module for this.'),
+    '#default_value' => variable_get('gallerix_secure_mode', 0)
+  );
+  /*
+  $form['gallerix_security']['gallerix_security_type'] = array(
+    '#type' => 'radios',
+    '#title' => t('Security Type'),
+    '#options' => array(0 => 'Low',  1 => 'Medium', 2 => 'High'),
+    '#description' => t('Select which type of security to use in your albums. Keep in mind that Gallerix does NOT implement any kind of node access system. 
+                         Instead, it depends on your node access system of choice. Instead, the security features in Gallerix ensure that the user stays within 
+                         the albums s/he was granted access to by whatever separate node access system your installation is using. See help for a description of each type of security.'),
+    '#disabled' => TRUE || !variable_get('gallerix_secure_mode', 0), //System hasn't been implemented yet.
+    '#default_value' => variable_get('gallerix_security_type', 0)
+  );  */
+  
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Submit')
+  );
+  
+  
+  return $form;
+}
+
+function gallerix_admin_settings_validate($form_id, $form_values) {
+
+  if (!preg_match("|^[0-9]{1,4}x[0-9]{1,4}$|", $form_values['gallerix_full_resolution'])) {
+    form_set_error('gallerix_full_resolution', t('You must use the format Width x Height'));
+  }
+  if (!preg_match("|^[0-9]{1,4}x[0-9]{1,4}$|", $form_values['gallerix_thumbnail_resolution'])) {
+    form_set_error('gallerix_thumbnail_resolution', t('You must use the format Width x Height'));
+  }
+  if (strpos($form_values['gallerix_fields_to_extract'], " ") !== false) {
+    form_set_error('gallerix_fields_to_extract', t('No whitespaces between each field, just a comma.'));
+  }
+  if ($form_values['gallerix_thumbnail_number'] != strval(intval($form_values['gallerix_thumbnail_number']))) {
+    form_set_error('gallerix_thumbnail_number', t('You must enter an number.'));
+  }
+  elseif (intval($form_values['gallerix_thumbnail_number']) == 1 || intval($form_values['gallerix_thumbnail_number']) == 2 || intval($form_values['gallerix_thumbnail_number']) < 0) {
+    form_set_error('gallerix_thumbnail_number', t('You must use at least 3 thumbnails. You may set to 0 to disable thumbnails.'));  
+  }
+
+}
+
+function gallerix_admin_settings_submit($form_id, $form_values) {
+
+  variable_set('gallerix_full_resolution', explode("x", $form_values['gallerix_full_resolution'])); 
+  variable_set('gallerix_thumbnail_resolution', explode("x", $form_values['gallerix_thumbnail_resolution']));
+  variable_set('gallerix_fields_to_extract', explode(",", $form_values['gallerix_fields_to_extract']));
+  
+  unset($form_values['gallerix_full_resolution']);
+  unset($form_values['gallerix_thumbnail_resolution']);
+  unset($form_values['gallerix_fields_to_extract']);
+  
+  system_settings_form_submit($form_id, $form_values);
+  
+}
+
+
+
+
+function gallerix_manage_pictures($type, $id) {
+  drupal_set_title('Gerer les images');
+  
+  $output = drupal_get_form('gallerix_manage_pictures_form', $id);
+
+  return $output;
+}
+
+function gallerix_manage_pictures_form($id) {
+  $node = node_load($id);
+  $album_name = _gallerix_album_name($node);
+  
+  //Repositories.
+  $album_repository = _gallerix_album_paths($node, TRUE);
+  $common_repository = file_directory_path() . '/gallerix/repository' ;
+  $trash_repository = file_directory_path() . '/gallerix/trash' ;
+  
+  $album_files = file_scan_directory($album_repository, '.*');
+
+  $common_files = variable_get('gallerix_repository', 0) ? file_scan_directory($common_repository, '.*') : 0;
+  $trash_files = (variable_get('gallerix_trash_can', 0) && variable_get('gallerix_trash_add', 0)) ? file_scan_directory($trash_repository, '.*') : 0;
+  $upload_files = variable_get('gallerix_upload_number', 1); 
+  $archive_allowed = variable_get('gallerix_allow_archives', false);
+  
+  $album_pictures = db_query('SELECT pid, path, name, caption, original_name FROM {gallerix_pictures} WHERE nid = %d ORDER BY sort', $node->nid);
+  
+  $form = array(); 
+  $form['#tree'] = TRUE;
+  
+  //We use this as a placeholder to tell the submit function what to do.
+  $actions = array();
+  
+  //We want to pass the node ID.
+  $form['node_id'] = array(
+    '#type' => 'value',
+    '#value' => $id
+  );
+  $form['album_repository'] = array(
+    '#type' => 'value',
+    '#value' => $album_repository
+  );
+  $form['#attributes'] = array("enctype" => "multipart/form-data");
+    
+  //Manual Upload  
+  if ($upload_files) {
+    $form['gallerix_upload'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('From Upload'),
+      '#collapsible' => TRUE,
+      '#collapsed' => TRUE,
+      '#tree' => FALSE,
+    );
+    
+    for ($x = 1; $x <= $upload_files; $x++) {
+      $form['gallerix_upload']['upload_' . $x] = array(
+        '#type' => 'file',
+        '#title' => t('Upload ' . $x),
+        '#size' => 40,
+        '#description' => t('Select an image to upload. ') . ($archive_allowed ? t('You may also upload an archive.') : ''),
+        '#default_value' => '',
+      );
+    }
+  }   
+  //Only display the "Add From Common Repository" form if there are any files to add.
+  if ($common_files) {
+    $actions['repository'] = TRUE; //Process repository.
+    foreach($common_files as $file) {   
+      $form['gallerix_repository']['checkboxes'][] = array(
+        '#type' => 'checkbox',
+        '#title' => $file->basename,
+        '#collapsible' => TRUE,
+      );
+      $form['gallerix_repository']['files'][] = array(
+        '#type' => 'value',
+        '#value' => array('filename' => $file->filename, 'basename' => $file->basename, 'filesize' => filesize($file->filename)),
+      );     
+    }
+  }
+  
+  //Only display the "Add From Trash Repository" form if there are any files to add.    
+  if ($trash_files) {
+    $actions['trash'] = TRUE; //Process trash.
+    
+    $form['gallerix_trash'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('From Trash'),
+      '#collapsible' => TRUE,
+      '#collapsed' => TRUE,
+    );  
+    
+    foreach($trash_files as $file) {   
+      $form['gallerix_trash']['checkboxes'][] = array(
+        '#type' => 'checkbox',
+        '#title' => $file->basename,
+      );
+      $form['gallerix_trash']['files'][] = array(
+        '#type' => 'value',
+        '#value' => array('filename' => $file->filename, 'basename' => $file->basename),
+      );     
+    }
+  }
+
+  while($album_picture = db_fetch_array($album_pictures)) {
+    $actions['album'] = TRUE; //Process album.  
+    
+    $form['gallerix_album']['checkboxes'][] = array(
+      '#type' => 'checkbox',
+      '#title' => 'Remove',
+      '#collapsible' => TRUE,
+    );
+    $form['gallerix_album']['files'][] = array(
+      '#type' => 'value',
+      '#value' => array('filename' => $album_picture['path'], 'basename' => $album_picture['name'], 'pid' => $album_picture['pid'], 'caption' => $album_picture['caption'], 'original_name' => $album_picture['original_name'])
+    ); 
+    $form['gallerix_album']['captions'][] = array(
+      '#type' => 'textfield',
+      '#title' => 'Caption',
+      '#default_value' => $album_picture['caption'],
+    );      
+  }
+  
+  //Let the submit function know what to process.
+  $form['actions'] = array(
+    '#type' => 'value',
+    '#value' => $actions
+  );
+  
+  
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Submit')
+  ); 
+
+    
+  return $form;   
+}
+
+function theme_gallerix_manage_pictures_form($form) {
+
+  $node = node_load($form['node_id']['#value']);
+  $album_name = _gallerix_album_name($node);
+  $upload_files = variable_get('gallerix_upload_number', 1); 
+  $paths = _gallerix_album_paths($node, TRUE);
+  
+  $header = array(theme('table_select_header_cell'), t('Picture'), t('Caption'));
+  $rows = array();
+
+  foreach(element_children($form['gallerix_album']['files']) as $key) {
+     $basename = $form['gallerix_album']['files'][$key]['#value']['basename'];
+
+     $thumbnail_path = $paths['thumbnails'] . '/' . $basename;    
+     $thumbnail = theme('image', $thumbnail_path, $alt = '', $basename);     
+
+     unset($form['gallerix_album']['checkboxes'][$key]['#title']);
+     unset($form['gallerix_album']['captions'][$key]['#title']);
+          
+     $rows[] = array(
+      drupal_render($form['gallerix_album']['checkboxes'][$key]),
+      $thumbnail,
+      drupal_render($form['gallerix_album']['captions'][$key])
+     );
+  }
+  
+  $headerAdd = array(theme('table_select_header_cell'), t('File Name'), t('File Size'));
+  $rowsAdd = array();
+  
+  foreach(element_children($form['gallerix_repository']['files']) as $key) {
+     $basename = $form['gallerix_repository']['files'][$key]['#value']['basename'];
+     $filesize = $form['gallerix_repository']['files'][$key]['#value']['filesize'];
+     $filesize = size_readable($filesize);
+     
+     unset($form['gallerix_repository']['checkboxes'][$key]['#title']);
+
+     $rowsAdd[] = array(
+      drupal_render($form['gallerix_repository']['checkboxes'][$key]),
+      $basename,
+      $filesize
+     );
+  }
+
+
+  $output = '';
+  
+  if ($form['actions']['#value']['repository']) {
+    $output .= '<h3>Repository Files</h3>';
+    $output .= theme('table', $headerAdd, $rowsAdd);  
+  }
+
+  $output .= '<h3>Supprimer des images</h3>';
+  $output .= theme('table', $header, $rows);
+  
+  $output .= drupal_render($form['submit']);
+  
+  return '<h3>Ajouter des images</h3>' . drupal_render($form) . $output;
+  return $output;
+}
+
+
+
+function gallerix_manage_pictures_form_submit($form_id, $form_values) {
+  $node = node_load($form_values['node_id']);
+  $paths = _gallerix_album_paths($node, TRUE);
+  $album_name = _gallerix_album_name($node);
+  $album_directory = $paths['album'];
+  
+  $rebuild = FALSE;
+  
+  //Load in the settings. 
+  $extract_exif = variable_get('gallerix_extract_exif', 0);
+  $fields_to_extract = $extract_exif ? variable_get('gallerix_fields_to_extract', 0) : array();
+  $use_trash = variable_get('gallerix_trash_can', 0);  
+  $delete_repository_files = variable_get('gallerix_delete_repository', FALSE);
+  $upload_files = variable_get('gallerix_upload_number', 1); 
+  $archive_allowed = variable_get('gallerix_allow_archives', false);
+    
+  if ($upload_files) {
+    for ($x = 1; $x <= $upload_files; $x++) {
+      if ($file = file_check_upload('upload_' . $x)) { 
+        $extension = strtolower(substr($file->filename,-4));
+                             
+        if(($extension == '.zip' || strtolower(substr($file->filename,-7)) == '.tar.gz') && $archive_allowed) {
+          $file = file_save_upload($file, file_directory_path(), false);       
+          _gallerix_bulkupload_unpack($file, $paths['original'] . '/', TRUE);
+          $rebuild = TRUE;       
+        }  
+        elseif($extension == '.jpg' || $extension == '.gif' || $extension == '.png') {
+          $file = file_save_upload($file, $paths['original'], false);             
+          $rebuild = TRUE;
+        }
+        else {
+          drupal_set_message(t("Invalid file upload."));    
+          unlink($file->filepath);
+        }  
+      }
+    }
+  }        
+  
+  //Move files from repository to album.
+  if ($form_values['actions']['repository']) {
+    foreach($form_values['gallerix_repository']['checkboxes'] as $key => $checked) {
+      if ($checked) {
+
+        $source = $form_values['gallerix_repository']['files'][$key]['filename'];
+        $extension = strtolower(substr($source,-4));
+
+        
+        if (($extension == '.zip' || strtolower(substr($source, -7)) == '.tar.gz') && $archive_allowed) {
+          $file = new stdClass();     
+          $file->filename = $form_values['gallerix_repository']['files'][$key]['basename'];
+          $file->filepath = $source;
+          _gallerix_bulkupload_unpack($file, $paths['original'] . '/', $delete_repository_files);
+          $rebuild = TRUE;         
+        }
+        elseif($extension == '.jpg' || $extension == '.gif' || $extension == '.png') {
+          $destination = $paths['original'] . '/' . $form_values['gallerix_repository']['files'][$key]['basename'];        
+          $success = false;
+          
+          if ($delete_repository_files) {
+            $success = file_move($source, $destination);
+          }
+          else {
+            $success = file_copy($source, $destination);
+          }
+          
+          if ($success) {
+            $rebuild = TRUE;
+          }
+          else {
+            //Watchdog will go here.
+          }
+          
+        }
+        else {
+          drupal_set_message(t("Invalid file upload."));
+          unlink($source);
+          //Watchdog will go here.        
+        }
+
+      }
+
+    }
+  }
+  
+  //Move files from trash to album. 
+  if ($form_values['actions']['trash']) { 
+    foreach($form_values['gallerix_trash']['checkboxes'] as $key => $checked) {
+      if ($checked) {
+        $source = $form_values['gallerix_trash']['files'][$key]['filename'];
+        $destination = $paths['original'] . '/' . $form_values['gallerix_trash']['files'][$key]['basename'];
+        
+        if (file_move($source, $destination)) {
+          $rebuild = TRUE;
+        }
+        else {
+          //Watchdog will go here.
+        }
+      }
+
+    }
+  }
+  
+  //Remove marked files from album.
+  if ($form_values['actions']['album']) { 
+    foreach($form_values['gallerix_album']['checkboxes'] as $key => $checked) {
+      $source = $form_values['gallerix_album']['files'][$key]['filename'];
+      $thumbnail = $album_directory . '/thumbnails/' . $form_values['gallerix_album']['files'][$key]['basename'];
+      $full = $album_directory . '/full/' . $form_values['gallerix_album']['files'][$key]['basename'];
+      
+      if ($checked && $use_trash) {
+      
+        $destination = file_directory_path() . '/gallerix/trash/' . $form_values['gallerix_album']['files'][$key]['original_name'];
+        
+        if (file_move($source, $destination) && file_delete($thumbnail) && file_delete($full)) {
+          $rebuild = TRUE;
+          
+        }
+        else {
+          //Watchdog will go here.
+        }
+      }
+      elseif ($checked) {
+        if (file_delete($source) && file_delete($thumbnail) && file_delete($full)) {
+          $rebuild = TRUE;
+        }
+        else {
+          //Watchdog will go here.
+        }      
+      }
+      else{  
+        db_query("UPDATE {gallerix_pictures} SET caption = '%s' WHERE pid = %d", $form_values['gallerix_album']['captions'][$key], $form_values['gallerix_album']['files'][$key]['pid']);   
+      }
+
+    }
+  }    
+  if ($rebuild && variable_get('gallerix_build_derivatives', 0) == 0) {
+    _gallerix_rebuild_album($node);
+  }
+ 
+ 
+  return 'node/' . $node->nid . '/manage';
+}
+
+function _gallerix_rebuild_album($node) {
+  $paths = _gallerix_album_paths($node, TRUE);
+  
+  //First, we purge the DB of all pictures that don't exist anymore.
+  $files = file_scan_directory($paths['original'], '.*');
+  $basenames = array();
+  
+  
+  foreach($files as $file) {
+    $basenames[] = $file->basename;
+  }
+  
+  $pictures = db_query('SELECT pid, path, name, caption FROM {gallerix_pictures} WHERE nid = %d', $node->nid);
+  
+  $album_picture_paths = array();
+  $album_picture_names = array();
+  $album_picture_captions = array();
+  
+  
+  while ($picture = db_fetch_array($pictures)) {
+
+    if (!in_array($picture['name'], $basenames)) {
+      db_query('DELETE FROM {gallerix_pictures} WHERE pid = %d', $picture['pid']);
+    }
+    else {
+      //If the file was found, we don't want to add it to the DB later, since it's already in it.
+      $key = array_search($picture['name'], $basenames);
+      unset($basenames[$key]);
+    }
+  }
+  
+  //Now we purge the files list of all files already in the DB.
+  foreach($files as $key => $file) {
+    if (!in_array($file->basename, $basenames)) {
+      unset($files[$key]);
+    }   
+  }
+  
+  //Finally, we add the remaining files to the DB.
+  foreach($files as $file) {
+    $pid = db_next_id('{gallerix_pictures}_pid'); 
+
+    $original_name = $file->basename;
+    $filename = _gallerix_secure_file($file->filename);
+    $basename = basename($filename);
+    
+   
+    //First extract all EXIF Data, if enabled.
+    $exif = variable_get('gallerix_extract_exif', 0) ? exif_read_data($filename) : '';
+    $tags = variable_get('gallerix_extract_iptc', 0) ? extract_iptc_data($filename) : '';
+    
+    //Then use the DateTimeOriginal field as the created date.
+    $created = $exif ? _gallerix_format_date_exif($exif['DateTimeOriginal']) : 0;
+    //ImageDescription is also fairly standard.
+    
+    $caption = $exif ? ($exif['Title'] ? $exif['Title'] : $exif['ImageDescription']) : '';
+    $caption = trim($caption);
+    //Now extract all selected fields, and serialize the data.
+    $exif = $exif ? _gallerix_extract_exif_fields($exif, variable_get('gallerix_fields_to_extract', array('Title', 'ImageDescription', 'DateTimeOriginal'))) : '';
+    
+    db_query("INSERT INTO {gallerix_pictures} (nid, pid, path, name, original_name, caption, created, exif, iptc) VALUES (%d, %d, '%s', '%s', '%s', '%s', %d, '%s', '%s')", $node->nid, $pid, 
+            $filename, $basename, $original_name, $caption, $created, $exif, $tags);
+  }
+  
+  _gallerix_build_derivatives($node->nid, 'full');
+  _gallerix_build_derivatives($node->nid, 'thumbnails');
+  _gallerix_sort_album($node);
+}
+
+
+function extract_iptc_data( $image_path ) {    
+  $size = getimagesize ( $image_path, $info);        
+  $tags = array();
+  
+   if(is_array($info)) {    
+    $iptc = iptcparse($info["APP13"]);
+    
+    foreach (array_keys($iptc) as $s) {              
+      $c = count ($iptc[$s]);
+      
+        for ($i=0; $i <$c; $i++) {   
+        
+        $tag = utf8_encode($iptc[$s][$i]);
+    
+        if ($tag) {
+         $tags[] = $tag; 
+        }
+      }
+    }                  
+  }
+  
+  //We never want the first tag, which does not contain useful information.
+  unset($tags[0]);
+  
+  return serialize($tags);             
+} 
+
+
+
+/**
+ * Returns a UNIX timestamp from EXIF dates.
+ * 
+ */
+function _gallerix_format_date_exif($date) {
+  //Unfortunately, the EXIF date field comes in a YYYY:MM:DD HH:MM:SS format, which throws off strtotime().
+  //We must replace the first half using a PHP4 safe approach. Although PHP5 has a count parameter for str_replace(),
+  //we can't use it in PHP4.
+  $date = split(" ", $date);
+  $first_half = $date[0];
+  $second_half = $date[1];
+  
+  $first_half = str_replace(":", "-", $first_half);
+  $date = $first_half . ' ' . $second_half;
+  
+  return strtotime($date);
+  
+}
+
+function _gallerix_extract_exif_fields($exif, $fields) {
+  //Since EXIF data can often be non-standard, we use this method to extract particular EXIF fields known to work by the user.
+  
+  $extract = array();
+  
+  foreach($fields as $field) {
+    $extract[$field] = trim($exif[$field]);
+  }
+  
+  return serialize($extract);
+
+}
+
+
+function _gallerix_build_derivatives($nid, $size) {
+  
+  $sizes = array(
+    'thumbnails' => variable_get('gallerix_thumbnail_resolution', array(100, 70)),
+    'full' => variable_get('gallerix_full_resolution', array(500, 400)),
+  );
+  
+  $node = db_fetch_object(db_query("SELECT nid, uid FROM {node} WHERE nid = %d", $nid));
+  $pictures = db_query("SELECT path, pid, name FROM {gallerix_pictures} WHERE nid = %d", $nid);
+  $album = db_query("SELECT path FROM {gallerix_albums} WHERE nid = %d", $nid);
+  
+  $base_path = _gallerix_album_paths($node, TRUE);
+  $base_path = $base_path['album'];
+  
+  while($picture = db_fetch_array($pictures)) {
+    if (!$image_info = image_get_info($picture['path'])) {
+      continue;  //Skip to the next picture if it's an invalid picture.
+    }
+    
+    $output_file = $base_path . '/' . $size . '/' . $picture['name'];
+
+  $width = $sizes[$size][0];
+  $height = $sizes[$size][1];  
+   
+  if (file_exists($output_file)) {
+
+    $existing_info = image_get_info($output_file);
+    //print $width . " " . $height . "\n";
+      //print_r($existing_info);   
+    if ($existing_info['width'] == $width || $existing_info['height'] == $height) {
+      continue;
+    }
+    
+  }
+  
+  if ($size == 'thumbnails') {
+      //Ratios code from ImageCache.
+      $image_size = getimagesize($picture['path']);
+      $ratio = $image_size[0]/$image_size[1];
+      $new_ratio = $width/$height;
+      $scaleWidth = $ratio > $new_ratio ? 9999999 : $width;
+      $scaleHeight = $ratio < $new_ratio ? 9999999 : $height;
+      
+    image_scale($picture['path'], $output_file, $scaleWidth, $scaleHeight);
+    image_crop($output_file, $output_file,0,0, $width, $height);     
+  }  
+  else {
+    image_scale($picture['path'], $output_file, $width, $height);
+    $info = image_get_info($output_file);
+    db_query("UPDATE {gallerix_pictures} SET width = %d, height = %d WHERE pid = %d", $info['width'], $info['height'], $picture['pid']);   
+  }
+    
+      
+  }
+
+}
+
+
+
+function _gallerix_sort_album(&$node) {
+  $counter = 0;
+  $sort_order = $node->sort_order;
+  $sort_order = $sort_order ? $sort_order : $node->settings['sort_order'];
+  $sort_order = ($sort_order == 'default') ? variable_get('gallerix_default_sort', 'ascending') : $sort_order;
+
+  switch($sort_order) {
+    case 'ascending':
+      _gallerix_sort_pictures_ascending($node->nid);
+      break;
+    case 'descending':
+      _gallerix_sort_pictures_descending($node->nid);
+      break;
+    case 'random':
+      _gallerix_sort_pictures_random($node->nid);
+      break;
+    case 'filename':
+      _gallerix_sort_pictures_filename($node->nid);
+      break; 
+  }
+
+}
+
+
+function _gallerix_sort_pictures_ascending($nid) {
+  $pictures = db_query("SELECT pid FROM {gallerix_pictures} WHERE nid = %d ORDER BY created", $nid);
+  $counter = 1;
+  
+  while($picture = db_fetch_object($pictures)) {
+    db_query("UPDATE {gallerix_pictures} SET sort = %d WHERE pid = %d", $counter, $picture->pid);   
+    $counter++;
+  }  
+}
+
+function _gallerix_sort_pictures_descending($nid) {
+  $pictures = db_query("SELECT pid FROM {gallerix_pictures} WHERE nid = %d ORDER BY created DESC", $nid);
+  $counter = 1;
+  
+  while($picture = db_fetch_object($pictures)) {
+    db_query("UPDATE {gallerix_pictures} SET sort = %d WHERE pid = %d", $counter, $picture->pid);   
+    $counter++;
+  }  
+}
+
+function _gallerix_sort_pictures_random($nid) {
+  $pictures = db_query("SELECT pid FROM {gallerix_pictures} WHERE nid = %d ORDER BY created DESC", $nid);
+  $collisions = array();
+  
+  while($picture = db_fetch_object($pictures)) {
+    $random = rand()%100;
+    db_query("UPDATE {gallerix_pictures} SET sort = %d WHERE pid = %d", $random, $picture->pid);   
+  }  
+  
+  $pictures = db_query("SELECT pid FROM {gallerix_pictures} WHERE nid = %d ORDER BY sort", $nid);
+  
+  $counter = 1;
+  
+  while($picture = db_fetch_object($pictures)) {
+    db_query("UPDATE {gallerix_pictures} SET sort = %d WHERE pid = %d", $counter, $picture->pid);   
+    $counter++;
+  }  
+
+}
+
+function _gallerix_sort_pictures_filename($nid) {
+  $pictures = db_query("SELECT pid FROM {gallerix_pictures} WHERE nid = %d ORDER BY filename", $nid);
+  $counter = 1;
+  
+  while($picture = db_fetch_object($pictures)) {
+    db_query("UPDATE {gallerix_pictures} SET sort = %d WHERE pid = %d", $counter, $picture->pid);   
+    $counter++;
+  }  
+}
+
+
+
+
+
+function _gallerix_extract_data(&$node) {
+  $pictures = db_query("SELECT pid, path FROM {gallerix_pictures} WHERE nid = %d", $node->nid);
+  
+  $exif_extract = variable_get('gallerix_extract_exif', 0);
+  $iptc_extract = variable_get('gallerix_extract_iptc', 0);
+    
+  while($picture = db_fetch_object($pictures)) {
+    $exif = $exif_extract ? exif_read_data($picture->path) : '';
+    $exif = $exif ? _gallerix_extract_exif_fields($exif, variable_get('gallerix_fields_to_extract', array('Title', 'ImageDescription', 'DateTimeOriginal'))) : '';
+    
+    $tags = $iptc_extract ? extract_iptc_data($picture->path) : '';
+    
+    db_query("UPDATE {gallerix_pictures} SET exif = '%s', iptc = '%s' WHERE pid = '%s'", $exif, $tags, $picture->pid);   
+  }   
+}
+
+
+/**
+ * Implementation of hook_prepare().
+ */
+function gallerix_prepare(&$node, $field_name) {
+
+}
+
+/**
+ * Implementation of hook_form().
+ */
+function gallerix_form($node) {
+  
+
+  
+  if (!isset($node->nid)) { 
+    //First time we're entering the form.
+    $settings = array();
+    $settings['sort_order'] = 'default';
+  }
+  else {
+    $settings = $node->settings;
+  }
+  
+  
+  $form['#attributes'] = array("enctype" => "multipart/form-data");
+  
+  
+
+  $form['title'] = array(
+    '#type' => 'textfield',
+    '#title' => 'Nom de l\'Album',
+    '#required' => TRUE,
+    '#description' => t('For the time being, album names are permanent and cannot be changed.'),
+    '#default_value' => $node->title,
+    '#weight' => -5
+  );
+
+  $form['sort_order'] = array(
+    '#type' => 'select',
+    '#title' => t('Sort Order'),
+    '#description' => t('Override the selected default sort order in the Gallerix Settings Page.'),
+    '#options' => array('ascending' => 'Date Taken Ascending', 'descending' => 'Date Taken Descending', 'random' => 'Random', 'filename' =>'Filename', 'default' => 'Default'),
+    '#default_value' => $settings['sort_order']
+  ); 
+  $form['body_filter']['body'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Album Description'),
+    '#description' => t('Enter a short description for this album.'),
+    '#default_value' => $node->body,
+    '#rows' => 5,
+   );
+   $form['body_filter']['filter'] = filter_form($node->format);
+  
+  
+  return $form;
+}
+
+
+/**
+ * Implementation of hook_validate().
+ */
+ 
+function gallerix_validate(&$node) {
+
+}
+
+
+function gallerix_submit(&$node) {
+  
+}
+
+
+/**
+ * Implementation of hook_insert().
+ */
+function gallerix_insert($node) {
+
+  $album_name = _gallerix_album_name($node);
+  
+  $path = file_directory_path() . '/gallerix/albums/' . $node->uid;
+  
+  if (!file_exists($path)) {
+    mkdir($path);
+    chmod($path, 0777);  
+  }
+  
+  $path .= '/' . $node->nid; 
+  
+  if (!file_exists($path)) {
+    mkdir($path);
+    chmod($path, 0777);
+    mkdir($path . '/original');
+    chmod($path . '/original', 0777);
+    mkdir($path . '/thumbnails');
+    chmod($path . '/thumbnails', 0777);
+    mkdir($path . '/full');
+    chmod($path . '/full', 0777);                
+  }
+
+
+  $paths = _gallerix_album_paths($node, TRUE);
+  $path = $paths['album'];
+  
+  $settings['sort_order'] = $node->sort_order;
+  $settings = serialize($settings);
+  db_query("INSERT INTO {gallerix_albums} (nid, path, settings) VALUES (%d, '%s', '%s')", $node->nid, $path, $settings);
+}
+
+
+
+
+/**
+ * Implementation of hook_update().
+ *
+ * Resave the settings if they have been changed.
+ */
+function gallerix_update($node) { 
+  $settings['sort_order'] = $node->sort_order;
+  $settings = serialize($settings);
+      
+  db_query("UPDATE {gallerix_albums} SET settings = '%s' WHERE nid = %d", $settings, $node->nid);
+  
+  
+  //If the sort order has been changed, resort the album.
+  if ($node->sort_order != $node->settings['sort_order']) {
+    _gallerix_sort_album($node);
+  }   
+}
+
+
+
+
+/**
+ * Implementation of hook_load().
+ *
+ * Only needs to load in the settings, and the default image/
+ */
+function gallerix_load($node) {
+  
+  $settings = db_fetch_array(db_query('SELECT settings FROM {gallerix_albums} WHERE nid = %d', $node->nid));
+  $settings = unserialize($settings['settings']);
+  
+  $additions->settings = $settings;
+  
+  $additions->default_image = db_fetch_object(db_query("SELECT name, pid, nid, caption FROM {gallerix_pictures} WHERE nid = %d AND sort = %d", $node->nid, 1));
+  
+  
+  return $additions;
+}
+
+/**
+ * Implementation of hook_delete().
+ *
+ * The node is being deleted, remove all images associated with this node.
+ */
+function gallerix_delete($node) {
+  //file_delete($node->filepath);
+  $paths = _gallerix_album_paths($node, TRUE);
+  
+  $path = $paths['album'];
+  if (file_exists($path)) {
+    _gallerix_remove_album($path);   
+  }
+ 
+  db_query("DELETE FROM {gallerix_albums} WHERE nid = %d", $node->nid);     
+  db_query("DELETE FROM {gallerix_pictures} WHERE nid = %d", $node->nid);
+} 
+
+
+
+function gallerix_album_settings($node) {
+  $settings = db_fetch_array(db_query('SELECT settings FROM {gallerix_albums} WHERE nid = %d', $node->nid));
+  $settings = unserialize($settings['settings']);
+  
+  return $settings;
+}
+
+
+/**
+ * Recursively delete the album directory.
+ *
+ * @author swizec@swizec.com
+ */
+function _gallerix_remove_album($dir) {
+
+  if (!is_writable($dir)) {
+    if (!@chmod( $dir, 0777)) {
+      return FALSE;
+    }
+  }
+
+  $d = dir( $dir );
+  
+  while (FALSE !== ($entry = $d->read())) {
+    if ($entry == '.' || $entry == '..') {
+      continue;
+    }
+    $entry = $dir . '/' . $entry;
+    if (is_dir($entry)) {
+    
+      if (!_gallerix_remove_album($entry)) {
+        return FALSE;
+      }
+      continue;
+    }
+    if (!@unlink($entry)) {
+      $d->close();
+      return FALSE;
+    }
+  }
+
+  $d->close();
+
+  rmdir($dir);
+
+  return TRUE;
+}
+
+
+/**
+ * Implementation of hook_view().
+ */
+function gallerix_view($node, $teaser = FALSE, $page = FALSE) {
+  $path = drupal_get_path('module', 'gallerix');
+  
+  $get = 'node/' . $node->nid . '/picture/';
+  $get = url($get);
+  
+  $thumbnail_size = variable_get('gallerix_thumbnail_resolution', array(100, 70));
+  
+  $thumbnail_number = variable_get('gallerix_thumbnail_number', 5);
+
+  if (!$teaser && $node->default_image) {
+    if (variable_get('gallerix_secure_mode', 0)) {
+      $default .= $node->default_image->pid . '_' . sha1($node->nid . $node->default_image->pid); 
+    }   
+     drupal_add_js($path . '/js/gallerix.js');  
+     drupal_add_js(array('gallerix' => array(
+       'default' => $node->default_image->pid,
+       'get' => $get,
+       'links_width' => $links_width
+
+     )), 'setting');
+  }
+   
+   
+   
+   $content = '';
+   
+   if(!$node->default_image) {
+    $content .= theme('gallerix_empty_album', $node);
+   }
+   elseif ($teaser) {
+    $content .= theme('gallerix_album_teaser', $node);    
+   }
+   else {
+    $content .= '<div id="gallerix">' . "\n";
+    $content .= theme('gallerix_full', $node, $path);
+      if (module_exists('gallerix_widget_engine')) {
+        $content .=  _gallerix_widget_engine_display_widgets($node);
+        drupal_add_js(array('gallerix' => array('widgets_enabled' => TRUE)), 'setting');
+      }
+      else {
+        $content .= theme('gallerix_links', $node, $path);
+        drupal_add_js(array('gallerix' => array('widgets_enabled' => FALSE)), 'setting');        
+      } 
+         
+    theme('gallerix_files', $path);
+    $content .= "</div>\n";
+   
+   }
+   
+
+  
+   $node->content['image'] = array(
+     '#value' => $content,
+     '#weight' => -1
+   );
+   
+   return $node;
+}
+
+
+function theme_gallerix_empty_album($node) {
+  $output = '';
+  $output .= t('This album is currently empty.');
+  
+  return $output;
+}
+
+function theme_gallerix_files($path) {
+  drupal_add_css($path .'/gallerix.css');
+}
+
+function theme_gallerix_full($node, $path) {
+  global $user;
+  $output = '';
+  $output .= '<div id="gallerix-loader">' . "\n" ;  
+    $output .= '<div id="gallerix-display">' . "\n" ;  
+      $output .= theme('image', $path . '/images/blank.gif','', t('Full Image'), array('id' => 'gallerix-full'), FALSE);
+    $output .= '</div>' . "\n" ;
+  $output .= '</div>' . "\n" ;
+  $output .= '<span id="gallerix-message"></span>' . "\n";     
+  $output .= "\n";
+  
+  return $output;
+  
+}
+
+
+function theme_gallerix_links($node, $path) {
+  $output = '';
+  $output .= '<div id="gallerix-picture-links">' . "\n";
+  $x = 1;
+  $thumbnail_number = variable_get('gallerix_thumbnail_number', 5);
+  $current = floor($thumbnail_number/2);
+
+  for($x = 0; $x < $thumbnail_number; $x++) {
+    $thumbnail = theme('image', $path . '/images/blank.gif','', '', array('class' => 'gallerix-thumbnail ' . ($x == $current ? 'current' : '')), FALSE);
+    $output .= l($thumbnail, '#', array('id' => 'gallerix-thumbnail-link-' . ($thumbnail_count ? $thumbnail_count : 0), 'class' => 'gallerix-picture-link gallerix-thumbnail-link ' . ($x == $current ? 'current' : '')), NULL, NULL, FALSE, TRUE);
+    $output .= "\n";
+    $thumbnail_count++;
+    
+  }
+
+  $output .= '</div>' . "\n";
+  
+  return $output;
+}   
+
+
+
+function theme_gallerix_album_teaser($node) {
+  $paths = _gallerix_album_paths($node, TRUE);
+  
+  $full_path = $paths['full'] . '/' . $node->default_image->name;
+  
+  $output = '<div class="gallerix-album">';
+  $output .= '<a href="' . base_path() . '?q=node/' . $node->nid . '">';
+  $output .= theme('image', $full_path,'', $node->default_image->caption, array('class' => 'gallerix-teaser'), FALSE);  
+  $output .= '</a>';
+  $output .= '</div>';
+  
+  return $output;
+}
+
+
+/*************** Security Functions ******************/
+
+
+/**
+ * Make sure the PID provided matches the key attached to it. Otherwise, return 0.
+ *
+ */
+function _gallerix_validate_request($pid) {
+  if (variable_get('gallerix_secure_mode', 0)) {
+    $parts = split("_", $pid);
+    $pid = $parts[0];  
+    $key = $parts[1];  
+    
+    $picture = db_query('SELECT nid, pid, path, name, caption, created, exif FROM {gallerix_pictures} WHERE pid = %d', $pid);
+    $picture = db_fetch_object($picture);
+    
+    $match = sha1($picture->nid . $pid);
+    
+    if ($key == $match) {
+      return $pid;
+    }
+    else {
+      return 0;      
+    } 
+  }
+  else { 
+    return $pid;
+  }
+    
+}
+
+/**
+ * Checks to see that the PID being edited matches the UID.
+ *
+ */
+function _gallerix_validate_edit_request($pid) {
+  global $user;
+
+
+  $parts = split("_", $pid);
+  $pid = $parts[0];  
+  $key = $parts[1];  
+  
+  $picture = db_query('SELECT nid, pid, path, name, caption, created, exif FROM {gallerix_pictures} WHERE pid = %d', $pid);
+  $picture = db_fetch_object($picture);
+  
+  $match = sha1($picture->nid . $pid);
+  $node = db_fetch_object(db_query('SELECT nid, uid FROM {node} WHERE nid = %d', $picture->nid));
+  
+  if ($key == $match && $node->uid == $user->uid) {
+    return $pid;
+  } 
+  
+  return 0;
+    
+}
+
+
+
+function _gallerix_album_paths(&$node, $local) {
+
+  if ($local) {
+    $base_path = '';
+  }
+  else {
+    $base_path = base_path();
+  }
+
+  $base_path .= file_directory_path() . '/gallerix/albums/' . $node->uid . '/' . $node->nid;
+  
+  $paths = array();
+  $paths['original'] = $base_path . '/original';
+  $paths['thumbnails'] = $base_path . '/thumbnails';
+  $paths['full'] = $base_path . '/full';
+  $paths['album'] = $base_path;    
+
+  return $paths;
+}
+
+
+/**
+ * Generate the album name. By default it just converts the album title to lower case, and replaces spaces with underscores.
+ *
+ */
+function _gallerix_album_name(&$node) {
+
+  if (variable_get('gallerix_secure_mode', 0)) {
+    $album_name = sha1($node->nid);
+  }
+  else {
+    $album_name = $node->nid;
+  }
+  
+  return $node->nid;
+}
+
+
+function _gallerix_secure_directory($directory) {
+
+  $files = file_scan_directory($directory, '.*');
+
+  foreach($files as $file) {
+    _gallerix_secure_file($file->filename);
+  }
+}
+
+
+//Takes any filename and secures it. Returns the new filename.
+function _gallerix_secure_file($filename) {
+  if (!variable_get('gallerix_secure_mode', 0)) {
+    return $filename;
+  }
+  else {
+
+    $directory = dirname($filename);
+    $basename = basename($filename);
+    
+    $length = strlen($basename);
+    $root = substr($basename, 0, $length - 4);
+    $extension = substr($basename, -4);
+    $encrypted_root = sha1($root);
+    
+    $new_filename = $directory . '/' . $encrypted_root . $extension;
+    
+     
+    rename($filename, $new_filename);
+    
+    return $new_filename;
+  }
+}
+
+function _gallerix_generate_picture_link($nid, $pid) {
+  $path = 'node/' . $nid . '/picture/' . $pid;  
+  
+  if (variable_get('gallerix_secure_mode', 0)) {
+    $path .= '_' . sha1($nid . $pid);
+  
+  }
+  
+  return url($path);
+  
+}
+
+/*************** Views ****************************/
+function gallerix_views_default_views() {
+
+  $view = new stdClass();
+  $view->name = 'gallerix_grid';
+  $view->description = 'Grid view of all albums.';
+  $view->access = array (
+  );
+
+  $view->view_args_php = '';
+  $view->page = TRUE;
+  $view->page_title = 'Albums';
+  $view->page_header = '';
+  $view->page_header_format = '1';
+  $view->page_footer = '';
+  $view->page_footer_format = '1';
+  $view->page_empty = '';
+  $view->page_empty_format = '1';
+  $view->page_type = 'list';
+  $view->url = 'gallery';
+  $view->use_pager = TRUE;
+  $view->nodes_per_page = '24';
+  $view->sort = array (
+    array (
+      'tablename' => 'node',
+      'field' => 'created',
+      'sortorder' => 'DESC',
+      'options' => 'normal',
+    ),
+  );
+  $view->argument = array (
+    array (
+      'type' => 'uid',
+      'argdefault' => '2',
+      'title' => 'Albums by %1',
+      'options' => '',
+      'wildcard' => '',
+      'wildcard_substitution' => '',
+    ),
+  );
+  $view->field = array (
+    array (
+      'tablename' => 'gallerix',
+      'field' => 'gallerix',
+      'label' => '',
+      'handler' => 'gallerix_views_handler_album',
+    ),
+  );
+  $view->filter = array (
+    array (
+      'tablename' => 'node',
+      'field' => 'type',
+      'operator' => 'OR',
+      'options' => '',
+      'value' => array (
+        0 => 'album',
+      ),
+    ),
+  );
+  $view->exposed_filter = array (
+  );
+  $view->requires = array(node, gallerix);
+  $views[$view->name] = $view;
+  
+  return $views;
+
+}
+
+function gallerix_views_tables() {
+  $tables['gallerix'] = array(
+    'name' => 'gallerix',
+    'fields' => array(
+      'gallerix' => array(
+        'name' => t('Gallerix: Display Album'),
+        'handler' => array(
+          'gallerix_views_handler_album' => t('Image'),
+        ),
+        'notafield' => true,
+        'sortable' => false,
+      ),
+    ),
+  );
+  return $tables;
+}
+
+/**
+ * Views handler for displaying the image.
+ */
+function gallerix_views_handler_album($fieldinfo, $fielddata, $value, $data) {
+  $node = node_load($data->nid);
+  
+  $path = drupal_get_path('module', 'gallerix');
+  drupal_add_css($path .'/gallerix.css');
+  
+  return theme('gallerix_album_grid', $node, $path);
+}
+
+
+
+/**
+ * Themes each thumbnail to be displayed by the default view.
+ *
+ */
+function theme_gallerix_album_grid($node, $module_path) {
+  $paths = _gallerix_album_paths($node, TRUE);
+  $output = '';
+  
+  $front_picture = db_result(db_query("SELECT name FROM {gallerix_pictures} WHERE nid = %d AND sort = %d", $node->nid, 1));
+  
+  $front_picture = $front_picture ? ($paths['thumbnails'] . '/' . $front_picture) : ($module_path . '/images/blank.gif');
+  
+  $thumbnail = theme('image', $front_picture, '', $node->title, array('class' => 'gallerix-thumbnail'));
+  
+  $link =  l($thumbnail, 'node/' . $node->nid, array(), NULL, NULL, FALSE, TRUE);
+  
+  $output .= $link;
+  
+  return $output;
+}
+
+
+
+
+
+
+
+
+
+/******************************* Utility Function ******************************/
+
+/**
+ * Unpack zip files.
+ *
+ */
+function _gallerix_bulkupload_unpack(&$file,$tmpdir, $delete = FALSE) {
+  // Commands taken from http://cvs.drupal.org/viewcvs/drupal/contributions/modules/acidfree/acidfree.module?rev=1.111&view=markup
+  
+  file_check_directory($tmpdir,FILE_CREATE_DIRECTORY+FILE_MODIFY_PERMISSIONS);
+  
+  if(substr($file->filename,-4) == '.zip') {
+    $e = "unzip -qq -j {$file->filepath} -d $tmpdir";
+    //$e = "unzip -j {$file->filepath} -d $tmpdir";    
+  } else if(substr($file->filename,-7) == '.tar.gz') {
+    $e = "tar -C $tmpdir -xzf {$file->filepath}";
+  } else {
+    drupal_set_message("Filename must end with .zip or .tar.gz");
+  }
+  
+  if($e) {
+    $message = system($e);
+    if($message)
+      drupal_set_message('Extracting of the images failed: '.$message);
+  }
+  if ($delete) {
+    unlink($file->filepath);  
+  }
+}
+
+
+/**
+ * Returns a human readable file size.
+ *
+ * @author trask768@yahoo.com
+ */
+function size_readable($size, $retstring = null) {
+  // adapted from code at http://aidanlister.com/repos/v/function.size_readable.php
+  $sizes = array('B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB');
+  
+  if ($retstring === null) { 
+    $retstring = '%01.2f %s'; 
+  }
+  
+  $last_size_string = end($sizes);
+  
+  foreach ($sizes as $size_string) {
+          
+          if ($size < 1024) { 
+            break; 
+          }
+          if ($size_string != $last_size_string) { 
+            $size /= 1024; 
+          }
+          
+  }
+  if ($size_string == $sizes[0]) { 
+    $retstring = '%01d %s'; 
+  } // Bytes aren't normally fractional
+  
+  return sprintf($retstring, $size, $size_string);
+}
+
+
+
+
+
+
+
+

@@ -1,0 +1,834 @@
+<?php
+// $Id: usernode.module,v 1.12.2.21 2007/09/11 13:28:59 fago Exp $
+
+/**
+ * @file
+ * Automatic creation of usernodes - one node for each user.
+ */
+
+/**
+ * Defines the used content type for the nodes.
+ *
+ * You may change this to your custom nodetype, if you do so you may also remove
+ * the next 6 functions, however reimplementing hook_delete would be suggested.
+ */
+define('USERNODE_CONTENT_TYPE', "usernode");
+
+/**
+ * Usernode custom nodetype
+ */
+function usernode_node_info() {
+  return array(
+    'usernode' => array(
+      'name' => t('Usernode'),
+      'module' => 'usernode',
+      'description' => t('Nodes of this type are automatically generated for each user.'),
+      'locked' => TRUE,
+      'has_body' => FALSE,
+      'has_title' => FALSE,
+    )
+  );
+}
+
+/*
+ * Implementation of hook_cron()
+ */
+function usernode_cron() {
+  if (variable_get('usernode_check_more', FALSE)) {
+    usernode_check_all();
+  }
+}
+
+/**
+ * Implementation of hook_form(): Construct the usernode form.
+ */
+function usernode_form(&$node) {
+  $form['title'] = array(
+    '#type' => 'hidden',
+    '#value' => isset($node->user) ? $node->user->name : $node->title,
+  );
+
+  // temporarily store a newly registering user's user object,
+  // so that usernode_submit() can set the user's actual uid on node creation.
+  if (isset($node->user)) {
+    $form['user'] = array(
+      '#type' => 'value',
+      '#value' => $node->user,
+    );
+  }
+
+  return $form;
+}
+
+/**
+ * Implementation of hook_access().
+ */
+function usernode_access($op, $node) {
+  global $user;
+
+  if ($op == 'create' || $op == 'delete') {
+    return FALSE;
+  }
+
+  if ($op == 'update') {
+    if ( (user_access('edit own usernode') && is_usernode($node))
+         || user_access('edit usernodes') ) {
+      return TRUE;
+    }
+  }
+}
+
+/**
+ * Implementation of hook_perm().
+ */
+function usernode_perm() {
+  return array('edit usernodes', 'edit own usernode');
+}
+
+/**
+ * Implementation of hook_view().
+ */
+function usernode_view($node, $teaser = FALSE, $page = FALSE) {
+  $node = node_prepare($node, $teaser);
+
+  $member = '<dl><dt class="user-member">';
+  $member .= t('Member for') .'</dt><dd class="user-member">';
+  $member .= format_interval(time() - $node->user->created) .'</dl>';
+
+  $node->content['user_member'] = array(
+    '#value' => $member,
+    '#weight' => 0,
+  );
+
+  if (module_exists('nodeprofile') && function_exists('nodeprofile_show_profiles')) {
+    $node->content['nodeprofile'] = nodeprofile_show_profiles($node->uid);
+    $node->content['nodeprofile']['#weight'] = -2;
+  }
+
+  return $node;
+}
+
+/**
+ * Implementation of hook_delete().
+ */
+function usernode_delete(&$node) {
+  // prevent deletion of usernodes, if a module directly calls node_delete()
+  drupal_set_message('You mustn\'t manually delete a usernode! Delete the '.
+                     'according user and the usernode is going to be deleted too.', 'error');
+
+  $user = usernode_get_user($node);
+
+  // the node has already been deleted, so save it again
+  $nid = $node->nid;
+  unset($node->nid);
+
+  node_save($node);
+
+  // change to old nid
+  db_query("UPDATE {node} SET nid = %d WHERE nid = %d", $nid, $node->nid);
+  db_query("UPDATE {node_revisions} SET nid = %d WHERE nid = %d", $nid, $node->nid);
+
+  // simulate deleting of new nid
+  node_invoke_nodeapi($node, 'delete');
+
+  // prevent other modules from reacting on old node deletion through nodeapi
+  // TODO: redirect to the referrer, not to the homepage.
+  drupal_goto('');
+}
+
+/**
+ * End of usernode content type implementation
+ */
+
+/**
+ * Implementation of hook_user().
+ */
+function usernode_user($op, &$edit, &$user, $category = NULL) {
+  switch ($op) {
+    case 'load':
+       usernode_get_node_id($user);
+       break;
+    case 'insert':
+      return usernode_create_node($user);
+    case 'after_update':
+       return $category == 'account' ? usernode_update_node($user) : '';
+    case 'delete':
+      return usernode_delete_node($user);
+  }
+}
+
+/**
+ * Implementation of hook_menu().
+ */
+function usernode_menu($may_cache) {
+  global $user;
+
+  if ($may_cache) {
+    // prevent manual adding of usernodes
+    $items[] = array('path' => 'node/add/'. USERNODE_CONTENT_TYPE,
+        'callback' => 'usernode_prevent_manual_adding',
+        'access' => user_access('administer nodes'),
+        'type' => MENU_CALLBACK);
+
+    $items[] = array('path' => 'usernode',
+        'callback' => 'usernode_view_own_usernode',
+        'title' => t('My usernode'),
+        'access' => $user->uid && user_access('access content'),
+        'type' => MENU_SUGGESTED_ITEM);
+    return $items;
+  }
+
+  if (!$may_cache && arg(0) == 'node' && is_numeric(arg(1))) {
+    $node = node_load(arg(1));
+    if ($node->nid && $node->type == USERNODE_CONTENT_TYPE && arg(2) == 'delete') {
+      // somebody tries to delete a usernode!
+      drupal_set_message(t("It's not possible to delete a usernode!"), 'error');
+      drupal_goto('');
+    }
+  }
+}
+
+/**
+ * Delete the associated node(s). Called by hook_user().
+ */
+function usernode_delete_node(&$user) {
+  $node = usernode_get_node($user);
+
+  db_query('DELETE FROM {node} WHERE nid = %d', $node->nid);
+  db_query('DELETE FROM {node_revisions} WHERE nid = %d', $node->nid);
+  db_query('DELETE FROM {usernode} WHERE nid = %d', $node->nid);
+
+  // Don't call hook_delete as we prevent deletion there
+  node_invoke_nodeapi($node, 'delete');
+
+  // Clear the cache so an anonymous poster can see the node being deleted.
+  cache_clear_all();
+
+  // Remove this node from the search index if needed.
+  if (function_exists('search_wipe')) {
+    search_wipe($node->nid, 'node');
+  }
+}
+
+/**
+ * Create an associated node. Called by hook_user().
+ */
+function usernode_create_node($user) {
+  $node = array(
+    'type' => USERNODE_CONTENT_TYPE,
+    'title' => check_plain($user->name),
+    'user' => $user,
+  );
+  usernode_save_node($node);
+}
+
+/*
+ * Saves a usernode by using drupal_execute.
+ * This allows modules like auto_nodetitle to work and makes sure all hooks are invoked properly
+ */
+function usernode_save_node($node) {
+  $values = array();
+
+  // workaround to disable drupal message "Your usernode has been created"
+  $messages = drupal_get_messages();
+
+  // create the usernode
+  drupal_execute(USERNODE_CONTENT_TYPE .'_node_form', $values, $node);
+
+  // write back the old messages
+  $_SESSION['messages'] = $messages;
+}
+
+/**
+ * Implementation of usernode_submit():
+ * Use the temporarily stored user object of a newly registering user,
+ * so that the usernode is owned by the actual user instead of Anonymous.
+ */
+function usernode_submit(&$node) {
+  if (isset($node->user)) {
+    $node->uid = $node->user->uid;
+  }
+  //unpublish the usernode if the user is blocked
+  $node_options = variable_get('node_options_'. USERNODE_CONTENT_TYPE, array('status', 'promote'));
+  if (in_array('status', $node_options)) {
+    $node->status = $node->user->status;
+  }
+}
+
+/**
+ * Implementation of hook_insert():
+ * Insert a node/user relationship into the {usernode} table.
+ */
+function usernode_insert($node) {
+  db_query("INSERT INTO {usernode} (nid,uid) VALUES(%d,%d)",
+           $node->nid, $node->uid);
+}
+
+/**
+ * Update an associated node. Called by hook_user().
+ */
+function usernode_update_node($user) {
+  $node = usernode_get_node($user);
+  //make sure the node is associated with the updated $user and save it again,
+  //so the usernode is updated
+  $node->user = $user;
+  usernode_save_node($node);
+}
+
+/**
+ * Implementation of hook_load():
+ * Load the user object of the corresponding user into $node->user.
+ */
+function usernode_load($node) {
+  $sql = "SELECT uid FROM {usernode} WHERE nid = %d";
+  $uid = db_result(db_query($sql, $node->nid));
+
+  if ($uid) {
+    $additions = array('user' => user_load(array('uid' => $uid)));
+    return $additions;
+  }
+}
+
+/**
+ * Return the usernode of the user.
+ * @param $user The user object or the user's uid
+ */
+function usernode_get_node(&$user) {
+  if (!is_object($user)) {
+    $nid = usernode_get_node_id($user);
+    return $nid ? node_load($nid) : FALSE;
+  }
+  if (!isset($user->node)) {
+    $nid = usernode_get_node_id($user);
+    $user->node = $nid ? node_load($nid) : FALSE;
+  }
+  return $user->node;
+}
+
+/**
+ * Return the id of the usernode of the user.
+ * @param $user The user object or the user's uid
+ */
+function usernode_get_node_id(&$user) {
+  static $history = array();
+
+  if (!is_object($user)) {
+    if (!$history[$user]) {
+      $history[$user] = db_result(db_query("SELECT nid FROM {usernode} WHERE uid = %d", $user));
+    }
+    return $history[$user];
+  }
+
+  if (!isset($user->node_id)) {
+    $user->node_id = usernode_get_node_id($user->uid);
+  }
+  return $user->node_id;
+}
+
+
+/**
+ * Return the user object of the usernode.
+ */
+function usernode_get_user($node) {
+  return $node->user;
+}
+
+/**
+ * Return true if the node is the usernode of the given or the current user,
+ * and false otherwise.
+ */
+function is_usernode($node, $account = NULL) {
+  global $user;
+
+  if (is_null($account)) {
+    $account = $user;
+  }
+
+  return $account->uid == $node->user->uid;
+}
+
+/**
+ * Implementation of hook_enable().
+ */
+function usernode_enable() {
+  //when the module is activated, we check the usernodes
+  usernode_check_all();
+  // set the flag to re-check usernodes on cron - so we verfiy usernode creating actually worked
+  variable_set('usernode_check_more', TRUE);
+  if (module_exists('nodefamily')) {
+    nodefamily_content_type_set_max(USERNODE_CONTENT_TYPE, 1);
+  }
+}
+
+/**
+ * Check all users for an existing usernode, and create one if necessary.
+ */
+function usernode_check_all($limit = 100) {
+  // find usernodes that have been deleted while the module was deactivated
+  $result = db_query("SELECT un.* FROM {usernode} un ".
+                     "LEFT JOIN {node} n ON un.nid = n.nid ".
+                     "WHERE n.nid IS NULL");
+
+  while ($row = db_fetch_object($result)) {
+    db_query("DELETE FROM {usernode} WHERE nid = %d", $row->nid);
+  }
+
+  // create usernodes for all existing users without a usernode
+  $result = db_query_range("SELECT u.* FROM {users} u ".
+                           "LEFT JOIN {usernode} un ON u.uid = un.uid ".
+                           "WHERE un.nid IS NULL AND u.uid != 0", 0, $limit);
+  $processed = 0;
+  while ($user = db_fetch_object($result)) {
+    usernode_create_node($user);
+    $processed ++;
+  }
+  if ($processed < $limit) {
+    variable_del('usernode_check_more');
+    return TRUE;
+  }
+  return FALSE;
+}
+
+/**
+ * Implementation of hook_form_alter().
+ */
+function usernode_form_alter($form_id, &$form) {
+  if ($form_id == USERNODE_CONTENT_TYPE .'_node_form' && !$_POST) {
+    unset($form['delete']);
+  }
+  //If the nodefamily module is activated, make sure that it knows that usernodes are lonely nodes
+  else if ($form_id == 'node_type_form' && module_exists('nodefamily') && $form['#node_type']->type == USERNODE_CONTENT_TYPE ) {
+    nodefamily_content_type_set_max(USERNODE_CONTENT_TYPE, 1);
+  }
+}
+
+/**
+ * Implementation of hook_link().
+ */
+function usernode_link($type, &$node, $teaser = FALSE) {
+  $links = array();
+
+  if ($type == 'node' && $node->type == USERNODE_CONTENT_TYPE && !$teaser) {
+    if ($node->user->uid && $node->user->name && user_access('access user profiles')) {
+      $links['usernode_user_profile'] = array(
+        'title' => t('View user page'),
+        'href' => 'user/'. $node->user->uid,
+        'attributes' => array('title' => t('View user page.')),
+      );
+    }
+  }
+  return $links;
+}
+
+function usernode_prevent_manual_adding() {
+  drupal_set_message(t('You mustn\'t manually add a usernode!'), 'error');
+  drupal_goto('node/add');
+}
+
+function usernode_view_own_usernode() {
+  global $user;
+
+  $node = usernode_get_node($user);
+  return node_view($node, FALSE, TRUE, TRUE);
+}
+
+/**
+ * @ingroup views
+ */
+
+/**
+ * Implementation of hook_views_tables():
+ * Present fields and filters for user data.
+ */
+function usernode_views_tables() {
+  $tables['usernode'] = array(
+    'name' => 'usernode',
+    'provider' => 'internal', // won't show up in external list.
+    'join' => array(
+      'left' => array(
+        'table' => 'node',
+        'field' => 'nid'
+      ),
+      'right' => array(
+        'field' => 'nid'
+      ),
+      'type' => 'inner',
+    ),
+  );
+
+  $tables['usernode_users'] = array(
+    'name' => 'users',
+    'provider' => 'internal', // won't show up in external list.
+    'join' => array(
+      'left' => array(
+        'table' => 'usernode',
+        'field' => 'uid'
+      ),
+      'right' => array(
+        'field' => 'uid'
+      ),
+    ),
+    'fields' => array(
+      'name' => array(
+        'name' => t('Usernode: Name'),
+        'handler' => array(
+          'usernode_views_handler_field_username_text' => t('normal text'),
+          'usernode_views_handler_field_username_link' => t('themed userlink'),
+        ),
+        'sortable' => true,
+        'uid' => 'uid',
+        'addlfields' => array('uid'),
+        'help' => t('This will display the name of the user.'),
+      ),
+      'uid' => array(
+        'name' => t('Usernode: User ID'),
+        'handler' => 'views_handler_field_int',
+        'sortable' => true,
+        'help' => t('Display the user id.'),
+      ),
+      'picture' => array(
+        'field' => 'uid',
+        'name' => t('Usernode: Picture'),
+        'handler' => 'views_handler_field_userpic',
+        'sortable' => false,
+        'help' => t('Display the user picture.'),
+      ),
+      'mail' => array(
+        'name' => t('Usernode: Email'),
+        'handler' => 'usernode_views_handler_field_email',
+        'sortable' => true,
+        'help' => t('This will display the email address of the user.'),
+      ),
+      'status' => array(
+        'name' => t('Usernode: Status'),
+        'handler' => 'usernode_views_handler_field_status',
+        'sortable' => true,
+        'help' => t('This will display whether user is active or blocked.'),
+      ),
+      'created' => array(
+        'name' => t('Usernode: Created Time'),
+        'sortable' => true,
+        'handler' => views_handler_field_dates(),
+        'option' => 'string',
+        'help' => t('Display the registration time of a user.'),
+      ),
+      'access' => array(
+        'name' => t('Usernode: Last Access Time'),
+        'sortable' => true,
+        'handler' => views_handler_field_dates(),
+        'option' => 'string',
+        'help' => t('Displays when the user has visited the site the last time.'),
+      ),
+      'login' => array(
+        'name' => t('Usernode: Last Login Time'),
+        'sortable' => true,
+        'handler' => views_handler_field_dates(),
+        'option' => 'string',
+        'help' => t('Displays when the user has logged in the last time.'),
+      ),
+    ),
+    'sorts' => array(
+      'name' => array(
+        'name' => t('Usernode: Name'),
+        'help' => t('This allows you to sort alphabetically by usernames.'),
+      ),
+      'uid' => array(
+        'name' => t('Usernode: User ID'),
+        'help' => t('This allows you to sort by user id.'),
+      ),
+      'mail' => array(
+        'name' => t('Usernode: Email'),
+        'help' => t('This allows you to sort alphabetically by email.'),
+      ),
+      'status' => array(
+        'name' => t('Usernode: Status'),
+        'help' => t('This allows you to sort by user status (active/blocked).'),
+      ),
+      'created' => array(
+        'name' => t('Usernode: Created Time'),
+        'help' => t('Sort by the registration time of a user.'),
+      ),
+      'access' => array(
+        'name' => t('Usernode: Last Access Time'),
+        'help' => t('Sorts by the last access time of a user.'),
+      ),
+      'login' => array(
+        'name' => t('Usernode: Last Login Time'),
+        'help' => t('Sorts by the last login time of a user.'),
+      ),
+    ),
+    'filters' => array(
+      'name' => array(
+        'name' => t('Usernode: Name'),
+        'operator' => 'views_handler_operator_or',
+        'list' => 'views_handler_filter_username',
+        'value-type' => 'array',
+        'help' => t('This allows you to filter by a particular user. You might not find this useful if you have a lot of users.'),
+      ),
+      'uid' => array(
+        'name' => t('Usernode: User ID'),
+        'operator' => 'views_handler_operator_gtlt',
+        'help' => t('This allows you to filter by user id.'),
+      ),
+      'mail' => array(
+        'name' => t('Usernode: Email'),
+        'operator' => 'views_handler_operator_like',
+        'handler' => 'views_handler_filter_like',
+        'help' => t('This allows you to filter by email address.'),
+      ),
+      'status' => array(
+        'name' => t('Usernode: Active'),
+        'operator' => 'views_handler_operator_eqneq',
+        'list' => array(0 => t('blocked'), 1 => t('active')),
+        'help' => t('This allows you to filter by user status (active/blocked).'),
+      ),
+      'created' => array(
+        'name' => t('Usernode: Created Time'),
+        'operator' => 'views_handler_operator_gtlt',
+        'value' => views_handler_filter_date_value_form(),
+        'handler' => 'views_handler_filter_timestamp',
+        'option' => 'string',
+        'help' => t('This filter allows usernodes to be filtered by their users\'s creation date. Enter dates in the format: CCYY-MM-DD HH:MM:SS. Enter \'now\' to use the current time. You may enter a delta (in seconds) to the option that will be added to the time; this is most useful when combined with now. If you have the jscalendar module from jstools installed, you can use a popup date picker here.'),
+      ),
+      'access' => array(
+        'name' => t('Usernode: Last Access Time'),
+        'operator' => 'views_handler_operator_gtlt',
+        'value' => views_handler_filter_date_value_form(),
+        'handler' => 'views_handler_filter_timestamp',
+        'option' => 'string',
+        'help' => t('This filter allows usernodes to be filtered by their users\'s last access time. Enter dates in the format: CCYY-MM-DD HH:MM:SS. Enter \'now\' to use the current time. You may enter a delta (in seconds) to the option that will be added to the time; this is most useful when combined with now. If you have the jscalendar module from jstools installed, you can use a popup date picker here.'),
+      ),
+      'login' => array(
+        'name' => t('Usernode: Last Login Time'),
+        'operator' => 'views_handler_operator_gtlt',
+        'value' => views_handler_filter_date_value_form(),
+        'handler' => 'views_handler_filter_timestamp',
+        'option' => 'string',
+        'help' => t('This filter allows usernodes to be filtered by their users\'s last login time. Enter dates in the format: CCYY-MM-DD HH:MM:SS. Enter \'now\' to use the current time. You may enter a delta (in seconds) to the option that will be added to the time; this is most useful when combined with now. If you have the jscalendar module from jstools installed, you can use a popup date picker here.'),
+      ),
+    ),
+  );
+
+  $tables['usernode_users_roles'] = array(
+    'name' => 'users_roles',
+    'provider' => 'internal', // won't show up in external list.
+    'join' => array(
+      'left' => array(
+        'table' => 'usernode',
+        'field' => 'uid'
+      ),
+      'right' => array(
+        'field' => 'uid'
+      ),
+    ),
+    'filters' => array(
+      'rid' => array(
+        'name' => t('Usernode: Role'),
+        'operator' => 'views_handler_operator_andor',
+        'list' => 'views_handler_filter_role',
+        'value-type' => 'array',
+        'help' => t('Include the user only if the user is a member of the selected role.'),
+      ),
+    ),
+  );
+
+  $tables['usernode_role'] = array(
+    'name' => 'role',
+    'provider' => 'internal', // won't show up in external list.
+    'join' => array(
+      'left' => array(
+        'table' => 'usernode_users_roles',
+        'field' => 'rid'
+      ),
+      'right' => array(
+        'field' => 'rid'
+      ),
+    ),
+  );
+  return $tables;
+}
+
+/**
+ * Implementation of hook_views_arguments():
+ * Present an argument Role ID.
+ */
+function usernode_views_arguments() {
+  $arguments = array(
+    'usernode_rid' => array(
+      'name' => t('Usernode: Role ID'),
+      'handler' => 'views_handler_arg_usernode_rid',
+      'help' => t('The Role ID argument allows to filter usernodes by the specified Role.'),
+    ),
+  );
+  return $arguments;
+}
+
+/**
+ * Callback for usernode_views_arguments().
+ */
+function views_handler_arg_usernode_rid($op, &$query, $argtype, $arg = '') {
+  switch ($op) {
+    case 'summary':
+      $table_data = _views_get_tables();
+      $joininfo = $table_data['usernode_role']['join'];
+      $joininfo['type'] = 'inner';
+      $query->add_table('usernode_role', true, 1, $joininfo);
+
+      $query->add_field('name', 'usernode_role');
+      $query->add_field('rid', 'usernode_role');
+      $fieldinfo['field'] = "usernode_role.name";
+      return $fieldinfo;
+      break;
+
+    case 'sort':
+      $query->add_orderby('usernode_role', 'name', $argtype);
+      break;
+
+    case 'filter':
+      $rid = intval($arg);
+      $table_data = _views_get_tables();
+      $joininfo = $table_data['usernode_users_roles']['join'];
+      $joininfo['type'] = 'inner';
+      $joininfo['extra'] = array('rid' => $rid);
+
+      $query->add_table("usernode_users_roles", true, 1, $joininfo);
+      break;
+
+    case 'link':
+      return l($query->name, "$arg/" . intval($query->rid));
+
+    case 'title':
+      $role = db_fetch_object(db_query("SELECT name FROM {role} WHERE rid = '%d'", $query));
+      return $role->name;
+  }
+}
+
+/**
+ * Callback for usernode_views_tables(): user name as plaintext.
+ */
+function usernode_views_handler_field_username_text($fieldinfo, $fielddata, $value, $data) {
+  return check_plain($value);
+}
+
+/**
+ * Callback for usernode_views_tables(): user name as a link to the usernode.
+ */
+function usernode_views_handler_field_username_link($fieldinfo, $fielddata, $value, $data) {
+  if ($value) {
+    $obj->name = $value;
+    $uidfield = $fielddata['tablename'] ."_". $fieldinfo['uid'];
+    $obj->uid = $data->$uidfield;
+    return theme('username', $obj);
+  }
+}
+
+/**
+ * Callback for usernode_views_tables(): email address as a link.
+ */
+function usernode_views_handler_field_email($fieldinfo, $fielddata, $value, $data) {
+  return l($value, 'mailto:'. $value);
+}
+
+/**
+ * Callback for usernode_views_tables(): render status: active or blocked.
+ */
+function usernode_views_handler_field_status($fieldinfo, $fielddata, $value, $data) {
+  return $value ? t('active') : t('blocked');
+}
+
+/**
+ * Generate a default view: a simple userlisting.
+ */
+function usernode_views_default_views() {
+  $view = new stdClass();
+  $view->name = 'userlist';
+  $view->description = 'Provides a user listing using usernodes.';
+  $view->access = array();
+  $view->view_args_php = '';
+  $view->sort = array();
+  $view->argument = array();
+  $view->field = array(
+    array(
+      'tablename' => 'usernode_users',
+      'field' => 'uid',
+      'label' => 'user id',
+      'sortable' => '1',
+      'defaultsort' => 'ASC',
+    ),
+    array(
+      'tablename' => 'node',
+      'field' => 'title',
+      'label' => 'username',
+      'handler' => 'views_handler_field_nodelink',
+      'sortable' => '1',
+    ),
+    array(
+      'tablename' => 'usernode_users',
+      'field' => 'mail',
+      'label' => 'email',
+      'sortable' => '1',
+    ),
+    array(
+      'tablename' => 'usernode_users',
+      'field' => 'created',
+      'label' => 'created',
+      'handler' => 'views_handler_field_date_small',
+      'sortable' => '1',
+    ),
+    array(
+      'tablename' => 'usernode_users',
+      'field' => 'access',
+      'label' => 'access',
+      'handler' => 'views_handler_field_date',
+      'sortable' => '1',
+    ),
+    array(
+      'tablename' => 'usernode_users',
+      'field' => 'login',
+      'label' => 'login',
+      'handler' => 'views_handler_field_date_large',
+      'sortable' => '1',
+    ),
+  );
+  $view->filter = array(
+    array(
+      'tablename' => 'node',
+      'field' => 'type',
+      'operator' => 'OR',
+      'options' => '',
+      'value' => array(
+        0 => 'usernode',
+      ),
+    ),
+    array(
+      'tablename' => 'usernode_users',
+      'field' => 'status',
+      'operator' => '=',
+      'options' => '',
+      'value' => '1',
+    ),
+    array(
+      'tablename' => 'usernode_users_roles',
+      'field' => 'rid',
+      'operator' => 'AND',
+      'options' => '',
+      'value' => array(
+      ),
+    ),
+  );
+  $view->exposed_filter = array(
+    array(
+      'tablename' => 'usernode_users_roles',
+      'field' => 'rid',
+      'label' => 'User Roles',
+      'optional' => 1,
+      'is_default' => 0,
+      'operator' => 0,
+      'single' => 0,
+    ),
+  );
+  $view->requires = array(node, usernode_users, usernode_users_roles);
+  $views[$view->name] = $view;
+
+  return $views;
+}

@@ -1,0 +1,15 @@
+; $Id$
+name = Colorpicker Example
+description = Shows an example of the colorpicker in action.
+package = "Colorpicker"
+; Information added by drupal.org packaging script on 2007-09-22
+version = "5.x-1.x-dev"
+project = "colorpicker"
+datestamp = "1190419295"
+
+
+; Information added by drupal.org packaging script on 2007-11-04
+version = "5.x-1.x-dev"
+project = "colorpicker"
+datestamp = "1194177680"
+

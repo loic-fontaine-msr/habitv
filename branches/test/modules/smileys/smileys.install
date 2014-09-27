@@ -1,0 +1,65 @@
+<?php
+// $Id: smileys.install,v 1.2.2.2 2007/04/22 22:36:01 Gurpartap Exp $
+
+/**
+ * Implementation of hook_install()
+ */
+function smileys_install() {
+  switch ($GLOBALS['db_type']) {
+    case 'mysql':
+    case 'mysqli':
+      $result = db_query("CREATE TABLE IF NOT EXISTS {smileys} (
+        id int(11) auto_increment,
+        acronyms varchar(255) DEFAULT '' NOT NULL,
+        image varchar(255) DEFAULT '' NOT NULL,
+        description varchar(64) DEFAULT '' NOT NULL,
+        standalone tinyint(1) DEFAULT '0' NOT NULL,
+        package varchar(64) DEFAULT 'Uncategorized' NOT NULL,
+        PRIMARY KEY (id)
+      ) TYPE=MyISAM /*!40100 DEFAULT CHARACTER SET utf8 */;");
+      break;
+    case 'pgsql':
+      $result = db_query("CREATE TABLE {smileys} (
+        id SERIAL,
+        acronyms varchar(255) DEFAULT '' NOT NULL,
+        image varchar(255) DEFAULT '' NOT NULL,
+        description varchar(64) DEFAULT '' NOT NULL,
+        standalone INT2 NOT NULL DEFAULT '0',
+        package varchar(64) DEFAULT 'Uncategorized' NOT NULL,
+        PRIMARY KEY (id)
+      )");
+      break;
+  }
+  if ($result) {
+    $dir = drupal_get_path('module', 'smileys'). '/packs/example/';
+    $examples = array(
+      array(':) :-) :smile:', 'smile.png', 'Smiling'),
+      array(';) ;-) :wink:', 'wink.png', 'Eye-wink'),
+      array(':( :-( :sad:', 'sad.png', 'Sad'),
+      array(':D :-D :lol:', 'lol.png', 'Laughing out loud'),
+      array('}:) }:-) :evil:', 'evil.png', 'Evil'),
+      array(':P :-P :tongue:', 'tongue.png', 'Sticking out tongue'),
+      array(':O :-O :shocked:', 'shock.png', 'Shocked'),
+      array(':? :-? :puzzled:', 'puzzled.png', 'Puzzled'),
+      array('8) 8-) :cool:', 'cool.png', 'Cool'),
+      array(':jawdrop:', 'jawdrop.gif', 'Jawdropping!'),
+      array(':sick: :barf:', 'barf.gif', 'Barf!'),
+    );
+    foreach ($examples as $data) {
+      db_query("INSERT INTO {smileys} (acronyms, image, description, standalone, package) VALUES ('%s', '%s', '%s', 1, '%s');", $data[0], $dir . $data[1], $data[2], 'example');
+    }
+  }
+}
+
+function smileys_uninstall() { 
+  db_query('DROP TABLE {smileys}');
+  variable_del('smileys_enable_for_comments');
+  variable_del('smileys_enable_for_nodes');
+}
+
+/**
+ * Updates
+ */
+function smileys_update_1() {
+  return _system_update_utf8(array('smileys'));
+}

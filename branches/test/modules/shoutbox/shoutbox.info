@@ -1,0 +1,13 @@
+; $Id: shoutbox.info,v 1.1.2.3 2007/06/18 23:07:02 dww Exp $
+; Shoutbox module
+; Originally by benshell;
+; Now maintained by disterics
+
+name = shoutbox
+description = This module enables you to display a shoutbox block.
+
+; Information added by drupal.org packaging script on 2007-10-18
+version = "5.x-1.1"
+project = "shoutbox"
+datestamp = "1192691417"
+

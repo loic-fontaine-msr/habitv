@@ -1,0 +1,36 @@
+Readme
+------
+
+The Shoutbox module provides a block where visitors can quickly post short messages. 
+Permissions can be set so that posts go live immediately or go to a moderation queue.
+
+
+Installation
+------------
+
+1. Create the SQL tables.
+     mysql -u username -ppassword drupal < shoutbox.mysql
+
+2. Copy all the shoutbox files to modules/shoutbox (you will have to create this directory). 
+   Drupal should automatically detect the new module. 
+
+3. Enable the Shoutbox module.
+
+4. Set permissions for posting, moderating, and administering the shoutbox.
+
+5. Enable the Shoutbox block.
+
+
+Author
+------
+
+Benjamin Shell <drupal@benjaminshell.com>
+
+Maintainer
+---------
+disterics 
+
+Demo Site
+---------
+
+

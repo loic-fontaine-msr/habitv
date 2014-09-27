@@ -1,0 +1,522 @@
+# translation of acidfree-module.po to Czech
+# Generated from file: acidfree.module,v 1.2.2.79 2006/01/14 16:27:53 vhmauery
+# Jiri Vetvicka <jiri.vetvicka@blue-point.cz>, 2006.
+# Adam Rambousek <xrambous@fi.muni.cz>, 2006.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: acidfree-module\n"
+"POT-Creation-Date: 2006-02-07 08:45+0100\n"
+"PO-Revision-Date: 2006-02-10 15:35GMT+1\n"
+"Last-Translator: Jiri Vetvicka <jiri.vetvicka@blue-point.cz>\n"
+"Language-Team: Czech \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms:  nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: KBabel 1.9.1\n"
+
+#: acidfree.module:137
+msgid "The '%fm' module must be enabled for Acidfree to work.  Please download it from the drupal modules site and enable it below."
+msgstr "Modul '%fm' musí být povolen, aby mohl Acidfree pracovat. Prosím stáhněte jej z modulů na stránkách Drupalu a povolte jej."
+
+#: acidfree.module:138
+msgid "A better photo album than Gallery or Album. Acidfree is node based and well integrated into Drupal."
+msgstr "Lepší foto album než Gallery nebo Album. Acidfree je založen na uzlu a dobře integrován do Drupalu."
+
+#: acidfree.module:141
+msgid "Add an album here.  Other elements you can add are in the 'create content' menu."
+msgstr "Přidat album. Jiné prvky, které můžete přidat jsou v menu vytvořit obsah."
+
+#: acidfree.module:143
+msgid "<p>Acidfree is an album system that has the ability to store any kind of media (assuming the class is existent.)  Currently implemented are %types.  Following the example of one of the currently implemented classes, it is easy to create a new media type.</p>"
+msgstr "<p>Acidfree je album, které může uchovávat jakýkoliv typ média (pokud existuje odpovídající třída). V současnosti jsou implementovány %types. Následující příklad ukazuje jednu z implementováných tříd, je snadné vytvořit nový typ média.</p>"
+
+#: acidfree.module:145
+msgid "<p>Because Acidfree is more than simply a storage and viewing module, it requires some depenencies for the album management.  First, it requires the Filemanager module.  Until the Filemanager gets patched to have the exended API that Acidfree requires, Acidfree will ship with a patch for the Filemanager.  Second, it requires some form of image manipulation.  Drupal provides a frontend to the GD library that can do what is required.  Or, if you would rather use ImageMagick or libmagick (php-imagick module), set that up (copy the image.*.inc files to the includes directory) and select it.  Finally, if you want lossless rotations for your images, you will require jpegtran or exiftran.</p><p>For video thumbnailing, there are three options.  You can choose a static image for all your videos (no thumbnail), upload your own thumbnail (user thumbnail) or have mplayer thumbnail them automatically for you.  If you choose the first option, you will be asked to give the dimensions of the video so it can be displayed correctly in the 'full' view.  With option two, be sure to upload a thumbnail that is the same dimensions as the actual video (grab a frame from the video, do not resize it.)  The third option obviously implies that you have mplayer and all the win32 codecs installed on your <b>server</b> and that you are allowed to exec other programs (i.e., not running in safe mode.).  "
+msgstr "<p>Protože je Acidfree více než jednoduchý modul k uchovávání a zobrazování, vyžaduje pro správu alba některé závislosti. Zaprvé vyžaduje modul Filemanager. Until the Filemanager gets patched to have the exended API that Acidfree requires, Acidfree will ship with a patch for the Filemanager.  Zadruhé vyžaduje nějakou formu manipulace s obrázky  Drupal poskytuje frontend ke knihovně GD, můžete, ale raději používt ImageMagick nebo libmagick (php-imagick module), set that up (nakopírujte obrázek *.inc files do the includes directory) a vyberte jej.  Nakonec, pokud chcete použít bezeztrátovou rotaci, budete potřebovat jpegtran nebo exiftran.</p><p>Pro miniatury videí jsou k dispozici tři volby. Můžete si vybrat statický obrázek pro všechna videa (žádná miniatura), nahrát vlastní miniaturu (uživatelská miniatura) nebo nechat mplayer vytvářet miniatury automaticky.  Pokud vyberte první volbu, budete dotázáni na rozměry videa, aby bylo správně zobrazeno v plném zobrazení.  U druhé volby se ujistětě, že miniatura má stejné rozměry jako aktuální video (grabněte frame z videa a neměnte jeho velikost)  Třetí volba předpokládá, že máte mplayer a všchny jeho kodeky nainstalované na svém <b>serveru</b> a máte povolené spouštět další programy (tzn. neběží v safe módu).  "
+
+#: acidfree.module:147
+msgid "Change these settings to however you like.  You are w00t, afterall."
+msgstr "Změňte toto nastavení jakkoliv chcete."
+
+#: acidfree.module:168
+msgid "acidfree %class"
+msgstr "acidfree %class"
+
+#: acidfree.module:178
+msgid "Acidfree albums"
+msgstr "Acidfree alba"
+
+#: acidfree.module:206
+msgid "album contents"
+msgstr "obsahy alba"
+
+#: acidfree.module:224
+msgid "Acidfree %class"
+msgstr "Acidfree %class"
+
+#: acidfree.module:228
+msgid "acidfree media"
+msgstr "acidfree média"
+
+#: acidfree.module:231
+msgid "Mass import"
+msgstr "hromadný import"
+
+#: acidfree.module:249
+msgid "no maximum"
+msgstr "žádné maximum"
+
+#: acidfree.module:250
+msgid "8 megapixel (~ 3264x2448)"
+msgstr "8 megapixelů (~ 3264x2448)"
+
+#: acidfree.module:251
+msgid "7 megapixel (~ 3056x2292)"
+msgstr "7 megapixelů (~ 3056x2292)"
+
+#: acidfree.module:252
+msgid "6 megapixel (~ 2816x2112)"
+msgstr "6 megapixelů (~ 2816x2112)"
+
+#: acidfree.module:253
+msgid "5 megapixel (~ 2560x1920)"
+msgstr "5 megapixelů (~ 2560x1920)"
+
+#: acidfree.module:254
+msgid "4 megapixel (~ 2240x1680)"
+msgstr "4 megapixely (~ 2240x1680)"
+
+#: acidfree.module:255
+msgid "3 megapixel (~ 2048x1536)"
+msgstr "3 megapixely (~ 2048x1536)"
+
+#: acidfree.module:256
+msgid "2 megapixel (~ 1600x1200)"
+msgstr "2 megapixely (~ 1600x1200)"
+
+#: acidfree.module:257
+msgid "Do not keep large images"
+msgstr "Neuchovávejte velké obrázky"
+
+#: acidfree.module:269
+msgid "Neither exiftran nor jpegtran executables seem to be in safe_mode_exec_dir (%safe_dir) &mdash; lossy jpeg rotation will be used instead"
+msgstr "Buď exiftran nebo jpegtran nejsou v safe_mode_exec_dir (%safe_dir) &mdash; bude použita ztrátová rotace jpeg"
+
+#: acidfree.module:272
+msgid "Neither exiftran nor jpegtran are available &mdash; lossy jpeg rotation will be used instead"
+msgstr "Buď exiftran nebo jpegtran nejsou dostupné &mdash; bude použita ztrátová rotace jpeg"
+
+#: acidfree.module:276
+msgid "Number of images to resize each cron run"
+msgstr "Počet obrázků jejichž velikost bude změněna při každém spuštění cronu"
+
+#: acidfree.module:294
+msgid "Resolution of full size image"
+msgstr "Rozlišení obrázku v plné velikosti"
+
+#: acidfree.module:295
+msgid "Resolution of medium (browser sized) image"
+msgstr "Rozlišení obrázku ve střední (prohlížecí) velikosti"
+
+#: acidfree.module:296
+msgid "Resolution of thumbnail image"
+msgstr "Rozlišení miniatury obrázku"
+
+#: acidfree.module:297
+msgid "Image Resolution"
+msgstr "Rozlišení obrázku"
+
+#: acidfree.module:298
+msgid "Show Acidfree search tab"
+msgstr "Zobrazit vyhledávání Acidfree"
+
+#: acidfree.module:299
+msgid "Image order"
+msgstr "Pořadí obrázku"
+
+#: acidfree.module:299
+msgid "Chronological"
+msgstr "Chronologicky"
+
+#: acidfree.module:299
+msgid "Most recent first"
+msgstr "Aktuální první "
+
+#: acidfree.module:300
+msgid "Number of columns"
+msgstr "Pošet sloupců"
+
+#: acidfree.module:301
+msgid "Number of rows"
+msgstr "Počet řádků"
+
+#: acidfree.module:302
+msgid "Show EXIF data in full image view"
+msgstr "Zobrazit EXIF data v plném zobrazení obrázku"
+
+#: acidfree.module:303
+msgid "Acidfree Display"
+msgstr "Zobrazení Acidfree"
+
+#: acidfree.module:306
+msgid "No image toolkit has been properly installed or configured.  Go to admin/settings to fix this."
+msgstr "Žádný obrázkový toolkit nebyl nalezen nebo správně nakonfigurován. Jděte do administrace/nastavení a opravte to."
+
+#: acidfree.module:307
+msgid "Path to exiftran"
+msgstr "Cesta k exiftran"
+
+#: acidfree.module:307
+msgid "exiftran provides lossless rotation of jpeg images and keeps EXIF information.  If you provide a working path, Acidfree will try to use it."
+msgstr "exiftran poskytuje bezztrátovou rotaci jpeg obrázků a uchovává EXIF informace.  Pokud zadáte správnou cestu, Acidfree se pokusí jej použít."
+
+#: acidfree.module:308
+msgid "Path to jpegtran"
+msgstr "Cesta k jpegtran"
+
+#: acidfree.module:308
+msgid "jpegtran provides lossless rotation of jpeg images and can somewhat munge the EXIF information.  If you provide a working path, Acidfree will try to use it."
+msgstr "jpegtran poskytuje bezztrátovou rotaci jpeg obrázků a může poskytovat nějaké EXIF informace.  Pokud zadáte správnou cestu, Acidfree se pokusí jej použít."
+
+#: acidfree.module:309
+msgid "Image Manipulation"
+msgstr "Manipulace s obrázkem"
+
+#: acidfree.module:311
+msgid "Video Manipulation"
+msgstr "Manipulace s videem"
+
+#: acidfree.module:335
+msgid "ERR: Unable to query for anonymous user, node uid of 0"
+msgstr "Chyba: nemohu vytvořit dotaz pro anonymního uživatele, uid uzlu 0"
+
+#: acidfree.module:346
+msgid "There are a total of %total Acidfree image nodes. Of these, %na nodes are considered public by acidfree (under node_access protection or acidfree private flag set) as compared to the anonymous user. Filemanager considers %pub acidfree files as public and %priv as private."
+msgstr "Celkem uzlů s Acidfree obrázky: %total. Z nich je podle acidfree %na uzlů veřejných pro anonymní uživatele. Filemanager považuje %pub acidfree souborů za veřejných a %priv za soukromých."
+
+#: acidfree.module:347
+msgid "Force all new images to be transferred by Drupal "
+msgstr "Převést všechny nové obrázky Drupalem"
+
+#: acidfree.module:347
+msgid "If checked all then all images added to acidfree will be streamed through Drupal. Otherwise files are directly accessible via http. If left unchecked then only content under the protection of node_access will be streamed. This setting only applies to added or edited acidfree image nodes. It is usually wise to also process all existing images against this new security, see the next option."
+msgstr "Pokud je zaškrtnuto všechny obrázky budou přeneseny přes Drupal. Jinak budou soubory přistupné přes http. Pokud necháte nezaškrtnuto, bude přenesen pouze obsah pod ochranou v nastavení přistupu. Toto nastavení je aplikovatelné pouze na přidávané nebo editované acidfree obrázky. Je lepší zpracovat všechny existující obrázky pod tímto novým zabezpečení, viz další volba."
+
+#: acidfree.module:348
+msgid "Process all images against new security"
+msgstr "Zpracovat všechny obrázky novým zabezpečením"
+
+#: acidfree.module:348
+msgid "If checked all then all images in acidfree will be scanned and to adjust their streaming (aka privacy) setting. Some security modules may make changes that require reprocessing all nodes. In general it is a good idea to check this box whenever the above streaming setting is changed, after installing a new security module or changing a security module's settings. The changes are done during the normal cron job for resizing images (and checks for resizing as well) so cron must be configured and you need to wait for the normal cron job time or manually fire the cron job. You may need to clear the Drupal cache to see changes in node URLs."
+msgstr "Pokud je zaškrtnuto všechny obrázky v acidfree budou prohlédnuty a uzpůsobeny vlastnímu nastavení přenesení. Některé bepečnostní moduly mohou udělat změny, které vyžadují přepracovaní všech uzlů. Obecně je dobré zaškrtnout tento box kdykoliv se změní nastavení po instalací nového bezpečnostního modulu nebo změně nastavení bezpečnostních modulů. Je potřeba vyčisti cache Drupal, aby se projevily změny v uzlech URL."
+
+#: acidfree.module:350
+msgid "Filemanager Settings"
+msgstr "Nastavení Filemanageru"
+
+#: acidfree.module:417
+msgid "edit this %type"
+msgstr "upravit %type"
+
+#: acidfree.module:451
+msgid "Recent Acidfree items"
+msgstr "Poslední položky"
+
+#: acidfree.module:452
+msgid "Favorite Acidfree items"
+msgstr "Oblíbené položky"
+
+#: acidfree.module:453
+msgid "Random Acidfree items"
+msgstr "Náhodné položky"
+
+#: acidfree.module:457
+msgid "Acidfree item recent selection"
+msgstr "Poslední výběr položky"
+
+#: acidfree.module:458
+msgid "Acidfree item favorite selection"
+msgstr "Oblíbený výběr položky"
+
+#: acidfree.module:459
+msgid "Acidfree item random selection"
+msgstr "Náhodný výběr položky"
+
+#: acidfree.module:487
+msgid "Number of items"
+msgstr "Počet položek"
+
+#: acidfree.module:490;616
+msgid "Title"
+msgstr "Titulek"
+
+#: acidfree.module:495
+msgid "Include items from all albums"
+msgstr "Zahrnout položky ze všech alb"
+
+#: acidfree.module:497
+msgid "Select random items from these albums"
+msgstr "Vybrat náhodné položky z těchto alb"
+
+#: acidfree.module:526;605
+msgid "Delete"
+msgstr "Smazat"
+
+#: acidfree.module:537;604
+msgid "Copy"
+msgstr "Kopírovat"
+
+#: acidfree.module:545;603
+msgid "Move"
+msgstr "Přesunout"
+
+#: acidfree.module:585
+msgid "Changes saved."
+msgstr "Změny uloženy."
+
+#: acidfree.module:589
+msgid "Album Contents"
+msgstr "Obsahy alba"
+
+#: acidfree.module:600
+msgid "All"
+msgstr "Vše"
+
+#: acidfree.module:600
+msgid "None"
+msgstr "Žádný"
+
+#: acidfree.module:600
+msgid "Invert"
+msgstr "Obrátit"
+
+#: acidfree.module:606
+msgid "Submit"
+msgstr "Poslat"
+
+#: acidfree.module:618;844
+msgid "Description"
+msgstr "Popis"
+
+#: acidfree.module:633
+msgid "Acidfree self-test checklist"
+msgstr "Samokontrola seznamu"
+
+#: acidfree.module:636
+msgid "Filemanager module enabled"
+msgstr "Povolit Filemanager"
+
+#: acidfree.module:638
+msgid "Latest version of Filemanager module installed"
+msgstr "Nainstalována poslední verze Filemanageru"
+
+#: acidfree.module:640
+msgid "You need to install the latest version of Filemanager for Acidfree to work.  Please download, install, and configure the latest version."
+msgstr "K tomu, aby Acidfree pracoval, musíte stáhnout poslední verzi Filemanageru.  Prosím stáhněte, nainstalujte a nakonfigurujte poslední verzi."
+
+#: acidfree.module:644
+msgid "filemanager-private.patch applied"
+msgstr "aplikován filemanager-private.patch"
+
+#: acidfree.module:646
+msgid "filemanager-private.patch <b>not</b> applied.  Acidfree will still work, but your protected nodes' files will not be protected as well.  Follow the instructions that came with the Acidfree distribution to patch the Filemanager module if you are using a node_access module."
+msgstr "filemanager-private.patch <b>nebyl</b> aplikován.  Acidfree bude pracovat, ale ochrana uzlů souborů nebude tak dobrá.  Podle instrukcí v distribuci Acidfree zazáplatujte modul Filemanager pokud používáte modul pro kontrolu přístupů."
+
+#: acidfree.module:653
+msgid "Filemanager private path set and permissions OK"
+msgstr "Soukromá cesta k filemanageru nastavena a práva jsou OK"
+
+#: acidfree.module:655
+msgid "Filemanager private path not properly set or permissions are not right (must be web writeable).  Go to <a href=\"%url\">admin/settings/filemanager</a> to configure it."
+msgstr "Soukromá cesta k filemanageru není správně nastavena nebo nejsou správně nastavena práva (musí být právo zápisu). Jděteo do t<a href=\"%url\">administrac/nastavení/filemanager</a> a nakonfigurujte jej."
+
+#: acidfree.module:660
+msgid "Filemanager public path set and permissions OK"
+msgstr "Veřejná cesta k filemanageru nastavena a práva jsou OK"
+
+#: acidfree.module:662
+msgid "Filemanager public path not properly set or permissions are not right (must be web writeable).  Go to <a href=\"%url\">admin/settings/filemanager</a> to configure it."
+msgstr "Veřejná cesta k filemanageru není správně nastavena nebo nejsou správně nastavena práva (musí být právo zápisu). Jděte do <a href=\"%url\">administrace/nastavení/filemanager</a> a nakonfigurujte jej."
+
+#: acidfree.module:668
+msgid "Filemanager database table created"
+msgstr "Tabulka databáze filemanageru byla vytvořena"
+
+#: acidfree.module:670
+msgid "Filemanager database table needs to be created.  Follow the instructions that came with the filemanager module."
+msgstr "Musí být vytvořena tabulka databáze Filemanageru.  Postupujte dle instrukcí dodaných spolu s modulem filemanager."
+
+#: acidfree.module:674
+msgid "Filemanager module <b>not</b> enabled.  Go to <a href=\"%url\">admin/modules</a> to enabled it."
+msgstr "Modul Filemanager<b>nebyl</b> povolen.  Jděte do<a href=\"%url\">administrace/moduly</a> a povolte jej."
+
+#: acidfree.module:680
+msgid "Acidfree class definition files found for %types"
+msgstr "Třídy acidfree byly nalezeny pro /types "
+
+#: acidfree.module:682
+msgid "Acidfree class definition files not found (class_album.inc, class_photo.inc, etc.)  The entire Acidfree distribution should be untarred in the modules directory &mdash; not just the acidfree.module file."
+msgstr "Nenalezen soubor s definicí Acidfree tříd (class_album.inc, class_photo.inc atd.). Do adresáře modules je třeba rozbalit celé Acidfree, ne jen soubor acidfree.module."
+
+#: acidfree.module:687
+msgid "Drupal 'Temporary directory' path set and permissions OK"
+msgstr "Cesta k dočasnému adresáři Drupalu byla nastavena a práva jsou OK"
+
+#: acidfree.module:689
+msgid "Drupal 'Temporary directory' path not properly set or permissions are not right (must be web writeable).  Go to <a href=\"%url\">admin/settings</a> to configure it."
+msgstr "Cesta k dočasnému adresáři Drupalu není správně nastavena nebo nejsou správně nastavena práva (musí být právo zápisu). Jděteo do t<a href=\"%url\">administrac/nastavení/filemanager</a> a nakonfigurujte jej."
+
+#: acidfree.module:695
+msgid "Acidfree database tables created"
+msgstr "Tabulky Acidfree databáze vytvořeny"
+
+#: acidfree.module:697
+msgid "Acidfree database tables needs to be created.  Follow the instructions that that came with the Acidfree distribution."
+msgstr "Musí být vytvořeny tabulky databáze Acidfree.  Postupujte dle instrukcí dodaných spolu s modulem Acidfree."
+
+#: acidfree.module:702
+msgid "%itk image toolkit installed and properly configured"
+msgstr "%itk obrázkový toolkit byl nainstalován a správně nakonfigurován"
+
+#: acidfree.module:704
+msgid "Image toolkit not properly installed or configured.  Go to <a href=\"%url\">admin/settings</a> and configure the image toolkit properly."
+msgstr "Obrázkový toolkit nebyl správně nainstalován nebo nakonfigurován.  Jděte do<a href=\"%url\">administrace/nastaveni</a> a správně toolkit nakonfigurujte."
+
+#: acidfree.module:709
+msgid "Errors were detected.  Please correct the above errors before you do anything else with Acidfree."
+msgstr "Byly nalezeny chyby.  Prosím opravte chyby vypsané výše, před tím, než budete cokoliv jiného dělat s Acidfree."
+
+#: acidfree.module:711
+msgid "No errors were detected.  But this doesn't mean that Acidfree is guaranteed to work flawlessly.  It is a complex system and still under development.  Please be patient while all the wrinkles are found and ironed out."
+msgstr "Nebyly nalezeny žádné chyby.  Ale to neznamené, že Acidfree bude pracovat bezchyb. Je to komplexní systém a je stále ve vývoji.  Prosím buďte schovývavý dokud se všechny chybky neobjeví a neopraví."
+
+#: acidfree.module:718
+msgid "PHP configuration"
+msgstr "Konfigurace PHP"
+
+#: acidfree.module:719
+msgid "Maximum file upload size is"
+msgstr "Maximální velikost nahrávaného souboru je"
+
+#: acidfree.module:720
+msgid "Maximum POST size is"
+msgstr "Maximální velikost POST je"
+
+#: acidfree.module:721
+msgid "Maximum execution time is %max_time seconds"
+msgstr "Maximální čas spuštení je %max_time vteřin"
+
+#: acidfree.module:722
+msgid "Maximum memory usage is"
+msgstr "Maximální využití paměti je"
+
+#: acidfree.module:723
+msgid "If these limits are smaller than the files you plan on uploading, you should change the settings in your php.ini file"
+msgstr "Pokud jsou tyto limity menší než soubor, který plánujete nahrát, můžete změnit toto nastavení v souboru php.ini"
+
+#: acidfree.module:831;832
+msgid "Parent album"
+msgstr "Nadřazené album"
+
+#: acidfree.module:834;835
+msgid "Parent albums"
+msgstr "Nadřazená alba"
+
+#: acidfree.module:1080
+msgid "Acidfree inline filter"
+msgstr "Řádkový acidfree filtr"
+
+#: acidfree.module:1102
+msgid "\n    <p>You may link to existing acidfree images and videos to the current node using special tags. The tags will be replaced by the corresponding media. For example:\n\n    Suppose you have acidfree nodes 123, 234, 345.\n    \n    <pre>[acidfree:123]</pre>\n\n    will be replaced by <em><code>&lt;img src='path/to/acidfree/image/123'&gt;</code></em>\n\n    "
+msgstr "\n    <p>Můžete odkazovat existující acidfree obrázky a videa do aktuálního uzlu za použití speciálních tagů. Tagy budou nahrazeny odpovídajím médiem. Například:\n\n    Předtavte si, že máte acidfree uzly 123, 234, 345.\n    \n    <pre>[acidfree:123]</pre>\n\n    bude nahrazen <em><code>&lt;img src='cesta/k/acidfree/obrazku/123'&gt;</code></em>\n\n    "
+
+#: acidfree.module:1114
+msgid "You may use <a href=\"%acidfree_help\">[acidfree:xx] tags</a> to display acidfree videos or images inline."
+msgstr "Můžete použít <a href=\"%acidfree_help\">[acidfree:xx] tagy</a> k zobrazení acidfree videí a obrázků vřadě."
+
+#: acidfree.module:1150
+msgid "Home"
+msgstr "Domů"
+
+#: acidfree.module:1153
+msgid "Albums"
+msgstr "Alba"
+
+#: acidfree.module:1229
+msgid "file %filename is not a valid acidfree element type (%mime)"
+msgstr "soubor %filename není platným acidfree typem (%mime)"
+
+#: acidfree.module:1354;1398
+msgid "Import"
+msgstr "Import"
+
+#: acidfree.module:1358;1393
+msgid "Upload"
+msgstr "Nahrát"
+
+#: acidfree.module:1380
+msgid "Parent Album"
+msgstr "Nadřazené album"
+
+#: acidfree.module:1381
+msgid "Select the album to place this upload in."
+msgstr "Vyberte album, do kterého chcete nahrávat."
+
+#: acidfree.module:1387
+msgid "File to upload"
+msgstr "Soubor k nahrání"
+
+#: acidfree.module:1388
+msgid "File to upload.  This may be an image, video clip, zip file, or a tar file that is gzipped or bzipped.  You may upload up to five at a time."
+msgstr "Soubor k nahrání.  Můžete použít obrázek, video klip, zip, tar nebo zagzipovaný nebo zabzipovaný soubor. Můžete náhravat pět položek najednou."
+
+#: acidfree.module:1394
+msgid "Files to upload"
+msgstr "Soubory k nahrání"
+
+#: acidfree.module:1395
+msgid "Path on server"
+msgstr "Cesta na serveru"
+
+#: acidfree.module:1396
+msgid "This must be the full path to a directory on the server that is readable."
+msgstr "Musít určit celou cestu k serveru k adresáři, který má práva pro čtení."
+
+#: acidfree.module:1397
+msgid "Include subdirectories"
+msgstr "Včštně podadresářů"
+
+#: acidfree.module:1399
+msgid "Import local"
+msgstr "Lokální import"
+
+#: acidfree.module:1439
+msgid "This is the path to the %class that you are uploading.  Be sure that it fits within the specifications for file size and type."
+msgstr "Toto je cesta k %class který nahráváte.  Ujistěte se, že vyhovuje specifikacím pro velikost a typ souboru."
+
+#: acidfree.module:1526
+msgid "Root"
+msgstr "Kořen"
+
+#: acidfree.module:1973;2364;1141;1475;2265
+msgid "Acidfree"
+msgstr "Acidfree"
+
+#: acidfree.module:1973
+msgid "Filestore for Acidfree media (images, videos, etc.)"
+msgstr "Uložiště pro Acidfree média (obrázky, videa apod.)"
+
+#: acidfree.module:2128;2131;2143
+msgid "[acidfreepath]"
+msgstr "[acidfreepath]"
+
+#: acidfree.module:2128
+msgid "Concatentated Acidfree album path (minus root album) e.g. trips/seattle.  Try something like 'albums/[acidfreepath]/[title]' or something"
+msgstr "Celá cesta k albu Acidfree (bez kořenového alba), např. cesty/seattle. Zkuste něco jako 'albums/[acidfreepath]/[title]'."
+
+#: acidfree.module:0
+msgid "acidfree"
+msgstr "acidfree"
+

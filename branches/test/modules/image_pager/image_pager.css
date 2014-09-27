@@ -1,0 +1,28 @@
+/* $Id: image_pager.css,v 1.2.2.1 2007/02/08 21:01:16 bjaspan Exp $ */
+
+.block-image_pager {
+  display: none; /* hide until JS shows me */
+}
+
+.image-pager .image {
+  text-align: center;
+}
+.image-pager .prev {
+  padding-right: 2em;
+  cursor: pointer;
+}
+.image-pager .next {
+  padding-left: 2em;
+  cursor: pointer;
+}
+.image-pager .pager {
+  text-align: center;
+}
+.image-pager .pager .disabled {
+  color: gray;
+  cursor: default;
+}
+.image-pager .pager a,
+.image-pager .pager a:hover {
+  text-decoration: none;
+}

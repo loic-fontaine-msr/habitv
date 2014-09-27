@@ -1,0 +1,9 @@
+; $Id: persistent_login.info,v 1.1 2006/11/07 18:24:09 bjaspan Exp $
+name = Persistent Login
+description = Provides a 'Remember Me' checkbox in the login form
+
+; Information added by drupal.org packaging script on 2007-12-20
+version = "5.x-1.4-beta2"
+project = "persistent_login"
+datestamp = "1198170607"
+

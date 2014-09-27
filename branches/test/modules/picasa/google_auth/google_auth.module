@@ -1,0 +1,221 @@
+<?php
+/**
+ * This method gets called when you need to associate a google account with a 
+ * Drupal action.
+ *
+ * @param $data
+ *   An array of attributes for google_auth_request
+ */
+function google_auth_required($data) {
+  if (!strlen($_SESSION['google_auth_token'])) {
+    google_auth_request($data);
+  }
+}
+
+/**
+ * Taken from the documentation at
+ * http://code.google.com/apis/accounts/AuthForWebApps.html#AuthSubRequest
+ * It is likely you will find a more up to date version of documentation there.
+ *
+ * Call AuthSubRequest to acquire single-use authentication. AuthSubRequest is
+ * called as a URL; make a request to:
+ * https://www.google.com/accounts/AuthSubRequest with the following query
+ * parameters:
+ *
+ * @param string $scope (required) URL identifying the service to be accessed.
+ * The resulting token will enable access to the specified service only. Some
+ * services may limit scope further, such as read-only access.
+ * @param string $secure (optional) Boolean flag indicating whether the
+ * authentication transaction should issue a secure token (1) or a non-secure
+ * token (0). Secure tokens are available to registered applications only.
+ * @param string $session (optional) Boolean flag indicating whether the
+ * one-time-use token may be exchanged for a session token (1) or not (0).
+ * @param string $next (optional) URL the user should be redirected to after a
+ * successful login. This value should be a page on the web application site,
+ * and can include query parameters.  Default is set by _google_auth_next()
+ */
+function _google_auth_sub_request($data) {
+  if (!$data['next']) {
+    $data['$next'] = _google_auth_next();
+  }
+  $url .= "https://www.google.com/accounts/AuthSubRequest?next=";
+  $url .= drupal_urlencode($data['next']) ."&scope=";
+  $url .= drupal_urlencode($data['scope']);
+  $url .= "&session=". $data['session'];
+  $token = $_GET["token"];
+  if (!strlen($token)) {
+    $url = str_replace( "http%3A/%252F","http%3A//", $url);
+    drupal_goto($url);
+  } 
+  else {
+    $_SESSION['google_auth_token'] = $token;
+    $msg = "Your request has authenticated.";
+    drupal_set_message($msg);
+  }
+}
+/**
+ * Checks the request and responds accordingly
+ *
+ * @param $data
+ *   an array of attributes
+ *   - $url string The url to post to.
+ *   - $scope string The projects scope url
+ *   - $secure boolean Act as a Google Authenticated Application
+ *   - $session boolean Single request or store in session
+ *   - $next - The callback url for Google
+ */
+function google_auth_request($data) {
+  if (!$data["scope"]) {
+    $error = t("google_auth_http_request requires a scope");
+    drupal_set_message($error,'error');
+    return;
+  }
+  if (!$data["url"]) {
+    $error = t("google_auth_http_request requires a url");
+    drupal_set_message($error,'error');
+    return;
+  }
+  if (!$data["secure"]) {
+    $data["secure"] = 0;
+  }
+  if (!$data["session"]) {
+    $data["session"] = 1;
+  }
+  if (!$data["next"]) {
+    $data["next"] = _google_auth_next();
+  }
+  if ($data["session"] == 1) {
+    if (!$_SESSION['google_auth_token']) {
+      _google_auth_sub_request($data);
+    }
+  }
+  if ($data['url']) {
+    $request = drupal_http_request($data['url']);
+    switch ($request->code) {
+      case 500:
+        _google_auth_sub_request($data);
+      break;
+       case 400:
+         return;
+       break;
+       case 200:
+         return _google_auth_parse($request->data);
+       break;
+    }
+  }
+}
+/**
+ * Get the next url to pass to Google
+ *
+ * @return $url
+ *   A string representing the current url
+ */
+function _google_auth_next() {
+  $uri = htmlentities(substr(
+    $_SERVER['REQUEST_URI'], 0, strcspn($_SERVER['REQUEST_URI'], "\n\r")), 
+    ENT_QUOTES);
+  if (isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on') {
+    $p = 'https://';
+  } else {
+    $p = 'http://';
+  }
+  $h = $_SERVER['HTTP_HOST'];
+  $port = '';
+  if ($_SERVER['SERVER_PORT'] != '' && 
+    (($protocol == 'http://' && $_SERVER['SERVER_PORT'] != '80') || 
+    ($protocol == 'https://' && $_SERVER['SERVER_PORT'] != '443'))) {
+    $port .= ':' . $_SERVER['SERVER_PORT'];
+  }
+  $url = $p . $h . $port . $uri;
+  return $url;
+}
+/**
+ * Google responds using Atom feeds. This method parses the feed into an array.
+ *
+ * @param $contents
+ *   A string of xml
+ * @return $url
+ *   A string representing the current url
+ */
+function _google_auth_parse($contents){
+  $tree = array();
+  if (strpos($contents,'<?xml') !== false) {
+    $parser = xml_parser_create();
+    xml_parser_set_option($parser, XML_OPTION_SKIP_WHITE, 1);
+    xml_parse_into_struct($parser, $contents, $vals, $index);
+    xml_parser_free($parser);
+    $i = 0;
+
+    if (isset($vals[$i]['attributes'])) {
+      $tree[$vals[$i]['tag']][]['ATTRIBUTES'] = $vals[$i]['attributes'];
+      $index = count($tree[$vals[$i]['tag']])-1;
+      $temp = array_merge($tree[$vals[$i]['tag']][$index],
+      _google_auth_parse_children($vals, $i));
+      $tree[$vals[$i]['tag']][$index] = $temp;
+    } 
+    else {
+      $tree[$vals[$i]['tag']][] = _google_auth_parse_children($vals, $i);
+    }
+  }
+  return $tree;
+}
+/**
+ * Helper method for _google_auth_parse
+ *
+ */
+function _google_auth_parse_children($vals, &$i) {
+  $children = array(); // Contains node data
+  if (isset($vals[$i]['value'])){
+    $children['VALUE'] = $vals[$i]['value'];
+  }
+
+  while (++$i < count($vals)){
+    switch ($vals[$i]['type']){
+
+      case 'cdata':
+        if (isset($children['VALUE'])){
+          $children['VALUE'] .= $vals[$i]['value'];
+        } 
+        else {
+          $children['VALUE'] = $vals[$i]['value'];
+        }
+        break;
+      case 'complete':
+        if (isset($vals[$i]['attributes'])) {
+          $children[$vals[$i]['tag']][]['ATTRIBUTES'] = $vals[$i]['attributes'];
+          $index = count($children[$vals[$i]['tag']])-1;
+
+          if (isset($vals[$i]['value'])){
+            $children[$vals[$i]['tag']][$index]['VALUE'] = $vals[$i]['value'];
+          } 
+          else {
+            $children[$vals[$i]['tag']][$index]['VALUE'] = '';
+          }
+        } 
+        else {
+          if (isset($vals[$i]['value'])){
+            $children[$vals[$i]['tag']][]['VALUE'] = $vals[$i]['value'];
+          } 
+          else {
+            $children[$vals[$i]['tag']][]['VALUE'] = '';
+          }
+        }
+        break;
+      case 'open':
+        if (isset($vals[$i]['attributes'])) {
+          $children[$vals[$i]['tag']][]['ATTRIBUTES'] = $vals[$i]['attributes'];
+          $index = count($children[$vals[$i]['tag']])-1;
+          $temp = array_merge($children[$vals[$i]['tag']][$index],
+          _google_auth_parse_children($vals, $i));
+          $children[$vals[$i]['tag']][$index] = $temp;
+        } 
+        else {
+          $children[$vals[$i]['tag']][] = _google_auth_parse_children($vals, $i);
+        }
+        break;
+      case 'close':
+        return $children;
+    }
+  }
+}
+

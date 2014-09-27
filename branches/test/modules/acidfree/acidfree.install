@@ -1,0 +1,622 @@
+<?php
+/* ex: set syntax=php tabstop=4 expandtab shiftwidth=4 softtabstop=4: */
+// acidfree.install
+
+function acidfree_uninstall() {
+    db_query('DROP TABLE {acidfree_album}');
+    db_query("DELETE FROM {variable} WHERE name LIKE '%acidfree%'");
+    taxonomy_del_vocabulary(variable_get('acidfree_vocab_id', 0));
+    views_invalidate_cache();
+    db_query("DELETE FROM {blocks} WHERE module = 'acidfree'");
+}
+
+
+function acidfree_install() {
+    switch ($GLOBALS['db_type']) {
+    case 'mysql':
+    case 'mysqli':
+        $query = "CREATE TABLE {acidfree_album} (
+                      aid int(11) NOT NULL auto_increment,
+                      tid int(11) NOT NULL default '0',
+                      thumb varchar(255) NOT NULL default '',
+                      share tinyint(5) NOT NULL default '0',
+                      order_by VARCHAR(32) NOT NULL default '<default>',
+                      view varchar(32) NOT NULL default 'grid',
+                      PRIMARY KEY (aid)
+                 ) TYPE=MyISAM /*!40100 DEFAULT CHARACTER SET utf8 */;";
+
+        break;
+    case 'pgsql':
+        $query = "CREATE TABLE {acidfree_album} (
+                      aid SERIAL,
+                      tid integer NOT NULL default '0',
+                      thumb varchar(255) NOT NULL default '',
+                      share smallint NOT NULL default '0',
+                      order_by VARCHAR(32) NOT NULL default '<default>',
+                      view varchar(32) NOT NULL default 'grid',
+                      PRIMARY KEY (aid)
+                 );";
+        break;
+    }
+    db_query($query);
+
+    variable_set('node_options_acidfree', array('status', 'sticky'));
+    db_query("UPDATE {system} SET weight=99 WHERE name='acidfree'");
+    // clearing the cache to eliminate views issues?
+    cache_clear_all('*', 'cache', true);
+}
+
+function acidfree_update_1() {
+    return _system_update_utf8(array('acidfree', 'acidfree_hierarchy'));
+}
+
+function acidfree_update_2() {
+    switch ($GLOBALS['db_type']) {
+        case 'mysql':
+        case 'mysqli':
+            $items[] = update_sql("ALTER TABLE {acidfree} ADD COLUMN share TINYINT(1) NOT NULL DEFAULT '0'");
+            break;
+
+        case 'pgsql':
+            // this could all be a single query in postgres 8.1,
+            // but 7.4 makes us do it in 4 queries
+            $items[] = update_sql("ALTER TABLE {acidfree} ADD COLUMN share SMALLINT");
+            $items[] = update_sql("UPDATE {acidfree} SET share=0 WHERE share IS NULL");
+            $items[] = update_sql("ALTER TABLE {acidfree} ALTER COLUMN share SET NOT NULL");
+            $items[] = update_sql("ALTER TABLE {acidfree} ALTER COLUMN share SET DEFAULT 0");
+            break;
+    }
+    db_query("DELETE FROM {variable} WHERE name='acidfree_types'");
+    cache_clear_all('variables', 'cache');
+    return $items;
+}
+
+/*
+ * UPDATE 3
+ *
+ * What a nightmare.  With the complete rewrite of Acidfree
+ * to use Image and Video nodes for content and Taxonomy for
+ * albums, we have a lot of fixin' up to do to get this all
+ * working right for the new version.  I didn't want to leave
+ * legacy code lying around in the module, so I stripped it out
+ * which left me with a few loose ends to tie up here while
+ * doing the update.
+ * All in all, this shouldn't happen again, since this is how
+ * Acidfree should have been from the beginning (but couldn't
+ * have for lack of good APIs).  Read my lips, 'No more updates.'
+ * Famous last words.
+ */
+
+function acidfree_update_3_okay() {
+    // make sure we are okay to update
+    $modules = array();
+    if (db_table_exists('acidfree')) {
+        if (db_result(db_query(
+                "SELECT COUNT(aid) FROM {acidfree} WHERE class='photo' LIMIT 1"
+            )) != 0) {
+            $modules[] = 'image';
+        }
+        if (db_result(db_query(
+                "SELECT COUNT(aid) FROM {acidfree} WHERE class='video' LIMIT 1"
+            )) != 0) {
+            $modules[] = 'video';
+            $modules[] = 'video_upload';
+            $modules[] = 'video_image';
+        }
+    }
+    $missing_modules = array();
+    foreach ($modules as $module) {
+        if (!module_exists($module)) {
+            $missing_modules[] = $module;
+        }
+    }
+    return $missing_modules;
+}
+
+function acidfree_update_order_conversion($order) {
+    if ($order == 'iage') {
+        return 'node.nid DESC';
+    }
+    if ($order == 'age') {
+        return 'node.nid ASC';
+    }
+    if ($order == 'alpha') {
+        return 'node.title DESC';
+    }
+    return '<default>';
+}
+
+function acidfree_update_3_album_tree($root, $ptid=0) {
+    static $nid2tid = array();
+    static $vid = null;
+    if (!isset($vid)) {
+        $vid = acidfree_get_vocab_id();
+    }
+    $root = acidfree_update_3_node_load($root);
+    if ($root->thumb) {
+        $root->thumb = db_result(db_query('SELECT aid FROM {acidfree} JOIN {file} on thumb = fid WHERE fid = %d AND class <> \'album\'', $root->thumb));
+    }
+    $root->taxonomy[$vid] = array($ptid);
+    $root->order_by = acidfree_update_order_conversion($root->sort);
+    $root->view = 'grid';
+    acidfree_insert($root);
+    if ($ptid == 0) {
+        variable_set('acidfree_root_term_id', $root->tid);
+    }
+    $nid2tid[$root->nid] = $root->tid;
+    taxonomy_node_save($root->nid, $root->taxonomy);
+    $children = db_query("SELECT n.nid FROM {node} n JOIN {acidfree} a ON n.nid = a.aid JOIN {acidfree_hierarchy} h ON n.nid = h.child WHERE a.class = 'album' AND h.parent = %d", $root->nid);
+    while ($child = db_fetch_array($children)) {
+        acidfree_update_3_album_tree($child['nid'], $root->tid);
+    }
+    return $nid2tid;
+}
+
+function acidfree_update_3_node_common(&$node, &$lookup) {
+    foreach ($node->parent as $parent) {
+        $terms[] = $lookup[$parent];
+    }
+    if (!is_array($node->taxonomy)) {
+        $node->taxonomy = $terms;
+    } else {
+        $node->taxonomy = array_merge($node->taxonomy, $terms);
+    }
+    taxonomy_node_save($node->nid, $node->taxonomy);
+}
+
+function acidfree_update_3_node_load($nid) {
+    $node = node_load($nid);
+    $items = db_fetch_array(db_query("SELECT * FROM {acidfree} WHERE aid=%d", $node->nid));
+    if ($items['class'] == 'album') {
+        $unserial = unserialize($items['small']);
+        if (is_array($unserial)) {
+            foreach ($unserial as $key => $value) {
+                $items[$key] = $value;
+            }
+        }
+        $items['small'] = '';
+    }
+    foreach ($items as $key => $value) {
+        $node->$key = $value;
+    }
+    $result = db_query("SELECT parent FROM {acidfree_hierarchy} WHERE child = %d", $node->nid);
+    while ($p = db_fetch_object($result)) {
+        $parents[] = $p->parent;
+    }
+    if (!isset($parents))
+        $parents = array(acidfree_update_3_get_root());
+    $node->parent = $parents;
+    return $node;
+}
+
+function acidfree_update_3_get_root() {
+    return db_result(db_query('SELECT nid FROM {node} JOIN {acidfree} ON nid=aid '.
+            'JOIN {acidfree_hierarchy} ON aid=child WHERE parent=\'%d\'', -1));
+}
+
+function acidfree_update_3_user_root($uid) {
+    $root = acidfree_update_3_get_root();
+    return db_result(db_query('SELECT nid FROM {node} JOIN {acidfree} ON nid=aid '.
+            'JOIN {acidfree_hierarchy} ON aid=child '.
+            'WHERE parent=\'%d\' AND uid=\'%d\'', $root, $uid));
+}
+
+function acidfree_update_3_do_conversion() {
+    /*
+     * convert the albums
+     */
+    $vid = acidfree_get_vocab_id();
+    $root = acidfree_update_3_get_root();
+    $new_root = acidfree_update_3_album_tree($root);
+    drupal_set_message(t('finished updating albums'));
+
+    /* 
+     * convert the images
+     */
+    _image_check_settings();
+    // preserve image size settings -- copy from acidfree to image module
+    $preview_size = variable_get('acidfree_small_dim', 120);
+    $thumb_size = variable_get('acidfree_thumb_dim', 640);
+    $large_size = variable_get('acidfree_large_dim', '');
+    if ($large_size == -1) {
+        $large_size = '';
+    }
+    $sizes =  _image_get_sizes();
+    foreach ($sizes as $key=>$size) {
+        switch ($key) {
+        case 'thumbnail':
+            $sizes[$key]['height'] = $sizes[$key]['width'] = $thumb_size;
+            break;
+        case 'preview':
+            $sizes[$key]['height'] = $sizes[$key]['width'] = $preview_size;
+            break;
+        case '_original':
+            $sizes[$key]['height'] = $sizes[$key]['width'] = $large_size;
+            break;
+        }
+    }
+    variable_set('image_sizes', $sizes);
+    variable_set('image_updated', time());
+    variable_del('acidfree_large_dim');
+    variable_del('acidfree_small_dim');
+    variable_del('acidfree_thumb_dim');
+    // import images
+    $images = db_query("SELECT n.nid FROM {node} n JOIN {acidfree} a ON n.nid = a.aid
+                        WHERE type='acidfree' AND class='photo'");
+    $sizes = array('large' => '_original', 'small' => 'preview', 'thumb' => 'thumbnail');
+    while ($image = db_fetch_array($images)) {
+        $image = acidfree_update_3_node_load($image);
+        foreach ($sizes as $size => $label) {
+            $fmimage = db_fetch_object(db_query("SELECT * FROM {file} WHERE fid = '{$image->$size}'"));
+            // continue only if file was really found
+            if ($fmimage) {
+                if (strstr($fmimage->filename, 'tmp')) {
+                    $pinfo = pathinfo($fmimage->filename);
+                    $fmimage = filemanager_rename($fmimage, "{$image->nid}_{$size}.{$pinfo['extension']}");
+                }
+                $old_path = filemanager_create_path($fmimage);
+                _image_insert($image, $label, $old_path);
+                filemanager_delete($fmimage);
+            }
+        }
+        acidfree_update_3_node_common($image, $new_root);
+    }
+    db_query("UPDATE {node} n JOIN {acidfree} a ON n.nid=a.aid SET n.type='image' WHERE n.type='acidfree' AND a.class='photo'");
+
+    drupal_set_message(t('Finished updating images'));
+
+    /*
+     * convert the videos
+     */
+    $videos = db_query("SELECT n.nid from {node} n JOIN {acidfree} a on n.nid = a.aid
+                        WHERE type='acidfree' AND class='video'");
+    // convert videos only if there's something to do
+    if (db_num_rows($videos) > 0) {
+        _video_upload_check_settings();
+        while ($video = db_fetch_array($videos)) {
+            $video = acidfree_update_3_node_load($video);
+            $video->type = 'video';
+            $video->vtype = 'upload';
+            $sizes = array('thumb', 'small', 'large');
+            foreach ($sizes as $size) {
+                $fmimage = db_fetch_object(db_query("SELECT * FROM {file} WHERE fid = '{$video->$size}'"));
+                switch ($size) {
+                case 'thumb':
+                    break;
+                case 'small':
+                    $filepath = filemanager_create_path($fmimage);
+                    $thumb = image_create_node_from($filepath, t('Thumbnail for @video', array('@video' => $video->title)));
+                    $video->serial_data['iid'] = $thumb->nid;
+                    // we can do the lazy man way or we can extract info using ffmpeg on the video file
+                    $iminfo = image_get_info($filepath);
+                    $video->videox = $iminfo['width'];
+                    $video->videoy = $iminfo['height'];
+                    break;
+                case 'large':
+                    /* invoke the video_upload stuff */
+                    $fid = db_next_id('{files}_fid');
+                    db_query("INSERT INTO {files} (fid, nid, filename, filepath, filemime, filesize) VALUES (%d, %d, '%s', '%s', '%s', %d)", $fid, 1, 'video_upload_temp.'.$fmimage->filename, filemanager_create_path($fmimage), $fmimage->mimetype, $fmimage->size);                    
+                    $file = (object)array(
+                            'filename' => $fmimage->filename,
+                            'filemime' => $fmimage->mimetype,
+                            'filesize' => $fmimage->size,
+                            'filepath' => filemanager_create_path($fmimage)
+                        );
+                    $video->new_video_upload_file_fid = $fid;
+                    $video->serial_data['video_fid'] = $fid;
+                    _video_upload_insert($video);
+                }
+                filemanager_delete($fmimage);
+            }
+            acidfree_update_3_node_common($video, $new_root);
+            video_insert($video);
+        }
+        db_query("UPDATE {node} n JOIN {acidfree} a ON n.nid=a.aid SET n.type='video' WHERE n.type='acidfree' AND a.class='video'");
+        drupal_set_message(t('finished updating videos'));
+    }
+}
+
+function acidfree_update_3() {
+    $missing = acidfree_update_3_okay();
+    if ($missing) {
+        ob_end_clean();
+        echo t('Acidfree update failed because of missing dependencies.  Please refer to the UPGRADE file distributed with Acidfree.  The following modules are required for you to upgrade: %modules.  Please install these modules, ensure they are configured properly and try the installation again.', array('%modules' => implode(', ', $missing))). "\n";
+        exit(1);
+    }
+    $items = array();
+    if (db_table_exists('acidfree_album')) {
+        return $items;
+    }
+    switch ($GLOBALS['db_type']) {
+    case 'mysqli':
+    case 'mysql':
+        $items[] = update_sql("CREATE TABLE {acidfree_album} (aid INT(11) NOT NULL auto_increment, tid int(11) NOT NULL default '0', thumb INT(11) NOT NULL default '0', share INT(1) NOT NULL default '0', order_by VARCHAR(32) NOT NULL default 'n.nid DESC', view varchar(32) NOT NULL default 'grid', PRIMARY KEY (aid)) type=MyISAM /*!40100 DEFAULT CHARACTER SET utf8 */;");
+        break;
+    case 'pgsql':
+        $items[] = update_sql("CREATE TABLE {acidfree_album} (aid SERIAL, tid integer NOT NULL default '0', thumb integer NOT NULL default '0', share smallint NOT NULL default '0', order_by VARCHAR(32) NOT NULL default 'n.nid DESC', view varchar(32) NOT NULL default 'grid', PRIMARY KEY (aid));");
+        break;
+    }
+
+    /* bail out early if we don't have any work to do */
+    if (!db_result(db_query("SELECT COUNT(n.nid) AS count FROM {node} n WHERE type='acidfree'"))) {
+        return $items;
+    }
+
+    // get the non-per-user-albums albums
+    acidfree_update_3_do_conversion();
+
+    if (variable_get('acidfree_per_user_albums', false)) {
+        // get each user's albums
+        $users = db_query('SELECT uid FROM {users} WHERE uid > 1');
+        while (($user = db_fetch_object($users))) {
+            // reset the user album parent tids to 0
+        }
+    }
+    if (db_table_exists('acidfree'))
+        $items[] = update_sql("DROP TABLE {acidfree}");
+    if (db_table_exists('acidfree_hierarchy'))
+        $items[] = update_sql("DROP TABLE {acidfree_hierarchy}");
+
+    db_query('truncate table {cache}');
+    db_query('truncate table {cache_page}');
+    db_query('truncate table {cache_filter}');
+    db_query('truncate table {cache_menu}');
+    variable_del('acidfree_types');
+    variable_del('acidfree_video_thumbnailer');
+    variable_del('acidfree_default_video_width');
+    variable_del('acidfree_default_video_height');
+    return $items;
+}
+
+if (!function_exists('filemanager_rename')) {
+// supply filemanager functions if they are not enabled
+function filemanager_rename($file, $name) {
+    $file = filemanager_get_file_info($file);
+
+    // Exit immediately if the rename does nothing
+    if (! $file || $name == $file->filename) {
+      return $file;
+    }
+
+    // Begin rename operation
+    $oldworking = filemanager_create_path($file, true);
+    $oldactive = filemanager_create_path($file, false);
+    $lock = _filemanager_lock();
+
+    $file->filename = $name;
+
+    $updated = _filemanager_update_file($file, $oldworking, $oldactive);
+
+    if ($file != false) {
+        db_query("UPDATE {file} SET filename = '%s', directory = '%d' WHERE fid=%d", $file->filename, $file->directory, $file->fid);
+    }
+    _filemanager_unlock($lock);
+    return $file;
+}
+function filemanager_delete($file) {
+  $file = filemanager_get_file_info($file);
+  file_delete(filemanager_create_path($file, TRUE));
+  file_delete(filemanager_create_path($file, FALSE));
+  db_query("DELETE FROM {file} WHERE fid=%d", $file->fid);
+}
+function filemanager_get_file_info($file) {
+  if (is_object($file)) {
+    return $file;
+  }
+  $result = db_query("SELECT fid, area, directory, filename, mimetype, size, active, working, private FROM {file} WHERE fid = %d", $file);
+  return db_fetch_object($result);
+}
+function filemanager_create_path($file, $working = FALSE) {
+  $file = filemanager_get_file_info($file);
+  return filemanager_create_directory_path($file->private, $working, $file->directory) . '/' . $file->filename;
+}
+function filemanager_create_directory_path($private = FALSE, $working = FALSE, $subdir = FALSE) {
+  return ($private ? variable_get('filemanager_private_path', 'private') : variable_get('filemanager_public_path', 'files')) . '/' . ($working ? 'working' : 'active') . ($subdir !== FALSE ? '/' . $subdir : '');
+}
+function filemanager_create_directory($directory) {
+  if (!file_exists($directory)) {
+    mkdir($directory);
+  }
+}
+function _filemanager_update_file(&$file, $oldworking, $oldactive) {
+    // Using the new file object find/create an appropiate area for this file
+    $file = _filemanager_find_directory($file);
+    $newworking = filemanager_create_path($file, true);
+    $newactive = filemanager_create_path($file, false);
+    if (file_exists($oldworking)) {
+        filemanager_create_directory(dirname(dirname($newworking)));
+        filemanager_create_directory(dirname($newworking));
+        if (!_filemanager_move($oldworking, $newworking, FILE_EXISTS_ERROR)) {
+            drupal_set_message(t('file exists: %fn', array('%fn' => $file->filename)), 'error');
+            return false;
+        }
+    }
+    if (file_exists($oldactive)) {
+        filemanager_create_directory(dirname(dirname($newactive)));
+        filemanager_create_directory(dirname($newactive));
+        if (!_filemanager_move($oldactive, $newactive, FILE_EXISTS_ERROR)) {
+            drupal_set_message(t('file exists: %fn', array('%fn' => $file->filename)), 'error');
+            return false;
+        }
+    }
+
+    return true;
+}
+function _filemanager_move(&$source, $dest = 0, $replace = FILE_EXISTS_RENAME) {
+  $path_original = is_object($source) ? $source->filepath : $source;
+
+  if (_filemanager_copy($source, $dest, $replace)) {
+    $path_current = is_object($source) ? $source->filepath : $source;
+
+    if ($path_original == $path_current || file_delete($path_original)) {
+      return 1;
+    }
+    drupal_set_message(t('The removal of the original file %file has failed.', array('%file' => theme('placeholder', $source))), 'error');
+  }
+  return 0;
+}
+function _filemanager_copy(&$source, $dest = 0, $replace = FILE_EXISTS_RENAME) {
+  $directory = $dest;
+  $basename = file_check_path($directory);
+
+  // Make sure we at least have a valid directory.
+  if ($basename === false) {
+    drupal_set_message(t('The selected file %file could not be uploaded, because the destination %directory is not properly configured.', array('%file' => theme('placeholder', $source), '%directory' => theme('placeholder', $dest))), 'error');
+    watchdog('file system', t('The selected file %file could not not be uploaded, because the destination %directory could not be found, or because its permissions do not allow the file to be written.', array('%file' => theme('placeholder', $source), '%directory' => theme('placeholder', $dest))), WATCHDOG_ERROR);
+    return 0;
+  }
+
+  // Process a file upload object.
+  if (is_object($source)) {
+    $file = $source;
+    $source = $file->filepath;
+    if (!$basename) {
+      $basename = $file->filename;
+    }
+  }
+
+  $source = realpath($source);
+
+  if (!file_exists($source)) {
+    drupal_set_message(t('The selected file %file could not be copied, because no file by that name exists.  Please check that you supplied the correct filename.', array('%file' => theme('placeholder', $source))), 'error');
+    return 0;
+  }
+
+  // If the destination file is not specified then use the filename of the
+  // source file.
+  $basename = $basename ? $basename : basename($source);
+  $dest = $directory .'/'. $basename;
+
+  // Make sure source and destination filenames are not the same, makes no sense
+  // to copy it if they are. In fact copying the file will most likely result in
+  // a 0 byte file. Which is bad. Real bad.
+  if ($source != realpath($dest)) {
+    if (file_exists($dest)) {
+      switch ($replace) {
+        case FILE_EXISTS_RENAME:
+          // Destination file already exists and we can't replace is so we try
+          // and and find a new filename.
+          if ($pos = strrpos($basename, '.')) {
+            $name = substr($basename, 0, $pos);
+            $ext = substr($basename, $pos);
+          }
+          else {
+            $name = $basename;
+          }
+
+          $counter = 0;
+          do {
+            $dest = $directory .'/'. $name .'_'. $counter++ . $ext;
+          } while (file_exists($dest));
+          break;
+
+        case FILE_EXISTS_ERROR:
+          drupal_set_message(t('The selected file %file could not be copied, because a file by that name already exists in the destination.', array('%file' => theme('placeholder', $source))), 'error');
+          return 0;
+      }
+    }
+
+    if (!@copy($source, $dest)) {
+      drupal_set_message(t('The selected file %file could not be copied.', array('%file' => theme('placeholder', $source))), 'error');
+      return 0;
+    }
+
+    // Give everyone read access so that FTP'd users or non-webserver users
+    // can see/read these files.
+    @chmod($dest, 0664);
+  }
+
+  if (is_object($file)) {
+    $file->filename = $basename;
+    $file->filepath = $dest;
+    $source = $file;
+  }
+  else {
+    $source = $dest;
+  }
+
+  return 1; // Everything went ok.
+}
+function _filemanager_find_directory(&$file) {
+  // Find a directory that is not already full and does not contain our files
+  $file->directory = 0;
+  $directories = db_query("SELECT directory, count(1) AS filecount FROM {file} WHERE private = '%s' GROUP BY directory ORDER BY directory ASC", $file->private);
+
+  // this while loop requires the $directories array to be ordered in ascending order
+  while ($directory = db_fetch_object($directories)) {
+    // The idea here is to find a directory where the filename doesn't exist
+    // and we haven't hit the maximum file limit. The directories are named
+    // numerically and the first part of the test makes sure that the they're
+    // filled in sequenceially. $file->directory is incremented by 1 each time
+    // but $directory->directory comes from the database. If
+    // $directory->directory > $file->directory, then $file->directory doesn't
+    // exist and would be a safe place to save the file.
+    if ($directory->directory > $file->directory || $directory->filecount < variable_get('filemanager_max_file_count', '2000')) {
+      // If the directory is ok now lets make sure we don't already have this
+      // filename in the directory (checking both working and active).
+      if (!file_exists(filemanager_create_path($file, FALSE)) && !file_exists(filemanager_create_path($file, TRUE))) {
+        break;
+      }
+    }
+    $file->directory++;
+  }
+  return $file;
+}
+function _filemanager_lock() {
+  $lock_file = variable_get('filemanager_private_path', 'private') .'/'. 'filemanager.lck';
+  $flk = fopen($lock_file,'w+');
+  flock($flk, LOCK_EX);
+  return $flk;
+}
+function _filemanager_unlock(&$handle) {
+  flock($handle, LOCK_UN);
+  fclose($handle);
+}
+} // end of filemanager functions
+
+function acidfree_update_4() {
+  $items = array();
+  $num_thumbs = variable_get('acidfree_cols', 5) * variable_get('acidfree_rows', 3);
+  if ($num_thumbs < 0) {
+    $num_thumbs = 0;
+  }
+  variable_set('acidfree_num_thumbs', $num_thumbs);
+  variable_del('acidfree_cols');
+  variable_del('acidfree_rows');
+  $order = variable_get('acidfree_order', NULL);
+  if (!is_null($order)) {
+    $order = acidfree_update_order_conversion($order);
+    if ($order == '<default>') {
+        $order = 'node.nid DESC';
+    }
+    variable_set('acidfree_order', $order);
+  }
+  $items[] = update_sql("UPDATE {system} SET weight=99 WHERE name='acidfree'");
+  return $items;
+}
+
+function acidfree_update_5() {
+    $items = array();
+    $vid = acidfree_get_vocab_id();
+    $items[] = update_sql("UPDATE {vocabulary} SET module = 'acidfree' WHERE vid = $vid");
+    return $items;
+}
+
+/* At this stage, we are putting acidfree_types into the cache
+ * rather than in the variable table.  So we delete it here.
+ */
+function acidfree_update_6() {
+    $items = array();
+    variable_del('acidfree_types');
+
+    return $items;
+}
+
+/* fix a blunder caused back in update_3 where we were inserting
+ * albums with an empty view column causing 'page not found' errors */
+function acidfree_update_7() {
+    $items = array();
+    $items[] = update_sql("UPDATE {acidfree_album} SET view = 'grid' WHERE view = ''");
+    return $items;
+}
+?>

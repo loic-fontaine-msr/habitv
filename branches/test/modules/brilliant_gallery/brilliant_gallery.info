@@ -1,0 +1,11 @@
+; $Id: brilliant_gallery.info,v 1.6 2007/10/26 20:48:07 tjfulopp Exp $
+name = Brilliant Gallery
+description = Creates a fully customizable table gallery of quality-scaled images from a pre-defined folder.
+dependencies = lightbox2 colorpicker
+package = Media
+
+; Information added by drupal.org packaging script on 2007-12-29
+version = "5.x-2.17"
+project = "brilliant_gallery"
+datestamp = "1198950604"
+

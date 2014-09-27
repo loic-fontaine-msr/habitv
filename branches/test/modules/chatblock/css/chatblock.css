@@ -1,0 +1,10 @@
+/* $Id$ */
+
+#chatblock_block {
+  overflow-x: hidden;
+  overflow: auto;
+  height: 300px;
+  width: 98%;
+  display: block;
+  background-color: white;
+}

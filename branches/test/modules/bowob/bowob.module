@@ -1,0 +1,502 @@
+<?php
+/* $ */
+
+function bowob_chat_id(){
+  $bowob_chat_id = array(795);
+
+  return $bowob_chat_id;
+}
+
+function bowob_chat_onlyreg(){
+  $bowob_chat_onlyreg = array(false);
+
+  return $bowob_chat_onlyreg;
+}
+
+function bowob_chat_name(){
+  $bowob_chat_name = array("Chat");
+
+  return $bowob_chat_name;
+}
+
+define('USERNAME_MAX_LENGTH', 60);
+
+function bowob_link_block(){
+  $bowob_chat_id = bowob_chat_id();
+  $bowob_chat_name = bowob_chat_name();
+
+  $items = array();
+  for($i = 0; $i < sizeof($bowob_chat_id); $i++){
+      $items[] = l($bowob_chat_name[$i], 'bowob/'.($i + 1), array('title' => $bowob_chat_name[$i]));
+  }
+
+  if(sizeof($items)){
+    $form['links'] = array('#value' => theme('item_list', $items));
+  }
+
+  return $form;
+}
+
+function bowob_login_block(){
+  $bowob_chat_id = bowob_chat_id();
+  $bowob_chat_onlyreg = bowob_chat_onlyreg();
+  $bowob_chat_name = bowob_chat_name();
+
+  global $user;
+  $bowob_username = "";
+
+  if($user->uid){
+    $bowob_username = $user->name;
+  }
+
+  $rooms_all = array();
+  $items = array();
+  $rooms_all_first = -1;
+  for($i = 0; $i < sizeof($bowob_chat_id); $i++){
+    if($bowob_chat_onlyreg[$i]){
+      $items[] = l($bowob_chat_name[$i], 'bowob/'.($i + 1), array('title' => $bowob_chat_name[$i]));
+    }
+    else{
+      if($rooms_all_first == -1){
+        $rooms_all_first = $i;
+      }
+      $rooms_all[$i] = $bowob_chat_name[$i];
+    }
+  }
+
+  if(sizeof($rooms_all) == 1){
+    $form = array(
+      '#action' => url('bowob/'.($rooms_all_first + 1)),
+      '#id' => 'bowob-login-form',
+      '#base' => 'bowob_login',
+    );
+
+    $form['username'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Username'),
+      '#maxlength' => USERNAME_MAX_LENGTH,
+      ($bowob_username == "") ? '#' : '#value' => $bowob_username,
+      '#size' => 15,
+      '#required' => TRUE,
+      '#prefix' => $bowob_chat_name[$rooms_all_first],
+    );
+
+    $form['submit'] = array(
+      '#type' => 'submit',
+      '#value' => t('Chat'),
+    );
+  }
+  else if(sizeof($rooms_all) > 1){
+    $form = array(
+      '#action' => url('bowob/1'),
+      '#id' => 'bowob-login-form',
+      '#base' => 'bowob_login',
+    );
+
+    $form['room'] = array(
+      '#type' => 'radios',
+      '#options' => $rooms_all,
+      '#default_value' => $rooms_all_first,
+    );
+
+    $form['username'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Username'),
+      '#maxlength' => USERNAME_MAX_LENGTH,
+      ($bowob_username == "") ? '#' : '#value' => $bowob_username,
+      '#size' => 15,
+      '#required' => TRUE,
+    );
+
+  	$submit_js = "for(var i = 0; i < document.getElementById('bowob-login-form').room.length; i++){";
+  	$submit_js .= "   if(document.getElementById('bowob-login-form').room[i].checked){";
+  	$submit_js .= "      document.getElementById('bowob-login-form').action = '".url("bowob")."/' + (parseInt(document.getElementById('bowob-login-form').room[i].value) + 1);";
+  	$submit_js .= "   }";
+  	$submit_js .= "}";
+
+    $form['submit'] = array(
+      '#type' => 'submit',
+      '#value' => t('Chat'),
+      '#attributes' => array('onclick' => $submit_js),
+    );
+  }
+
+  if(sizeof($items)){
+    $form['links'] = array('#value' => theme('item_list', $items));
+  }
+
+  return $form;
+}
+
+function bowob_block($op = 'list', $delta = 0){
+  if($op == 'list'){
+    $blocks[0]['info'] = t('BoWoB Link');
+    $blocks[1]['info'] = t('BoWoB Login');
+
+    return $blocks;
+  }
+  else if($op == 'view' && arg(0) != "bowob"){
+    $block = array();
+    $block['subject'] = t('Chat');
+    if($delta == 0){
+      $block['content'] = drupal_get_form('bowob_link_block');
+    }
+    else{
+      $block['content'] = drupal_get_form('bowob_login_block');
+    }
+
+    return $block;
+  }
+}
+
+function bowob_menu($may_cache){
+  $items = array();
+
+  if ($may_cache) {
+    $items[] = array(
+      'path' => 'bowob',
+      'title' => t('Chat'),
+      'callback' => 'drupal_get_form',
+      'callback arguments' => array('bowob_login'),
+      'access' => true,
+      'type' => MENU_CALLBACK
+    );
+
+    $items[] = array(
+      'path' => 'bowob_sync',
+      'callback' => 'bowob_sync',
+      'access' => true,
+      'type' => MENU_CALLBACK,
+    );
+  }
+
+  return $items;
+}
+
+function bowob_db_install(){
+  db_query("CREATE TABLE IF NOT EXISTS bowob (id int(11) NOT NULL auto_increment,sync varchar(50) NOT NULL default '',time int(11) NOT NULL default '0',mode int(11) NOT NULL default '0',id_chat int(11) NOT NULL default '0',user varchar(50) NOT NULL default '',type int(11) NOT NULL default '0',lang varchar(50) NOT NULL default '',KEY id (id)) /*!40100 DEFAULT CHARACTER SET utf8 */ ");
+}
+
+function bowob_synchronize($bowob_mode, $bowob_id_chat, $bowob_user, $bowob_type, $bowob_lang){
+  $bowob_time = time();
+  $bowob_pattern = "1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  $bowob_sync = "";
+  for($bowob_i = 0; $bowob_i < 50; $bowob_i++){
+    $bowob_sync .= $bowob_pattern[rand(0, 61)];
+  }
+
+  bowob_db_install();
+
+  db_query("INSERT INTO bowob (sync,time,mode,id_chat,user,type,lang) VALUES ('".$bowob_sync."',".$bowob_time.",".$bowob_mode.",".$bowob_id_chat.",'".$bowob_user."',".$bowob_type.",'".$bowob_lang."')");
+
+  $bowob_rs = db_query("SELECT id,sync,user FROM bowob WHERE sync='".$bowob_sync."' AND time=".$bowob_time." AND mode=".$bowob_mode." AND id_chat=".$bowob_id_chat." AND user='".$bowob_user."' AND type=".$bowob_type." AND lang='".$bowob_lang."'");
+
+  if(!$bowob_rs){
+    echo "BoWoB: db error";
+    exit();
+  }
+  
+  while($bowob_fa = db_fetch_object($bowob_rs)){
+    if($bowob_fa->sync == $bowob_sync && $bowob_fa->user == $bowob_user){
+      if($bowob_mode == 2){
+        header("location: http://www.bowob.com/chat.php?type=5&id_chat=".$bowob_id_chat."&id=".$bowob_fa->id."&sync=".$bowob_sync);
+        exit();
+      }
+      else{
+        $bowob_data = array($bowob_fa->id, $bowob_sync);
+        return $bowob_data;
+      }
+    }
+  }
+
+  echo "BoWoB: db error";
+  exit();
+}
+
+function bowob_sync(){
+
+  if(!@is_numeric(arg(1)) || arg(2) == ""){
+    echo "BoWoB: GET: no data received";
+    exit();
+  }
+
+  bowob_db_install();
+
+  db_query("DELETE FROM bowob WHERE time<".(time() - 300));
+
+  $bowob_rs = db_fetch_object(db_query("SELECT sync,mode,id_chat,user,type,lang FROM bowob WHERE id=".arg(1)." AND sync='".arg(2)."'"));
+
+  if(!$bowob_rs || $bowob_rs->sync != arg(2)){
+    echo "BoWoB: GET: bad data received";
+    exit();
+  }
+
+  db_query("DELETE FROM bowob WHERE id=".arg(1));
+
+  header('Cache-Control: no-cache');
+  header('Content-Type: text/html; charset=utf-8');
+
+  echo utf8_encode("bowob_mode: ").$bowob_rs->mode.utf8_encode("\n");
+  echo utf8_encode("bowob_id_chat: ").$bowob_rs->id_chat.utf8_encode("\n");
+  echo utf8_encode("bowob_user: ").$bowob_rs->user.utf8_encode("\n");
+  echo utf8_encode("bowob_type: ").$bowob_rs->type.utf8_encode("\n");
+  echo utf8_encode("bowob_lang: ").$bowob_rs->lang.utf8_encode("\n");
+
+}
+
+function bowob_login($msg = ''){
+
+  $bowob_chat_id = bowob_chat_id();
+  $bowob_chat_onlyreg = bowob_chat_onlyreg();
+  $bowob_chat_name = bowob_chat_name();
+
+  $rooms_all = array();
+  $items = array();
+  $rooms_all_first = -1;
+  for($i = 0; $i < sizeof($bowob_chat_id); $i++){
+    if($bowob_chat_onlyreg[$i]){
+      $items[] = l($bowob_chat_name[$i], 'bowob/'.($i + 1), array('title' => $bowob_chat_name[$i]));
+    }
+    else{
+      if($rooms_all_first == -1){
+        $rooms_all_first = $i;
+      }
+      $rooms_all[$i] = $bowob_chat_name[$i];
+    }
+  }
+
+  if(!@is_numeric(arg(1)) || $bowob_chat_id[arg(1) - 1] == NULL){
+    if(sizeof($rooms_all)){
+      drupal_goto('bowob/'.($rooms_all_first + 1));
+    }
+    else if(sizeof($items)){
+      drupal_goto('bowob/1');
+    }
+    else{
+      drupal_goto('');
+    }
+  }
+
+  if(isset($_POST["username"])){
+    bowob_login_submit("bowob_login", $_POST);
+  }
+
+  if($bowob_chat_onlyreg[arg(1) - 1]){ // Only reg users
+
+    bowob_login_submit("bowob_login", NULL);
+
+  }
+  else{ // All users
+
+    $msg = "";
+    if($msg){
+      $form['message'] = array('#value' => '<p>'. check_plain($msg) .'</p>');
+    }
+
+    global $user;
+    $bowob_username = "";
+
+    if($user->uid){
+      $bowob_username = $user->name;
+    }
+
+    if(sizeof($rooms_all) == 1){
+      $form = array(
+        '#action' => url('bowob/'.($rooms_all_first + 1)),
+        '#id' => 'bowob-login-form',
+        '#base' => 'bowob_login',
+      );
+
+      $form['username'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Username'),
+        '#maxlength' => USERNAME_MAX_LENGTH,
+        ($bowob_username == "") ? '#' : '#value' => $bowob_username,
+        '#size' => 60,
+        '#required' => TRUE,
+        '#prefix' => $bowob_chat_name[$rooms_all_first],
+        '#attributes' => array('tabindex' => '1'),
+        '#description' => t('Enter your @s username.', array('@s' => variable_get('site_name', 'Drupal'))),
+      );
+
+      $form['submit'] = array(
+        '#type' => 'submit',
+        '#value' => t('Chat'),
+        '#weight' => 2,
+        '#attributes' => array('tabindex' => '3'),
+      );
+    }
+    else if(sizeof($rooms_all) > 1){
+      $form = array(
+        '#action' => url('bowob/1'),
+        '#id' => 'bowob-login-form',
+        '#base' => 'bowob_login',
+      );
+
+      $form['room'] = array(
+        '#type' => 'radios',
+        '#options' => $rooms_all,
+        '#default_value' => (arg(1) - 1),
+      );
+
+      $form['username'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Username'),
+        '#maxlength' => USERNAME_MAX_LENGTH,
+        ($bowob_username == "") ? '#' : '#value' => $bowob_username,
+        '#size' => 60,
+        '#required' => TRUE,
+        '#attributes' => array('tabindex' => '1'),
+        '#description' => t('Enter your @s username.', array('@s' => variable_get('site_name', 'Drupal'))),
+      );
+
+    	$submit_js = "for(var i = 0; i < document.getElementById('bowob-login-form').room.length; i++){";
+    	$submit_js .= "   if(document.getElementById('bowob-login-form').room[i].checked){";
+    	$submit_js .= "      document.getElementById('bowob-login-form').action = '".url("bowob")."/' + (parseInt(document.getElementById('bowob-login-form').room[i].value) + 1);";
+    	$submit_js .= "   }";
+    	$submit_js .= "}";
+
+      $form['submit'] = array(
+        '#type' => 'submit',
+        '#value' => t('Chat'),
+        '#attributes' => array('tabindex' => '3', 'onclick' => $submit_js),
+      );
+    }
+
+    if(sizeof($items)){
+      $form['links'] = array('#value' => theme('item_list', $items));
+    }
+
+    return $form;
+
+  }
+}
+
+function bowob_login_submit($form_id, $form_values){
+
+  $bowob_chat_id = bowob_chat_id();
+  $bowob_chat_onlyreg = bowob_chat_onlyreg();
+
+  if($bowob_chat_onlyreg[arg(1) - 1]){ // Only reg users
+    global $user;
+
+    if($user->uid){ // Logued
+      global $locale;
+
+      //CHAT REG
+      $bowob_data = bowob_synchronize(1, $bowob_chat_id[arg(1) - 1], str_replace("'", "\'", str_replace("\\", "\\\\", $user->name)), 0, $locale);
+
+      $output = "<br>\n";
+      $output .= "<center>\n";
+      $output .= "<script type=\"text/javascript\" src=\"http://www.bowob.com/chat.php?type=1&id_chat=".$bowob_chat_id[arg(1) - 1]."&id=".$bowob_data[0]."&sync=".$bowob_data[1]."\"></script>\n";
+      $output .=  "<noscript>NOSCRIPT: This content requires JavaScript.</noscript>\n";
+      $output .= "</center>\n";
+      print theme('page', $output);
+
+      exit();
+    }
+
+    drupal_goto('user');
+  }
+  else{ // All users
+
+    $form_values['username'] = trim($form_values['username']);
+
+    if($form_values['username'] == ""){
+      form_set_error('username', t('!name field is required.', array('!name' => t('Username'))));
+    }
+
+    // Validate the username:
+    if (user_is_blocked($form_values['username'])) {
+      form_set_error('username', t('The username %name has not been activated or is blocked.', array('%name' => $form_values['username'])));
+    }
+    else if (drupal_is_denied('user', $form_values['username'])) {
+      form_set_error('username', t('The name %name is a reserved username.', array('%name' => $form_values['username'])));
+    }
+
+    global $user;
+    global $locale;
+
+    if($user->uid){ // Logued
+      if(strtolower($form_values["username"]) == strtolower($user->name)){
+
+        //CHAT REG
+        $bowob_data = bowob_synchronize(1, $bowob_chat_id[arg(1) - 1], str_replace("'", "\'", str_replace("\\", "\\\\", $user->name)), 0, $locale);
+
+        $output = "<br>\n";
+        $output .= "<center>\n";
+        $output .= "<script type=\"text/javascript\" src=\"http://www.bowob.com/chat.php?type=1&id_chat=".$bowob_chat_id[arg(1) - 1]."&id=".$bowob_data[0]."&sync=".$bowob_data[1]."\"></script>\n";
+        $output .=  "<noscript>NOSCRIPT: This content requires JavaScript.</noscript>\n";
+        $output .= "</center>\n";
+        print theme('page', $output);
+
+        exit();
+      }
+      else{
+        if(db_num_rows(db_query("SELECT uid FROM {users} WHERE LOWER(name) = LOWER('%s')", $form_values["username"])) > 0){
+          form_set_error('username', t('The name %name is already taken.', array('%name' => $form_values["username"])));
+        }
+        else if(drupal_is_denied('user', $form_values["username"])){
+          form_set_error('username', t('The name %name has been denied access.', array('%name' => $form_values["username"])));
+        }
+        else{
+          //CHAT GUEST
+          $bowob_data = bowob_synchronize(1, $bowob_chat_id[arg(1) - 1], $form_values["username"], 1, $locale);
+
+          $output = "<br>\n";
+          $output .= "<center>\n";
+          $output .= "<script type=\"text/javascript\" src=\"http://www.bowob.com/chat.php?type=1&id_chat=".$bowob_chat_id[arg(1) - 1]."&id=".$bowob_data[0]."&sync=".$bowob_data[1]."\"></script>\n";
+          $output .=  "<noscript>NOSCRIPT: This content requires JavaScript.</noscript>\n";
+          $output .= "</center>\n";
+          print theme('page', $output);
+
+          exit();
+        }
+      }
+    }
+    else{ // Guest
+
+      if(db_num_rows(db_query("SELECT uid FROM {users} WHERE LOWER(name) = LOWER('%s')", $form_values["username"])) > 0){
+        form_set_error('username', t('The name %name is already taken.', array('%name' => $form_values["username"])));
+      }
+      else if(drupal_is_denied('user', $form_values["username"])){
+        form_set_error('username', t('The name %name has been denied access.', array('%name' => $form_values["username"])));
+      }
+      else{
+        //CHAT GUEST
+        $bowob_data = bowob_synchronize(1, $bowob_chat_id[arg(1) - 1], $form_values["username"], 1, $locale);
+
+        $output = "<br>\n";
+        $output .= "<center>\n";
+        $output .= "<script type=\"text/javascript\" src=\"http://www.bowob.com/chat.php?type=1&id_chat=".$bowob_chat_id[arg(1) - 1]."&id=".$bowob_data[0]."&sync=".$bowob_data[1]."\"></script>\n";
+        $output .=  "<noscript>NOSCRIPT: This content requires JavaScript.</noscript>\n";
+        $output .= "</center>\n";
+        print theme('page', $output);
+
+        exit();
+      }
+    }
+  }
+
+}
+
+function bowob_enable(){
+  $bowob_rs = db_result(db_query("SELECT mid FROM {menu} WHERE pid=0 LIMIT 1"));
+
+  $item['mid'] = 0;
+  $item['pid'] = $bowob_rs;
+  $item['path'] = "bowob";
+  $item['title'] = t('Chat');
+  $item['description'] = t('Chat');
+  $item['weight'] = 0;
+  $item['type'] = 118;
+
+  menu_save_item($item);
+}
+
+function bowob_disable(){
+  db_query("DROP TABLE IF EXISTS bowob");
+  db_query("DELETE FROM {menu} WHERE path = 'bowob'");
+}
+
+?>
