@@ -547,6 +547,10 @@ function error_handler($errno, $message, $filename, $line) {
   if (error_reporting() == 0) {
     return;
   }
+  // Hide PHP 5.3 deprecation errors, 8192 == E_DEPRECATED.
+  if ($errno == 8192) {
+    return;
+  }
 
   if ($errno & (E_ALL ^ E_NOTICE)) {
     $types = array(1 => 'error', 2 => 'warning', 4 => 'parse error', 8 => 'notice', 16 => 'core error', 32 => 'core warning', 64 => 'compile error', 128 => 'compile warning', 256 => 'user error', 512 => 'user warning', 1024 => 'user notice', 2048 => 'strict warning');
