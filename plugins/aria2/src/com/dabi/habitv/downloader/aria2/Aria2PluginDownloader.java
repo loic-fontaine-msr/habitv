@@ -1,6 +1,7 @@
 package com.dabi.habitv.downloader.aria2;
 
 import java.util.Map;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.dabi.habitv.api.plugin.api.PluginDownloaderInterface;
@@ -50,7 +51,7 @@ public class Aria2PluginDownloader extends BaseUpdatablePlugin implements
 			}
 		}
 		cmd = cmd.replaceFirst(FrameworkConf.DOWNLOAD_INPUT,
-				downloadParam.getDownloadInput());
+				Matcher.quoteReplacement(downloadParam.getDownloadInput()));
 
 		final int lastSlashIndex = downloadParam.getDownloadOutput()
 				.lastIndexOf('/');
@@ -59,8 +60,8 @@ public class Aria2PluginDownloader extends BaseUpdatablePlugin implements
 		final String dirDest = downloadParam.getDownloadOutput().substring(0,
 				lastSlashIndex);
 
-		cmd = cmd.replaceFirst(Aria2Conf.FILE_NAME, fileName);
-		cmd = cmd.replaceFirst(Aria2Conf.DIR_DEST, dirDest);
+		cmd = cmd.replaceFirst(Aria2Conf.FILE_NAME, Matcher.quoteReplacement(fileName));
+		cmd = cmd.replaceFirst(Aria2Conf.DIR_DEST, Matcher.quoteReplacement(dirDest));
 		try {
 			return (new Aria2CmdExecutor(downloaders.getCmdProcessor(), cmd));
 		} catch (final ExecutorFailedException e) {

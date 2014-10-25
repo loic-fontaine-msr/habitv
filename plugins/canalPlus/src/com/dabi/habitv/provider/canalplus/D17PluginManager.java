@@ -101,12 +101,14 @@ public class D17PluginManager extends BasePluginWithProxy implements
 		final Elements select = doc.select(".block-videos");
 		for (final Element divElement : select) {
 			final Element link = divElement.child(0).child(0).child(1);
-			final String url = link.child(0).attr("href");
-			final String name = link.text();
-			final CategoryDTO categoryDTO = new CategoryDTO(D17Conf.NAME, name,
-					url, D17Conf.EXTENSION);
-			categoryDTO.setDownloadable(true);
-			categories.add(categoryDTO);
+			if (!link.childNodes().isEmpty()) {
+				final String url = link.child(0).attr("href");
+				final String name = link.text();
+				final CategoryDTO categoryDTO = new CategoryDTO(D17Conf.NAME,
+						name, url, D17Conf.EXTENSION);
+				categoryDTO.setDownloadable(true);
+				categories.add(categoryDTO);
+			}
 
 		}
 		return categories;

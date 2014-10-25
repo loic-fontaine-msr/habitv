@@ -61,7 +61,7 @@ public class CategoryManager extends AbstractManager {
 			if (pluginList == null || pluginList.contains(provider.getName())) {
 				final SearchCategoryTask searchCategoryTask = new SearchCategoryTask(
 						provider.getName(), provider, searchCategoryPublisher);
-				searchCategoryMgr.addTask(searchCategoryTask);
+				searchCategoryMgr.addTask(provider, searchCategoryTask);
 				taskList.add(searchCategoryTask);
 			}
 		}

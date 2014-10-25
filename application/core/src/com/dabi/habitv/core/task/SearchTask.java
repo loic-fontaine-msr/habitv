@@ -159,4 +159,9 @@ public class SearchTask extends AbstractTask<Object> {
 	public String toString() {
 		return "Searching" + provider.getName();
 	}
+
+	@Override
+	protected void canceled() {
+		LOG.info("Cancel episode search for " + provider.getName() + ".");
+	}
 }

@@ -102,4 +102,10 @@ public class ExportTask extends AbstractEpisodeTask {
 		return rank;
 	}
 
+	@Override
+	protected void canceled() {
+		LOG.error("Episode canceled : " + getEpisode() + " "
+				+ export.getName());	
+	}
+
 }

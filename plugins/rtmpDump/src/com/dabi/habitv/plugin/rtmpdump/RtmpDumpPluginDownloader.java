@@ -1,6 +1,7 @@
 package com.dabi.habitv.plugin.rtmpdump;
 
 import java.util.Map;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.dabi.habitv.api.plugin.api.PluginDownloaderInterface;
@@ -44,9 +45,9 @@ public class RtmpDumpPluginDownloader extends BaseUpdatablePlugin implements
 			cmd += cmdParam;
 		}
 		cmd = cmd.replaceFirst(FrameworkConf.DOWNLOAD_INPUT,
-				downloadParam.getDownloadInput());
+				Matcher.quoteReplacement(downloadParam.getDownloadInput()));
 		cmd = cmd.replaceFirst(FrameworkConf.DOWNLOAD_DESTINATION,
-				downloadParam.getDownloadOutput());
+				Matcher.quoteReplacement(downloadParam.getDownloadOutput()));
 		if (protocol2proxy != null) {
 			final ProxyDTO sockProxy = protocol2proxy
 					.get(ProxyDTO.ProtocolEnum.SOCKS);

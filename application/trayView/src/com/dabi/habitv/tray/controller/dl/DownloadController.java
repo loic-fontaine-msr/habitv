@@ -71,7 +71,7 @@ public class DownloadController extends BaseController implements
 		etatColumn = new EtatColumn(getController());
 
 		this.downloadTable.getColumns().clear();
-		
+
 		this.downloadTable.setOnContextMenuRequested(new EventHandler<Event>() {
 
 			@Override
@@ -82,7 +82,7 @@ public class DownloadController extends BaseController implements
 		});
 		this.downloadTable.getColumns().addAll(new PluginColumn(),
 				new CategoryColumn(), new EpisodeColumn(), etatColumn);
-		
+
 		this.downloadTable.setContextMenu(new ContextMenu());
 	}
 
@@ -110,7 +110,12 @@ public class DownloadController extends BaseController implements
 				@Override
 				public void handle(ActionEvent event) {
 					for (ActionProgress actionProgress : actionProgressList) {
-						actionProgress.getProcessHolder().stop();
+						if (actionProgress.getProcessHolder() != null) {
+							actionProgress.getProcessHolder().stop();
+						} else {
+							getController().cancel(
+									actionProgress.getEpisode());
+						}
 						getController().setDownloaded(
 								actionProgress.getEpisode());
 					}

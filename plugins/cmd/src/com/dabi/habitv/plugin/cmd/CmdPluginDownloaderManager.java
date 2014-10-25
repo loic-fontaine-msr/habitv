@@ -1,5 +1,7 @@
 package com.dabi.habitv.plugin.cmd;
 
+import java.util.regex.Matcher;
+
 import com.dabi.habitv.api.plugin.api.PluginDownloaderInterface;
 import com.dabi.habitv.api.plugin.dto.DownloadParamDTO;
 import com.dabi.habitv.api.plugin.exception.DownloadFailedException;
@@ -26,9 +28,9 @@ public final class CmdPluginDownloaderManager implements
 			throw new IllegalArgumentException("cmd parameters must be defined");
 		}
 		replaceIfContains(cmd, FrameworkConf.DOWNLOAD_INPUT,
-				downloadParam.getDownloadInput());
+				Matcher.quoteReplacement(downloadParam.getDownloadInput()));
 		replaceIfContains(cmd, FrameworkConf.DOWNLOAD_DESTINATION,
-				downloadParam.getDownloadOutput());
+				Matcher.quoteReplacement(downloadParam.getDownloadOutput()));
 
 		try {
 			return new CmdExecutor(downloaders.getCmdProcessor(), cmd,

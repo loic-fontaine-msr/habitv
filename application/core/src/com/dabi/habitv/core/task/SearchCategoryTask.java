@@ -65,4 +65,9 @@ public final class SearchCategoryTask extends
 		return "SearchingCategory" + channel;
 	}
 
+	@Override
+	protected void canceled() {
+		LOG.info("Canceled Grabbing categories for " + channel + ".");
+	}
+
 }

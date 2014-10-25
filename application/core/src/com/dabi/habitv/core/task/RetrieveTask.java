@@ -158,4 +158,10 @@ public class RetrieveTask extends AbstractEpisodeTask {
 			final EpisodeExportState episodeExportState) {
 		this.episodeExportState = episodeExportState;
 	}
+
+	@Override
+	protected void canceled() {
+		retreivePublisher.addNews(new RetreiveEvent(getEpisode(),
+				EpisodeStateEnum.STOPPED));
+	}
 }

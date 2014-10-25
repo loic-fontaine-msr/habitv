@@ -16,4 +16,9 @@ public abstract class AbstractTaskForTest extends AbstractTask<Object> {
 	protected void started() {
 
 	}
+	
+	@Override
+	protected void canceled() {
+		
+	}
 }

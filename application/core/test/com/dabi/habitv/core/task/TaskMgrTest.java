@@ -90,11 +90,16 @@ public class TaskMgrTest {
 				return "task1";
 			}
 
+			@Override
+			protected void canceled() {
+				
+			}
+
 		};
 		if (cat == null) {
-			taskMgr.addTask(task);
+			taskMgr.addTask(task, task);
 		} else {
-			taskMgr.addTask(task, cat);
+			taskMgr.addTask(task, task, cat);
 		}
 		task = new AbstractTaskForTest() {
 
@@ -119,11 +124,12 @@ public class TaskMgrTest {
 			public String toString() {
 				return "task2";
 			}
+
 		};
 		if (cat2 == null) {
-			taskMgr.addTask(task);
+			taskMgr.addTask(task, task);
 		} else {
-			taskMgr.addTask(task, cat2);
+			taskMgr.addTask(task, task, cat2);
 		}
 		if (shutdown) {
 			taskMgr.shutdown(1000);
@@ -194,9 +200,9 @@ public class TaskMgrTest {
 
 		};
 		if (cat == null) {
-			taskMgr.addTask(task);
+			taskMgr.addTask(task, task);
 		} else {
-			taskMgr.addTask(task, cat);
+			taskMgr.addTask(task, task, cat);
 		}
 		task = new AbstractTaskForTest() {
 
@@ -224,9 +230,9 @@ public class TaskMgrTest {
 
 		};
 		if (cat2 == null) {
-			taskMgr.addTask(task);
+			taskMgr.addTask(task, task);
 		} else {
-			taskMgr.addTask(task, cat2);
+			taskMgr.addTask(task, task, cat2);
 		}
 		taskMgr.shutdown(1000);
 	}

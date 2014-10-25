@@ -1,6 +1,5 @@
 package com.dabi.habitv;
 
-import java.awt.SystemTray;
 import java.io.File;
 
 import org.fuin.utils4j.Utils4J;
