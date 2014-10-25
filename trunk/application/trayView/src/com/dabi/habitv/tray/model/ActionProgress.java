@@ -2,8 +2,6 @@ package com.dabi.habitv.tray.model;
 
 import java.util.Collection;
 
-import javafx.collections.ObservableList;
-
 import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
 import com.dabi.habitv.api.plugin.holder.ProcessHolder;
 import com.dabi.habitv.core.event.EpisodeStateEnum;

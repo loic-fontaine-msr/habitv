@@ -1,6 +1,5 @@
 package com.dabi.habitv.tray.model;
 
-import java.io.File;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Observable;
@@ -13,7 +12,6 @@ import org.apache.log4j.Logger;
 import com.dabi.habitv.api.plugin.dto.CategoryDTO;
 import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
 import com.dabi.habitv.api.plugin.exception.TechnicalException;
-import com.dabi.habitv.core.config.HabitTvConf;
 import com.dabi.habitv.core.config.UserConfig;
 import com.dabi.habitv.core.config.XMLUserConfig;
 import com.dabi.habitv.core.dao.GrabConfigDAO;
@@ -224,6 +222,10 @@ public class HabitTvViewManager extends Observable {
 
 	public Set<String> findDownloadedEpisodes(CategoryDTO category) {
 		return coreManager.findDownloadedEpisodes(category);
+	}
+
+	public void cancel(EpisodeDTO episode) {
+		coreManager.cancel(episode);
 	}
 
 }

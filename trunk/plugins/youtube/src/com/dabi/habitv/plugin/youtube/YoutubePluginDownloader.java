@@ -1,5 +1,6 @@
 package com.dabi.habitv.plugin.youtube;
 
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.dabi.habitv.api.plugin.api.PluginDownloaderInterface;
@@ -35,10 +36,10 @@ public class YoutubePluginDownloader extends BaseUpdatablePlugin implements
 		} else {
 			cmd += cmdParam;
 		}
-		cmd = cmd.replaceFirst(FrameworkConf.DOWNLOAD_INPUT,
-				downloadParam.getDownloadInput());
+		cmd = cmd.replaceFirst(FrameworkConf.DOWNLOAD_INPUT, Matcher.quoteReplacement(
+				downloadParam.getDownloadInput()));
 		cmd = cmd.replaceFirst(FrameworkConf.DOWNLOAD_DESTINATION,
-				downloadParam.getDownloadOutput());
+				Matcher.quoteReplacement(downloadParam.getDownloadOutput()));
 
 		// if (proxyDTO!=null){
 		// youtube-dl supports downloading videos through a proxy, by

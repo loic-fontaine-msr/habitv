@@ -153,4 +153,8 @@ public final class CoreManager {
 		return episodeManager.findDownloadedEpisodes(category);
 	}
 
+	public void cancel(EpisodeDTO episode) {
+		episodeManager.cancelTask(episode);
+	}
+
 }

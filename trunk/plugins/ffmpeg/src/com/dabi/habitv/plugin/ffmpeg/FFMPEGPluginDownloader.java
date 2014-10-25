@@ -1,5 +1,6 @@
 package com.dabi.habitv.plugin.ffmpeg;
 
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.dabi.habitv.api.plugin.api.PluginDownloaderInterface;
@@ -36,11 +37,11 @@ public class FFMPEGPluginDownloader extends BaseUpdatablePlugin implements
 		final String downloaderBin = getBinParam(downloaders);
 		String cmd = downloaderBin + getCmd();
 		cmd = cmd.replaceFirst(FrameworkConf.DOWNLOAD_INPUT,
-				downloadParam.getDownloadInput());
+				Matcher.quoteReplacement(downloadParam.getDownloadInput()));
 		cmd = cmd.replaceFirst(FrameworkConf.DOWNLOAD_DESTINATION,
-				downloadParam.getDownloadOutput());
+				Matcher.quoteReplacement(downloadParam.getDownloadOutput()));
 		cmd = cmd.replaceFirst(FrameworkConf.EXTENSION,
-				downloadParam.getExtension());
+				Matcher.quoteReplacement(downloadParam.getExtension()));
 
 		try {
 			return (new FFMPEGCmdExecutor(downloaders.getCmdProcessor(), cmd));

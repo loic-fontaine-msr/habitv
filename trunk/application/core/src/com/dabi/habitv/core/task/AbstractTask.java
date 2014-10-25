@@ -18,32 +18,49 @@ abstract class AbstractTask<R> implements Callable<R> {
 
 	private Future<R> future;
 
+	private boolean running = false;
+
+	private boolean canceled = false;
+
 	@Override
 	public final R call() { // NO_UCD (test only)
-		R result;
-		try {
-			started();
-			Thread.currentThread().setName(toString());
-			result = doCall();
-			if (listener != null) {
-				listener.onTaskEnded();
+		if (!canceled) {
+			R result;
+			running = true;
+			try {
+				started();
+				Thread.currentThread().setName(toString());
+				result = doCall();
+				if (listener != null) {
+					listener.onTaskEnded();
+				}
+				ended();
+			} catch (final Throwable e) {
+				if (listener != null) {
+					listener.onTaskFailed();
+				}
+				failed(e);
+				throw new TaskFailedException(e);
+			} finally {
+				running = false;
+				if (canceled){
+					canceled();
+				}
 			}
-			ended();
-		} catch (final Throwable e) {
-			if (listener != null) {
-				listener.onTaskFailed();
-			}
-			failed(e);
-			throw new TaskFailedException(e);
+			return result;
+		} else {
+			canceled();
+			return null;
 		}
-		return result;
 	}
 
-	protected abstract void adding();//appelé avant le démarrage du thread
-	
+	protected abstract void adding();// appelé avant le démarrage du thread
+
 	protected abstract void failed(Throwable e);
 
 	protected abstract void ended();
+	
+	protected abstract void canceled();
 
 	protected abstract void started();
 
@@ -76,5 +93,16 @@ abstract class AbstractTask<R> implements Callable<R> {
 
 	@Override
 	public abstract String toString();
+
+	public boolean isRunning() {
+		return running;
+	}
+
+	public void cancel() {
+		canceled = true;
+		if (future != null) {
+			future.cancel(true);
+		}
+	}
 
 }

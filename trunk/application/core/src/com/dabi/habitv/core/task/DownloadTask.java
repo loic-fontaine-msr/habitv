@@ -75,6 +75,14 @@ public class DownloadTask extends AbstractEpisodeTask {
 	protected void started() {
 		LOG.info("Download of " + getEpisode() + " is starting");
 	}
+	
+
+	@Override
+	protected void canceled() {
+		LOG.info("Cancel of " + getEpisode() + " done");
+		publisher.addNews(new RetreiveEvent(getEpisode(),
+				EpisodeStateEnum.STOPPED));		
+	}
 
 	@Override
 	protected Object doCall() throws DownloadFailedException {

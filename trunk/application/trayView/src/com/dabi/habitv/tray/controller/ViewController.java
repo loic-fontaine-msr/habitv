@@ -307,4 +307,8 @@ public class ViewController implements CoreSubscriber {
 			throw new TechnicalException(e);
 		}
 	}
+
+	public void cancel(EpisodeDTO episode) {
+		getManager().cancel(episode);
+	}
 }
