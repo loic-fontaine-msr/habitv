@@ -3,10 +3,10 @@
 	<parent>
 		<groupId>com.dabi.habitv</groupId>
 		<artifactId>fwk</artifactId>
-		<version>4.0.3</version>
+		<version>4.0.4-SNAPSHOT</version>
 	</parent>
 	<artifactId>api</artifactId>
-	<version>4.0.3</version>
+	<version>4.0.4-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>api</name>
 	<dependencies>
