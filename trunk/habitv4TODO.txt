@@ -1,9 +1,5 @@
 comment releaser les plugins ?
 
-update youtube-dl
-
-échoué -> relancé -> pas de progression
-
 tester torrent
 
 rss content matcher

@@ -100,16 +100,19 @@ public class D17PluginManager extends BasePluginWithProxy implements
 				categoryUrl(catUrl), D17Conf.ENCODING));
 		final Elements select = doc.select(".block-videos");
 		for (final Element divElement : select) {
-			final Element link = divElement.child(0).child(0).child(1);
-			if (!link.childNodes().isEmpty()) {
-				final String url = link.child(0).attr("href");
-				final String name = link.text();
-				final CategoryDTO categoryDTO = new CategoryDTO(D17Conf.NAME,
-						name, url, D17Conf.EXTENSION);
-				categoryDTO.setDownloadable(true);
-				categories.add(categoryDTO);
+			if (!divElement.childNodes().isEmpty()
+					&& !divElement.child(0).childNodes().isEmpty()
+					&& !divElement.child(0).child(0).childNodes().isEmpty()) {
+				final Element link = divElement.child(0).child(0).child(1);
+				if (!link.childNodes().isEmpty()) {
+					final String url = link.child(0).attr("href");
+					final String name = link.text();
+					final CategoryDTO categoryDTO = new CategoryDTO(
+							D17Conf.NAME, name, url, D17Conf.EXTENSION);
+					categoryDTO.setDownloadable(true);
+					categories.add(categoryDTO);
+				}
 			}
-
 		}
 		return categories;
 	}

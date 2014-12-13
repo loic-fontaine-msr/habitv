@@ -3,9 +3,8 @@ package com.dabi.habitv.provider.beinsport;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
-import java.util.Set;
 import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -37,12 +36,6 @@ import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.api.BasePluginWithProxy;
 import com.dabi.habitv.framework.plugin.utils.DownloadUtils;
 import com.dabi.habitv.framework.plugin.utils.SoccerUtils;
-import com.sun.syndication.feed.synd.SyndEnclosure;
-import com.sun.syndication.feed.synd.SyndEntry;
-import com.sun.syndication.feed.synd.SyndFeed;
-import com.sun.syndication.io.FeedException;
-import com.sun.syndication.io.SyndFeedInput;
-import com.sun.syndication.io.XmlReader;
 
 public class BeinSportPluginManager extends BasePluginWithProxy implements
 		PluginProviderDownloaderInterface { // NO_UCD
@@ -54,65 +47,47 @@ public class BeinSportPluginManager extends BasePluginWithProxy implements
 
 	@Override
 	public Set<EpisodeDTO> findEpisode(final CategoryDTO category) {
-		switch (category.getId()) {
-		case BeinSportConf.VIDEOS_CATEGORY:
-			return findEpisodeByRSS(category, BeinSportConf.VIDEOS_URL_RSS);
-		case BeinSportConf.REPLAY_CATEGORY:
+		if (BeinSportConf.REPLAY_CATEGORY.equals(category.getId())) {
 			final Set<EpisodeDTO> episodeDTOs = new LinkedHashSet<>();
 			for (final CategoryDTO subCategory : findReplaycategories()) {
 				episodeDTOs.addAll(findEpisodeByCategory(subCategory,
 						BeinSportConf.HOME_URL + subCategory.getId()));
 			}
 			return episodeDTOs;
-		default:
+		} else if (category.getId().startsWith(BeinSportConf.VIDEOS_CATEGORY)) {
+			return findEpisodeByVideoCategory(category,
+					BeinSportConf.VIDEOS_URL_RSS);
+		} else {
 			return findEpisodeByCategory(category, BeinSportConf.HOME_URL
 					+ category.getId());
 		}
 	}
 
-	private Set<EpisodeDTO> findEpisodeByRSS(final CategoryDTO category,
-			final String videosUrl) {
-		final Set<EpisodeDTO> episodeList;
+	private Set<EpisodeDTO> findEpisodeByVideoCategory(CategoryDTO category,
+			String videosUrlRss) {
+		final Set<EpisodeDTO> episodeList = new LinkedHashSet<>();
+		org.jsoup.nodes.Document doc;
 		try {
-
-			final SyndFeedInput input = new SyndFeedInput();
-			final SyndFeed feed = input.build(new XmlReader(
-					getInputStreamFromUrl(videosUrl)));
-			episodeList = convertFeedToEpisodeList(feed, category);
-		} catch (IllegalArgumentException | FeedException | IOException e) {
+			String url = BeinSportConf.CATEGORIES_URL
+					+ category.getId().split("_")[1];
+			doc = Jsoup.parse(getInputStreamFromUrl(url), "UTF-8", url);
+		} catch (IOException e) {
 			throw new TechnicalException(e);
 		}
-		return episodeList;
-	}
 
-	private static Set<EpisodeDTO> convertFeedToEpisodeList(
-			final SyndFeed feed, final CategoryDTO category) {
-		final Set<EpisodeDTO> episodeList = new LinkedHashSet<EpisodeDTO>();
-		final List<?> entries = feed.getEntries();
-		if (!entries.isEmpty()) {
-			for (final Object object : entries) {
-				final SyndEntry entry = (SyndEntry) object;
-				final List<?> enclosures = entry.getEnclosures();
-				String url;
-				if (!enclosures.isEmpty()) {
-					url = ((SyndEnclosure) enclosures.get(0)).getUrl();
-				} else {
-					url = entry.getLink();
-				}
-				final String name = SoccerUtils.maskScore(entry.getTitle());
-				episodeList.add(new EpisodeDTO(category, name, url));
-			}
-		}
+		findEpisodeFromArticle(category, episodeList, doc.children());
+
 		return episodeList;
 	}
 
 	@Override
 	public Set<CategoryDTO> findCategory() {
 		final Set<CategoryDTO> categoryDTOs = new LinkedHashSet<>();
-		CategoryDTO videoCategory = new CategoryDTO(BeinSportConf.VIDEOS_CATEGORY,
+		CategoryDTO videoCategory = new CategoryDTO(
 				BeinSportConf.VIDEOS_CATEGORY, BeinSportConf.VIDEOS_CATEGORY,
-				BeinSportConf.EXTENSION);
-		videoCategory.setDownloadable(true);
+				BeinSportConf.VIDEOS_CATEGORY, BeinSportConf.EXTENSION);
+		videoCategory.setDownloadable(false);
+		addVideoCategories(videoCategory);
 		categoryDTOs.add(videoCategory);
 		final CategoryDTO replayCategory = new CategoryDTO(
 				BeinSportConf.REPLAY_CATEGORY, BeinSportConf.REPLAY_CATEGORY,
@@ -120,6 +95,52 @@ public class BeinSportPluginManager extends BasePluginWithProxy implements
 		replayCategory.addSubCategories(findReplaycategories());
 		categoryDTOs.add(replayCategory);
 		return categoryDTOs;
+	}
+
+	private void addVideoCategories(CategoryDTO videoCategory) {
+		org.jsoup.nodes.Document doc;
+		try {
+			doc = Jsoup.parse(getInputStreamFromUrl(BeinSportConf.VIDEO_URL),
+					"UTF-8", BeinSportConf.VIDEO_URL);
+		} catch (IOException e) {
+			throw new TechnicalException(e);
+		}
+
+		Elements divSportSelect = doc.select("#sportSelect");
+
+		for (final Element liSport : divSportSelect.select("li")) {
+			final Element aHref = liSport.select("a").first();
+			final String id = aHref.attr("data-sport");
+			String name = aHref.text();
+			CategoryDTO videosubCategory = new CategoryDTO(BeinSportConf.NAME,
+					name, id, BeinSportConf.EXTENSION);
+			videosubCategory.setDownloadable(false);
+			addVideoCompetitions(doc, videosubCategory);
+			videoCategory.addSubCategory(videosubCategory);
+		}
+	}
+
+	private void addVideoCompetitions(org.jsoup.nodes.Document doc,
+			CategoryDTO videosubCategory) {
+
+		Elements divCompetitionSelect = doc.select("#competitionSelect");
+
+		for (final Element ulCompet : divCompetitionSelect.select("ul")) {
+			final String idSport = ulCompet.attr("data-sport");
+			if (videosubCategory.getId().equals(idSport)) {
+				for (Element liCompet : ulCompet.select("li")) {
+					final Element aHref = liCompet.select("a").first();
+					final String id = BeinSportConf.VIDEOS_CATEGORY + "_"
+							+ aHref.attr("data-categories");
+					String name = aHref.text();
+					CategoryDTO videoCompetCategory = new CategoryDTO(
+							BeinSportConf.NAME, name, id,
+							BeinSportConf.EXTENSION);
+					videoCompetCategory.setDownloadable(true);
+					videosubCategory.addSubCategory(videoCompetCategory);
+				}
+			}
+		}
 	}
 
 	@Override
@@ -160,6 +181,13 @@ public class BeinSportPluginManager extends BasePluginWithProxy implements
 			divTabContainer = doc.select("#newsIndex");
 		}
 
+		findEpisodeFromArticle(category, episodeList, divTabContainer);
+
+		return episodeList;
+	}
+
+	private void findEpisodeFromArticle(final CategoryDTO category,
+			final Set<EpisodeDTO> episodeList, Elements divTabContainer) {
 		for (final Element article : divTabContainer.select("article")) {
 			final Element aHref = article.select("a").first();
 			final Element h4 = article.select("h4").first();
@@ -168,8 +196,6 @@ public class BeinSportPluginManager extends BasePluginWithProxy implements
 			name = SoccerUtils.maskScore(name);
 			episodeList.add(new EpisodeDTO(category, name, href));
 		}
-
-		return episodeList;
 	}
 
 	private Collection<CategoryDTO> findReplaycategories() {
@@ -183,8 +209,8 @@ public class BeinSportPluginManager extends BasePluginWithProxy implements
 			final Element aHref = h2.child(0);
 			final String href = aHref.attr("href");
 			final String title = aHref.text();
-			CategoryDTO category = new CategoryDTO(BeinSportConf.NAME, title, href,
-					BeinSportConf.EXTENSION);
+			CategoryDTO category = new CategoryDTO(BeinSportConf.NAME, title,
+					href, BeinSportConf.EXTENSION);
 			category.setDownloadable(true);
 			categories.add(category);
 		}

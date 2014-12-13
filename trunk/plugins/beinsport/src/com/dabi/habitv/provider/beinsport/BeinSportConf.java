@@ -19,8 +19,12 @@ interface BeinSportConf {
 	String REPLAY_URL = "http://www.beinsport.fr/replay";
 
 	String HOME_URL = "http://www.beinsport.fr/";
+	
+	String VIDEO_URL = "http://www.beinsport.fr/videos";
 
 	String RTMPDUMP_CMD2 = "-r \"#PROTOCOL#//#HOST#/#CONTEXT_ROOT#\" -a \"#CONTEXT_ROOT#\" -f \"WIN 11,3,300,265\" -W \"http://www.beinsport.fr/ptvFlash/unifiedplayer/adaptive_vod/UnifiedPlayer.swf\" -y \"mp4:#VIDEO_URL#\" -o \"#FILE_DEST#\"";
 
 	String XML_INFO = "http://www.beinsport.fr/vodConfig.xml/videoId/";
+
+	String CATEGORIES_URL = "http://www.beinsports.fr/ajax/filter-videos/filterCategory/";
 }

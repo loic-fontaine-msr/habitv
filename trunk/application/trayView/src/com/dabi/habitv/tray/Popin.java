@@ -91,17 +91,19 @@ public class Popin extends Application {
 			System.exit(1);
 		}
 	};
-	
+
 	public static void fatalError() {
 		fatalError("Une erreur est survenue habiTv va fermer.\n Consulter la log pour plus de détails.");
 	}
 
 	public static void fatalError(String message) {
-		(new Popin())
-		.setOkButtonHandler(SYSTEM_CLOSE_HANDLER)
-		.setCancelButtonHandler(SYSTEM_CLOSE_HANDLER)
-		.show("Erreur",
-				message);
+		(new Popin()).setOkButtonHandler(SYSTEM_CLOSE_HANDLER)
+				.setCancelButtonHandler(SYSTEM_CLOSE_HANDLER)
+				.show("Erreur", message);
 	}
 
-}
+	public static void error(String message) {
+		(new Popin())
+		.show("Erreur",
+				"Une erreur est survenue. Consulter la log pour plus de détail. " + message);
+	}}
