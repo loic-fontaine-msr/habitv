@@ -441,8 +441,12 @@ public class GrabConfigDAO {
 					.getName());
 			if (associatedCatDTO != null) {
 				catNameToCat.remove(category.getName());
-				if (category.getSubcategories() != null
-						&& !category.getSubcategories().getCategory().isEmpty()) {
+				
+				category.setId(associatedCatDTO.getId());
+				category.setExtension(associatedCatDTO.getExtension());
+				category.setDownloadable(associatedCatDTO.isDownloadable());
+				
+				if (category.getSubcategories() != null) {
 					updateCategory(category.getSubcategories().getCategory(),
 							associatedCatDTO.getSubCategories());
 				}

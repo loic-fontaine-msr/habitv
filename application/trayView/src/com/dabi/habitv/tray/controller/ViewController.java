@@ -6,8 +6,8 @@ import java.awt.datatransfer.StringSelection;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 
 import javafx.application.Platform;
@@ -248,15 +248,28 @@ public class ViewController implements CoreSubscriber {
 	}
 
 	public void updateGrabconfig(Map<String, CategoryDTO> channels) {
-		getManager().updateGrabconfig(channels);
+		try {
+			getManager().updateGrabconfig(channels);
+		} catch (Exception e) {
+			Popin.error(e.getMessage());
+		}
 	}
 
 	public UserConfig loadUserConfig() {
-		return getManager().getUserConfig();
+		try {
+			return getManager().getUserConfig();
+		} catch (Exception e) {
+			Popin.fatalError(e.getMessage());
+			return null;
+		}
 	}
 
 	public void saveConfig(UserConfig userConfig) {
-		getManager().saveConfig(userConfig);
+		try {
+			getManager().saveConfig(userConfig);
+		} catch (Exception e) {
+			Popin.error(e.getMessage());
+		}
 	}
 
 	public void openMainView(final EventHandler<WindowEvent> eventHandler) {
@@ -271,7 +284,11 @@ public class ViewController implements CoreSubscriber {
 	}
 
 	public void setDownloaded(EpisodeDTO episode) {
-		getManager().setDownloaded(episode);
+		try {
+			getManager().setDownloaded(episode);
+		} catch (Exception e) {
+			Popin.error(e.getMessage());
+		}
 	}
 
 	public void openIndex(CategoryDTO category) {
@@ -280,15 +297,28 @@ public class ViewController implements CoreSubscriber {
 	}
 
 	public void restart(EpisodeDTO episode, boolean exportOnly) {
-		getManager().restart(episode, exportOnly);
+		try {
+			getManager().restart(episode, exportOnly);
+		} catch (Exception e) {
+			Popin.error(e.getMessage());
+		}
 	}
 
 	public Collection<EpisodeDTO> findEpisodeByCategory(CategoryDTO category) {
-		return getManager().findEpisodeByCategory(category);
+		try {
+			return getManager().findEpisodeByCategory(category);
+		} catch (Exception e) {
+			Popin.error(e.getMessage());
+			return Collections.emptyList();
+		}
 	}
 
 	public void downloadEpisode(EpisodeDTO episode) {
-		getManager().restart(episode, false);
+		try {
+			getManager().restart(episode, false);
+		} catch (Exception e) {
+			Popin.error(e.getMessage());
+		}
 	}
 
 	public void openLogFile() {
@@ -303,12 +333,16 @@ public class ViewController implements CoreSubscriber {
 	public void openInBrowser(EpisodeDTO episodeDTO) {
 		try {
 			Desktop.getDesktop().browse(new URI(episodeDTO.getId()));
-		} catch (IOException | URISyntaxException e) {
-			throw new TechnicalException(e);
+		} catch (Exception e) {
+			Popin.error(e.getMessage());
 		}
 	}
 
 	public void cancel(EpisodeDTO episode) {
-		getManager().cancel(episode);
+		try {
+			getManager().cancel(episode);
+		} catch (Exception e) {
+			Popin.error(e.getMessage());
+		}
 	}
 }

@@ -28,82 +28,82 @@
 		<dependency>
 			<groupId>com.dabi.habitv</groupId>
 			<artifactId>aria2</artifactId>
-			<version>${project.version}</version>
+			<version>[4.0-SNAPSHOT,4.1)</version>
 		</dependency>
 		<dependency>
 			<groupId>com.dabi.habitv</groupId>
 			<artifactId>arte</artifactId>
-			<version>${project.version}</version>
+			<version>[4.0-SNAPSHOT,4.1)</version>
 		</dependency>
 		<dependency>
 			<groupId>com.dabi.habitv</groupId>
 			<artifactId>beinsport</artifactId>
-			<version>${project.version}</version>
+			<version>[4.0-SNAPSHOT,4.1)</version>
 		</dependency>
 		<dependency>
 			<groupId>com.dabi.habitv</groupId>
 			<artifactId>canalPlus</artifactId>
-			<version>${project.version}</version>
+			<version>[4.0-SNAPSHOT,4.1)</version>
 		</dependency>
 		<dependency>
 			<groupId>com.dabi.habitv</groupId>
 			<artifactId>cmd</artifactId>
-			<version>${project.version}</version>
+			<version>[4.0-SNAPSHOT,4.1)</version>
 		</dependency>
 		<dependency>
 			<groupId>com.dabi.habitv</groupId>
 			<artifactId>curl</artifactId>
-			<version>${project.version}</version>
+			<version>[4.0-SNAPSHOT,4.1)</version>
 		</dependency>
 		<dependency>
 			<groupId>com.dabi.habitv</groupId>
 			<artifactId>ffmpeg</artifactId>
-			<version>${project.version}</version>
+			<version>[4.0-SNAPSHOT,4.1)</version>
 		</dependency>
 		<dependency>
 			<groupId>com.dabi.habitv</groupId>
 			<artifactId>lequipe</artifactId>
-			<version>${project.version}</version>
+			<version>[4.0-SNAPSHOT,4.1)</version>
 		</dependency>
 		<dependency>
 			<groupId>com.dabi.habitv</groupId>
 			<artifactId>nrj12</artifactId>
-			<version>${project.version}</version>
+			<version>[4.0-SNAPSHOT,4.1)</version>
 		</dependency>
 		<dependency>
 			<groupId>com.dabi.habitv</groupId>
 			<artifactId>pluzz</artifactId>
-			<version>${project.version}</version>
+			<version>[4.0-SNAPSHOT,4.1)</version>
 		</dependency>
 		<dependency>
 			<groupId>com.dabi.habitv</groupId>
 			<artifactId>RSS</artifactId>
-			<version>${project.version}</version>
+			<version>[4.0-SNAPSHOT,4.1)</version>
 		</dependency>
 		<dependency>
 			<groupId>com.dabi.habitv</groupId>
 			<artifactId>file</artifactId>
-			<version>${project.version}</version>
+			<version>[4.0-SNAPSHOT,4.1)</version>
 		</dependency>		
 		<dependency>
 			<groupId>com.dabi.habitv</groupId>
 			<artifactId>rtmpDump</artifactId>
-			<version>${project.version}</version>
+			<version>[4.0-SNAPSHOT,4.1)</version>
 		</dependency>
 		<dependency>
 			<groupId>com.dabi.habitv</groupId>
 			<artifactId>youtube</artifactId>
-			<version>${project.version}</version>
+			<version>[4.0-SNAPSHOT,4.1)</version>
 		</dependency>
 		<dependency>
 			<groupId>com.dabi.habitv</groupId>
 			<artifactId>tf1</artifactId>
-			<version>${project.version}</version>
+			<version>[4.0-SNAPSHOT,4.1)</version>
 		</dependency>
 		<dependency>
 			<groupId>com.dabi.habitv</groupId>
 			<artifactId>clubic</artifactId>
-			<version>${project.version}</version>
+			<version>[4.0-SNAPSHOT,4.1)</version>
 		</dependency>		
 	</dependencies>
 
