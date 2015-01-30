@@ -18,6 +18,7 @@
 		<dependency>
 			<groupId>com.dabi.habitv</groupId>
 			<artifactId>framework</artifactId>
+			<version>4.0.4</version>
 		</dependency>
 	</dependencies>
 </project>
