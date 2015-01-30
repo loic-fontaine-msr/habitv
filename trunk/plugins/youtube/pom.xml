@@ -7,6 +7,7 @@
 		<version>4.0.4</version>
 	</parent>
 	<artifactId>youtube</artifactId>
+	<version>4.0.5-SNAPSHOT</version>
 	<name>youtube</name>
 	<dependencies>
 		<dependency>
