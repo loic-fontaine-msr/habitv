@@ -4,10 +4,9 @@
 	<parent>
 		<groupId>com.dabi.habitv</groupId>
 		<artifactId>plugins</artifactId>
-		<version>4.0.4</version>
+		<version>4.0.4-SNAPSHOT</version>
 	</parent>
 	<artifactId>youtube</artifactId>
-	<version>4.0.5</version>
 	<name>youtube</name>
 	<dependencies>
 		<dependency>
