@@ -1,7 +1,6 @@
 package com.dabi.habitv.provider.beinsport;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -21,6 +20,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
@@ -221,21 +221,15 @@ public class BeinSportPluginManager extends BasePluginWithProxy implements
 		final String content = getUrlContent(url.startsWith("http") ? url
 				: (BeinSportConf.HOME_URL + url));
 		final String clipId = findMediaId(content);
-		ArrayList<String> urlList;
 		try {
-			urlList = findUrlList(clipId);
+			return findUrl(clipId);
 		} catch (XPathExpressionException | ParserConfigurationException
 				| SAXException | IOException e) {
 			throw new TechnicalException(e);
 		}
-		if (!urlList.isEmpty()) {
-			return urlList.get(0);
-		} else {
-			throw new TechnicalException("No link found");
-		}
 	}
 
-	private ArrayList<String> findUrlList(final String clipId)
+	private String findUrl(final String clipId)
 			throws ParserConfigurationException, XPathExpressionException,
 			SAXException, IOException {
 		final XPathFactory factory = XPathFactory.newInstance();
@@ -251,13 +245,24 @@ public class BeinSportPluginManager extends BasePluginWithProxy implements
 
 		final NodeList nodes = (NodeList) expr.evaluate(doc,
 				XPathConstants.NODESET);
-		final ArrayList<String> urlList = new ArrayList<>();
+		String bestUrl = null;
+		Double maxBitrate = null;
 		for (int i = 0; i < nodes.getLength(); i++) {
-			urlList.add(nodes.item(i).getAttributes()
-					.getNamedItem("externalPath").getTextContent());
+			NamedNodeMap attributes = nodes.item(i).getAttributes();
+			Double bitrate = Double.valueOf(attributes.getNamedItem("bitrate")
+					.getTextContent());
+			String externalPath = attributes.getNamedItem("externalPath")
+					.getTextContent();
+			if (maxBitrate == null || bitrate > maxBitrate) {
+				maxBitrate = bitrate;
+				bestUrl = externalPath;
+			}
+		}
+		if (bestUrl == null) {
+			throw new TechnicalException("No link found");
 		}
 
-		return urlList;
+		return bestUrl;
 	}
 
 	private static String findMediaId(final String content) {
