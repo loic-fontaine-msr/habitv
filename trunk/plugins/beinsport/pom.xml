@@ -8,7 +8,7 @@
 	</parent>
 	<artifactId>beinsport</artifactId>
 	<name>beinsport</name>
-	<version>4.0.5-SNAPSHOT</version>
+	<version>4.0.5</version>
 	<dependencies>
 		<dependency>
 			<groupId>org.jsoup</groupId>
@@ -21,6 +21,17 @@
 		<dependency>
 			<groupId>com.dabi.habitv</groupId>
 			<artifactId>framework</artifactId>
+			<version>4.0.4</version>
 		</dependency>
+		<dependency>
+			<groupId>com.dabi.habitv</groupId>
+			<artifactId>api</artifactId>
+			<version>4.0.4</version>
+		</dependency>		
 	</dependencies>
+
+  <scm>
+    <connection>scm:svn:http://subversion.assembla.com/svn/habitv/tags/beinsport-4.0.5</connection>
+    <developerConnection>scm:svn:http://subversion.assembla.com/svn/habitv/tags/beinsport-4.0.5</developerConnection>
+  </scm>
 </project>
