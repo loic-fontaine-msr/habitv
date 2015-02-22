@@ -223,7 +223,7 @@ public final class EpisodeManager extends AbstractManager implements TaskAdder {
 						// reinit counter
 						downloadAttempts.remove(retreiveTask.getEpisode());
 						(new DlErrorDAO()).addDownloadErrorFiles(retreiveTask
-								.getEpisode().getFullName());
+								.getEpisode().getFullNameNoNum());
 						retreivePublisher.addNews(new RetreiveEvent(
 								retreiveTask.getEpisode(),
 								EpisodeStateEnum.TO_MANY_FAILED));

@@ -334,6 +334,7 @@ public class ToDownloadController extends BaseController implements
 				text);
 		CategoryDTO categoryDTO = new CategoryDTO(templateCategory.getPlugin(),
 				findNameById(id), id, FrameworkConf.MP4);
+		categoryDTO.setState(StatusEnum.USER);
 		categoryDTO.setDownloadable(true);
 		return categoryDTO;
 	}

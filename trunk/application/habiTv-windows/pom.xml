@@ -3,19 +3,19 @@
 	<parent>
 		<groupId>com.dabi.habitv</groupId>
 		<artifactId>application</artifactId>
-		<version>4.0.3</version>
+		<version>4.0.5-SNAPSHOT</version>
 	</parent>
 	<artifactId>habiTv-windows</artifactId>
 	<packaging>jar</packaging>
-	<version>4.0.3</version>
+	<version>4.0.5-SNAPSHOT</version>
 	<name>habiTv-windows</name>	
 	 <scm>
         <connection>scm:svn:http://subversion.assembla.com/svn/habitv/tags/habiTv-windows-4.0.3</connection>
         <developerConnection>scm:svn:http://subversion.assembla.com/svn/habitv/tags/habiTv-windows-4.0.3</developerConnection>
     </scm>
 	<properties>
-		<habitv.version>4.0.3</habitv.version>
-		<package.version>4.0.3</package.version>
+		<habitv.version>4.0.5</habitv.version>
+		<package.version>4.0.5</package.version>
 		<exec.mainClass>com.dabi.habitv.packaging.HabiTvFxRunner</exec.mainClass>
 		<javafx.min.version>2.2</javafx.min.version>
 <!--<jdk.home>C:/Program Files/Java/jdk1.7.0_11</jdk.home>-->
