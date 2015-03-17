@@ -71,6 +71,7 @@ public class PluginProviderDownloaderTester {
 		downloaderName2downloader.put(FrameworkConf.RTMDUMP, mockDownloader);
 		downloaderName2downloader.put(FrameworkConf.CURL, mockDownloader);
 		downloaderName2downloader.put(FrameworkConf.FFMPEG, mockDownloader);
+		downloaderName2downloader.put(FrameworkConf.ADOBEHDS, mockDownloader);
 
 		final Map<String, String> downloaderName2BinPath = new HashMap<>();
 		downloaders = new DownloaderPluginHolder("cmdProcessor",

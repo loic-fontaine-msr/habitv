@@ -3,11 +3,11 @@
 	<parent>
 		<groupId>com.dabi.habitv</groupId>
 		<artifactId>application</artifactId>
-		<version>4.0.3</version>
+		<version>4.0.5-SNAPSHOT</version>
 	</parent>	
 	<artifactId>habiTv-linux</artifactId>
 	<packaging>jar</packaging>
-	<version>4.0.3-SNAPSHOT</version>
+	<version>4.0.5-SNAPSHOT</version>
 	<name>habiTv-linux</name>
 	<scm>
 		<connection>scm:svn:http://subversion.assembla.com/svn/habitv/trunk/application/habiTv-linux</connection>
@@ -23,8 +23,8 @@
   </repositories>  	
 	
 	<properties>
-		<habitv.version>4.0.3</habitv.version>
-		<package.version>4.0.3</package.version>
+		<habitv.version>4.0.5</habitv.version>
+		<package.version>4.0.5</package.version>
 		<exec.mainClass>com.dabi.habitv.packaging.HabiTvFxRunner</exec.mainClass>
 		<javafx.min.version>2.2</javafx.min.version>
 		<jdk.home>/usr/lib/jvm/jdk1.7.0_45</jdk.home>

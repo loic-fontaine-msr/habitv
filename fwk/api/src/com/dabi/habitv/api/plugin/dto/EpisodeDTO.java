@@ -80,15 +80,20 @@ public class EpisodeDTO implements Comparable<EpisodeDTO>, Serializable {
 	}
 
 	public String getFullName() {
+		StringBuilder stringBuilder = new StringBuilder(getFullNameNoNum());
+		if (getNum() > 0) {
+			stringBuilder.append("-" + getNum());
+		}
+		return stringBuilder.toString();
+	}
+
+	public String getFullNameNoNum() {
 		StringBuilder stringBuilder = new StringBuilder();
 		if (category != null) {
 			stringBuilder.append(getCategory().getPlugin() + "-"
 					+ getCategory().getName() + "-");
 		}
 		stringBuilder.append(getName());
-		if (getNum() > 0) {
-			stringBuilder.append("-" + getNum());
-		}
 		return stringBuilder.toString();
 	}
 

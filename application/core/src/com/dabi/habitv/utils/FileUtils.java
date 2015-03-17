@@ -27,7 +27,7 @@ public final class FileUtils {
 	 * @return
 	 */
 	public static String sanitizeFilename(final String name) {
-		return removeNonASCII(name.replaceAll("[\\s,:\\\\/*?!|<>&«»()\"\'\\$]",
+		return removeNonASCII(name.replaceAll("[%\\s,:\\\\/*?!|<>&«»()\"\'\\$]",
 				"_").replaceAll("__", "_"));
 	}
 

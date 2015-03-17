@@ -42,4 +42,6 @@ public interface FrameworkConf {
 
 	String USER_HOME = System.getProperty("user.home")
 			.replace("\\", "/");
+	
+	String ADOBEHDS = "adobeHDS";
 }

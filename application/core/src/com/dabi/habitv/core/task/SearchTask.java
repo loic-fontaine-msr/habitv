@@ -121,7 +121,7 @@ public class SearchTask extends AbstractTask<Object> {
 						episode.setNum(i);
 						isDownloaded = dlFiles.contains(episode.getName());
 						isErrorDownloaded = errorFiles.contains(episode
-								.getFullName());
+								.getFullNameNoNum());
 						if (indexCreated
 								&& FilterUtils
 										.filterByIncludeExcludeAndDownloaded(

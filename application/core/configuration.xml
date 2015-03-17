@@ -14,6 +14,7 @@
             <curl>bin\curl.exe</curl>
             <ffmpeg>bin\ffmpeg.exe</ffmpeg>
             <youtube>bin\youtube-dl.exe</youtube>
+			<adobeHDS>bin\adobeHDS.exe</adobeHDS>
         </downloaders>
     </downloadConfig>
     <updateConfig>

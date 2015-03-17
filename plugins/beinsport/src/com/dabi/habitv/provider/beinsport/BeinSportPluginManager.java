@@ -1,28 +1,24 @@
 package com.dabi.habitv.provider.beinsport;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.Proxy;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLDecoder;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpression;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.w3c.dom.Document;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
 import com.dabi.habitv.api.plugin.api.PluginProviderDownloaderInterface;
 import com.dabi.habitv.api.plugin.dto.CategoryDTO;
@@ -51,7 +47,7 @@ public class BeinSportPluginManager extends BasePluginWithProxy implements
 			final Set<EpisodeDTO> episodeDTOs = new LinkedHashSet<>();
 			for (final CategoryDTO subCategory : findReplaycategories()) {
 				episodeDTOs.addAll(findEpisodeByCategory(subCategory,
-						BeinSportConf.HOME_URL + subCategory.getId()));
+						BeinSportConf.HOME_URL + "/" + subCategory.getId()));
 			}
 			return episodeDTOs;
 		} else if (category.getId().startsWith(BeinSportConf.VIDEOS_CATEGORY)) {
@@ -150,25 +146,112 @@ public class BeinSportPluginManager extends BasePluginWithProxy implements
 		if (downloadParam.getDownloadInput().endsWith(FrameworkConf.MP4)) {
 			return DownloadUtils.download(downloadParam, downloaders);
 		} else {
-			final String finalVideoUrl = findFinalRtmpUrl(downloadParam
-					.getDownloadInput());
-			final String[] tab = finalVideoUrl.split("/");
-			final String contextRoot = tab[3];
-			final String rtmpdumpCmd = BeinSportConf.RTMPDUMP_CMD2
-					.replace("#PROTOCOL#", tab[0]).replace("#HOST#", tab[2])
-					.replaceAll("#CONTEXT_ROOT#", contextRoot);
-			final String relativeUrl = finalVideoUrl.substring(finalVideoUrl
-					.indexOf("/" + contextRoot + "/") + 1);
+			String m3u8Url;
+			try {
+				m3u8Url = findm3u8Url(downloadParam.getDownloadInput());
+			} catch (UnsupportedEncodingException e) {
+				throw new DownloadFailedException(e);
+			}
 
-			downloadParam.addParam(FrameworkConf.PARAMETER_ARGS, rtmpdumpCmd);
-			return DownloadUtils.download(DownloadParamDTO.buildDownloadParam(
-					downloadParam, relativeUrl), downloaders,
-					FrameworkConf.RTMDUMP);
+			return DownloadUtils
+					.download(DownloadParamDTO.buildDownloadParam(
+							downloadParam, m3u8Url), downloaders,
+							FrameworkConf.FFMPEG);
 		}
 	}
 
-	private static final Pattern VIDEOID_PATTERN = Pattern
-			.compile(".*videoId\\s+=\\s+\\\"(.*)\\\";.*");
+	private String findm3u8Url(String downloadInput)
+			throws UnsupportedEncodingException {
+		return findBestm3u8Url(findHSLURL(findIFrameURL(downloadInput)));
+	}
+
+	private String findBestm3u8Url(String hSLURL)
+			throws UnsupportedEncodingException {
+		String redirectUrl = findRedirectUrl(hSLURL);
+		final String m3u8AllQuality = getUrlContent(redirectUrl);
+		TreeMap<Integer, String> quality2m3u8 = new TreeMap<Integer, String>();
+
+		Integer bandWidth = null;
+		for (String line : m3u8AllQuality.split("\\n")) {
+			if (line.contains("EXT-X-STREAM-INF")) {
+				bandWidth = findBandWidth(line);
+			} else if (bandWidth != null) {
+				quality2m3u8.put(bandWidth, URLDecoder.decode(line, "UTF-8"));
+				bandWidth = null;
+			}
+		}
+		return buildFromhSLURL(redirectUrl, quality2m3u8.lastEntry().getValue());
+	}
+
+	private String findRedirectUrl(String hSLURL) {
+		try {
+			final HttpURLConnection hc = (HttpURLConnection) (new URL(hSLURL))
+					.openConnection();
+			hc.setInstanceFollowRedirects(false);
+			if (hc.getResponseCode() == 302) {
+				return hc.getHeaderField("Location");
+			} else {
+				throw new DownloadFailedException("Redirect error " + hSLURL);
+			}
+		} catch (final IOException e) {
+			throw new TechnicalException(e);
+		}
+	}
+
+	private String buildFromhSLURL(String hSLURL, String relativeM3u8) {
+		return hSLURL.replaceFirst("/[^/]+\\?",
+				"/" + relativeM3u8.substring(0, relativeM3u8.indexOf("?"))
+						+ "?");
+	}
+
+	private static final Pattern BANDWITH_PATTERN = Pattern
+			.compile("BANDWIDTH=(\\d+),");
+
+	private Integer findBandWidth(String line) {
+		final Matcher matcher = BANDWITH_PATTERN.matcher(line);
+		final boolean hasMatched = matcher.find();
+		String ret = null;
+		if (hasMatched) {
+			ret = matcher.group(matcher.groupCount());
+		} else {
+			throw new TechnicalException("can't find bandwidth");
+		}
+		return Integer.valueOf(ret);
+	}
+
+	private String findHSLURL(String iFrameURL) {
+		final String content = getUrlContent(iFrameURL);
+		return findStreamHlsUrl(content);
+	}
+
+	private String findStreamHlsUrl(String content) {
+		final Matcher matcher = STREAM_HLS_PATTERN.matcher(content);
+		final boolean hasMatched = matcher.find();
+		String ret = null;
+		if (hasMatched) {
+			ret = matcher.group(matcher.groupCount());
+		} else {
+			throw new TechnicalException("can't find stream hls url");
+		}
+		return ret;
+	}
+
+	private String findIFrameURL(String downloadInput) {
+		org.jsoup.nodes.Document doc;
+		try {
+			doc = Jsoup.parse(getInputStreamFromUrl(BeinSportConf.HOME_URL
+					+ downloadInput), "UTF-8", downloadInput);
+		} catch (IOException e) {
+			throw new TechnicalException(e);
+		}
+
+		Elements divVodPlayer = doc.select("#vodPlayer");
+
+		return divVodPlayer.select("iframe").first().attr("src");
+	}
+
+	private static final Pattern STREAM_HLS_PATTERN = Pattern
+			.compile("\"stream_hls_url\"\\s*:\\s*\"([^\"]*)\"");
 
 	private Set<EpisodeDTO> findEpisodeByCategory(final CategoryDTO category,
 			final String url) {
@@ -215,67 +298,6 @@ public class BeinSportPluginManager extends BasePluginWithProxy implements
 			categories.add(category);
 		}
 		return categories;
-	}
-
-	private String findFinalRtmpUrl(final String url) {
-		final String content = getUrlContent(url.startsWith("http") ? url
-				: (BeinSportConf.HOME_URL + url));
-		final String clipId = findMediaId(content);
-		try {
-			return findUrl(clipId);
-		} catch (XPathExpressionException | ParserConfigurationException
-				| SAXException | IOException e) {
-			throw new TechnicalException(e);
-		}
-	}
-
-	private String findUrl(final String clipId)
-			throws ParserConfigurationException, XPathExpressionException,
-			SAXException, IOException {
-		final XPathFactory factory = XPathFactory.newInstance();
-		final XPath xpath = factory.newXPath();
-		final XPathExpression expr = xpath.compile("//file");
-
-		final DocumentBuilderFactory domFactory = DocumentBuilderFactory
-				.newInstance();
-		domFactory.setNamespaceAware(true);
-		final DocumentBuilder builder = domFactory.newDocumentBuilder();
-		final Document doc = builder
-				.parse(getInputStreamFromUrl(BeinSportConf.XML_INFO + clipId));
-
-		final NodeList nodes = (NodeList) expr.evaluate(doc,
-				XPathConstants.NODESET);
-		String bestUrl = null;
-		Double maxBitrate = null;
-		for (int i = 0; i < nodes.getLength(); i++) {
-			NamedNodeMap attributes = nodes.item(i).getAttributes();
-			Double bitrate = Double.valueOf(attributes.getNamedItem("bitrate")
-					.getTextContent());
-			String externalPath = attributes.getNamedItem("externalPath")
-					.getTextContent();
-			if (maxBitrate == null || bitrate > maxBitrate) {
-				maxBitrate = bitrate;
-				bestUrl = externalPath;
-			}
-		}
-		if (bestUrl == null) {
-			throw new TechnicalException("No link found");
-		}
-
-		return bestUrl;
-	}
-
-	private static String findMediaId(final String content) {
-
-		final Matcher matcher = VIDEOID_PATTERN.matcher(content);
-		final boolean hasMatched = matcher.find();
-		String ret = null;
-		if (hasMatched) {
-			ret = matcher.group(matcher.groupCount());
-		} else {
-			throw new TechnicalException("can't find mediaId");
-		}
-		return ret;
 	}
 
 	@Override

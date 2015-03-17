@@ -26,5 +26,6 @@
 		<module>file</module>		
 		<module>tf1</module>
 		<module>clubic</module>
+		<module>adobeHDS</module>
 	</modules>
 </project>

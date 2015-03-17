@@ -28,7 +28,7 @@ public class FileUtilsTest {
 
 	@Test
 	public final void testSanitizeFilename() {
-		assertEquals("eecaeaii_", FileUtils.sanitizeFilename("éèçàêâîï$"));
+		assertEquals("eecaeaii_", FileUtils.sanitizeFilename("éèçàêâîï$%"));
 	}
 
 }
