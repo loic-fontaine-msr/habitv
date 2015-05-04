@@ -1,13 +1,9 @@
 package com.dabi.habitv.provider.beinsport;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.Proxy;
 import java.net.URL;
-import java.net.URLConnection;
 import java.net.URLDecoder;
 import java.util.Collection;
 import java.util.LinkedHashSet;
@@ -274,7 +270,7 @@ public class BeinSportPluginManager extends BasePluginWithProxy implements
 		for (final Element article : divTabContainer.select("article")) {
 			final Element aHref = article.select("a").first();
 			final Element h4 = article.select("h4").first();
-			final String href = aHref.attr("href");
+			final String href = aHref.attr("href").replace(" ", "%20");
 			String name = h4.text();
 			name = SoccerUtils.maskScore(name);
 			episodeList.add(new EpisodeDTO(category, name, href));
