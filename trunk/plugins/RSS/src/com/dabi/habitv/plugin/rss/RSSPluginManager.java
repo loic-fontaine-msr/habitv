@@ -13,6 +13,7 @@ import com.dabi.habitv.api.plugin.dto.StatusEnum;
 import com.dabi.habitv.api.plugin.exception.TechnicalException;
 import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.api.BasePluginWithProxy;
+import com.dabi.habitv.framework.plugin.utils.RetrieverUtils;
 import com.sun.syndication.feed.synd.SyndEnclosure;
 import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.feed.synd.SyndFeed;
@@ -30,8 +31,8 @@ public class RSSPluginManager extends BasePluginWithProxy implements
 		final Set<EpisodeDTO> episodeList;
 		try {
 			final SyndFeedInput input = new SyndFeedInput();
-			final SyndFeed feed = input.build(new XmlReader(
-					getInputStreamFromUrl(category.getId())));
+			final SyndFeed feed = input.build(new XmlReader(RetrieverUtils
+					.getInputStreamFromUrl(category.getId(), 60000, getHttpProxy())));
 			episodeList = convertFeedToEpisodeList(feed, category);
 		} catch (IllegalArgumentException | FeedException | IOException e) {
 			throw new TechnicalException(e);
@@ -55,7 +56,7 @@ public class RSSPluginManager extends BasePluginWithProxy implements
 		categoryList
 				.add(buildCategoryTemplate(
 						"Youtube",
-						"http://gdata.youtube.com/feeds/base/users/§ID§/uploads?alt=rss&amp;v=1&amp;orderby=published&amp;client=ytapi-youtube-profile!!Saisissez l'identifiant d'un utilisateur youtube"));
+						"https://www.youtube.com/feeds/videos.xml?user=§ID§!!Saisissez l'identifiant d'un utilisateur youtube"));
 		return categoryList;
 	}
 

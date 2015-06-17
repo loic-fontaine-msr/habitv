@@ -53,7 +53,7 @@ public class DownloadedDAO {
 	}
 
 	private String getFileIndex() {
-		return getFileIndex(indexDir, category);
+		return getFileIndex(indexDir, category);//FIXME store this ! to many call
 	}
 
 	public static String getFileIndex(String indexDir, CategoryDTO category) {

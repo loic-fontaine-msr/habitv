@@ -86,67 +86,73 @@ public class SearchTask extends AbstractTask<Object> {
 	private void findEpisodeByCategories(
 			final Collection<CategoryDTO> categoryDTOs) {
 		for (final CategoryDTO category : categoryDTOs) {
-			if (!category.getSubCategories().isEmpty()) {
-				findEpisodeByCategories(category.getSubCategories());
-			} else {
-				if (category.isDownloadable()) {
-					// dao to find dowloaded episodes
-					final DownloadedDAO dlDAO = buildDownloadDAO(category);
-					final Set<String> dlFiles = dlDAO.findDownloadedFiles();
-					final boolean indexCreated = dlDAO.isIndexCreated();
-					// dao to find error download episodes
-					final DlErrorDAO errorDAO = new DlErrorDAO();
-					final Set<String> errorFiles = errorDAO
-							.findDownloadedErrorFiles();
+			try {
+				findEpisodesByCategory(category);
+			} catch (Exception e) {
+				searchPublisher.addNews(new SearchEvent(provider.getName(), category.getName(),
+						SearchStateEnum.ERROR, e));
+			}
+		}
+	}
 
-					// get list of downloadable episodes
-					final Set<EpisodeDTO> episodeList = provider
-							.findEpisode(category);
-					if (!indexCreated && !episodeList.isEmpty()) {
-						LOG.info("Creating index for " + category.getName());
-						searchPublisher.addNews(new SearchEvent(provider
-								.getName(), category.getName(),
-								SearchStateEnum.BUILD_INDEX));
-					}
-					// reinit index to purge non available files from index
-					// dlDAO.initIndex(); provider may re add an old dl file, so
-					// we
-					// shoudl'nt reinit index
-					// filter episode lister by include/exclude and already
-					// downloaded
-					boolean isDownloaded;
-					boolean isErrorDownloaded;
-					int i = 0;
-					for (final EpisodeDTO episode : episodeList) {
-						episode.setNum(i);
-						isDownloaded = dlFiles.contains(episode.getName());
-						isErrorDownloaded = errorFiles.contains(episode
-								.getFullNameNoNum());
-						if (indexCreated
-								&& FilterUtils
-										.filterByIncludeExcludeAndDownloaded(
-												episode, category.getInclude(),
-												category.getExclude())
-								&& !isDownloaded && !isErrorDownloaded) {
-							// producer download the file
-							taskAdder.addRetreiveTask(new RetrieveTask(episode,
-									retreivePublisher, taskAdder, exporter,
-									provider, downloader, dlDAO, false));
+	private void findEpisodesByCategory(final CategoryDTO category) {
+		if (!category.getSubCategories().isEmpty()) {
+			findEpisodeByCategories(category.getSubCategories());
+		} else {
+			if (category.isDownloadable()) {
+				// dao to find dowloaded episodes
+				final DownloadedDAO dlDAO = buildDownloadDAO(category);
+				final Set<String> dlFiles = dlDAO.findDownloadedFiles();
+				final boolean indexCreated = dlDAO.isIndexCreated();
+				// dao to find error download episodes
+				final DlErrorDAO errorDAO = new DlErrorDAO();
+				final Set<String> errorFiles = errorDAO
+						.findDownloadedErrorFiles();
 
-						} else {
-							// if index has not been created the first run will
-							// only
-							// fill this file
-							if (!isDownloaded && !isErrorDownloaded) {
-								dlDAO.addDownloadedFiles(false, episode);
-							}
-						}
-						i++;
-					}
-				} else {
-					LOG.info("La catégorie n'est pas téléchargeable : "
-							+ category);
+				// get list of downloadable episodes
+				final Set<EpisodeDTO> episodeList = provider
+						.findEpisode(category);
+				if (!indexCreated && !episodeList.isEmpty()) {
+					LOG.info("Creating index for " + category.getName());
+					searchPublisher.addNews(new SearchEvent(provider.getName(),
+							category.getName(), SearchStateEnum.BUILD_INDEX));
 				}
+				// reinit index to purge non available files from index
+				// dlDAO.initIndex(); provider may re add an old dl file, so
+				// we
+				// shoudl'nt reinit index
+				// filter episode lister by include/exclude and already
+				// downloaded
+				boolean isDownloaded;
+				boolean isErrorDownloaded;
+				int i = 0;
+				for (final EpisodeDTO episode : episodeList) {
+					episode.setNum(i);
+					isDownloaded = dlFiles.contains(episode.getName());
+					isErrorDownloaded = errorFiles.contains(episode
+							.getFullNameNoNum());
+					if (indexCreated
+							&& FilterUtils.filterByIncludeExcludeAndDownloaded(
+									episode, category.getInclude(),
+									category.getExclude()) && !isDownloaded
+							&& !isErrorDownloaded) {
+						// producer download the file
+						taskAdder.addRetreiveTask(new RetrieveTask(episode,
+								retreivePublisher, taskAdder, exporter,
+								provider, downloader, dlDAO, false));
+
+					} else {
+						// if index has not been created the first run will
+						// only
+						// fill this file
+						if (!isDownloaded && !isErrorDownloaded) {
+							dlDAO.addDownloadedFiles(false, episode);
+						}
+					}
+					i++;
+				}
+			} else {
+				LOG.info("La catégorie n'est pas téléchargeable : " + category);
 			}
 		}
 	}
