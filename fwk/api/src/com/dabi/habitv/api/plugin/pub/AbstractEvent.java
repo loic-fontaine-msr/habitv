@@ -23,7 +23,7 @@ public abstract class AbstractEvent {
 
 	@Override
 	public int hashCode() {
-		return getException().hashCode();
+		return getException() == null ? 0 : getException().hashCode();
 	}
 
 	@Override

@@ -18,9 +18,17 @@ public final class SearchEvent extends AbstractEvent {
 		this.state = state;
 		this.info = info;
 	}
+	
+	public SearchEvent(final String channel, final String category, final SearchStateEnum state, Throwable throwable) {
+		super(throwable);
+		this.channel = channel;
+		this.category = category;
+		this.state = state;
+		this.info = null;
+	}	
 
 	public SearchEvent(final String channel, final String category, final SearchStateEnum state) {
-		this(channel, category, state, null);
+		this(channel, category, state, (String) null);
 	}
 
 	public SearchEvent(final String channel, final SearchStateEnum state) {

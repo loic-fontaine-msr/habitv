@@ -14,12 +14,11 @@
             <curl>bin\curl.exe</curl>
             <ffmpeg>bin\ffmpeg.exe</ffmpeg>
             <youtube>bin\youtube-dl.exe</youtube>
-			<adobeHDS>bin\adobeHDS.exe</adobeHDS>
         </downloaders>
     </downloadConfig>
     <updateConfig>
         <updateOnStartup>true</updateOnStartup>
-        <autoriseSnapshot>true</autoriseSnapshot>
+        <autoriseSnapshot>false</autoriseSnapshot>
     </updateConfig>
     <exportConfig>
         <exporters>

@@ -7,7 +7,7 @@
 		<version>4.0.5-SNAPSHOT</version>
 	</parent>
 	<artifactId>lequipe</artifactId>
-	<version>4.0.7-SNAPSHOT</version>
+	<version>4.0.8-SNAPSHOT</version>
 	<name>lequipe</name>
 	<dependencies>
 		<dependency>
