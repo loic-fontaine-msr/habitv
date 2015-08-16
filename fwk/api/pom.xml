@@ -2,11 +2,11 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.dabi.habitv</groupId>
-		<artifactId>fwk</artifactId>
-		<version>4.0.5-SNAPSHOT</version>
+		<artifactId>parent</artifactId>
+		<version>4.0.6</version>
 	</parent>
 	<artifactId>api</artifactId>
-	<version>4.0.5-SNAPSHOT</version>
+	<version>4.0.6-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>api</name>
 	<dependencies>
