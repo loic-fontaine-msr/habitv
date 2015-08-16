@@ -64,8 +64,7 @@ public class CategoryDTO implements Comparable<CategoryDTO>, Serializable {
 	 * @param extension
 	 *            the extension of the files in this category
 	 */
-	public CategoryDTO(final String plugin, final String name,
-			final String identifier, final List<String> include,
+	public CategoryDTO(final String plugin, final String name, final String identifier, final List<String> include,
 			final List<String> exclude, final String extension) {
 		super();
 		this.plugin = plugin;
@@ -88,8 +87,7 @@ public class CategoryDTO implements Comparable<CategoryDTO>, Serializable {
 	 * @param extension
 	 *            the extension of the files in this category
 	 */
-	public CategoryDTO(final String plugin, final String name,
-			final String identifier, final String extension) {
+	public CategoryDTO(final String plugin, final String name, final String identifier, final String extension) {
 		super();
 		this.plugin = plugin;
 		this.name = name;
@@ -355,8 +353,7 @@ public class CategoryDTO implements Comparable<CategoryDTO>, Serializable {
 
 	public boolean hasSelectedSubCategory() {
 		for (CategoryDTO subCategory : getSubCategories()) {
-			if (subCategory.isSelected()
-					|| subCategory.hasSelectedSubCategory()) {
+			if (subCategory.isSelected() || subCategory.hasSelectedSubCategory()) {
 				return true;
 			}
 
@@ -367,12 +364,32 @@ public class CategoryDTO implements Comparable<CategoryDTO>, Serializable {
 	public boolean hasSubCategoryWithState(StatusEnum state) {
 		for (CategoryDTO subCategory : getSubCategories()) {
 			if (subCategory.getState() == state
-					|| (subCategory.getState() != StatusEnum.DELETED && subCategory
-							.hasSubCategoryWithState(state))) {
+					|| (subCategory.getState() != StatusEnum.DELETED && subCategory.hasSubCategoryWithState(state))) {
 				return true;
 			}
 
 		}
 		return false;
+	}
+
+	public CategoryDTO findSubCategorieById(String id) {
+		for (CategoryDTO subCategory : getSubCategories()) {
+			if (id.equals(subCategory.getId())) {
+				return subCategory;
+			}
+
+		}
+		return null;
+	}
+
+	public void mergeSubCategories(CategoryDTO otherCat) {
+		for (CategoryDTO otherSubCat : otherCat.getSubCategories()) {
+			CategoryDTO subCat = findSubCategorieById(otherSubCat.getId());
+			if (subCat == null) {
+				addSubCategory(otherSubCat);
+			} else {
+				subCat.mergeSubCategories(otherSubCat);
+			}
+		}
 	}
 }
