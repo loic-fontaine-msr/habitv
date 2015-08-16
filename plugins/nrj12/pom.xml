@@ -4,10 +4,16 @@
 	<parent>
 		<groupId>com.dabi.habitv</groupId>
 		<artifactId>plugins</artifactId>
-		<version>4.0.5-SNAPSHOT</version>
+		<version>4.0.6</version>
 	</parent>
 	<artifactId>nrj12</artifactId>
-	<version>4.0.5-SNAPSHOT</version>
+	<version>4.0.6-SNAPSHOT</version>
+	
+	<scm>
+        <connection>scm:svn:http://subversion.assembla.com/svn/habitv/trunk/plugins/nrj12</connection>
+        <developerConnection>scm:svn:http://subversion.assembla.com/svn/habitv/trunk/plugins/nrj12</developerConnection>
+    </scm>
+	
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -21,7 +27,6 @@
 		<dependency>
 			<groupId>com.dabi.habitv</groupId>
 			<artifactId>framework</artifactId>
-			<version>4.0.0</version>
 		</dependency>
 	</dependencies>
 </project>

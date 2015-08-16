@@ -4,11 +4,17 @@
 	<parent>
 		<groupId>com.dabi.habitv</groupId>
 		<artifactId>plugins</artifactId>
-		<version>4.0.5-SNAPSHOT</version>
+		<version>4.0.6</version>
 	</parent>
 	<artifactId>beinsport</artifactId>
 	<name>beinsport</name>
 	<version>4.0.7-SNAPSHOT</version>
+	
+	<scm>
+        <connection>scm:svn:http://subversion.assembla.com/svn/habitv/trunk/plugins/beinsport</connection>
+        <developerConnection>scm:svn:http://subversion.assembla.com/svn/habitv/trunk/plugins/beinsport</developerConnection>
+    </scm>
+	
 	<dependencies>
 		<dependency>
 			<groupId>org.jsoup</groupId>
