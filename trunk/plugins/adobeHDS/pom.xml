@@ -8,11 +8,11 @@
 	</parent>
 	<artifactId>adobeHDS</artifactId>
 	<name>adobeHDS</name>
-	<version>4.0.6-SNAPSHOT</version>
+	<version>4.0.6</version>
 	
 	<scm>
-        <connection>scm:svn:http://subversion.assembla.com/svn/habitv/trunk/plugins/adobeHDS</connection>
-        <developerConnection>scm:svn:http://subversion.assembla.com/svn/habitv/trunk/plugins/adobeHDS</developerConnection>
+        <connection>scm:svn:http://subversion.assembla.com/svn/habitv/tags/adobeHDS-4.0.6</connection>
+        <developerConnection>scm:svn:http://subversion.assembla.com/svn/habitv/tags/adobeHDS-4.0.6</developerConnection>
     </scm>
 	
 	<dependencies>
