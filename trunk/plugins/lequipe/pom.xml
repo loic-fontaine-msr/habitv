@@ -7,12 +7,12 @@
 		<version>4.0.6</version>
 	</parent>
 	<artifactId>lequipe</artifactId>
-	<version>4.0.8</version>
+	<version>4.0.9-SNAPSHOT</version>
 	<name>lequipe</name>
 	
 	<scm>
-        <connection>scm:svn:http://subversion.assembla.com/svn/habitv/tags/lequipe-4.0.8</connection>
-        <developerConnection>scm:svn:http://subversion.assembla.com/svn/habitv/tags/lequipe-4.0.8</developerConnection>
+        <connection>scm:svn:http://subversion.assembla.com/svn/habitv/trunk/plugins/lequipe</connection>
+        <developerConnection>scm:svn:http://subversion.assembla.com/svn/habitv/trunk/plugins/lequipe</developerConnection>
     </scm>
 	
 	<dependencies>
