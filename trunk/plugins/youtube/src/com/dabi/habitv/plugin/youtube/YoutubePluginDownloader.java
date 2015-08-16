@@ -12,11 +12,9 @@ import com.dabi.habitv.api.plugin.holder.ProcessHolder;
 import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.api.update.BaseUpdatablePlugin;
 
-public class YoutubePluginDownloader extends BaseUpdatablePlugin implements
-		PluginDownloaderInterface {
+public class YoutubePluginDownloader extends BaseUpdatablePlugin implements PluginDownloaderInterface {
 
-	private static final Pattern VERSION_PATTERN = Pattern
-			.compile("([\\-0-9A-Za-z.-]*)");
+	private static final Pattern VERSION_PATTERN = Pattern.compile("([\\-0-9A-Za-z.-]*)");
 
 	@Override
 	public String getName() {
@@ -24,22 +22,18 @@ public class YoutubePluginDownloader extends BaseUpdatablePlugin implements
 	}
 
 	@Override
-	public ProcessHolder download(final DownloadParamDTO downloadParam,
-			final DownloaderPluginHolder downloaders)
+	public ProcessHolder download(final DownloadParamDTO downloadParam, final DownloaderPluginHolder downloaders)
 			throws DownloadFailedException {
 		final String binParam = getBinParam(downloaders);
 		String cmd = binParam + " ";
-		final String cmdParam = downloadParam
-				.getParam(FrameworkConf.PARAMETER_ARGS);
+		final String cmdParam = downloadParam.getParam(FrameworkConf.PARAMETER_ARGS);
 		if (cmdParam == null) {
 			cmd += YoutubeConf.DUMP_CMD;
 		} else {
 			cmd += cmdParam;
 		}
-		cmd = cmd.replaceFirst(FrameworkConf.DOWNLOAD_INPUT, Matcher.quoteReplacement(
-				downloadParam.getDownloadInput()));
-		cmd = cmd.replaceFirst(FrameworkConf.DOWNLOAD_DESTINATION,
-				Matcher.quoteReplacement(downloadParam.getDownloadOutput()));
+		cmd = cmd.replaceFirst(FrameworkConf.DOWNLOAD_INPUT, Matcher.quoteReplacement(downloadParam.getDownloadInput()));
+		cmd = cmd.replaceFirst(FrameworkConf.DOWNLOAD_DESTINATION, Matcher.quoteReplacement(downloadParam.getDownloadOutput()));
 
 		// if (proxyDTO!=null){
 		// youtube-dl supports downloading videos through a proxy, by
@@ -81,11 +75,8 @@ public class YoutubePluginDownloader extends BaseUpdatablePlugin implements
 
 	@Override
 	public DownloadableState canDownload(final String downloadInput) {
-		if (downloadInput.contains("youtube.")
-				|| downloadInput.contains("dailymotion.")
-				|| downloadInput.contains("vimeo.")
-				|| downloadInput.contains("dailymotion.")
-				|| downloadInput.contains("tf1.")
+		if (downloadInput.contains("youtube.") || downloadInput.contains("dailymotion.") || downloadInput.contains("vimeo.")
+				|| downloadInput.contains("dailymotion.") || downloadInput.contains("tf1.") || downloadInput.contains("wat.tv")
 				|| downloadInput.contains("clubic.")) {
 			return DownloadableState.SPECIFIC;
 		} else {
