@@ -96,6 +96,7 @@ public class UpdateController {
 					try {
 						habitvViewMain.run(stage);
 					} catch (Throwable e) {
+						LOG.error("", e);
 						Popin.fatalError();
 					}
 				}

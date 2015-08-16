@@ -1,5 +1,9 @@
 package com.dabi.habitv.tray.controller;
 
+import javafx.scene.Node;
+
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.CheckBox;
@@ -66,59 +70,53 @@ public class ConfigController extends BaseController {
 	}
 
 	private void addButtonActions() {
-		downloadOuput.setOnKeyReleased(new EventHandler<KeyEvent>() {
+
+		final Runnable saveDlOupput = new Runnable() {
 
 			@Override
-			public void handle(KeyEvent event) {
-				planTaskIfNot(new Runnable() {
-
-					@Override
-					public void run() {
-						UserConfig userConfig = getController()
-								.loadUserConfig();
-						userConfig.setDownloadOuput(downloadOuput.getText());
-						saveConfig(userConfig);
-					}
-
-				});
+			public void run() {
+				UserConfig userConfig = getController().loadUserConfig();
+				if (!userConfig.getDownloadOuput().equals(
+						downloadOuput.getText())) {
+					userConfig.setDownloadOuput(downloadOuput.getText());
+					saveConfig(userConfig);
+				}
 			}
-		});
 
-		nbrMaxAttempts.setOnKeyReleased(new EventHandler<KeyEvent>() {
+		};
+
+		triggersave(downloadOuput, saveDlOupput);
+
+		Runnable saveMaxAttemps = new Runnable() {
 
 			@Override
-			public void handle(KeyEvent event) {
-				planTaskIfNot(new Runnable() {
-
-					@Override
-					public void run() {
-						UserConfig userConfig = getController()
-								.loadUserConfig();
-						userConfig.setMaxAttempts(Integer
-								.parseInt(nbrMaxAttempts.getText()));
-						saveConfig(userConfig);
-					}
-				});
+			public void run() {
+				UserConfig userConfig = getController().loadUserConfig();
+				if (!userConfig.getMaxAttempts().equals(
+						nbrMaxAttempts.getText())) {
+					userConfig.setMaxAttempts(Integer.parseInt(nbrMaxAttempts
+							.getText()));
+					saveConfig(userConfig);
+				}
 			}
-		});
+		};
 
-		daemonCheckTimeSec.setOnKeyReleased(new EventHandler<KeyEvent>() {
+		triggersave(nbrMaxAttempts, saveMaxAttemps);
+
+		Runnable saveDaemonCheck = new Runnable() {
 
 			@Override
-			public void handle(KeyEvent event) {
-				planTaskIfNot(new Runnable() {
-
-					@Override
-					public void run() {
-						UserConfig userConfig = getController()
-								.loadUserConfig();
-						userConfig.setDemonCheckTime(Integer
-								.parseInt(daemonCheckTimeSec.getText()));
-						saveConfig(userConfig);
-					}
-				});
+			public void run() {
+				UserConfig userConfig = getController().loadUserConfig();
+				if (!userConfig.getDemonCheckTime().equals(
+						daemonCheckTimeSec.getText())) {
+					userConfig.setDemonCheckTime(Integer
+							.parseInt(daemonCheckTimeSec.getText()));
+					saveConfig(userConfig);
+				}
 			}
-		});
+		};
+		triggersave(daemonCheckTimeSec, saveDaemonCheck);
 
 		autoUpdate.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -129,6 +127,21 @@ public class ConfigController extends BaseController {
 				saveConfig(userConfig);
 			}
 		});
+	}
+
+	private void triggersave(final Node eventTarget, final Runnable toExecute) {
+		eventTarget.focusedProperty().addListener(
+				new ChangeListener<Boolean>() {
+
+					@Override
+					public void changed(
+							ObservableValue<? extends Boolean> arg0,
+							Boolean arg1, Boolean focus) {
+						if (!focus) {
+							planTaskIfNot(toExecute);
+						}
+					}
+				});
 	}
 
 	private void saveConfig(UserConfig userConfig) {

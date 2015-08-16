@@ -1,54 +1,33 @@
 package com.dabi.habitv.provider.arte;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.text.SimpleDateFormat;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
-import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpression;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
-
-import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
 import com.dabi.habitv.api.plugin.api.PluginProviderDownloaderInterface;
 import com.dabi.habitv.api.plugin.dto.CategoryDTO;
 import com.dabi.habitv.api.plugin.dto.DownloadParamDTO;
 import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
 import com.dabi.habitv.api.plugin.exception.DownloadFailedException;
-import com.dabi.habitv.api.plugin.exception.TechnicalException;
 import com.dabi.habitv.api.plugin.holder.DownloaderPluginHolder;
 import com.dabi.habitv.api.plugin.holder.ProcessHolder;
 import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.api.BasePluginWithProxy;
 import com.dabi.habitv.framework.plugin.utils.DownloadUtils;
 import com.dabi.habitv.framework.plugin.utils.RetrieverUtils;
-import com.sun.syndication.feed.synd.SyndEntry;
-import com.sun.syndication.feed.synd.SyndFeed;
-import com.sun.syndication.io.FeedException;
-import com.sun.syndication.io.SyndFeedInput;
-import com.sun.syndication.io.XmlReader;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class ArtePluginManager extends BasePluginWithProxy implements
 		PluginProviderDownloaderInterface { // NO_UCD
-
-	private static final Logger LOG = Logger.getLogger(ArtePluginManager.class);
 
 	@Override
 	public String getName() {
@@ -57,58 +36,12 @@ public class ArtePluginManager extends BasePluginWithProxy implements
 
 	@Override
 	public Set<EpisodeDTO> findEpisode(final CategoryDTO category) {
-		if ("search".equals(category.getId())) {
-			return searchEpisodeByKeyworkds(category);
-		} else {
-			try {
-				return findEpisodeByCategory(category,
-						getInputStreamFromUrl(ArteConf.RSS_CATEGORY_URL
-								.replace(ArteConf.ID_EMISSION_TOKEN,
-										category.getId())));
-			} catch (Exception e) {
-				LOG.debug(
-						"Erreur findEpisodeByCategory utilisation de la recherche",
-						e);
-				return searchEpisodeByKeyworkds(category);
-			}
-		}
-	}
-
-	private Set<EpisodeDTO> searchEpisodeByKeyworkds(final CategoryDTO category) {
-		final String url = "http://videos.arte.tv/fr/do_search/videos/recherche?q="
-				+ category.getName().replaceAll(" ", "+");
-		final Set<EpisodeDTO> episodes = new LinkedHashSet<>();
-
-		final Document doc = Jsoup.parse(getUrlContent(url));
-
-		final Elements select = doc.select(".video");
-		for (final Element element : select) {
-			try {
-				final Element h2 = element.child(1);
-				final Element aHref = h2.child(0);
-				final String attr = aHref.attr("href");
-				episodes.add(new EpisodeDTO(category, aHref.text() + "-"
-						+ getNbr(attr), ArteConf.ARTE_PREFIX_URL + attr));
-			} catch (final IndexOutOfBoundsException e) {
-				getLog().error(element, e);
-				throw new TechnicalException(e);
-			}
-		}
-		return episodes;
-	}
-
-	private int getNbr(final String attr) {
-		int i = 0;
-		if (attr.contains("--") && attr.contains(".")) {
-			i = Integer.parseInt(attr.substring(attr.indexOf("--") + 2,
-					attr.indexOf(".")));
-		}
-		return i;
+		return findEpisodeByCategory(category);
 	}
 
 	@Override
 	public Set<CategoryDTO> findCategory() {
-		return findCategories(RetrieverUtils.getUrlContent(ArteConf.RSS_PAGE,
+		return findCategories(RetrieverUtils.getUrlContent(ArteConf.CAT_PAGE,
 				FrameworkConf.UTF8, getHttpProxy()));
 	}
 
@@ -116,167 +49,108 @@ public class ArtePluginManager extends BasePluginWithProxy implements
 	public ProcessHolder download(final DownloadParamDTO downloadParam,
 			final DownloaderPluginHolder downloaders)
 			throws DownloadFailedException {
-		final String downloadLink = buildDownloadLink(downloadParam
-				.getDownloadInput());
+		String downloadLink;
+		try {
+			downloadLink = buildDownloadLink(downloadParam.getDownloadInput());
+		} catch (IOException e) {
+			throw new DownloadFailedException(e);
+		}
 		return DownloadUtils.download(DownloadParamDTO.buildDownloadParam(
 				downloadParam, downloadLink), downloaders);
 	}
 
-	private static final String SEP = "/";
-
-	private static final Pattern VIDEO_REF_FILE_PATTERN = Pattern
-			.compile(".*videorefFileUrl = \"(.*)\"");
-
-	private static final Pattern LINK_TITLE_PATTERN = Pattern
-			.compile("<a href=\"([^\\,]*),view,rss.xml\" class=\"rss\">([^\\<]*)</a>");
-
-	private static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat(
-			"yyyyMMdd");
-
-	private Set<EpisodeDTO> findEpisodeByCategory(final CategoryDTO category,
-			final InputStream inputStream) {
-		final Set<EpisodeDTO> episodeList;
-		try {
-			final SyndFeedInput input = new SyndFeedInput();
-			final SyndFeed feed = input.build(new XmlReader(inputStream, true,
-					FrameworkConf.UTF8));
-			episodeList = convertFeedToEpisodeList(feed, category);
-		} catch (IllegalArgumentException | FeedException | IOException e) {
-			throw new TechnicalException(e);
-		}
-		return episodeList;
-	}
-
-	private Set<EpisodeDTO> convertFeedToEpisodeList(final SyndFeed feed,
-			final CategoryDTO category) {
+	private Set<EpisodeDTO> findEpisodeByCategory(final CategoryDTO category) {
 		final Set<EpisodeDTO> episodeList = new LinkedHashSet<EpisodeDTO>();
-		final List<?> entries = feed.getEntries();
-		final boolean uniqueTitle = isTitleUnique(entries);
-		for (final Object object : entries) {
-			final SyndEntry entry = (SyndEntry) object;
-			episodeList.add(new EpisodeDTO(category, buildTitle(entry,
-					uniqueTitle), entry.getLink()));
+		final Document doc = Jsoup.parse(getUrlContent(category.getId(),
+				FrameworkConf.UTF8));
+		final Elements select = doc.select("#content-videos")
+				.select("li.video");
+		for (final Element liVideo : select) {
+			final String href = liVideo.select("div.video-container").attr(
+					"arte_vp_url");
+			final String title = liVideo.select("p.time-row").first().text();
+			String infoUrl = ArteConf.HOME_URL
+					+ liVideo.select("a.info").first().attr("href");
+			episodeList.add(new EpisodeDTO(category, findRealTitle(infoUrl,
+					title), href));
 		}
 		return episodeList;
 	}
 
-	private String buildTitle(final SyndEntry entry, final boolean uniqueTitle) {
-		return entry.getTitle()
-				+ ((uniqueTitle) ? "" : (" " + SIMPLE_DATE_FORMAT.format(entry
-						.getPublishedDate())));
-	}
-
-	private boolean isTitleUnique(final List<?> entries) {
-		final Set<String> titles = new HashSet<>(entries.size());
-		for (final Object object : entries) {
-			final SyndEntry entry = (SyndEntry) object;
-			if (titles.contains(entry.getTitle())) {
-				return false;
-			}
-			titles.add(entry.getTitle());
+	private String findRealTitle(String infoUrl, String title) {
+		try {
+			final Document doc = Jsoup.parse(getUrlContent(infoUrl,
+					FrameworkConf.UTF8));
+			return doc.select("h2.text-thin").first().text();
+		} catch (Exception e) {
+			return title;
 		}
-		return true;
 	}
 
 	private Set<CategoryDTO> findCategories(final String urlContent) {
 		final Set<CategoryDTO> categoryDTOs = new LinkedHashSet<>();
-		final Matcher matcher = LINK_TITLE_PATTERN.matcher(urlContent);
-		String categoryName;
-		String identifier;
-		while (matcher.find()) {
-			identifier = findShowIdentifier(matcher.group(1));
-			categoryName = matcher.group(2);
-			CategoryDTO category = new CategoryDTO(ArteConf.NAME, categoryName,
-					identifier, FrameworkConf.UTF8);
+		final Document doc = Jsoup.parse(urlContent);
+		final Elements select = doc.select("section.nav-clusters")
+				.select(".head").select(".cluster");
+		for (final Element divCluster : select) {
+			final Element aHref = divCluster.child(0);
+			final String href = aHref.attr("href");
+			final String title = aHref.child(0).text();
+			CategoryDTO category = new CategoryDTO(ArteConf.NAME, title, href,
+					FrameworkConf.MP4);
 			category.setDownloadable(true);
 			categoryDTOs.add(category);
 		}
 		return categoryDTOs;
 	}
 
-	private static String findShowIdentifier(final String url) {
-		final String[] subUrl = url.split(SEP);
-		if (subUrl.length > 2) {
-			return subUrl[subUrl.length - 2] + SEP + subUrl[subUrl.length - 1];
-		}
-		throw new TechnicalException("can't find show identifier");
-	}
-
+	@SuppressWarnings("unchecked")
 	private String buildDownloadLink(final String url)
-			throws DownloadFailedException {
-		final String htmlInfo = getUrlContent(url, FrameworkConf.UTF8);
+			throws DownloadFailedException, JsonParseException,
+			JsonMappingException, IOException {
+		final ObjectMapper mapper = new ObjectMapper();
+		final Map<String, Object> mainData = mapper.readValue(
+				getInputStreamFromUrl(url), Map.class);
 
-		final Matcher matcher = VIDEO_REF_FILE_PATTERN.matcher(htmlInfo);
-		final String videoRefFileUrl;
-		if (matcher.find()) {
-			videoRefFileUrl = matcher.group(matcher.groupCount());
-		} else {
-			throw new DownloadFailedException("can't find json url");
-		}
-		final String strVideXmlUrl = findStrVideoXmlUrl(videoRefFileUrl);
-		return findVideoUrlFromStrVideoXml(strVideXmlUrl);
+		return findBestQualityLink(((Map<String, Object>) ((Map<String, Object>) mainData
+				.get("videoJsonPlayer")).get("VSR")));
 	}
 
-	private String findStrVideoXmlUrl(final String videoRefFileUrl)
-			throws DownloadFailedException {
-		final XPathFactory factory = XPathFactory.newInstance();
-		final XPath xpath = factory.newXPath();
-		XPathExpression expr;
-		try {
-			expr = xpath.compile("//videoref/videos/video[@lang='fr']");
-
-			final DocumentBuilderFactory domFactory = DocumentBuilderFactory
-					.newInstance();
-			domFactory.setNamespaceAware(true);
-			final DocumentBuilder builder = domFactory.newDocumentBuilder();
-			final org.w3c.dom.Document doc = builder
-					.parse(getInputStreamFromUrl(videoRefFileUrl));
-
-			final NodeList nodes = (NodeList) expr.evaluate(doc,
-					XPathConstants.NODESET);
-			if (nodes.getLength() > 0) {
-				return nodes.item(0).getAttributes().getNamedItem("ref")
-						.getTextContent();
-			}
-		} catch (XPathExpressionException | ParserConfigurationException
-				| SAXException | IOException e) {
-			throw new DownloadFailedException(e);
+	private String findBestQualityLink(Map<String, Object> mapLink) {
+		String url = findBestQualityInFormat(mapLink, "HBBTV");
+		if (url == null) {
+			url = findBestQualityInFormat(mapLink, "M3U8");
 		}
-
-		return null;
+		if (url == null) {
+			url = findBestQualityInFormat(mapLink, "RMP4");
+		}
+		return url;
 	}
 
-	private String findVideoUrlFromStrVideoXml(final String strVideXmlUrl)
-			throws DownloadFailedException {
-		final XPathFactory factory = XPathFactory.newInstance();
-		final XPath xpath = factory.newXPath();
-		XPathExpression expr;
-		try {
-			expr = xpath.compile("/video/urls/url[@quality='hd']");
-
-			final DocumentBuilderFactory domFactory = DocumentBuilderFactory
-					.newInstance();
-			domFactory.setNamespaceAware(true);
-			final DocumentBuilder builder = domFactory.newDocumentBuilder();
-			final org.w3c.dom.Document doc = builder
-					.parse(getInputStreamFromUrl(strVideXmlUrl));
-
-			final NodeList nodes = (NodeList) expr.evaluate(doc,
-					XPathConstants.NODESET);
-			if (nodes.getLength() > 0) {
-				return nodes.item(0).getFirstChild().getNodeValue();
+	@SuppressWarnings("unchecked")
+	private String findBestQualityInFormat(Map<String, Object> mapLink,
+			String format) {
+		Integer maxBitrate = null;
+		String url = null;
+		for (Entry<String, Object> linkEntry : mapLink.entrySet()) {
+			Map<String, Object> videoDetails = (Map<String, Object>) linkEntry
+					.getValue();
+			if ("VF".equals(videoDetails.get("versionCode"))
+					&& format.equals(videoDetails.get("videoFormat"))) {
+				Integer bitrate = (Integer) videoDetails.get("bitrate");
+				if (maxBitrate == null || bitrate > maxBitrate) {
+					String streamer = (String) videoDetails.get("streamer");
+					String videoUrl = (String) videoDetails.get("url");
+					url = (streamer == null) ? videoUrl : streamer + videoUrl;
+				}
 			}
-		} catch (XPathExpressionException | ParserConfigurationException
-				| SAXException | IOException e) {
-			throw new DownloadFailedException(e);
 		}
-
-		return null;
+		return url;
 	}
 
 	@Override
 	public DownloadableState canDownload(final String downloadInput) {
-		return downloadInput.startsWith(ArteConf.ARTE_PREFIX_URL) ? DownloadableState.SPECIFIC
+		return downloadInput.startsWith(ArteConf.HOME_URL) ? DownloadableState.SPECIFIC
 				: DownloadableState.IMPOSSIBLE;
 	}
 
