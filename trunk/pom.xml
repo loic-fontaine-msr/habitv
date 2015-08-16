@@ -3,7 +3,7 @@
 
 	<groupId>com.dabi.habitv</groupId>
 	<artifactId>parent</artifactId>
-	<version>4.0.5-SNAPSHOT</version>
+	<version>4.0.6-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>Parent habiTv</name>
@@ -36,11 +36,11 @@
 		</repository>
 	</repositories>	
 	
-	<modules>
+	<!--<modules>
 		<module>fwk</module>	
 		<module>plugins</module>
 		<module>application</module>
-	</modules>
+	</modules>-->
 
 	<dependencyManagement>
 	<dependencies>

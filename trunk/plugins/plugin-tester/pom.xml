@@ -97,7 +97,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.dabi.habitv</groupId>
-			<artifactId>tf1</artifactId>
+			<artifactId>wat</artifactId>
 			<version>[4.0-SNAPSHOT,4.1)</version>
 		</dependency>
 		<dependency>
