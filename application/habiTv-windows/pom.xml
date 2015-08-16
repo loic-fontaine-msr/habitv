@@ -10,12 +10,12 @@
 	<version>4.0.6-SNAPSHOT</version>
 	<name>habiTv-windows</name>	
 	 <scm>
-        <connection>scm:svn:http://subversion.assembla.com/svn/habitv/tags/habiTv-windows-4.0.3</connection>
-        <developerConnection>scm:svn:http://subversion.assembla.com/svn/habitv/tags/habiTv-windows-4.0.3</developerConnection>
+        <connection>scm:svn:http://subversion.assembla.com/svn/habitv/trunk/application/habiTv-windows</connection>
+        <developerConnection>scm:svn:http://subversion.assembla.com/svn/habitv/trunk/application/habiTv-windows</developerConnection>
     </scm>
 	<properties>
-		<habitv.version>4.0.5</habitv.version>
-		<package.version>4.0.5</package.version>
+		<habitv.version>4.0.6</habitv.version>
+		<package.version>4.0.6</package.version>
 		<exec.mainClass>com.dabi.habitv.packaging.HabiTvFxRunner</exec.mainClass>
 		<javafx.min.version>2.2</javafx.min.version>
 <!--<jdk.home>C:/Program Files/Java/jdk1.7.0_11</jdk.home>-->
