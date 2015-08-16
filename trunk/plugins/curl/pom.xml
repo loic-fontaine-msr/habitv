@@ -8,11 +8,11 @@
 	</parent>
 	<artifactId>curl</artifactId>
 	<name>curl</name>
-	<version>4.0.6</version>
+	<version>4.0.7-SNAPSHOT</version>
 	
 	<scm>
-        <connection>scm:svn:http://subversion.assembla.com/svn/habitv/tags/curl-4.0.6</connection>
-        <developerConnection>scm:svn:http://subversion.assembla.com/svn/habitv/tags/curl-4.0.6</developerConnection>
+        <connection>scm:svn:http://subversion.assembla.com/svn/habitv/trunk/plugins/curl</connection>
+        <developerConnection>scm:svn:http://subversion.assembla.com/svn/habitv/trunk/plugins/curl</developerConnection>
     </scm>
 	
 	<dependencies>
