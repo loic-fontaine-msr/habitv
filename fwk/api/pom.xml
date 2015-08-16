@@ -6,13 +6,13 @@
 		<version>4.0.6</version>
 	</parent>
 	<artifactId>api</artifactId>
-	<version>4.0.6-SNAPSHOT</version>
+	<version>4.0.6</version>
 	<packaging>jar</packaging>
 	<name>api</name>
 
 	 <scm>
-        <connection>scm:svn:http://subversion.assembla.com/svn/habitv/trunk/fwk/api</connection>
-        <developerConnection>scm:svn:http://subversion.assembla.com/svn/habitv/trunk/fwk/api</developerConnection>
+        <connection>scm:svn:http://subversion.assembla.com/svn/habitv/tags/api-4.0.6</connection>
+        <developerConnection>scm:svn:http://subversion.assembla.com/svn/habitv/tags/api-4.0.6</developerConnection>
     </scm>		
 	
 	<dependencies>
