@@ -6,7 +6,7 @@
 		<version>4.0.6</version>
 	</parent>
 	<artifactId>api</artifactId>
-	<version>4.0.6</version>
+	<version>4.0.6-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>api</name>
 	<dependencies>
@@ -20,9 +20,4 @@
 			<artifactId>log4j</artifactId>
 		</dependency>
 	</dependencies>
-
-  <scm>
-    <connection>scm:svn:http://subversion.assembla.com/svn/habitv/tags/api-4.0.6</connection>
-    <developerConnection>scm:svn:http://subversion.assembla.com/svn/habitv/tags/api-4.0.6</developerConnection>
-  </scm>
 </project>
