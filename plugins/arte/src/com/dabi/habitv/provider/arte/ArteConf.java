@@ -4,7 +4,7 @@ interface ArteConf {
 
 	String NAME = "arte";
 
-	String RSS_PAGE = "http://videos.arte.tv/fr/videos/meta/index--3188674--3223978.html";
+	String CAT_PAGE = "http://www.arte.tv/guide/fr/plus7";
 
 	String ID_EMISSION_TOKEN = "#ID_EMISSION#";
 
@@ -15,6 +15,6 @@ interface ArteConf {
 
 	String RTMPDUMP_CMD = "-r \"#VIDEO_URL#\" -c 1935 -m 10 -o \"#FILE_DEST#\"";
 
-	String ARTE_PREFIX_URL = "http://videos.arte.tv/";
+	String HOME_URL = "http://www.arte.tv";
 
 }

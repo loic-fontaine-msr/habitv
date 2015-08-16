@@ -63,7 +63,7 @@ public class CanalPlusPluginProvider extends BasePluginWithProxy implements
 		return new EpisodeDTO(category, (String) mapEpisode.get("title"),
 				CanalUtils.findUrl(this,
 						(String) ((Map<String, Object>) mapEpisode
-								.get("onClick")).get("URLMedias")));
+								.get("onClick")).get("URLPage")));
 	}
 
 	@Override
@@ -129,6 +129,7 @@ public class CanalPlusPluginProvider extends BasePluginWithProxy implements
 				(String) ((Map<String, Object>) dataMap.get("onClick"))
 						.get("URLPage"), FrameworkConf.MP4);
 		categoryDTO.setDownloadable(true);
+		//System.out.println(categoryDTO.getId());
 		return categoryDTO;
 	}
 

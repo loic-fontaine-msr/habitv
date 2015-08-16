@@ -2,6 +2,8 @@ package com.dabi.habitv.tray;
 
 import java.io.IOException;
 
+import org.apache.log4j.Logger;
+
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -13,8 +15,11 @@ import javafx.stage.Stage;
 
 import com.dabi.habitv.api.plugin.exception.TechnicalException;
 import com.dabi.habitv.tray.PopinController.ButtonHandler;
+import com.dabi.habitv.tray.controller.TrayController;
 
 public class Popin extends Application {
+
+	private static final Logger LOG = Logger.getLogger(TrayController.class);
 
 	private PopinController controller = new PopinController();
 
@@ -52,6 +57,7 @@ public class Popin extends Application {
 					start(new Stage());
 					controller.show(title, message);
 				} catch (Exception e) {
+					LOG.error("", e);
 					throw new TechnicalException(e);
 				}
 			}
@@ -67,6 +73,7 @@ public class Popin extends Application {
 					start(new Stage());
 					controller.show(title, node);
 				} catch (Exception e) {
+					LOG.error("", e);
 					throw new TechnicalException(e);
 				}
 			}
@@ -103,7 +110,8 @@ public class Popin extends Application {
 	}
 
 	public static void error(String message) {
-		(new Popin())
-		.show("Erreur",
-				"Une erreur est survenue. Consulter la log pour plus de détail. " + message);
-	}}
+		(new Popin()).show("Erreur",
+				"Une erreur est survenue. Consulter la log pour plus de détail. "
+						+ message);
+	}
+}

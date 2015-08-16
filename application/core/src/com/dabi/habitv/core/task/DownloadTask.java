@@ -1,6 +1,7 @@
 package com.dabi.habitv.core.task;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.nio.file.Files;
 
@@ -22,6 +23,8 @@ import com.dabi.habitv.core.token.TokenReplacer;
 import com.dabi.habitv.framework.plugin.utils.DownloadUtils;
 
 public class DownloadTask extends AbstractEpisodeTask {
+
+	private static final String TMP = ".tmp";
 
 	private final PluginProviderInterface provider;
 
@@ -75,20 +78,19 @@ public class DownloadTask extends AbstractEpisodeTask {
 	protected void started() {
 		LOG.info("Download of " + getEpisode() + " is starting");
 	}
-	
 
 	@Override
 	protected void canceled() {
 		LOG.info("Cancel of " + getEpisode() + " done");
 		publisher.addNews(new RetreiveEvent(getEpisode(),
-				EpisodeStateEnum.STOPPED));		
+				EpisodeStateEnum.STOPPED));
 	}
 
 	@Override
 	protected Object doCall() throws DownloadFailedException {
 		final String outputFilename = TokenReplacer.replaceAll(
 				downloaders.getDownloadOutput(), getEpisode());
-		final String outputTmpFileName = outputFilename + ".tmp";
+		final String outputTmpFileName = outputFilename + TMP;
 		// delete to prevent resuming since most of the download can't resume
 		final File outputFile = new File(outputFilename);
 		// create download dir if doesn't exist
@@ -103,13 +105,37 @@ public class DownloadTask extends AbstractEpisodeTask {
 			}
 		}
 		download(outputTmpFileName);
-		final File file = new File(outputTmpFileName);
+		File file = new File(outputTmpFileName);
+		if (!file.exists()) {
+			file = findFileWithoutExtension(outputFilename);
+		}
 		try {
 			Files.move(file.toPath(), new File(outputFilename).toPath());
 		} catch (IOException e) {
 			throw new TechnicalException(e);
 		}
 		return null;
+	}
+
+	static File findFileWithoutExtension(String outputFilename) {
+		int lastIndexOfSlash = outputFilename.lastIndexOf("/");
+		String folder = outputFilename.substring(
+				0,
+				lastIndexOfSlash > 0 ? lastIndexOfSlash : outputFilename
+						.lastIndexOf("\\"));
+		File dir = new File(folder);
+
+		String fileNameNoFolder = outputFilename.replace(folder, "");
+		String fileName = fileNameNoFolder.substring(1,fileNameNoFolder.length());
+		final String outputFilenameNoExtension = fileName.substring(0,
+				fileName.lastIndexOf("."));
+
+		File[] matchingFiles = dir.listFiles(new FilenameFilter() {
+			public boolean accept(File dir, String fileName) {
+				return fileName.contains(outputFilenameNoExtension) && fileName.contains(TMP);
+			}
+		});
+		return matchingFiles.length < 1 ? null : matchingFiles[0];
 	}
 
 	private ProcessHolder download(final String outputTmpFileName)

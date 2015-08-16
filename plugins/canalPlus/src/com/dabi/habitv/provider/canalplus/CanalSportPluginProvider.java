@@ -108,7 +108,7 @@ public class CanalSportPluginProvider extends BasePluginWithProxy implements
 	@Override
 	public ProcessHolder download(DownloadParamDTO downloadInput,
 			DownloaderPluginHolder downloaders) throws DownloadFailedException {
-		return CanalUtils.doDownload(downloadInput, downloaders, this,
+		return CanalUtils.doDownload3(downloadInput, downloaders, this,
 				CanalPlusConf.VIDEO_INFO_URL, getName().toLowerCase());
 	}
 

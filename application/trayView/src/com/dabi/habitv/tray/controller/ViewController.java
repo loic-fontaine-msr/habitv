@@ -10,6 +10,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.stage.Stage;
@@ -34,6 +36,8 @@ import com.dabi.habitv.tray.subscriber.CoreSubscriber;
 import com.dabi.habitv.utils.DirUtils;
 
 public class ViewController implements CoreSubscriber {
+
+	private static final Logger LOG = Logger.getLogger(ViewController.class);
 
 	private final HabitTvViewManager habitvViewManager;
 	private Stage primaryStage;
@@ -251,6 +255,7 @@ public class ViewController implements CoreSubscriber {
 		try {
 			getManager().updateGrabconfig(channels);
 		} catch (Exception e) {
+			LOG.error("", e);
 			Popin.error(e.getMessage());
 		}
 	}
@@ -259,6 +264,7 @@ public class ViewController implements CoreSubscriber {
 		try {
 			return getManager().getUserConfig();
 		} catch (Exception e) {
+			LOG.error("", e);
 			Popin.fatalError(e.getMessage());
 			return null;
 		}
@@ -268,6 +274,7 @@ public class ViewController implements CoreSubscriber {
 		try {
 			getManager().saveConfig(userConfig);
 		} catch (Exception e) {
+			LOG.error("", e);
 			Popin.error(e.getMessage());
 		}
 	}
@@ -287,6 +294,7 @@ public class ViewController implements CoreSubscriber {
 		try {
 			getManager().setDownloaded(episode);
 		} catch (Exception e) {
+			LOG.error("", e);
 			Popin.error(e.getMessage());
 		}
 	}
@@ -300,6 +308,7 @@ public class ViewController implements CoreSubscriber {
 		try {
 			getManager().restart(episode, exportOnly);
 		} catch (Exception e) {
+			LOG.error("", e);
 			Popin.error(e.getMessage());
 		}
 	}
@@ -308,6 +317,7 @@ public class ViewController implements CoreSubscriber {
 		try {
 			return getManager().findEpisodeByCategory(category);
 		} catch (Exception e) {
+			LOG.error("", e);
 			Popin.error(e.getMessage());
 			return Collections.emptyList();
 		}
@@ -317,6 +327,7 @@ public class ViewController implements CoreSubscriber {
 		try {
 			getManager().restart(episode, false);
 		} catch (Exception e) {
+			LOG.error("", e);
 			Popin.error(e.getMessage());
 		}
 	}
@@ -334,6 +345,7 @@ public class ViewController implements CoreSubscriber {
 		try {
 			Desktop.getDesktop().browse(new URI(episodeDTO.getId()));
 		} catch (Exception e) {
+			LOG.error("", e);
 			Popin.error(e.getMessage());
 		}
 	}
@@ -342,6 +354,7 @@ public class ViewController implements CoreSubscriber {
 		try {
 			getManager().cancel(episode);
 		} catch (Exception e) {
+			LOG.error("", e);
 			Popin.error(e.getMessage());
 		}
 	}

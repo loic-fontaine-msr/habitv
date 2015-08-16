@@ -8,6 +8,7 @@
 	</parent>
 	<artifactId>canalPlus</artifactId>
 	<name>canalPlus</name>
+	<version>4.0.7</version>
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>

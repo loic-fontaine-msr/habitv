@@ -2,9 +2,11 @@ package com.dabi.habitv.core.task;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Set;
@@ -13,6 +15,7 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.dabi.habitv.api.plugin.api.PluginProviderDownloaderInterface;
@@ -52,12 +55,11 @@ public class DownloadTaskTest {
 	public void tearDown() throws Exception {
 	}
 
-
 	final ExecutorFailedException executorFailedException = new ExecutorFailedException(
 			"cmd", "fullOuput", "lastline", null);
 	final DownloadFailedException downloadFailedException = new DownloadFailedException(
 			executorFailedException);
-	
+
 	public void init(final boolean toFail) {
 		final CategoryDTO category = new CategoryDTO("channel", "category",
 				"identifier", "extension");
@@ -65,7 +67,7 @@ public class DownloadTaskTest {
 				"episode1234567890123456789012345678901234567890123456789",
 				"videoUrl");
 		final PluginProviderDownloaderInterface provider = new PluginProviderDownloaderInterface() {
-			
+
 			@Override
 			public String getName() {
 				return "provider";
@@ -156,8 +158,7 @@ public class DownloadTaskTest {
 								downloadFailedException, "download"), event);
 					} else {
 						assertEquals(new RetreiveEvent(episode,
-								EpisodeStateEnum.DOWNLOADED),
-								event);
+								EpisodeStateEnum.DOWNLOADED), event);
 					}
 					break;
 				case 2:
@@ -175,13 +176,14 @@ public class DownloadTaskTest {
 		final DownloadedDAO downloadedDAO = new DownloadedDAO(category, ".") {
 
 			@Override
-			public void addDownloadedFiles(final boolean manual, final EpisodeDTO... episodes) {
+			public void addDownloadedFiles(final boolean manual,
+					final EpisodeDTO... episodes) {
 				downloaded = true;
 			}
 
 		};
 		task = new DownloadTask(episode, provider, downloader, publisher,
-				downloadedDAO,false);
+				downloadedDAO, false);
 		assertTrue(task.equals(task));
 		assertEquals(task.hashCode(), task.hashCode());
 	}
@@ -215,4 +217,13 @@ public class DownloadTaskTest {
 	// assertTrue(downloaded);
 	// assertTrue(!(new File(filename)).exists());
 	// }
+
+	@Test
+	@Ignore
+	public final void testMatchingFiles() {
+		File file = DownloadTask
+				.findFileWithoutExtension("D:\\media\\video\\regular\\avi\\20150731 - JAMAIS_ENTRE_AMIS_Bande_Annonce_Sexe_-Comdie_-_201.flv");
+		assertNotNull(file);
+
+	}
 }
