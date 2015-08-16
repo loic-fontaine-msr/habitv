@@ -34,10 +34,17 @@ public class WatPluginManager extends BasePluginWithProxy implements PluginProvi
 			final String name = aElement.text();
 			String url = getFullUrl(aElement.attr("href"));
 			if (!StringUtils.isEmpty(name) && !"#".equals(url)) {
-				episodes.add(new EpisodeDTO(category, name, url));
+				episodes.add(new EpisodeDTO(category, name, rewriteDomain(url)));
 			}
 		}
 		return episodes;
+	}
+
+	private String rewriteDomain(String url) {
+		// http://wat.replay.nt1.tv/video/dallas-saison-sur-nt1-partir-75e4h_6d81b_.html
+		// ->
+		// www.wat.tv/video/dallas-saison-sur-nt1-partir-75e4h_6d81b_.html
+		return url.replaceAll("(http:\\/\\/)([a-zA-Z\\.1-9]*)", "$1www.wat.tv");
 	}
 
 	@Override
