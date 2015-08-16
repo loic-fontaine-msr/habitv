@@ -8,11 +8,11 @@
 	</parent>
 	<artifactId>file</artifactId>
 	<name>file</name>
-	<version>4.0.6-SNAPSHOT</version>
+	<version>4.0.6</version>
 	
 	<scm>
-        <connection>scm:svn:http://subversion.assembla.com/svn/habitv/trunk/plugins/file</connection>
-        <developerConnection>scm:svn:http://subversion.assembla.com/svn/habitv/trunk/plugins/file</developerConnection>
+        <connection>scm:svn:http://subversion.assembla.com/svn/habitv/tags/file-4.0.6</connection>
+        <developerConnection>scm:svn:http://subversion.assembla.com/svn/habitv/tags/file-4.0.6</developerConnection>
     </scm>
 	
 	<dependencies>
