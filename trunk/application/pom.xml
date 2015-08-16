@@ -10,11 +10,16 @@
 	<packaging>pom</packaging>
 
 	<name>habiTv application part</name>
-	<version>4.0.6-SNAPSHOT</version>
+	<version>4.0.6</version>
 	<modules>
 		<module>core</module>
 		<module>consoleView</module>
 		<module>trayView</module>		
 		<module>habiTv</module>
 	</modules>
+
+  <scm>
+    <connection>scm:svn:http://subversion.assembla.com/svn/habitv/tags/application-4.0.6</connection>
+    <developerConnection>scm:svn:http://subversion.assembla.com/svn/habitv/tags/application-4.0.6</developerConnection>
+  </scm>
 </project>
