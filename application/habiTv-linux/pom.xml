@@ -3,11 +3,11 @@
 	<parent>
 		<groupId>com.dabi.habitv</groupId>
 		<artifactId>application</artifactId>
-		<version>4.0.5-SNAPSHOT</version>
+		<version>4.0.6-SNAPSHOT</version>
 	</parent>	
 	<artifactId>habiTv-linux</artifactId>
 	<packaging>jar</packaging>
-	<version>4.0.5-SNAPSHOT</version>
+	<version>4.0.6-SNAPSHOT</version>
 	<name>habiTv-linux</name>
 	<scm>
 		<connection>scm:svn:http://subversion.assembla.com/svn/habitv/trunk/application/habiTv-linux</connection>
