@@ -8,11 +8,11 @@
 	</parent>
 	<artifactId>canalPlus</artifactId>
 	<name>canalPlus</name>
-	<version>4.0.8</version>
+	<version>4.0.9-SNAPSHOT</version>
 	
 	<scm>
-        <connection>scm:svn:http://subversion.assembla.com/svn/habitv/tags/canalPlus-4.0.8</connection>
-        <developerConnection>scm:svn:http://subversion.assembla.com/svn/habitv/tags/canalPlus-4.0.8</developerConnection>
+        <connection>scm:svn:http://subversion.assembla.com/svn/habitv/trunk/plugins/canalPlus</connection>
+        <developerConnection>scm:svn:http://subversion.assembla.com/svn/habitv/trunk/plugins/canalPlus</developerConnection>
     </scm>
 	
 	<dependencies>
