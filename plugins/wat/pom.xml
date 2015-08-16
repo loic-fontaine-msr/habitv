@@ -8,11 +8,11 @@
 	</parent>
 	<artifactId>wat</artifactId>
 	<name>wat</name>
-	<version>4.0.7</version>
+	<version>4.0.8-SNAPSHOT</version>
 	
 	<scm>
-        <connection>scm:svn:http://subversion.assembla.com/svn/habitv/tags/wat-4.0.7</connection>
-        <developerConnection>scm:svn:http://subversion.assembla.com/svn/habitv/tags/wat-4.0.7</developerConnection>
+        <connection>scm:svn:http://subversion.assembla.com/svn/habitv/trunk/plugins/wat</connection>
+        <developerConnection>scm:svn:http://subversion.assembla.com/svn/habitv/trunk/plugins/wat</developerConnection>
     </scm>
 	
 	<dependencies>
