@@ -8,11 +8,11 @@
 	</parent>
 	<artifactId>arte</artifactId>
 	<name>arte</name>
-	<version>4.0.7-SNAPSHOT</version>
+	<version>4.0.7</version>
 	
 	<scm>
-        <connection>scm:svn:http://subversion.assembla.com/svn/habitv/trunk/plugins/arte</connection>
-        <developerConnection>scm:svn:http://subversion.assembla.com/svn/habitv/trunk/plugins/arte</developerConnection>
+        <connection>scm:svn:http://subversion.assembla.com/svn/habitv/tags/arte-4.0.7</connection>
+        <developerConnection>scm:svn:http://subversion.assembla.com/svn/habitv/tags/arte-4.0.7</developerConnection>
     </scm>
 	
 	<dependencies>
