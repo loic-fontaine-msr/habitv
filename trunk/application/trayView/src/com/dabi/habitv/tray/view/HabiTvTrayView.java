@@ -12,6 +12,8 @@ import javafx.event.EventHandler;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
+import org.apache.log4j.Logger;
+
 import com.dabi.habitv.api.plugin.pub.UpdatablePluginEvent;
 import com.dabi.habitv.api.plugin.pub.UpdatablePluginEvent.UpdatablePluginStateEnum;
 import com.dabi.habitv.core.event.RetreiveEvent;
@@ -22,6 +24,8 @@ import com.dabi.habitv.tray.controller.ViewController;
 import com.dabi.habitv.tray.subscriber.CoreSubscriber;
 
 public final class HabiTvTrayView implements CoreSubscriber {
+
+	private static final Logger LOG = Logger.getLogger(HabiTvTrayView.class);
 
 	private final ViewController controller;
 
@@ -42,9 +46,7 @@ public final class HabiTvTrayView implements CoreSubscriber {
 		@Override
 		public void handle(WindowEvent event) {
 			if (firstClose) {
-				trayIcon.displayMessage("habiTv",
-						"habiTv est encore en cours d'exécution.",
-						TrayIcon.MessageType.INFO);
+				trayIcon.displayMessage("habiTv", "habiTv est encore en cours d'exécution.", TrayIcon.MessageType.INFO);
 				firstClose = false;
 			}
 		}
@@ -58,13 +60,11 @@ public final class HabiTvTrayView implements CoreSubscriber {
 		primaryStage.setOnCloseRequest(closingMainViewHandler);
 		fixImage = getImage("fixe.gif"); //$NON-NLS-1$
 		animatedImage = getImage("anim.gif"); //$NON-NLS-1$
-		trayIcon = new TrayIcon(fixImage,
-				Messages.getString("HabiTvTrayView.2")); //$NON-NLS-1$
+		trayIcon = new TrayIcon(fixImage, Messages.getString("HabiTvTrayView.2")); //$NON-NLS-1$
 	}
 
 	private Image getImage(final String image) {
-		return Toolkit.getDefaultToolkit().getImage(
-				ClassLoader.getSystemResource(image));
+		return Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource(image));
 	}
 
 	public void init() throws AWTException {
@@ -96,8 +96,7 @@ public final class HabiTvTrayView implements CoreSubscriber {
 
 			@Override
 			public void mouseClicked(final MouseEvent mouseEvent) {
-				if (mouseEvent.getButton() == MouseEvent.BUTTON1
-						&& mouseEvent.getClickCount() == 2) {
+				if (mouseEvent.getButton() == MouseEvent.BUTTON1 && mouseEvent.getClickCount() == 2) {
 					controller.openMainView(closingMainViewHandler);
 				}
 				// } else {
@@ -146,8 +145,9 @@ public final class HabiTvTrayView implements CoreSubscriber {
 		case ERROR:
 			checkInProgress = false;
 			changeAnimation();
+			LOG.error("", event.getException());
 			trayIcon.displayMessage(
-					Messages.getString("HabiTvTrayView.17"), Messages.getString("HabiTvTrayView.18") + event.getException().getMessage(), TrayIcon.MessageType.ERROR); //$NON-NLS-1$ //$NON-NLS-2$
+					Messages.getString("HabiTvTrayView.17"), Messages.getString("HabiTvTrayView.18") + " " + event.getChannel() + " : " + event.getException().getMessage(), TrayIcon.MessageType.ERROR); //$NON-NLS-1$ //$NON-NLS-2$
 			break;
 		case IDLE:
 
@@ -184,8 +184,7 @@ public final class HabiTvTrayView implements CoreSubscriber {
 		case EXPORT_FAILED:
 			trayIcon.displayMessage(
 					Messages.getString("HabiTvTrayView.22"), Messages.getString("HabiTvTrayView.23") + event.getEpisode().getCategory() + " " + event.getEpisode().getName() + " " //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-							+ event.getException().getMessage(),
-					TrayIcon.MessageType.WARNING);
+							+ event.getException().getMessage(), TrayIcon.MessageType.WARNING);
 			break;
 		case EXPORT_STARTING:
 
