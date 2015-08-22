@@ -8,11 +8,11 @@
 	</parent>
 	<artifactId>beinsport</artifactId>
 	<name>beinsport</name>
-	<version>4.0.8-SNAPSHOT</version>
+	<version>4.0.8</version>
 	
 	<scm>
-        <connection>scm:svn:http://subversion.assembla.com/svn/habitv/trunk/plugins/beinsport</connection>
-        <developerConnection>scm:svn:http://subversion.assembla.com/svn/habitv/trunk/plugins/beinsport</developerConnection>
+        <connection>scm:svn:http://subversion.assembla.com/svn/habitv/tags/beinsport-4.0.8</connection>
+        <developerConnection>scm:svn:http://subversion.assembla.com/svn/habitv/tags/beinsport-4.0.8</developerConnection>
     </scm>
 	
 	<dependencies>
