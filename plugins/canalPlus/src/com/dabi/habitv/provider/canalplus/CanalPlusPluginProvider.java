@@ -17,26 +17,25 @@ import com.dabi.habitv.api.plugin.holder.DownloaderPluginHolder;
 import com.dabi.habitv.api.plugin.holder.ProcessHolder;
 import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.api.BasePluginWithProxy;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class CanalPlusPluginProvider extends BasePluginWithProxy implements
-		PluginProviderInterface, PluginDownloaderInterface { // NO_UCD
+public class CanalPlusPluginProvider extends BasePluginWithProxy implements PluginProviderInterface, PluginDownloaderInterface { // NO_UCD
 
 	@Override
 	@SuppressWarnings("unchecked")
 	public Set<EpisodeDTO> findEpisode(final CategoryDTO category) {
 		final ObjectMapper mapper = new ObjectMapper();
 		try {
-			final Map<String, Object> catData = mapper.readValue(
-					getInputStreamFromUrl(category.getId()), Map.class);
+			final Map<String, Object> catData = mapper.readValue(getInputStreamFromUrl(category.getId()), Map.class);
 
 			List<Object> strates = (List<Object>) catData.get("strates");
 			for (Object strateObject : strates) {
 				Map<String, Object> strateMap = (Map<String, Object>) strateObject;
 				String type = (String) strateMap.get("type");
 				if ("contentGrid".equals(type) || "contentRow".equals(type)) {
-					return findEpisodes(category,
-							(List<Object>) strateMap.get("contents"));
+					return findEpisodes(category, (List<Object>) strateMap.get("contents"));
 				}
 			}
 			return Collections.emptySet();
@@ -46,24 +45,24 @@ public class CanalPlusPluginProvider extends BasePluginWithProxy implements
 	}
 
 	@SuppressWarnings("unchecked")
-	private Set<EpisodeDTO> findEpisodes(CategoryDTO category,
-			List<Object> objectContent) {
+	private Set<EpisodeDTO> findEpisodes(CategoryDTO category, List<Object> objectContent) {
 		Set<EpisodeDTO> episodes = new LinkedHashSet<>();
 		for (Object objectEpisode : objectContent) {
-			episodes.add(buildEpisode(category,
-					(Map<String, Object>) objectEpisode));
+			EpisodeDTO episode = buildEpisode(category, (Map<String, Object>) objectEpisode);
+			if (episode != null) {
+				episodes.add(episode);
+			}
 		}
 
 		return episodes;
 	}
 
 	@SuppressWarnings("unchecked")
-	private EpisodeDTO buildEpisode(CategoryDTO category,
-			Map<String, Object> mapEpisode) {
-		return new EpisodeDTO(category, (String) mapEpisode.get("title"),
-				CanalUtils.findUrl(this,
-						(String) ((Map<String, Object>) mapEpisode
-								.get("onClick")).get("URLPage")));
+	private EpisodeDTO buildEpisode(CategoryDTO category, Map<String, Object> mapEpisode) {
+		String title = (String) mapEpisode.get("title");
+		String subTitle = (String) mapEpisode.get("subtitle");
+		String url = CanalUtils.findUrl(this, (String) ((Map<String, Object>) mapEpisode.get("onClick")).get("URLPage"));
+		return url == null ? null : new EpisodeDTO(category, title + (subTitle == null ? "" : (" " + subTitle)), url);
 	}
 
 	@Override
@@ -71,65 +70,93 @@ public class CanalPlusPluginProvider extends BasePluginWithProxy implements
 	public Set<CategoryDTO> findCategory() {
 		final ObjectMapper mapper = new ObjectMapper();
 		try {
-			final Map<String, Object> mainData = mapper.readValue(
-					getInputStreamFromUrl(CanalPlusConf.URL_HOME), Map.class);
-
+			final Map<String, Object> mainData = mapper.readValue(getInputStreamFromUrl(CanalPlusConf.URL_HOME), Map.class);
 			String urlMainPage = getUrlMainPage(mainData);
-
-			final Map<String, Object> catData = mapper.readValue(
-					getInputStreamFromUrl(urlMainPage), Map.class);
-
-			return findCategories(catData);
+			return findCategoriesFromUrl(null, urlMainPage);
 
 		} catch (IOException e) {
 			throw new DownloadFailedException(e);
 		}
 	}
 
+	private Set<CategoryDTO> findCategoriesFromUrl(CategoryDTO fatherCat, String urlMainPage) throws IOException, JsonParseException,
+			JsonMappingException {
+		final ObjectMapper mapper = new ObjectMapper();
+		@SuppressWarnings("unchecked")
+		final Map<String, Object> catData = mapper.readValue(getInputStreamFromUrl(urlMainPage), Map.class);
+		return findCategories(fatherCat, catData);
+	}
+
 	@SuppressWarnings("unchecked")
-	private Set<CategoryDTO> findCategories(Map<String, Object> catData) {
+	private Set<CategoryDTO> findCategories(CategoryDTO fatherCat, Map<String, Object> catData) throws JsonParseException,
+			JsonMappingException, IOException {
 		final Set<CategoryDTO> categories = new LinkedHashSet<>();
-		for (Object data : ((List<Object>) catData.get("strates"))) {
-			Map<String, Object> dataMap = (Map<String, Object>) data;
-			addCategory(categories, dataMap);
+		List<Object> strates = (List<Object>) catData.get("strates");
+		if (strates != null) {
+			for (Object data : strates) {
+				Map<String, Object> dataMap = (Map<String, Object>) data;
+				addCategory(fatherCat, categories, dataMap);
+			}
 		}
 		return categories;
 	}
 
-	private void addCategory(final Set<CategoryDTO> categories,
-			Map<String, Object> dataMap) {
+	@SuppressWarnings("unchecked")
+	private void addCategory(final CategoryDTO fatherCat, final Set<CategoryDTO> categories, Map<String, Object> dataMap)
+			throws JsonParseException, JsonMappingException, IOException {
 		String type = (String) dataMap.get("type");
+		Map<String, Object> onClick = (Map<String, Object>) dataMap.get("onClick");
+		String urlPage = onClick == null ? null : (String) onClick.get("URLPage");
+		// String displayTemplate = onClick == null ? null : (String)
+		// onClick.get("displayTemplate");
 		if ("landing".equals(type)) {
-			categories.add(buildLeafCategory(dataMap));
-		} else if ("contentGrid".equals(type)) {
-			categories.add(buildNodeCategory(dataMap));
+			CategoryDTO leafCategory = buildLeafCategory(fatherCat, dataMap);
+			if (leafCategory != null) {
+				categories.add(leafCategory);
+			}
+		} else if ("contentRow".equals(type) || "textList".equals(type) || "contentGrid".equals(type)) {
+			List<Object> contents = (List<Object>) dataMap.get("contents");
+			if (contents != null) {
+				for (Object object : contents) {
+					Map<String, Object> subDataMap = (Map<String, Object>) object;
+					addCategory(fatherCat, categories, subDataMap);
+				}
+			}
+		} else if (type == null && urlPage != null) {
+			CategoryDTO category = buildNodeCategory(dataMap);
+			category.setDownloadable(true);
+			category.addSubCategories(findCategoriesFromUrl(category, urlPage));
+			categories.add(category);
 		}
 	}
 
 	@SuppressWarnings("unchecked")
-	private CategoryDTO buildNodeCategory(Map<String, Object> dataMap) {
+	private CategoryDTO buildNodeCategory(Map<String, Object> dataMap) throws JsonParseException, JsonMappingException, IOException {
 		String title = (String) dataMap.get("title");
-		CategoryDTO categoryDTO = new CategoryDTO(CanalPlusConf.NAME, title,
-				title, FrameworkConf.MP4);
+		title = (String) (title == null ? dataMap.get("type") : title);
+		String identifier = (String) ((Map<String, Object>) dataMap.get("onClick")).get("URLPage");
+		CategoryDTO categoryDTO = new CategoryDTO(CanalPlusConf.NAME, title, identifier, FrameworkConf.MP4);
 		categoryDTO.setDownloadable(false);
 		List<Object> contents = (List<Object>) dataMap.get("contents");
 		if (contents != null) {
 			for (Object subDataMap : contents) {
-				addCategory(categoryDTO.getSubCategories(),
-						(Map<String, Object>) subDataMap);
+				addCategory(categoryDTO, categoryDTO.getSubCategories(), (Map<String, Object>) subDataMap);
 			}
 		}
 		return categoryDTO;
 	}
 
 	@SuppressWarnings("unchecked")
-	private CategoryDTO buildLeafCategory(Map<String, Object> dataMap) {
-		CategoryDTO categoryDTO = new CategoryDTO(CanalPlusConf.NAME,
-				(String) dataMap.get("title"),
-				(String) ((Map<String, Object>) dataMap.get("onClick"))
-						.get("URLPage"), FrameworkConf.MP4);
+	private CategoryDTO buildLeafCategory(CategoryDTO fatherCat, Map<String, Object> dataMap) {
+		String title = (String) dataMap.get("title");
+		String identifier = (String) ((Map<String, Object>) dataMap.get("onClick")).get("URLPage");
+		if (fatherCat != null && fatherCat.getName().equals(title)) {
+			fatherCat.setDownloadable(true);
+			return null;
+		}
+		CategoryDTO categoryDTO = new CategoryDTO(CanalPlusConf.NAME, title, identifier, FrameworkConf.MP4);
 		categoryDTO.setDownloadable(true);
-		//System.out.println(categoryDTO.getId());
+		// System.out.println(categoryDTO.getId());
 		return categoryDTO;
 	}
 
@@ -139,8 +166,7 @@ public class CanalPlusPluginProvider extends BasePluginWithProxy implements
 		for (Object catObject : arbList) {
 			Map<String, Object> catMap = (Map<String, Object>) catObject;
 			if ("OnDemand".equals(catMap.get("picto"))) {
-				return (String) ((Map<String, Object>) catMap.get("onClick"))
-						.get("URLPage");
+				return (String) ((Map<String, Object>) catMap.get("onClick")).get("URLPage");
 			}
 		}
 		return null;
@@ -161,10 +187,8 @@ public class CanalPlusPluginProvider extends BasePluginWithProxy implements
 	}
 
 	@Override
-	public ProcessHolder download(DownloadParamDTO downloadInput,
-			DownloaderPluginHolder downloaders) throws DownloadFailedException {
-		return CanalUtils.doDownload(downloadInput, downloaders, this,
-				CanalPlusConf.VIDEO_INFO_URL, getName().toLowerCase());
+	public ProcessHolder download(DownloadParamDTO downloadInput, DownloaderPluginHolder downloaders) throws DownloadFailedException {
+		return CanalUtils.doDownload(downloadInput, downloaders, this, CanalPlusConf.VIDEO_INFO_URL, getName().toLowerCase());
 	}
 
 }
