@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -135,6 +136,21 @@ public class PluginProviderDownloaderTester {
 	}
 
 	@Test
+	public final void specificFindEpCanal() throws DownloadFailedException {
+		Set<EpisodeDTO> ep;
+		// ep= new CanalPlusPluginProvider().findEpisode(new
+		// CategoryDTO("channel", "name",
+		// "http://service.mycanal.fr/page/6d4d60f9c6b98415e0d48f6ab8c027a1/1276.json?cache=300000",
+		// "extension"));
+		// Assert.assertNotNull(ep);
+		// LOG.error(ep);
+
+		ep = new CanalPlusPluginProvider().findEpisode(new CategoryDTO("channel", "name",
+				"http://service.mycanal.fr/page/6d4d60f9c6b98415e0d48f6ab8c027a1/4086.json?cache=300000", "extension"));
+		LOG.error(ep);
+	}
+
+	@Test
 	public final void testProviderCanalFootballClub() throws InstantiationException, IllegalAccessException, DownloadFailedException {
 		testPluginProvider(CanalSportPluginProvider.class, false);
 	}
@@ -197,6 +213,8 @@ public class PluginProviderDownloaderTester {
 		final Set<CategoryDTO> categories = plugin.findCategory();
 		checkCategories(categories);
 
+		showCategoriesTree(categories, 0);
+
 		Set<EpisodeDTO> episodeList = Collections.emptySet();
 		int i = 0;
 		while (episodeList.isEmpty() && i < MAX_ATTEMPTS) {
@@ -214,6 +232,13 @@ public class PluginProviderDownloaderTester {
 
 		final EpisodeDTO episode = (new ArrayList<>(episodeList)).get(getRandomIndex(episodeList));
 		testEpisode(plugin, episode);
+	}
+
+	private void showCategoriesTree(Set<CategoryDTO> categories, int i) {
+		for (CategoryDTO categoryDTO : categories) {
+			LOG.error(StringUtils.repeat(" ", i) + categoryDTO.getName());
+			showCategoriesTree(categoryDTO.getSubCategories(), i + 1);
+		}
 	}
 
 	private void testEpisode(final PluginProviderInterface plugin, final EpisodeDTO episode) throws DownloadFailedException {

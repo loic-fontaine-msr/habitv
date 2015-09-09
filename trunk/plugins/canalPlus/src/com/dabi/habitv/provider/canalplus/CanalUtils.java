@@ -17,96 +17,74 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class CanalUtils {
 
 	@SuppressWarnings("unchecked")
-	public static String findToken(BasePluginWithProxy basePluginWithProxy)
-			throws IOException {
+	public static String findToken(BasePluginWithProxy basePluginWithProxy) throws IOException {
 		final ObjectMapper mapper = new ObjectMapper();
-		final Map<String, Object> mainData = mapper.readValue(
-				basePluginWithProxy
-						.getInputStreamFromUrl(CanalPlusConf.URL_HOME),
-				Map.class);
+		final Map<String, Object> mainData = mapper.readValue(basePluginWithProxy.getInputStreamFromUrl(CanalPlusConf.URL_HOME), Map.class);
 
 		return (String) mainData.get("token");
 	}
 
-	public static ProcessHolder doDownload(
-			final DownloadParamDTO downloadParam,
-			final DownloaderPluginHolder downloaders,
-			BasePluginWithProxy basePluginWithProxy, String videoInfoUrl,
-			String channel) {
+	public static ProcessHolder doDownload(final DownloadParamDTO downloadParam, final DownloaderPluginHolder downloaders,
+			BasePluginWithProxy basePluginWithProxy, String videoInfoUrl, String channel) {
 		final String videoUrl;
 		if (downloadParam.getDownloadInput().contains("vid=")) {
 			final String vid = CanalUtils.getVid(downloadParam);
 			try {
-				videoUrl = CanalUtils.findVideoUrl(basePluginWithProxy,
-						findToken(basePluginWithProxy), vid, channel);
+				videoUrl = CanalUtils.findVideoUrl(basePluginWithProxy, findToken(basePluginWithProxy), vid, channel);
 			} catch (IOException e) {
 				throw new DownloadFailedException(e);
 			}
 		} else {
 			videoUrl = downloadParam.getDownloadInput();
 		}
-		return DownloadUtils.download(
-				DownloadParamDTO.buildDownloadParam(downloadParam, videoUrl),
-				downloaders);
-	}
-	
-	public static ProcessHolder doDownload3(
-			final DownloadParamDTO downloadParam,
-			final DownloaderPluginHolder downloaders,
-			BasePluginWithProxy basePluginWithProxy, String videoInfoUrl,
-			String channel) {
-		final String videoUrl;
-		if (downloadParam.getDownloadInput().contains("vid=")) {
-			final String vid = CanalUtils.getVid(downloadParam);
-			try {
-				videoUrl = CanalUtils.findVideoUrl3(basePluginWithProxy,
-						findToken(basePluginWithProxy), vid, channel);
-			} catch (IOException e) {
-				throw new DownloadFailedException(e);
-			}
-		} else {
-			videoUrl = downloadParam.getDownloadInput();
-		}
-		return DownloadUtils.download(
-				DownloadParamDTO.buildDownloadParam(downloadParam, videoUrl),
-				downloaders);
+		return DownloadUtils.download(DownloadParamDTO.buildDownloadParam(downloadParam, videoUrl), downloaders);
 	}
 
-	public static String findVideoUrl3(BasePluginWithProxy basePluginWithProxy,
-			String token, String vid, String channel) {
+	public static ProcessHolder doDownload3(final DownloadParamDTO downloadParam, final DownloaderPluginHolder downloaders,
+			BasePluginWithProxy basePluginWithProxy, String videoInfoUrl, String channel) {
+		final String videoUrl;
+		if (downloadParam.getDownloadInput().contains("vid=")) {
+			final String vid = CanalUtils.getVid(downloadParam);
+			try {
+				videoUrl = CanalUtils.findVideoUrl3(basePluginWithProxy, findToken(basePluginWithProxy), vid, channel);
+			} catch (IOException e) {
+				throw new DownloadFailedException(e);
+			}
+		} else {
+			videoUrl = downloadParam.getDownloadInput();
+		}
+		return DownloadUtils.download(DownloadParamDTO.buildDownloadParam(downloadParam, videoUrl), downloaders);
+	}
+
+	public static String findVideoUrl3(BasePluginWithProxy basePluginWithProxy, String token, String vid, String channel) {
 		try {
-			return findUrl3(basePluginWithProxy, CanalPlusConf.URL_VIDEO
-					.replace("{TOKEN}", token).replace("{ID}", vid));
+			return findUrl3(basePluginWithProxy, CanalPlusConf.URL_VIDEO.replace("{TOKEN}", token).replace("{ID}", vid));
 		} catch (Exception e) {
-			return findUrl2(basePluginWithProxy, CanalPlusConf.URL_VIDEO_2
-					.replace("{CHANNEL}", channel).replace("{ID}", vid));
+			return findUrl2(basePluginWithProxy, CanalPlusConf.URL_VIDEO_2.replace("{CHANNEL}", channel).replace("{ID}", vid));
 		}
 	}
-	
+
 	public static String getVid(final DownloadParamDTO downloadParam) {
-		final String vid = downloadParam.getDownloadInput().split("vid=")[1]
-				.split("&")[0];
+		final String vid = downloadParam.getDownloadInput().split("vid=")[1].split("&")[0];
 		return vid;
 	}
 
 	@SuppressWarnings("unchecked")
 	private static String getVideoUrl(Map<String, Object> catData) {
-		return (String) ((Map<String, Object>) ((Map<String, Object>) ((Map<String, Object>) catData
-				.get("detail")).get("informations")).get("VoD"))
+		Map<String, Object> detailMap = (Map<String, Object>) catData.get("detail");
+		return detailMap == null ? null : (String) ((Map<String, Object>) ((Map<String, Object>) detailMap.get("informations")).get("VoD"))
 				.get("videoURL");
 	}
 
 	@SuppressWarnings("unchecked")
-	public static String findUrl(BasePluginWithProxy basePluginWithProxy,
-			String urlMedias) {
+	public static String findUrl(BasePluginWithProxy basePluginWithProxy, String urlMedias) {
 		final ObjectMapper mapper = new ObjectMapper();
 		try {
 			final Map<String, Object> catData = mapper.readValue(
-					basePluginWithProxy.getInputStreamFromUrl(urlMedias
-							.replace("{FORMAT}", "hls")), Map.class);
+					basePluginWithProxy.getInputStreamFromUrl(urlMedias.replace("{FORMAT}", "hls")), Map.class);
 
 			String videoUrl = getVideoUrl(catData);
-			if (videoUrl.endsWith(FrameworkConf.M3U8)) {
+			if (videoUrl != null && videoUrl.endsWith(FrameworkConf.M3U8)) {
 				return M3U8Utils.keepBestQuality(videoUrl);
 			}
 			return videoUrl;
@@ -116,16 +94,12 @@ public class CanalUtils {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static String findUrl2(BasePluginWithProxy basePluginWithProxy,
-			String urlMedias) {
+	public static String findUrl2(BasePluginWithProxy basePluginWithProxy, String urlMedias) {
 		final ObjectMapper mapper = new ObjectMapper();
 		try {
-			final Map<String, Object> catData = mapper.readValue(
-					basePluginWithProxy.getInputStreamFromUrl(urlMedias),
-					Map.class);
+			final Map<String, Object> catData = mapper.readValue(basePluginWithProxy.getInputStreamFromUrl(urlMedias), Map.class);
 
-			Map<String, Object> videoUrls = (Map<String, Object>) ((Map<String, Object>) catData
-					.get("MEDIA")).get("VIDEOS");
+			Map<String, Object> videoUrls = (Map<String, Object>) ((Map<String, Object>) catData.get("MEDIA")).get("VIDEOS");
 			String videoUrl = (String) videoUrls.get("HLS");
 			return M3U8Utils.keepBestQuality(videoUrl);
 		} catch (IOException e) {
@@ -133,37 +107,29 @@ public class CanalUtils {
 		}
 	}
 
-	public static String findVideoUrl(BasePluginWithProxy basePluginWithProxy,
-			String token, String vid, String channel) {
+	public static String findVideoUrl(BasePluginWithProxy basePluginWithProxy, String token, String vid, String channel) {
 		try {
-			return findUrl(basePluginWithProxy, CanalPlusConf.URL_VIDEO
-					.replace("{TOKEN}", token).replace("{ID}", vid));
+			return findUrl(basePluginWithProxy, CanalPlusConf.URL_VIDEO.replace("{TOKEN}", token).replace("{ID}", vid));
 		} catch (Exception e) {
-			return findUrl2(basePluginWithProxy, CanalPlusConf.URL_VIDEO_2
-					.replace("{CHANNEL}", channel).replace("{ID}", vid));
+			return findUrl2(basePluginWithProxy, CanalPlusConf.URL_VIDEO_2.replace("{CHANNEL}", channel).replace("{ID}", vid));
 		}
 	}
 
 	@SuppressWarnings("unchecked")
 	private static List<Object> getVideoUrls3(Map<String, Object> catData) {
-		return (List<Object>) ((Map<String, Object>) ((Map<String, Object>) catData
-				.get("detail")).get("informations")).get("videoURLs");
+		return (List<Object>) ((Map<String, Object>) ((Map<String, Object>) catData.get("detail")).get("informations")).get("videoURLs");
 	}
 
 	@SuppressWarnings("unchecked")
-	public static String findUrl3(BasePluginWithProxy basePluginWithProxy,
-			String urlMedias) {
+	public static String findUrl3(BasePluginWithProxy basePluginWithProxy, String urlMedias) {
 		final ObjectMapper mapper = new ObjectMapper();
 		try {
 			final Map<String, Object> catData = mapper.readValue(
-					basePluginWithProxy.getInputStreamFromUrl(urlMedias
-							.replace("{FORMAT}", "hls")), Map.class);
+					basePluginWithProxy.getInputStreamFromUrl(urlMedias.replace("{FORMAT}", "hls")), Map.class);
 
 			List<Object> videoUrls = getVideoUrls3(catData);
 			if (videoUrls == null) {
-				mapper.readValue(basePluginWithProxy
-						.getInputStreamFromUrl(urlMedias.replace("{FORMAT}",
-								"hd")), Map.class);
+				mapper.readValue(basePluginWithProxy.getInputStreamFromUrl(urlMedias.replace("{FORMAT}", "hd")), Map.class);
 				videoUrls = getVideoUrls3(catData);
 			}
 			for (Object videoUrlObject : videoUrls) {
@@ -179,5 +145,5 @@ public class CanalUtils {
 			throw new DownloadFailedException(e);
 		}
 	}
-	
+
 }

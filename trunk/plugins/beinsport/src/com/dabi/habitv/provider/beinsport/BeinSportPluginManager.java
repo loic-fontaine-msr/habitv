@@ -33,9 +33,16 @@ public class BeinSportPluginManager extends BasePluginWithProxy implements Plugi
 
 		final org.jsoup.nodes.Document doc = Jsoup.parse(getUrlContent(category.getId()));
 
-		for (final Element aHref : doc.select("article.cluster_video__article h3 a")) {
+		for (final Element article : doc.select("article.cluster_video__article")) {
+			Element aHref = article.select("h3 a").first();
 			final String href = BeinSportConf.HOME_URL + aHref.attr("data-url");
-			String name = aHref.text();
+			Element img = article.select("img").first();
+			String name;
+			if (img == null) {
+				name = aHref.text();
+			} else {
+				name = img.attr("alt");
+			}
 			name = SoccerUtils.maskScore(name);
 			episodeList.add(new EpisodeDTO(category, name, href));
 		}
