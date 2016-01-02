@@ -2,28 +2,21 @@ package com.dabi.habitv.provider.arte;
 
 import java.io.IOException;
 import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 import com.dabi.habitv.api.plugin.api.PluginProviderDownloaderInterface;
 import com.dabi.habitv.api.plugin.dto.CategoryDTO;
 import com.dabi.habitv.api.plugin.dto.DownloadParamDTO;
 import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
 import com.dabi.habitv.api.plugin.exception.DownloadFailedException;
+import com.dabi.habitv.api.plugin.exception.TechnicalException;
 import com.dabi.habitv.api.plugin.holder.DownloaderPluginHolder;
 import com.dabi.habitv.api.plugin.holder.ProcessHolder;
 import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.api.BasePluginWithProxy;
 import com.dabi.habitv.framework.plugin.utils.DownloadUtils;
 import com.dabi.habitv.framework.plugin.utils.RetrieverUtils;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class ArtePluginManager extends BasePluginWithProxy implements PluginProviderDownloaderInterface { // NO_UCD
@@ -46,94 +39,87 @@ public class ArtePluginManager extends BasePluginWithProxy implements PluginProv
 	@Override
 	public ProcessHolder download(final DownloadParamDTO downloadParam, final DownloaderPluginHolder downloaders)
 			throws DownloadFailedException {
-		String downloadLink;
-		try {
-			downloadLink = buildDownloadLink(downloadParam.getDownloadInput());
-		} catch (IOException e) {
-			throw new DownloadFailedException(e);
-		}
-		return DownloadUtils.download(DownloadParamDTO.buildDownloadParam(downloadParam, downloadLink), downloaders);
+		return DownloadUtils.download(downloadParam, downloaders, "youtube");
 	}
 
 	private Set<EpisodeDTO> findEpisodeByCategory(final CategoryDTO category) {
+		return jsonToEpisodes(category,
+				getJsonLine(RetrieverUtils.getUrlContent(category.getId(), FrameworkConf.UTF8, getHttpProxy()), "categoryVideoSet"));
+	}
+
+	private Set<EpisodeDTO> jsonToEpisodes(CategoryDTO category, String jsonLine) {
 		final Set<EpisodeDTO> episodeList = new LinkedHashSet<EpisodeDTO>();
-		final Document doc = Jsoup.parse(getUrlContent(category.getId(), FrameworkConf.UTF8));
-		final Elements select = doc.select("#content-videos").select("li.video");
-		for (final Element liVideo : select) {
-			final String href = liVideo.select("div.video-container").attr("arte_vp_url");
-			final String title = liVideo.select("p.time-row").first().text();
-			String infoUrl = ArteConf.HOME_URL + liVideo.select("a.info").first().attr("href");
-			episodeList.add(new EpisodeDTO(category, findRealTitle(infoUrl, title), href));
+
+		if (jsonLine != null) {
+			ObjectMapper objectMapper = new ObjectMapper();
+			JsonNode jsonNode;
+			try {
+				jsonNode = objectMapper.readTree(jsonLine);
+				JsonNode categoriesVideso = jsonNode.get("categoryVideoSet");
+				for (JsonNode catVide : categoriesVideso.get("videos")) {
+					episodeList.add(new EpisodeDTO(category, getTitle(catVide), catVide.get("url").asText()));
+				}
+			} catch (IOException e) {
+				throw new TechnicalException(e);
+			}
 		}
+
 		return episodeList;
 	}
 
-	private String findRealTitle(String infoUrl, String title) {
-		try {
-			final Document doc = Jsoup.parse(getUrlContent(infoUrl, FrameworkConf.UTF8));
-			return doc.select("h2.text-thin").first().text();
-		} catch (Exception e) {
-			return title;
+	private String getTitle(JsonNode vid) {
+		JsonNode titleNode = vid.get("title");
+		StringBuilder title = new StringBuilder(titleNode.asText());
+		JsonNode subTitleNode = vid.get("subtitle");
+		if (subTitleNode != null && !subTitleNode.isNull()) {
+			title.append(" - " + subTitleNode.asText());
+		} else {
+			JsonNode dateNode = vid.get("scheduled_on");
+			title.append(" - " + dateNode.asText());
+			title.append(" - " + vid.get("id").asText());
 		}
+		return title.toString();
 	}
 
 	private Set<CategoryDTO> findCategories(final String urlContent) {
+		return jsonToCategories(getJsonLine(urlContent, "categoriesVideos"));
+	}
+
+	private String getJsonLine(final String urlContent, String properties) {
+		String lineJson = null;
+		for (String line : urlContent.split("\\n")) {
+			if (line.contains(properties)) {
+				lineJson = "{" + line.replace(properties, "\"" + properties + "\"") + "\"lol\":{}}";
+			}
+		}
+		return lineJson;
+	}
+
+	private Set<CategoryDTO> jsonToCategories(String lineJson) {
 		final Set<CategoryDTO> categoryDTOs = new LinkedHashSet<>();
-		final Document doc = Jsoup.parse(urlContent);
-		final Elements select = doc.select("section.nav-clusters").select(".head").select(".cluster");
-		for (final Element divCluster : select) {
-			final Element aHref = divCluster.child(0);
-			final String href = aHref.attr("href");
-			final String title = aHref.child(0).text();
-			CategoryDTO category = new CategoryDTO(ArteConf.NAME, title, href, FrameworkConf.MP4);
-			category.setDownloadable(true);
-			categoryDTOs.add(category);
+		if (lineJson != null) {
+			ObjectMapper objectMapper = new ObjectMapper();
+			JsonNode jsonNode;
+			try {
+				jsonNode = objectMapper.readTree(lineJson);
+				JsonNode categoriesVideso = jsonNode.get("categoriesVideos");
+				for (JsonNode categorie : categoriesVideso) {
+					JsonNode cat = categorie.get("category");
+					CategoryDTO category = new CategoryDTO(ArteConf.NAME, cat.get("name").asText(), ArteConf.HOME_URL
+							+ cat.get("url").asText(), FrameworkConf.MP4);
+					category.setDownloadable(true);
+					categoryDTOs.add(category);
+				}
+			} catch (IOException e) {
+				throw new TechnicalException(e);
+			}
 		}
 		return categoryDTOs;
 	}
 
-	@SuppressWarnings("unchecked")
-	private String buildDownloadLink(final String url) throws DownloadFailedException, JsonParseException, JsonMappingException,
-			IOException {
-		final ObjectMapper mapper = new ObjectMapper();
-		final Map<String, Object> mainData = mapper.readValue(getInputStreamFromUrl(url), Map.class);
-
-		return findBestQualityLink(((Map<String, Object>) ((Map<String, Object>) mainData.get("videoJsonPlayer")).get("VSR")));
-	}
-
-	private String findBestQualityLink(Map<String, Object> mapLink) {
-		String url = findBestQualityInFormat(mapLink, "HBBTV");
-		if (url == null) {
-			url = findBestQualityInFormat(mapLink, "M3U8");
-		}
-		if (url == null) {
-			url = findBestQualityInFormat(mapLink, "RMP4");
-		}
-		return url;
-	}
-
-	@SuppressWarnings("unchecked")
-	private String findBestQualityInFormat(Map<String, Object> mapLink, String format) {
-		Integer maxBitrate = null;
-		String url = null;
-		for (Entry<String, Object> linkEntry : mapLink.entrySet()) {
-			Map<String, Object> videoDetails = (Map<String, Object>) linkEntry.getValue();
-			String versionCode = (String) videoDetails.get("versionCode");
-			if (versionCode != null && versionCode.startsWith("VF") && format.equals(videoDetails.get("videoFormat"))) {
-				Integer bitrate = (Integer) videoDetails.get("bitrate");
-				if (maxBitrate == null || bitrate > maxBitrate) {
-					String streamer = (String) videoDetails.get("streamer");
-					String videoUrl = (String) videoDetails.get("url");
-					url = (streamer == null) ? videoUrl : streamer + videoUrl;
-				}
-			}
-		}
-		return url;
-	}
-
 	@Override
-	public DownloadableState canDownload(final String downloadInput) {
-		return downloadInput.startsWith(ArteConf.HOME_URL) ? DownloadableState.SPECIFIC : DownloadableState.IMPOSSIBLE;
+	public DownloadableState canDownload(String downloadInput) {
+		return downloadInput.contains("arte") ? DownloadableState.SPECIFIC : DownloadableState.IMPOSSIBLE;
 	}
 
 }

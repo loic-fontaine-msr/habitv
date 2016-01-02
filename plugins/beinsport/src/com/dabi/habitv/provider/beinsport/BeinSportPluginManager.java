@@ -44,6 +44,12 @@ public class BeinSportPluginManager extends BasePluginWithProxy implements Plugi
 				name = img.attr("alt");
 			}
 			name = SoccerUtils.maskScore(name);
+			if (name.contains(" : ")) {
+				Element time = article.select("time").first();
+				if (time != null) {
+					name = name.substring(0, name.indexOf(":")) + time.attr("datetime");
+				}
+			}
 			episodeList.add(new EpisodeDTO(category, name, href));
 		}
 		return episodeList;

@@ -40,8 +40,9 @@ public interface FrameworkConf {
 
 	String ERROR_FILE = "dlError.index";
 
-	String USER_HOME = System.getProperty("user.home")
-			.replace("\\", "/");
-	
+	String USER_HOME = System.getProperty("user.home").replace("\\", "/");
+
 	String ADOBEHDS = "adobeHDS";
+
+	String YOUTUBE = "youtube";
 }

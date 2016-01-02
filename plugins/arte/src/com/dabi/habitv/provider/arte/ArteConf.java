@@ -8,8 +8,7 @@ interface ArteConf {
 
 	String ID_EMISSION_TOKEN = "#ID_EMISSION#";
 
-	String RSS_CATEGORY_URL = "http://videos.arte.tv/fr/do_delegate/videos/programmes/"
-			+ ID_EMISSION_TOKEN + ",view,rss.xml";
+	String RSS_CATEGORY_URL = "http://videos.arte.tv/fr/do_delegate/videos/programmes/" + ID_EMISSION_TOKEN + ",view,rss.xml";
 
 	String ID_EPISODE_TOKEN = "#ID_EPISODE#";
 
