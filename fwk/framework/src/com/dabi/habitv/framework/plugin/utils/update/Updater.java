@@ -13,6 +13,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import com.dabi.habitv.api.plugin.exception.TechnicalException;
+import com.dabi.habitv.framework.plugin.utils.AlphanumComparator;
 import com.dabi.habitv.framework.plugin.utils.update.FindArtifactUtils.ArtifactVersion;
 
 public abstract class Updater {
@@ -64,8 +65,8 @@ public abstract class Updater {
 
 	private void updateFile(final File currentFolder, final String fileToUpdate) {
 		onChecking(fileToUpdate);
-		final ArtifactVersion artifactNewVersion = FindArtifactUtils.findLastVersionUrl(groupId, fileToUpdate, coreVersion, autoriseSnapshot,
-				getServerExtension());
+		final ArtifactVersion artifactNewVersion = FindArtifactUtils.findLastVersionUrl(groupId, fileToUpdate, coreVersion,
+				autoriseSnapshot, getServerExtension());
 		if (artifactNewVersion == null) {
 			LOG.info("Nothing found for " + fileToUpdate);
 			return;
@@ -73,7 +74,8 @@ public abstract class Updater {
 		final File currentFile = new File(folderToUpdate + "/" + fileToUpdate + "." + getLocalExtension());
 		if (currentFile.exists()) {
 			final String currentVersion = getCurrentVersion(currentFile);//
-			if (currentVersion == null || currentVersion.contains("-SNAPSHOT") || currentVersion.compareTo(artifactNewVersion.getVersion()) < 0) {
+			if (currentVersion == null || currentVersion.contains("-SNAPSHOT")
+					|| AlphanumComparator.INSTANCE.compare(currentVersion, artifactNewVersion.getVersion()) < 0) {
 				updateFile(artifactNewVersion, currentFile);
 			}
 		} else {
@@ -127,8 +129,7 @@ public abstract class Updater {
 	}
 
 	/**
-	 * Cette méthode télécharge un
-	 * fichier sur internet et le stocke en local
+	 * Cette méthode télécharge un fichier sur internet et le stocke en local
 	 * 
 	 * @param filePath
 	 *            , chemin du fichier à télécharger

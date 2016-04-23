@@ -8,7 +8,7 @@
 	</parent>
 	<artifactId>wat</artifactId>
 	<name>wat</name>
-	<version>4.0.8-SNAPSHOT</version>
+	<version>4.0.9-SNAPSHOT</version>
 	
 	<scm>
         <connection>scm:svn:http://subversion.assembla.com/svn/habitv/trunk/plugins/wat</connection>

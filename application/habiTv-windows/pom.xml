@@ -7,7 +7,7 @@
 	</parent>
 	<artifactId>habiTv-windows</artifactId>
 	<packaging>jar</packaging>
-	<version>4.0.7-SNAPSHOT</version>
+	<version>4.0.7</version>
 	<name>habiTv-windows</name>	
 	 <scm>
         <connection>scm:svn:http://subversion.assembla.com/svn/habitv/trunk/application/habiTv-windows</connection>

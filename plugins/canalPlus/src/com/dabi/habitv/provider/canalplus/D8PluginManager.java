@@ -18,8 +18,7 @@ import com.dabi.habitv.api.plugin.holder.ProcessHolder;
 import com.dabi.habitv.framework.plugin.api.BasePluginWithProxy;
 import com.dabi.habitv.framework.plugin.utils.DownloadUtils;
 
-public class D8PluginManager extends BasePluginWithProxy implements
-		PluginProviderDownloaderInterface { // NO_UCD
+public class D8PluginManager extends BasePluginWithProxy implements PluginProviderDownloaderInterface { // NO_UCD
 
 	@Override
 	public String getName() {
@@ -30,8 +29,7 @@ public class D8PluginManager extends BasePluginWithProxy implements
 	public Set<EpisodeDTO> findEpisode(final CategoryDTO category) {
 		final Set<EpisodeDTO> episodes = new LinkedHashSet<>();
 
-		final org.jsoup.nodes.Document doc = Jsoup.parse(getUrlContent(
-				getUrl(category), D8Conf.ENCODING));
+		final org.jsoup.nodes.Document doc = Jsoup.parse(getUrlContent(getUrl(category), D8Conf.ENCODING));
 
 		Elements select = doc.select(".list-programmes-emissions");
 
@@ -41,10 +39,9 @@ public class D8PluginManager extends BasePluginWithProxy implements
 			for (final Element liElement : emission) {
 				if (!liElement.children().isEmpty()) {
 					final Element aLink = liElement.child(0);
-					if (aLink.children().size() > 1
-							&& aLink.child(1).children().size() > 0) {
-						final String title = aLink.child(1).child(0).text()
-								+ " - " + aLink.child(1).child(1).text();
+					if (aLink.children().size() > 1 && aLink.child(1).children().size() > 0) {
+						String id = aLink.attr("data-vid");
+						final String title = aLink.child(1).child(0).text() + " - " + aLink.child(1).child(1).text() + "-" + id;
 						final String url = aLink.attr(getAttrName(aLink));
 						episodes.add(new EpisodeDTO(category, title, url));
 					}
@@ -57,16 +54,14 @@ public class D8PluginManager extends BasePluginWithProxy implements
 
 			for (final Element block : select) {
 				if (block.children().size() > 1) {
-					final Elements emission = block.children().get(1)
-							.children();
+					final Elements emission = block.select("a");
 					for (final Element aLink : emission) {
-						if (aLink.children().size() > 1) {
-							final String title = aLink.child(1).text() + " - "
-									+ aLink.child(2).text();
+						if (aLink.children().size() > 2) {
+							String id = aLink.attr("data-vid");
+							final String title = aLink.child(1).text() + " - " + aLink.child(2).text() + id;
 							final String url = aLink.attr(getAttrName(aLink));
 							if (url != null) {
-								episodes.add(new EpisodeDTO(category, title,
-										url));
+								episodes.add(new EpisodeDTO(category, title, url));
 							}
 						}
 					}
@@ -77,24 +72,21 @@ public class D8PluginManager extends BasePluginWithProxy implements
 	}
 
 	private String getUrl(final CategoryDTO category) {
-		return DownloadUtils.isHttpUrl(category.getId()) ? category.getId()
-				: (D8Conf.HOME_URL + category.getId());
+		return DownloadUtils.isHttpUrl(category.getId()) ? category.getId() : (D8Conf.HOME_URL + category.getId());
 	}
 
 	@Override
 	public Set<CategoryDTO> findCategory() {
 		final Set<CategoryDTO> categories = new LinkedHashSet<>();
 
-		final org.jsoup.nodes.Document doc = Jsoup.parse(getUrlContent(
-				D8Conf.HOME_URL, D8Conf.ENCODING));
+		final org.jsoup.nodes.Document doc = Jsoup.parse(getUrlContent(D8Conf.HOME_URL, D8Conf.ENCODING));
 
 		final Elements select = doc.select("#nav").get(0).child(0).children();
 		for (final Element liElement : select) {
 			final Element aElement = liElement.child(0);
 			final String url = aElement.attr("href");
 			final String name = aElement.text();
-			final CategoryDTO categoryDTO = new CategoryDTO(D8Conf.NAME, name,
-					url, D8Conf.EXTENSION);
+			final CategoryDTO categoryDTO = new CategoryDTO(D8Conf.NAME, name, url, D8Conf.EXTENSION);
 			categoryDTO.addSubCategories(findSubCategories(url));
 			categories.add(categoryDTO);
 
@@ -104,11 +96,9 @@ public class D8PluginManager extends BasePluginWithProxy implements
 	}
 
 	@Override
-	public ProcessHolder download(final DownloadParamDTO downloadParam,
-			final DownloaderPluginHolder downloaders)
+	public ProcessHolder download(final DownloadParamDTO downloadParam, final DownloaderPluginHolder downloaders)
 			throws DownloadFailedException {
-		return CanalUtils.doDownload(downloadParam, downloaders, this,
-				D8Conf.VIDEO_INFO_URL, getName().toLowerCase());
+		return CanalUtils.doDownload(downloadParam, downloaders, this, D8Conf.VIDEO_INFO_URL, getName().toLowerCase());
 	}
 
 	private static String getAttrName(final Element aLink) {
@@ -133,8 +123,7 @@ public class D8PluginManager extends BasePluginWithProxy implements
 						final Element aElement = subDivElement.child(0);
 						final String url = aElement.attr("href");
 						final String name = aElement.child(1).text();
-						final CategoryDTO categoryDTO = new CategoryDTO(
-								D8Conf.NAME, name, url, D8Conf.EXTENSION);
+						final CategoryDTO categoryDTO = new CategoryDTO(D8Conf.NAME, name, url, D8Conf.EXTENSION);
 						categoryDTO.setDownloadable(true);
 						categories.add(categoryDTO);
 					}
@@ -145,14 +134,12 @@ public class D8PluginManager extends BasePluginWithProxy implements
 	}
 
 	private String getFullUrl(final String catUrl) {
-		return DownloadUtils.isHttpUrl(catUrl) ? catUrl : getUrlContent(
-				D8Conf.HOME_URL + catUrl, D8Conf.ENCODING);
+		return DownloadUtils.isHttpUrl(catUrl) ? catUrl : getUrlContent(D8Conf.HOME_URL + catUrl, D8Conf.ENCODING);
 	}
 
 	@Override
 	public DownloadableState canDownload(final String downloadInput) {
-		return downloadInput.startsWith(D8Conf.HOME_URL) ? DownloadableState.SPECIFIC
-				: DownloadableState.IMPOSSIBLE;
+		return downloadInput.startsWith(D8Conf.HOME_URL) ? DownloadableState.SPECIFIC : DownloadableState.IMPOSSIBLE;
 	}
 
 }
