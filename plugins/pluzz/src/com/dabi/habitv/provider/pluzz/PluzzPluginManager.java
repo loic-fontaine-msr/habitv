@@ -117,16 +117,24 @@ public class PluzzPluginManager extends BasePluginWithProxy implements
 			throw new DownloadFailedException(e);
 		}
 		// http://webservices.francetelevisions.fr/tools/getInfosOeuvre/v2/?idDiffusion=104433755&catalogue=Pluzz&callback=webserviceCallback_104433755
-		String url = null;
+		
 		List<Object> videoList = (List<Object>) videoData.get("videos");
+		String urlm3u8 = null;
+		String urlHls = null;
+		String otherUrl = null;
 		for (Object object : videoList) {
 			Map<String, Object> mapVideo = (Map<String, Object>) object;
-			url = (String) mapVideo.get("url");
-			if (((String) mapVideo.get("format")).contains("m3u8")) {
-				return url;
+			String url = (String) mapVideo.get("url");
+			String format = (String) mapVideo.get("format");
+			if (format.contains("m3u8")) {
+				urlm3u8 = url;
+			} else if (format.contains("hls_v5_os")) {
+				urlHls = url;
+			} else {
+				otherUrl = url;
 			}
 		}
-		return url;
+		return urlHls == null ? (urlm3u8 == null ? otherUrl : urlm3u8) : urlHls;
 	}
 
 	private String findMediaIdInPage(String downloadInput) {

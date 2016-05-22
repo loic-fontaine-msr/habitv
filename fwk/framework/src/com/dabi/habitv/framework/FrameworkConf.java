@@ -33,6 +33,8 @@ public interface FrameworkConf {
 	String FFMPEG = "ffmpeg";
 
 	String M3U8 = "m3u8";
+	
+	String M4U8 = "m4u8";
 
 	String UTF8 = "UTF-8";
 

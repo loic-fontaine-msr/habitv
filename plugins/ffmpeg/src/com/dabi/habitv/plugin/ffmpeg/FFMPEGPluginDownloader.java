@@ -67,7 +67,8 @@ public class FFMPEGPluginDownloader extends BaseUpdatablePlugin implements
 
 	@Override
 	public DownloadableState canDownload(final String downloadInput) {
-		return downloadInput.endsWith(FrameworkConf.M3U8) ? DownloadableState.SPECIFIC
+		String mainUrl = downloadInput.split("\\?")[0];
+		return (mainUrl.endsWith(FrameworkConf.M3U8) || mainUrl.endsWith("m4u8")) ? DownloadableState.SPECIFIC
 				: DownloadableState.IMPOSSIBLE;
 	}
 
