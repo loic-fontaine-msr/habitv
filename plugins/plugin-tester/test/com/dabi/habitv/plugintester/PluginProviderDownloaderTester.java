@@ -43,6 +43,7 @@ import com.dabi.habitv.provider.clubic.ClubicPluginManager;
 import com.dabi.habitv.provider.lequipe.LEquipePluginManager;
 import com.dabi.habitv.provider.nrj12.NRJ12PluginManager;
 import com.dabi.habitv.provider.pluzz.PluzzPluginManager;
+import com.dabi.habitv.provider.sfr.SFRPluginManager;
 import com.dabi.habitv.provider.wat.WatPluginManager;
 
 public class PluginProviderDownloaderTester {
@@ -200,6 +201,11 @@ public class PluginProviderDownloaderTester {
 	@Test
 	public final void testProviderPluzz() throws InstantiationException, IllegalAccessException, DownloadFailedException {
 		testPluginProvider(PluzzPluginManager.class, true);
+	}
+	
+	@Test
+	public final void testProviderSfr() throws InstantiationException, IllegalAccessException, DownloadFailedException {
+		testPluginProvider(SFRPluginManager.class, true);
 	}
 
 	private void testPluginProvider(final Class<? extends PluginProviderInterface> prDlPluginClass, final boolean episodeOnlyOnLeaf)
