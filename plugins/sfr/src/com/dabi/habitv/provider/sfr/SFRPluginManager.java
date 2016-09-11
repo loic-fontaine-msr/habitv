@@ -117,8 +117,8 @@ public class SFRPluginManager extends BasePluginWithProxy implements PluginProvi
 		}
 		for (Map<String, Object> map : userData) {
 			String title = (String) map.get("title");
-			if (title.startsWith("EN VIDEO - ")) {
-				episodeList.add(new EpisodeDTO(category, title.replaceFirst("EN VIDEO - ", ""), SFRConf.HOME_URL + (String) map.get("pageUrl")));
+			if (title.contains("VIDEO")) {
+				episodeList.add(new EpisodeDTO(category, title, SFRConf.HOME_URL + (String) map.get("pageUrl")));
 			}
 		}
 	}
