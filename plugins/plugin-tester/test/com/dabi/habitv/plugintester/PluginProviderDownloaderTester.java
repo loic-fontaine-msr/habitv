@@ -204,6 +204,14 @@ public class PluginProviderDownloaderTester {
 	}
 	
 	@Test
+	public final void specificFindEpPluzz() throws DownloadFailedException {
+		Set<EpisodeDTO> ep;
+		ep = new PluzzPluginManager().findEpisode(new CategoryDTO("pluzz", "santa_diabla_fo",
+				"santa_diabla_fo", "mp4"));
+		LOG.error(ep);
+	}
+	
+	@Test
 	public final void testProviderSfr() throws InstantiationException, IllegalAccessException, DownloadFailedException {
 		testPluginProvider(SFRPluginManager.class, true);
 	}

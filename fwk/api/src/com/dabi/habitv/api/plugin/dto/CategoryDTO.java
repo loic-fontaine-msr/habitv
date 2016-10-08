@@ -213,9 +213,12 @@ public class CategoryDTO implements Comparable<CategoryDTO>, Serializable {
 		boolean ret;
 		if (obj instanceof CategoryDTO) {
 			final CategoryDTO category = (CategoryDTO) obj;
-			ret = getName().equals(category.getName());
+			ret = getId().equals(category.getId());
 			if (ret) {
 				ret = getPlugin().equals(category.getPlugin());
+				if (ret && getFatherCategory() != null) {
+					ret = getFatherCategory().equals(category.getFatherCategory());
+				}
 			}
 		} else {
 			ret = false;

@@ -28,11 +28,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 public class JsonArchiveParser {
 
-	private static final Logger LOGGER = Logger
-			.getLogger(JsonArchiveParser.class);
+	private static final Logger LOGGER = Logger.getLogger(JsonArchiveParser.class);
 
 	private final Map<String, CategoryDTO> catName2RootCat;
-	private final Map<String, CategoryDTO> catId2LeafCat;
+	private final Map<String, CategoryDTO> catName2LeafCat;
 	private final Map<String, Collection<EpisodeDTO>> catName2Episode;
 	private final String zipUrl;
 	private final Proxy proxy;
@@ -44,7 +43,7 @@ public class JsonArchiveParser {
 	public JsonArchiveParser(final String zipUrl, final Proxy proxy) {
 		super();
 		catName2RootCat = new HashMap<String, CategoryDTO>();
-		catId2LeafCat = new HashMap<String, CategoryDTO>();
+		catName2LeafCat = new HashMap<String, CategoryDTO>();
 		catName2Episode = new HashMap<String, Collection<EpisodeDTO>>();
 		this.zipUrl = zipUrl;
 		this.proxy = proxy;
@@ -54,14 +53,13 @@ public class JsonArchiveParser {
 	 * @return the categories and episode of the archive
 	 */
 	public Archive load() {
-		final ZipInputStream zin = new ZipInputStream(
-				RetrieverUtils.getInputStreamFromUrl(zipUrl, proxy));
+		final ZipInputStream zin = new ZipInputStream(RetrieverUtils.getInputStreamFromUrl(zipUrl, proxy));
 		ZipEntry zipEntry;
 		try {
 			zipEntry = zin.getNextEntry();
 			while (zipEntry != null) {
 				LOGGER.debug(zipEntry.getName());
-				if (zipEntry.getName().startsWith("catch_up_")) {
+				if (zipEntry.getName().startsWith("catch_up_") || zipEntry.getName().startsWith("guide_tv_")) {
 					loadEntry(zin);
 					zin.closeEntry();
 				}
@@ -79,19 +77,16 @@ public class JsonArchiveParser {
 		return new Archive(this.catName2RootCat.values(), catName2Episode);
 	}
 
-	private void loadEntry(final InputStream zin) throws JsonParseException,
-			JsonMappingException, IOException {
+	private void loadEntry(final InputStream zin) throws JsonParseException, JsonMappingException, IOException {
 		final ObjectMapper mapper = new ObjectMapper();
 		@SuppressWarnings("unchecked")
-		final Map<String, Object> userData = mapper.readValue(
-				buildUnclosableStream(zin), Map.class);
+		final Map<String, Object> userData = mapper.readValue(buildUnclosableStream(zin), Map.class);
 		buildCategoriesAndEpisode(userData);
 	}
 
 	@SuppressWarnings("unchecked")
 	private void buildCategoriesAndEpisode(final Map<String, Object> userData) {
-		final List<Object> programmes = (List<Object>) userData
-				.get("programmes");
+		final List<Object> programmes = (List<Object>) userData.get("programmes");
 		for (final Object objectProgramme : programmes) {
 			final CategoryDTO category = loadCategory((Map<String, Object>) objectProgramme);
 			category.setDownloadable(true);
@@ -99,14 +94,12 @@ public class JsonArchiveParser {
 		}
 	}
 
-	private void loadEpisode(final Map<String, Object> objectProgramme,
-			final CategoryDTO category) {
+	private void loadEpisode(final Map<String, Object> objectProgramme, final CategoryDTO category) {
 		final String name = buildName(objectProgramme);
 		// final String videoUrl = (String) objectProgramme.get("url_video");
 		final String id = (String) objectProgramme.get("id_diffusion");
 		final String urlSite = (String) objectProgramme.get("url_site");
-		final EpisodeDTO episodeDTO = new EpisodeDTO(category, name, urlSite
-				+ "/videos/" + id);
+		final EpisodeDTO episodeDTO = new EpisodeDTO(category, name + "-" + id, urlSite + "/videos/" + id);
 		addEpisodeToCat(episodeDTO);
 	}
 
@@ -125,21 +118,19 @@ public class JsonArchiveParser {
 		CategoryDTO fatherCategory = catName2RootCat.get(fatherCatName);
 		if (fatherCategory == null) {
 			if (fatherCatName == null || fatherCatName.isEmpty()) {
-				fatherCategory = new CategoryDTO(PluzzConf.NAME,
-						"Pas de rubrique", "Pas de rubrique", PluzzConf.EXTENSION);
+				fatherCategory = new CategoryDTO(PluzzConf.NAME, "Pas de rubrique", "Pas de rubrique",
+						PluzzConf.EXTENSION);
 			} else {
-				fatherCategory = new CategoryDTO(PluzzConf.NAME, fatherCatName,
-						fatherCatName, PluzzConf.EXTENSION);
+				fatherCategory = new CategoryDTO(PluzzConf.NAME, fatherCatName, fatherCatName, PluzzConf.EXTENSION);
 			}
 			catName2RootCat.put(fatherCatName, fatherCategory);
 		}
 		final String catId = (String) objectProgramme.get("code_programme");
 		final String name = (String) objectProgramme.get("titre");
-		CategoryDTO category = catId2LeafCat.get(catId);
+		CategoryDTO category = catName2LeafCat.get(name);
 		if (category == null) {
-			category = new CategoryDTO(PluzzConf.NAME, name, catId,
-					PluzzConf.EXTENSION);
-			catId2LeafCat.put(catId, category);
+			category = new CategoryDTO(PluzzConf.NAME, name, catId, PluzzConf.EXTENSION);
+			catName2LeafCat.put(name, category);
 			fatherCategory.addSubCategory(category);
 		}
 		return category;
@@ -184,8 +175,7 @@ public class JsonArchiveParser {
 			 * @see java.io.InputStream#read(byte[], int, int)
 			 */
 			@Override
-			public int read(final byte[] b, final int off, final int len)
-					throws IOException {
+			public int read(final byte[] b, final int off, final int len) throws IOException {
 				return zin.read(b, off, len);
 			}
 
