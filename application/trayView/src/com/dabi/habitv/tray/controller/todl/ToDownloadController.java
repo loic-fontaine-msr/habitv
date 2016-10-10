@@ -12,6 +12,24 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 
+import com.dabi.habitv.api.plugin.dto.CategoryDTO;
+import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
+import com.dabi.habitv.api.plugin.dto.StatusEnum;
+import com.dabi.habitv.api.plugin.pub.UpdatablePluginEvent;
+import com.dabi.habitv.core.event.RetreiveEvent;
+import com.dabi.habitv.core.event.SearchCategoryEvent;
+import com.dabi.habitv.core.event.SearchEvent;
+import com.dabi.habitv.core.event.UpdatePluginEvent;
+import com.dabi.habitv.framework.FrameworkConf;
+import com.dabi.habitv.framework.plugin.utils.DownloadUtils;
+import com.dabi.habitv.framework.plugin.utils.RetrieverUtils;
+import com.dabi.habitv.tray.Popin;
+import com.dabi.habitv.tray.PopinController.ButtonHandler;
+import com.dabi.habitv.tray.controller.BaseController;
+import com.dabi.habitv.tray.controller.todl.CategoryTreeItem.SelectionChangeHandler;
+import com.dabi.habitv.tray.subscriber.CoreSubscriber;
+import com.dabi.habitv.utils.FilterUtils;
+
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -41,24 +59,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
-
-import com.dabi.habitv.api.plugin.dto.CategoryDTO;
-import com.dabi.habitv.api.plugin.dto.EpisodeDTO;
-import com.dabi.habitv.api.plugin.dto.StatusEnum;
-import com.dabi.habitv.api.plugin.pub.UpdatablePluginEvent;
-import com.dabi.habitv.core.event.RetreiveEvent;
-import com.dabi.habitv.core.event.SearchCategoryEvent;
-import com.dabi.habitv.core.event.SearchEvent;
-import com.dabi.habitv.core.event.UpdatePluginEvent;
-import com.dabi.habitv.framework.FrameworkConf;
-import com.dabi.habitv.framework.plugin.utils.DownloadUtils;
-import com.dabi.habitv.framework.plugin.utils.RetrieverUtils;
-import com.dabi.habitv.tray.Popin;
-import com.dabi.habitv.tray.PopinController.ButtonHandler;
-import com.dabi.habitv.tray.controller.BaseController;
-import com.dabi.habitv.tray.controller.todl.CategoryTreeItem.SelectionChangeHandler;
-import com.dabi.habitv.tray.subscriber.CoreSubscriber;
-import com.dabi.habitv.utils.FilterUtils;
 
 public class ToDownloadController extends BaseController implements CoreSubscriber {
 
@@ -410,7 +410,20 @@ public class ToDownloadController extends BaseController implements CoreSubscrib
 		});
 
 		episodeListView.setContextMenu(buildEpisodeContextMenu());
+
+		episodeListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<EpisodeDTO>() {
+
+			@Override
+			public void changed(ObservableValue<? extends EpisodeDTO> observable, EpisodeDTO oldValue,
+					EpisodeDTO newValue) {
+				if (ouvrirUrl != null && observable.getValue() != null) {
+					ouvrirUrl.setDisable(!observable.getValue().getId().startsWith("http:"));
+				}
+			}
+		});
 	}
+
+	MenuItem ouvrirUrl = new MenuItem("Ouvrir dans le navigateur");
 
 	private ContextMenu buildEpisodeContextMenu() {
 		ContextMenu contextMenu = new ContextMenu();
@@ -434,7 +447,6 @@ public class ToDownloadController extends BaseController implements CoreSubscrib
 		});
 		contextMenu.getItems().add(urlCopie);
 
-		MenuItem ouvrirUrl = new MenuItem("Ouvrir dans le navigateur");
 		ouvrirUrl.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
@@ -455,6 +467,9 @@ public class ToDownloadController extends BaseController implements CoreSubscrib
 				downloadedEpisodes.add(episode.getName());
 			}
 		});
+
+		contextMenu.getItems().add(marquerTelecharger);
+
 		return contextMenu;
 	}
 

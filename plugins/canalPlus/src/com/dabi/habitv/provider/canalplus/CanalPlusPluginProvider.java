@@ -2,6 +2,7 @@ package com.dabi.habitv.provider.canalplus;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -31,14 +32,15 @@ public class CanalPlusPluginProvider extends BasePluginWithProxy implements Plug
 			final Map<String, Object> catData = mapper.readValue(getInputStreamFromUrl(category.getId()), Map.class);
 
 			List<Object> strates = (List<Object>) catData.get("strates");
+			Set<EpisodeDTO> epList = new HashSet<>();
 			for (Object strateObject : strates) {
 				Map<String, Object> strateMap = (Map<String, Object>) strateObject;
 				String type = (String) strateMap.get("type");
 				if ("contentGrid".equals(type) || "contentRow".equals(type)) {
-					return findEpisodes(category, (List<Object>) strateMap.get("contents"));
+					epList.addAll(findEpisodes(category, (List<Object>) strateMap.get("contents")));
 				}
 			}
-			return Collections.emptySet();
+			return epList;
 		} catch (IOException e) {
 			throw new DownloadFailedException(e);
 		}

@@ -36,7 +36,6 @@ import com.dabi.habitv.plugin.rss.RSSPluginManager;
 import com.dabi.habitv.provider.arte.ArtePluginManager;
 import com.dabi.habitv.provider.beinsport.BeinSportPluginManager;
 import com.dabi.habitv.provider.canalplus.CanalPlusPluginProvider;
-import com.dabi.habitv.provider.canalplus.CanalSportPluginProvider;
 import com.dabi.habitv.provider.canalplus.D17PluginManager;
 import com.dabi.habitv.provider.canalplus.D8PluginManager;
 import com.dabi.habitv.provider.clubic.ClubicPluginManager;
@@ -76,8 +75,8 @@ public class PluginProviderDownloaderTester {
 		downloaderName2downloader.put(FrameworkConf.YOUTUBE, mockDownloader);
 
 		final Map<String, String> downloaderName2BinPath = new HashMap<>();
-		downloaders = new DownloaderPluginHolder("cmdProcessor", downloaderName2downloader, downloaderName2BinPath, "downloadOutputDir",
-				"indexDir", "binDir", "plugins");
+		downloaders = new DownloaderPluginHolder("cmdProcessor", downloaderName2downloader, downloaderName2BinPath,
+				"downloadOutputDir", "indexDir", "binDir", "plugins");
 	}
 
 	@After
@@ -86,8 +85,9 @@ public class PluginProviderDownloaderTester {
 
 	@Test
 	public final void specificCheckDownload() throws DownloadFailedException {
-		testEpisode(new BeinSportPluginManager(), new EpisodeDTO(new CategoryDTO("channel", "name", "identifier", "extension"), "name",
-				"http://beinsports.fr/videos/article/1bcejiwk7j23e1unkovve3heku"));
+		testEpisode(new BeinSportPluginManager(),
+				new EpisodeDTO(new CategoryDTO("channel", "name", "identifier", "extension"), "name",
+						"http://beinsports.fr/videos/article/1bcejiwk7j23e1unkovve3heku"));
 	}
 
 	@Test
@@ -103,7 +103,8 @@ public class PluginProviderDownloaderTester {
 	}
 
 	@Test
-	public final void testProviderArte() throws InstantiationException, IllegalAccessException, DownloadFailedException {
+	public final void testProviderArte()
+			throws InstantiationException, IllegalAccessException, DownloadFailedException {
 		testPluginProvider(ArtePluginManager.class, true);
 	}
 
@@ -123,17 +124,20 @@ public class PluginProviderDownloaderTester {
 	}
 
 	@Test
-	public final void testProviderLEquipe() throws InstantiationException, IllegalAccessException, DownloadFailedException {
+	public final void testProviderLEquipe()
+			throws InstantiationException, IllegalAccessException, DownloadFailedException {
 		testPluginProvider(LEquipePluginManager.class, true);
 	}
 
 	@Test
-	public final void testProviderNRJ12() throws InstantiationException, IllegalAccessException, DownloadFailedException {
+	public final void testProviderNRJ12()
+			throws InstantiationException, IllegalAccessException, DownloadFailedException {
 		testPluginProvider(NRJ12PluginManager.class, true);
 	}
 
 	@Test
-	public final void testProviderCanalPlus() throws InstantiationException, IllegalAccessException, DownloadFailedException {
+	public final void testProviderCanalPlus()
+			throws InstantiationException, IllegalAccessException, DownloadFailedException {
 		testPluginProvider(CanalPlusPluginProvider.class, false);
 	}
 
@@ -147,14 +151,9 @@ public class PluginProviderDownloaderTester {
 		// Assert.assertNotNull(ep);
 		// LOG.error(ep);
 
-		ep = new CanalPlusPluginProvider().findEpisode(new CategoryDTO("channel", "name",
-				"http://service.mycanal.fr/page/6d4d60f9c6b98415e0d48f6ab8c027a1/4086.json?cache=300000", "extension"));
+		ep = new CanalPlusPluginProvider().findEpisode(new CategoryDTO("c+", "Football",
+				"http://service.mycanal.fr/page/0e269fd07e3e10af4099b87b77825782/4086.json?cache=300000", "mp4"));
 		LOG.error(ep);
-	}
-
-	@Test
-	public final void testProviderCanalFootballClub() throws InstantiationException, IllegalAccessException, DownloadFailedException {
-		testPluginProvider(CanalSportPluginProvider.class, false);
 	}
 
 	@Test
@@ -172,7 +171,8 @@ public class PluginProviderDownloaderTester {
 	}
 
 	@Test
-	public final void testProviderFile() throws InstantiationException, IllegalAccessException, DownloadFailedException {
+	public final void testProviderFile()
+			throws InstantiationException, IllegalAccessException, DownloadFailedException {
 		File dest = new File(TEST_FILE);
 		dest.delete();
 		File done = new File(TEST_FILE + ".done");
@@ -182,7 +182,8 @@ public class PluginProviderDownloaderTester {
 			@Override
 			public Set<CategoryDTO> findCategory() {
 				checkCategories(super.findCategory());
-				return new LinkedHashSet<>(Arrays.asList(new CategoryDTO("file", TEST_FILE, TEST_FILE, FrameworkConf.MP4)));
+				return new LinkedHashSet<>(
+						Arrays.asList(new CategoryDTO("file", TEST_FILE, TEST_FILE, FrameworkConf.MP4)));
 			}
 		};
 		testPluginProvider(plugin, true);
@@ -194,35 +195,39 @@ public class PluginProviderDownloaderTester {
 	}
 
 	@Test
-	public final void testProviderClubic() throws InstantiationException, IllegalAccessException, DownloadFailedException {
+	public final void testProviderClubic()
+			throws InstantiationException, IllegalAccessException, DownloadFailedException {
 		testPluginProvider(ClubicPluginManager.class, true);
 	}
 
 	@Test
-	public final void testProviderPluzz() throws InstantiationException, IllegalAccessException, DownloadFailedException {
+	public final void testProviderPluzz()
+			throws InstantiationException, IllegalAccessException, DownloadFailedException {
 		testPluginProvider(PluzzPluginManager.class, true);
 	}
-	
+
 	@Test
 	public final void specificFindEpPluzz() throws DownloadFailedException {
 		Set<EpisodeDTO> ep;
-		ep = new PluzzPluginManager().findEpisode(new CategoryDTO("pluzz", "santa_diabla_fo",
-				"santa_diabla_fo", "mp4"));
+		ep = new PluzzPluginManager()
+				.findEpisode(new CategoryDTO("pluzz", "santa_diabla_fo", "santa_diabla_fo", "mp4"));
 		LOG.error(ep);
 	}
-	
+
 	@Test
 	public final void testProviderSfr() throws InstantiationException, IllegalAccessException, DownloadFailedException {
 		testPluginProvider(SFRPluginManager.class, true);
 	}
 
-	private void testPluginProvider(final Class<? extends PluginProviderInterface> prDlPluginClass, final boolean episodeOnlyOnLeaf)
+	private void testPluginProvider(final Class<? extends PluginProviderInterface> prDlPluginClass,
+			final boolean episodeOnlyOnLeaf)
 			throws InstantiationException, IllegalAccessException, DownloadFailedException {
 		final PluginProviderInterface plugin = prDlPluginClass.newInstance();
 		testPluginProvider(plugin, episodeOnlyOnLeaf);
 	}
 
-	private void testPluginProvider(final PluginProviderInterface plugin, final boolean episodeOnlyOnLeaf) throws DownloadFailedException {
+	private void testPluginProvider(final PluginProviderInterface plugin, final boolean episodeOnlyOnLeaf)
+			throws DownloadFailedException {
 		LOG.error("---------------------------------------------------------------------");
 		LOG.error("searching categories for " + plugin.getName());
 		final Set<CategoryDTO> categories = plugin.findCategory();
@@ -256,7 +261,8 @@ public class PluginProviderDownloaderTester {
 		}
 	}
 
-	private void testEpisode(final PluginProviderInterface plugin, final EpisodeDTO episode) throws DownloadFailedException {
+	private void testEpisode(final PluginProviderInterface plugin, final EpisodeDTO episode)
+			throws DownloadFailedException {
 		LOG.error("episode found " + episode);
 		LOG.error("episode id " + episode.getId());
 

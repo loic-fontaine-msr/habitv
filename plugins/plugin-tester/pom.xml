@@ -73,7 +73,7 @@
 		<dependency>
 			<groupId>com.dabi.habitv</groupId>
 			<artifactId>pluzz</artifactId>
-			<version>4.0.8-SNAPSHOT</version>
+			<version>[4.0-SNAPSHOT,4.1)</version>
 		</dependency>
 		<dependency>
 			<groupId>com.dabi.habitv</groupId>
