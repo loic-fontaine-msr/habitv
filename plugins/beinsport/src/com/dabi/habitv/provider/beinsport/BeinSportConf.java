@@ -18,4 +18,6 @@ interface BeinSportConf {
 
 	String HOME_URL = "http://www.beinsports.com";
 
+	String CAT_URL = "http://www.beinsports.com/france/videos?categories[0]=";
+
 }

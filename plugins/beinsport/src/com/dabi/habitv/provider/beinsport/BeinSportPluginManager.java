@@ -6,7 +6,6 @@ import java.util.Set;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 import com.dabi.habitv.api.plugin.api.PluginProviderDownloaderInterface;
 import com.dabi.habitv.api.plugin.dto.CategoryDTO;
@@ -31,7 +30,7 @@ public class BeinSportPluginManager extends BasePluginWithProxy implements Plugi
 	public Set<EpisodeDTO> findEpisode(final CategoryDTO category) {
 		final Set<EpisodeDTO> episodeList = new LinkedHashSet<>();
 
-		final org.jsoup.nodes.Document doc = Jsoup.parse(getUrlContent(category.getId()));
+		final org.jsoup.nodes.Document doc = Jsoup.parse(getUrlContent(BeinSportConf.CAT_URL + category.getId()));
 
 		for (final Element article : doc.select("article.cluster_video__article")) {
 			Element aHref = article.select("h3 a").first();
@@ -58,8 +57,8 @@ public class BeinSportPluginManager extends BasePluginWithProxy implements Plugi
 	@Override
 	public Set<CategoryDTO> findCategory() {
 		final Set<CategoryDTO> categoryDTOs = new LinkedHashSet<>();
-		CategoryDTO videoCategory = new CategoryDTO(BeinSportConf.VIDEOS_CATEGORY, BeinSportConf.VIDEOS_CATEGORY, BeinSportConf.VIDEOS_URL,
-				BeinSportConf.EXTENSION);
+		CategoryDTO videoCategory = new CategoryDTO(BeinSportConf.VIDEOS_CATEGORY, BeinSportConf.VIDEOS_CATEGORY,
+				BeinSportConf.VIDEOS_URL, BeinSportConf.EXTENSION);
 		videoCategory.setDownloadable(true);
 		addSubCategories(videoCategory);
 		categoryDTOs.add(videoCategory);
@@ -79,35 +78,22 @@ public class BeinSportPluginManager extends BasePluginWithProxy implements Plugi
 			throw new TechnicalException(e);
 		}
 
-		Elements selects = doc.select("select.bein-selectBox");
-		Element showTypeSelect = selects.get(1);
-		Element catSelect = selects.get(0);
-
-		addSubCategories(category, catSelect, showTypeSelect);
+		addSubCategories(category, doc);
 	}
 
-	private void addSubCategories(CategoryDTO category, Element catSelect, Element showTypeSelect) {
-		for (final Element option : catSelect.select("option")) {
+	private void addSubCategories(CategoryDTO category, Element doc) {
+		for (final Element option : doc.select("#video-central__sports option")) {
 			final String catRel = option.attr("value");
 			if (!"all".equals(catRel)) {
 				String catName = option.text();
-				CategoryDTO catCategory = buildSubCategory(category, catName, catRel, "all");
+				CategoryDTO catCategory = buildSubCategory(category, catName, catRel);
 				category.addSubCategory(catCategory);
-				for (final Element optionShow : showTypeSelect.select("option")) {
-					final String showRel = optionShow.attr("value");
-					if (!"all".equals(showRel)) {
-						String showName = optionShow.text();
-						CategoryDTO showCategory = buildSubCategory(category, catName + " : " + showName, catRel, showRel);
-						catCategory.addSubCategory(showCategory);
-					}
-				}
 			}
 		}
 	}
 
-	private CategoryDTO buildSubCategory(CategoryDTO category, final String name, String cat, String type) {
-		CategoryDTO subCategory = new CategoryDTO(BeinSportConf.NAME, name, category.getId() + "/" + cat + "/" + type,
-				BeinSportConf.EXTENSION);
+	private CategoryDTO buildSubCategory(CategoryDTO category, final String name, String cat) {
+		CategoryDTO subCategory = new CategoryDTO(BeinSportConf.NAME, name, cat, BeinSportConf.EXTENSION);
 		subCategory.setDownloadable(true);
 		return subCategory;
 	}
@@ -116,7 +102,8 @@ public class BeinSportPluginManager extends BasePluginWithProxy implements Plugi
 	public ProcessHolder download(final DownloadParamDTO downloadParam, final DownloaderPluginHolder downloaders)
 			throws DownloadFailedException {
 		return DownloadUtils.download(
-				DownloadParamDTO.buildDownloadParam(downloadParam, findUrlDownload(downloadParam.getDownloadInput())), downloaders);
+				DownloadParamDTO.buildDownloadParam(downloadParam, findUrlDownload(downloadParam.getDownloadInput())),
+				downloaders);
 	}
 
 	private String findUrlDownload(String downloadInput) {
@@ -131,7 +118,8 @@ public class BeinSportPluginManager extends BasePluginWithProxy implements Plugi
 
 	@Override
 	public DownloadableState canDownload(final String downloadInput) {
-		return downloadInput.startsWith(BeinSportConf.HOME_URL) ? DownloadableState.SPECIFIC : DownloadableState.IMPOSSIBLE;
+		return downloadInput.startsWith(BeinSportConf.HOME_URL) ? DownloadableState.SPECIFIC
+				: DownloadableState.IMPOSSIBLE;
 	}
 
 }

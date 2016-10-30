@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.dabi.habitv</groupId>
@@ -8,13 +9,13 @@
 	</parent>
 	<artifactId>beinsport</artifactId>
 	<name>beinsport</name>
-	<version>4.0.10-SNAPSHOT</version>
-	
+	<version>4.0.11-SNAPSHOT</version>
+
 	<scm>
-        <connection>scm:svn:http://subversion.assembla.com/svn/habitv/trunk/plugins/beinsport</connection>
-        <developerConnection>scm:svn:http://subversion.assembla.com/svn/habitv/trunk/plugins/beinsport</developerConnection>
-    </scm>
-	
+		<connection>scm:svn:http://subversion.assembla.com/svn/habitv/trunk/plugins/beinsport</connection>
+		<developerConnection>scm:svn:http://subversion.assembla.com/svn/habitv/trunk/plugins/beinsport</developerConnection>
+	</scm>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.jsoup</groupId>
@@ -31,6 +32,17 @@
 		<dependency>
 			<groupId>com.dabi.habitv</groupId>
 			<artifactId>api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.dabi.habitv</groupId>
+			<artifactId>plugin-tester</artifactId>
+			<version>4.0.6-SNAPSHOT</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
 		</dependency>		
 	</dependencies>
 
