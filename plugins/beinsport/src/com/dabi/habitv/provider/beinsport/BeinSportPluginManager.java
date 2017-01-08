@@ -92,7 +92,7 @@ public class BeinSportPluginManager extends BasePluginWithProxy implements Plugi
 			Element element = it.next();
 			if ("h3".equals(element.tagName())) {
 				Element link = element.select("a").first();
-				if (mainCat.getId().equals(link.attr("href"))) {
+				if (mainCat.getId().equals(link.attr("href")+"videos")) {
 					element = it.next();
 					for (Element aLink : element.select("li a")) {
 						String text = aLink.text();
