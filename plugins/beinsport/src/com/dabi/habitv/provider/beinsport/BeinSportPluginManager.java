@@ -78,7 +78,7 @@ public class BeinSportPluginManager extends BasePluginWithProxy implements Plugi
 			Elements aMain = liMain.select(">a");
 			if (aMain.hasClass("taxonomy-mobile")) {
 				final String href = aMain.attr("href");
-				final String text = aMain.text();
+				final String text = aMain.text()+"videos";
 				CategoryDTO mainCat = buildSubCategory(category, text, href);
 				addSubSubCat(mainCat, doc);
 				category.addSubCategory(mainCat);
