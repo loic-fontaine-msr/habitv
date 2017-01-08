@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Element;
+
 import com.dabi.habitv.api.plugin.api.PluginProviderDownloaderInterface;
 import com.dabi.habitv.api.plugin.dto.CategoryDTO;
 import com.dabi.habitv.api.plugin.dto.DownloadParamDTO;
@@ -15,7 +18,6 @@ import com.dabi.habitv.api.plugin.holder.ProcessHolder;
 import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.api.BasePluginWithProxy;
 import com.dabi.habitv.framework.plugin.utils.DownloadUtils;
-import com.dabi.habitv.framework.plugin.utils.RetrieverUtils;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -33,7 +35,7 @@ public class ArtePluginManager extends BasePluginWithProxy implements PluginProv
 
 	@Override
 	public Set<CategoryDTO> findCategory() {
-		return findCategories(RetrieverUtils.getUrlContent(ArteConf.CAT_PAGE, FrameworkConf.UTF8, getHttpProxy()));
+		return findCategories();
 	}
 
 	@Override
@@ -44,7 +46,7 @@ public class ArtePluginManager extends BasePluginWithProxy implements PluginProv
 
 	private Set<EpisodeDTO> findEpisodeByCategory(final CategoryDTO category) {
 		return jsonToEpisodes(category,
-				getJsonLine(RetrieverUtils.getUrlContent(category.getId(), FrameworkConf.UTF8, getHttpProxy()), "categoryVideoSet"));
+				getJsonLine(category.getId(), "#container-collection", "data-categoryVideoSet"));
 	}
 
 	private Set<EpisodeDTO> jsonToEpisodes(CategoryDTO category, String jsonLine) {
@@ -55,8 +57,7 @@ public class ArtePluginManager extends BasePluginWithProxy implements PluginProv
 			JsonNode jsonNode;
 			try {
 				jsonNode = objectMapper.readTree(jsonLine);
-				JsonNode categoriesVideso = jsonNode.get("categoryVideoSet");
-				for (JsonNode catVide : categoriesVideso.get("videos")) {
+				for (JsonNode catVide : jsonNode.get("videos")) {
 					episodeList.add(new EpisodeDTO(category, getTitle(catVide), catVide.get("url").asText()));
 				}
 			} catch (IOException e) {
@@ -81,18 +82,20 @@ public class ArtePluginManager extends BasePluginWithProxy implements PluginProv
 		return title.toString();
 	}
 
-	private Set<CategoryDTO> findCategories(final String urlContent) {
-		return jsonToCategories(getJsonLine(urlContent, "categoriesVideos"));
+	private Set<CategoryDTO> findCategories() {
+		return jsonToCategories(getJsonLine(ArteConf.CAT_PAGE, "#home", "data-categoriesVideos"));
 	}
 
-	private String getJsonLine(final String urlContent, String properties) {
-		String lineJson = null;
-		for (String line : urlContent.split("\\n")) {
-			if (line.contains(properties)) {
-				lineJson = "{" + line.replace(properties, "\"" + properties + "\"") + "\"lol\":{}}";
-			}
+	private String getJsonLine(String url, String blockId, String properties) {
+		org.jsoup.nodes.Document doc;
+		try {
+			doc = Jsoup.parse(getInputStreamFromUrl(url), "UTF-8", url);
+		} catch (IOException e) {
+			throw new TechnicalException(e);
 		}
-		return lineJson;
+		Element homeElement = doc.select(blockId).first();
+		String json = homeElement.attr(properties);
+		return json;
 	}
 
 	private Set<CategoryDTO> jsonToCategories(String lineJson) {
@@ -102,11 +105,10 @@ public class ArtePluginManager extends BasePluginWithProxy implements PluginProv
 			JsonNode jsonNode;
 			try {
 				jsonNode = objectMapper.readTree(lineJson);
-				JsonNode categoriesVideso = jsonNode.get("categoriesVideos");
-				for (JsonNode categorie : categoriesVideso) {
+				for (JsonNode categorie : jsonNode) {
 					JsonNode cat = categorie.get("category");
-					CategoryDTO category = new CategoryDTO(ArteConf.NAME, cat.get("name").asText(), ArteConf.HOME_URL
-							+ cat.get("url").asText(), FrameworkConf.MP4);
+					CategoryDTO category = new CategoryDTO(ArteConf.NAME, cat.get("name").asText(),
+							ArteConf.HOME_URL + cat.get("url").asText(), FrameworkConf.MP4);
 					category.setDownloadable(true);
 					categoryDTOs.add(category);
 				}
