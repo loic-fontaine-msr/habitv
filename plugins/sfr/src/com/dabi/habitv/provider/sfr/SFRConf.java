@@ -14,5 +14,5 @@ public interface SFRConf {
 
 	int MAX_PAGE = 5;
 
-	String VIDEOS_URL = "https://sport.sfr.fr/api/rest/tracking/media/category/%s/?page=%s";
+	String VIDEOS_URL = "https://sport.sfr.fr/api/rest/tracking/published/category/%s/?page=%s";
 }

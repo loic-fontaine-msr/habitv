@@ -31,11 +31,6 @@
 		</dependency>
 		<dependency>
 			<groupId>com.dabi.habitv</groupId>
-			<artifactId>beinsport</artifactId>
-			<version>[4.0-SNAPSHOT,4.1)</version>
-		</dependency>
-		<dependency>
-			<groupId>com.dabi.habitv</groupId>
 			<artifactId>canalPlus</artifactId>
 			<version>[4.0-SNAPSHOT,4.1)</version>
 		</dependency>
@@ -99,11 +94,5 @@
 			<artifactId>clubic</artifactId>
 			<version>[4.0-SNAPSHOT,4.1)</version>
 		</dependency>		
-		<dependency>
-			<groupId>com.dabi.habitv</groupId>
-			<artifactId>sfr</artifactId>
-			<version>[4.0-SNAPSHOT,4.1)</version>
-		</dependency>			
 	</dependencies>
-
 </project>
