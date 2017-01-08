@@ -1,11 +1,13 @@
 package com.dabi.habitv.provider.beinsport;
 
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import com.dabi.habitv.api.plugin.api.PluginProviderDownloaderInterface;
 import com.dabi.habitv.api.plugin.dto.CategoryDTO;
@@ -30,26 +32,16 @@ public class BeinSportPluginManager extends BasePluginWithProxy implements Plugi
 	public Set<EpisodeDTO> findEpisode(final CategoryDTO category) {
 		final Set<EpisodeDTO> episodeList = new LinkedHashSet<>();
 
-		final org.jsoup.nodes.Document doc = Jsoup.parse(getUrlContent(BeinSportConf.CAT_URL + category.getId()));
+		for (int i = 1; i <= 3; i++) {
+			final org.jsoup.nodes.Document doc = Jsoup
+					.parse(getUrlContent(BeinSportConf.HOME_URL + category.getId() + "/" + i));
 
-		for (final Element article : doc.select("article.cluster_video__article")) {
-			Element aHref = article.select("h3 a").first();
-			final String href = BeinSportConf.HOME_URL + aHref.attr("data-url");
-			Element img = article.select("img").first();
-			String name;
-			if (img == null) {
-				name = aHref.text();
-			} else {
-				name = img.attr("alt");
+			for (final Element aHref : doc.select("figcaption a")) {
+				String href = BeinSportConf.HOME_URL + aHref.attr("href");
+				String name = aHref.text();
+				name = SoccerUtils.maskScore(name);
+				episodeList.add(new EpisodeDTO(category, name, href));
 			}
-			name = SoccerUtils.maskScore(name);
-			if (name.contains(" : ")) {
-				Element time = article.select("time").first();
-				if (time != null) {
-					name = name.substring(0, name.indexOf(":")) + time.attr("datetime");
-				}
-			}
-			episodeList.add(new EpisodeDTO(category, name, href));
 		}
 		return episodeList;
 	}
@@ -59,7 +51,7 @@ public class BeinSportPluginManager extends BasePluginWithProxy implements Plugi
 		final Set<CategoryDTO> categoryDTOs = new LinkedHashSet<>();
 		CategoryDTO videoCategory = new CategoryDTO(BeinSportConf.VIDEOS_CATEGORY, BeinSportConf.VIDEOS_CATEGORY,
 				BeinSportConf.VIDEOS_URL, BeinSportConf.EXTENSION);
-		videoCategory.setDownloadable(true);
+		videoCategory.setDownloadable(false);
 		addSubCategories(videoCategory);
 		categoryDTOs.add(videoCategory);
 		final CategoryDTO replayCategory = new CategoryDTO(BeinSportConf.REPLAY_CATEGORY, BeinSportConf.REPLAY_CATEGORY,
@@ -82,12 +74,33 @@ public class BeinSportPluginManager extends BasePluginWithProxy implements Plugi
 	}
 
 	private void addSubCategories(CategoryDTO category, Element doc) {
-		for (final Element option : doc.select("#video-central__sports option")) {
-			final String catRel = option.attr("value");
-			if (!"all".equals(catRel)) {
-				String catName = option.text();
-				CategoryDTO catCategory = buildSubCategory(category, catName, catRel);
-				category.addSubCategory(catCategory);
+		for (final Element liMain : doc.select(".top_menu__list>li")) {
+			Elements aMain = liMain.select(">a");
+			if (aMain.hasClass("taxonomy-mobile")) {
+				final String href = aMain.attr("href");
+				final String text = aMain.text();
+				CategoryDTO mainCat = buildSubCategory(category, text, href);
+				addSubSubCat(mainCat, doc);
+				category.addSubCategory(mainCat);
+			}
+		}
+	}
+
+	private void addSubSubCat(CategoryDTO mainCat, Element doc) {
+		Iterator<Element> it = doc.select(".sports_links_column>*").iterator();
+		while (it.hasNext()) {
+			Element element = it.next();
+			if ("h3".equals(element.tagName())) {
+				Element link = element.select("a").first();
+				if (mainCat.getId().equals(link.attr("href"))) {
+					element = it.next();
+					for (Element aLink : element.select("li a")) {
+						String text = aLink.text();
+						String href = aLink.attr("href") + "videos";
+						CategoryDTO secondCat = buildSubCategory(mainCat, text, href);
+						mainCat.addSubCategory(secondCat);
+					}
+				}
 			}
 		}
 	}

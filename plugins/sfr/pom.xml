@@ -7,7 +7,7 @@
 		<version>4.0.6</version>
 	</parent>
 	<artifactId>sfr</artifactId>
-	<version>4.0.11-SNAPSHOT</version>
+	<version>4.0.12-SNAPSHOT</version>
 	<name>sfr</name>
 	
 	<scm>
