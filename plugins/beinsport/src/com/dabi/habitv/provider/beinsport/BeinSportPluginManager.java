@@ -92,7 +92,7 @@ public class BeinSportPluginManager extends BasePluginWithProxy implements Plugi
 			Element element = it.next();
 			if ("h3".equals(element.tagName())) {
 				Element link = element.select("a").first();
-				if (mainCat.getId().equals(link.attr("href")+"videos")) {
+				if (mainCat.getId().equals(link.attr("href") + "videos")) {
 					element = it.next();
 					for (Element aLink : element.select("li a")) {
 						String text = aLink.text();
@@ -123,7 +123,7 @@ public class BeinSportPluginManager extends BasePluginWithProxy implements Plugi
 		org.jsoup.nodes.Document doc;
 		try {
 			doc = Jsoup.parse(getInputStreamFromUrl(downloadInput), "UTF-8", downloadInput);
-			return doc.select("iframe").first().attr("src");
+			return "http:" + doc.select("p.lecteur_dailymotion iframe").first().attr("src");
 		} catch (IOException e) {
 			throw new TechnicalException(e);
 		}
