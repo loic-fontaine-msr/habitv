@@ -34,7 +34,7 @@ public class BeinSportPluginManager extends BasePluginWithProxy implements Plugi
 
 		for (int i = 1; i <= 3; i++) {
 			final org.jsoup.nodes.Document doc = Jsoup
-					.parse(getUrlContent(BeinSportConf.HOME_URL + category.getId() + "/" + i));
+					.parse(getUrlContent(category.getId() + "/" + i));
 
 			for (final Element aHref : doc.select("figcaption a")) {
 				String href = BeinSportConf.HOME_URL + aHref.attr("href");

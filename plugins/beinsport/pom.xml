@@ -9,7 +9,7 @@
 	</parent>
 	<artifactId>beinsport</artifactId>
 	<name>beinsport</name>
-	<version>4.0.15-SNAPSHOT</version>
+	<version>4.0.16-SNAPSHOT</version>
 
 	<scm>
 		<connection>scm:svn:http://subversion.assembla.com/svn/habitv/trunk/plugins/beinsport</connection>
