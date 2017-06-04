@@ -22,17 +22,16 @@ import com.dabi.habitv.framework.plugin.api.BasePluginWithProxy;
 import com.dabi.habitv.framework.plugin.utils.DownloadUtils;
 import com.dabi.habitv.framework.plugin.utils.M3U8Utils;
 import com.dabi.habitv.provider.pluzz.jpluzz.Archive;
-import com.dabi.habitv.provider.pluzz.jpluzz.JsonArchiveParser;
+import com.dabi.habitv.provider.pluzz.jpluzz.JsonMainParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class PluzzPluginManager extends BasePluginWithProxy implements
-		PluginProviderDownloaderInterface {
+public class PluzzPluginManager extends BasePluginWithProxy implements PluginProviderDownloaderInterface {
 
 	private Archive cachedArchive;
 
 	private long cachedTimeMs;
 
-	private JsonArchiveParser jsonArchiveParser;
+	private JsonMainParser jsonArchiveParser;
 
 	@Override
 	public String getName() {
@@ -47,12 +46,10 @@ public class PluzzPluginManager extends BasePluginWithProxy implements
 				episodeList.addAll(findEpisode(subCat));
 			}
 		}
-		final Collection<EpisodeDTO> collection = getCachedArchive()
-				.getCatName2Episode().get(category.getId());
+		final Collection<EpisodeDTO> collection = getCachedArchive().getCatName2Episode().get(category.getId());
 		if (collection != null) {
 			for (final EpisodeDTO episode : collection) {
-				final EpisodeDTO newEp = new EpisodeDTO(category,
-						episode.getName(), episode.getId());
+				final EpisodeDTO newEp = new EpisodeDTO(category, episode.getName(), episode.getId());
 				newEp.setNum(episode.getNum());
 				episodeList.add(newEp);
 			}
@@ -60,18 +57,16 @@ public class PluzzPluginManager extends BasePluginWithProxy implements
 		return episodeList;
 	}
 
-	public JsonArchiveParser getJsonArchiveParser() {
+	public JsonMainParser getJsonArchiveParser() {
 		if (jsonArchiveParser == null) {
-			jsonArchiveParser = new JsonArchiveParser(PluzzConf.ZIP_URL,
-					getHttpProxy());
+			jsonArchiveParser = new JsonMainParser(PluzzConf.MAIN_URL, getHttpProxy());
 		}
 		return jsonArchiveParser;
 	}
 
 	private Archive getCachedArchive() {
 		final long now = System.currentTimeMillis();
-		if (cachedArchive == null
-				|| (now - cachedTimeMs) > PluzzConf.MAX_CACHE_ARCHIVE_TIME_MS) {
+		if (cachedArchive == null || (now - cachedTimeMs) > PluzzConf.MAX_CACHE_ARCHIVE_TIME_MS) {
 			cachedArchive = getJsonArchiveParser().load();
 			cachedTimeMs = now;
 		}
@@ -84,9 +79,7 @@ public class PluzzPluginManager extends BasePluginWithProxy implements
 	}
 
 	@Override
-	public ProcessHolder download(final DownloadParamDTO downloadParam,
-			final DownloaderPluginHolder downloaders)
-			throws DownloadFailedException {
+	public ProcessHolder download(final DownloadParamDTO downloadParam, final DownloaderPluginHolder downloaders) throws DownloadFailedException {
 		String mediaId = findMediaIdInUrl(downloadParam.getDownloadInput());
 		if (mediaId == null) {
 			mediaId = findMediaIdInPage(downloadParam.getDownloadInput());
@@ -98,9 +91,7 @@ public class PluzzPluginManager extends BasePluginWithProxy implements
 		String videoUrl = findVideoUrl(mediaId);
 
 		videoUrl = M3U8Utils.keepBestQuality(videoUrl);
-		return DownloadUtils.download(
-				DownloadParamDTO.buildDownloadParam(downloadParam, videoUrl),
-				downloaders);
+		return DownloadUtils.download(DownloadParamDTO.buildDownloadParam(downloadParam, videoUrl), downloaders);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -108,16 +99,14 @@ public class PluzzPluginManager extends BasePluginWithProxy implements
 		final ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> videoData;
 		try {
-			String urlContent = getUrlContent(String.format(PluzzConf.WS_JSON,
-					mediaId, mediaId));
-			urlContent = urlContent.substring(urlContent.indexOf("(") + 1,
-					urlContent.lastIndexOf(")"));
+			String urlContent = getUrlContent(String.format(PluzzConf.WS_JSON, mediaId, mediaId));
+			urlContent = urlContent.substring(urlContent.indexOf("(") + 1, urlContent.lastIndexOf(")"));
 			videoData = mapper.readValue(urlContent, Map.class);
 		} catch (IOException e) {
 			throw new DownloadFailedException(e);
 		}
 		// http://webservices.francetelevisions.fr/tools/getInfosOeuvre/v2/?idDiffusion=104433755&catalogue=Pluzz&callback=webserviceCallback_104433755
-		
+
 		List<Object> videoList = (List<Object>) videoData.get("videos");
 		String urlm3u8 = null;
 		String urlHls = null;
@@ -141,8 +130,7 @@ public class PluzzPluginManager extends BasePluginWithProxy implements
 		// http://www.france2.fr/emissions/qui-sera-le-prochain-grand-patissier
 		// <a class="video" id="ftv_player_104433710"
 
-		final org.jsoup.nodes.Document doc = Jsoup
-				.parse(getUrlContent(downloadInput));
+		final org.jsoup.nodes.Document doc = Jsoup.parse(getUrlContent(downloadInput));
 
 		Elements select = doc.select("a.video");
 
@@ -156,25 +144,24 @@ public class PluzzPluginManager extends BasePluginWithProxy implements
 	}
 
 	private String findMediaIdInUrl(String downloadInput) {
-		// www.france2.fr/emissions/envoye-special-la-suite/videos/104433874?origin=ftvsite_homepage
-		String[] slashSplit = downloadInput.split("/");
-		String mediaId = slashSplit[slashSplit.length - 1].split("\\?")[0];
+		String mediaId;
 		try {
-			Integer.valueOf(mediaId);
-		} catch (NumberFormatException e) {
 			// http://pluzz.francetv.fr/videos/marsupilami_saison5_ep6_,104497701.html
-			mediaId = downloadInput.split(",")[1].split(".")[0];
+			mediaId = downloadInput.split(",")[1].split("\\.")[0];
+			Integer.valueOf(mediaId);
+		} catch (Exception e) {
+			// www.france2.fr/emissions/envoye-special-la-suite/videos/104433874?origin=ftvsite_homepage
+			String[] slashSplit = downloadInput.split("/");
+			mediaId = slashSplit[slashSplit.length - 1].split("\\?")[0];
+			Integer.valueOf(mediaId);
 		}
 		return mediaId;
 	}
 
 	@Override
 	public DownloadableState canDownload(String downloadInput) {
-		if (downloadInput.contains("france2.")
-				|| downloadInput.contains("france3.")
-				|| downloadInput.contains("france4.")
-				|| downloadInput.contains("france5.")
-				|| downloadInput.contains("pluzz.")) {
+		if (downloadInput.contains("france2.") || downloadInput.contains("france3.") || downloadInput.contains("france4.")
+		        || downloadInput.contains("france5.") || downloadInput.contains("pluzz.")) {
 			return DownloadableState.SPECIFIC;
 		} else {
 			return DownloadableState.IMPOSSIBLE;

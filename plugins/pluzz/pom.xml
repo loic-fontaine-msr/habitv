@@ -17,6 +17,12 @@
 	
 	<dependencies>
 		<dependency>
+			<groupId>com.dabi.habitv</groupId>
+			<artifactId>plugin-tester</artifactId>
+			<version>4.0.6-SNAPSHOT</version>
+			<scope>test</scope>
+		</dependency>	
+		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<scope>test</scope>

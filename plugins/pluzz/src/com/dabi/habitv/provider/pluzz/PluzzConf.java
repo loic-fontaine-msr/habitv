@@ -8,11 +8,11 @@ public interface PluzzConf {
 
 	String EXTENSION = FrameworkConf.MP4;
 
-	String ZIP_URL = "http://webservices.francetelevisions.fr/catchup/flux/flux_main.zip";
+	String MAIN_URL = "http://pluzz.webservices.francetelevisions.fr/pluzz/liste/type/replay/nb/10000/chaine";
 
 	long MAX_CACHE_ARCHIVE_TIME_MS = 60000L;
 
-	String BASE_URL = "http://medias2.francetv.fr/catchup-mobile";
+	String BASE_URL = "http://pluzz.francetv.fr";
 
 	String WS_JSON = "http://webservices.francetelevisions.fr/tools/getInfosOeuvre/v2/?idDiffusion=%s&catalogue=Pluzz&callback=webserviceCallback_%s";
 
