@@ -1,5 +1,7 @@
 package com.dabi.habitv.provider.arte;
 
+import com.dabi.habitv.framework.FrameworkConf;
+
 interface ArteConf {
 
 	String NAME = "arte";
@@ -15,5 +17,7 @@ interface ArteConf {
 	String RTMPDUMP_CMD = "-r \"#VIDEO_URL#\" -c 1935 -m 10 -o \"#FILE_DEST#\"";
 
 	String HOME_URL = "http://www.arte.tv";
+
+	String EXTENSION = FrameworkConf.MP4;
 
 }
