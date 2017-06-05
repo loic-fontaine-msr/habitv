@@ -6,10 +6,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.Proxy;
 import java.net.URL;
-import java.net.URLConnection;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -45,32 +45,53 @@ public final class RetrieverUtils {
 	 * @param timeOut
 	 * @return the input stream
 	 */
-	public static InputStream getInputStreamFromUrl(final String url,
-			final Proxy proxy) {
+	public static InputStream getInputStreamFromUrl(final String url, final Proxy proxy) {
 		return getInputStreamFromUrl(url, FrameworkConf.TIME_OUT_MS, proxy);
 	}
 
-	public static InputStream getInputStreamFromUrl(final String url,
-			final Integer timeOut, final Proxy proxy) {
+	public static InputStream getInputStreamFromUrl(final String url, final Integer timeOut, final Proxy proxy) {
 		try {
-			final URLConnection hc = openConnection(url, proxy);
-			if (timeOut != null) {
-				hc.setConnectTimeout(timeOut);
-				hc.setReadTimeout(timeOut);
+			HttpURLConnection hc = (HttpURLConnection) openConnection(url, proxy);
+			prepareConnection(timeOut, hc);
+			
+			boolean redirect = false;
+
+			// normally, 3xx is redirect
+			int status = hc.getResponseCode();
+			if (status != HttpURLConnection.HTTP_OK) {	
+				if (status == HttpURLConnection.HTTP_MOVED_TEMP
+					|| status == HttpURLConnection.HTTP_MOVED_PERM
+						|| status == HttpURLConnection.HTTP_SEE_OTHER)
+				redirect = true;
 			}
-			hc.setRequestProperty("User-Agent", USER_AGENT);
+
+			if (redirect) {
+				// get redirect url from "location" header field
+				String newUrl = hc.getHeaderField("Location");
+				// open the new connnection again
+				hc = (HttpURLConnection) new URL(newUrl).openConnection();
+				prepareConnection(timeOut, hc);
+			}
+			
 			return hc.getInputStream();
 		} catch (final IOException e) {
 			throw new TechnicalException(e);
 		}
 	}
 
-	private static URLConnection openConnection(final String url,
-			final Proxy proxy) throws IOException, MalformedURLException {
+	private static void prepareConnection(final Integer timeOut, final HttpURLConnection hc) {
+		if (timeOut != null) {
+			hc.setConnectTimeout(timeOut);
+			hc.setReadTimeout(timeOut);
+		}
+		hc.setRequestProperty("User-Agent", USER_AGENT);
+	}
+
+	private static HttpURLConnection openConnection(final String url, final Proxy proxy) throws IOException, MalformedURLException {
 		if (useProxy(proxy)) {
-			return (new URL(url)).openConnection(proxy);
+			return (HttpURLConnection) (new URL(url)).openConnection(proxy);
 		} else {
-			return (new URL(url)).openConnection();
+			return (HttpURLConnection) (new URL(url)).openConnection();
 		}
 	}
 
@@ -95,15 +116,13 @@ public final class RetrieverUtils {
 	 *            classloader
 	 * @return the unmarshalled object to be casted
 	 */
-	public static Object unmarshalInputStream(final InputStream input,
-			final String unmarshallerPackage, final ClassLoader classLoader) {
+	public static Object unmarshalInputStream(final InputStream input, final String unmarshallerPackage, final ClassLoader classLoader) {
 		try {
 			final JAXBContext context;
 			if (classLoader == null) {
 				context = JAXBContext.newInstance(unmarshallerPackage);
 			} else {
-				context = JAXBContext.newInstance(unmarshallerPackage,
-						classLoader);
+				context = JAXBContext.newInstance(unmarshallerPackage, classLoader);
 			}
 			return context.createUnmarshaller().unmarshal(input);
 		} catch (final JAXBException e) {
@@ -114,8 +133,7 @@ public final class RetrieverUtils {
 	/**
 	 * @see #unmarshalInputStream(InputStream, String) without the classloader
 	 */
-	public static Object unmarshalInputStream(final InputStream input,
-			final String unmarshallerPackage) {
+	public static Object unmarshalInputStream(final InputStream input, final String unmarshallerPackage) {
 		return unmarshalInputStream(input, unmarshallerPackage, null);
 	}
 
@@ -123,8 +141,7 @@ public final class RetrieverUtils {
 		return getUrlContent(url, null, proxy);
 	}
 
-	public static String getUrlContent(final String url, final String encoding,
-			final Proxy proxy) {
+	public static String getUrlContent(final String url, final String encoding, final Proxy proxy) {
 
 		final InputStream in = getInputStreamFromUrl(url, proxy);
 		final BufferedReader reader;
@@ -181,8 +198,7 @@ public final class RetrieverUtils {
 		} catch (IOException e) {
 			final SyndFeedInput input = new SyndFeedInput();
 			try {
-				final SyndFeed feed = input.build(new XmlReader(
-						getInputStreamFromUrl(url, null)));
+				final SyndFeed feed = input.build(new XmlReader(getInputStreamFromUrl(url, null)));
 				return feed.getTitle();
 			} catch (IllegalArgumentException | FeedException | IOException e1) {
 				throw new TechnicalException(e);

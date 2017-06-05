@@ -20,8 +20,7 @@ import com.dabi.habitv.api.plugin.holder.ProcessHolder;
 import com.dabi.habitv.framework.plugin.api.BasePluginWithProxy;
 import com.dabi.habitv.framework.plugin.utils.DownloadUtils;
 
-public class D17PluginManager extends BasePluginWithProxy implements
-		PluginProviderDownloaderInterface { // NO_UCD
+public class D17PluginManager extends BasePluginWithProxy implements PluginProviderDownloaderInterface { // NO_UCD
 
 	@Override
 	public String getName() {
@@ -34,21 +33,17 @@ public class D17PluginManager extends BasePluginWithProxy implements
 		final Set<String> episodesNames = new HashSet<>();
 
 		final String categoryId = category.getId();
-		final org.jsoup.nodes.Document doc = Jsoup.parse(getUrlContent(
-				categoryUrl(categoryId), D17Conf.ENCODING));
+		final org.jsoup.nodes.Document doc = Jsoup.parse(getUrlContent(categoryUrl(categoryId), D17Conf.ENCODING));
 
 		final Elements select = doc.select("a.loop-videos");
 		for (final Element aVideoElement : select) {
 			try {
-				final String maintitle = aVideoElement.select("h4").first()
-						.text();
-				final String subtitle = aVideoElement.select("p").first()
-						.text();
+				final String maintitle = aVideoElement.select("h4").first().text();
+				final String subtitle = aVideoElement.select("p").first().text();
 				final String title = maintitle + " - " + subtitle;
 				String hrefRelative = aVideoElement.attr("href");
 				if (!episodesNames.contains(title)) {
-					episodes.add(new EpisodeDTO(category, title,
-							D17Conf.HOME_URL + hrefRelative));
+					episodes.add(new EpisodeDTO(category, title, D17Conf.HOME_URL + hrefRelative));
 					episodesNames.add(title);
 				}
 			} catch (final IndexOutOfBoundsException e) {
@@ -60,24 +55,21 @@ public class D17PluginManager extends BasePluginWithProxy implements
 	}
 
 	private String categoryUrl(final String categoryId) {
-		return DownloadUtils.isHttpUrl(categoryId) ? categoryId
-				: D17Conf.HOME_URL + categoryId;
+		return DownloadUtils.isHttpUrl(categoryId) ? categoryId : D17Conf.HOME_URL + categoryId;
 	}
 
 	@Override
 	public Set<CategoryDTO> findCategory() {
 		final Set<CategoryDTO> categories = new LinkedHashSet<>();
 
-		final org.jsoup.nodes.Document doc = Jsoup.parse(getUrlContent(
-				D17Conf.HOME_URL, D17Conf.ENCODING));
+		final org.jsoup.nodes.Document doc = Jsoup.parse(getUrlContent(D17Conf.HOME_URL, D17Conf.ENCODING));
 
 		final Elements select = doc.select(".main-menu").get(0).children();
 		for (final Element liElement : select) {
 			final Element aElement = liElement.child(0);
 			final String url = aElement.attr("href");
 			final String name = aElement.text();
-			final CategoryDTO categoryDTO = new CategoryDTO(D17Conf.NAME, name,
-					url, D17Conf.EXTENSION);
+			final CategoryDTO categoryDTO = new CategoryDTO(D17Conf.NAME, name, url, D17Conf.EXTENSION);
 			categoryDTO.addSubCategories(findSubCategories(url));
 			categories.add(categoryDTO);
 		}
@@ -86,41 +78,28 @@ public class D17PluginManager extends BasePluginWithProxy implements
 	}
 
 	@Override
-	public ProcessHolder download(final DownloadParamDTO downloadParam,
-			final DownloaderPluginHolder downloaders)
-			throws DownloadFailedException {
-		return CanalUtils.doDownload(downloadParam, downloaders, this,
-				D17Conf.VIDEO_INFO_URL, getName().toLowerCase());
+	public ProcessHolder download(final DownloadParamDTO downloadParam, final DownloaderPluginHolder downloaders) throws DownloadFailedException {
+		return CanalUtils.doDownload(downloadParam, downloaders, this, D17Conf.VIDEO_INFO_URL, getName().toLowerCase());
 	}
 
 	private Collection<CategoryDTO> findSubCategories(final String catUrl) {
 		final Set<CategoryDTO> categories = new LinkedHashSet<>();
 
-		final org.jsoup.nodes.Document doc = Jsoup.parse(getUrlContent(
-				categoryUrl(catUrl), D17Conf.ENCODING));
-		final Elements select = doc.select(".block-videos");
-		for (final Element divElement : select) {
-			if (!divElement.childNodes().isEmpty()
-					&& !divElement.child(0).childNodes().isEmpty()
-					&& !divElement.child(0).child(0).childNodes().isEmpty()) {
-				final Element link = divElement.child(0).child(0).child(1);
-				if (!link.childNodes().isEmpty()) {
-					final String url = link.child(0).attr("href");
-					final String name = link.text();
-					final CategoryDTO categoryDTO = new CategoryDTO(
-							D17Conf.NAME, name, url, D17Conf.EXTENSION);
-					categoryDTO.setDownloadable(true);
-					categories.add(categoryDTO);
-				}
-			}
+		final org.jsoup.nodes.Document doc = Jsoup.parse(getUrlContent(categoryUrl(catUrl), D17Conf.ENCODING));
+		final Elements select = doc.select(".block-videos li a");
+		for (final Element link : select) {
+			final String url = link.attr("href");
+			final String name = link.select("h4").first().text();
+			final CategoryDTO categoryDTO = new CategoryDTO(D17Conf.NAME, name, url, D17Conf.EXTENSION);
+			categoryDTO.setDownloadable(true);
+			categories.add(categoryDTO);
 		}
 		return categories;
 	}
 
 	@Override
 	public DownloadableState canDownload(final String downloadInput) {
-		return downloadInput.startsWith(D17Conf.HOME_URL) ? DownloadableState.SPECIFIC
-				: DownloadableState.IMPOSSIBLE;
+		return downloadInput.startsWith(D17Conf.HOME_URL) ? DownloadableState.SPECIFIC : DownloadableState.IMPOSSIBLE;
 	}
 
 }

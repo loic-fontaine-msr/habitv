@@ -4,11 +4,11 @@
 	<parent>
 		<groupId>com.dabi.habitv</groupId>
 		<artifactId>parent</artifactId>
-		<version>4.0.6</version>
+		<version>4.1.0</version>
 	</parent>
 	<artifactId>ffmpeg</artifactId>
 	<name>ffmpeg</name>
-	<version>4.0.8-SNAPSHOT</version>
+	<version>4.1.0-SNAPSHOT</version>
 	
 	<scm>
         <connection>scm:svn:http://subversion.assembla.com/svn/habitv/trunk/plugins/ffmpeg</connection>
@@ -16,6 +16,12 @@
     </scm>
 	
 	<dependencies>
+		<dependency>
+			<groupId>com.dabi.habitv</groupId>
+			<artifactId>plugin-tester</artifactId>
+			<version>4.1.0</version>
+			<scope>test</scope>
+		</dependency>	
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>

@@ -7,8 +7,9 @@ import org.junit.Test;
 import com.dabi.habitv.api.plugin.api.PluginDownloaderInterface;
 import com.dabi.habitv.api.plugin.dto.DownloadParamDTO;
 import com.dabi.habitv.api.plugin.holder.DownloaderPluginHolder;
+import com.dabi.habitv.plugintester.BasePluginUpdateTester;
 
-public class YoutubePluginDownloaderTest {
+public class YoutubePluginDownloaderTest extends BasePluginUpdateTester {
 
 	@Test
 	public void testDownload() {
@@ -21,4 +22,8 @@ public class YoutubePluginDownloaderTest {
 		
 	}
 
+	@Test
+	public final void testYoutube() throws InstantiationException, IllegalAccessException {
+		testUpdatablePlugin(YoutubePluginDownloader.class);
+	}
 }

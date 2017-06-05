@@ -43,14 +43,16 @@ public class WatPluginManager extends BasePluginWithProxy implements PluginProvi
 
 		final Document doc = Jsoup.parse(getUrlContent(WatConf.PROGRAMME_URL));
 
-		final Elements aChannels = doc.select("section#filter_section ul.filters_1 .link a");
+		final Elements aChannels = doc.select("ul.mobile_channel li.mobile_channel_item a");
 
 		for (final Element aChannel : aChannels) {
 			String href = aChannel.attr("href");
-			String channel = aChannel.text();
-			CategoryDTO channelCat = new CategoryDTO(WatConf.NAME, channel, href, WatConf.EXTENSION);
-			channelCat.addSubCategories(findCategoryByChannel(href));
-			categories.add(channelCat);
+			if (href != null && href.length() > 5) {
+				String channel = aChannel.text();
+				CategoryDTO channelCat = new CategoryDTO(WatConf.NAME, channel, href, WatConf.EXTENSION);
+				channelCat.addSubCategories(findCategoryByChannel(href));
+				categories.add(channelCat);
+			}
 		}
 
 		return categories;
@@ -78,8 +80,7 @@ public class WatPluginManager extends BasePluginWithProxy implements PluginProvi
 		}
 
 		for (Element aShow : aShows) {
-			CategoryDTO catCat = new CategoryDTO(WatConf.NAME, aShow.child(0).child(0).text(), getFullUrl(aShow.attr("href")),
-					WatConf.EXTENSION);
+			CategoryDTO catCat = new CategoryDTO(WatConf.NAME, aShow.child(0).child(0).text(), getFullUrl(aShow.attr("href")), WatConf.EXTENSION);
 			catCat.setDownloadable(true);
 			categories.add(catCat);
 		}

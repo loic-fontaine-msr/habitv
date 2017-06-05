@@ -22,8 +22,7 @@ public class YoutubePluginDownloader extends BaseUpdatablePlugin implements Plug
 	}
 
 	@Override
-	public ProcessHolder download(final DownloadParamDTO downloadParam, final DownloaderPluginHolder downloaders)
-			throws DownloadFailedException {
+	public ProcessHolder download(final DownloadParamDTO downloadParam, final DownloaderPluginHolder downloaders) throws DownloadFailedException {
 		final String binParam = getBinParam(downloaders);
 		String cmd = binParam + " ";
 		final String cmdParam = downloadParam.getParam(FrameworkConf.PARAMETER_ARGS);
@@ -72,12 +71,12 @@ public class YoutubePluginDownloader extends BaseUpdatablePlugin implements Plug
 	protected String[] getFilesToUpdate() {
 		return new String[] { "youtube-dl" };
 	}
-
+	
 	@Override
 	public DownloadableState canDownload(final String downloadInput) {
-		if (downloadInput.contains("youtube.") || downloadInput.contains("dailymotion.") || downloadInput.contains("vimeo.")
-				|| downloadInput.contains("dailymotion.") || downloadInput.contains("tf1.") || downloadInput.contains("wat.tv")
-				|| downloadInput.contains("clubic.")) {
+		if (downloadInput.contains("youtube.") || downloadInput.contains("youtu.be") || downloadInput.contains("dailymotion.") || downloadInput.contains("vimeo.")
+		        || downloadInput.contains("dailymotion.") || downloadInput.contains("tf1.") || downloadInput.contains("wat.tv")
+		        || downloadInput.contains("clubic.") || downloadInput.contains("6play.")) {
 			return DownloadableState.SPECIFIC;
 		} else {
 			return DownloadableState.IMPOSSIBLE;

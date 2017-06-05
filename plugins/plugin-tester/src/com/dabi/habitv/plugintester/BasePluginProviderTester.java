@@ -50,17 +50,17 @@ public class BasePluginProviderTester {
 	public void setUp() throws Exception {
 		final Map<String, PluginDownloaderInterface> downloaderName2downloader = new HashMap<>();
 		final MockDownloader mockDownloader = new MockDownloader();
-	
+
 		downloaderName2downloader.put(mockDownloader.getName(), mockDownloader);
 		downloaderName2downloader.put(FrameworkConf.RTMDUMP, mockDownloader);
 		downloaderName2downloader.put(FrameworkConf.CURL, mockDownloader);
 		downloaderName2downloader.put(FrameworkConf.FFMPEG, mockDownloader);
 		downloaderName2downloader.put(FrameworkConf.ADOBEHDS, mockDownloader);
 		downloaderName2downloader.put(FrameworkConf.YOUTUBE, mockDownloader);
-	
+
 		final Map<String, String> downloaderName2BinPath = new HashMap<>();
-		downloaders = new DownloaderPluginHolder("cmdProcessor", downloaderName2downloader, downloaderName2BinPath,
-				"downloadOutputDir", "indexDir", "binDir", "plugins");
+		downloaders = new DownloaderPluginHolder("cmdProcessor", downloaderName2downloader, downloaderName2BinPath, "downloadOutputDir", "indexDir",
+		        "binDir", "plugins");
 	}
 
 	@After
@@ -72,24 +72,26 @@ public class BasePluginProviderTester {
 		LOG.error("searching categories for " + plugin.getName());
 		final Set<CategoryDTO> categories = plugin.findCategory();
 		checkCategories(categories);
-	
+
 		showCategoriesTree(categories, 0);
-	
+
 		Set<EpisodeDTO> episodeList = Collections.emptySet();
 		int i = 0;
 		while (episodeList.isEmpty() && i < MAX_ATTEMPTS) {
 			LOG.error("no ep found, searching againg categories for " + plugin.getName());
 			final CategoryDTO category = findCategory(episodeOnlyOnLeaf, categories);
-			LOG.error("search episodes for " + plugin.getName() + "/" + category);
-			episodeList = plugin.findEpisode(category);
-			i++;
+			if (category.isDownloadable()) {
+				LOG.error("search episodes for " + plugin.getName() + "/" + category);
+				episodeList = plugin.findEpisode(category);
+				i++;
+			}
 		}
 		if (i == MAX_ATTEMPTS) {
 			Assert.fail("no ep found in " + MAX_ATTEMPTS + " attempts");
 		}
-	
+
 		checkEpisodes(episodeList);
-	
+
 		final EpisodeDTO episode = (new ArrayList<>(episodeList)).get(getRandomIndex(episodeList));
 		testEpisode(plugin, episode);
 	}
@@ -104,7 +106,7 @@ public class BasePluginProviderTester {
 	protected void testEpisode(final PluginProviderInterface plugin, final EpisodeDTO episode) throws DownloadFailedException {
 		LOG.error("episode found " + episode);
 		LOG.error("episode id " + episode.getId());
-	
+
 		if (PluginDownloaderInterface.class.isInstance(plugin)) {
 			final PluginDownloaderInterface pluginDownloader = (PluginDownloaderInterface) plugin;
 			pluginDownloader.download(buildDownloadersHolder(episode), downloaders);
@@ -149,9 +151,8 @@ public class BasePluginProviderTester {
 		return rand.nextInt(max - min + 1) + min;
 	}
 
-	public void testPluginProvider(final Class<? extends PluginProviderInterface> prDlPluginClass,
-			final boolean episodeOnlyOnLeaf)
-			throws InstantiationException, IllegalAccessException, DownloadFailedException {
+	public void testPluginProvider(final Class<? extends PluginProviderInterface> prDlPluginClass, final boolean episodeOnlyOnLeaf)
+	        throws InstantiationException, IllegalAccessException, DownloadFailedException {
 		final PluginProviderInterface plugin = prDlPluginClass.newInstance();
 		testPluginProvider(plugin, episodeOnlyOnLeaf);
 	}

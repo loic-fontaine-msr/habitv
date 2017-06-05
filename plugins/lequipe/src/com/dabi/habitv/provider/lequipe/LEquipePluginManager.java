@@ -1,5 +1,6 @@
 package com.dabi.habitv.provider.lequipe;
 
+import java.net.HttpURLConnection;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -22,6 +23,10 @@ import com.dabi.habitv.framework.plugin.utils.SoccerUtils;
 public class LEquipePluginManager extends BasePluginWithProxy implements
 		PluginProviderDownloaderInterface {
 
+	public LEquipePluginManager() {
+		HttpURLConnection.setFollowRedirects(true);
+	}
+	
 	@Override
 	public String getName() {
 		return LEquipeConf.NAME;
@@ -52,10 +57,7 @@ public class LEquipePluginManager extends BasePluginWithProxy implements
 		final Document doc = Jsoup
 				.parse(getUrlContent(LEquipeConf.VIDEO_HOME_URL));
 
-		final Elements aOngletsSport = doc.select("#naveau-1").get(0)
-				.children();
-		for (final Element li : aOngletsSport.select("ul").get(0).children()) {
-			Element aHref = li.child(0);
+		for (final Element aHref : doc.select("div#nav-inside-global ul li a")) {
 			final String href = aHref.attr("href");
 			if (href.length() > 1) {
 				final String content = aHref.text();
@@ -91,8 +93,7 @@ public class LEquipePluginManager extends BasePluginWithProxy implements
 	private void findEpisodeByUrl(final CategoryDTO category,
 			final Set<EpisodeDTO> episodeList, final String pageUrl) {
 		final Document doc = Jsoup.parse(getUrlContent(pageUrl));
-		Elements elementsByClass = doc.select(".items_last_vids");
-		for (final Element li : elementsByClass) {
+		for (final Element li : doc.select(".items_last_vids")) {
 			Element aResult = li.child(0);
 			final String hRef = aResult.attr("href");
 			StringBuilder name = new StringBuilder();

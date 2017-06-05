@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -64,8 +65,8 @@ public class CategoryDTO implements Comparable<CategoryDTO>, Serializable {
 	 * @param extension
 	 *            the extension of the files in this category
 	 */
-	public CategoryDTO(final String plugin, final String name, final String identifier, final List<String> include,
-			final List<String> exclude, final String extension) {
+	public CategoryDTO(final String plugin, final String name, final String identifier, final List<String> include, final List<String> exclude,
+	        final String extension) {
 		super();
 		this.plugin = plugin;
 		this.name = name;
@@ -215,7 +216,7 @@ public class CategoryDTO implements Comparable<CategoryDTO>, Serializable {
 			final CategoryDTO category = (CategoryDTO) obj;
 			ret = getId().equals(category.getId());
 			if (ret) {
-				ret = getPlugin().equals(category.getPlugin());
+				ret = Objects.equals(getPlugin(),category.getPlugin());
 				if (ret && getFatherCategory() != null) {
 					ret = getFatherCategory().equals(category.getFatherCategory());
 				}
@@ -366,8 +367,7 @@ public class CategoryDTO implements Comparable<CategoryDTO>, Serializable {
 
 	public boolean hasSubCategoryWithState(StatusEnum state) {
 		for (CategoryDTO subCategory : getSubCategories()) {
-			if (subCategory.getState() == state
-					|| (subCategory.getState() != StatusEnum.DELETED && subCategory.hasSubCategoryWithState(state))) {
+			if (subCategory.getState() == state || (subCategory.getState() != StatusEnum.DELETED && subCategory.hasSubCategoryWithState(state))) {
 				return true;
 			}
 

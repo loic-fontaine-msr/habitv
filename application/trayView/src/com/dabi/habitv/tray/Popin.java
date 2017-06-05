@@ -23,23 +23,30 @@ public class Popin extends Application {
 
 	private PopinController controller = new PopinController();
 
+	private Double width;
+
+	private Double height;
+
 	public Popin() {
+
+	}
+
+	public Popin(double width, double height) {
+		this.width = width;
+		this.height = height;
 	}
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		Platform.setImplicitExit(false);
-		primaryStage.getIcons().add(
-				new Image(ClassLoader.getSystemResource("fixe.gif")
-						.openStream()));
+		primaryStage.getIcons().add(new Image(ClassLoader.getSystemResource("fixe.gif").openStream()));
 		try {
 			// primaryStage.setTitle("habiTv");
-			FXMLLoader fxmlLoader = new FXMLLoader(
-					HabitvViewMain.class.getResource("popin.fxml"));
+			FXMLLoader fxmlLoader = new FXMLLoader(HabitvViewMain.class.getResource("popin.fxml"));
 			fxmlLoader.setController(controller);
 
 			GridPane root = (GridPane) fxmlLoader.load();
-			Scene scene = new Scene(root);
+			Scene scene = width==null? new Scene(root) : new Scene(root, width, height);
 			primaryStage.setScene(scene);
 			primaryStage.show();
 			controller.init(primaryStage);
@@ -104,14 +111,10 @@ public class Popin extends Application {
 	}
 
 	public static void fatalError(String message) {
-		(new Popin()).setOkButtonHandler(SYSTEM_CLOSE_HANDLER)
-				.setCancelButtonHandler(SYSTEM_CLOSE_HANDLER)
-				.show("Erreur", message);
+		(new Popin()).setOkButtonHandler(SYSTEM_CLOSE_HANDLER).setCancelButtonHandler(SYSTEM_CLOSE_HANDLER).show("Erreur", message);
 	}
 
 	public static void error(String message) {
-		(new Popin()).show("Erreur",
-				"Une erreur est survenue. Consulter la log pour plus de détail. "
-						+ message);
+		(new Popin()).show("Erreur", "Une erreur est survenue. Consulter la log pour plus de détail. " + message);
 	}
 }

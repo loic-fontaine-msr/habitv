@@ -36,13 +36,9 @@ public final class CoreManager {
 		taskName2PoolSizeMap = config.getTaskDefinition();
 		TokenReplacer.setCutSize(config.getFileNameCutSize());
 		pluginManager = new PluginManager(config);
-		episodeManager = new EpisodeManager(
-				pluginManager.getDownloadersHolder(),
-				pluginManager.getExportersHolder(),
-				pluginManager.getProvidersHolder(), taskName2PoolSizeMap,
-				config.getMaxAttempts(), DirUtils.getAppDir());
-		categoryManager = new CategoryManager(
-				pluginManager.getProvidersHolder(), taskName2PoolSizeMap);
+		episodeManager = new EpisodeManager(pluginManager.getDownloadersHolder(), pluginManager.getExportersHolder(),
+		        pluginManager.getProvidersHolder(), taskName2PoolSizeMap, config.getMaxAttempts(), DirUtils.getAppDir());
+		categoryManager = new CategoryManager(pluginManager.getProvidersHolder(), taskName2PoolSizeMap);
 
 		setProxy(config);
 	}
@@ -59,15 +55,12 @@ public final class CoreManager {
 	}
 
 	private void setProxy(final UserConfig config) {
-		final Map<String, Map<ProtocolEnum, ProxyDTO>> plugin2protocol2proxy = config
-				.getProxy();
+		final Map<String, Map<ProtocolEnum, ProxyDTO>> plugin2protocol2proxy = config.getProxy();
 
 		// set the defaut http proxy
-		final Map<ProtocolEnum, ProxyDTO> defaultProxyMap = plugin2protocol2proxy
-				.get(null);
+		final Map<ProtocolEnum, ProxyDTO> defaultProxyMap = plugin2protocol2proxy.get(null);
 		if (defaultProxyMap != null) {
-			final ProxyDTO httpProxy = defaultProxyMap
-					.get(ProxyDTO.ProtocolEnum.HTTP);
+			final ProxyDTO httpProxy = defaultProxyMap.get(ProxyDTO.ProtocolEnum.HTTP);
 			if (httpProxy != null) {
 				setHttpProxy(httpProxy);
 			}
@@ -78,8 +71,7 @@ public final class CoreManager {
 
 	private void setHttpProxy(final ProxyDTO httpProxy) {
 		System.setProperty("http.proxyHost", httpProxy.getHost());
-		System.setProperty("http.proxyPort",
-				String.valueOf(httpProxy.getPort()));
+		System.setProperty("http.proxyPort", String.valueOf(httpProxy.getPort()));
 	}
 
 	public CategoryManager getCategoryManager() {
@@ -97,7 +89,6 @@ public final class CoreManager {
 	public Map<String, CategoryDTO> findCategory() {
 		return getCategoryManager().findCategory();
 	}
-	
 
 	public Map<String, CategoryDTO> findCategory(List<String> pluginList) {
 		return getCategoryManager().findCategory(pluginList);
@@ -115,11 +106,10 @@ public final class CoreManager {
 	public void reTryExport() {
 		episodeManager.reTryExport();
 	}
-	
 
 	public void reTryExport(List<String> pluginList) {
 		episodeManager.reTryExport(pluginList);
-	}	
+	}
 
 	public boolean hasExportToResume() {
 		return episodeManager.hasExportToResume();

@@ -6,7 +6,7 @@ public interface LEquipeConf {
 
 	String NAME = "lequipe";
 
-	String VIDEO_HOME_URL = "http://video.lequipe.fr";
+	String VIDEO_HOME_URL = "https://video.lequipe.fr";
 
 	String VIDEOS_URL = "http://video.lequipe.fr/morevideos";
 
