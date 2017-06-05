@@ -19,6 +19,7 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.dabi.habitv.api.plugin.dto.CategoryDTO;
@@ -53,6 +54,7 @@ public class GrabConfigDAOTest {
 	}
 
 	@Test
+	@Ignore
 	public final void testLoadOld() throws IOException {
 		File file = new File(XML_FILE);
 		Files.copy(new File(OLD_XML_FILE).toPath(), file.toPath());

@@ -22,8 +22,8 @@
   </repositories>  	
 	
 	<properties>
-		<habitv.version>4.0.5</habitv.version>
-		<package.version>4.0.5</package.version>
+		<habitv.version>4.1.0</habitv.version>
+		<package.version>4.1.0</package.version>
 		<exec.mainClass>com.dabi.habitv.packaging.HabiTvFxRunner</exec.mainClass>
 		<javafx.min.version>2.2</javafx.min.version>
 		<jdk.home>/usr/lib/jvm/jdk1.7.0_45</jdk.home>
