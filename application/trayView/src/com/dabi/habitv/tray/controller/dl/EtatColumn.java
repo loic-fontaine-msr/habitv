@@ -44,7 +44,7 @@ public class EtatColumn extends TableColumn<ActionProgress, Node> {
 			newDownloadBox.setPadding(new Insets(2));
 			downloadBoxs.put(actionProgress.getEpisode().getId(), downloadBox);
 		} else {
-			downloadBox.update();
+			downloadBox.update(actionProgress);
 		}
 		return downloadBox;
 	}
