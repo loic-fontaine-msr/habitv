@@ -24,7 +24,7 @@
 		<dependency>
 			<groupId>com.dabi.habitv</groupId>
 			<artifactId>core</artifactId>
-			<!--<version>${project.version}</version>-->
+			<version>${project.version}</version>
 		</dependency>	
 	</dependencies>	
 	</dependencyManagement>		
