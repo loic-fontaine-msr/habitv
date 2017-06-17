@@ -3,6 +3,8 @@ package com.dabi.habitv.provider.beinsport;
 import java.io.IOException;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
@@ -46,7 +48,7 @@ public class BeinSportPluginManager extends BasePluginWithProxy implements Plugi
 	private String toUrl(String href) {
 		return href.startsWith("http://") ? href : (BeinSportConf.HOME_URL + href);
 	}
-	
+
 	@Override
 	public Set<CategoryDTO> findCategory() {
 		final Set<CategoryDTO> categoryDTOs = new LinkedHashSet<>();
@@ -99,11 +101,17 @@ public class BeinSportPluginManager extends BasePluginWithProxy implements Plugi
 		        downloaders);
 	}
 
+	private static Pattern VIDEO = Pattern.compile("'video': '(.*)'");
+
 	private String findUrlDownload(String downloadInput) {
 		org.jsoup.nodes.Document doc;
 		try {
 			doc = Jsoup.parse(getInputStreamFromUrl(downloadInput), "UTF-8", downloadInput);
-			return "http:" + doc.select(".block-video iframe").first().attr("src");
+			String blockScript = doc.select(".block-video script").first().html();
+			Matcher matcher = VIDEO.matcher(blockScript);
+			matcher.find();
+			String group = matcher.group(1);
+			return "http://www.dailymotion.com/video/" + group;
 		} catch (IOException e) {
 			throw new TechnicalException(e);
 		}

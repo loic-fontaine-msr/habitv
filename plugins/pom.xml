@@ -28,5 +28,6 @@
 		<module>rtmpDump</module>
 		<module>sfr</module>
 		<module>youtube</module>
+		<module>wat</module>
 	</modules>
 </project>
