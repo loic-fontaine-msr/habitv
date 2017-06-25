@@ -23,7 +23,7 @@ public class ManualDlPopin extends Popin {
 			getChildren().add(textField);
 		}
 	}
-	
+
 	private ManualForm manualForm = new ManualForm();
 
 	private ViewController viewController;
@@ -38,9 +38,13 @@ public class ManualDlPopin extends Popin {
 			@Override
 			public void onAction() {
 				String url = manualForm.textField.getText();
-				String name = RetrieverUtils.getTitleByUrl(url);
-				viewController.restart(new EpisodeDTO(new CategoryDTO("Manuel", "Manuel", "Manuel", "mp4"), name, url), false); //FIXME comment gérer l'exntesion ?
-				
+				String name = url.startsWith("http://") ? RetrieverUtils.getTitleByUrl(url) : url;
+				viewController.restart(new EpisodeDTO(new CategoryDTO("Manuel", "Manuel", "Manuel", "mp4"), name, url), false); // FIXME
+		                                                                                                                        // comment
+		                                                                                                                        // gérer
+		                                                                                                                        // l'exntesion
+		                                                                                                                        // ?
+
 			}
 
 		});

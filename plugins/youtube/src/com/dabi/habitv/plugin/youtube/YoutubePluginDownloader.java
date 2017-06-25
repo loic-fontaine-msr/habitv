@@ -71,12 +71,12 @@ public class YoutubePluginDownloader extends BaseUpdatablePlugin implements Plug
 	protected String[] getFilesToUpdate() {
 		return new String[] { "youtube-dl" };
 	}
-	
+
 	@Override
 	public DownloadableState canDownload(final String downloadInput) {
-		if (downloadInput.contains("youtube.") || downloadInput.contains("youtu.be") || downloadInput.contains("dailymotion.") || downloadInput.contains("vimeo.")
+		if (!downloadInput.startsWith("mp3:") && ( downloadInput.contains("youtube.") || downloadInput.contains("youtu.be") || downloadInput.contains("dailymotion.") || downloadInput.contains("vimeo.")
 		        || downloadInput.contains("dailymotion.") || downloadInput.contains("tf1.") || downloadInput.contains("wat.tv")
-		        || downloadInput.contains("clubic.") || downloadInput.contains("6play.")) {
+		        || downloadInput.contains("clubic.") || downloadInput.contains("6play."))) {
 			return DownloadableState.SPECIFIC;
 		} else {
 			return DownloadableState.IMPOSSIBLE;

@@ -132,7 +132,7 @@ public class DownloadTask extends AbstractEpisodeTask {
 
 		File[] matchingFiles = dir.listFiles(new FilenameFilter() {
 			public boolean accept(File dir, String fileName) {
-				return fileName.contains(outputFilenameNoExtension) && fileName.contains(TMP);
+				return fileName.contains(outputFilenameNoExtension) && (fileName.contains(TMP) || fileName.contains(".mp3"));
 			}
 		});
 		return matchingFiles.length < 1 ? null : matchingFiles[0];

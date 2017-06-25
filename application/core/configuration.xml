@@ -3,7 +3,7 @@
     <proxies/>
     <osConfig/>
     <downloadConfig>
-        <downloadOuput>D:/media/video/regular/#TVSHOW_NAME#-#EPISODE_NAME_CUT#.#EXTENSION#</downloadOuput>
+        <downloadOuput>D:/divx/regular/#TVSHOW_NAME#-#EPISODE_NAME_CUT#.#EXTENSION#</downloadOuput>
         <maxAttempts>5</maxAttempts>
         <demonCheckTime>1800</demonCheckTime>
         <fileNameCutSize>50</fileNameCutSize>
@@ -39,7 +39,7 @@
                 </condition>
                 <id>move</id>
                 <label>move file</label>
-                <command>cmd /c move &quot;D:\divx\regular\#TVSHOW_NAME#-#EPISODE_NAME_CUT#.#EXTENSION#&quot; &quot;D:\divx\regular\avi\#TVSHOW_NAME#\#DATE§yyyyMMdd# - #EPISODE_NAME_CUT#.avi&quot;</command>
+                <command>cmd /c move &quot;D:\divx\regular\#TVSHOW_NAME#-#EPISODE_NAME_CUT#.#EXTENSION#&quot; &quot;D:\divx\regular\avi\#TVSHOW_NAME#\#DATE§yyyyMMdd# - #EPISODE_NAME_CUT#.#EXTENSION#&quot;</command>
                 <subexporters/>
             </exporter>
         </exporters>
