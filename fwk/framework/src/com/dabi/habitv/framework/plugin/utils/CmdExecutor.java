@@ -40,8 +40,7 @@ public class CmdExecutor implements ProcessHolder {
 
 	private Thread killThread;
 
-	public CmdExecutor(final String cmdProcessor, final String cmd,
-			final long maxHungTime) {
+	public CmdExecutor(final String cmdProcessor, final String cmd, final long maxHungTime) {
 		super();
 		this.cmd = cmd;
 		this.cmdProcessor = cmdProcessor;
@@ -72,13 +71,11 @@ public class CmdExecutor implements ProcessHolder {
 
 			ProcessingThreads.addProcessing(process);
 			// consume standard output in a thread
-			final Thread outputThread = treatCmdOutput(
-					process.getInputStream(), fullOutput);
+			final Thread outputThread = treatCmdOutput(process.getInputStream(), fullOutput);
 			outputThread.start();
 
 			// consume error output in a thread
-			final Thread errorThread = treatCmdOutput(process.getErrorStream(),
-					fullOutput);
+			final Thread errorThread = treatCmdOutput(process.getErrorStream(), fullOutput);
 			errorThread.start();
 
 			if (getHungProcessTime() != -1) {
@@ -91,14 +88,12 @@ public class CmdExecutor implements ProcessHolder {
 			ended = true;
 			if (hungThread) {
 				process.destroy();
-				throw new HungProcessException(cmd, fullOutput.toString(),
-						lastOutputLine, maxHungTime);
+				throw new HungProcessException(cmd, fullOutput.toString(), lastOutputLine, maxHungTime);
 			} else {
 				process.waitFor();
 			}
 		} catch (final InterruptedException e) {
-			throw new ExecutorFailedException(cmd, fullOutput.toString(),
-					lastOutputLine, e);
+			throw new ExecutorFailedException(cmd, fullOutput.toString(), lastOutputLine, e);
 		} finally {
 			if (process != null) {
 				ProcessingThreads.removeProcessing(process);
@@ -109,11 +104,8 @@ public class CmdExecutor implements ProcessHolder {
 			throw new ExecutorStoppedException(cmd);
 		}
 
-		if (process.exitValue() != 0
-				|| (getLastOutputLine() != null && !isSuccess(fullOutput
-						.toString()))) {
-			throw new ExecutorFailedException(cmd, fullOutput.toString(),
-					lastOutputLine, null);
+		if (process.exitValue() != 0 || (getLastOutputLine() != null && !isSuccess(fullOutput.toString()))) {
+			throw new ExecutorFailedException(cmd, fullOutput.toString(), lastOutputLine, null);
 		}
 		this.fullOutput = fullOutput.toString();
 	}
@@ -129,8 +121,7 @@ public class CmdExecutor implements ProcessHolder {
 
 	}
 
-	private Thread buildKillerThread(final StringBuffer fullOutput,
-			final Process process) {
+	private Thread buildKillerThread(final StringBuffer fullOutput, final Process process) {
 		final Thread tread = new Thread() {
 			@Override
 			public void run() {
@@ -181,38 +172,35 @@ public class CmdExecutor implements ProcessHolder {
 				return Runtime.getRuntime().exec(cmdArgs);
 			}
 		} catch (final IOException e) {
-			throw new ExecutorFailedException(cmd, e.getMessage(),
-					e.getMessage(), e);
+			throw new ExecutorFailedException(cmd, e.getMessage(), e.getMessage(), e);
 		}
 	}
 
-	private Thread treatCmdOutput(final InputStream inputStream,
-			final StringBuffer fullOutput) {
+	private Thread treatCmdOutput(final InputStream inputStream, final StringBuffer fullOutput) {
 		final Thread tread = new Thread() {
 			@Override
 			public void run() {
 				setName("ThreadOut" + cmd);
 				try {
-					final BufferedReader reader = new BufferedReader(
-							new InputStreamReader(inputStream));
+					final BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
 					String line = "";
 					String lastHandledLine;
 					try {
 						long lastTime = 0;
-						while ((line = reader.readLine()) != null
-								&& !hungThread) {
+						while ((line = reader.readLine()) != null && !hungThread) {
 							fullOutput.append(line);
 							fullOutput.append("\n");
 							lastOutputLine = line;
 							lastHandledLine = progression;
-							progression = handleProgression(line);
-							LOG.debug(line);
-							final long now = System.currentTimeMillis();
-							if (progression != null
-									&& (now - lastTime) > FrameworkConf.TIME_BETWEEN_LOG) {
-								hungThread = isHungProcess(lastHandledLine,
-										progression, now, lastTime, maxHungTime);
-								lastTime = now;
+							String newProgression = handleProgression(line);
+							if (newProgression != null) {
+								progression = newProgression;
+								LOG.debug(line);
+								final long now = System.currentTimeMillis();
+								if (progression != null && (now - lastTime) > FrameworkConf.TIME_BETWEEN_LOG) {
+									hungThread = isHungProcess(lastHandledLine, progression, now, lastTime, maxHungTime);
+									lastTime = now;
+								}
 							}
 						}
 					} finally {
@@ -226,17 +214,15 @@ public class CmdExecutor implements ProcessHolder {
 		return tread;
 	}
 
-	private boolean isHungProcess(final String lastHandledLine,
-			final String currentHandledLine, final long now,
-			final long lastTime, final long maxHungTime) {
+	private boolean isHungProcess(final String lastHandledLine, final String currentHandledLine, final long now, final long lastTime,
+	        final long maxHungTime) {
 		LOG.debug("lastHandledLine" + lastHandledLine);
 		LOG.debug("currentHandledLine" + currentHandledLine);
 		LOG.debug("now" + now);
 		LOG.debug("lastTime" + lastTime);
 		LOG.debug("maxHungTime" + maxHungTime);
-		return lastHandledLine != null && currentHandledLine != null
-				&& (currentHandledLine.equals(lastHandledLine))
-				&& (now - lastTime) > maxHungTime;
+		return lastHandledLine != null && currentHandledLine != null && (currentHandledLine.equals(lastHandledLine))
+		        && (now - lastTime) > maxHungTime;
 	}
 
 	protected String getLastOutputLine() {

@@ -22,6 +22,7 @@
 		<module>email</module>
 		<module>ffmpeg</module>
 		<module>file</module>
+		<module>globalnews</module>
 		<module>lequipe</module>
 		<module>pluzz</module>
 		<module>RSS</module>

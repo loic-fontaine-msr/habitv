@@ -57,11 +57,6 @@ public class BeinSportPluginManager extends BasePluginWithProxy implements Plugi
 		videoCategory.setDownloadable(false);
 		addSubCategories(videoCategory);
 		categoryDTOs.add(videoCategory);
-		final CategoryDTO replayCategory = new CategoryDTO(BeinSportConf.REPLAY_CATEGORY, BeinSportConf.REPLAY_CATEGORY, BeinSportConf.REPLAY_URL,
-		        BeinSportConf.EXTENSION);
-		replayCategory.setDownloadable(false);
-		categoryDTOs.add(replayCategory);
-		addSubCategories(replayCategory);
 		return categoryDTOs;
 	}
 
