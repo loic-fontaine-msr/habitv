@@ -1,13 +1,13 @@
-package com.dabi.habitv.provider.globalnews;
+package com.dabi.habitv.provider.footyroom;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -24,32 +24,26 @@ import com.dabi.habitv.framework.FrameworkConf;
 import com.dabi.habitv.framework.plugin.api.BasePluginWithProxy;
 import com.dabi.habitv.framework.plugin.utils.DownloadUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class GlobalNewsPluginManager extends BasePluginWithProxy implements PluginProviderDownloaderInterface {
+public class FootyroomPluginManager extends BasePluginWithProxy implements PluginProviderDownloaderInterface {
 
-	public GlobalNewsPluginManager() {
+	public FootyroomPluginManager() {
 		HttpURLConnection.setFollowRedirects(true);
 	}
 
 	@Override
 	public String getName() {
-		return GlobalNewsConf.NAME;
+		return FootyroomConf.NAME;
 	}
 
 	@Override
 	public Set<EpisodeDTO> findEpisode(final CategoryDTO category) {
 		final Set<EpisodeDTO> episodeList = new LinkedHashSet<>();
 		final Document doc = Jsoup.parse(getUrlContent(category.getId()));
-		for (final Element div : doc.select("div.video-browse ul li a>div")) {
-			Element aResult = div.parent();
-			final String hRef = aResult.attr("href");
-
-			Elements h5 = aResult.select("h5");
-			if (h5.size() > 0) {
-				episodeList.add(new EpisodeDTO(category, h5.get(0).text(), hRef));
-			}
+		for (final Element aHref : doc.select("div.posts-page header a.not-spoiler")) {
+			final String hRef = aHref.attr("href");
+			final String name = aHref.text();
+			episodeList.add(new EpisodeDTO(category, name, hRef));
 		}
 		return episodeList;
 	}
@@ -57,17 +51,26 @@ public class GlobalNewsPluginManager extends BasePluginWithProxy implements Plug
 	@Override
 	public Set<CategoryDTO> findCategory() {
 		final Set<CategoryDTO> categoryDTOs = new LinkedHashSet<>();
-		final Document doc = Jsoup.parse(getUrlContent(GlobalNewsConf.VIDEO_HOME_URL));
+		final Document doc = Jsoup.parse(getUrlContent(FootyroomConf.VIDEO_HOME_URL));
 
-		for (final Element aHref : doc.select("div.video-navigation a")) {
-			final String href = aHref.attr("href");
-			if (href.length() > 1) {
-				final String content = aHref.text();
-				final CategoryDTO categoryDTO = new CategoryDTO(GlobalNewsConf.NAME, content, href, GlobalNewsConf.EXTENSION);
-				categoryDTO.setDownloadable(true);
-				categoryDTOs.add(categoryDTO);
+		for (final Element league : doc.select("ul.all-leagues-section")) {
+			Iterator<Element> competitionIt = league.children().iterator();
+			if (competitionIt.hasNext()) {
+				String leagueName = competitionIt.next().text();
+				final CategoryDTO leagueCat = new CategoryDTO(FootyroomConf.NAME, leagueName, leagueName, FootyroomConf.EXTENSION);
+				leagueCat.setDownloadable(false);
+				categoryDTOs.add(leagueCat);
+
+				while (competitionIt.hasNext()) {
+					Element competition = competitionIt.next();
+					Element aHref = competition.child(0);
+					final String href = aHref.attr("href");
+					final String content = aHref.text();
+					final CategoryDTO categoryDTO = new CategoryDTO(FootyroomConf.NAME, content, href, FootyroomConf.EXTENSION);
+					categoryDTO.setDownloadable(true);
+					leagueCat.addSubCategory(categoryDTO);
+				}
 			}
-
 		}
 		return categoryDTOs;
 	}
@@ -85,27 +88,25 @@ public class GlobalNewsPluginManager extends BasePluginWithProxy implements Plug
 
 	}
 
-	private final ObjectMapper mapper = new ObjectMapper();
+	private static final Pattern URL_SOURCE = Pattern.compile("\"source\":\"([^\"]+)\"");
+	private static final Pattern URL_IFRAME = Pattern.compile("\\<iframe[^\\>]+src=\\\\\"([^\"]+)\\\\\"[^\\>]+\\>");
 
 	private String findDownloadlink(String url) throws JsonProcessingException, IOException {
-		String jsonLink = findJsonLink(url);
-		final JsonNode root = mapper.readTree(getInputStreamFromUrl(jsonLink));
-		return root.elements().next().get("sources").elements().next().get("file").textValue();
-	}
-
-	private static final Pattern MEDIAID_FEEDURL = Pattern.compile("\"mediaId\":\"([^\"]+)\".*\"feedUrl\":\"([^\"]+)\"");
-
-	private String findJsonLink(String url) {
 		final Document doc = Jsoup.parse(getUrlContent(url));
-		Elements scriptTags = doc.select("div.video-controls script");
+		Elements scriptTags = doc.select("div.video-section script");
 		for (Element scriptTag : scriptTags) {
 			String data = scriptTag.data();
-			if (!StringUtils.isEmpty(data)) {
-				Matcher matcher = MEDIAID_FEEDURL.matcher(data);
+			if (data.contains("DataStore")) {
+				Matcher matcher = URL_IFRAME.matcher(data);
 				if (matcher.find()) {
-					String mediaId = matcher.group(1);
-					String feedUrl = matcher.group(2).replace("\\", "");
-					return "http:" + feedUrl + "?q=id.exact:" + mediaId;
+					String feedUrl = matcher.group(1).replace("\\", "");
+					return DownloadUtils.isHttpUrl(feedUrl) ? feedUrl : ("http:" + feedUrl);
+				} else {
+					matcher = URL_SOURCE.matcher(data);
+					if (matcher.find()) {
+						String feedUrl = matcher.group(1).replace("\\", "");
+						return DownloadUtils.isHttpUrl(feedUrl) ? feedUrl : ("http:" + feedUrl);
+					}
 				}
 			}
 		}
@@ -114,7 +115,7 @@ public class GlobalNewsPluginManager extends BasePluginWithProxy implements Plug
 
 	@Override
 	public DownloadableState canDownload(final String downloadInput) {
-		return downloadInput.contains("globalnews") ? DownloadableState.SPECIFIC : DownloadableState.IMPOSSIBLE;
+		return downloadInput.contains("footyroom") ? DownloadableState.SPECIFIC : DownloadableState.IMPOSSIBLE;
 	}
 
 }
