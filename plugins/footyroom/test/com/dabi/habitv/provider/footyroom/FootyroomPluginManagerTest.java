@@ -11,5 +11,4 @@ public class FootyroomPluginManagerTest extends BasePluginProviderTester {
 	public final void test() throws InstantiationException, IllegalAccessException, DownloadFailedException {
 		testPluginProvider(FootyroomPluginManager.class, true);
 	}
-
 }

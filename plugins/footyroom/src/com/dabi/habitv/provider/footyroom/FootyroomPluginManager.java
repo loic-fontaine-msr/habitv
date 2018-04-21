@@ -63,7 +63,7 @@ public class FootyroomPluginManager extends BasePluginWithProxy implements Plugi
 
 				while (competitionIt.hasNext()) {
 					Element competition = competitionIt.next();
-					Element aHref = competition.child(0);
+					Element aHref = competition.select("a").first();
 					final String href = aHref.attr("href");
 					final String content = aHref.text();
 					final CategoryDTO categoryDTO = new CategoryDTO(FootyroomConf.NAME, content, href, FootyroomConf.EXTENSION);
@@ -80,12 +80,30 @@ public class FootyroomPluginManager extends BasePluginWithProxy implements Plugi
 		String videoUrl;
 		try {
 			videoUrl = findDownloadlink(downloadParam.getDownloadInput());
+			if (videoUrl.startsWith("http://footy1.matchat.online")){
+				videoUrl = findM3UDownloadlink(videoUrl);	
+			}
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 		downloadParam.addParam(FrameworkConf.DOWNLOADER_PARAM, FrameworkConf.YOUTUBE);
 		return DownloadUtils.download(DownloadParamDTO.buildDownloadParam(downloadParam, videoUrl), downloaders);
 
+	}
+
+	private static final Pattern M3U8 = Pattern.compile("hls: \\'([^\\']*)\\'");
+	private String findM3UDownloadlink(String url) {
+		final Document doc = Jsoup.parse(getUrlContent(url));
+		Elements scriptTags = doc.select("body script");
+		for (Element scriptTag : scriptTags) {
+			String data = scriptTag.data();
+				Matcher matcher = M3U8.matcher(data);
+				if (matcher.find()) {
+					String feedUrl = matcher.group(1).replace("\\", "");
+					return DownloadUtils.isHttpUrl(feedUrl) ? feedUrl : ("http:" + feedUrl);
+				}
+		}
+		throw new RuntimeException("m3u8 not found");
 	}
 
 	private static final Pattern URL_SOURCE = Pattern.compile("\"source\":\"([^\"]+)\"");
